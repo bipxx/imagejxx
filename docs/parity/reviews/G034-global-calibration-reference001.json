@@ -1,0 +1,450 @@
+{
+  "schema_version": 1,
+  "reference": "ImageJ1.54r actual ImagePlus global/local copy and dtype adaptation",
+  "cases": [
+    {
+      "id": "off_u8",
+      "bit_depth": 8,
+      "global_present": false,
+      "local": {
+        "pixel_width": 2.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local8",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 2.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local8",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      }
+    },
+    {
+      "id": "off_u16",
+      "bit_depth": 16,
+      "global_present": false,
+      "local": {
+        "pixel_width": 3.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local16",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 3.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local16",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      }
+    },
+    {
+      "id": "off_f32",
+      "bit_depth": 32,
+      "global_present": false,
+      "local": {
+        "pixel_width": 4.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "pixel",
+        "value_unit": "local_float",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 4.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "pixel",
+        "value_unit": "local_float",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      }
+    },
+    {
+      "id": "enabled_u8",
+      "bit_depth": 8,
+      "global_present": true,
+      "local": {
+        "pixel_width": 2.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local8",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "?m",
+        "value_unit": "OD",
+        "function": 0,
+        "coefficients": [
+          10.0,
+          2.0
+        ],
+        "signed16": false,
+        "calibrated": true,
+        "at_0": 10.0,
+        "at_1": 12.0
+      }
+    },
+    {
+      "id": "enabled_u16",
+      "bit_depth": 16,
+      "global_present": true,
+      "local": {
+        "pixel_width": 3.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local16",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "?m",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      }
+    },
+    {
+      "id": "enabled_f32",
+      "bit_depth": 32,
+      "global_present": true,
+      "local": {
+        "pixel_width": 4.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "pixel",
+        "value_unit": "local_float",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "?m",
+        "value_unit": "OD",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      }
+    },
+    {
+      "id": "enabled_rgb",
+      "bit_depth": 24,
+      "global_present": true,
+      "local": {
+        "pixel_width": 1.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "pixel",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "?m",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      }
+    },
+    {
+      "id": "enabled_signed16",
+      "bit_depth": 16,
+      "global_present": true,
+      "local": {
+        "pixel_width": 1.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "pixel",
+        "value_unit": "Gray Value",
+        "function": 0,
+        "coefficients": [
+          -32768.0,
+          1.0
+        ],
+        "signed16": true,
+        "calibrated": true,
+        "at_0": -32768.0,
+        "at_1": -32767.0
+      },
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "?m",
+        "value_unit": "Gray Value",
+        "function": 0,
+        "coefficients": [
+          -32768.0,
+          1.0
+        ],
+        "signed16": true,
+        "calibrated": true,
+        "at_0": -32768.0,
+        "at_1": -32767.0
+      }
+    },
+    {
+      "id": "ignored_u8",
+      "bit_depth": 8,
+      "global_present": true,
+      "local": {
+        "pixel_width": 2.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local8",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 2.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local8",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      }
+    },
+    {
+      "id": "copy_isolation",
+      "bit_depth": 8,
+      "global_present": true,
+      "local": {
+        "pixel_width": 2.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local8",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "?m",
+        "value_unit": "OD",
+        "function": 0,
+        "coefficients": [
+          10.0,
+          2.0
+        ],
+        "signed16": false,
+        "calibrated": true,
+        "at_0": 10.0,
+        "at_1": 12.0
+      }
+    },
+    {
+      "id": "new_u8",
+      "bit_depth": 8,
+      "global_present": true,
+      "local": {
+        "pixel_width": 1.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "pixel",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "?m",
+        "value_unit": "OD",
+        "function": 0,
+        "coefficients": [
+          10.0,
+          2.0
+        ],
+        "signed16": false,
+        "calibrated": true,
+        "at_0": 10.0,
+        "at_1": 12.0
+      }
+    },
+    {
+      "id": "cleared_u8",
+      "bit_depth": 8,
+      "global_present": false,
+      "local": {
+        "pixel_width": 2.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local8",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 2.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local8",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      }
+    },
+    {
+      "id": "cleared_u16",
+      "bit_depth": 16,
+      "global_present": false,
+      "local": {
+        "pixel_width": 3.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local16",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      },
+      "effective": {
+        "pixel_width": 3.0,
+        "pixel_height": 1.0,
+        "pixel_depth": 1.0,
+        "x_origin": 0.0,
+        "unit": "local16",
+        "value_unit": "Gray Value",
+        "function": 20,
+        "coefficients": null,
+        "signed16": false,
+        "calibrated": false,
+        "at_0": 0.0,
+        "at_1": 1.0
+      }
+    }
+  ]
+}

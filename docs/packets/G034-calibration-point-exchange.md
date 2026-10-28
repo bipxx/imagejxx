@@ -1,5 +1,31 @@
 # Calibration fitting-point exchange
 
+## Editor-session standards and unit defaults
+
+Accepted fit submissions now remember their original measured/known points for
+both fit dialogs in the same Window. Reuse survives source closure and takes
+precedence over per-document fit-point prefill; the function/settings still come
+from the existing document logic. Unit defaults are remembered after accepted
+fit submission or successful manual/function Apply, and used only when the next
+source unit is the default Gray Value. An explicit document unit takes precedence.
+
+These are immutable numeric points and one string, with no document/provider
+owner. Admission bounds limit numeric values to2*4096 doubles and the unit to
+1MiB; this is bounded UI session state, not render-memory accounting or RSS.
+Copy candidates are prepared before job admission/publication and installed by
+no-throw swaps. Synchronous refusal, imported/unsubmitted drafts and dialog
+Cancel do not replace defaults. Cancellation or failure after a fit has already
+been admitted retains that submitted standard set, matching the accepted-OK
+lifecycle rather than a successful-solver-only cache. State is not a new saved
+preference/session-file schema and does not leak into another editor instance.
+
+The pinned Calibrator source uses static xText/yText/unitSaved updated on dialog
+OK. These native editor admission semantics do not claim all original rejected
+OK, raw-text stripping or measured-mean autofill behavior. Measured means,
+Calibrate consolidation, durable replay and native global calibration remain
+open. [Global calibration contract](G034-global-calibration-contract.md).
+
+
 This packet follows the pinned ImageJ1.54r Calibrator.open/save workflow. It
 exchanges measured/known fitting standards. It does not replace a density
 lookup table or apply calibration merely because a file was opened.

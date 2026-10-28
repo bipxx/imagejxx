@@ -1196,6 +1196,8 @@ struct Window::Impl {
   bool jobPreview = false, jobSkip = false;
   std::atomic<bool> cancelled{false};
   bool fitShowPlot = true; // interactive session preference, never numeric provenance
+  std::shared_ptr<const CalibrationPoints> fitStandards; // bounded numeric session state; no source owner
+  std::string calibrationUnit="Gray Value";
   struct PlotRectangleDrag {ImVec2 start,origin,size;CalibrationPlotView view;std::uint64_t generation;};
   struct CalibrationPlotState {
     std::shared_ptr<const CalibrationPlotPayload> payload;
@@ -4638,6 +4640,12 @@ struct Window::Impl {
   void rois();
   void resultTable();
   void recorder();
+  const std::string& intensityDialogUnit(const ImageJIntensityCalibration& calibration) const {
+    return calibration.value_unit()=="Gray Value"?calibrationUnit:calibration.value_unit();
+  }
+  void reuseIntensityStandards(Json& values) const {
+    if(fitStandards){values["measured"]=Json(fitStandards->measured).dump();values["known"]=Json(fitStandards->known).dump();}
+  }
   void submitIntensityFit(const DocumentSnapshot& source,ImageJIntensityFitRequest request,bool show) {
     const auto previous=std::exchange(fitShowPlot,show);
     try {owner.fitIntensityCalibration(source,std::move(request));}
@@ -4663,6 +4671,7 @@ struct Window::Impl {
     const auto current=owner.nativeSnapshot();
     if(!source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
     calibration.validate_for(source.data().dataset.pixel_type(),source.data().dataset.shape().s);
+    auto rememberedUnit=calibration.value_unit();
     // Stage all potentially throwing plot/metadata work before committing the edit.
     std::optional<ImageJIntensityFitPlot> plot;
     std::optional<CalibrationPlotAnnotation> annotation;
@@ -4680,7 +4689,7 @@ struct Window::Impl {
     static_assert(std::is_nothrow_swappable_v<decltype(payload)>);
     static_assert(std::is_nothrow_swappable_v<decltype(binding)>);
     // A successful Apply remembers the preference; Cancel and failures never do.
-    fitShowPlot=show;
+    fitShowPlot=show;calibrationUnit.swap(rememberedUnit);
     if(payload){livePlot.payload.swap(payload);livePlot.source.swap(binding);focusLivePlot();livePlot.view={};livePlot.drag.reset();++livePlot.generation;}
   }
   void focusLivePlot() noexcept {
@@ -6086,6 +6095,10 @@ void Window::fitIntensityCalibration(const DocumentSnapshot& source,ImageJIntens
       throw std::invalid_argument("Calibration fit and plot exceed working-memory budget");
     bytes+=plotBytes;
   }
+  // Estimate validated the4096-point bounds. Prepare the session copy before
+  // job admission; only a successfully submitted request replaces defaults.
+  auto standards=std::make_shared<const CalibrationPoints>(CalibrationPoints{request.measured,request.known,true});
+  auto rememberedUnit=request.value_unit;
   auto owner=documentById(source.id());impl->stopAnimation("intensity_calibration");
   impl->start([source,request,showPlot,plotBytes] {
     auto prepared=prepare_imagej_intensity_fit(source,request);
@@ -6110,6 +6123,7 @@ void Window::fitIntensityCalibration(const DocumentSnapshot& source,ImageJIntens
     if(showPlot){result.fit_plot=std::move(plot);result.fit_plot_annotation=std::move(annotation);result.fit_plot_source=Impl::FitPlotBinding{source.id(),expected};}
     result.calibration_fit=true;result.fit_status=std::move(status);return result;
   },std::move(owner),false,"Calibration fit","Calibration fit",bytes,{},true);
+  impl->fitStandards.swap(standards);impl->calibrationUnit.swap(rememberedUnit); // noexcept; cancellation after admission retains submitted defaults
 }
 
 std::shared_ptr<imagejxx::Document>
@@ -7038,7 +7052,7 @@ void Window::action(const std::string &name, const Json &p) {
       if(source.data().dataset.shape().s!=1 || (type!=PixelType::UInt8 && type!=PixelType::UInt16))
         throw std::invalid_argument("Calibration fitting requires scalar UInt8/UInt16");
       Json values{{"function","exponential"},{"measured","[0,1,2]"},{"known","[1,2,4]"},
-        {"value_unit",calibration.value_unit()},{"zero_clip",false},{"initial_coefficients","[]"},
+        {"value_unit",impl->intensityDialogUnit(calibration)},{"zero_clip",false},{"initial_coefficients","[]"},
         {"max_iterations",256},{"relative_tolerance",1e-10},{"show_plot",impl->fitShowPlot}};
       const auto parameters=metadataJson(calibration.source_parameters());
       if(parameters.contains("fit") && parameters.at("fit").is_object()) {
@@ -7050,6 +7064,7 @@ void Window::action(const std::string &name, const Json &p) {
         }
       }
       impl->stopAnimation("intensity_calibration");
+      impl->reuseIntensityStandards(values);
       impl->ask("Fit Nonlinear Calibration",std::move(values),[this,source](Json fields) {
         const auto now=nativeSnapshot();
         if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
@@ -7084,7 +7099,7 @@ void Window::action(const std::string &name, const Json &p) {
       if(source.data().dataset.shape().s!=1 || (type!=PixelType::UInt8 && type!=PixelType::UInt16))
         throw std::invalid_argument("Calibration fitting requires scalar UInt8/UInt16");
       Json values{{"function","straight_line"},{"measured","[0,1]"},{"known","[0,1]"},
-        {"value_unit",calibration.value_unit()},{"zero_clip",false},{"show_plot",impl->fitShowPlot}};
+        {"value_unit",impl->intensityDialogUnit(calibration)},{"zero_clip",false},{"show_plot",impl->fitShowPlot}};
       const auto parameters=metadataJson(calibration.source_parameters());
       if(parameters.contains("fit") && parameters.at("fit").is_object()) {
         const auto& fit=parameters.at("fit");
@@ -7095,6 +7110,7 @@ void Window::action(const std::string &name, const Json &p) {
         }
       }
       impl->stopAnimation("intensity_calibration");
+      impl->reuseIntensityStandards(values);
       impl->ask("Fit Polynomial Calibration",std::move(values),[this,source](Json fields) {
         const auto now=nativeSnapshot();
         if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
@@ -7124,7 +7140,7 @@ void Window::action(const std::string &name, const Json &p) {
         "log","rodbard","gamma_variate","log2","rodbard2","exp_with_offset","gaussian","exp_recovery"});
       if(type==PixelType::UInt8)functions.push_back("uncalibrated_od");
       Json values{{"function","straight_line"},{"coefficients","[0,1]"},
-        {"value_unit",calibration.value_unit()},{"zero_clip",false},{"inverted_lut",false},{"show_plot",impl->fitShowPlot}};
+        {"value_unit",impl->intensityDialogUnit(calibration)},{"zero_clip",false},{"inverted_lut",false},{"show_plot",impl->fitShowPlot}};
       const auto parameters=metadataJson(calibration.source_parameters());
       if(parameters.value("producer",std::string())=="imagej154r.function") {
         for(const auto* key:{"function","zero_clip","inverted_lut"})values[key]=parameters.at(key);
@@ -7153,7 +7169,7 @@ void Window::action(const std::string &name, const Json &p) {
     if(source.data().dataset.pixel_type()==PixelType::UInt16 && source.data().dataset.shape().s==1)choices.push_back("signed16");
     if(calibration.mode()==ImageJIntensityMode::Lookup)choices.push_back("lookup");
     impl->stopAnimation("intensity_calibration");
-    impl->ask("Intensity Calibration",{{"mode",record.at("mode")},{"value_unit",calibration.value_unit()},{"show_plot",impl->fitShowPlot}},
+    impl->ask("Intensity Calibration",{{"mode",record.at("mode")},{"value_unit",impl->intensityDialogUnit(calibration)},{"show_plot",impl->fitShowPlot}},
         [this,source,record](Json values) {
           const auto now=nativeSnapshot();
           if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();

@@ -74,6 +74,14 @@ def test_physical_point_exchange_and_fit(context,tmp_path):
     record=report["fitted"]["properties"]["imagejxx.intensity_calibration"]
     np.testing.assert_allclose(record["source_parameters"]["coefficients"],[2,2],rtol=1e-12,atol=1e-12)
     assert report["fitted"]["pixels"]==report["before"]["pixels"]
+    assert report["fresh_before"]==report["fresh_after"]
+    for name in ["remembered_nonlinear","remembered_polynomial"]:
+        assert json.loads(report[name]["measured"])==[0,1,2]
+        assert json.loads(report[name]["known"])==[2,4,6]
+    # Editable text is recorded separately from the initialized values object.
+    edited=[json.loads(frame["dialog"]["text"]["known"]) for frame in report["frames"]
+            if frame["dialog"]["open"] and frame["dialog"]["title"]=="Fit Nonlinear Calibration"]
+    assert [9,9,9] in edited
     assert all(frame["error"]=="" for frame in report["frames"])
 
 
@@ -96,3 +104,66 @@ def test_point_import_matches_pinned_textreader_values(case,tmp_path):
     np.testing.assert_array_equal(actual,expected[:,-1])
     if columns==2:np.testing.assert_array_equal(np.array(json.loads(draft["measured"]),np.float32).view(np.uint32),expected[:,0])
     assert owner.undo_steps==0
+
+
+def admit_standards(editor,known=(2,4,6),unit="OD"):
+    editor.action("fit_intensity_calibration",function="straight_line",measured=[0,1,2],known=list(known),value_unit=unit,show_plot=False)
+    editor.wait()
+
+
+def fresh_source(editor,title="fresh"):
+    editor.close_document(discard=True)
+    reads=ij.DatasetReadObserver()
+    owner=ij.Document(ij.Dataset(np.zeros((2,3),np.uint8),axes="YX").observe_reads(reads),title)
+    editor.add_native_document(owner)
+    return owner,reads
+
+
+@pytest.mark.parametrize("kind",["polynomial","nonlinear"])
+def test_accepted_standards_survive_source_closure_and_seed_both_dialogs(kind,tmp_path):
+    _,editor,_=fixture(tmp_path);admit_standards(editor)
+    owner,reads=fresh_source(editor);before=owner.snapshot();count=reads.counts().plane_reads
+    editor.action("show_intensity_"+kind+"_fit");assert reads.counts().plane_reads==count
+    values=editor.render_headless(4)["dialog"]["values"]
+    assert json.loads(values["measured"])==[0,1,2] and json.loads(values["known"])==[2,4,6]
+    assert values["value_unit"]=="OD" and owner.snapshot().shares_data(before) and owner.undo_steps==0
+
+
+def test_rejected_fit_and_unsubmitted_import_preserve_last_standards(tmp_path):
+    _,editor,_=fixture(tmp_path);admit_standards(editor)
+    owner,_=fresh_source(editor);before=owner.snapshot()
+    with pytest.raises((ValueError,RuntimeError)):
+        editor.action("fit_intensity_calibration",function="straight_line",measured=[0,1],known=[99],value_unit="bad",show_plot=False)
+    editor.action("show_intensity_polynomial_fit")
+    path=tmp_path/"unsubmitted.txt";path.write_text("0 9\n1 9\n2 9\n")
+    editor.action("import_intensity_points",path=str(path))
+    imported=editor.render_headless(4)["dialog"]["values"];assert json.loads(imported["known"])==[9,9,9]
+    editor.action("show_intensity_nonlinear_fit")
+    values=editor.render_headless(4)["dialog"]["values"]
+    assert json.loads(values["known"])==[2,4,6] and values["value_unit"]=="OD"
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==0
+
+
+def test_explicit_document_unit_takes_precedence_over_remembered_default(tmp_path):
+    _,editor,_=fixture(tmp_path);admit_standards(editor)
+    owner,_=fresh_source(editor)
+    ij.set_imagej_intensity_calibration(owner,ij.ImageJIntensityCalibration.uncalibrated("HU"))
+    editor.action("show_intensity_polynomial_fit")
+    assert editor.render_headless(4)["dialog"]["values"]["value_unit"]=="HU"
+
+
+def test_standards_do_not_leak_between_editor_sessions(tmp_path):
+    _,first,_=fixture(tmp_path);admit_standards(first)
+    _,second,_=fixture(tmp_path/"second")
+    values=second.render_headless(4)["dialog"]["values"]
+    assert json.loads(values["measured"])==[0,1] and json.loads(values["known"])==[0,1]
+    assert values["value_unit"]=="Gray Value"
+
+
+def test_manual_calibration_remembers_unit_for_fresh_default_source(tmp_path):
+    _,editor,_=fixture(tmp_path)
+    editor.action("set_intensity_calibration",record=ij.ImageJIntensityCalibration.uncalibrated("unit-a").record,show_plot=False)
+    owner,_=fresh_source(editor)
+    editor.action("show_intensity_function")
+    assert editor.render_headless(4)["dialog"]["values"]["value_unit"]=="unit-a"
+    assert owner.undo_steps==0 and not ij.read_imagej_intensity_calibration(owner.snapshot()).has_density

@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "scope": "Remember admitted calibration fitting standards and accepted unit defaults within the shared C++ editor session; original global-calibration observation and next integration contract",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "standards": "Window::fitIntensityCalibration validates/estimates the request, stages immutable numeric copies, admits the existing worker, then no-throw swaps the session standard set. Both fitting dialogs reuse it after per-document model/settings defaults. It outlives source closure without storing document/provider pointers. Both direct C++ and Editor.action fit submission paths share the implementation.",
+    "unit": "Accepted fit submission and successful manual/function Apply remember the value unit. Next calibration/function/polynomial/nonlinear dialog uses it only when the source has default Gray Value. An explicit document unit takes precedence.",
+    "lifecycle": "Synchronous rejection, imported/unsubmitted drafts and dialog Cancel do not replace defaults. Failure/cancel after a fit has already been admitted retains submitted standards/unit, rather than successful-solver-only caching. Each Window has independent state; no process singleton, durable preference/session-file format or changed numeric provenance.",
+    "bounds": "At most2*4096 double values and one1MiB unit string, validated before candidate copying/admission. This is bounded UI session state, not render-memory accounting, processing reservation or total RSS. No plane reads/source copies/jobs/history changes merely opening a populated dialog.",
+    "unchanged": "No native core API/SDK change, core kernel change, new UI controls, historical reference repinning or plot geometry/cap enlargement."
+  },
+  "verification": {
+    "windows": {
+      "collected": 957,
+      "passed": 956,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "skip": "Explicit optional IMAGEJXX_RENDER_TESTS=1 hidden-OpenGL settings check",
+      "original_focused_cases": 783,
+      "cpp_cases": 6,
+      "new_physical_case_frames": {
+        "imgui_cpp": "84/160",
+        "imgui_python": "84/160"
+      },
+      "prior_case_bounds": "generic128/160, snapshots186/192, calibration606/608 remain"
+    },
+    "assertions": "Both actual hosts complete original file exchange and fit, close source, attach a fresh uncalibrated source, reuse points in nonlinear form, physically edit known points to[9,9,9], cancel and reopen polynomial with[2,4,6]. No fresh-source metadata/pixel/history mutation. API tests cover unit default precedence, independent Window sessions, synchronous refusal and unsubmitted import.",
+    "native": "Windows existing native controls pass.119 inputs to the previously passed Linux444 private consumer rehashed unchanged; no new Linux execution or Linux full UI/global-calibration/SDK claim.",
+    "freeze": "1284 production/configuration/vendored/native-control files rechecked against the single current build461 freeze with zero mismatches. Python/reference reader bytes separately pinned in final469.",
+    "reader_corrections": [
+      "Initial462 reader looked for editable input in dialog.values; actual delivered dialog.text contains six edited[9,9,9] frames. Preserve the same value assertion against actual buffers; original defaults/output assertions retained. No native rebuild.",
+      "Reader correction accidentally doubled CRLF; restoring single CRLF has identical AST without positions. Preimage/hash retained; final469 pins and runs the clean reader. No native rebuild."
+    ],
+    "commercial_inventory": "scripts/check_licenses.py --desktop and git diff --check pass."
+  },
+  "global_next_packet": {
+    "state": "Native implementation open; original API observations only",
+    "reference": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-global-calibration-reference002.json",
+      "bytes": 11078,
+      "sha256": "ecc5526a4ec4bc6368b2daaeb811056552d66652ccf6a70d10ef7a6c3fa2ef08"
+    },
+    "encoding_limited_reference": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-global-calibration-reference001.json",
+      "bytes": 11043,
+      "sha256": "a949f7da76d0e3680f6afb7425db2d7c050c5af543c816fc7a237b1a6da5b3cb"
+    },
+    "cases": 13,
+    "spec": "docs/packets/G034-global-calibration-contract.md",
+    "observed": "Global/local calibration are separate; set/get use copies; ignore and clear restore local state; new images inherit effective global state.8-bit density does not apply unchanged to16-bit/Float32/RGB; local signed16 takes precedence. Float32 clears density but retains global value unit. Spatial overlay persists across these dtype cases.",
+    "encoding": "Original463 JVM stdout replaced ImageJ-normalized micro-sign spatial unit with ?. Reference001 preserved unchanged as encoding-limited evidence, not a unit oracle. Observer now escapes non-ASCII JSON; fresh474 reference002 preserves U+00B5m. All other numeric/density/unit fields agree; no expectation replacement.",
+    "path": "Typed effective resolver and Application-owned copy/generation first, then captured target/prepared-command generation guards and existing downstream consumers before functional Global checkbox. Preserve local documents/history; do not bulk-edit open documents or misuse projection-only output adapter. No private Calibrator UI/full global acceptance claimed."
+  },
+  "evidence": {
+    "calibration-standards-windows-build461": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-standards-windows-build461\\receipt.json",
+      "bytes": 24938,
+      "sha256": "35e548ba9470b48537a3bb81fb22d5a07c06d0121422459a2e085b3ceacef303"
+    },
+    "calibration-standards-installed462": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-standards-installed462\\receipt.json",
+      "bytes": 128108,
+      "sha256": "e2feb8250cbfe02f57525cafd69a6c6a60e7deb033c5eb7bd48137efe7397bbe"
+    },
+    "calibration-global-reference463": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-global-reference463\\receipt.json",
+      "bytes": 7760,
+      "sha256": "52144fb4e39177efa42d409be0695c2c521f042c494a7fc8723e69e58e65b7b5"
+    },
+    "calibration-standards-reader464": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-standards-reader464\\receipt.json",
+      "bytes": 612,
+      "sha256": "7e6cd17afb4498cde256b053fd11a5d76764556375b7a017f42fa3e0fa37496f"
+    },
+    "calibration-standards-installed465": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-standards-installed465\\receipt.json",
+      "bytes": 128023,
+      "sha256": "3f4500e4c077d6f045a1a189e02541da150dcadda88708d894c9d2aaf61f174c"
+    },
+    "calibration-standards-retention466": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-standards-retention466\\receipt.json",
+      "bytes": 7002,
+      "sha256": "96304abdaa4af050c5d31873eb9dbdb9a9027239b519781f5f6490a51a5fab17"
+    },
+    "calibration-standards-newlines468": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-standards-newlines468\\receipt.json",
+      "bytes": 455,
+      "sha256": "d21d93dd190ac39cc4db185928f5e5a7aa7ca74c534644eaac34eb847c645712"
+    },
+    "calibration-standards-installed469": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-standards-installed469\\receipt.json",
+      "bytes": 128331,
+      "sha256": "3a805d74e1b779103f803239ab16738670e2c1bf188873a035ff657d73a2d938"
+    },
+    "calibration-standards-retention471": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-standards-retention471\\receipt.json",
+      "bytes": 2405,
+      "sha256": "4a654746f72b1e3d046e1f85f4f46096810ab682369b83e028025bd8606c226d"
+    },
+    "global-calibration-encoding473": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-encoding473\\receipt.json",
+      "bytes": 427,
+      "sha256": "74737859499ed05d338ec822bac18d8be8a2d0912dda1b9c0f7fe46a16c0c067"
+    },
+    "calibration-global-reference474": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-global-reference474\\receipt.json",
+      "bytes": 7766,
+      "sha256": "cfb5a0288c2536f544529ef937e00e97e598d8d96164d506c0b55571e678ef3e"
+    },
+    "calibration-global-retention475": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-global-retention475\\receipt.json",
+      "bytes": 1221,
+      "sha256": "779ccb77927633f92c5402c6ade6a523b9d1e51d507a7f463f107173d033b48b"
+    },
+    "storage_after476": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-standards-after476.json",
+      "bytes": 1523,
+      "sha256": "5d772027d536855296fc8fb71357c0e12708e6f3d2186fa6bd9fd62b3eac2c83"
+    }
+  },
+  "storage": {
+    "before_known_bytes": 8493894895,
+    "after_known_bytes": 8496359043,
+    "limit_bytes": 8589934592,
+    "budget_verified": false,
+    "unknown_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "recovered_bytes": 3133307,
+    "retention": "Terminal owned scratch/raw diagnostics retired after lossless archive member size/hash verification. Failed462 and superseded passed465 full captures retired with identities; full contents unavailable. Final469 and original global-reference captures retained; no cache/runtime/SDK/checkout archive. Same active compiler/runtime/SDK roots; temporary reserves declared in runners."
+  },
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified_complete": 0
+  },
+  "remaining": [
+    "Native global calibration effective-state and downstream integration",
+    "Measured-mean standards autofill, unified Calibrate and complete original raw/rejected-OK behavior",
+    "Calibration replay/macro/session and supported-platform acceptance",
+    "Full eligible ImageJ/Fiji family certification",
+    "Matched speed and memory benchmarks; no comparative superiority established"
+  ]
+}

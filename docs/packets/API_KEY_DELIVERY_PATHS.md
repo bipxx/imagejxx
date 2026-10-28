@@ -1,5 +1,44 @@
 # Shortest delivery paths by API and setting key
 
+## Session fitting standards and original global-calibration contract — 2026-10-28
+
+Both fitting dialogs reuse the last admitted measured/known standards across
+source closure. Manual/function Apply and admitted fits remember the unit;
+explicit document units override it, default Gray Value sources use the session
+unit. Bounded immutable numeric state has no document/provider owner. Candidates
+are staged before admission/commit and installed by no-throw swaps. Rejected or
+unsubmitted/imported/cancelled drafts preserve defaults; jobs cancelled/failed
+after admission retain submitted defaults. No persisted preference/schema,
+numeric provenance, native core SDK or render-memory accounting change.
+
+Final957 collected:956 passed, one explicitly optional hidden-OpenGL settings
+check skipped. Six C++ UI cases pass; original783 focused cases remain passing.
+Both hosts physically verify reuse after closing the fitted source and edit/
+cancel/reopen in84/160 frames. Original generic128/160, snapshot186/192 and
+calibration606/608 caps unchanged. One native build/cache/runtime;1284 source
+freeze entries rechecked. Prior Linux consumer119 inputs unchanged; no new Linux
+execution/full UI/SDK claim. [Evidence](../parity/reviews/G034-calibration-standards-progress001.json).
+
+A new actual ImageJ1.54r observer records thirteen global/local cases: copy
+isolation, ignore/clear/new images and dtype/signed16 adaptation. Native global
+implementation stays open. Initial stdout lost the normalized micro-sign unit;
+reference001 is preserved as encoding-limited evidence. Escaped-JSON reference002
+preserves actual U+00B5m; all other numeric fields agree.
+[Next global implementation contract](G034-global-calibration-contract.md) uses an Application-owned typed
+effective resolver and generation guards, then shared downstream consumers.
+Do not bulk-edit local documents or repurpose the projection-output policy.
+
+Reader fixes preserve assertions: editable buffers are dialog.text, not initial
+dialog.values; normalize accidentally doubled CRLF without AST changes. No
+native rebuild needed. Failed preimages/logs retained losslessly. Owned terminal
+scratch and superseded full captures retired with identities; full retired
+contents unavailable. Cleanup recovered3,133,307B; final469/reference captures
+retained. Known roots8,496,359,043B; two denied caches keep full8GiB unverified.
+Commercial inventory passes; historical fingerprints unchanged. Remaining:
+global effective state, measured means, unified Calibrate, replay/downstream,
+original/platform and matched performance gates.47 in progress/52 open/0 complete.
+
+
 ## Calibration fitting-point Open/Save — 2026-10-28
 
 Polynomial/nonlinear dialogs now exchange measured/known standards through

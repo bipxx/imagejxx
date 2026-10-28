@@ -488,7 +488,20 @@ Json calibrationPointsUiCase(Window& w,const std::string& context,const std::str
   click(last.at("dialog").at("controls").at("save_points"),"save_points");path(directory/fs::u8path("saved-\xc2\xb5.txt"));
   click(last.at("file_browser").at("controls").at("submit"),"save_points_file");
   click(last.at("dialog").at("controls").at("apply"),"fit_imported_points");w.wait();frame();frame();
-  report["fitted"]=state(w);report["error"]=w.error();report["frame_count"]=report["frames"].size();
+  report["fitted"]=state(w);
+  report["api_fixture_actions"].push_back("close fitted source, attach fresh source, open alternate fitting dialog");
+  w.closeDocument(owner->id,true);
+  auto fresh=std::make_shared<imagejxx::Document>(Dataset::from_planes({1,1,1,1,3,1},{Image(3,1,1,PixelType::UInt8)}));
+  w.addNativeDocument(fresh);report["fresh_before"]=state(w);
+  w.action("show_intensity_nonlinear_fit");frame();frame();report["remembered_nonlinear"]=last.at("dialog").at("values");
+  click(last.at("dialog").at("controls").at("known"),"edit_cancelled_standards");
+  for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
+  frame(Json::array({{{"type","text"},{"value","[9,9,9]"}}}));frame();report["cancelled_standards"]=last.at("dialog").at("values");
+  click(last.at("dialog").at("controls").at("cancel"),"cancel_standards_draft");
+  w.action("show_intensity_polynomial_fit");frame();frame();report["remembered_polynomial"]=last.at("dialog").at("values");
+  click(last.at("dialog").at("controls").at("cancel"),"close_remembered_standards");report["fresh_after"]=state(w);
+  report["error"]=w.error();report["frame_count"]=report["frames"].size();
+
   require(report.dump().size()<8*1024*1024,"Calibration points report byte limit");
   writeJson((directory/"case.json").u8string(),report);capture.done=true;return report;
 }
