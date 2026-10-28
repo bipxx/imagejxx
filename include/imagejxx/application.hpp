@@ -280,6 +280,9 @@ public:
   HistoryInfo history(std::uint64_t id = 0) const;
 
 private:
+  EffectiveCalibration capture_calibration_locked(const DocumentSnapshot& source) const;
+  void validate_calibration_binding_locked(const detail::TargetCalibrationBinding& binding, std::uint64_t id) const;
+  void validate_target_calibration_locked(const ResolvedTarget& target) const;
   AutoContrastJob submit_auto_contrast_impl(const AutoContrastOptions &,
       const AutoContrastLimits &,JobOptions,const ChannelDisplayState *);
   friend class PreparedOperation;

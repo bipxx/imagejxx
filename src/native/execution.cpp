@@ -782,7 +782,17 @@ make_operation_output(const ResolvedTarget &target,
   data.metadata.title = title.value_or(
       target.source().data().metadata.title + " (" + operation + ")");
   auto edit = created->begin_edit();
-  edit.replace_dataset(data.dataset);
+  if(const auto context=target.calibration_context()) {
+    edit.replace_dataset(data.dataset.with_calibration(context->spatial()));
+    const auto type=data.dataset.pixel_type();const auto samples=data.dataset.shape().s;
+    auto density=context->intensity();
+    if(samples!=1)density=ImageJIntensityCalibration::uncalibrated();
+    else if(type!=target.source().data().dataset.pixel_type() || samples!=target.source().data().dataset.shape().s)
+      density=ImageJIntensityCalibration::uncalibrated(type==PixelType::Float32 || type==PixelType::Float64?density.value_unit():"Gray Value");
+    density.validate_for(type,samples);
+    if(!density.has_density() && density.value_unit()=="Gray Value")edit.remove_property(imagej_intensity_property);
+    else edit.set_property(imagej_intensity_property,density.record());
+  } else edit.replace_dataset(data.dataset);
   edit.set_title(data.metadata.title);
   edit.select(data.selection);
   edit.set_previous_selection(data.previous_selection);
@@ -970,6 +980,7 @@ PreparedOperation::publish(Application &application,
   auto source = application.lookup_locked(target().document_id());
   auto current = source->snapshot();
   target().validate_source(current);
+  application.validate_target_calibration_locked(target());
   if (!current.revisions().matches(state_->edit.source_revisions(),
                                    state_->edit.dependencies()))
     throw RevisionConflict();
@@ -1044,6 +1055,11 @@ PreparedOperation::publish(Application &application,
     auto created = make_operation_output(target(), preview(), operation(), title,
                                         bool(state_->edit.axis_remap_display()));
     check_canceled(state_->cancellation);
+    // Direct Document writers do not take the registry lock. Recheck the
+    // original source under its lock immediately before derived adoption.
+    std::lock_guard<std::mutex> source_lock(source->mutex_);
+    current=source->snapshot_locked();target().validate_source(current);
+    if(!current.revisions().matches(state_->edit.source_revisions(),state_->edit.dependencies()))throw RevisionConflict();
     result.document = created;
     result.document_id = application.adopt_locked(std::move(created), true);
     result.created = true;

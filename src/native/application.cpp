@@ -1,3 +1,4 @@
+#include "target_calibration_internal.hpp"
 #include "operation_internal.hpp"
 #include "target_mask_resources.hpp"
 #include "operation_job_probe_internal.hpp"
@@ -71,6 +72,7 @@ OperationJob Application::submit(const std::string &operation,
                                  const OperationParameters &parameters,
                                  ExecutionOptions options,
                                  JobOptions job_options) {
+  validate_target(target);
   auto normalized = detail::without_execution_callbacks([&] {
     kernel_checkpoint();
     return validate_execution_parameters(operation, target, parameters, options);
@@ -103,6 +105,7 @@ OperationJob Application::submit(const std::string &operation,
   {
     std::lock_guard<std::mutex> lock(mutex_);
     target.validate_source(lookup_locked(target.document_id())->snapshot());
+    validate_target_calibration_locked(target);
     if (!scheduler_)
       scheduler_ = std::make_shared<JobScheduler>();
     scheduler = scheduler_;
@@ -166,7 +169,8 @@ OperationJob Application::submit(const std::string &operation,
   result->bind_job(job);
   try {
     std::lock_guard<std::mutex> lock(mutex_);
-    lookup_locked(target.document_id());
+    target.validate_source(lookup_locked(target.document_id())->snapshot());
+    validate_target_calibration_locked(target);
   } catch (...) {
     job.cancel();
     throw;
@@ -455,10 +459,22 @@ DocumentTransaction Application::begin_edit(std::uint64_t id,
 ResolvedTarget Application::resolve_target(const TargetRequest &request,
                                            std::uint64_t id,
                                            const std::string &operation) const {
-  return imagejxx::resolve_target(snapshot(id), request, operation);
+  auto binding=std::make_shared<detail::TargetCalibrationBinding>();
+  auto source=[&] {
+    std::lock_guard<std::mutex> lock(mutex_);const auto captured=lookup_locked(id)->snapshot();
+    const auto bypass=calibration_bypass_.find(captured.id());
+    binding->application=job_identity_;binding->global_generation=global_calibration_generation_;
+    binding->bypass_generation=bypass==calibration_bypass_.end()?0:bypass->second.generation;
+    binding->ignore=bypass!=calibration_bypass_.end() && bypass->second.ignore;
+    if(global_calibration_ && !binding->ignore)binding->effective=capture_calibration_locked(captured);
+    return captured;
+  }();
+  auto target=imagejxx::resolve_target(source,request,operation);target.calibration_binding_=std::move(binding);return target;
 }
 void Application::validate_target(const ResolvedTarget &target) const {
-  target.validate_source(snapshot(target.document_id()));
+  std::lock_guard<std::mutex> lock(mutex_);
+  target.validate_source(lookup_locked(target.document_id())->snapshot());
+  validate_target_calibration_locked(target);
 }
 PreparedOperation Application::prepare(const std::string &operation,
                                        const ResolvedTarget &target,

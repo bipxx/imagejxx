@@ -365,14 +365,16 @@ ResolvedGaussianBlurCommand
 resolve_gaussian_command(const DocumentSnapshot &source,
                          const TargetRequest &request,
                          GaussianBlurCommandOptions options) {
-  validate_source_metadata(source);
-  if (request.mode != ExecutionMode::Planes)
+  return resolve_gaussian_command(resolve_target(source,request,operation_id),options);
+}
+ResolvedGaussianBlurCommand resolve_gaussian_command(const ResolvedTarget& target,
+                                                     GaussianBlurCommandOptions options) {
+  validate_source_metadata(target.source());target.validate_operation(operation_id);
+  if(target.execution_mode()!=ExecutionMode::Planes)
     throw std::invalid_argument("Gaussian command requires plane execution");
-  const auto calibration = source.data().dataset.calibration();
-  calibration.validate();
-  const auto sigma = effective_sigmas(options, calibration);
-  auto target = resolve_target(source, request, operation_id);
-  return {options, calibration, std::move(target), sigma[0], sigma[1]};
+  const auto calibration=target.calibration();calibration.validate();
+  const auto sigma=effective_sigmas(options,calibration);
+  return {options,calibration,target,sigma[0],sigma[1]};
 }
 
 void validate_gaussian_command_record(const MetadataObject &record) {

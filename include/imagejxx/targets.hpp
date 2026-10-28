@@ -1,8 +1,11 @@
 #pragma once
 
 #include <imagejxx/document.hpp>
+#include <imagejxx/global_calibration.hpp>
 
 namespace imagejxx {
+class Application;
+namespace detail { struct TargetCalibrationBinding; }
 
 // Half-open voxel-index range [start, stop), with a positive sampling step.
 // An omitted stop resolves to the axis extent. Omitted request ranges use the
@@ -33,6 +36,12 @@ public:
   const DocumentSnapshot &source() const { return source_; }
   std::uint64_t document_id() const { return source_.id(); }
   Revisions source_revisions() const { return source_.revisions(); }
+  // Application captures share their generation guard across targets/jobs.
+  // Detached snapshot targets retain the existing local-only contract.
+  bool application_calibration_bound() const { return bool(calibration_binding_); }
+  const EffectiveCalibration* calibration_context() const;
+  const SpatialCalibration& calibration() const;
+  ImageJIntensityCalibration intensity_calibration() const;
   TargetScope scope() const { return scope_; }
   RoiPolicy roi_policy() const { return roi_; }
   ExecutionMode execution_mode() const { return mode_; }
@@ -55,6 +64,8 @@ public:
   MetadataObject record() const;
 
 private:
+  friend class Application;
+  std::shared_ptr<const detail::TargetCalibrationBinding> calibration_binding_;
   friend ResolvedTarget resolve_target(const DocumentSnapshot &,
                                        const TargetRequest &,
                                        const std::string &);

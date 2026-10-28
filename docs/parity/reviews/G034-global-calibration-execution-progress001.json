@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "status": "scoped_verified",
+  "date": "2026-10-28",
+  "scope": "Generic Application-resolved targets, prepared operations, queued jobs, atomic publication guards, derived output metadata and target-bound scaled Gaussian. Not complete global calibration or ImageJ/Fiji parity.",
+  "implementation": [
+    "Opaque target binding shares weak application identity, global/own-bypass generations and optional immutable effective calibration through existing prepared/job state",
+    "Guard-only local/bypassed targets avoid decoding unsupported density records but invalidate if applicable global state changes",
+    "Prepare/admission/publication reject stale or foreign bindings; publication keeps registry lock through mutation/adoption and rechecks derived source under its document lock",
+    "In-place edits preserve local calibration; generic derived output receives effective spatial/density policy, with density dropped for changed storage and float value units retained",
+    "Scaled Gaussian target overload resolves sigma from effective spacing; detached snapshots and schema1 target replay remain explicitly local"
+  ],
+  "verification": {
+    "installed_windows": {
+      "collected": 1216,
+      "passed": 1214,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "seconds": 18.703,
+      "optional_skips": [
+        "hidden OpenGL settings/context test",
+        "hidden OpenGL shared jobs-panel test"
+      ],
+      "xml": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-installed490\\results.xml",
+        "bytes": 178600,
+        "sha256": "d18c317bc32d11ba1868a2c24df53d8c3d6a7c3cf2c575d961ef9d1dfb44637d"
+      },
+      "new_execution_cases": 19,
+      "cpp_imgui_regressions": 6
+    },
+    "native_windows": "Four existing controls pass, including extended global processing guards",
+    "linux": "Current core SDK refreshed in existing cache; core/projection/global installed-header consumers pass",
+    "installed_sdk_clients": {
+      "windows": "4/4 CTest pass",
+      "linux": "4/4 CTest pass",
+      "table_profiles_per_platform": 128,
+      "fit_dtype_cells_per_platform": 86
+    },
+    "producer_inputs_rechecked": 1290,
+    "reader_pins_rechecked": 38,
+    "commercial_dependency_inventory": "passed using existing .venv interpreter; verification runtime alone lacks packaging",
+    "limitations": [
+      "No Linux Python/full desktop/scientific-I/O SDK, macOS, GPU or full original calibration workflow promotion",
+      "Optional hidden OpenGL checks remain unexecuted",
+      "Original reference fingerprints and tolerances unchanged"
+    ]
+  },
+  "reader_failure": {
+    "initial_windows": "native-global failed after successful1039.672s coherent build",
+    "initial_linux": "global-consumer failed after successful667.691s core rebuild",
+    "cause": "New native assertion compared MetadataValue shared-pointer identity against a separately constructed global record; this is not semantic density equality",
+    "diagnostic": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-density-diagnostic494.json",
+      "bytes": 5553,
+      "sha256": "8d0cb1aa59bada5383f5fe54f118085c866f3c70057bb82c7dd3aaae1b9fbdd6"
+    },
+    "correction": "Compare shared immutable record with actual captured app global plus every exact table word; source preimage losslessly retained",
+    "retry": "No production source change. Existing caches reused; Windows incremental build8.531s, Linux core incremental1.018276s. Final controls/installed suites pass."
+  },
+  "receipts": {
+    "global-calibration-execution-windows-build489": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-windows-build489\\receipt.json",
+      "bytes": 16475,
+      "sha256": "180ce95b76eeb33baf5076290987bc318e0321b7095830d93bcd3aa7fe8ccd6a"
+    },
+    "global-calibration-execution-linux492": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-linux492\\receipt.json",
+      "bytes": 195416,
+      "sha256": "94190c81fd94eeba960096409268b638108e18bd9a4c5c06f61f83e1505be621"
+    },
+    "global-calibration-execution-windows-resume497": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-windows-resume497\\receipt.json",
+      "bytes": 33534,
+      "sha256": "9f703f916413173940fff4fcd86d45a2cfe0f6a6f4ec51b075af7bd90fd8285d"
+    },
+    "global-calibration-execution-linux-resume498": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-linux-resume498\\receipt.json",
+      "bytes": 195277,
+      "sha256": "30930b4d416174262672666a435529619b0d576f0488608d4a102d07adbacc5e"
+    },
+    "global-calibration-execution-installed490": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-installed490\\receipt.json",
+      "bytes": 133336,
+      "sha256": "f727a7f693a1baa34f7fd20b510b7e7baea60c00cf8222bfc74886de67a1fc8b"
+    },
+    "global-calibration-execution-sdk-windows491": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-sdk-windows491\\receipt.json",
+      "bytes": 59637,
+      "sha256": "39637a11fe02b7ef9c33b7a5a77d983f4ec7f7686a2c873acec4328d8d92ba71"
+    },
+    "global-calibration-execution-sdk-linux491": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-sdk-linux491\\receipt.json",
+      "bytes": 36596,
+      "sha256": "87fb30407585ec0067e6b170ac9846f959c94acc01b0a1dcfa2563a35b560460"
+    },
+    "global-calibration-execution-built495": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-built495\\receipt.json",
+      "bytes": 3281,
+      "sha256": "047b7f80d6d79a3640162a6d1255d433d7c151c5ce03edb15a684c1dc4f40977"
+    },
+    "global-calibration-execution-retention499": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-retention499\\receipt.json",
+      "bytes": 12282,
+      "sha256": "0fe864bfb30ed89647f2f14a355c3c4b5117e1cad5ab7ae5451b8388aa245618"
+    }
+  },
+  "retention": {
+    "state": "owned scratch retired after terminal process proof; raw logs/freeze/dependency/native reader preimage losslessly compressed and member-hash verified",
+    "recovered_bytes": 1151250,
+    "diagnostics": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-retention499\\diagnostics.zip",
+      "bytes": 229677,
+      "sha256": "fbeb86a61c56f872385ccd9f46d1365ed3c4453496b4839ba92321951134b497"
+    },
+    "retained_final_capture": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-installed490\\captures.tar.xz",
+      "bytes": 1278352,
+      "sha256": "59f6501363972b400cdf598c11668e0314ba6604180f6927b66220d69a9f3b77"
+    },
+    "old_installed_sdk_bytes": "Replaced archive/header identities retained in receipts; old bytes unavailable",
+    "storage_measurement": ".tmp/manual-workflow-verification/global-calibration-execution-final502.json",
+    "budget": "Unverified: two inaccessible project pytest cache subtrees remain unknown; complete normalized roots measured, same active caches/runtime/SDKs",
+    "scope_correction": "500/501 measured before retention;501 filename final is historical naming error.502 is authoritative post-retention snapshot.",
+    "storage_snapshot": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-execution-final502.json",
+      "bytes": 1523,
+      "sha256": "5aa0b4ef14d49084e3aa2e2cd28557e580dc3951d20dde660cccf2b0d1d41f7c",
+      "known_bytes": 8519559033,
+      "headroom_upper_bound_bytes": 70375559,
+      "budget_verified": false,
+      "unavailable_subtrees": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+        }
+      ]
+    }
+  },
+  "next": [
+    "Dedicated projection and axis export/reslice/orientation/spacing/resize factories must consume effective metadata and carry the guard while keeping their scientific remapping/output policies",
+    "Display/XYZ/measurement/profile/histogram/live plot caches need global/bypass generation keys before enabling shared Global UI",
+    "Global session/persistence/replay schemas and original spatial/time/invert-origin/Calibrator UI coverage",
+    "Matched ImageJ/Fiji latency and memory benchmarks"
+  ],
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified_complete": 0
+  },
+  "performance_claim": "No matched speed or memory superiority established; build/test timings are not processing benchmarks."
+}

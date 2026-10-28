@@ -34,6 +34,8 @@ public:
 
 private:
   friend ResolvedGaussianBlurCommand
+  resolve_gaussian_command(const ResolvedTarget &, GaussianBlurCommandOptions);
+  friend ResolvedGaussianBlurCommand
   resolve_gaussian_command(const DocumentSnapshot &, const TargetRequest &,
                            GaussianBlurCommandOptions);
   friend ResolvedGaussianBlurCommand
@@ -49,6 +51,10 @@ private:
   double sigma_x_, sigma_y_;
 };
 
+// Resolve physical sigma against an Application target's captured effective
+// spatial calibration, retaining its publication generation guard.
+ResolvedGaussianBlurCommand resolve_gaussian_command(
+    const ResolvedTarget& target, GaussianBlurCommandOptions options = {});
 ResolvedGaussianBlurCommand
 resolve_gaussian_command(const DocumentSnapshot &source,
                          const TargetRequest &request = {},

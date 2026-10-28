@@ -1,5 +1,6 @@
 #include <imagejxx/application.hpp>
 #include <limits>
+#include "target_calibration_internal.hpp"
 
 namespace imagejxx {
 std::shared_ptr<const GlobalCalibration> Application::global_calibration() const {
@@ -43,7 +44,9 @@ void Application::set_ignore_global_calibration(bool ignore, std::uint64_t id) {
   found->second.ignore=ignore;++found->second.generation;
 }
 EffectiveCalibration Application::effective_calibration(std::uint64_t id) const {
-  std::lock_guard<std::mutex> lock(mutex_);const auto source=lookup_locked(id)->snapshot();
+  std::lock_guard<std::mutex> lock(mutex_);return capture_calibration_locked(lookup_locked(id)->snapshot());
+}
+EffectiveCalibration Application::capture_calibration_locked(const DocumentSnapshot& source) const {
   const auto bypass=calibration_bypass_.find(source.id());
   const bool ignore=bypass!=calibration_bypass_.end() && bypass->second.ignore;
   auto result=resolve_effective_calibration(source,global_calibration_.get(),ignore);
@@ -53,12 +56,21 @@ EffectiveCalibration Application::effective_calibration(std::uint64_t id) const 
 }
 void Application::validate_effective_calibration(const EffectiveCalibration& captured) const {
   std::lock_guard<std::mutex> lock(mutex_);
-  if(captured.application_.lock()!=job_identity_)throw std::invalid_argument("Calibration capture belongs to another application or is detached");
+  detail::TargetCalibrationBinding binding;
+  binding.application=captured.application_;binding.global_generation=captured.global_generation_;
+  binding.bypass_generation=captured.bypass_generation_;binding.ignore=captured.ignores_global_;
+  validate_calibration_binding_locked(binding,captured.document_id_);
   const auto source=lookup_locked(captured.document_id_)->snapshot();
-  const auto bypass=calibration_bypass_.find(source.id());
+  if(!captured.source_revisions_.matches(source.revisions(),Change::Pixels|Change::Metadata))throw RevisionConflict();
+}
+void Application::validate_calibration_binding_locked(const detail::TargetCalibrationBinding& binding,std::uint64_t id) const {
+  if(binding.application.lock()!=job_identity_)throw std::invalid_argument("Calibration capture belongs to another application or is detached");
+  (void)lookup_locked(id);
+  const auto bypass=calibration_bypass_.find(id);
   const auto generation=bypass==calibration_bypass_.end()?0:bypass->second.generation;
-  if(generation!=captured.bypass_generation_ ||
-      (!captured.ignores_global_ && captured.global_generation_!=global_calibration_generation_) ||
-      !captured.source_revisions_.matches(source.revisions(),Change::Pixels|Change::Metadata))throw RevisionConflict();
+  if(generation!=binding.bypass_generation || (!binding.ignore && binding.global_generation!=global_calibration_generation_))throw RevisionConflict();
+}
+void Application::validate_target_calibration_locked(const ResolvedTarget& target) const {
+  if(target.calibration_binding_)validate_calibration_binding_locked(*target.calibration_binding_,target.document_id());
 }
 } // namespace imagejxx

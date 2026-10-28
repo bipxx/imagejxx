@@ -84,10 +84,12 @@ void bind_gaussian_command(py::module_ &m) {
         return bindings::metadata_python(record);
       });
 
-  m.def("resolve_gaussian_command", &resolve_gaussian_command,
+  m.def("resolve_gaussian_command", py::overload_cast<const DocumentSnapshot&,const TargetRequest&,GaussianBlurCommandOptions>(&resolve_gaussian_command),
         py::arg("snapshot"), py::arg("target_request") = TargetRequest{},
         py::arg("options") = GaussianBlurCommandOptions{},
         py::call_guard<py::gil_scoped_release>());
+  m.def("resolve_gaussian_command",py::overload_cast<const ResolvedTarget&,GaussianBlurCommandOptions>(&resolve_gaussian_command),
+        py::arg("target"),py::arg("options")=GaussianBlurCommandOptions{},py::call_guard<py::gil_scoped_release>());
   m.def(
       "gaussian_command_from_record",
       [](const DocumentSnapshot &snapshot, py::dict record) {

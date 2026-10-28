@@ -1,6 +1,29 @@
 # Sol Ultra execution guide
 
-## Native global/effective calibration metadata foundation — 2026-10-28
+## Effective calibration processing integration — verified scope, 2026-10-28
+
+Generic Application targets carry effective calibration and application/global/
+bypass guards through prepared operations and queued jobs. Publication checks
+those generations under its registry lock. In-place edits retain local metadata;
+derived outputs receive effective spatial/density policy. Scaled Gaussian uses
+the captured target. Detached snapshots and target record schema1 remain local.
+
+Installed Windows: 1,216 collected:1,214 passed, two optional hidden-OpenGL checks
+skipped. All 19 new execution cases and six existing C++ ImGui regressions pass.
+Both active core SDKs refreshed; 4/4 installed CTest clients pass per platform,
+including 128 table profiles and 86 fit dtype cells each. 1,290 producer inputs and
+38 reader pins rechecked. Initial native reader compared separately allocated
+metadata pointers; exact record/table diagnostic and corrected reader pass with
+unchanged product sources. Incremental retries reused the same caches.
+
+Next: dedicated projection/axis consumers and display/XYZ/measurement/plot cache
+generations before enabling the shared Global control. Global replay/session,
+original spatial/time/UI variants and broader supported-platform gates remain.
+Tracker: 47 in progress / 52 open / 0 certified; no matched speed advantage established.
+Owned scratch retired; hashed lossless retention recovered 1,151,250 B. Two denied
+cache trees keep the complete 8 GiB budget unverified. See [scoped evidence](parity/reviews/G034-global-calibration-execution-progress001.json).
+
+## Previous milestone: native global/effective calibration metadata foundation — 2026-10-28
 
 GlobalCalibration/EffectiveCalibration and Application-owned Set/Clear/local/
 effective/bypass/capture validation are implemented in C++ and Python bindings.

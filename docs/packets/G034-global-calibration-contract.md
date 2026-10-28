@@ -1,7 +1,7 @@
 # Global calibration: observed semantics and implementation path
 
-Status: native metadata values/resolver/Application state implemented; processing,
-publication and shared UI integration remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
+Status: native metadata and generic target/job/publication/scaled Gaussian
+integration verified; dedicated consumers, shared UI and persistence remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
 The thirteen-case [reference](../parity/reviews/G034-global-calibration-reference002.json)
 comes from actual pinned ImageJ1.54r ImagePlus/Calibration execution. It does not
 invoke the private Calibrator dialog or qualify all calibration functions.
@@ -43,11 +43,14 @@ ignore/capture validation are implemented in the native core and Python binding.
 The resolver matches the13 initial cases and25 additional known-source None,
 16-bit function and custom-table cases in
 [reference003](../parity/reviews/G034-global-calibration-reference003.json).
-Existing ordinary snapshots/processing APIs still consume local calibration.
-No functional Global UI toggle or automatic processing change is claimed.
+Detached snapshots/processing APIs still consume local calibration. Generic
+Application-resolved targets now carry effective metadata and generation guards;
+see [execution evidence](../parity/reviews/G034-global-calibration-execution-progress001.json).
+No functional Global UI toggle is enabled.
 
-The next packet must carry the minted effective capture through ResolvedTarget
-and prepared-operation/job state, without changing the original source snapshot.
+The generic pipeline carries the minted capture through ResolvedTarget and
+prepared-operation/job state without changing the original source snapshot.
+The next packet extends that contract to dedicated consumer factories.
 At Application publication, check its app identity/global generation/own bypass
 generation under the same registry lock as existing owner/revision publication.
 The standalone validator is read-only and is not a check-then-commit substitute.
@@ -113,4 +116,26 @@ records, signed16 variants, local edits while active, ignore/clear transitions,
 spatial/time fields and original Calibrator/Set Scale UI. Match downstream
 pixels/metadata/measurements, source/history invariants and stale-job behavior.
 Full supported-platform/reference and comparative performance gates remain open.
-This is a concrete next-packet contract, not implemented native global support.
+The metadata foundation is verified; generic target/job/publication and scaled
+Gaussian integration is scoped verified by execution-progress001.
+The remaining consumers and full global workflow are not yet certified.
+
+## Next consumer packet after generic execution verification
+
+1. Application.prepare_axis_plane_export and prepare_axis_range_* currently
+   delegate to snapshot-oriented preparation. Capture an application context once
+   and pass it through those existing native factories; preserve pure snapshot
+   overloads. Attach the same guard to the resulting prepared target before
+   admitting/publication. Do not reconstruct global state from serialized data.
+2. Axis transforms must remap effective spatial calibration with the existing
+   axis remapper, while retaining the original local source snapshot for history
+   and revision checks. Projection must use its own existing density-output
+   policy on the captured effective input. Do not replace their scientific
+   output policies with the generic same-storage filtering rule.
+3. Add direct output metadata/pixel and stale-generation tests for each factory,
+   then exercise original source/calibration transitions. Reuse installed-core
+   consumers and one compiler cache/runtime; batch public-header changes before
+   rebuilding. Keep detached overloads and replay boundaries explicit.
+4. Only after these native consumers agree, add generation keys to display/XYZ,
+   measurements/histograms/profile/live-plot caches. Retained independent plots
+   keep captured values. Verify both actual ImGui hosts before exposing Global.

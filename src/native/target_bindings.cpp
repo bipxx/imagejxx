@@ -65,6 +65,12 @@ void bind_targets(py::module_ &m) {
       .def_property_readonly("source", &ResolvedTarget::source,
                              py::return_value_policy::copy)
       .def_property_readonly("document_id", &ResolvedTarget::document_id)
+      .def_property_readonly("application_calibration_bound",&ResolvedTarget::application_calibration_bound)
+      .def_property_readonly("calibration_context",[](const ResolvedTarget& target)->std::optional<EffectiveCalibration> {
+        const auto context=target.calibration_context();return context?std::optional<EffectiveCalibration>(*context):std::nullopt;
+      })
+      .def_property_readonly("calibration",[](const ResolvedTarget& target){return target.calibration();})
+      .def("intensity_calibration",&ResolvedTarget::intensity_calibration,py::call_guard<py::gil_scoped_release>())
       .def_property_readonly("source_revisions",
                              &ResolvedTarget::source_revisions)
       .def_property_readonly("scope", &ResolvedTarget::scope)

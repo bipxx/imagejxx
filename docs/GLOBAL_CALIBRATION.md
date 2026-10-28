@@ -75,8 +75,43 @@ restores their current values. There is no new persistence/replay schema here.
 ## Remaining integration
 
 Follow [the global calibration contract](packets/G034-global-calibration-contract.md)
-for target/prepared-command propagation, atomic publication guards, display/XYZ,
+for remaining dedicated prepared-command propagation, display/XYZ,
 measurements/profiles/histograms/projection, scientific I/O/session and shared UI
 integration. The existing projected_imagej_intensity_calibration helper is an
 output policy, not a global adapter. No full ImageJ/Fiji, supported-platform or
 comparative performance acceptance follows from the metadata foundation.
+
+## Verified generic processing integration — 2026-10-28
+
+The working tree now carries an application calibration binding in ordinary
+Application.resolve_target results. A binding captures application identity,
+global generation and the document's bypass generation. When global calibration
+is active and not bypassed it also holds the immutable effective value. With no
+global value, or while bypassed, raw target resolution does not decode the local
+reserved intensity property. Enabling global calibration still invalidates a
+previous application target. Another document's bypass change does not.
+
+Application prepare/submit and publication validate this binding. Publication
+checks generations under the same registry lock as mutation/adoption; direct
+Document writers are also excluded during the final source check and derived
+adoption. In-place proposals retain local calibration. Generic derived images
+receive effective spatial calibration and compatible density; changing storage
+type drops density, retaining the value unit for float outputs. Color outputs
+have no density. This policy does not certify every operation's scientific
+conversion semantics.
+
+The ResolvedTarget Gaussian overload resolves scaled sigma using the captured
+spatial calibration and retains its guard. Pure snapshot target resolution stays
+local and detached, including when explicitly passed to an Application. Target
+record schema1 is unchanged: runtime application identity/generations and global
+density are not serialized. Global replay/session persistence remains open.
+
+The generic source-edit preview retains local metadata; effective derived output
+metadata is installed on the created output owner. Specialized axis exports,
+reslices/projections and other dedicated preparation routes still require their
+own integration. Display/XYZ/measurement/plot caches and the shared Global UI
+control remain pending. Installed Windows verification collects1216 cases:1214 pass, two optional
+hidden-OpenGL checks skip. All19 new execution cases and six existing C++ UI
+regressions pass. Both installed core SDKs pass4/4 CTest clients. This does not
+certify the remaining global consumers, full platform matrix or performance.
+See [scoped evidence](parity/reviews/G034-global-calibration-execution-progress001.json).

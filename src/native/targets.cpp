@@ -1,3 +1,4 @@
+#include "target_calibration_internal.hpp"
 #include <imagejxx/operations.hpp>
 #include <imagejxx/targets.hpp>
 #include "target_record_internal.hpp"
@@ -8,6 +9,15 @@
 #include <utility>
 
 namespace imagejxx {
+const EffectiveCalibration* ResolvedTarget::calibration_context() const {
+  return calibration_binding_ && calibration_binding_->effective?&*calibration_binding_->effective:nullptr;
+}
+const SpatialCalibration& ResolvedTarget::calibration() const {
+  const auto context=calibration_context();return context?context->spatial():source_.data().dataset.calibration();
+}
+ImageJIntensityCalibration ResolvedTarget::intensity_calibration() const {
+  const auto context=calibration_context();return context?context->intensity():read_imagej_intensity_calibration(source_);
+}
 namespace {
 std::array<int, 3> key(PlanePosition p) { return {p.t, p.c, p.z}; }
 void validate_position(PlanePosition p, DatasetShape shape) {

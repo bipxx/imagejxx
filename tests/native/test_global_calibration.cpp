@@ -59,6 +59,29 @@ void ownership_and_guards() {
   app.close(id,true);rejects<DocumentUnavailable>([&]{app.effective_calibration(id);});
   rejects<DocumentUnavailable>([&]{app.set_ignore_global_calibration(true,id);});
 }
+void processing_guards() {
+  Application app;auto owner=std::make_shared<Document>(pixels());app.adopt(owner);
+  const auto local=app.resolve_target();
+  check(local.application_calibration_bound() && !local.calibration_context(),"Local target missing generation guard");
+  app.set_global_calibration(global());
+  rejects<RevisionConflict>([&]{app.prepare("add",local,{{"value",std::int64_t(1)}});});
+  auto target=app.resolve_target();
+  check(target.calibration().spacing[0]==.5 && target.intensity_calibration().has_density(),"Target did not capture effective calibration");
+  auto prepared=app.prepare("add",target,{{"value",std::int64_t(1)}});
+  app.set_global_calibration(global(.75));
+  rejects<RevisionConflict>([&]{app.publish(prepared);});
+  check(owner->undo_steps()==0,"Stale publication changed source history");
+  TargetRequest request;request.destination=OutputDestination::NewDocument;
+  auto derived=app.prepare("add",app.resolve_target(request),{{"value",std::int64_t(1)}});
+  const auto result=app.publish(derived);
+  check(result.document->snapshot().data().dataset.calibration().spacing[0]==.75,"Derived output lost effective spatial calibration");
+  const auto density=read_imagej_intensity_calibration(result.document->snapshot());
+  const auto expected=app.global_calibration()->intensity();
+  check(density.shares_record(expected) && density.table_words()==expected.table_words(),"Derived output lost effective density");
+  check(owner->snapshot().data().dataset.calibration().spacing[0]==1 && owner->undo_steps()==0,"Derived output changed source calibration/history");
+  Application foreign;foreign.adopt(owner);
+  rejects<std::invalid_argument>([&]{foreign.prepare("add",target,{{"value",std::int64_t(1)}});});
+}
 void detached_values_and_threads() {
   Application app;auto owner=std::make_shared<Document>(pixels());std::weak_ptr<Document> weak=owner;
   const auto id=app.adopt(owner);app.set_global_calibration(GlobalCalibration::from_snapshot(owner->snapshot()));
@@ -73,4 +96,4 @@ void detached_values_and_threads() {
   writer.join();reader.join();check(!failed,"Concurrent calibration values/generations tore");
 }
 }
-int main(){try{resolution();ownership_and_guards();detached_values_and_threads();std::cout<<"Global calibration native checks passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{resolution();ownership_and_guards();processing_guards();detached_values_and_threads();std::cout<<"Global calibration native checks passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
