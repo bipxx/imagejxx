@@ -1,5 +1,41 @@
 # ImageJ and Fiji gap closure plan
 
+## Calibration plots support cursor inspection and viewport controls — 2026-10-28
+
+The shared calibration renderer now has crosshair X/Y unit readout, anchored
+Ctrl/Shift+wheel zoom, wheel/Space+wheel horizontal/vertical pan, middle-drag
+pan, reset and zoom buttons, and double-click reset. A private C++17 viewport
+keeps immutable data/CSV/source/history unchanged and permits views beyond data
+bounds. It rejects unrepresentable/collapsed axis ranges atomically; new plots
+reset to full range. Plot coordinate scaling handles large opposite endpoints
+and close finite limits. No new dependency or public core API/SDK change.
+
+Windows installed verification passes670 checks, zero failures/skips, projection
+and viewport native consumers, and three physical C++ cases. C++/Python physical
+calibration cases check pixel-quantized cursor coordinates, anchored zoom, drag
+pan, reset, unchanged samples and All source revisions. Each case uses366 frames;
+the new interaction scenario adds17 frames to prior349 and declares a400-frame
+cap. Other implemented shortcuts/buttons are not independently physically
+qualified here. A separate Linux C++17 viewport consumer passes; this gives no
+Linux UI/SDK acceptance. [Scoped evidence](parity/reviews/G034-calibration-plot-interaction-progress001.json).
+
+Preserved failures: C++20 lerp use was replaced for C++17; a collapse fixture was
+corrected to actually collapse adjacent-double bounds; cursor expectations now
+account for ImGui integer-pixel input flooring with the same tight tolerance.
+Original reference values/fingerprints remain unchanged. All terminal owned
+scratch was retired after necessary lossless capture/log verification; log/
+identity compression recovered1,251,862B. Same active cache/runtime; known roots
+8,453,887,992B and two denied pytest caches keep full8GiB budget unverified.
+Commercial-use inventory passes. No comparative speed or family completion.
+
+Next: numeric limits, grid/ticks/log/style and rectangle zoom; stage formula,
+coefficients and R-squared annotations once from frozen provenance before plot
+publication; then detached/multiple plot snapshot lifecycle and reuse the same
+viewport in histogram/line-profile rendering. Existing generic plots remain
+fixed-view. Continue fitting settings/restarts/global calibration, table import/
+export/replay and downstream consumers. Linux Python/UI, installed IO, macOS and
+original-reference gates remain open. Tracker47 in progress/52 open/0 complete.
+
 ## Manual calibration dialogs automatically show plots — 2026-10-28
 
 Intensity Calibration and Calibration Function now expose Show plot, sharing

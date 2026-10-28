@@ -5,6 +5,7 @@
 #include <imagejxx/imagej_intensity_plot.hpp>
 #include <type_traits>
 #include "path_visual.hpp"
+#include "calibration_plot_view.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
@@ -1188,6 +1189,7 @@ struct Window::Impl {
   bool fitShowPlot = true; // interactive session preference, never numeric provenance
   bool fitPlotFocusRequested = false;
   bool fitPlotIsTable = false;
+  CalibrationPlotView fitPlotView;
   std::optional<ImageJIntensityFitPlot> fitPlot;
   std::optional<FitPlotBinding> fitPlotSource;
   Json fitPlotObservation;
@@ -4600,7 +4602,7 @@ struct Window::Impl {
     static_assert(std::is_nothrow_swappable_v<decltype(binding)>);
     // A successful Apply remembers the preference; Cancel and failures never do.
     fitShowPlot=show;
-    if(plot){fitPlot.swap(plot);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;}
+    if(plot){fitPlot.swap(plot);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;fitPlotView={};}
   }
   void plots();
   void dialogs();
@@ -6641,7 +6643,7 @@ void Window::action(const std::string &name, const Json &p) {
       const bool table=name=="show_intensity_calibration_plot";
       auto plot=table?impl->calibrationTablePlot(calibration):
           imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes);
-      impl->fitPlotIsTable=table;
+      impl->fitPlotIsTable=table;impl->fitPlotView={};
       impl->fitPlotSource=Impl::FitPlotBinding{source.id(),source.revisions()};impl->fitPlot=std::move(plot);impl->fitPlotFocusRequested=true;return;
     }
     if(name=="fit_intensity_calibration") {
@@ -9183,7 +9185,7 @@ void Window::poll() {
           controller_->publish(*completed.prepared);
           if(completed.fit_plot) {
             impl->fitPlot.swap(completed.fit_plot);impl->fitPlotSource.swap(completed.fit_plot_source);
-            impl->fitPlotFocusRequested=true;impl->fitPlotIsTable=false;
+            impl->fitPlotFocusRequested=true;impl->fitPlotIsTable=false;impl->fitPlotView={};
           }
           impl->status.swap(completed.fit_status);return;
         }
@@ -10991,13 +10993,37 @@ void Window::Impl::plots() {
       file(fitPlotIsTable?"Export calibration table plot":"Export calibration fit plot",true,[text=stream.str()](std::string path){writeBytes(path,{text.begin(),text.end()});},fitPlotIsTable?"calibration-table.csv":"calibration-fit.csv");
     }
     observeControl("fit_plot.export",true,nullptr,nullptr,ImGui::GetCurrentWindow());
+    if(ImGui::Button("Reset axes"))fitPlotView={};
+    observeControl("fit_plot.reset");
+    ImGui::SameLine();if(ImGui::Button("+"))fitPlotView.zoom(data,.5,.5,std::pow(2.,-.2));
+    observeControl("fit_plot.zoom_in");
+    ImGui::SameLine();if(ImGui::Button("-"))fitPlotView.zoom(data,.5,.5,std::pow(2.,.2));
+    observeControl("fit_plot.zoom_out");
     ImGui::TextUnformatted(fitPlotIsTable?"Blue line: calibrated table samples":"Red points: measurements; blue line: fitted curve");
     if(fitPlotIsTable && std::none_of(data.curve_y.begin(),data.curve_y.end(),[](float v){return std::isfinite(v);}))ImGui::TextUnformatted("No finite calibrated samples.");
     ImGui::Text("X: pixel value | Y: %s",data.value_unit.c_str());
     if(data.objective=="measured_as_function_of_known")ImGui::TextWrapped("Fit error is measured in pixel values using measured(known).");
     const auto origin=ImGui::GetCursorScreenPos();
-    const ImVec2 size{std::max(120.f,ImGui::GetContentRegionAvail().x),160.f};
-    ImGui::InvisibleButton("##calibration_fit_canvas",size);observeControl("fit_plot.canvas");
+    const ImVec2 size{std::max(120.f,ImGui::GetContentRegionAvail().x),
+        std::clamp(ImGui::GetContentRegionAvail().y-48.f,80.f,160.f)};
+    ImGui::InvisibleButton("##calibration_fit_canvas",size,ImGuiButtonFlags_MouseButtonLeft|ImGuiButtonFlags_MouseButtonMiddle);
+    observeControl("fit_plot.canvas");
+    ImGui::SetItemKeyOwner(ImGuiKey_MouseWheelY);ImGui::SetItemKeyOwner(ImGuiKey_MouseWheelX);
+    const auto& plotInput=ImGui::GetIO();const bool hovered=ImGui::IsItemHovered();
+    const auto px=std::clamp(double((plotInput.MousePos.x-origin.x)/size.x),0.,1.);
+    const auto py=std::clamp(1.-double((plotInput.MousePos.y-origin.y)/size.y),0.,1.);
+    if(hovered) {
+      if((plotInput.KeyCtrl || plotInput.KeyShift) && plotInput.MouseWheel!=0)
+        fitPlotView.zoom(data,px,py,std::pow(2.,-.2*std::clamp(double(plotInput.MouseWheel),-16.,16.)));
+      else if(plotInput.MouseWheel!=0 || plotInput.MouseWheelH!=0)
+        fitPlotView.pan(data,-double(plotInput.MouseWheelH)*.1-
+            (ImGui::IsKeyDown(ImGuiKey_Space)?double(plotInput.MouseWheel)*.1:0),
+            ImGui::IsKeyDown(ImGuiKey_Space)?0:-double(plotInput.MouseWheel)*.1);
+      if(ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))fitPlotView={};
+    }
+    if(ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Middle))
+      fitPlotView.pan(data,-double(plotInput.MouseDelta.x)/size.x,double(plotInput.MouseDelta.y)/size.y);
+    const auto viewLimits=fitPlotView.limits(data);
     auto* draw=ImGui::GetWindowDrawList();const ImVec2 end{origin.x+size.x,origin.y+size.y};
     draw->AddRect(origin,end,ImGui::GetColorU32(ImGuiCol_Border));draw->PushClipRect(origin,end,true);
     const auto fraction=[](double value,double low,double high) {
@@ -11006,10 +11032,13 @@ void Window::Impl::plots() {
       // coordinates before float conversion/ImGui tessellation; clipping still
       // controls visibility. Non-finite model samples never enter this path.
       const auto scale=std::max(std::abs(low),std::abs(high));
-      return std::clamp((value/scale-low/scale)/(high/scale-low/scale),-10000.,10000.);
+      const auto span=high-low,delta=value-low;
+      const auto denominator=std::isfinite(span)?span/scale:high/scale-low/scale;
+      const auto numerator=std::isfinite(delta)?delta/scale:value/scale-low/scale;
+      return std::clamp(numerator/denominator,-10000.,10000.);
     };
     const auto position=[&](double x,double y) {
-      const auto nx=fraction(x,data.x_min,data.x_max),ny=fraction(y,data.y_min,data.y_max);
+      const auto nx=fraction(x,viewLimits[0],viewLimits[1]),ny=fraction(y,viewLimits[2],viewLimits[3]);
       return ImVec2{origin.x+float(nx*size.x),origin.y+size.y-float(ny*size.y)};
     };
     std::size_t drawnSegments=0;bool finiteGeometry=true;
@@ -11025,13 +11054,22 @@ void Window::Impl::plots() {
       if(std::isfinite(point.x) && std::isfinite(point.y))draw->AddCircleFilled(point,3.f,IM_COL32(255,90,90,255));
       if(headlessSessionActive)points.push_back({point.x,point.y});
     }
+    Json cursor=nullptr;
+    if(hovered) {
+      const auto x=CalibrationPlotView::interpolate(viewLimits[0],viewLimits[1],px),y=CalibrationPlotView::interpolate(viewLimits[2],viewLimits[3],py);
+      draw->AddLine({plotInput.MousePos.x,origin.y},{plotInput.MousePos.x,end.y},IM_COL32(150,150,150,130));
+      draw->AddLine({origin.x,plotInput.MousePos.y},{end.x,plotInput.MousePos.y},IM_COL32(150,150,150,130));
+      ImGui::SetTooltip("X: %.9g\nY: %.9g %s\nCtrl/Shift+wheel: zoom; wheel: pan Y\nMiddle drag: pan; double-click: reset",x,y,data.value_unit.c_str());
+      if(headlessSessionActive)cursor={{"x",x},{"y",y}};
+    }
     draw->PopClipRect();
-    ImGui::Text("X: %.6g to %.6g | Y: %.6g to %.6g",data.x_min,data.x_max,data.y_min,data.y_max);
+    ImGui::Text("X: %.6g to %.6g | Y: %.6g to %.6g",viewLimits[0],viewLimits[1],viewLimits[2],viewLimits[3]);
     if(headlessSessionActive)fitPlotObservation={{"kind",fitPlotIsTable?"calibration_table":"fit"},{"function",data.function},{"value_unit",data.value_unit},{"objective",data.objective},
       {"measured",data.measured},{"known",data.known},{"curve_x",data.curve_x},{"curve_y",data.curve_y},
       {"limits",{data.x_min,data.x_max,data.y_min,data.y_max}},{"data_screen_points",std::move(points)},
       {"canvas_origin",{origin.x,origin.y}},{"canvas_size",{size.x,size.y}},{"source_id",fitPlotSource->id()},
-      {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true}};
+      {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true},
+      {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)}};
     ImGui::End();return;
   }
 

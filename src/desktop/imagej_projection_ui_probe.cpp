@@ -184,7 +184,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   } failure{report,directory};
   HeadlessInputSession session(w);Json last;
   auto frame=[&](const Json& events=Json::array()) {
-    require(report["frames"].size()<352,"Calibration UI frame bound");last=session.frame(events);
+    require(report["frames"].size()<400,"Calibration UI frame bound");last=session.frame(events);
     report["frames"].push_back({{"events",events},{"rendered",{
       {"input_frame",last.at("input_frame")},{"dialog",last.at("dialog")},
       {"error_modal",last.at("error_modal")},{"window_error",last.at("window_error")}}}});
@@ -226,6 +226,28 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   click(last.at("file_browser").at("controls").at("submit"),"table_csv_save");
   const auto csvBytes=readBytes(csv.u8string());report["table_csv_path"]=csv.u8string();report["table_csv_text"]=std::string(csvBytes.begin(),csvBytes.end());
   report["table_csv_browser_closed"]=!last.at("file_browser").at("open").get<bool>();
+  // New interaction scenario has its own bounded frame allowance; original
+  // sample/CSV/reference assertions remain unchanged.
+  frame();frame();
+  const auto interactionSource=owner->snapshot();
+  const auto canvas=last.at("fit_plot");
+  const double cx=canvas.at("canvas_origin")[0].get<double>()+canvas.at("canvas_size")[0].get<double>()*.25;
+  const double cy=canvas.at("canvas_origin")[1].get<double>()+canvas.at("canvas_size")[1].get<double>()*.25;
+  frame(Json::array({{{"type","position"},{"space","screen"},{"point",{cx,cy}}}}));frame();
+  report["plot_interaction"]["hover"]=last.at("fit_plot");
+  frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",true}}}}}}));
+  frame(Json::array({{{"type","wheel"},{"x",0},{"y",2}}}));frame();
+  frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",false}}}}}}));
+  report["plot_interaction"]["zoom"]=last.at("fit_plot");
+  frame(Json::array({{{"type","button"},{"name","middle"},{"down",true}}}));
+  frame(Json::array({{{"type","position"},{"space","screen"},{"point",{
+      cx+canvas.at("canvas_size")[0].get<double>()*.1,cy+canvas.at("canvas_size")[1].get<double>()*.1}}}}));frame();
+  frame(Json::array({{{"type","button"},{"name","middle"},{"down",false}}}));frame();
+  report["plot_interaction"]["pan"]=last.at("fit_plot");
+  click(last.at("host_controls").at("fit_plot.reset"),"plot_reset_axes");
+  report["plot_interaction"]["reset"]=last.at("fit_plot");
+  report["plot_interaction"]["source_unchanged"]=owner->snapshot().shares_data(interactionSource) &&
+      owner->snapshot().revisions().matches(interactionSource.revisions(),Change::All);
   click(last.at("host_controls").at("fit_plot.close"),"table_plot_close");report["table_plot_closed"]=last.at("fit_plot").is_null();
   report["table_plot_source_unchanged"]=owner->snapshot().shares_data(tableSource) && owner->snapshot().revisions().matches(tableSource.revisions(),Change::All);
 

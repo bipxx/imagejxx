@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "scope": "G034 interactive calibration plot viewport in shared ImGui renderer; private C++17 arithmetic on Windows/Linux",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "controls": [
+      "Cursor crosshair and X/Y unit readout",
+      "Ctrl/Shift+wheel anchored zoom, factor2^(-0.2*wheel), bounded per-event wheel input",
+      "Wheel vertical pan; horizontal wheel or Space+wheel horizontal pan",
+      "Middle-button drag pan",
+      "Reset axes and zoom in/out buttons; canvas double-click reset"
+    ],
+    "view_contract": "Private CalibrationPlotView stores normalized viewport separately from immutable samples; extrapolation beyond original data bounds allowed. Finite/ordered actual limits checked before accepting change, including adjacent-double collapse. New plot publication resets view. No source/history/CSV mutation.",
+    "cxx_standard": "C++17; sign-aware interpolation avoids overflowing finite opposite endpoint subtraction; no new library/public core API",
+    "renderer": "Scaled differences avoid overflow and preserve close large-double differences; off-canvas geometry stays clipped/bounded; degenerate axes centered; responsive canvas reserves space for range labels"
+  },
+  "evidence": {
+    "calibration-plot-interaction-windows-build285": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-interaction-windows-build285\\receipt.json",
+      "bytes": 8150,
+      "sha256": "a85a81fb3a70fac084c58b42e5307af66386c0f96fea3984ab07ee2f9b56e53f"
+    },
+    "calibration-plot-interaction-windows-build287": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-interaction-windows-build287\\receipt.json",
+      "bytes": 12780,
+      "sha256": "d5f0dbc89d4304b78690e1079fd424568e381f49ec9fccbdf93be123b305ab0d"
+    },
+    "calibration-plot-interaction-windows-build291": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-interaction-windows-build291\\receipt.json",
+      "bytes": 24735,
+      "sha256": "ebd03e96649ec661d5f7111703e3e7e5efb5605c2931ab8dd790fa7d231e289d"
+    },
+    "calibration-plot-interaction-installed290": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-interaction-installed290\\receipt.json",
+      "bytes": 28197,
+      "sha256": "8039a5ed9b3f1e5819a5f2db304319b44b1891dcf1dfae268a346ac42c09d2e7"
+    },
+    "calibration-plot-interaction-installed292": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-interaction-installed292\\receipt.json",
+      "bytes": 28125,
+      "sha256": "c8023239d8df930cfb9ab796479f587ba4d5188b7cc5f7cda167e8c75a0f54ca"
+    },
+    "calibration-plot-view-linux293": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-view-linux293\\receipt.json",
+      "bytes": 29414,
+      "sha256": "bb6e1fd287362a20818e3eec197fb10d7a0738f669d0cd7bc34a5f0e98bd866f"
+    },
+    "calibration-plot-interaction-retention294": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-interaction-retention294\\receipt.json",
+      "bytes": 10101,
+      "sha256": "7e87e0cea5717bfa79ccdc4d8517afbc2d87ab262c842e3fff25b33ba6b0cfb6"
+    }
+  },
+  "reference_source": {
+    "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\source\\ij\\gui\\PlotWindow.java",
+    "bytes": 35577,
+    "sha256": "dacac61098eda1ad45204869d8cfa00d3b30d7b457be1e9aef7a2ed9b2965a40"
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 670,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "native": "Projection execution consumer plus private viewport test passed on Windows; independent Linux -std=c++17 -Wall -Wextra -Werror consumer passed",
+    "physical": "C++ executable projection/intensity/nonlinear cases pass. Independent reader checks cursor mapping, two-tick anchored zoom, middle-drag pan, reset, identical sample arrays and All source revisions in C++/Python calibration cases.",
+    "calibration_frames": 366,
+    "calibration_frame_bound": 400,
+    "frame_budget_amendment": "New physical viewport scenario adds17 frames to previous349-frame cases; explicit cap400. Historical original numeric/reference expectations and fingerprints remain unchanged.",
+    "limitations": "Physical checks cover cursor/Ctrl+wheel/middle drag/reset toolbar; other shortcut/button handlers implemented but not independently physically qualified here. Linux arithmetic is not Linux UI or installed SDK acceptance.",
+    "commercial_use_inventory": "passed; no new dependency",
+    "diff_check": "passed"
+  },
+  "harness_history": [
+    {
+      "run": "build285",
+      "state": "failed",
+      "cause": "std::lerp unavailable under project C++17; replaced with local sign-aware interpolation, without raising project language standard."
+    },
+    {
+      "run": "build287",
+      "state": "failed",
+      "cause": "Native fixture expected midpoint zoom between adjacent large doubles to collapse, but endpoints remained representably distinct. Move test anchor to left endpoint to exercise actual collapse; no product relaxation."
+    },
+    {
+      "run": "installed290",
+      "state": "failed",
+      "cause": "Four new cursor reader assertions compared to fractional requested screen point, while ImGui AddMousePosEvent floors actual pointer to integer pixels. Correct oracle derives integer delivered point; fixed tolerance unchanged. Failed captures/logs retained and scratch retired."
+    }
+  ],
+  "storage": {
+    "before_known_bytes": 8450329959,
+    "after_known_bytes": 8453887992,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "lossless_log_identity_recovery_bytes": 1251862,
+    "retention": "Owned terminal Windows/Linux scratch retired; failed/successful captures and logs hash-verified lossless compression. No cache/runtime clone or whole SDK/archive. One active cache/runtime reused; Linux consumer was temporary scratch."
+  },
+  "remaining": [
+    "Numeric axis limits, grid/ticks/log/style controls and rectangle zoom",
+    "Formula/coefficient/R-squared plot annotations from frozen calibration provenance",
+    "Detached and multiple plot windows with explicit snapshot/source lifecycle; generic histogram/profile viewport reuse",
+    "Fitting settings/restarts/global calibration, table import/export/replay/macro, downstream measurement/histogram",
+    "Linux Python/UI, installed IO SDK, macOS and original-reference qualification",
+    "Matched ImageJ/Fiji speed/memory benchmark evidence"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

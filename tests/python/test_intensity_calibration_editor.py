@@ -91,6 +91,7 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     np.testing.assert_array_equal(report["manual_automatic_plot"]["curve_y"],257*np.arange(256)-32768)
     np.testing.assert_array_equal(report["function_automatic_plot"]["curve_y"],5+2*257*np.arange(256))
     _assert_fit_csv(report)
+    _assert_plot_interaction(report)
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -298,6 +299,7 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     np.testing.assert_array_equal(report["manual_automatic_plot"]["curve_y"],257*np.arange(256)-32768)
     np.testing.assert_array_equal(report["function_automatic_plot"]["curve_y"],5+2*257*np.arange(256))
     _assert_fit_csv(report)
+    _assert_plot_interaction(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
 
@@ -409,7 +411,7 @@ def _assert_physical_fit_running_cancel(report):
     control=case["control"]
     assert control["enabled"] and control["id"]>0
     assert {"fit_cancel_apply","fit_running_cancel"}<={r["name"] for r in report["controls"]}
-    assert len(report["frames"])<=352
+    assert len(report["frames"])<=400
 
 
 def _assert_fit_plot_render(report):
@@ -742,3 +744,28 @@ def test_manual_plot_budget_failure_preserves_previous_plot_and_preference(tmp_p
     assert editor.render_headless(4)["fit_plot"]==previous
     editor.action("show_intensity_calibration")
     assert editor.render_headless(4)["dialog"]["values"]["show_plot"] is True
+
+
+def _assert_plot_interaction(report):
+    case=report["plot_interaction"];base=np.asarray(case["hover"]["limits"],dtype=float)
+    cursor=case["hover"]["cursor"];assert cursor is not None
+    ax=(cursor["x"]-base[0])/(base[1]-base[0]);ay=(cursor["y"]-base[2])/(base[3]-base[2])
+    origin=np.asarray(case["hover"]["canvas_origin"]);size=np.asarray(case["hover"]["canvas_size"])
+    # ImGui AddMousePosEvent floors screen positions to whole pixels.
+    mouse=np.floor(origin+size*.25);normalized=(mouse-origin)/size
+    np.testing.assert_allclose([ax,ay],[normalized[0],1-normalized[1]],rtol=0,atol=2e-6)
+    factor=2**(-.2*2)
+    expected=np.array([ax*(1-factor),ax+(1-ax)*factor,ay*(1-factor),ay+(1-ay)*factor])
+    np.testing.assert_allclose(case["zoom"]["viewport"],expected,rtol=0,atol=2e-6)
+    delta=(np.floor(origin+size*.35)-mouse)/size
+    pan=expected+np.array([-delta[0]*factor,-delta[0]*factor,delta[1]*factor,delta[1]*factor])
+    np.testing.assert_allclose(case["pan"]["viewport"],pan,rtol=0,atol=2e-6)
+    assert case["reset"]["viewport"]==[0,1,0,1]
+    assert case["reset"]["view_limits"]==case["reset"]["limits"]
+    for state in case.values():
+        if not isinstance(state,dict):continue
+        assert state["finite_geometry"] and state["visible"]
+        assert state["curve_x"]==case["hover"]["curve_x"]
+        assert state["curve_y"]==case["hover"]["curve_y"]
+    assert case["source_unchanged"]
+    assert "plot_reset_axes" in {c["name"] for c in report["controls"]}
