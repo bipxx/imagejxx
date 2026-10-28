@@ -3,6 +3,7 @@
 #include <imagejxx/imagej_projection_command.hpp>
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/imagej_intensity_plot.hpp>
+#include <type_traits>
 #include "path_visual.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
@@ -1136,6 +1137,11 @@ struct Window::Impl {
   bool exit = false, gl = false, layout = false;
   std::optional<Image> clipboard, clipboardMask;
   FloatingSamplePolicy clipboardSamplePolicy = FloatingSamplePolicy::FiniteOnly;
+  struct FitPlotBinding {
+    std::uint64_t document_id=0;Revisions expected;
+    std::uint64_t id() const noexcept{return document_id;}
+    bool same_document(const DocumentSnapshot& source) const noexcept{return document_id==source.id();}
+  };
   struct JobResult {
     State state;
     ComponentCounts components;
@@ -1144,6 +1150,8 @@ struct Window::Impl {
     bool recorded = false;
     bool calibration_fit = false;
     std::string fit_status;
+    std::optional<ImageJIntensityFitPlot> fit_plot;
+    std::optional<FitPlotBinding> fit_plot_source;
     std::shared_ptr<const void> reservation;
     JobResult(PreparedOperation value, MetadataObject capture, bool recordStep)
         : prepared(std::move(value)), record(std::move(capture)), recorded(recordStep) {}
@@ -1177,8 +1185,10 @@ struct Window::Impl {
   Json jobStep;
   bool jobPreview = false, jobSkip = false;
   std::atomic<bool> cancelled{false};
+  bool fitShowPlot = true; // interactive session preference, never numeric provenance
+  bool fitPlotFocusRequested = false;
   std::optional<ImageJIntensityFitPlot> fitPlot;
-  std::optional<DocumentSnapshot> fitPlotSource;
+  std::optional<FitPlotBinding> fitPlotSource;
   Json fitPlotObservation;
   std::vector<float> plotX, plotY;
   std::string plotTitle;
@@ -4549,6 +4559,11 @@ struct Window::Impl {
   void rois();
   void resultTable();
   void recorder();
+  void submitIntensityFit(const DocumentSnapshot& source,ImageJIntensityFitRequest request,bool show) {
+    const auto previous=std::exchange(fitShowPlot,show);
+    try {owner.fitIntensityCalibration(source,std::move(request));}
+    catch(...){fitShowPlot=previous;throw;}
+  }
   void plots();
   void dialogs();
   void canvas(Pane &pane);
@@ -5747,16 +5762,33 @@ void Window::fitIntensityCalibration(const DocumentSnapshot& source,ImageJIntens
   if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
   const auto mb=impl->preferenceState.settings.integer("processing_memory_mb");
   if(mb>0)request.max_working_bytes=std::min(request.max_working_bytes,std::size_t(mb)*1024*1024);
-  const auto bytes=estimate_imagej_intensity_fit(source,request);
+  auto bytes=estimate_imagej_intensity_fit(source,request);
+  const bool showPlot=impl->fitShowPlot;const auto plotBytes=std::size_t(4*1024*1024);
+  if(showPlot) {
+    if(bytes>request.max_working_bytes || plotBytes>request.max_working_bytes-bytes)
+      throw std::invalid_argument("Calibration fit and plot exceed working-memory budget");
+    bytes+=plotBytes;
+  }
   auto owner=documentById(source.id());impl->stopAnimation("intensity_calibration");
-  impl->start([source,request] {
+  impl->start([source,request,showPlot,plotBytes] {
     auto prepared=prepare_imagej_intensity_fit(source,request);
     const auto calibration=read_imagej_intensity_calibration(prepared.preview());
     const auto diagnostic=metadataJson(calibration.source_parameters()).at("fit");
     auto status=std::string("Calibration fit RMSE: ")+diagnostic.at("rmse").dump()+"; R-squared: "+diagnostic.at("r_squared").dump();
     if(diagnostic.contains("iterations"))status+="; iterations: "+diagnostic.at("iterations").dump();
     if(request.function=="rodbard2")status+=" (RMSE in measured values)";
+    std::optional<ImageJIntensityFitPlot> plot;
+    auto expected=source.revisions();
+    if(showPlot) {
+      plot=imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,plotBytes);
+      // The typed producer changes metadata only and preserves the guarded
+      // display. Use the same change classifier/advance operation as commit,
+      // staging this binding before publication instead of copying a snapshot
+      // (whose display map can allocate) after the source has changed.
+      expected.advance(document_changes(source.data(),prepared.preview().data()));
+    }
     Impl::JobResult result(std::move(prepared),MetadataObject{},false);
+    if(showPlot){result.fit_plot=std::move(plot);result.fit_plot_source=Impl::FitPlotBinding{source.id(),expected};}
     result.calibration_fit=true;result.fit_status=std::move(status);return result;
   },std::move(owner),false,"Calibration fit","Calibration fit",bytes,{},true);
 }
@@ -6570,14 +6602,16 @@ void Window::action(const std::string &name, const Json &p) {
       auto bytes=std::size_t(4*1024*1024);const auto mb=impl->preferenceState.settings.integer("processing_memory_mb");
       if(mb>0)bytes=std::min(bytes,std::size_t(mb)*1024*1024);
       auto plot=imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes);
-      impl->fitPlotSource=source;impl->fitPlot=std::move(plot);return;
+      impl->fitPlotSource=Impl::FitPlotBinding{source.id(),source.revisions()};impl->fitPlot=std::move(plot);impl->fitPlotFocusRequested=true;return;
     }
     if(name=="fit_intensity_calibration") {
       ImageJIntensityFitRequest request;request.max_working_bytes=std::numeric_limits<std::size_t>::max();
+      bool showPlot=impl->fitShowPlot;
       for(const auto& field:p.items()) {
         const auto& key=field.key();const auto& value=field.value();
         if(key=="document_id")continue;
-        if(key=="function")request.function=value.get<std::string>();
+        if(key=="show_plot"){if(!value.is_boolean())throw std::invalid_argument("Show plot requires Boolean");showPlot=value.get<bool>();}
+        else if(key=="function")request.function=value.get<std::string>();
         else if(key=="value_unit")request.value_unit=value.get<std::string>();
         else if(key=="zero_clip")request.zero_clip=value.get<bool>();
         else if(key=="relative_tolerance")request.relative_tolerance=value.get<double>();
@@ -6589,7 +6623,7 @@ void Window::action(const std::string &name, const Json &p) {
           if(key=="measured")request.measured=std::move(numbers);else if(key=="known")request.known=std::move(numbers);else request.initial_coefficients=std::move(numbers);
         } else throw std::invalid_argument("Unknown fit field: "+key);
       }
-      fitIntensityCalibration(source,std::move(request));return;
+      impl->submitIntensityFit(source,std::move(request),showPlot);return;
     }
     if(name=="set_intensity_calibration") {
       for(const auto& field:p.items())if(field.key()!="record" && field.key()!="document_id")
@@ -6606,7 +6640,7 @@ void Window::action(const std::string &name, const Json &p) {
         throw std::invalid_argument("Calibration fitting requires scalar UInt8/UInt16");
       Json values{{"function","exponential"},{"measured","[0,1,2]"},{"known","[1,2,4]"},
         {"value_unit",calibration.value_unit()},{"zero_clip",false},{"initial_coefficients","[]"},
-        {"max_iterations",256},{"relative_tolerance",1e-10}};
+        {"max_iterations",256},{"relative_tolerance",1e-10},{"show_plot",impl->fitShowPlot}};
       const auto parameters=metadataJson(calibration.source_parameters());
       if(parameters.contains("fit") && parameters.at("fit").is_object()) {
         const auto& fit=parameters.at("fit");
@@ -6632,7 +6666,7 @@ void Window::action(const std::string &name, const Json &p) {
         request.measured=measured;request.known=known;request.initial_coefficients=initial;
         request.value_unit=fields.at("value_unit").get<std::string>();request.zero_clip=fields.at("zero_clip").get<bool>();
         request.max_iterations=fields.at("max_iterations").get<std::size_t>();request.relative_tolerance=fields.at("relative_tolerance").get<double>();
-        request.max_working_bytes=std::numeric_limits<std::size_t>::max();fitIntensityCalibration(source,std::move(request));
+        request.max_working_bytes=std::numeric_limits<std::size_t>::max();impl->submitIntensityFit(source,std::move(request),fields.at("show_plot").get<bool>());
       },Json::array({{{"name","function"},{"label","Function"},{"kind","text"},
           {"choices",{"exponential","power","log","rodbard","gamma_variate","log2","rodbard2","exp_with_offset","gaussian","exp_recovery"}}},
         {{"name","measured"},{"label","Measured values [a,b,...]"},{"kind","text"}},
@@ -6641,7 +6675,8 @@ void Window::action(const std::string &name, const Json &p) {
         {{"name","zero_clip"},{"label","Clip negatives (8-bit tables)"},{"kind","bool"}},
         {{"name","initial_coefficients"},{"label","Starting coefficients ([] for automatic)"},{"kind","text"}},
         {{"name","max_iterations"},{"label","Maximum iterations"},{"kind","int"}},
-        {{"name","relative_tolerance"},{"label","Relative tolerance"},{"kind","float"}}}),"intensity_nonlinear_fit");
+        {{"name","relative_tolerance"},{"label","Relative tolerance"},{"kind","float"}},
+        {{"name","show_plot"},{"label","Show plot"},{"kind","bool"}}}),"intensity_nonlinear_fit");
       return;
     }
     if(name=="show_intensity_polynomial_fit") {
@@ -6649,7 +6684,7 @@ void Window::action(const std::string &name, const Json &p) {
       if(source.data().dataset.shape().s!=1 || (type!=PixelType::UInt8 && type!=PixelType::UInt16))
         throw std::invalid_argument("Calibration fitting requires scalar UInt8/UInt16");
       Json values{{"function","straight_line"},{"measured","[0,1]"},{"known","[0,1]"},
-        {"value_unit",calibration.value_unit()},{"zero_clip",false}};
+        {"value_unit",calibration.value_unit()},{"zero_clip",false},{"show_plot",impl->fitShowPlot}};
       const auto parameters=metadataJson(calibration.source_parameters());
       if(parameters.contains("fit") && parameters.at("fit").is_object()) {
         const auto& fit=parameters.at("fit");
@@ -6671,12 +6706,13 @@ void Window::action(const std::string &name, const Json &p) {
         const auto measured=points("measured"),known=points("known");
         ImageJIntensityFitRequest request;request.function=fields.at("function").get<std::string>();request.measured=measured;request.known=known;
         request.value_unit=fields.at("value_unit").get<std::string>();request.zero_clip=fields.at("zero_clip").get<bool>();
-        request.max_working_bytes=std::numeric_limits<std::size_t>::max();fitIntensityCalibration(source,std::move(request));
+        request.max_working_bytes=std::numeric_limits<std::size_t>::max();impl->submitIntensityFit(source,std::move(request),fields.at("show_plot").get<bool>());
       },Json::array({{{"name","function"},{"label","Function"},{"kind","text"},{"choices",{"straight_line","poly2","poly3","poly4"}}},
         {{"name","measured"},{"label","Measured values [a,b,...]"},{"kind","text"}},
         {{"name","known"},{"label","Known values [a,b,...]"},{"kind","text"}},
         {{"name","value_unit"},{"label","Value unit"},{"kind","text"}},
-        {{"name","zero_clip"},{"label","Clip negatives (8-bit tables)"},{"kind","bool"}}}),"intensity_polynomial_fit");
+        {{"name","zero_clip"},{"label","Clip negatives (8-bit tables)"},{"kind","bool"}},
+        {{"name","show_plot"},{"label","Show plot"},{"kind","bool"}}}),"intensity_polynomial_fit");
       return;
     }
     if(name=="show_intensity_function") {
@@ -9096,7 +9132,14 @@ void Window::poll() {
         if (impl->cancelled) throw OperationCancelled();
         if(completed.calibration_fit) {
           if(documents_.empty() || document()->id!=completed.prepared->target().document_id())throw RevisionConflict();
-          controller_->publish(*completed.prepared);impl->status.swap(completed.fit_status);return;
+          static_assert(std::is_nothrow_swappable_v<decltype(impl->fitPlot)>);
+          static_assert(std::is_nothrow_swappable_v<decltype(impl->fitPlotSource)>);
+          controller_->publish(*completed.prepared);
+          if(completed.fit_plot) {
+            impl->fitPlot.swap(completed.fit_plot);impl->fitPlotSource.swap(completed.fit_plot_source);
+            impl->fitPlotFocusRequested=true;
+          }
+          impl->status.swap(completed.fit_status);return;
         }
         publishPreparedProjection(completed.record, *completed.prepared, completed.recorded);
         impl->status = "Projection complete";
@@ -10875,17 +10918,31 @@ void Window::Impl::recorder() {
   ImGui::End();
 }
 void Window::Impl::plots() {
-  ImGui::Begin("Plot");
   fitPlotObservation=nullptr;
   if(fitPlot && fitPlotSource) {
     if(owner.documents_.empty() || !fitPlotSource->same_document(owner.nativeSnapshot()) ||
-        !fitPlotSource->revisions().matches(owner.nativeSnapshot().revisions(),Change::All)) {
+        !fitPlotSource->expected.matches(owner.nativeSnapshot().revisions(),Change::All)) {
       fitPlot.reset();fitPlotSource.reset();
     }
   }
+  if(fitPlotFocusRequested && fitPlot){ImGui::SetNextWindowFocus();ImGui::SetNextWindowCollapsed(false);}
+  const bool visible=ImGui::Begin("Plot");
+  if(!visible){ImGui::End();return;}
+  // A newly appearing/docking window may yield its tab selection on the
+  // following frame. Consume focus only after it is visibly established.
+  fitPlotFocusRequested=ImGui::IsWindowAppearing();
   if(fitPlot) {
     const auto& data=*fitPlot;
     ImGui::Text("Calibration fit: %s",data.function.c_str());
+    if(ImGui::Button("Close fit plot")){fitPlot.reset();fitPlotSource.reset();ImGui::End();return;}
+    observeControl("fit_plot.close",true,nullptr,nullptr,ImGui::GetCurrentWindow());ImGui::SameLine();
+    if(ImGui::Button("Export fit plot CSV")) {
+      std::ostringstream stream;stream.precision(17);stream<<"series,x,y\n";
+      for(std::size_t i=0;i<data.measured.size();++i)stream<<"data,"<<data.measured[i]<<','<<data.known[i]<<'\n';
+      for(std::size_t i=0;i<data.curve_x.size();++i){stream<<"fit,"<<data.curve_x[i]<<',';if(std::isfinite(data.curve_y[i]))stream<<data.curve_y[i];stream<<'\n';}
+      file("Export calibration fit plot",true,[text=stream.str()](std::string path){writeBytes(path,{text.begin(),text.end()});},"calibration-fit.csv");
+    }
+    observeControl("fit_plot.export",true,nullptr,nullptr,ImGui::GetCurrentWindow());
     ImGui::TextUnformatted("Red points: measurements; blue line: fitted curve");
     ImGui::Text("X: pixel value | Y: %s",data.value_unit.c_str());
     if(data.objective=="measured_as_function_of_known")ImGui::TextWrapped("Fit error is measured in pixel values using measured(known).");
@@ -10925,16 +10982,8 @@ void Window::Impl::plots() {
       {"measured",data.measured},{"known",data.known},{"curve_x",data.curve_x},{"curve_y",data.curve_y},
       {"limits",{data.x_min,data.x_max,data.y_min,data.y_max}},{"data_screen_points",std::move(points)},
       {"canvas_origin",{origin.x,origin.y}},{"canvas_size",{size.x,size.y}},{"source_id",fitPlotSource->id()},
-      {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments}};
-    if(ImGui::Button("Export fit plot CSV")) {
-      std::ostringstream stream;stream.precision(17);stream<<"series,x,y\n";
-      for(std::size_t i=0;i<data.measured.size();++i)stream<<"data,"<<data.measured[i]<<','<<data.known[i]<<'\n';
-      for(std::size_t i=0;i<data.curve_x.size();++i){stream<<"fit,"<<data.curve_x[i]<<',';if(std::isfinite(data.curve_y[i]))stream<<data.curve_y[i];stream<<'\n';}
-      file("Export calibration fit plot",true,[text=stream.str()](std::string path){writeBytes(path,{text.begin(),text.end()});},"calibration-fit.csv");
-    }
-    observeControl("fit_plot.export");ImGui::SameLine();
-    if(ImGui::Button("Close fit plot")){fitPlot.reset();fitPlotSource.reset();}
-    observeControl("fit_plot.close");ImGui::End();return;
+      {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true}};
+    ImGui::End();return;
   }
 
   if (plotY.empty())
@@ -13789,6 +13838,7 @@ HeadlessInputSession::HeadlessInputSession(Window &window, Probe probe) {
     window.impl->guiScale = 0;
     window.impl->appearance(1, false);
     window.impl->layout = false;
+    if(window.impl->fitPlot)window.impl->fitPlotFocusRequested=true;
     window.impl->lastVisible = -1;
     window.impl->exit = false;
     auto &io = ImGui::GetIO();

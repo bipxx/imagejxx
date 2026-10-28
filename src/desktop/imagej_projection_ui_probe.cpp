@@ -184,7 +184,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   } failure{report,directory};
   HeadlessInputSession session(w);Json last;
   auto frame=[&](const Json& events=Json::array()) {
-    require(report["frames"].size()<256,"Calibration UI frame bound");last=session.frame(events);
+    require(report["frames"].size()<320,"Calibration UI frame bound");last=session.frame(events);
     report["frames"].push_back({{"events",events},{"rendered",{
       {"input_frame",last.at("input_frame")},{"dialog",last.at("dialog")},
       {"error_modal",last.at("error_modal")},{"window_error",last.at("window_error")}}}});
@@ -238,7 +238,8 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   click(last.at("dialog").at("controls").at("cancel"),"function_cancel");
   const auto functionSnapshot=owner->snapshot();
   const auto fitAction=nonlinear_fit?"show_intensity_nonlinear_fit":"show_intensity_polynomial_fit";
-  menu(fitAction);
+  menu(fitAction);report["fit_initial_show_plot"]=last.at("dialog").at("values").at("show_plot");
+  click(last.at("dialog").at("controls").at("show_plot"),"fit_show_plot_false");
   if(nonlinear_fit)editText("initial_coefficients","[4,0.5]");else choose("function","poly2");
   editText("measured","[0,1,2]");editText("known","[5,7]");
   click(last.at("dialog").at("controls").at("apply"),"invalid_fit_apply");
@@ -258,7 +259,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
     {"source_unchanged",owner->snapshot().shares_data(functionSnapshot)}};
   w.wait();frame();frame();report["fitted"]=state(w);
   report["fit_reserved_after_publish"]=GaussianCancellationAccess::scheduler(w)->usage().reserved_bytes;
-  report["fit_status"]=last.at("status");
+  report["fit_status"]=last.at("status");report["auto_plot_disabled"]=last.at("fit_plot");
   menu("show_intensity_fit_plot");report["fit_plot"]=last.at("fit_plot");
   menu(fitAction);report["fit_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"fit_cancel");
@@ -307,6 +308,26 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   report["fit_running_cancel"]["busy_after"]=w.busy();
   report["fit_running_cancel"]["error_after"]=w.error();
   GaussianCancellationAccess::setNextPreparationGate(w,{});
+  report["plot_after_running_cancel"]=last.at("fit_plot");
+  click(last.at("host_controls").at("fit_plot.close"),"fit_plot_close");
+  report["plot_after_close"]=last.at("fit_plot");
+  menu(fitAction);report["auto_plot_draft"]=last.at("dialog").at("values");
+  click(last.at("dialog").at("controls").at("show_plot"),"fit_show_plot_true");
+  editText("value_unit","HUauto");
+  click(last.at("dialog").at("controls").at("apply"),"auto_fit_apply",false);
+  const auto autoDeadline=std::chrono::steady_clock::now()+std::chrono::seconds(10);
+  while(w.jobInfo() && (w.jobInfo()->state==JobState::Queued || w.jobInfo()->state==JobState::Running)) {
+    require(std::chrono::steady_clock::now()<autoDeadline,"Automatic fit plot worker timeout");std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+  const auto autoReady=w.jobInfo();require(bool(autoReady),"Automatic fit plot job missing");
+  report["auto_plot_ready"]={{"state",int(autoReady->state)},{"stage",autoReady->stage},
+    {"stage_completed",autoReady->stage_completed},{"stage_total",autoReady->stage_total},
+    {"resource_bytes",autoReady->resource_bytes},{"retained_bytes",GaussianCancellationAccess::scheduler(w)->usage().retained_bytes},
+    {"source_unchanged",owner->snapshot().shares_data(fittedSnapshot)}};
+  w.wait();frame();frame();report["auto_plot_enabled"]=last.at("fit_plot");report["auto_fit_applied"]=state(w);
+  report["auto_plot_reserved_after"]=GaussianCancellationAccess::scheduler(w)->usage().reserved_bytes;
+  menu(fitAction);report["auto_plot_saved"]=last.at("dialog").at("values").at("show_plot");
+  click(last.at("dialog").at("controls").at("cancel"),"auto_plot_draft_cancel");
 
   session.close();report["lifecycle"]=session.lifecycle();
   SessionCapture capture;capture.documents.push_back(calibrated);

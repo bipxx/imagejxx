@@ -82,6 +82,7 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     assert report["fit_reserved_after_publish"]==0
     _assert_physical_fit_running_cancel(report)
     _assert_fit_plot_render(report)
+    _assert_automatic_fit_plot(report)
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -280,6 +281,7 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     assert report["fit_reserved_after_publish"]==0
     _assert_physical_fit_running_cancel(report)
     _assert_fit_plot_render(report)
+    _assert_automatic_fit_plot(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
 
@@ -391,7 +393,7 @@ def _assert_physical_fit_running_cancel(report):
     control=case["control"]
     assert control["enabled"] and control["id"]>0
     assert {"fit_cancel_apply","fit_running_cancel"}<={r["name"] for r in report["controls"]}
-    assert len(report["frames"])<=256
+    assert len(report["frames"])<=320
 
 
 def _assert_fit_plot_render(report):
@@ -487,7 +489,7 @@ def test_fit_plot_headless_geometry_and_stale_source(case,tmp_path):
     record=value.record;record["source_parameters"]["fit"]={"measured":measured,"known":known}
     owner=_fit_owner();ij.set_imagej_intensity_calibration(owner,ij.ImageJIntensityCalibration.from_record(record));before=owner.snapshot();steps=owner.undo_steps
     editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner)
-    editor.action("show_intensity_fit_plot");render=editor.render_headless(2);plot=render["fit_plot"]
+    editor.action("show_intensity_fit_plot");render=editor.render_headless(4);plot=render["fit_plot"]
     assert plot is not None and plot["finite_geometry"] and plot["drawn_segments"]>0
     assert np.isfinite(plot["data_screen_points"]).all()
     if case=="nonfinite":assert any(v is None for v in plot["curve_y"])
@@ -496,7 +498,7 @@ def test_fit_plot_headless_geometry_and_stale_source(case,tmp_path):
         np.testing.assert_allclose((x-x[0])/(x[-1]-x[0]),[0,.25,1],atol=1e-6)
     assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
     view=owner.snapshot().display;view.zoom=2;owner.set_display(view)
-    assert editor.render_headless(2)["fit_plot"] is None
+    assert editor.render_headless(4)["fit_plot"] is None
 
 
 def test_fit_plot_editor_honors_memory_preference(tmp_path):
@@ -513,3 +515,75 @@ def test_fit_plot_uses_model_curve_before_uint8_zero_clip():
     value=ij.ImageJIntensityCalibration.fit_polynomial("uint8","straight_line",[0,20],[-10,10],zero_clip=True)
     assert np.array(value.table_words(),np.uint32).view(np.float32)[0]==0
     assert ij.imagej_intensity_fit_plot(value,256).curve_y[0]==-10
+
+
+def _assert_automatic_fit_plot(report):
+    assert report["fit_initial_show_plot"] is True
+    assert report["auto_plot_disabled"] is None
+    assert report["fit_dialog"]["values"]["show_plot"] is False
+    assert report["auto_plot_draft"]["show_plot"] is False and report["auto_plot_saved"] is True
+    assert report["plot_after_running_cancel"]==report["fit_plot"]
+    assert report["plot_after_close"] is None
+    close=next(c["control"] for c in report["controls"] if c["name"]=="fit_plot_close")
+    assert close["visible"] and close["window_name"]=="Plot"
+    ready=report["auto_plot_ready"]
+    assert ready["state"]==2 and ready["source_unchanged"]
+    assert ready["stage"]=="Calibration fit plot" and ready["stage_completed"]==ready["stage_total"]==100
+    assert ready["resource_bytes"]==ready["retained_bytes"]>report["fit_ready"]["resource_bytes"]
+    assert report["auto_plot_reserved_after"]==0
+    plot=report["auto_plot_enabled"]
+    assert plot and plot["value_unit"]=="HUauto" and plot["function"]==report["fit_plot"]["function"]
+    assert plot["visible"] and plot["finite_geometry"] and plot["drawn_segments"]==99
+    assert report["auto_fit_applied"]["undo"]==report["fitted"]["undo"]+1
+    assert "show_plot" not in report["auto_fit_applied"]["properties"]["imagejxx.intensity_calibration"]["source_parameters"]
+    assert {"fit_show_plot_false","fit_show_plot_true","auto_fit_apply","fit_plot_close"}<={c["name"] for c in report["controls"]}
+
+
+@pytest.mark.parametrize("show",[False,True])
+def test_editor_automatic_fit_plot_publication_and_noop(show,tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    owner=_fit_owner();editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner)
+    before=owner.snapshot()
+    arguments=dict(function="poly2",measured=[0,1,3],known=[1,4,16],show_plot=show)
+    editor.action("fit_intensity_calibration",**arguments);editor.wait()
+    plot=editor.render_headless(4)["fit_plot"]
+    assert (plot is not None)==show
+    if show:assert plot["function"]=="poly2" and plot["measured"]==[0,1,3]
+    assert owner.undo_steps==1 and owner.snapshot().revisions.pixels==before.revisions.pixels
+    assert "show_plot" not in ij.read_imagej_intensity_calibration(owner.snapshot()).record["source_parameters"]
+    # A metadata-identical fit must bind to the unchanged revision too.
+    editor.action("fit_intensity_calibration",**arguments);editor.wait()
+    assert (editor.render_headless(4)["fit_plot"] is not None)==show
+    assert owner.undo_steps==1
+
+
+@pytest.mark.parametrize("change",["failure","cancel","stale"])
+def test_automatic_fit_plot_refusal_and_previous_plot(change,tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    owner=_fit_owner();editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner)
+    editor.action("fit_intensity_calibration",function="straight_line",measured=[0,1],known=[1,3],show_plot=True);editor.wait()
+    previous=editor.render_headless(4)["fit_plot"];before=owner.snapshot();steps=owner.undo_steps
+    args=dict(function="exponential",measured=[0,1,2],known=[5,10,20],initial_coefficients=[4,.5],show_plot=True)
+    if change=="failure":args["max_iterations"]=1
+    editor.action("fit_intensity_calibration",**args)
+    if change=="cancel":editor.cancel()
+    elif change=="stale":view=owner.snapshot().display;view.zoom=2;owner.set_display(view)
+    if change=="cancel":editor.wait()
+    else:
+        with pytest.raises(RuntimeError):editor.wait()
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    after=editor.render_headless(4)["fit_plot"]
+    if change=="stale":assert after is None
+    else:assert after==previous
+
+
+@pytest.mark.parametrize("value",[0,1,"true",None])
+def test_fit_show_plot_requires_boolean(value,tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    owner=_fit_owner();editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner);before=owner.snapshot()
+    with pytest.raises((ValueError,RuntimeError),match="Boolean"):
+        editor.action("fit_intensity_calibration",function="straight_line",measured=[0,1],known=[1,3],show_plot=value)
+    assert not editor.busy and owner.snapshot().shares_data(before)

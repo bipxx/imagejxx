@@ -1,0 +1,428 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "dd6e4260e32235178e6634878647262a00eb3037",
+  "scope": "Shared interactive Show plot preference, owned-worker plot preparation and guarded metadata/plot publication; actual dock visibility and Close in both Windows ImGui hosts",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 24110,
+      "sha256": "c3412e0e21aa305aff677d43aa1f2b687a9e1d13ad4d4ae3c280eebf472eb935"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 799796,
+      "sha256": "1ec4e59335d903cfdb0f7c50696f992e78e24923df07cb1d6fb3d2255206991f"
+    },
+    {
+      "path": "tests/python/test_intensity_calibration_editor.py",
+      "bytes": 35771,
+      "sha256": "d66be87cad85780bc2aa25ac57f07ee92cb5491480405a7a9dcb13d9b72c8222"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-windows-build233/receipt.json",
+      "bytes": 22331,
+      "sha256": "b4e9b79097cb46cbbe94c01362557b4cf6f127486eee369b338a670941544a67"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-windows-build233/source-freeze.json",
+      "bytes": 368531,
+      "sha256": "fdb5a46a72ac0eaeed3395c50714eca88c56c6bff7b5bbb05c2360736718cd9e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-windows-build233/dependency-inputs.json",
+      "bytes": 130574,
+      "sha256": "ab725c95300fb7720cabef8cbc1e3bef061828d678194eea6921e09cf5091206"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-installed234/receipt.json",
+      "bytes": 24696,
+      "sha256": "8b37efa264731dcd0ab1cc543db8a4349dc780f5928785a0ed20be1517982edb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-installed234/results.xml",
+      "bytes": 78878,
+      "sha256": "8fa6d96a43d0c3bb241bd92a0bf6a51b2a58fed1cc997ea7a1e0344efe77e62b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-installed234/captures.tar.xz",
+      "bytes": 790576,
+      "sha256": "7b88b8254857174ebf5c999e283f464e5f407b37248119c4fd527ea9e8fac131"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-windows-build219/receipt.json",
+      "bytes": 8041,
+      "sha256": "f380342652f0bd40ce3e608923fda3cd501dc54a618d230893f0cf4941327e03"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-installed223/receipt.json",
+      "bytes": 24784,
+      "sha256": "d7fc489c65047eb0c3769b7cde5d9fc3001a50244e5a2220c0fe9ae7f45b659e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-installed223/results.xml",
+      "bytes": 96176,
+      "sha256": "90bba4f9e23c4002e925730b77347d235544e9d717fd4108aec40a9fada779a3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-installed223/captures.tar.xz",
+      "bytes": 768988,
+      "sha256": "fec59e5dc6d8b3ad1aa3177f7a8863c9d018a9746b367df77920f3304f59c2ed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-installed227/receipt.json",
+      "bytes": 24796,
+      "sha256": "11fdbd61bd28ae1e4694325e3dc2600a838144dfea82152bb74af9b408a5d486"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-installed227/results.xml",
+      "bytes": 84500,
+      "sha256": "118dda42ea7841cc3677f4728ad86436c4cca877ce29605cecd7585975269941"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-installed227/captures.tar.xz",
+      "bytes": 780460,
+      "sha256": "5b7b5d15cf4004f572526aa55d7aecf8770a1a76e2c3e5f9c263f1890451d043"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-dock-diagnostic229/receipt.json",
+      "bytes": 663,
+      "sha256": "d2dd3d69ad25beb56ff1a48edc8b4b1f59e44897f4072d4eb357feadc3ca7f2e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-binding-diagnostic230/receipt.json",
+      "bytes": 2075,
+      "sha256": "89667c9817b0fd5cdf38278b49e88e1f6014d85a85c9220fb46f17a00841a5b2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-focus-diagnostic231/receipt.json",
+      "bytes": 138,
+      "sha256": "7c8cd8b85b302dcced74899cb8d9129ba075898b2c2e66537fb025af93a6bba9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-retention228/receipt.json",
+      "bytes": 13722,
+      "sha256": "651edf5ab87045882f12eaea663f8e4614976567e51a95264743a3835671e866"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-retention228/identity-and-logs.zip",
+      "bytes": 377652,
+      "sha256": "0fe648478e8635d713ac2c02af89e661b80a90e29989438192fe9c01c3df55e3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-capture-retention236/receipt.json",
+      "bytes": 5161,
+      "sha256": "b04f700749ec78d814c45354b3641211e25709757d1e93904eed97491503cf86"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-capture-retention236/plot-observations.json",
+      "bytes": 27639,
+      "sha256": "9f7f875ad39afe9d83a46c97ce92aa2a120b81625168806428bd9029795eeec4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-storage-published216.json",
+      "bytes": 1522,
+      "sha256": "e02c62d6520404df018984b22e6e48910afd80ccb086bb3d77d21a2afc1aa22f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-storage-final235.json",
+      "bytes": 1522,
+      "sha256": "64e238db33c6c6e27f5d2db87fea112e1a2a34316dee7841918c33fa1f11365b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-storage-final238.json",
+      "bytes": 1522,
+      "sha256": "671cfdf3c029c39494aa5c22b731d93f5ab1bde301c9bd0758fd09d19a9ecf00"
+    }
+  ],
+  "verification": {
+    "focused_tests": 531,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "current_windows_native": "passed",
+    "core_scope": "Core/public headers/native tests match previous plot packet hashes; prior Linux source qualification reused, no new Linux UI qualification",
+    "license_inventory": "scripts/check_licenses.py --desktop passed; no new dependency",
+    "diff_check": "git diff --check passed"
+  },
+  "physical_observations": [
+    {
+      "member": "intensity-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 301,
+      "initial_show_plot": true,
+      "off_has_no_plot": true,
+      "saved_show_plot": true,
+      "ready": {
+        "resource_bytes": 29454040,
+        "retained_bytes": 29454040,
+        "source_unchanged": true,
+        "stage": "Calibration fit plot",
+        "stage_completed": 100,
+        "stage_total": 100,
+        "state": 2
+      },
+      "reservation_after": 0,
+      "automatic_plot": {
+        "function": "poly2",
+        "value_unit": "HUauto",
+        "objective": "known_as_function_of_measured",
+        "visible": true,
+        "finite_geometry": true,
+        "drawn_segments": 99,
+        "source_id": 6435110888356341153
+      },
+      "close_control": {
+        "active": false,
+        "clip_rect": [
+          925.0,
+          429.0,
+          1249.0,
+          819.0
+        ],
+        "enabled": true,
+        "focused": false,
+        "id": 3509617705,
+        "point": [
+          988.0,
+          465.5
+        ],
+        "rect": [
+          932.0,
+          454.0,
+          1044.0,
+          477.0
+        ],
+        "visible": true,
+        "window_name": "Plot"
+      },
+      "close_clears_plot": true,
+      "cancel_preserves_previous_plot": true,
+      "undo_before": 3,
+      "undo_after": 4,
+      "raw_inputs_verified": true
+    },
+    {
+      "member": "nonlinear-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 301,
+      "initial_show_plot": true,
+      "off_has_no_plot": true,
+      "saved_show_plot": true,
+      "ready": {
+        "resource_bytes": 29462936,
+        "retained_bytes": 29462936,
+        "source_unchanged": true,
+        "stage": "Calibration fit plot",
+        "stage_completed": 100,
+        "stage_total": 100,
+        "state": 2
+      },
+      "reservation_after": 0,
+      "automatic_plot": {
+        "function": "exponential",
+        "value_unit": "HUauto",
+        "objective": "known_as_function_of_measured",
+        "visible": true,
+        "finite_geometry": true,
+        "drawn_segments": 99,
+        "source_id": 6338985175709955707
+      },
+      "close_control": {
+        "active": false,
+        "clip_rect": [
+          925.0,
+          429.0,
+          1249.0,
+          819.0
+        ],
+        "enabled": true,
+        "focused": false,
+        "id": 3509617705,
+        "point": [
+          988.0,
+          465.5
+        ],
+        "rect": [
+          932.0,
+          454.0,
+          1044.0,
+          477.0
+        ],
+        "visible": true,
+        "window_name": "Plot"
+      },
+      "close_clears_plot": true,
+      "cancel_preserves_previous_plot": true,
+      "undo_before": 3,
+      "undo_after": 4,
+      "raw_inputs_verified": true
+    },
+    {
+      "member": "pytest/test_actual_intensity_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 301,
+      "initial_show_plot": true,
+      "off_has_no_plot": true,
+      "saved_show_plot": true,
+      "ready": {
+        "resource_bytes": 29454040,
+        "retained_bytes": 29454040,
+        "source_unchanged": true,
+        "stage": "Calibration fit plot",
+        "stage_completed": 100,
+        "stage_total": 100,
+        "state": 2
+      },
+      "reservation_after": 0,
+      "automatic_plot": {
+        "function": "poly2",
+        "value_unit": "HUauto",
+        "objective": "known_as_function_of_measured",
+        "visible": true,
+        "finite_geometry": true,
+        "drawn_segments": 99,
+        "source_id": 4668753309756748339
+      },
+      "close_control": {
+        "active": false,
+        "clip_rect": [
+          925.0,
+          429.0,
+          1249.0,
+          819.0
+        ],
+        "enabled": true,
+        "focused": false,
+        "id": 3509617705,
+        "point": [
+          988.0,
+          465.5
+        ],
+        "rect": [
+          932.0,
+          454.0,
+          1044.0,
+          477.0
+        ],
+        "visible": true,
+        "window_name": "Plot"
+      },
+      "close_clears_plot": true,
+      "cancel_preserves_previous_plot": true,
+      "undo_before": 3,
+      "undo_after": 4,
+      "raw_inputs_verified": true
+    },
+    {
+      "member": "pytest/test_actual_nonlinear_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 301,
+      "initial_show_plot": true,
+      "off_has_no_plot": true,
+      "saved_show_plot": true,
+      "ready": {
+        "resource_bytes": 29462936,
+        "retained_bytes": 29462936,
+        "source_unchanged": true,
+        "stage": "Calibration fit plot",
+        "stage_completed": 100,
+        "stage_total": 100,
+        "state": 2
+      },
+      "reservation_after": 0,
+      "automatic_plot": {
+        "function": "exponential",
+        "value_unit": "HUauto",
+        "objective": "known_as_function_of_measured",
+        "visible": true,
+        "finite_geometry": true,
+        "drawn_segments": 99,
+        "source_id": 4668753309756748344
+      },
+      "close_control": {
+        "active": false,
+        "clip_rect": [
+          925.0,
+          429.0,
+          1249.0,
+          819.0
+        ],
+        "enabled": true,
+        "focused": false,
+        "id": 3509617705,
+        "point": [
+          988.0,
+          465.5
+        ],
+        "rect": [
+          932.0,
+          454.0,
+          1044.0,
+          477.0
+        ],
+        "visible": true,
+        "window_name": "Plot"
+      },
+      "close_clears_plot": true,
+      "cancel_preserves_previous_plot": true,
+      "undo_before": 3,
+      "undo_after": 4,
+      "raw_inputs_verified": true
+    }
+  ],
+  "implemented": [
+    "Show plot Boolean in polynomial/nonlinear dialogs; interactive defaulttrue and shared per-Window session preference; Cancel does not apply draft",
+    "Strict Boolean show_plot editor action; omitted flag captures current session preference",
+    "Additional4MiB declared combined fit/plot admission, same worker and retained Ready result lease",
+    "Existing native model plot producer runs under worker cancellation/stage controls before metadata publication",
+    "Scalar document-ID/expected-revision plot binding staged using the same document_changes/Revisions::advance operations as typed metadata commit",
+    "Compile-time noexcept swaps for plot and scalar binding; no snapshot/map copy after successful source publication",
+    "No-op fits bind to unchanged revisions; stale/closed/cancel/failure guards retained",
+    "Plot respects ImGui Begin visibility; explicit/manual or automatic plots select their dock tab; focus survives initial appearing/docking frames",
+    "Close/Export toolbar precedes chart; Close physically verified visible in Plot window",
+    "Fresh diagnostic contexts restore plot selection; bounded4-frame API checks require actual visible output"
+  ],
+  "provenance": "Presentation preference remains outside numeric calibration records and saved document calibration provenance",
+  "scope_correction": "Previous fit-plot captures proved payload and coordinate calculations but did not prove an active visible dock tab: the renderer ignored Begin(false). Current visible-tab and physical Close evidence closes that gap. Historical fingerprints/expectations remain unchanged.",
+  "failure_history": [
+    {
+      "run": 219,
+      "failure": "Compile-time noexcept assertion rejected optional<DocumentSnapshot> swap on MSVC; replaced with scalar binding, reducing retained snapshot ownership. Terminal compiler logs archived."
+    },
+    {
+      "run": 223,
+      "failure": "Four physical cases found Close ineffective; hidden dock tab still emitted stale controls. Corrected Begin guard/tab focus/toolbar; full failure captures retained."
+    },
+    {
+      "run": 227,
+      "failure": "Four fresh-context API cases remained hidden. Diagnostics229/230 show unchanged source revisions and no plot even with5 frames;231 shows an explicit action after dock warmup is visible. Focus request was consumed on initial appearance. Retain it until established, and require actual visible output after bounded4-frame initialization."
+    }
+  ],
+  "storage": {
+    "known_final_bytes": 8588836987,
+    "normal_limit_bytes": 8589934592,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "recovered_bytes": 5084949,
+    "retention": "Current and necessary failed223/227 full captures retained in member-hash-verified solid archives. Necessary logs/identity/failure scratch bytes losslessly archived before raw retirement. Stale2656256-byte manual-threshold workflow executable retired with source/objects/target preserved. Superseded preliminary208 full archive retired after compact plot values/member hashes retained; omitted original container/frame/session bytes unavailable. Historical pins unchanged."
+  },
+  "limitations": [
+    "No manual calibration/OD/lookup plot producer yet",
+    "No physical CSV export acceptance gate yet",
+    "Session preference is not a new disk setting or ImageJ macro compatibility claim",
+    "No updated installed C++ SDK/full platform/original-reference qualification",
+    "No matched comparative speed or full-family completion claim"
+  ],
+  "family_tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

@@ -1,5 +1,47 @@
 # Scientific Z projection
 
+## Automatic fit plots and visible dock lifecycle — 2026-10-28
+
+Polynomial/nonlinear dialogs now capture Show plot (interactive defaulttrue,
+remembered within the Window session). The strict editor action accepts the
+same Boolean. Plot generation runs on the existing fitting worker with4MiB
+additional declared admission and retained Ready resources. Metadata publishes
+first under existing guards, then compile-time noexcept swaps install the plot
+and a staged scalar document/revision binding. No snapshot/map copy follows
+commit; no-op edits bind to unchanged revisions. Numeric provenance stays free
+of presentation flags. Failure/cancellation preserves the prior valid plot.
+
+Final531 focused checks pass with no skips, plus current Windows native checks.
+Both actual Windows hosts physically toggle off/on, verify worker plot stage/
+Ready retention, automatically display a visible plot and close it through its
+visible toolbar. Cancel preserves the previous plot; changed units add one Undo
+entry. Four cases use301 bounded frames (cap320). Fresh-context API checks use
+four initialization frames and require actual visible output.
+[Scoped evidence](../parity/reviews/G034-intensity-auto-plot-progress001.json).
+
+Scope correction: earlier fit-plot captures established payload/coordinates,
+not active dock visibility. Begin(false) was ignored and controls could describe
+stale items. The renderer now respects visibility, selects the Plot tab and
+retains focus through its initial appearing/docking frames. A compile-time
+snapshot-swap rejection and two UI failure runs remain preserved. Historical
+expectations/fingerprints are unchanged.
+
+Next: manual calibration/OD/lookup table plots using the separate upstream
+integer-indexed table policy; reuse the same presentation preference and renderer
+without another pool/store. Add physical CSV export evidence. Then fitting
+settings/restarts/global calibration, table import/export/replay/downstream and
+the batched installed C++ SDK refresh. Macro defaults and full platform gates
+remain open. No speed advantage or family completion is established.
+
+Same cache/runtime reused. Required success/failure captures and logs remain
+compressed/hash-verified; scratch retired. Total5,084,949 bytes recovered through
+identity/log retention, a stale test executable and superseded208 capture
+retirement. Its compact plot data/member hashes remain; omitted original full
+bytes are unavailable. Source/objects/target preserved. Known whole-root
+8,588,836,987B; two denied caches keep the full8GiB budget unverified. Dependency
+commercial-use inventory passes. Tracker47 in progress/52 open/0 complete.
+
+
 ## Shared fit-plot data and ImGui consumer — 2026-10-28
 
 C++/Python now expose bounded ImageJIntensityFitPlot data through the existing
