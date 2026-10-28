@@ -1,0 +1,284 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "c27eb76d6200ef46523bb4add115988aab688d4d",
+  "scope": "Actual Processing Cancel button wiring while genuine polynomial/nonlinear fit jobs are Running under a declared pre-compute diagnostic barrier, in both Windows ImGui hosts",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "src/desktop/gaussian_cancellation_internal.hpp",
+      "bytes": 2535,
+      "sha256": "f64104b24d1579872f9963a45258ed24e7eaad2975663d2fba19cd1b2d5b6181"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 22136,
+      "sha256": "a801709d2cf47666fba99af72e9f9b352885548c6db2bd55ab753b3cb1dcf206"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 791215,
+      "sha256": "03909d66f1ab3b99e01b3472d7125574beaef6fad4627c98cc24ee6f86c2e24f"
+    },
+    {
+      "path": "tests/python/test_intensity_calibration_editor.py",
+      "bytes": 23779,
+      "sha256": "e77ead48f18ae7f81ff5f4b16c673fb15eb4d4c30c8327fd534bd730bfac4f13"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-windows-build195/receipt.json",
+      "bytes": 22352,
+      "sha256": "cac8d227c59106f075790a2dbd8d169588fb89c59660f4fa56d5823b6950a162"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-windows-build195/source-freeze.json",
+      "bytes": 368243,
+      "sha256": "769cbed389657da197d4a92d56133a5311fd9e496f234575a22e6f8b7521547e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-windows-build195/dependency-inputs.json",
+      "bytes": 130574,
+      "sha256": "ab725c95300fb7720cabef8cbc1e3bef061828d678194eea6921e09cf5091206"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-installed196/receipt.json",
+      "bytes": 24277,
+      "sha256": "91e1165afd5c00c8eff346dbd41c75c352d41d88d49e0f062b00779a43640eae"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-installed196/results.xml",
+      "bytes": 62096,
+      "sha256": "93ec7cb1c5e08a499c7a8e1f96bb6baf40be6102a22dc950d61072ecd1569a0e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-installed196/captures.tar.xz",
+      "bytes": 757948,
+      "sha256": "e9019a4cba6a6c592d01cbf52e3b2d0435c4d0bc0f980c66993f89e9877cfafd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-retention197/receipt.json",
+      "bytes": 4695,
+      "sha256": "a342d7e8a3f5ddcb765347d8841f761c151d35f82708fa56543ebe6c1499f5c6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-retention197/identity-and-logs.zip",
+      "bytes": 95506,
+      "sha256": "2ae3d0b6aacf35471b7321ff7e5e9ad0890b1b56c640486b1a2c04ae4a454a75"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-storage-published193.json",
+      "bytes": 1521,
+      "sha256": "696f1fa645e74e445ee6b9ff47ba1ef223c2e20b005cb545f1dcc0588e109a0a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-storage-after198.json",
+      "bytes": 1522,
+      "sha256": "7edd7b6d9cb9a2ede51b7c3f937651076bb54a898f56bfd248635391b882902e"
+    }
+  ],
+  "verification": {
+    "focused_tests": 420,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "standalone_cpp_cases": [
+      "projection",
+      "polynomial calibration",
+      "nonlinear calibration"
+    ],
+    "current_windows_native": "passed",
+    "linux": "No core changes; previous Linux source-consumer qualification retained, no new Linux UI qualification",
+    "license_inventory": "scripts/check_licenses.py --desktop passed",
+    "diff_check": "git diff --check passed"
+  },
+  "physical_observations": [
+    {
+      "member": "intensity-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 248,
+      "running_state": 1,
+      "terminal_state": 6,
+      "cancel_requested": true,
+      "resource_bytes": 25259640,
+      "reserved_before": 25259640,
+      "reserved_after": 0,
+      "source_data_unchanged": true,
+      "source_revisions_unchanged": true,
+      "busy_after": false,
+      "error_after": "",
+      "control": {
+        "active": false,
+        "enabled": true,
+        "focused": false,
+        "id": 2726564689,
+        "point": [
+          96.0,
+          163.5
+        ],
+        "rect": [
+          68.0,
+          152.0,
+          124.0,
+          175.0
+        ]
+      },
+      "source_before_sha256": "5460e53dd78bfdf9847d27feb227930d664fd11b77d8ce54d402a65f69011fcd",
+      "source_after_sha256": "5460e53dd78bfdf9847d27feb227930d664fd11b77d8ce54d402a65f69011fcd",
+      "undo_before": 3,
+      "undo_after": 3,
+      "raw_input_echoes_verified": true,
+      "fixture": "One-shot pre-compute barrier holds the genuine fit job; Cancel uses physical position/button events"
+    },
+    {
+      "member": "nonlinear-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 248,
+      "running_state": 1,
+      "terminal_state": 6,
+      "cancel_requested": true,
+      "resource_bytes": 25268536,
+      "reserved_before": 25268536,
+      "reserved_after": 0,
+      "source_data_unchanged": true,
+      "source_revisions_unchanged": true,
+      "busy_after": false,
+      "error_after": "",
+      "control": {
+        "active": false,
+        "enabled": true,
+        "focused": false,
+        "id": 2726564689,
+        "point": [
+          96.0,
+          163.5
+        ],
+        "rect": [
+          68.0,
+          152.0,
+          124.0,
+          175.0
+        ]
+      },
+      "source_before_sha256": "0610b1d532cd742e69d1eac3385edff4a3aa004092fa0befd208605f5df4e793",
+      "source_after_sha256": "0610b1d532cd742e69d1eac3385edff4a3aa004092fa0befd208605f5df4e793",
+      "undo_before": 3,
+      "undo_after": 3,
+      "raw_input_echoes_verified": true,
+      "fixture": "One-shot pre-compute barrier holds the genuine fit job; Cancel uses physical position/button events"
+    },
+    {
+      "member": "pytest/test_actual_intensity_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 248,
+      "running_state": 1,
+      "terminal_state": 6,
+      "cancel_requested": true,
+      "resource_bytes": 25259640,
+      "reserved_before": 25259640,
+      "reserved_after": 0,
+      "source_data_unchanged": true,
+      "source_revisions_unchanged": true,
+      "busy_after": false,
+      "error_after": "",
+      "control": {
+        "active": false,
+        "enabled": true,
+        "focused": false,
+        "id": 2726564689,
+        "point": [
+          96.0,
+          163.5
+        ],
+        "rect": [
+          68.0,
+          152.0,
+          124.0,
+          175.0
+        ]
+      },
+      "source_before_sha256": "5460e53dd78bfdf9847d27feb227930d664fd11b77d8ce54d402a65f69011fcd",
+      "source_after_sha256": "5460e53dd78bfdf9847d27feb227930d664fd11b77d8ce54d402a65f69011fcd",
+      "undo_before": 3,
+      "undo_after": 3,
+      "raw_input_echoes_verified": true,
+      "fixture": "One-shot pre-compute barrier holds the genuine fit job; Cancel uses physical position/button events"
+    },
+    {
+      "member": "pytest/test_actual_nonlinear_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 248,
+      "running_state": 1,
+      "terminal_state": 6,
+      "cancel_requested": true,
+      "resource_bytes": 25268536,
+      "reserved_before": 25268536,
+      "reserved_after": 0,
+      "source_data_unchanged": true,
+      "source_revisions_unchanged": true,
+      "busy_after": false,
+      "error_after": "",
+      "control": {
+        "active": false,
+        "enabled": true,
+        "focused": false,
+        "id": 2726564689,
+        "point": [
+          96.0,
+          163.5
+        ],
+        "rect": [
+          68.0,
+          152.0,
+          124.0,
+          175.0
+        ]
+      },
+      "source_before_sha256": "0610b1d532cd742e69d1eac3385edff4a3aa004092fa0befd208605f5df4e793",
+      "source_after_sha256": "0610b1d532cd742e69d1eac3385edff4a3aa004092fa0befd208605f5df4e793",
+      "undo_before": 3,
+      "undo_after": 3,
+      "raw_input_echoes_verified": true,
+      "fixture": "One-shot pre-compute barrier holds the genuine fit job; Cancel uses physical position/button events"
+    }
+  ],
+  "invariants": [
+    "One-shot private gate consumed only by next genuine submitted preparation; no new normal-processing delay/setting",
+    "Creator-thread arming requires live headless ImGui source, idle worker and fresh gate",
+    "Worker gate owns scalar synchronization only, never controller or UI",
+    "Bounded barrier entry/release waits and failure cleanup release/cancel/drain worker",
+    "Existing draft Cancel and successful fit/session/Ready reservation checks preserved",
+    "Physical Cancel requests cancellation; numerical-stage cancellation remains independently covered by previous tests"
+  ],
+  "storage": {
+    "known_bytes": 8587438804,
+    "normal_limit_bytes": 8589934592,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "recovered_bytes": 3333204,
+    "scope": "Complete normalized project cache/tmp/dependency/runtime/public review roots and existing Linux root",
+    "retention": "Current full captures compressed and member hashes verified before scratch retirement; older build186 identity/log bytes recoverable in verified archive; stale manual-threshold path test executable retired, source/objects/CMake target preserved",
+    "historical_expectations": "Unchanged. Retired executable bytes unavailable; raw archived identity/log paths unavailable in place."
+  },
+  "next": [
+    "Inspect pinned ImageJ fit-plot axis/objective behavior before specifying plot output",
+    "Add bounded C++ plot-data producer reusing existing evaluator and immutable fit provenance; Python interface returns same data",
+    "Render observed pairs and fitted curve with arbitrary X coordinates in existing ImGui Plot panel; never reuse PlotLines index spacing for irregular measurements",
+    "Validate NIH Rodbard swapped fitting objective, non-finite domains, cancellation, settings and source ownership",
+    "Then fit settings/restarts/global calibration, table import/export, replay and downstream consumers"
+  ],
+  "limitations": [
+    "This declared pre-compute fixture proves Running-state UI cancellation wiring; it does not measure physical cancellation latency during numerical computation",
+    "No timed responsiveness, matched ImageJ/Fiji speed superiority, complete UI/family/platform/installed SDK qualification",
+    "No core algorithms or public processing API changes in this packet"
+  ],
+  "family_tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

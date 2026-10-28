@@ -8,6 +8,8 @@
 #include <imagejxx/channel_display.hpp>
 #include <chrono>
 #include <thread>
+#include <condition_variable>
+#include <mutex>
 namespace imagejxx::desktop {
 namespace {
 void require(bool v,const char* message){if(!v)throw std::runtime_error(message);}
@@ -182,7 +184,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   } failure{report,directory};
   HeadlessInputSession session(w);Json last;
   auto frame=[&](const Json& events=Json::array()) {
-    require(report["frames"].size()<240,"Calibration UI frame bound");last=session.frame(events);
+    require(report["frames"].size()<256,"Calibration UI frame bound");last=session.frame(events);
     report["frames"].push_back({{"events",events},{"rendered",{
       {"input_frame",last.at("input_frame")},{"dialog",last.at("dialog")},
       {"error_modal",last.at("error_modal")},{"window_error",last.at("window_error")}}}});
@@ -260,6 +262,50 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   menu(fitAction);report["fit_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"fit_cancel");
   const auto fittedSnapshot=owner->snapshot();
+
+  // A one-shot private gate holds the genuine fit job before computation.
+  // It makes Running observable without slowing normal fits or claiming a
+  // numerical-stage timing measurement. Only pointer/button events cancel it.
+  struct FitGate {
+    std::mutex mutex;std::condition_variable changed;bool entered=false,released=false;
+    void hold(const JobContext& context) {
+      std::unique_lock<std::mutex> lock(mutex);entered=true;changed.notify_all();
+      if(!changed.wait_for(lock,std::chrono::seconds(10),[&]{return released;}))
+        throw std::runtime_error("Fit cancellation fixture release timeout");
+      lock.unlock();context.checkpoint();
+    }
+    void release(){std::lock_guard<std::mutex> lock(mutex);released=true;changed.notify_all();}
+  };
+  auto gate=std::make_shared<FitGate>();
+  struct FitGateCleanup {
+    Window& window;std::shared_ptr<FitGate> gate;
+    ~FitGateCleanup(){try{window.cancel();gate->release();window.wait();
+      GaussianCancellationAccess::setNextPreparationGate(window,{});}catch(...){}}
+  } gateCleanup{w,gate};
+  report["api_fixture_actions"].push_back("one-shot pre-compute fit worker barrier");
+  menu(fitAction);
+  GaussianCancellationAccess::setNextPreparationGate(w,[gate](const JobContext& context){gate->hold(context);});
+  click(last.at("dialog").at("controls").at("apply"),"fit_cancel_apply",false);
+  {
+    std::unique_lock<std::mutex> lock(gate->mutex);
+    require(gate->changed.wait_for(lock,std::chrono::seconds(5),[&]{return gate->entered;}),"Fit worker did not enter cancellation fixture");
+  }
+  const auto running=w.jobInfo();require(running && running->state==JobState::Running,"Fit cancellation requires running job");
+  frame();report["fit_running_cancel"]={{"running_state",int(running->state)},{"job_id",running->id},
+    {"resource_bytes",running->resource_bytes},{"reserved_before",GaussianCancellationAccess::scheduler(w)->usage().reserved_bytes},
+    {"source_before",state(w)},{"control",last.at("host_controls").at("processing.cancel")}};
+  click(last.at("host_controls").at("processing.cancel"),"fit_running_cancel",false);
+  const auto requested=w.jobInfo();
+  report["fit_running_cancel"]["cancel_requested"]=requested && requested->id==running->id && requested->cancel_requested;
+  gate->release();w.wait();frame();
+  for(const auto& job:w.jobs())if(job.id==running->id)report["fit_running_cancel"]["terminal_state"]=int(job.state);
+  report["fit_running_cancel"]["reserved_after"]=GaussianCancellationAccess::scheduler(w)->usage().reserved_bytes;
+  report["fit_running_cancel"]["source_after"]=state(w);
+  report["fit_running_cancel"]["source_data_unchanged"]=owner->snapshot().shares_data(fittedSnapshot);
+  report["fit_running_cancel"]["source_revisions_unchanged"]=owner->snapshot().revisions().matches(fittedSnapshot.revisions(),Change::All);
+  report["fit_running_cancel"]["busy_after"]=w.busy();
+  report["fit_running_cancel"]["error_after"]=w.error();
+  GaussianCancellationAccess::setNextPreparationGate(w,{});
 
   session.close();report["lifecycle"]=session.lifecycle();
   SessionCapture capture;capture.documents.push_back(calibrated);

@@ -4974,6 +4974,15 @@ Job GaussianCancellationAccess::startBusyPreparation(
     throw;
   }
 }
+void GaussianCancellationAccess::setNextPreparationGate(
+    Window &window, std::function<void(const JobContext &)> gate) {
+  window.checkThread();
+  if (!window.impl->headlessSessionActive || !ImGui::GetCurrentContext() ||
+      window.busy() || window.documents_.empty() ||
+      (gate && window.impl->diagnosticWorkerGate))
+    throw std::invalid_argument("Preparation gate requires an idle live diagnostic source");
+  window.impl->diagnosticWorkerGate = std::move(gate);
+}
 void GaussianCancellationAccess::showBusyGaussian(Window &window) {
   window.checkThread();
   if (!window.impl->headlessSessionActive || ImGui::GetCurrentContext() == nullptr ||

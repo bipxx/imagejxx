@@ -1,5 +1,38 @@
 # Shortest delivery paths by API and setting key
 
+## Physical cancellation of running calibration fits — 2026-10-28
+
+Both actual Windows hosts now submit polynomial/nonlinear fits through the
+dialog, render Processing while the genuine job is Running, and click its
+Cancel button with pointer input. All four cases end Canceled, release the
+reservation and preserve data, all revisions and Undo history. Existing draft
+Cancel, successful Apply, Ready retention and session reopen checks remain.
+Final 420 focused checks pass without skips; current Windows native checks pass.
+[Scoped evidence](../parity/reviews/G034-intensity-fit-cancel-ui-progress001.json).
+
+The declared one-shot private barrier holds the genuine worker before compute;
+it creates no normal-processing delay or public setting. This proves physical
+Running-state cancellation wiring, not numerical-stage cancellation latency.
+Independent API tests already cover solver/table checkpoints. The driver keeps
+bounded waits/failure cleanup and now allows 256 frames (248 observed) to retain
+the previous cases plus this scenario. No pinned historical expectation changes.
+
+Next fit-plot path: first inspect the pinned upstream axis/objective behavior.
+Add bounded C++ plot data using the existing evaluator/provenance, expose the
+same data in Python, then render pairs and curve in the existing ImGui Plot
+panel with arbitrary X spacing. Do not duplicate formulas or infer fractional
+curve values from an integer lookup table. Cover NIH Rodbard objective/axes,
+non-finite domains, cancellation and source ownership. Then finish settings/
+restarts/global calibration, table import/export, replay and downstream behavior.
+
+One cache/runtime reused. Current captures and necessary logs are losslessly
+compressed and hash-verified; scratch retired. Identity/log compaction plus one
+stale manual-threshold path test executable recovered 3,333,204 bytes; source/
+objects/target remain. Known whole-root 8,587,438,804 bytes; two denied caches
+leave full 8 GiB budget unverified. Commercial-use inventory passes. Tracker
+stays 47 in progress / 52 open / 0 complete; no comparative speed claim.
+
+
 ## Background calibration fitting — 2026-10-28
 
 Polynomial and nonlinear fits now use the existing owned worker and prepared

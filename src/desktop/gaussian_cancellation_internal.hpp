@@ -24,6 +24,10 @@ public:
   // The gate executes on the genuine legacy add(value0) worker before compute.
   static Job startBusyPreparation(
       Window &window, std::function<void(const JobContext &)> gate);
+  // One-shot gate for a subsequently submitted genuine preparation. Private
+  // physical-input diagnostics only; empty gate clears an unconsumed fixture.
+  static void setNextPreparationGate(
+      Window &window, std::function<void(const JobContext &)> gate);
   // Open the native Gaussian panel while that unrelated preparation is busy;
   // this is not an ordinary menu/action gesture or a new public API default.
   static void showBusyGaussian(Window &window);

@@ -80,6 +80,7 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     assert report["fit_ready"]["state"]==2 and report["fit_ready"]["source_unchanged"]
     assert report["fit_ready"]["resource_bytes"]==report["fit_ready"]["retained_bytes"]>0
     assert report["fit_reserved_after_publish"]==0
+    _assert_physical_fit_running_cancel(report)
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -276,6 +277,7 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     assert report["fit_ready"]["stage"]=="Calibration table"
     assert report["fit_ready"]["stage_completed"]==report["fit_ready"]["stage_total"]==65536
     assert report["fit_reserved_after_publish"]==0
+    _assert_physical_fit_running_cancel(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
 
@@ -374,3 +376,17 @@ def test_editor_fit_rejects_view_changes_before_publication(tmp_path):
     with pytest.raises(RuntimeError,match="(?i)changed"):
         editor.wait()
     assert not editor.busy and owner.undo_steps==0 and not ij.read_imagej_intensity_calibration(owner.snapshot()).has_density
+
+
+def _assert_physical_fit_running_cancel(report):
+    case=report["fit_running_cancel"]
+    assert case["running_state"]==1 and case["terminal_state"]==6
+    assert case["resource_bytes"]>0 and case["reserved_before"]>=case["resource_bytes"]
+    assert case["cancel_requested"] and case["reserved_after"]==0
+    assert case["source_data_unchanged"] and case["source_revisions_unchanged"]
+    assert case["source_before"]==case["source_after"]
+    assert not case["busy_after"] and not case["error_after"]
+    control=case["control"]
+    assert control["enabled"] and control["id"]>0
+    assert {"fit_cancel_apply","fit_running_cancel"}<={r["name"] for r in report["controls"]}
+    assert len(report["frames"])<=256
