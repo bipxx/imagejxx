@@ -51,6 +51,7 @@
 #include "rendering.hpp"
 #include "z_subset_ui_probe.hpp"
 #include "imagej_projection_ui_probe.hpp"
+#include "calibrated_command_ui_probe.hpp"
 #include "plot_snapshot_ui_probe.hpp"
 #include "generic_plot_ui_probe.hpp"
 #include <cmath>
@@ -248,6 +249,9 @@ PYBIND11_MODULE(_desktop, m) {
              py::gil_scoped_release release;
              return zSubsetUiCase(window, "imgui_python", directory).dump();
            })
+      .def("_calibrated_command_ui_case",[](Window& window,const std::string& directory) {
+        py::gil_scoped_release release;return calibratedCommandUiCase(window,"imgui_python",directory).dump();
+      })
       .def("_axis_spacing_ui_case",
            [](Window &window, const std::string &directory) {
              py::gil_scoped_release release;

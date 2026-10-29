@@ -1,5 +1,37 @@
 # ImageJ and Fiji gap closure plan
 
+## Shared calibrated commands in both ImGui hosts — current, 2026-10-28
+
+All six live axis/projection routes capture effective calibration before execution.
+Modal defaults/previews use captured geometry; changed context disables Apply.
+Global/bypassed actions record calibrated envelopes. Ordinary local actions retain
+legacy records plus application guards; strict legacy replay remains local.
+Individual recorder replay matches source/context; rebind opens the saved request.
+
+Installed Windows: **2,194 collected; 2,192 passed; two optional hidden-OpenGL
+skips**. Exact original 2,192-case union preserved plus two new host cases. Nine
+actual C++ ImGui cases and Python counterparts pass; new cases each use 119/128
+frames. Coverage includes six Apply paths, replay/rebind, bypass, stale dialog,
+stale queued projection and local source/workflow-blob Save/Open. Fifteen native
+controls pass. CI actual capture/reader and 23 transport checks pass. 1,297 producer
+inputs rechecked; one additive CI registration after build separately verified.
+Core archive/public headers unchanged; no new Linux/UI/platform promotion.
+[Scoped evidence](parity/reviews/G034-calibrated-command-ui-progress001.json).
+
+Initial private-header fanout rebuilt many probes. Formatter, missed input and
+density-oracle failures were diagnosed without relaxing old expectations/caps.
+All diagnostic preimages retained losslessly; terminal scratch retired. Retention
+recovered 3,055,452 B. Every reader batch stays below 64 MiB. Two denied caches
+keep full 8 GiB unverified; the same caches/runtimes/SDKs were reused.
+
+Next: scaled Gaussian/live replay audit, then generation-aware display/XYZ/
+measurement/histogram/plot caches before Global/bypass controls. Global-state
+session/I/O migration, bulk workflows, original variants, RGB Slicer, platforms
+and matched speed/memory comparisons remain open. Tracker: **47 in progress /
+52 open / 0 fully certified**. UI and full ImageJ/Fiji parity remain unfinished;
+no measured speed superiority.
+
+
 ## Calibrated command capture and replay — verified scope, 2026-10-28
 
 The new opaque native/Python command envelope separates original local source

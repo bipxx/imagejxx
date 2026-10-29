@@ -94,9 +94,19 @@ unsupported; scalar refusal coverage does not certify RGB functionality.
 
 ## Remaining integration
 
-The existing ImGui resolved-command routes, recorder/replay dispatch and
-display/XYZ/analysis caches have not yet adopted this envelope. Native/Python API
-support alone does not enable the shared Global control or qualify session/I/O,
-the original Calibrator UI, all platforms, full ImageJ/Fiji parity or comparative
-speed/memory. Follow [the active plan](PLAN.md) and
+Both ImGui hosts now use this envelope for six live global/bypassed actions and
+individual recorder replay/rebind. Dialogs capture on opening; captured geometry
+drives spacing/Slicer defaults/previews and changed context disables Apply.
+Projection reserves command admission and publishes through its original capture.
+Ordinary local actions retain old records with guard-only application bindings;
+strict legacy replay remains local. Save/Open preserves new workflow records as
+session data, without persisting/restoring application global state. Bulk native
+workflow conversion explicitly rejects unsupported schemas.
+
+Actual UI cases each use 119/128 frames. Installed verification passes 2,192 of
+2,194 cases with two optional skips; CI actual capture/reader and 23 transport
+checks pass. [UI evidence](parity/reviews/G034-calibrated-command-ui-progress001.json).
+Scaled Gaussian/live replay, display/XYZ/analysis caches and Global/bypass controls
+remain open, along with global-state session/I/O migration, original Calibrator
+variants, supported platforms, RGB Slicer and matched speed/memory comparisons. Follow [the active plan](PLAN.md) and
 [the calibration contract](packets/G034-global-calibration-contract.md).

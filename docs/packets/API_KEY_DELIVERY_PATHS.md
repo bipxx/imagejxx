@@ -9,8 +9,10 @@ admission, prepare from the frozen command and publish through Application.
 Strict replay takes a current capture; rebind validates original claims before a
 complete replacement within the same operation family. No live app identity or
 generation is restored from JSON. Existing local command classes/formats stay
-unchanged. Next: actual Window/recorder dispatch and live cache generations,
-including scaled Gaussian consumers, before the Global control.
+unchanged. Six live Window routes and individual recorder replay/rebind are
+verified in both hosts. Next: scaled Gaussian/live replay and live cache
+generations before Global/bypass controls. Preserve modal geometry and strict
+legacy-local replay; do not restore global state from command records.
 
 ## Effective calibration processing integration — verified scope, 2026-10-28
 

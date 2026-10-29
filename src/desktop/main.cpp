@@ -23,6 +23,7 @@
 #include "scientific_roi_manager_ui_probe.hpp"
 #include "z_subset_ui_probe.hpp"
 #include "imagej_projection_ui_probe.hpp"
+#include "calibrated_command_ui_probe.hpp"
 #include "plot_snapshot_ui_probe.hpp"
 #include "generic_plot_ui_probe.hpp"
 #include "axis_spacing_ui_probe.hpp"
@@ -269,6 +270,12 @@ int run(const std::vector<std::string> &arguments) {
     const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));
     imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
     imagejxx::desktop::zSubsetUiCase(editor,"imgui_cpp",arguments[1],arguments[0]=="--regional-z-subset-ui-case",arguments[0]=="--display-z-subset-ui-case");return 0;
+  }
+  if (!arguments.empty() && arguments[0] == "--calibrated-command-ui-case") {
+    if(arguments.size()!=2)throw std::invalid_argument("Use --calibrated-command-ui-case FRESH_DIRECTORY");
+    const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));
+    imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
+    imagejxx::desktop::calibratedCommandUiCase(editor,"imgui_cpp",arguments[1]);return 0;
   }
   if (!arguments.empty() && arguments[0] == "--axis-spacing-ui-case") {
     if(arguments.size()!=2)throw std::invalid_argument("Use --axis-spacing-ui-case FRESH_DIRECTORY");

@@ -1,6 +1,8 @@
 #include "window.hpp"
 #include <imagejxx/stack_projection.hpp>
 #include <imagejxx/imagej_projection_command.hpp>
+#include <imagejxx/calibrated_command.hpp>
+#include "../native/calibration_preparation_internal.hpp"
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/imagej_intensity_plot.hpp>
 #include <type_traits>
@@ -1241,6 +1243,7 @@ struct Window::Impl {
     std::size_t extractionCap = AxisPlaneExportRequest{}.max_working_bytes;
     std::optional<DocumentSnapshot> axisRangeOrientationSource;
     std::optional<DocumentSnapshot> axisRangeSpacingSource;
+    std::optional<ResolvedTarget> calibrationCapture;
     std::optional<DocumentSnapshot> axisRangeSlicerResizeSource;
     Json axisRangeSlicerResizePreview = Json::object();
     Json axisRangeSpacingPreview = Json::object();
@@ -1589,6 +1592,160 @@ struct Window::Impl {
       else check(request);
     }
   }
+  static bool calibratedRecord(const MetadataObject& record) {
+    const auto schema=record.find("schema");
+    const auto value=schema==record.end()?nullptr:std::get_if<std::string>(&schema->second);
+    return value && *value=="imagejxx.calibrated-command";
+  }
+  static Json recordedRequest(const Json& record) {
+    return get(record,"schema")=="imagejxx.calibrated-command"?
+        record.at("descriptor").at("request"):record.at("request");
+  }
+  ResolvedTarget calibratedCapture(const DocumentSnapshot& source,Change dependencies=Change::Pixels|Change::Metadata) {
+    TargetRequest request;request.roi=RoiPolicy::WholePlane;
+    auto capture=owner.controller_->resolve_target(request,source.id());
+    if(!source.same_document(capture.source()) || !source.revisions().matches(capture.source().revisions(),dependencies))
+      throw RevisionConflict();
+    return capture;
+  }
+  std::size_t processingCap() const {
+    const auto configured=static_cast<std::size_t>(preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
+    return configured?configured:std::numeric_limits<std::size_t>::max();
+  }
+  template<class Request> void axisRendering(const ResolvedTarget& capture,Request request) {
+    const auto dataset=capture.source().data().dataset.with_calibration(capture.calibration());
+    if constexpr(std::is_same_v<Request,AxisRangeSpacingRequest>) {
+      request.orientation.range.max_working_bytes=std::min(request.orientation.range.max_working_bytes,processingCap());
+      validatePhysicalGridRendering(estimate_axis_range_spacing(dataset,request),physicalGridRenderLimit(gl,this));
+    } else if constexpr(std::is_same_v<Request,AxisRangeSlicerResizeRequest>) {
+      request.orientation.range.max_working_bytes=std::min(request.orientation.range.max_working_bytes,processingCap());
+      validateSlicerResizeRendering(estimate_axis_range_slicer_resize(dataset,request),physicalGridRenderLimit(gl,this));
+    }
+  }
+  std::uint64_t publishCalibrated(const ResolvedCalibratedCommand& command,bool requirePosition=false) {
+    owner.controller_->validate_target(command.capture());
+    return std::visit([&](const auto& request)->std::uint64_t {
+      using R=std::decay_t<decltype(request)>;
+      if constexpr(std::is_same_v<R,ImageJProjectionDocumentRequest>) {
+        if(owner.controller_->active_document_id()!=command.capture().document_id())throw RevisionConflict();
+        const auto cap=processingCap();
+        if(command.working_bytes()>cap)throw std::invalid_argument("Projection exceeds current processing memory budget");
+        const auto recorded=owner.recording;auto facade=owner.documentById(command.capture().document_id());
+        stopAnimation("imagej_projection");
+        start([command,recorded,cap] {
+          auto prepared=prepare_calibrated_command(command,{},cap);
+          return JobResult(std::move(prepared),command.record(),recorded);
+        },facade,false,"ImageJ projection","ImageJ projection",command.working_bytes(),{},true);
+        return 0;
+      } else {
+        requireAxisExtractionSource(command.capture().source(),request,requirePosition);
+        axisRendering(command.capture(),request);
+        auto prepared=prepare_calibrated_command(command,{},processingCap());
+        return owner.publishPreparedAxisExtraction(command.capture().source(),request,command.record(),prepared,requirePosition);
+      }
+    },command.request());
+  }
+  template<class Request> std::uint64_t liveAxis(const DocumentSnapshot& source,const Request& request,
+      std::optional<ResolvedTarget> saved={},std::optional<MetadataObject> original={}) {
+    requireAxisExtractionSource(source,request,true);
+    auto capture=saved?*saved:calibratedCapture(source);
+    owner.controller_->validate_target(capture);
+    axisRendering(capture,request);
+    if(original && calibratedRecord(*original)) {
+      return publishCalibrated(rebind_calibrated_command(capture,*original,request,
+          CalibratedCommandLimits{16ULL*1024*1024,processingCap()}),true);
+    }
+    if(capture.calibration_context() || imagejxx::detail::CalibrationPreparation::ignores_global(capture)) {
+      if(original) {
+        if constexpr(std::is_same_v<Request,AxisPlaneExportRequest> || std::is_same_v<Request,AxisRangeResliceRequest>)validate_axis_extraction_command_record(*original);
+        else if constexpr(std::is_same_v<Request,AxisRangeOrientationRequest>)validate_axis_orientation_command_record(*original);
+        else if constexpr(std::is_same_v<Request,AxisRangeSpacingRequest>)validate_axis_spacing_command_record(*original);
+        else validate_slicer_resize_command_record(*original);
+      }
+      return publishCalibrated(resolve_calibrated_command(capture,request,
+          CalibratedCommandLimits{16ULL*1024*1024,processingCap()}),true);
+    }
+    // The old codec still validates legacy original claims before replacement.
+    auto legacy=[&] {
+      if constexpr(std::is_same_v<Request,AxisPlaneExportRequest> || std::is_same_v<Request,AxisRangeResliceRequest>)
+        return original?rebind_axis_extraction_command(source,*original,AxisExtractionRequest{request}).record():
+            resolve_axis_extraction_command(source,AxisExtractionRequest{request}).record();
+      else if constexpr(std::is_same_v<Request,AxisRangeOrientationRequest>)
+        return original?rebind_axis_orientation_command(source,*original,request).record():resolve_axis_orientation_command(source,request).record();
+      else if constexpr(std::is_same_v<Request,AxisRangeSpacingRequest>)
+        return original?rebind_axis_spacing_command(source,*original,request).record():resolve_axis_spacing_command(source,request).record();
+      else return original?rebind_slicer_resize_command(source,*original,request).record():resolve_slicer_resize_command(source,request).record();
+    }();
+    auto runtime=request;const auto cap=processingCap();
+    auto prepared=[&] {
+      if constexpr(std::is_same_v<Request,AxisPlaneExportRequest>) {
+        runtime.max_working_bytes=std::min(runtime.max_working_bytes,cap);
+        return imagejxx::detail::CalibrationPreparation::prepare_axis_plane_export(capture,runtime,{});
+      } else if constexpr(std::is_same_v<Request,AxisRangeResliceRequest>) {
+        runtime.max_working_bytes=std::min(runtime.max_working_bytes,cap);
+        return imagejxx::detail::CalibrationPreparation::prepare_axis_range_reslice(capture,runtime,{});
+      } else if constexpr(std::is_same_v<Request,AxisRangeOrientationRequest>) {
+        runtime.range.max_working_bytes=std::min(runtime.range.max_working_bytes,cap);
+        return imagejxx::detail::CalibrationPreparation::prepare_axis_range_orientation(capture,runtime,{});
+      } else if constexpr(std::is_same_v<Request,AxisRangeSpacingRequest>) {
+        runtime.orientation.range.max_working_bytes=std::min(runtime.orientation.range.max_working_bytes,cap);
+        return imagejxx::detail::CalibrationPreparation::prepare_axis_range_spacing(capture,runtime,{});
+      } else {
+        runtime.orientation.range.max_working_bytes=std::min(runtime.orientation.range.max_working_bytes,cap);
+        return imagejxx::detail::CalibrationPreparation::prepare_axis_range_slicer_resize(capture,runtime,{});
+      }
+    }();
+    return owner.publishPreparedAxisExtraction(source,request,legacy,prepared,true);
+  }
+  ImageJProjectionDocumentRequest projectionRequest(const DocumentSnapshot& source,const Json& values) {
+    ImageJProjectionDocumentRequest request;const auto& dataset=source.data().dataset;
+    const auto shape=dataset.shape();
+    const auto axis=shape.t==1 && shape.z==1 && shape.c>1?ImageJProjectionAxis::Channels:
+        shape.z==1?ImageJProjectionAxis::Time:ImageJProjectionAxis::Z;
+    request.max_working_bytes=processingCap();request.projection.max_working_bytes=processingCap();
+    request.projection.max_output_pixel_bytes=processingCap();
+    request.projection.active_t=source.display().t;request.projection.active_c=source.display().c;
+    request.projection.last=(axis==ImageJProjectionAxis::Channels?shape.c:axis==ImageJProjectionAxis::Time?shape.t:shape.z)-1;
+    request.desktop_grays=true;
+    if(!recognized_channel_display(source.display(),dataset) && shape.s==1)
+      request.source_lut=inheritedDisplayLut(metadataJson(source.display().properties));
+    auto raw=metadataJson(imagej_projection_request_record(request));
+    for(const auto& field:values.items()) {
+      if(field.key()=="rebind_record" || field.key()=="document_id")continue;
+      if(field.key()=="first" || field.key()=="last") {
+        if(!field.value().is_number_integer() || field.value()<1 || field.value()>std::numeric_limits<int>::max())
+          throw std::invalid_argument("Projection bounds require positive native integer indices");
+        raw[field.key()]=field.value().get<int>()-1;
+      } else if(field.key()=="axis" || field.key()=="method" || field.key()=="all_time_frames" || field.key()=="all_channels" ||
+          field.key()=="group_size" || field.key()=="clip_when_summing")raw[field.key()]=field.value();
+      else throw std::invalid_argument("Unknown projection parameter: "+field.key());
+    }
+    return imagej_projection_request_from_record(metadataObjectFromJson(raw));
+  }
+  void liveProjection(const ResolvedTarget& capture,const ImageJProjectionDocumentRequest& request,
+      std::optional<MetadataObject> original={}) {
+    owner.controller_->validate_target(capture);
+    if(original && calibratedRecord(*original)) {
+      publishCalibrated(rebind_calibrated_command(capture,*original,request,
+          CalibratedCommandLimits{16ULL*1024*1024,processingCap()}));return;
+    }
+    if(original)validate_imagej_projection_command_record(*original);
+    if(capture.calibration_context() || imagejxx::detail::CalibrationPreparation::ignores_global(capture)) {
+      publishCalibrated(resolve_calibrated_command(capture,request,
+          CalibratedCommandLimits{16ULL*1024*1024,processingCap()}));return;
+    }
+    auto command=original?rebind_imagej_projection_command(capture.source(),*original,request):
+        resolve_imagej_projection_command(capture.source(),request);
+    const auto cap=processingCap();
+    if(command.estimate().working_bytes>cap)throw std::invalid_argument("Projection exceeds current processing memory budget");
+    const auto recorded=owner.recording;auto facade=owner.documentById(capture.document_id());
+    stopAnimation("imagej_projection");
+    start([capture,command,recorded,cap] {
+      auto r=command.request();r.max_working_bytes=std::min(r.max_working_bytes,cap);
+      auto prepared=imagejxx::detail::CalibrationPreparation::prepare_imagej_projection(capture,r,{});
+      return JobResult(std::move(prepared),command.record(),recorded);
+    },facade,false,"ImageJ projection","ImageJ projection",command.estimate().working_bytes,{},true);
+  }
   void requireCreationSource(const DocumentSnapshot &source) const {
     const auto facade = owner.documentById(source.id());
     const auto current = facade->nativeSnapshot();
@@ -1624,6 +1781,7 @@ struct Window::Impl {
     if (owner.documents_.empty() && !id)
       return true; // Preserve the existing no-document validation.
     const auto source = owner.documentById(id);
+    if(action=="replay_calibrated_command")return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if(action=="show_histogram") {
       const auto captured=source->nativeSnapshot();const auto &data=captured.data().dataset;
       return !owner.busy() && data.shape().s==1 &&
@@ -4207,9 +4365,11 @@ struct Window::Impl {
     const bool oriented = kind == AxisExtractionKind::OrientedRange;
     const bool range = kind != AxisExtractionKind::Plane;
     if (original) {
-      if (oriented) validate_axis_orientation_command_record(*original);
+      if(calibratedRecord(*original))validate_calibrated_command_record(*original);
+      else if (oriented) validate_axis_orientation_command_record(*original);
       else validate_axis_extraction_command_record(*original);
     }
+    const auto calibration=calibratedCapture(source);
     AxisPlaneExportRequest admission;
     admission.t = source.display().t;
     admission.c = source.display().c;
@@ -4225,7 +4385,7 @@ struct Window::Impl {
     Json originalJson;
     if (original) {
       originalJson = metadataJson(*original);
-      const auto &recordRequest = originalJson.at("request");
+      const auto recordRequest = recordedRequest(originalJson);
       cap = recordRequest.at("max_working_bytes").get<std::size_t>();
       values["plane"] = recordRequest.at("plane");
       if (range) {
@@ -4253,23 +4413,18 @@ struct Window::Impl {
         : range ? "Reslice range" : "Export plane";
     ask(original ? (oriented ? "Rebind oriented range"
                             : range ? "Rebind reslice range" : "Rebind plane export") : title,
-        std::move(values), [this, source, kind, cap, original](Json draft) {
+        std::move(values), [this, source, kind, cap, original, calibration](Json draft) {
           if (kind == AxisExtractionKind::OrientedRange) {
             const auto request = axisOrientationDialogRequest(source, cap, draft);
-            const auto command = original
-                ? rebind_axis_orientation_command(source, *original, request)
-                : resolve_axis_orientation_command(source, request);
-            owner.publishAxisOrientation(command, true);
+            liveAxis(source,request,calibration,original);
           } else {
             const auto request = axisExtractionDialogRequest(source,
                 kind == AxisExtractionKind::Range, cap, draft);
-            const auto command = original
-                ? rebind_axis_extraction_command(source, *original, request)
-                : resolve_axis_extraction_command(source, request);
-            owner.publishAxisExtraction(command, true);
+            std::visit([&](const auto& typed){liveAxis(source,typed,calibration,original);},request);
           }
         }, std::move(schema), oriented ? "axis_range_orientation"
             : range ? "axis_range_reslice" : "axis_plane_export");
+    dialog.calibrationCapture=calibration;
     if (oriented) dialog.axisRangeOrientationSource = source;
     else if (range) dialog.axisRangeSource = source;
     else dialog.axisPlaneSource = source;
@@ -5937,7 +6092,7 @@ std::uint64_t Window::exportAxisPlane(const DocumentSnapshot &source,
                                      AxisPlaneExportRequest request) {
   checkThread();
   impl->requireAxisExtractionSource(source, request, true);
-  return publishAxisExtraction(resolve_axis_extraction_command(source, request), true);
+  return impl->liveAxis(source,request);
 }
 std::uint64_t Window::replayAxisExtraction(
     const MetadataObject &record,
@@ -5950,7 +6105,8 @@ std::uint64_t Window::replayAxisExtraction(
   const auto command = rebindRequest
       ? rebind_axis_extraction_command(source, record, *rebindRequest)
       : axis_extraction_command_from_record(source, record);
-  return publishAxisExtraction(command, rebindRequest.has_value());
+  if(rebindRequest)return std::visit([&](const auto& request){return impl->liveAxis(source,request);},command.request());
+  return publishAxisExtraction(command, false);
 }
 std::uint64_t Window::publishAxisExtraction(
     const ResolvedAxisExtractionCommand &command,
@@ -6141,7 +6297,7 @@ std::uint64_t Window::resliceSpacedAxisRange(const DocumentSnapshot &source_inpu
       impl->preferenceState.settings.integer("processing_memory_mb")) * 1024 * 1024;
   if (configured)
     request.orientation.range.max_working_bytes = std::min(request.orientation.range.max_working_bytes, configured);
-  return publishAxisSpacing(resolve_axis_spacing_command(source, request));
+  return impl->liveAxis(source,request);
 }
 std::uint64_t Window::publishAxisSpacing(const ResolvedAxisSpacingCommand &command,
                                        bool requireCapturedPosition) {
@@ -6160,7 +6316,7 @@ std::uint64_t Window::resliceSlicerAxisRange(const DocumentSnapshot &source, Axi
   impl->requireAxisExtractionSource(source,request,true);
   const auto configured=static_cast<std::size_t>(impl->preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
   if(configured)request.orientation.range.max_working_bytes=std::min(request.orientation.range.max_working_bytes,configured);
-  return publishSlicerResize(resolve_slicer_resize_command(source,request));
+  return impl->liveAxis(source,request);
 }
 std::uint64_t Window::publishSlicerResize(const ResolvedSlicerResizeCommand &command,bool requireCapturedPosition) {
   checkThread();
@@ -6177,7 +6333,7 @@ std::uint64_t Window::resliceOrientedAxisRange(const DocumentSnapshot &source,
                                               AxisRangeOrientationRequest request) {
   checkThread();
   impl->requireAxisExtractionSource(source, request, true);
-  return publishAxisOrientation(resolve_axis_orientation_command(source, request), true);
+  return impl->liveAxis(source,request);
 }
 std::uint64_t Window::replayAxisOrientation(
     const MetadataObject &record,
@@ -6189,14 +6345,15 @@ std::uint64_t Window::replayAxisOrientation(
   const auto command = rebindRequest
       ? rebind_axis_orientation_command(source, record, *rebindRequest)
       : axis_orientation_command_from_record(source, record);
-  return publishAxisOrientation(command, rebindRequest.has_value());
+  if(rebindRequest)return impl->liveAxis(source,command.request());
+  return publishAxisOrientation(command, false);
 }
 std::uint64_t Window::resliceAxisRange(const DocumentSnapshot &source_input,
                                       AxisRangeResliceRequest request) {
   const auto source = source_input;
   checkThread();
   impl->requireAxisExtractionSource(source, request, true);
-  return publishAxisExtraction(resolve_axis_extraction_command(source, request), true);
+  return impl->liveAxis(source,request);
 }
 std::shared_ptr<Document> Window::document() const {
   checkThread();
@@ -6932,13 +7089,17 @@ void Window::action(const std::string &name, const Json &p) {
   if (name == "replay_slicer_resize" ||
       (name == "show_axis_range_slicer_resize" && p.contains("record"))) {
     if (!p.is_object() || !p.contains("record")) throw std::invalid_argument("Slicer replay requires a record");
-    validate_slicer_resize_command_record(metadataObjectFromJson(p.at("record")));
+    const auto record=metadataObjectFromJson(p.at("record"));
+    if(name=="show_axis_range_slicer_resize" && Impl::calibratedRecord(record))validate_calibrated_command_record(record);
+    else validate_slicer_resize_command_record(record);
   }
   if (name == "replay_axis_spacing" ||
       (name == "show_axis_range_spacing" && p.contains("record"))) {
     if (!p.is_object() || !p.contains("record"))
       throw std::invalid_argument("Physical spacing replay requires a record");
-    validate_axis_spacing_command_record(metadataObjectFromJson(p.at("record")));
+    const auto record=metadataObjectFromJson(p.at("record"));
+    if(name=="show_axis_range_spacing" && Impl::calibratedRecord(record))validate_calibrated_command_record(record);
+    else validate_axis_spacing_command_record(record);
   }
   if (name == "replay_axis_orientation") {
     if (!p.is_object() || !p.contains("record"))
@@ -6961,7 +7122,7 @@ void Window::action(const std::string &name, const Json &p) {
       "show_z_subset", "substack", "replay_z_subset",
       "export_axis_plane", "show_axis_plane_export",
       "reslice_axis_range", "show_axis_range_reslice",
-      "replay_axis_extraction", "replay_axis_orientation",
+      "replay_axis_extraction", "replay_axis_orientation", "replay_calibrated_command",
       "show_channel_display", "enable_channel_display", "channel_display", "replay_channel_display",
       "auto_contrast", "replay_auto_contrast", "rank_replay",
       "reslice_oriented_axis_range", "show_axis_range_orientation",
@@ -6985,6 +7146,14 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
+  if(name=="replay_calibrated_command") {
+    if(!p.is_object() || !p.contains("record"))throw std::invalid_argument("Calibrated replay requires a record");
+    for(const auto& field:p.items())if(field.key()!="record" && field.key()!="document_id")throw std::invalid_argument("Unknown calibrated replay field");
+    const auto record=metadataObjectFromJson(p.at("record"));validate_calibrated_command_record(record);
+    const auto source=nativeSnapshot(targetId);const auto op=string(get(p.at("record"),"operation"));
+    const auto capture=impl->calibratedCapture(source,op=="project_imagej"?Change::All:Change::Pixels|Change::Metadata);
+    impl->publishCalibrated(calibrated_command_from_record(capture,record));return;
+  }
   if(name=="import_intensity_points" || name=="export_intensity_points" || name=="browse_intensity_points") {
     for(const auto& field:p.items())if(field.key()!="document_id" && field.key()!=(name=="browse_intensity_points"?"save":"path"))throw std::invalid_argument("Unknown calibration points field");
     if(targetId && targetId!=nativeSnapshot().id())throw std::invalid_argument("Calibration requires the active document");
@@ -7202,11 +7371,16 @@ void Window::action(const std::string &name, const Json &p) {
       for(const auto& item:p.items()) if(item.key()!="record" && item.key()!="document_id")
         throw std::invalid_argument("Unknown projection dialog parameter: "+item.key());
       std::optional<MetadataObject> original;
-      if(p.contains("record")) {original=metadataObjectFromJson(p.at("record"));validate_imagej_projection_command_record(*original);}
+      if(p.contains("record")) {
+        original=metadataObjectFromJson(p.at("record"));
+        if(Impl::calibratedRecord(*original))validate_calibrated_command_record(*original);
+        else validate_imagej_projection_command_record(*original);
+      }
+      const auto calibration=impl->calibratedCapture(source,Change::All);
       const bool hyper=(shape.c>1 && (shape.z>1 || shape.t>1)) || (shape.z>1 && shape.t>1);
       std::optional<ImageJProjectionDocumentRequest> saved;
       if(original)saved=imagej_projection_request_from_record(
-          metadataObjectFromJson(metadataJson(*original).at("request")));
+          metadataObjectFromJson(Impl::recordedRequest(metadataJson(*original))));
       const bool grouped=saved?saved->projection.group_size>0:
           name=="show_imagej_grouped_projection" && !hyper;
       if(grouped && extent<2) throw std::invalid_argument("Grouped projection requires a stack");
@@ -7229,54 +7403,35 @@ void Window::action(const std::string &name, const Json &p) {
       if(grouped) {values["group_size"]=saved?saved->projection.group_size:extent;schema.push_back({{"name","group_size"},{"label","Group size"},{"kind","int"}});}
       impl->stopAnimation("imagej_projection");
       impl->ask(original?"Rebind ImageJ projection":grouped?"ImageJ Grouped Z Project":"ImageJ Z Project",std::move(values),
-          [this,source,original,grouped](Json values) {
+          [this,source,original,grouped,calibration](Json values) {
             if(grouped && (!values.at("group_size").is_number_integer() || values.at("group_size")<1))
               throw std::invalid_argument("Grouped projection requires a positive group size");
             const auto now=nativeSnapshot();
             if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
-            if(original) values["rebind_record"]=metadataJson(*original);
-            action("project_imagej",values);
+            const auto request=impl->projectionRequest(source,values);
+            impl->liveProjection(calibration,request,original);
           },std::move(schema),"imagej_projection");
+      impl->dialog.calibrationCapture=calibration;
       return;
     }
-    const auto configured=static_cast<std::size_t>(impl->preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
-    ImageJProjectionDocumentRequest request;
-    request.max_working_bytes=configured?configured:std::numeric_limits<std::size_t>::max();
-    request.projection.max_working_bytes=request.max_working_bytes;
-    request.projection.max_output_pixel_bytes=request.max_working_bytes;
-    request.projection.active_t=source.display().t;request.projection.active_c=source.display().c;
-    request.projection.last=extent-1;request.desktop_grays=true;
-    if(!recognized_channel_display(source.display(),source.data().dataset) && shape.s==1)
-      request.source_lut=inheritedDisplayLut(metadataJson(source.display().properties));
-    auto command=[&] {
-      if(name=="replay_imagej_projection") {
-        for(const auto& f:p.items()) if(f.key()!="record" && f.key()!="document_id")
-          throw std::invalid_argument("Unknown projection replay field: "+f.key());
-        if(!p.contains("record"))throw std::invalid_argument("Projection replay requires a record");
-        return imagej_projection_command_from_record(source,metadataObjectFromJson(p.at("record")));
-      }
-      auto raw=metadataJson(imagej_projection_request_record(request));
-      for(const auto& f:p.items()) {
-        if(f.key()=="rebind_record" || f.key()=="document_id")continue;
-        if(f.key()=="first" || f.key()=="last") {
-          if(!f.value().is_number_integer() || f.value()<1 || f.value()>std::numeric_limits<int>::max())throw std::invalid_argument("Projection bounds require positive native integer indices");
-          raw[f.key()]=f.value().get<int>()-1;
-        } else if(f.key()=="axis" || f.key()=="method" || f.key()=="all_time_frames" || f.key()=="all_channels" ||
-            f.key()=="group_size" || f.key()=="clip_when_summing") raw[f.key()]=f.value();
-        else throw std::invalid_argument("Unknown projection parameter: "+f.key());
-      }
-      request=imagej_projection_request_from_record(metadataObjectFromJson(raw));
-      return p.contains("rebind_record")?rebind_imagej_projection_command(source,
-          metadataObjectFromJson(p.at("rebind_record")),request):resolve_imagej_projection_command(source,request);
-    }();
-    if(configured && command.estimate().working_bytes>configured)
-      throw std::invalid_argument("Projection exceeds current processing memory budget");
-    const auto bytes=command.estimate().working_bytes;const auto recorded=recording;
-    impl->stopAnimation("imagej_projection");
-    impl->start([command,recorded,configured] {
-      auto prepared=prepare_imagej_projection(command,{},configured?configured:std::numeric_limits<std::size_t>::max());
-      return Impl::JobResult(std::move(prepared),command.record(),recorded);
-    },facade,false,"ImageJ projection","ImageJ projection",bytes,{},true);
+    if(name=="replay_imagej_projection") {
+      for(const auto& field:p.items())if(field.key()!="record" && field.key()!="document_id")
+        throw std::invalid_argument("Unknown projection replay field");
+      if(!p.contains("record"))throw std::invalid_argument("Projection replay requires a record");
+      const auto command=imagej_projection_command_from_record(source,metadataObjectFromJson(p.at("record")));
+      const auto cap=impl->processingCap();
+      if(command.estimate().working_bytes>cap)throw std::invalid_argument("Projection exceeds current processing memory budget");
+      const auto recorded=recording;impl->stopAnimation("imagej_projection");
+      impl->start([command,recorded,cap] {
+        auto prepared=prepare_imagej_projection(command,{},cap);
+        return Impl::JobResult(std::move(prepared),command.record(),recorded);
+      },facade,false,"ImageJ projection","ImageJ projection",command.estimate().working_bytes,{},true);
+    } else {
+      const auto calibration=impl->calibratedCapture(source,Change::All);
+      const auto request=impl->projectionRequest(source,p);
+      const auto original=p.contains("rebind_record")?std::optional<MetadataObject>(metadataObjectFromJson(p.at("rebind_record"))):std::nullopt;
+      impl->liveProjection(calibration,request,original);
+    }
     return;
   }
   if(ContrastPanel::handles(name)){
@@ -7866,13 +8021,25 @@ void Window::action(const std::string &name, const Json &p) {
       resliceSlicerAxisRange(source, slicerResizeRequest(source, p, false));
       return;
     }
+    const auto calibration=impl->calibratedCapture(source);
     const auto original=p.contains("record")?p.at("record"):Json();
-    impl->ask("Reslice with ImageJ bilinear", {{"plane", "XZ"}, {"first", 1},
-        {"last", shape.y}, {"step", 1}, {"reverse_order", false}, {"flip_vertical", false}, {"transpose", false}},
-        [this, source, original](Json values) {
+    const auto originalRecord=original.is_null()?std::optional<MetadataObject>{}:std::optional<MetadataObject>{metadataObjectFromJson(original)};
+    if(originalRecord) {
+      if(Impl::calibratedRecord(*originalRecord))validate_calibrated_command_record(*originalRecord);
+      else validate_slicer_resize_command_record(*originalRecord);
+    }
+    Json defaults{{"plane","XZ"},{"first",1},{"last",shape.y},{"step",1},
+        {"reverse_order",false},{"flip_vertical",false},{"transpose",false}};
+    if(originalRecord) {
+      const auto r=Impl::recordedRequest(original);
+      defaults["plane"]=r.at("plane");defaults["first"]=r.at("first").get<int>()+1;
+      defaults["last"]=r.at("last").get<int>()+1;defaults["step"]=r.at("step");
+      for(const auto key:{"reverse_order","flip_vertical","transpose"})defaults[key]=r.at(key);
+    }
+    impl->ask(originalRecord?"Rebind ImageJ bilinear":"Reslice with ImageJ bilinear",std::move(defaults),
+        [this, source, originalRecord, calibration](Json values) {
           const auto request=slicerResizeRequest(source,values,true);
-          if(original.is_null())resliceSlicerAxisRange(source,request);
-          else publishSlicerResize(rebind_slicer_resize_command(source,metadataObjectFromJson(original),request));
+          impl->liveAxis(source,request,calibration,originalRecord);
         }, Json::array({
           {{"name", "plane"}, {"kind", "text"}, {"label", "Plane"}, {"choices", {"XZ", "YZ"}}},
           {{"name", "first"}, {"kind", "int"}, {"label", "First (1-based)"}},
@@ -7881,6 +8048,7 @@ void Window::action(const std::string &name, const Json &p) {
           {{"name", "reverse_order"}, {"kind", "bool"}, {"label", "Reverse selected planes"}},
           {{"name", "flip_vertical"}, {"kind", "bool"}, {"label", "Flip source Z before transpose"}},
           {{"name", "transpose"}, {"kind", "bool"}, {"label", "Transpose before bilinear sampling"}}}), "axis_range_slicer_resize");
+    impl->dialog.calibrationCapture=calibration;
     impl->dialog.axisRangeSlicerResizeSource = source;
     impl->dialog.openedDocumentId = source.id();
     return;
@@ -7914,29 +8082,42 @@ void Window::action(const std::string &name, const Json &p) {
       resliceSpacedAxisRange(source, physicalGridRequest(source, p, false));
       return;
     }
-    const auto &calibration = source.data().dataset.calibration();
-    const auto initialSpacing = std::hypot(calibration.direction[2] * calibration.spacing[2],
-        calibration.direction[5] * calibration.spacing[2], calibration.direction[8] * calibration.spacing[2]);
+    const auto calibration=impl->calibratedCapture(source);
+    const auto &spatial = calibration.calibration();
+    const auto initialSpacing = std::hypot(spatial.direction[2] * spatial.spacing[2],
+        spatial.direction[5] * spatial.spacing[2], spatial.direction[8] * spatial.spacing[2]);
     const auto original = p.contains("record") ? p.at("record") : Json();
-    impl->ask("Reslice physical spacing", {{"plane", "XZ"}, {"first", 1},
-        {"last", shape.y}, {"step", 1}, {"physical_vertical_spacing", initialSpacing},
-        {"sampling", "Nearest"}, {"reverse_order", false}, {"flip_vertical", false}, {"transpose", false}},
-        [this, source, original](Json values) {
+    const auto originalRecord=original.is_null()?std::optional<MetadataObject>{}:std::optional<MetadataObject>{metadataObjectFromJson(original)};
+    if(originalRecord) {
+      if(Impl::calibratedRecord(*originalRecord))validate_calibrated_command_record(*originalRecord);
+      else validate_axis_spacing_command_record(*originalRecord);
+    }
+    Json defaults{{"plane","XZ"},{"first",1},{"last",shape.y},{"step",1},
+        {"physical_vertical_spacing",initialSpacing},{"sampling","Nearest"},
+        {"reverse_order",false},{"flip_vertical",false},{"transpose",false}};
+    if(originalRecord) {
+      const auto r=Impl::recordedRequest(original);
+      defaults["plane"]=r.at("plane");defaults["first"]=r.at("first").get<int>()+1;
+      defaults["last"]=r.at("last").get<int>()+1;defaults["step"]=r.at("step");
+      for(const auto key:{"reverse_order","flip_vertical","transpose","physical_vertical_spacing"})defaults[key]=r.at(key);
+      defaults["sampling"]=r.at("sampling")=="linear"?"Linear":"Nearest";
+    }
+    impl->ask(originalRecord?"Rebind physical spacing":"Reslice physical spacing",std::move(defaults),
+        [this, source, originalRecord, calibration](Json values) {
           const auto request = physicalGridRequest(source, values, true);
-          if (original.is_null()) resliceSpacedAxisRange(source, request);
-          else publishAxisSpacing(rebind_axis_spacing_command(source,
-              metadataObjectFromJson(original), request));
+          impl->liveAxis(source,request,calibration,originalRecord);
         }, Json::array({
           {{"name", "plane"}, {"kind", "text"}, {"label", "Plane"}, {"choices", {"XZ", "YZ"}}},
           {{"name", "first"}, {"kind", "int"}, {"label", "First (1-based)"}},
           {{"name", "last"}, {"kind", "int"}, {"label", "Last (inclusive, 1-based)"}},
           {{"name", "step"}, {"kind", "int"}, {"label", "Step"}},
           {{"name", "physical_vertical_spacing"}, {"kind", "float"},
-           {"label", "Physical Z spacing before transpose (" + calibration.unit + ")"}},
+           {"label", "Physical Z spacing before transpose (" + spatial.unit + ")"}},
           {{"name", "sampling"}, {"kind", "text"}, {"label", "Sampling"}, {"choices", {"Nearest", "Linear"}}},
           {{"name", "reverse_order"}, {"kind", "bool"}, {"label", "Reverse selected planes"}},
           {{"name", "flip_vertical"}, {"kind", "bool"}, {"label", "Flip source Z extent before sampling"}},
           {{"name", "transpose"}, {"kind", "bool"}, {"label", "Transpose output axes"}}}), "axis_range_spacing");
+    impl->dialog.calibrationCapture=calibration;
     impl->dialog.axisRangeSpacingSource = source;
     impl->dialog.openedDocumentId = source.id();
     return;
@@ -11183,6 +11364,23 @@ void Window::Impl::recorder() {
       });
       ImGui::EndDisabled(); ImGui::PopID();
     }
+    if(get(step,"schema")=="imagejxx.calibrated-command") {
+      ImGui::PushID(static_cast<int>(i));
+      ImGui::BeginDisabled(owner.documents_.empty() || owner.busy() || !actionAllowed("replay_calibrated_command"));
+      if(ImGui::Button("Replay calibrated command"))guard([&]{owner.action("replay_calibrated_command",{{"record",step}});});
+      observeControl("workflow.calibrated."+std::to_string(i)+".replay");ImGui::SameLine();
+      if(ImGui::Button("Rebind calibrated command..."))guard([&] {
+        const auto record=metadataObjectFromJson(step);validate_calibrated_command_record(record);
+        const auto operation=string(get(step,"operation"));
+        if(operation=="project_imagej")owner.action("show_imagej_projection",{{"record",step}});
+        else if(operation=="axis_range_spacing")owner.action("show_axis_range_spacing",{{"record",step}});
+        else if(operation=="axis_range_slicer_resize")owner.action("show_axis_range_slicer_resize",{{"record",step}});
+        else showAxisExtraction(owner.nativeSnapshot(),operation=="axis_range_orientation"?AxisExtractionKind::OrientedRange:
+            operation=="axis_range_reslice"?AxisExtractionKind::Range:AxisExtractionKind::Plane,record);
+      });
+      observeControl("workflow.calibrated."+std::to_string(i)+".rebind");
+      ImGui::EndDisabled();ImGui::PopID();continue;
+    }
     if(get(step,"schema")=="imagejxx.imagej-projection-command") {
       ImGui::PushID(static_cast<int>(i));
       ImGui::BeginDisabled(owner.documents_.empty() || !actionAllowed("replay_imagej_projection"));
@@ -13006,8 +13204,9 @@ void Window::Impl::dialogs() {
     }
     if (spacingRange && dialog.axisRangeSpacingSource) {
       const auto &source = *dialog.axisRangeSpacingSource;
+      const auto dataset=source.data().dataset.with_calibration(dialog.calibrationCapture?dialog.calibrationCapture->calibration():source.data().dataset.calibration());
       ImGui::Text("Captured T %d, C %d",source.display().t+1,source.display().c+1);
-      const auto shape = source.data().dataset.shape();
+      const auto shape = dataset.shape();
       const auto plane = parse_plane(string(get(dialog.values, "plane")));
       const auto extent = plane == Plane::XZ ? shape.y : shape.x;
       dialog.axisRangeLabel = std::string(plane == Plane::XZ ? "Y" : "X") +
@@ -13030,7 +13229,7 @@ void Window::Impl::dialogs() {
             preferenceState.settings.integer("processing_memory_mb")) * 1024 * 1024;
         if (configured)
           request.orientation.range.max_working_bytes = std::min(request.orientation.range.max_working_bytes, configured);
-        const auto estimate = imagejxx::estimate_axis_range_spacing(source.data().dataset, request);
+        const auto estimate = imagejxx::estimate_axis_range_spacing(dataset, request);
         dialog.axisRangeCount = estimate.plane_count;
         dialog.axisRangeSpacingPreview.update({
             {"width", estimate.width}, {"height", estimate.height}, {"samples", estimate.samples},
@@ -13064,8 +13263,9 @@ void Window::Impl::dialogs() {
     }
     if (slicerRange && dialog.axisRangeSlicerResizeSource) {
       const auto &source = *dialog.axisRangeSlicerResizeSource;
+      const auto dataset=source.data().dataset.with_calibration(dialog.calibrationCapture?dialog.calibrationCapture->calibration():source.data().dataset.calibration());
       ImGui::Text("Captured T %d, C %d",source.display().t+1,source.display().c+1);
-      const auto &calibration = source.data().dataset.calibration();
+      const auto &calibration = dataset.calibration();
       const bool editBusy = owner.busy();
       dialog.axisRangeCount.reset();
       dialog.axisRangeSlicerResizePreview = {{"source_available", false}, {"source_current", false},
@@ -13099,7 +13299,7 @@ void Window::Impl::dialogs() {
           throw RevisionConflict();
         auto request = slicerResizeRequest(source, dialog.values, true);
         const auto &range = request.orientation.range;
-        const auto shape = source.data().dataset.shape();
+        const auto shape = dataset.shape();
         const auto extent = range.plane == Plane::XZ ? shape.y : shape.x;
         dialog.axisRangeLabel = std::string(range.plane == Plane::XZ ? "Y" : "X") +
             " indices: 1 to " + std::to_string(extent);
@@ -13108,7 +13308,7 @@ void Window::Impl::dialogs() {
             preferenceState.settings.integer("processing_memory_mb")) * 1024 * 1024;
         if (configured)
           request.orientation.range.max_working_bytes = std::min(range.max_working_bytes, configured);
-        const auto estimate = imagejxx::estimate_axis_range_slicer_resize(source.data().dataset, request);
+        const auto estimate = imagejxx::estimate_axis_range_slicer_resize(dataset, request);
         dialog.axisRangeCount = estimate.plane_count;
         const int horizontal = range.plane == Plane::XZ ? 0 : 1;
         const int fixed = range.plane == Plane::XZ ? 1 : 0;
@@ -13186,13 +13386,14 @@ void Window::Impl::dialogs() {
     std::string extractionDraftError;
     if ((dialog.scientificExtraction || orientationRange) && extractionSource) {
       try {
+        const auto dataset=extractionSource->data().dataset.with_calibration(dialog.calibrationCapture?dialog.calibrationCapture->calibration():extractionSource->data().dataset.calibration());
         if (orientationRange) {
           auto request = axisOrientationDialogRequest(*extractionSource, dialog.extractionCap, parse());
           const auto configured = static_cast<std::size_t>(
               preferenceState.settings.integer("processing_memory_mb")) * 1024 * 1024;
           if (configured) request.range.max_working_bytes =
               std::min(request.range.max_working_bytes, configured);
-          const auto layout = describe_axis_range_orientation(extractionSource->data().dataset, request);
+          const auto layout = describe_axis_range_orientation(dataset, request);
           dialog.axisRangeOrientationPreview["working_bytes"] = layout.working_bytes;
           dialog.axisRangeOrientationPreview["max_working_bytes"] = request.range.max_working_bytes;
           dialog.axisRangeOrientationPreview["can_apply"] = true;
@@ -13205,8 +13406,8 @@ void Window::Impl::dialogs() {
           if (configured) value.max_working_bytes = std::min(value.max_working_bytes, configured);
           using Request = std::decay_t<decltype(value)>;
           if constexpr (std::is_same_v<Request, AxisPlaneExportRequest>)
-            (void)describe_axis_plane_export(extractionSource->data().dataset, value);
-          else (void)describe_axis_range_reslice(extractionSource->data().dataset, value);
+            (void)describe_axis_plane_export(dataset, value);
+          else (void)describe_axis_range_reslice(dataset, value);
         }, request);
         }
       } catch (const std::exception &error) {
@@ -13243,9 +13444,20 @@ void Window::Impl::dialogs() {
       if(!valid)ImGui::TextWrapped("Enter a finite numeric distance.");
       ImGui::BeginDisabled(!valid);
     }
+    bool calibrationReady=true;
+    if(dialog.calibrationCapture) {
+      try {owner.controller_->validate_target(*dialog.calibrationCapture);}
+      catch(const std::exception& error) {
+        calibrationReady=false;ImGui::TextWrapped("%s",error.what());
+        if(spacingRange)dialog.axisRangeSpacingPreview["can_apply"]=false;
+        if(slicerRange)dialog.axisRangeSlicerResizePreview["can_apply"]=false;
+      }
+    }
+    ImGui::BeginDisabled(!calibrationReady);
     const bool submitClicked = ImGui::Button(integerRange ? "Submit" :
                                              dialog.operation ? "Apply" : "OK");
-    dialog.controls["apply"] = itemControl(extractionReady && (!spacingRange || spacingRenderReady) && (!slicerRange || slicerApplyReady));
+    dialog.controls["apply"] = itemControl(calibrationReady && extractionReady && (!spacingRange || spacingRenderReady) && (!slicerRange || slicerApplyReady));
+    ImGui::EndDisabled();
     if (spacingRange || slicerRange || dialog.scientificExtraction || orientationRange)
       ImGui::EndDisabled();
     if(dialog.id=="selection_enlargement")ImGui::EndDisabled();
@@ -13319,6 +13531,7 @@ void Window::Impl::dialogs() {
     }
     ImGui::EndPopup();
   }
+  if(!dialog.open)dialog.calibrationCapture.reset();
   if(!dialog.open && dialog.id=="selection_enlargement"){dialog.enlargementSource.reset();dialog.submit={};}
   if (!dialog.open && dialog.id == "axis_plane_export") {
     dialog.axisPlaneSource.reset();
@@ -14388,6 +14601,16 @@ HeadlessInputSession::HeadlessInputSession(Window &window, Probe probe) {
     impl_->cleanup();
     throw;
   }
+}
+imagejxx::Application& HeadlessInputSession::fixtureApplication() {
+  if(!impl_ || !impl_->context)throw std::invalid_argument("Active headless fixture required");
+  impl_->window.checkThread();return *impl_->window.controller_;
+}
+void HeadlessInputSession::fixtureWorkerGate(std::function<void(const imagejxx::JobContext&)> gate) {
+  if(!impl_ || !impl_->context)throw std::invalid_argument("Active headless fixture required");
+  impl_->window.checkThread();
+  if(impl_->window.busy())throw std::invalid_argument("Set fixture gate before queueing work");
+  impl_->window.impl->diagnosticWorkerGate=std::move(gate);
 }
 HeadlessInputSession::~HeadlessInputSession() = default;
 void HeadlessInputSession::close() {

@@ -224,3 +224,18 @@ legacy UI readers. Batch capture-heavy modules sequentially under the unchanged
 functional pass alone is not complete verification. Preserve original receipt
 preimages when correcting a false passed state, then losslessly retain diagnostics
 and retire scratch. Source/fixture expectations and per-case limits stay fixed.
+
+## Shared desktop handoff verified — 2026-10-28
+
+Six live axis/projection actions, captured dialog defaults/previews/admission and
+individual recorder replay/rebind pass both actual ImGui hosts. Global/bypass
+produce explicit envelopes; ordinary local work retains legacy records with
+application guards. Strict legacy replay remains local. Physical error
+acknowledgment, workflow scrolling, stale Apply and queued publication refusal
+are covered at 119/128 frames each. Session coverage proves local source and
+workflow blobs, not global-state migration.
+
+Next: scaled Gaussian/live replay, then typed effective values and generation
+keys in display/XYZ/measurement/histogram/plot caches before Global/bypass
+controls. Bulk workflows, session/I/O, original/platform/RGB variants and matched
+performance remain open. [Evidence](../parity/reviews/G034-calibrated-command-ui-progress001.json).

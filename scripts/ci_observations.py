@@ -137,6 +137,7 @@ EDITOR_READERS = {
     "display-remap": ("--display-z-subset-ui-case", "IMAGEJXX_DISPLAY_REMAP_CPP_REPORT"),
     "axis-spacing": ("--axis-spacing-ui-case", "IMAGEJXX_SPACING_CPP_REPORT"),
     "slicer-resize": ("--slicer-resize-ui-case", "IMAGEJXX_SLICER_CPP_REPORT"),
+    "calibrated-command": ("--calibrated-command-ui-case", "IMAGEJXX_CALIBRATED_COMMAND_CPP_REPORT"),
     "roi-manager": ("--scientific-roi-manager-ui-case", "IMAGEJXX_ROI_MANAGER_CPP_REPORT"),
 }
 

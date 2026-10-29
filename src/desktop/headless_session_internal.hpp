@@ -4,6 +4,7 @@
 #include <functional>
 #include <memory>
 
+namespace imagejxx { class Application; class JobContext; }
 namespace imagejxx::desktop {
 
 class Window;
@@ -25,6 +26,8 @@ public:
   // close the context before propagating the original exception.
   Json frame(const Json &events = Json::array());
   Json lifecycle() const;
+  imagejxx::Application& fixtureApplication();
+  void fixtureWorkerGate(std::function<void(const imagejxx::JobContext&)>);
   void close();
 
 private:

@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-28",
+  "status": "scoped_verified",
+  "scope": "Six live shared ImGui axis/projection routes, modal capture/preview/admission, individual recorder strict replay/rebind, explicit bypass envelope and .ijx workflow-blob preservation. Global/bypass setting UI and global-state session migration are not enabled or certified.",
+  "implementation": [
+    "Capture WholePlane application context on caller thread/modal open; axes preserve Pixels/Metadata dependencies and projection keeps Selection/Display checks. Frozen spatial values drive spacing/Slicer previews and initial spacing/unit. Stale context disables Apply.",
+    "Global or explicitly bypassed live actions use the new calibrated envelope. Ordinary no-global live actions keep old records but retain guard-only application captures. Strict legacy replay remains local.",
+    "Projection reservation uses immutable command admission; worker preparation never resolves current global state. Publication rejects global changes and releases reservations without adding documents/workflow/history.",
+    "Individual recorder buttons validate/replay original new records against current source/context; explicit rebind opens the complete saved request. Early spacing/Slicer validators accept the new envelope only on rebind routes.",
+    "Private headless fixture seam supplies global/bypass state and a bounded worker barrier; physical mouse, wheel and modal acknowledgment drive actual shared controls in both hosts. No user-visible Global control claim.",
+    "CI one-report producer registration supplies the new reader environment; actual transport and its independent reader pass with unchanged compiled products."
+  ],
+  "verification": {
+    "installed_windows": {
+      "state": "passed",
+      "original_case_count": 2192,
+      "collected": 2194,
+      "passed": 2192,
+      "skipped": 2,
+      "disjoint": true,
+      "original_case_union_preserved": true,
+      "additional_ui_cases": [
+        [
+          "tests.python.test_calibrated_command_ui",
+          "test_calibrated_live_dialogs_and_workflow[imgui_cpp]"
+        ],
+        [
+          "tests.python.test_calibrated_command_ui",
+          "test_calibrated_live_dialogs_and_workflow[imgui_python]"
+        ]
+      ],
+      "groups": {
+        "desktop-calibrated-installed-main537": {
+          "cases": 2116,
+          "scratch_bytes": 44081887
+        },
+        "desktop-calibrated-installed-axis557": {
+          "cases": 76,
+          "scratch_bytes": 36091407
+        },
+        "desktop-calibrated-installed-imgui_cpp558": {
+          "cases": 1,
+          "scratch_bytes": 19134013
+        },
+        "desktop-calibrated-installed-imgui_python556": {
+          "cases": 1,
+          "scratch_bytes": 19144188
+        }
+      },
+      "xml": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-installed-main537\\results.xml",
+          "bytes": 321905,
+          "sha256": "115e146fa6dd6a5e782ec7af6bc79187952be7da442139c1c113ed31e27bbe40"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-installed-axis557\\results.xml",
+          "bytes": 9615,
+          "sha256": "d0262a530f983d451355282b8d06e9801cba39373df3017925f643e7a29686b6"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-installed-imgui_cpp558\\results.xml",
+          "bytes": 378,
+          "sha256": "6eb5863e7e6f679bb4eee367c60310688c2dca9920d9019ddc0992a12f7803d8"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-installed-imgui_python556\\results.xml",
+          "bytes": 381,
+          "sha256": "536974691e49cbb8d6543a5c24db9967ad270ba7889e8183534e6b35d4f55e17"
+        }
+      ],
+      "producer_inputs_rechecked": 1297,
+      "source_exception": {
+        "preimage": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-preimages545\\ci_observations.py",
+          "bytes": 58266,
+          "sha256": "aae3f60718ad6f8fe34732414df4a5070ef5156bba592308e3b6a8553f821d82"
+        },
+        "current": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\ci_observations.py",
+          "bytes": 58369,
+          "sha256": "bc5cb4a489ea324ccdedcf972ca41bf7f1ea29ce38e5653b1f5d816c3c44b8b5"
+        },
+        "scope": "One additive editor producer/reader environment registration after binary verification; all other frozen sources rechecked unchanged; no binary rebuild needed."
+      },
+      "ci_transport_tests": 23,
+      "ci_actual_cpp_report_and_reader": "passed",
+      "cases_sha256": "0e5f1f463297471f40182c9bcfb3e009984aed3a041916cc59a8759ae566b474",
+      "acceptance_claim": false
+    },
+    "native_windows": "15 controls pass in final coherent build",
+    "cpp_imgui_cases": 9,
+    "new_ui_frames_each": 119,
+    "unchanged_new_ui_frame_limit": 128,
+    "new_ui_hosts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "new_ui_scope": [
+      "six live Apply paths with original source/local history preserved",
+      "strict individual replay, context mismatch rejection and physical error acknowledgment",
+      "explicit plane rebind, physical scrolling to spacing/Slicer rebind dialogs",
+      "explicit bypass with local geometry",
+      "stale open dialog disabled",
+      "queued projection stale rejection, no output/recorder append and zero reserved bytes",
+      "save/open source local calibration and new workflow records as opaque session data"
+    ],
+    "reader_pins_rechecked": 51,
+    "commercial_dependency_inventory": "passed; no new dependencies",
+    "core_sdk_identity": "Windows installed core archive is byte-identical before/after; no core/public-header changes. Prior Windows/Linux installed SDK results retained, not rerun or promoted by desktop-only checks.",
+    "core_sdk_before": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+      "bytes": 58022616,
+      "sha256": "539a2f72ea3a5daee323539d69d059b6ce0528289794e23d4c5c4f4280ee19f5"
+    },
+    "core_sdk_after": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+      "bytes": 58022616,
+      "sha256": "539a2f72ea3a5daee323539d69d059b6ce0528289794e23d4c5c4f4280ee19f5"
+    },
+    "historical_expectations": "Original2192 unique case set preserved; fingerprints/tolerances unchanged. Two new UI host cases added.",
+    "platform_limits": "No new Linux Python/UI, macOS/GPU, full scientific-I/O SDK or original Calibrator qualification.",
+    "ci_transport_child_snapshot": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-ci-child559.py",
+      "bytes": 596,
+      "sha256": "38697aa072ab55ddc9c3119d1a148464dddfa794bbad537bcd3453cc9838f889"
+    }
+  },
+  "cleanup": {
+    "retention": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-retention561\\receipt.json",
+      "bytes": 30076,
+      "sha256": "ccd311d48a9af44de988a93adb57236b7051a064bbb5c4706e8ed0c139c96459"
+    },
+    "lossless_member_hashes_verified": true,
+    "recovered_bytes": 3055452,
+    "owned_scratch_retired": true,
+    "source_freeze_dependency_and_failure_preimages": "Recoverable from retention561 diagnostics.zip; old raw paths retired. Final disjoint full capture sets retained. No cache/runtime/SDK/checkouts archived.",
+    "storage_snapshot": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-final563.json",
+      "bytes": 1523,
+      "sha256": "713e587fe3fd9088ff989ebc1a9190c99593ac1c12b15c0945d797ceff857035"
+    },
+    "full_8GiB_verified": false,
+    "unknown": "Two denied pytest cache subtrees; unknown never zero.",
+    "known_generated_bytes_at_snapshot": 8565326732,
+    "headroom_upper_bound_bytes_at_snapshot": 24607860
+  },
+  "failure_diagnostics": "536 nonexistent formatter corrected; review repaired early legacy-only spacing/Slicer rebind validation.539/544 native AV copied empty workflow after an unsettled modal click; guard and extra settling frame produce diagnostic instead.543 optional LLDB unavailable (missing DLL), no debugger installed.547 expected mismatch modal required physical OK acknowledgment;551 later workflow row required physical wheel scrolling.555 pure snapshot axis oracle drops density; reader now explicitly checks effective density policy. No old expectations, case caps or numerical reference fingerprints changed. Debug544 passed only diagnostic collection; its child exit remained access violation, not product acceptance.",
+  "receipts": {
+    "desktop-calibrated-windows-resume554": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-windows-resume554\\receipt.json",
+      "bytes": 58846,
+      "sha256": "e495df8e4091572069c15552a2b4aa0dc4a2a2c8bdc252d96d70c8ab730f89e1"
+    },
+    "desktop-calibrated-installed-main537": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-installed-main537\\receipt.json",
+      "bytes": 136158,
+      "sha256": "e80647239947fa1a51aeb16d71308555b46b869af14ae026027038fbf3c5b487"
+    },
+    "desktop-calibrated-installed-axis557": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-installed-axis557\\receipt.json",
+      "bytes": 25986,
+      "sha256": "924139c3597c9521b2650cfaeeb969a1bdd14693dd300d948fde15de92a09edc"
+    },
+    "desktop-calibrated-installed-imgui_cpp558": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-installed-imgui_cpp558\\receipt.json",
+      "bytes": 21853,
+      "sha256": "22142c2709a671e1d91a3e63027084bd9d3342bbec73a1d5994c251415775626"
+    },
+    "desktop-calibrated-installed-imgui_python556": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-installed-imgui_python556\\receipt.json",
+      "bytes": 19493,
+      "sha256": "853274da46df8257b892066a10ae3d22e1ddb8a982e8d4392cafed7cc424534d"
+    },
+    "desktop-calibrated-ci559": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-ci559\\receipt.json",
+      "bytes": 26325,
+      "sha256": "7a28fc92d175a097ee9d76e7553fd69ba0b302f870311cbe7a62c63196c07061"
+    },
+    "desktop-calibrated-partition560": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-partition560\\receipt.json",
+      "bytes": 2939,
+      "sha256": "a9fcbb534d3709f60a324def5a2cc4bd45e9dbfa5c0497e1873b276035dc3e00"
+    },
+    "desktop-calibrated-retention561": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-calibrated-retention561\\receipt.json",
+      "bytes": 30076,
+      "sha256": "ccd311d48a9af44de988a93adb57236b7051a064bbb5c4706e8ed0c139c96459"
+    }
+  },
+  "remaining": [
+    "Gaussian/scaled live command/replay consumers",
+    "generation-aware display/XYZ/measurement/histogram/plot caches",
+    "Global and bypass user controls after consumers agree",
+    "global-state persistence/session/I/O migration and bulk native workflow support",
+    "original ImageJ variants, RGB Slicer and supported-platform matrix",
+    "matched processing speed and peak-memory comparisons"
+  ],
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified": 0
+  },
+  "performance_claim": "No measured superiority established; build/test durations are not matched image-processing benchmarks.",
+  "acceptance_claim": false
+}

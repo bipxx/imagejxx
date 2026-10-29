@@ -3,11 +3,12 @@
 ## Calibrated command handoff — execution ownership
 
 [PLAN](PLAN.md) owns status/counts; the native envelope is a verified handoff.
-Next ownership follows [the UI specification](packets/G034-global-calibration-contract.md):
+Six live axis/projection routes and individual recorder replay are verified.
+Remaining ownership follows [the UI specification](packets/G034-global-calibration-contract.md):
 
 | Role | Owned work | Handoff |
 | --- | --- | --- |
-| Command/controller | Window live action, queue/admission, recorder/replay dispatch; integration registration in Window. | Caller-thread captures and explicit new/legacy schema policy; preserve guard-only local jobs. |
+| Command/controller | Six axis/projection routes verified; next audit scaled Gaussian/live replay and remaining consumers. | Preserve caller-thread captures, explicit new/legacy schema policy and guard-only local jobs. |
 | Live consumers/UI | Dedicated calibration pane and generation-aware display/XYZ/analysis cache modules. Coordinate Window registration with its owner. | Typed cached effective values; no local revision/dirty-history mutation. Enable controls after command/consumer coverage agrees. |
 | Validation | Native/Python and both actual ImGui fixtures, original provenance, cancellation/stale/history/metadata/replay and installed SDK checks. | Pin the exact disjoint test union; keep each capture batch bounded and retain failed producer/reader/receipt preimages. |
 

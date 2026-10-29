@@ -157,3 +157,19 @@ local command formats/classes and detached replay stay unchanged. The new API
 passes119 cases within the exact2192-case installed union; record/command adoption
 in the current ImGui routes, recorder dispatch and live caches remains required.
 See [command evidence](parity/reviews/G034-calibrated-command-progress001.json).
+
+## Shared command UI integration — 2026-10-28
+
+Both ImGui hosts capture calibration on opening six axis/projection dialogs and
+before direct live actions. Effective geometry drives physical-spacing defaults
+and spacing/Slicer previews. Changed context disables Apply; stale queued
+projection cannot publish or append recorder history. Global/bypassed commands
+preserve explicit provenance. Individual replay requires matching source/context;
+rebind opens the saved request. Ordinary local records and strict legacy replay
+retain their prior semantics.
+
+The two actual UI cases pass at 119/128 frames each, along with the preserved
+2,192-case regression union. Save/Open verifies local source and workflow blobs,
+not global-state persistence. Global/bypass controls remain pending scaled
+Gaussian/live replay and generation-aware live cache integration. [Current plan](PLAN.md)
+and [evidence](parity/reviews/G034-calibrated-command-ui-progress001.json).
