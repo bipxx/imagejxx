@@ -1,6 +1,7 @@
 #include "target_calibration_internal.hpp"
 #include "calibration_preparation_internal.hpp"
 #include "operation_internal.hpp"
+#include "plane_operation_resources_internal.hpp"
 #include "target_mask_resources.hpp"
 #include "operation_job_probe_internal.hpp"
 #include <algorithm>
@@ -68,16 +69,9 @@ std::shared_ptr<JobScheduler> Application::job_scheduler() {
     scheduler_ = std::make_shared<JobScheduler>();
   return scheduler_;
 }
-OperationJob Application::submit(const std::string &operation,
-                                 const ResolvedTarget &target,
-                                 const OperationParameters &parameters,
-                                 ExecutionOptions options,
-                                 JobOptions job_options) {
-  validate_target(target);
-  auto normalized = detail::without_execution_callbacks([&] {
-    kernel_checkpoint();
-    return validate_execution_parameters(operation, target, parameters, options);
-  });
+namespace detail {
+std::size_t plane_operation_base_resources(const std::string& operation,
+    const ResolvedTarget& target,const OperationParameters& normalized) {
   const auto shape = target.source().data().dataset.shape();
   auto multiply = [](std::size_t a, std::size_t b) {
     if (b && a > std::numeric_limits<std::size_t>::max() / b)
@@ -102,6 +96,20 @@ OperationJob Application::submit(const std::string &operation,
     throw std::invalid_argument("Job reservation overflows addressable memory");
   if (extra > std::numeric_limits<std::size_t>::max() - staged - workspace)
     throw std::invalid_argument("Job reservation overflows addressable memory");
+  return staged + workspace + extra;
+}
+} // namespace detail
+OperationJob Application::submit(const std::string &operation,
+                                 const ResolvedTarget &target,
+                                 const OperationParameters &parameters,
+                                 ExecutionOptions options,
+                                 JobOptions job_options) {
+  validate_target(target);
+  auto normalized = detail::without_execution_callbacks([&] {
+    kernel_checkpoint();
+    return validate_execution_parameters(operation, target, parameters, options);
+  });
+  const auto base=detail::plane_operation_base_resources(operation,target,normalized);
   std::shared_ptr<JobScheduler> scheduler;
   {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -113,7 +121,6 @@ OperationJob Application::submit(const std::string &operation,
   }
   const auto configured = scheduler->limits().memory_budget;
   const auto cap = configured ? configured : std::numeric_limits<std::size_t>::max();
-  const auto base = staged + workspace + extra;
   if (base > cap || job_options.resource_bytes > cap)
     throw std::invalid_argument("Job reservation exceeds the processing memory budget");
   // Per-job admission preserves queue semantics: other jobs' reservations are

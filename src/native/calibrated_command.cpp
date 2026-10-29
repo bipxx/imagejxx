@@ -2,6 +2,8 @@
 #include "calibrated_descriptor_internal.hpp"
 #include "calibration_preparation_internal.hpp"
 #include "contrast_command_record.hpp"
+#include "plane_operation_resources_internal.hpp"
+#include "target_mask_resources.hpp"
 #include <algorithm>
 #include <type_traits>
 
@@ -30,10 +32,12 @@ std::string operation_of(const CalibratedCommandRequest& request) {
     else if constexpr(std::is_same_v<T,AxisRangeOrientationRequest>)return "axis_range_orientation";
     else if constexpr(std::is_same_v<T,AxisRangeSpacingRequest>)return "axis_range_spacing";
     else if constexpr(std::is_same_v<T,AxisRangeSlicerResizeRequest>)return "axis_range_slicer_resize";
-    else return "project_imagej";
+    else if constexpr(std::is_same_v<T,ImageJProjectionDocumentRequest>)return "project_imagej";
+    else return "gaussian_blur_imagej";
   },request);
 }
-CalibratedCommandRequest descriptor_request(const std::string& operation,const MetadataObject& descriptor) {
+CalibratedCommandRequest descriptor_request(const std::string& operation,const MetadataObject& descriptor,
+    const SourceRecord& source,std::optional<detail::TargetRecord>& target) {
   if(text_value(descriptor.at("operation"))!=operation)
     throw std::invalid_argument("Calibrated operation contradicts descriptor");
   if(operation=="axis_plane_export" || operation=="axis_range_reslice")
@@ -43,6 +47,20 @@ CalibratedCommandRequest descriptor_request(const std::string& operation,const M
   if(operation=="axis_range_spacing")return detail::spacing_descriptor_request(descriptor);
   if(operation=="axis_range_slicer_resize")return detail::slicer_descriptor_request(descriptor);
   if(operation=="project_imagej")return detail::projection_descriptor_request(descriptor);
+  if(operation=="gaussian_blur_imagej") {
+    exact_fields(descriptor,{"source","operation","command"});
+    if(!((source.pixel_type==PixelType::UInt8 && (source.shape.s==1 || source.shape.s==3)) ||
+        ((source.pixel_type==PixelType::UInt16 || source.pixel_type==PixelType::Float32) && source.shape.s==1)))
+      throw std::invalid_argument("Unsupported calibrated Gaussian source storage");
+    auto d=detail::gaussian_descriptor_request(object_value(descriptor.at("command")));
+    if(!same_calibration(d.calibration,source.calibration) ||
+        d.target.document_id!=source.document_id || d.target.source_shape.dimensions()!=source.shape.dimensions() ||
+        !d.target.source_revisions.matches(source.revisions,Change::Pixels|Change::Metadata))
+      throw std::invalid_argument("Gaussian descriptor contradicts effective source");
+    if(d.target.request.roi==RoiPolicy::WholePlane && d.target.source_revisions.selection!=0)
+      throw std::invalid_argument("Whole-plane calibrated Gaussian selection revision must be canonical zero");
+    target=std::move(d.target);return d.options;
+  }
   throw std::invalid_argument("Unsupported calibrated command operation");
 }
 struct Decoded {
@@ -50,6 +68,7 @@ struct Decoded {
   CalibratedCommandRequest request;
   CalibratedCommandLimits limits;
   std::string operation;
+  std::optional<detail::TargetRecord> target;
 };
 Decoded decode(const MetadataObject& record) {
   Budget bounded{record_limit};bounded.object(record);
@@ -85,11 +104,12 @@ Decoded decode(const MetadataObject& record) {
   if(!metadata_equal(source_record(effective_source),object_value(descriptor.at("source"))))
     throw std::invalid_argument("Calibrated descriptor contradicts original/effective source");
   const auto operation=text_value(record.at("operation"));
-  auto request=descriptor_request(operation,descriptor);
+  std::optional<detail::TargetRecord> target;
+  auto request=descriptor_request(operation,descriptor,effective_source,target);
   if(global && operation=="project_imagej" &&
       !metadata_equal(effective->at("intensity"),descriptor.at("intensity")))
     throw std::invalid_argument("Projection density contradicts effective calibration");
-  return {std::move(source),std::move(request),limits,operation};
+  return {std::move(source),std::move(request),limits,operation,std::move(target)};
 }
 std::pair<MetadataObject,std::size_t> describe(const ResolvedTarget& capture,
     const CalibratedCommandRequest& request) {
@@ -105,6 +125,19 @@ std::pair<MetadataObject,std::size_t> describe(const ResolvedTarget& capture,
       auto d=detail::spacing_descriptor(source,r);return {std::move(d.second),d.first.output.working_bytes};
     } else if constexpr(std::is_same_v<T,AxisRangeSlicerResizeRequest>) {
       auto d=detail::slicer_descriptor(source,r);return {std::move(d.second),d.first.output.working_bytes};
+    } else if constexpr(std::is_same_v<T,GaussianBlurCommandOptions>) {
+      const auto command=resolve_gaussian_command(capture,r);
+      const auto base=detail::plane_operation_base_resources("gaussian_blur_imagej",capture,command.parameters());
+      const auto masks=detail::target_mask_workspace(capture,"gaussian_blur_imagej",std::numeric_limits<std::size_t>::max());
+      auto legacy=command.record();
+      if(capture.roi_policy()==RoiPolicy::WholePlane) {
+        auto target=object_value(legacy.at("target"));
+        auto revisions=array_value(target.at("source_revisions"));revisions[2]=std::uint64_t(0);
+        target["source_revisions"]=metadata_array(std::move(revisions));legacy["target"]=metadata_object(std::move(target));
+      }
+      MetadataObject descriptor{{"operation",std::string("gaussian_blur_imagej")},
+          {"source",metadata_object(source_record(source))},{"command",metadata_object(std::move(legacy))}};
+      return {std::move(descriptor),add(base,masks)};
     } else {
       auto d=detail::projection_descriptor(capture.source(),capture.calibration_context(),r);
       return {std::move(d.second),d.first.working_bytes};
@@ -166,7 +199,14 @@ ResolvedCalibratedCommand calibrated_command_from_record(const ResolvedTarget& c
     expected.display=unsigned_value(descriptor.at("display_revision"));
     if(!capture.source().revisions().matches(expected,Change::All))throw RevisionConflict();
   }
-  auto resolved=resolve_calibrated_command(capture,d.request,d.limits);
+  auto replay_capture=capture;
+  if(d.target) {
+    // Strictly check original target dependencies/shape before restoring frozen
+    // ranges or positions. The caller supplies only current application context.
+    (void)detail::strict_target_from_record(capture.source(),*d.target,d.operation);
+    replay_capture=detail::CalibrationPreparation::target(capture,d.target->request);
+  }
+  auto resolved=resolve_calibrated_command(replay_capture,d.request,d.limits);
   if(!metadata_equal(resolved.record(),record))
     throw std::invalid_argument("Calibrated command source/context differs; explicit rebind required");
   return resolved;
@@ -182,7 +222,12 @@ PreparedOperation prepare_calibrated_command(const ResolvedCalibratedCommand& co
   if(!cap || command.working_bytes()>cap)throw std::invalid_argument("Calibrated command exceeds runtime working budget");
   return std::visit([&](auto r)->PreparedOperation {
     using T=std::decay_t<decltype(r)>;
-    if constexpr(std::is_same_v<T,ImageJProjectionDocumentRequest>) {
+    if constexpr(std::is_same_v<T,GaussianBlurCommandOptions>) {
+      const auto gaussian=resolve_gaussian_command(command.capture(),r);
+      const auto base=detail::plane_operation_base_resources(command.operation(),command.capture(),gaussian.parameters());
+      ExecutionOptions options;options.max_target_mask_bytes=cap-base;
+      return prepare_operation(command.operation(),command.capture(),gaussian.parameters(),options,control);
+    } else if constexpr(std::is_same_v<T,ImageJProjectionDocumentRequest>) {
       r.max_working_bytes=std::min(r.max_working_bytes,cap);
       return detail::CalibrationPreparation::prepare_imagej_projection(command.capture(),r,control);
     } else if constexpr(std::is_same_v<T,AxisPlaneExportRequest>) {

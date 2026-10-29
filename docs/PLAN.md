@@ -1,5 +1,39 @@
 # ImageJ and Fiji gap closure plan
 
+## Calibrated Gaussian native/Python command — current, 2026-10-28
+
+The existing envelope now also accepts GaussianBlurCommandOptions. It captures
+raw/scaled sigma intent, effective values and complete C/Z/T/ROI/destination
+provenance. Strict replay restores frozen targets after source/dependency checks;
+explicit rebinding uses a complete new capture target. Whole-plane selection
+revision is canonical zero only inside this new descriptor; legacy records stay
+unchanged. A private helper shares Application's existing plane-memory estimate.
+C++ clients must rebuild for the expanded request variant; exhaustive visitors
+need a Gaussian alternative. Both installed SDK fixtures were rebuilt.
+
+Installed Windows: **2,246 collected / 2,244 passed / two optional hidden-OpenGL
+skips**. Exact previous 2,194-case union preserved plus 52 Gaussian cases. Fifteen
+native controls and nine existing C++ ImGui cases/Python counterparts pass.
+Installed core SDKs pass 4/4 CTest clients on Windows/Linux, with 128 table and
+86 fit cells each. 1,298 producer inputs and 52 reader pins rechecked. One reader
+corrected its Float32 vertical-sigma oracle and no-op undo expectations; kernel,
+legacy tests, fingerprints and tolerances were unchanged. [Evidence](parity/reviews/G034-calibrated-gaussian-command-progress001.json).
+
+This does **not** finish live Gaussian preview/Apply/recorder integration. Generic
+UI dispatch refuses the new family explicitly until that handoff is complete.
+Next: capture effective context in GaussianPanel, retain the envelope/admission
+in GaussianJobs, then use explicit recorder replay/rebind in both hosts. Reuse
+its existing Application validation during polling/publication. Follow the exact
+handoff below and in THREE_AGENT_EXECUTION; avoid another job controller or a
+second envelope grammar. Live caches and Global/bypass controls follow.
+
+All owned scratch retired; lossless diagnostics recovered 1,760,807 B. Final
+capture batches are 44,081,838 / 36,088,907 / 19,134,361 / 19,144,372 B, each below
+64 MiB. Same caches/runtimes/SDKs; two denied caches keep full 8 GiB unverified.
+No full-family/platform or speed promotion: **47 in progress /52 open /0 fully
+certified**. Session/I/O, original/RGB/platform and matched performance stay open.
+
+
 ## Shared calibrated commands in both ImGui hosts — current, 2026-10-28
 
 All six live axis/projection routes capture effective calibration before execution.

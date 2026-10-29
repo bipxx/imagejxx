@@ -173,3 +173,17 @@ The two actual UI cases pass at 119/128 frames each, along with the preserved
 not global-state persistence. Global/bypass controls remain pending scaled
 Gaussian/live replay and generation-aware live cache integration. [Current plan](PLAN.md)
 and [evidence](parity/reviews/G034-calibrated-command-ui-progress001.json).
+
+## Gaussian command envelope — 2026-10-28
+
+The common calibrated command API now accepts GaussianBlurCommandOptions with a
+fully captured C/Z/T/ROI/destination target. Strict replay restores frozen scope
+and checks effective values; rebind uses a complete supplied target/options.
+The original kernel/output policy is reused. Raw local/bypassed metadata remains
+opaque; in-place calibration stays local. Whole-plane selection dependencies are
+canonicalized only inside the new descriptor. Legacy records stay unchanged.
+
+52 new cases pass within the 2,246-case installed union. Both rebuilt installed
+core SDKs pass 4/4 clients. C++ clients rebuild for the expanded request variant.
+Live Gaussian preview/Apply/recorder adoption is next; display/analysis caches,
+Global/bypass controls and persistence remain pending. [Evidence](parity/reviews/G034-calibrated-gaussian-command-progress001.json).

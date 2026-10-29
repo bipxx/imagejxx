@@ -1,11 +1,12 @@
 # Calibrated command capture and replay
 
-Status: scoped verified native/Python APIs. All 119 new command cases pass;
-combined installed verification passes 2,190 of 2,192 cases with two optional
-hidden-OpenGL skips. Both core SDKs pass 4/4 installed clients.
-[Evidence](parity/reviews/G034-calibrated-command-progress001.json).
+Status: seven native/Python command families and six shared ImGui routes are
+scoped verified. Installed verification passes 2,244 of 2,246 cases with two
+optional hidden-OpenGL skips, including 119 original envelope and 52 new Gaussian
+cases. Both rebuilt core SDKs pass 4/4 installed clients. Live Gaussian UI remains
+pending. [Current evidence](parity/reviews/G034-calibrated-gaussian-command-progress001.json).
 This additive interface covers plane export, range reslice, orientation, physical
-spacing, finite-scalar Slicer resize and ImageJ projection. Existing source-only
+spacing, finite-scalar Slicer resize, ImageJ projection and Gaussian blur. Existing source-only
 command classes and record formats retain their local snapshot semantics.
 
 Capture on the caller thread before queueing work:
@@ -110,3 +111,48 @@ Scaled Gaussian/live replay, display/XYZ/analysis caches and Global/bypass contr
 remain open, along with global-state session/I/O migration, original Calibrator
 variants, supported platforms, RGB Slicer and matched speed/memory comparisons. Follow [the active plan](PLAN.md) and
 [the calibration contract](packets/G034-global-calibration-contract.md).
+
+## Gaussian command target and replay
+
+Operation `gaussian_blur_imagej` takes `GaussianBlurCommandOptions`. The supplied
+capture is the complete target: choose C/Z/T scope, ROI and destination explicitly.
+For example:
+
+```python
+request = imagejxx.TargetRequest(imagejxx.TargetScope.ALL_Z,
+                                roi=imagejxx.RoiPolicy.WHOLE_PLANE)
+capture = app.resolve_target(request, document_id=source_id)
+command = imagejxx.resolve_calibrated_command(
+    capture, "gaussian_blur_imagej",
+    imagejxx.GaussianBlurCommandOptions(2, True))
+app.publish(imagejxx.prepare_calibrated_command(command))
+```
+
+The descriptor has `source`, `operation` and `command`; `command` uses the existing
+validated Gaussian grammar for raw sigma, scaled flag, effective X/Y sigmas and
+frozen target. It never borrows local calibration to explain global sigma.
+Pixel-unit aliases keep their existing unscaled behavior. Other calibrated
+command descriptors/formats remain unchanged.
+
+Strict replay takes a current source/context capture and restores the original
+recorded target after dependency checks, even if the caller navigated or supplied
+a different default scope. Explicit rebinding instead uses the full target of
+the new capture and replacement options. Validate the original first; neither
+path installs global state from JSON. Whole-plane target selection revision is
+canonical zero within this descriptor so irrelevant selection edits do not stale
+it. Selection-bound commands retain their actual selection dependency. Pure
+legacy Gaussian records and strict legacy replay retain their local semantics.
+
+Admission reuses Application's existing staged-plane/kernel workspace base plus
+mask allowance and the envelope/source metadata bound. In-place preparation keeps
+local calibration; derived publication uses the generic effective-output policy.
+Raw local/bypassed commands preserve opaque future density records. Runtime caps
+reject before callbacks/reads; no measured RSS guarantee follows.
+
+C++ `CalibratedCommandRequest` now has a Gaussian alternative. Rebuild SDK clients
+and update exhaustive visitors; this does not promise binary compatibility with
+the previous variant type. The installed Windows/Linux fixtures pass 4/4 clients.
+The 52 new Python cases pass in the 2,246-case installed union (2,244 passed/two
+optional skips). [Evidence](parity/reviews/G034-calibrated-gaussian-command-progress001.json).
+Live Gaussian preview/Apply/recorder integration remains pending; generic UI
+controls explicitly refuse this family until that integration is complete.

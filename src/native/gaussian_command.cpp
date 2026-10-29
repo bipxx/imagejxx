@@ -1,6 +1,7 @@
 #include "kernel_control.hpp"
 #include "imagej_shape_plan.hpp"
 #include "target_record_internal.hpp"
+#include "calibrated_descriptor_internal.hpp"
 #include <imagejxx/gaussian_command.hpp>
 
 #include <algorithm>
@@ -454,6 +455,11 @@ GaussianBlurCommandRegion gaussian_command_region(const ResolvedTarget &target,
                   });
   }
   return {extent.value_or(GaussianBlurExtent{0, 0, 0, 0}), std::move(combined)};
+}
+
+detail::GaussianDescriptorRecord detail::gaussian_descriptor_request(const MetadataObject& record) {
+  auto decoded=decode_gaussian_record(record);
+  return {decoded.options,std::move(decoded.calibration),std::move(decoded.target)};
 }
 
 } // namespace imagejxx

@@ -8,7 +8,7 @@ Remaining ownership follows [the UI specification](packets/G034-global-calibrati
 
 | Role | Owned work | Handoff |
 | --- | --- | --- |
-| Command/controller | Six axis/projection routes verified; next audit scaled Gaussian/live replay and remaining consumers. | Preserve caller-thread captures, explicit new/legacy schema policy and guard-only local jobs. |
+| Command/controller | Six axis/projection routes and native Gaussian envelope verified; next live Gaussian preview/Apply/recorder adoption. | Preserve caller-thread captures, explicit new/legacy schema policy and guard-only local jobs. |
 | Live consumers/UI | Dedicated calibration pane and generation-aware display/XYZ/analysis cache modules. Coordinate Window registration with its owner. | Typed cached effective values; no local revision/dirty-history mutation. Enable controls after command/consumer coverage agrees. |
 | Validation | Native/Python and both actual ImGui fixtures, original provenance, cancellation/stale/history/metadata/replay and installed SDK checks. | Pin the exact disjoint test union; keep each capture batch bounded and retain failed producer/reader/receipt preimages. |
 
@@ -2721,3 +2721,27 @@ For **documentation-only updates**, validate local links/anchors, inventory
 counts/assignments, preserved manifest bytes and diff hygiene. Do not compile
 the product or generate screenshot/test scratch just to update the plan. Product
 execution resumes from the P13i entry gates, not from an old construction prompt.
+
+## Next Gaussian UI execution handoff — 2026-10-28
+
+These are ownership boundaries, not running-agent status. The native envelope,
+existing kernel and memory estimator are verified; keep them fixed unless a
+concrete failing case requires a correction. C++ request-variant clients rebuild.
+
+| Packet/owner | Files and easiest path | Required handoff |
+| --- | --- | --- |
+| Panel/controller | Own GaussianPanel and all Window integration edits. Add a captured-target show path; retain the original snapshot and effective spatial value. Reuse the private target adapter for draft, preview and accepted AllZ/explicit scopes. Keep source-only show for legacy fixtures. | Scaled availability/unit text use the frozen value; no synthetic snapshot, per-frame density decoding or worker recapture. Validate dialog context and release preview on stale/cancel/close. |
+| Jobs | Own GaussianJobs. Resolve/store the envelope and declared bound once for active global or bypass; ordinary local commands keep old records. Pass the bound through existing JobOptions.resource_bytes and expose a creator-thread frozen record accessor for pre-commit staging. | Keep its existing Application.validate_target polling/publication guards; do not add another controller/generation manager. Preserve Preview phase, supersession, cancellation, reservations and legacy diagnostics. |
+| Validation | Own a focused private UI probe, Python readers and CI capture registration. Coordinate all Window hooks through its owner; no concurrent Window edits. | Both hosts physically edit sigma/scaled/scope, Preview/Apply/cancel, strict replay/mismatch/rebind and bypass; change global while draft/queued/READY. Pixels, local metadata/history, record target/context and released reservations must agree. |
+
+Window's native publication callback stages the frozen record before commit;
+record allocation failure must not commit an unrecorded edit. Explicit calibrated
+Gaussian replay goes through its existing GaussianJobs lane. Rebind must author
+a complete destination request/options; legacy strict replay remains local. Do
+not expose Global/bypass controls or call this full calibration completion.
+
+Merge the three handoffs before one coherent serial build in the active cache.
+Use separate bounded capture batches and installed runtime/SDKs. Then proceed to
+effective display/XYZ/measurement/profile/histogram/live-plot cache keys and shared
+controls. Session/I/O, bulk workflows, original/RGB/platform and matched speed/
+memory gates remain open. [Native evidence](parity/reviews/G034-calibrated-gaussian-command-progress001.json).

@@ -129,6 +129,29 @@ void calibrated_commands() {
   auto result=prepare_calibrated_command(rebound);app.publish(result);
   check(owner->undo_steps()==0 && owner->snapshot().data().dataset.calibration().spacing[0]==1,"Command edited original local history");
 }
+void calibrated_gaussian_commands() {
+  Image image(2,1,1,PixelType::UInt8);image.pixels={0,255};
+  auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,1,2,1},{image}));
+  Application app;app.adopt(owner);auto g=global();auto spatial=g.spatial();spatial.unit="um";
+  app.set_global_calibration(GlobalCalibration(spatial,g.intensity(),g.source_type()));
+  TargetRequest target;target.roi=RoiPolicy::WholePlane;
+  GaussianBlurCommandOptions options{.5,true};
+  const auto command=resolve_calibrated_command(app.resolve_target(target),options);
+  validate_calibrated_command_record(command.record());
+  auto replay=calibrated_command_from_record(app.resolve_target(),command.record());
+  check(replay.capture().roi_policy()==RoiPolicy::WholePlane,"Gaussian replay lost frozen target");
+  auto prepared=prepare_calibrated_command(replay);
+  const auto pixels=prepared.preview().data().dataset.plane({0,0,0})->pixels;
+  check(pixels==std::vector<double>({77,178}),"Calibrated Gaussian changed analytic two-pixel output");
+  app.set_global_calibration(global(.75));
+  rejects<RevisionConflict>([&]{app.publish(prepared);});
+  rejects<std::invalid_argument>([&]{calibrated_command_from_record(app.resolve_target(target),command.record());});
+  check(owner->undo_steps()==0,"Stale calibrated Gaussian changed history");
+  auto rebound=rebind_calibrated_command(app.resolve_target(target),command.record(),options);
+  auto applied=prepare_calibrated_command(rebound);app.publish(applied);
+  check(owner->undo_steps()==1 && owner->snapshot().data().dataset.calibration().spacing[0]==1,
+      "In-place calibrated Gaussian changed local metadata or lost history");
+}
 void detached_values_and_threads() {
   Application app;auto owner=std::make_shared<Document>(pixels());std::weak_ptr<Document> weak=owner;
   const auto id=app.adopt(owner);app.set_global_calibration(GlobalCalibration::from_snapshot(owner->snapshot()));
@@ -143,4 +166,4 @@ void detached_values_and_threads() {
   writer.join();reader.join();check(!failed,"Concurrent calibration values/generations tore");
 }
 }
-int main(){try{resolution();ownership_and_guards();processing_guards();dedicated_consumers();calibrated_commands();detached_values_and_threads();std::cout<<"Global calibration native checks passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{resolution();ownership_and_guards();processing_guards();dedicated_consumers();calibrated_commands();calibrated_gaussian_commands();detached_values_and_threads();std::cout<<"Global calibration native checks passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

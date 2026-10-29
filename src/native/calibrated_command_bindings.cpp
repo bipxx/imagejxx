@@ -20,6 +20,7 @@ CalibratedCommandRequest request(const std::string& operation,py::handle value) 
   if(operation=="axis_range_spacing")return py::cast<AxisRangeSpacingRequest>(value);
   if(operation=="axis_range_slicer_resize")return py::cast<AxisRangeSlicerResizeRequest>(value);
   if(operation=="project_imagej")return imagej_projection_request_from_record(bindings::metadata_object_value(value));
+  if(operation=="gaussian_blur_imagej")return py::cast<GaussianBlurCommandOptions>(value);
   throw py::value_error("Unsupported calibrated command operation");
 }
 }

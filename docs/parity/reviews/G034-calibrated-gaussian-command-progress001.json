@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-28",
+  "status": "scoped_verified",
+  "scope": "Extend the existing calibrated-command envelope and native/Python preparation/replay/rebind to GaussianBlurCommandOptions. This is a native/Python prerequisite for live Gaussian UI adoption, not completed preview/Apply/recorder UI integration.",
+  "implementation": [
+    "Append GaussianBlurCommandOptions to CalibratedCommandRequest; operation gaussian_blur_imagej. Source compatibility for ordinary calls preserved, but C++ clients must rebuild for the expanded public variant and update exhaustive visitors. Installed clients were rebuilt on both platforms; no binary ABI compatibility claim.",
+    "Descriptor contains effective source, operation and validated existing legacy Gaussian command. Raw sigma/scaled intent and effective sigma checked through the original codec. Original local source and binding/bypass/effective density stay in the common envelope. Legacy classes/records remain unchanged.",
+    "Strict replay restores recorded C/Z/T/ranges/ROI/destination only after actual source/dependency/shape checks, while the supplied current capture mints context guards. Rebind validates original claims and uses the supplied complete new capture target and explicit replacement options.",
+    "Whole-plane nested target selection revision is canonical zero only in the new Gaussian envelope. Irrelevant selection edits do not block strict replay; selection-bound replay still checks original selection revisions.",
+    "Preparation reuses the existing Gaussian kernel/generic execution and captured target. In-place changes preserve local metadata/history; derived results use existing effective-output policy. Raw local/bypassed work does not decode unsupported future density records.",
+    "Extract existing plane base resource estimate to one private helper shared by Application.submit and calibrated Gaussian admission. Target mask and source/envelope budgets remain separate; runtime caps reject before callbacks or plane reads. No new allocation/RSS accounting claim.",
+    "Generic shared UI replay/rebind explicitly refuses this newly added family pending its preview/Apply integration; the six already verified live axis/projection families retain behavior."
+  ],
+  "verification": {
+    "installed_windows": {
+      "state": "passed",
+      "original_case_count": 2194,
+      "collected": 2246,
+      "passed": 2244,
+      "skipped": 2,
+      "disjoint": true,
+      "original_case_union_preserved": true,
+      "additional_gaussian_cases": 52,
+      "groups": {
+        "calibrated-gaussian-installed-main570": {
+          "cases": 2168,
+          "scratch_bytes": 44081838
+        },
+        "calibrated-gaussian-installed-axis571": {
+          "cases": 76,
+          "scratch_bytes": 36088907
+        },
+        "calibrated-gaussian-installed-imgui_cpp572": {
+          "cases": 1,
+          "scratch_bytes": 19134361
+        },
+        "calibrated-gaussian-installed-imgui_python573": {
+          "cases": 1,
+          "scratch_bytes": 19144372
+        }
+      },
+      "xml": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-main570\\results.xml",
+          "bytes": 330271,
+          "sha256": "2f13baeb56730663543d43b51c1a75d610ce6b7b5cbd5a903aed7c877f3b995f"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-axis571\\results.xml",
+          "bytes": 9615,
+          "sha256": "e42deb7a56eaa5bce7211131a9c70a162ca8f7612c08236d6718a958c3392486"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-imgui_cpp572\\results.xml",
+          "bytes": 378,
+          "sha256": "eb856f7cb21f547b761e80dce9407dfc6ea2be2362addc1d0b63e1f35919a55d"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-imgui_python573\\results.xml",
+          "bytes": 381,
+          "sha256": "538fb5d01efcf662e61b8185e5da4db608e6842fbef6e74eadb029e0c07612f0"
+        }
+      ],
+      "producer_inputs_rechecked": 1298,
+      "reader_pins_rechecked": 52,
+      "cases_sha256": "8355eaecf1fd119edca55eebffcdbadb61cc2ae2e6a92e29c7ddd98d96f1795b",
+      "acceptance_claim": false
+    },
+    "new_gaussian_cases": 52,
+    "native_windows": "15 native control invocations pass, including new analytic Gaussian/public envelope assertions in the global control",
+    "cpp_imgui_regressions": 9,
+    "new_calibrated_ui_frames_each": 119,
+    "unchanged_frame_limit": 128,
+    "installed_core_sdks": {
+      "windows": "4/4 CTest clients pass; links final active archive identity",
+      "linux": "4/4 CTest clients pass after active core/prefix refresh",
+      "profiles_each": {
+        "exact_table": 128,
+        "fit_dtype_cells": 86
+      }
+    },
+    "linux_efficiency": "Build/install active core once, then use the four installed-only CMake clients; removed the redundant three direct installed-client runs from this successor. Old run expectations/results remain unchanged.",
+    "source_inputs": 1298,
+    "reader_pins": 52,
+    "commercial_dependency_inventory": "passed; no new dependencies",
+    "scope_limits": [
+      "No actual global Gaussian preview/Apply/rebind UI claim",
+      "No Global/bypass control enablement or generation-aware display/analysis cache completion",
+      "No Linux Python/full desktop/IO SDK, macOS/GPU or full-family promotion",
+      "No original Gaussian numerical fixture/fingerprint changes or matched speed/memory comparison"
+    ]
+  },
+  "failure_diagnostics": "Initial569 reader had four wrong expectations: two Float32 cases used the wrong vertical sigma in their kernel oracle, and clear/bypass rebinds with tiny sigma made no pixel change and correctly produced no undo entry. Exact reader/log/XML preimages preserved. Correct reader uses explicit Y/X sigma and requests a nontrivial replacement sigma. Existing expected values, tolerances and reference fingerprints unchanged.",
+  "cleanup": {
+    "owned_scratch_retired": true,
+    "retention": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-retention578\\receipt.json",
+      "bytes": 16740,
+      "sha256": "3b42536b32c555a43561bf936684992363cff6a4f4206b4c713a173c3c762fef"
+    },
+    "lossless_member_hashes_verified": true,
+    "recovered_bytes": 1760807,
+    "storage": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-final580.json",
+      "bytes": 1511,
+      "sha256": "1df7c7cde835e68182ca980b75fe865d2667031eb7458b96663b036ec5b897fa"
+    },
+    "full_8GiB_verified": false,
+    "unknown": "Two denied pytest cache subtrees. Known bytes are not a complete upper bound.",
+    "retired_inputs": "Raw build manifests/logs and reader preimages recover from retention578 diagnostics.zip. Final four disjoint full captures and SDK diagnostics retained. Replaced SDK bytes unavailable with identities recorded. No cache/runtime/SDK/checkouts archived.",
+    "known_generated_bytes_at_snapshot": 8569313063,
+    "headroom_upper_bound_bytes_at_snapshot": 20621529
+  },
+  "receipts": {
+    "calibrated-gaussian-windows566": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-windows566\\receipt.json",
+      "bytes": 58816,
+      "sha256": "73378406d69f75048108581ef7b53dd8f16a9c0822e72ff2596dcfa09d7806f3"
+    },
+    "calibrated-gaussian-windows-resume575": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-windows-resume575\\receipt.json",
+      "bytes": 58894,
+      "sha256": "686913f3c6c8c521fad69b13cec54fdb39613b3a267026c0f0afece556051ce6"
+    },
+    "calibrated-gaussian-linux567": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-linux567\\receipt.json",
+      "bytes": 167929,
+      "sha256": "c1cf743cb1d19bc19b387c0bcea2f951ca7acf7dc2f20a4f8fe3ca9094b02588"
+    },
+    "calibrated-gaussian-sdk-windows568": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-sdk-windows568\\receipt.json",
+      "bytes": 57005,
+      "sha256": "0d74c897002a7ff27f748c8189787ba6afac6817def9c417fc0b736efb49ad24"
+    },
+    "calibrated-gaussian-sdk-linux568": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-sdk-linux568\\receipt.json",
+      "bytes": 35792,
+      "sha256": "82169863ae26221207e20ccc24262d6d9eef8abf6aebf709a89ca8a090e4a3ac"
+    },
+    "calibrated-gaussian-installed-focused569": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-focused569\\receipt.json",
+      "bytes": 19013,
+      "sha256": "cae162924d512c8b4c4174cea11847abf212ec6a2c98e06a35f86c60fa3198f7"
+    },
+    "calibrated-gaussian-installed-focused576": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-focused576\\receipt.json",
+      "bytes": 18966,
+      "sha256": "3e35dad350cf8a7c0fbf0e5a486ff435495eb5f9990d23484811cdfa5be97d1a"
+    },
+    "calibrated-gaussian-installed-main570": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-main570\\receipt.json",
+      "bytes": 137054,
+      "sha256": "1aa0ac2905eddafb0f44ad2213e456bc27a147188cadf8d6fb14a8a08c90a988"
+    },
+    "calibrated-gaussian-installed-axis571": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-axis571\\receipt.json",
+      "bytes": 26435,
+      "sha256": "317218e86f9f7835f54334e694cdb4d251db00e226a19e86fd6f17cedfae9144"
+    },
+    "calibrated-gaussian-installed-imgui_cpp572": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-imgui_cpp572\\receipt.json",
+      "bytes": 22315,
+      "sha256": "d15bb956d1454967d5073462f07429af77ae58cd6f62267cdd2f16d0ce96d7e8"
+    },
+    "calibrated-gaussian-installed-imgui_python573": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-installed-imgui_python573\\receipt.json",
+      "bytes": 19959,
+      "sha256": "5ea86b3d745c4c934f89f2e7129b7453abdd137b3d8847e1cbd7b1bc1afe8608"
+    },
+    "calibrated-gaussian-partition577": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-partition577\\receipt.json",
+      "bytes": 1950,
+      "sha256": "c9a907205535e7f6873409c361dabafd896efb1ca495f1ed783acfe39075a371"
+    },
+    "calibrated-gaussian-retention578": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-retention578\\receipt.json",
+      "bytes": 16740,
+      "sha256": "3b42536b32c555a43561bf936684992363cff6a4f4206b4c713a173c3c762fef"
+    }
+  },
+  "remaining": [
+    "Live Gaussian panel capture/scaled labels and preview/Apply targets",
+    "Freeze command record/admission in GaussianJobs, use its existing Application validation and publication path",
+    "Explicit calibrated Gaussian recorder replay/rebind with original source/history tests in both actual UI hosts",
+    "Generation-aware display/XYZ/measurement/profile/histogram/live plot caches, then Global/bypass controls",
+    "Global-state persistence/session/I/O, bulk workflow support, original/platform/RGB and matched-performance gates"
+  ],
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified": 0
+  },
+  "performance_claim": "No image-processing speed or memory superiority established.",
+  "acceptance_claim": false
+}

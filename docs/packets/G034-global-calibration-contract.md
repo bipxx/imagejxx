@@ -2,7 +2,9 @@
 
 Status: native metadata, generic execution, dedicated factories and the new
 explicit calibrated command envelope/admission/replay API are scoped verified.
-Current ImGui command/recorder dispatch, live caches and persistence remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
+Six live axis/projection ImGui routes are verified. Native Gaussian envelope
+support is verified; its live preview/Apply/recorder, live caches and persistence
+remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
 The thirteen-case [reference](../parity/reviews/G034-global-calibration-reference002.json)
 comes from actual pinned ImageJ1.54r ImagePlus/Calibration execution. It does not
 invoke the private Calibrator dialog or qualify all calibration functions.
@@ -239,3 +241,20 @@ Next: scaled Gaussian/live replay, then typed effective values and generation
 keys in display/XYZ/measurement/histogram/plot caches before Global/bypass
 controls. Bulk workflows, session/I/O, original/platform/RGB variants and matched
 performance remain open. [Evidence](../parity/reviews/G034-calibrated-command-ui-progress001.json).
+
+## Gaussian native handoff — 2026-10-28
+
+Reuse the same calibrated-command API with GaussianBlurCommandOptions and a full
+captured target. Its validated legacy Gaussian descriptor retains raw/scaled
+intent; original local and effective calibration stay separate. Strict replay
+restores frozen positions after dependency checks; explicit rebind uses the new
+capture's target/options. Whole-plane selection revision is canonical zero only
+in this new descriptor. Both installed SDKs and 52 new cases pass; no live Gaussian
+UI completion follows. Rebuild C++ request-variant clients.
+
+Implement the panel/jobs/Window handoff in THREE_AGENT_EXECUTION. GaussianJobs
+already validates Application targets during poll and preview installation; reuse
+that guard. Retain one admitted envelope record and bound per lane, and stage its
+record before native publication. Local/legacy routes keep their old grammar.
+Then address live effective display/analysis caches and shared Global controls.
+[Evidence](../parity/reviews/G034-calibrated-gaussian-command-progress001.json).

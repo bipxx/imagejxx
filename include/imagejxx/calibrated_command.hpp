@@ -1,12 +1,13 @@
 #pragma once
 #include <imagejxx/execution.hpp>
+#include <imagejxx/gaussian_command.hpp>
 #include <imagejxx/imagej_projection_execution.hpp>
 #include <variant>
 
 namespace imagejxx {
 using CalibratedCommandRequest = std::variant<AxisPlaneExportRequest,
     AxisRangeResliceRequest, AxisRangeOrientationRequest, AxisRangeSpacingRequest,
-    AxisRangeSlicerResizeRequest, ImageJProjectionDocumentRequest>;
+    AxisRangeSlicerResizeRequest, ImageJProjectionDocumentRequest, GaussianBlurCommandOptions>;
 
 struct CalibratedCommandLimits {
   std::size_t max_record_bytes = 16ULL * 1024 * 1024;

@@ -6,7 +6,8 @@
 [calibrated command contract](CALIBRATED_COMMANDS.md) and
 [UI dispatch specification](packets/G034-global-calibration-contract.md).
 Six live routes/individual recorder replay are verified in both hosts. Next:
-scaled Gaussian/live replay and generation-aware caches, then Global/bypass
+Gaussian preview/Apply/recorder adoption of the verified envelope, then live
+cache generations and Global/bypass
 controls. Session/I/O and matched performance remain open.
 Reuse private descriptor/factory bridges and current caches/SDKs; preserve old
 local record formats. Capture on the caller thread and avoid per-frame record/

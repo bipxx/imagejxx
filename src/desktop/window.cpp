@@ -1626,7 +1626,9 @@ struct Window::Impl {
     owner.controller_->validate_target(command.capture());
     return std::visit([&](const auto& request)->std::uint64_t {
       using R=std::decay_t<decltype(request)>;
-      if constexpr(std::is_same_v<R,ImageJProjectionDocumentRequest>) {
+      if constexpr(std::is_same_v<R,GaussianBlurCommandOptions>) {
+        throw std::invalid_argument("Calibrated Gaussian UI dispatch requires its preview/Apply integration");
+      } else if constexpr(std::is_same_v<R,ImageJProjectionDocumentRequest>) {
         if(owner.controller_->active_document_id()!=command.capture().document_id())throw RevisionConflict();
         const auto cap=processingCap();
         if(command.working_bytes()>cap)throw std::invalid_argument("Projection exceeds current processing memory budget");
@@ -11372,6 +11374,7 @@ void Window::Impl::recorder() {
       if(ImGui::Button("Rebind calibrated command..."))guard([&] {
         const auto record=metadataObjectFromJson(step);validate_calibrated_command_record(record);
         const auto operation=string(get(step,"operation"));
+        if(operation=="gaussian_blur_imagej")throw std::invalid_argument("Calibrated Gaussian recorder controls require preview/Apply integration");
         if(operation=="project_imagej")owner.action("show_imagej_projection",{{"record",step}});
         else if(operation=="axis_range_spacing")owner.action("show_axis_range_spacing",{{"record",step}});
         else if(operation=="axis_range_slicer_resize")owner.action("show_axis_range_slicer_resize",{{"record",step}});

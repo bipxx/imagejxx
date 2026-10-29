@@ -1,5 +1,7 @@
 #pragma once
 #include "axis_command_record.hpp"
+#include "target_record_internal.hpp"
+#include <imagejxx/gaussian_command.hpp>
 #include <imagejxx/axis_extraction_command.hpp>
 #include <imagejxx/axis_orientation_command.hpp>
 #include <imagejxx/axis_spacing_command.hpp>
@@ -7,6 +9,12 @@
 #include <imagejxx/imagej_projection_execution.hpp>
 
 namespace imagejxx::detail {
+struct GaussianDescriptorRecord {
+  GaussianBlurCommandOptions options;
+  SpatialCalibration calibration;
+  TargetRecord target;
+};
+GaussianDescriptorRecord gaussian_descriptor_request(const MetadataObject&);
 std::pair<AxisExtractionLayout,MetadataObject> extraction_descriptor(
     const axis_command_record::SourceRecord&, const AxisExtractionRequest&);
 AxisExtractionRequest extraction_descriptor_request(const MetadataObject&);
