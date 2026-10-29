@@ -12,6 +12,7 @@
 #include <variant>
 #include <vector>
 
+namespace imagejxx {class ResolvedCalibratedCommand;}
 namespace imagejxx::desktop {
 
 // A frozen presentation delta, never a source/result/resource owner. Consumers
@@ -47,6 +48,8 @@ public:
                        std::uint64_t generation);
   void cancel_preview();
   bool request_apply(const ResolvedGaussianBlurCommand &command);
+  bool request_apply(const ResolvedCalibratedCommand &command);
+  const MetadataObject& apply_record() const;
   bool request_apply(const ResolvedRankFilterCommand &command);
   void cancel_all();
   void document_closed(std::uint64_t document_id);
@@ -98,6 +101,7 @@ private:
     MetadataObject command_record;
     std::optional<std::uint64_t> request_generation, published_document_id;
     std::uint64_t source_id = 0;
+    std::size_t record_working_bytes = 0;
     // Retain the diagnostic name even after command/result ownership is freed.
     const char *name = "Gaussian";
     std::string exit = "idle", error;
@@ -108,9 +112,10 @@ private:
   static const char *operation_id(const Command &command);
   static const char *command_name(const Command &command);
   void start(Lane &lane, const Command &command);
+  void admit_record(Lane&,const ResolvedCalibratedCommand* = nullptr);
   bool request_preview_command(const Command &command,
                                std::uint64_t generation);
-  bool request_apply_command(const Command &command);
+  bool request_apply_command(const Command &command,const ResolvedCalibratedCommand* = nullptr);
   void release(Lane &lane, const char *exit, std::string error = {});
   void reject_generation(std::uint64_t generation, std::string reason);
   std::string invalid_source(const Lane &lane,

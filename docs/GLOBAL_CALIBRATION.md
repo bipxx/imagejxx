@@ -2,10 +2,12 @@
 
 The native core provides immutable calibration values, a metadata-only resolver
 and Application-owned global state. This is the foundation for global editor
-integration. Existing processing/target APIs and ordinary DocumentSnapshot reads
-continue to use local document calibration; downstream consumers and the shared
-ImGui Global option are not yet connected. Setting this explicit state alone
-does not change processing output or enable global calibration in the editor.
+integration. Application-minted targets carry effective values through generic
+execution, six axis/projection routes and Gaussian preview/Apply/replay in both
+ImGui hosts. Ordinary DocumentSnapshot reads and detached legacy commands stay
+local. Live display/XYZ/analysis caches and the shared Global/bypass controls
+remain pending. See [current progress](PLAN.md) and
+[Gaussian UI evidence](parity/reviews/G034-calibrated-gaussian-ui-progress001.json).
 
 ## Values and resolution
 

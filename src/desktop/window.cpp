@@ -1627,7 +1627,8 @@ struct Window::Impl {
     return std::visit([&](const auto& request)->std::uint64_t {
       using R=std::decay_t<decltype(request)>;
       if constexpr(std::is_same_v<R,GaussianBlurCommandOptions>) {
-        throw std::invalid_argument("Calibrated Gaussian UI dispatch requires its preview/Apply integration");
+        const auto gaussian=resolve_gaussian_command(command.capture(),request);
+        requestGaussian(gaussian,{},&command);return 0;
       } else if constexpr(std::is_same_v<R,ImageJProjectionDocumentRequest>) {
         if(owner.controller_->active_document_id()!=command.capture().document_id())throw RevisionConflict();
         const auto cap=processingCap();
@@ -3318,12 +3319,13 @@ struct Window::Impl {
     (*probe)(event);
   }
   void requestGaussian(const ResolvedGaussianBlurCommand &command,
-                       std::optional<std::uint64_t> generation = std::nullopt) {
+                       std::optional<std::uint64_t> generation = std::nullopt,
+                       const ResolvedCalibratedCommand* frozen = nullptr) {
     const auto source = owner.documentById(command.target().document_id());
     if (!gaussianSourceAllowed(*source) || owner.busy())
       throw std::invalid_argument(
           "Gaussian requires an idle active UInt8 gray/RGB, UInt16 gray or Float32 gray document");
-    requestPlaneFilter(command, generation, "Gaussian", "Processing Gaussian blur...");
+    requestPlaneFilter(command, generation, "Gaussian", "Processing Gaussian blur...",frozen);
   }
   void requestRank(const ResolvedRankFilterCommand &command,
                    std::optional<std::uint64_t> generation = std::nullopt) {
@@ -3362,7 +3364,8 @@ struct Window::Impl {
   template <class Command>
   void requestPlaneFilter(const Command &command,
                            std::optional<std::uint64_t> generation,
-                           const char *name, const char *applyStatus) {
+                           const char *name, const char *applyStatus,
+                           const ResolvedCalibratedCommand* frozen = nullptr) {
     if (command.target().execution_mode() != ExecutionMode::Planes)
       throw std::invalid_argument(std::string(name) + " desktop targets require XY-plane execution");
     if constexpr (std::is_same_v<Command, ResolvedGaussianBlurCommand>) {
@@ -3381,7 +3384,7 @@ struct Window::Impl {
     bool admitted;
     try {
       admitted = generation ? gaussianJobs.request_preview(command, *generation)
-                            : gaussianJobs.request_apply(command);
+                            : frozen ? gaussianJobs.request_apply(*frozen) : gaussianJobs.request_apply(command);
       if constexpr (std::is_same_v<Command, ResolvedRankFilterCommand>) {
         if (rankProbe && admitted) {
           const auto stamp = rankRuntimeSteadyNanoseconds();
@@ -3700,7 +3703,7 @@ struct Window::Impl {
         [this](const ResolvedGaussianBlurCommand &command,
                const OperationJob &completed) {
           // Stage every allocating output/record operation before native commit.
-          Json step = owner.recording ? metadataJson(command.record()) : Json();
+          Json step = owner.recording ? metadataJson(gaussianJobs.apply_record()) : Json();
           OutputPublication outputs(owner.results, owner.workflow, {}, "", std::move(step));
           std::string completedStatus = "Edit complete";
           const auto publicationJobId = completed.info().id;
@@ -4505,7 +4508,7 @@ struct Window::Impl {
       rankPanel.cancel([this] { cancelGaussianPreview(); });
       gaussianPanel.cancel([this] { cancelGaussianPreview(); });
       cancelGaussianPreview();
-      gaussianPanel.show(d->nativeSnapshot());
+      gaussianPanel.show(calibratedCapture(d->nativeSnapshot()));
       gaussianReadbackRequested = true;
       return;
     }
@@ -9597,10 +9600,14 @@ void Window::action(const std::string &name, const Json &p) {
   if (name == "gaussian_replay") {
     const auto record = metadataObjectFromJson(get(p, "record"));
     const auto source = d->nativeSnapshot();
-    const auto command = p.contains("gaussian_rebind")
-        ? rebind_gaussian_command(source, record, gaussianRebindRequest(p["gaussian_rebind"]))
-        : gaussian_command_from_record(source, record);
-    impl->requestGaussian(command);
+    if(p.contains("gaussian_rebind")) {
+      validate_gaussian_command_record(record);
+      const auto& options=get(p.at("record"),"options");
+      const auto capture=impl->calibratedCapture(source);
+      const auto target=imagejxx::detail::CalibrationPreparation::target(capture,gaussianRebindRequest(p["gaussian_rebind"]));
+      impl->requestGaussian(resolve_gaussian_command(target,GaussianBlurCommandOptions{
+          options.at("sigma").get<double>(),options.at("scaled_units").get<bool>()}));
+    } else impl->requestGaussian(gaussian_command_from_record(source,record));
     return;
   }
   if (name == "rank_replay") {
@@ -11374,8 +11381,13 @@ void Window::Impl::recorder() {
       if(ImGui::Button("Rebind calibrated command..."))guard([&] {
         const auto record=metadataObjectFromJson(step);validate_calibrated_command_record(record);
         const auto operation=string(get(step,"operation"));
-        if(operation=="gaussian_blur_imagej")throw std::invalid_argument("Calibrated Gaussian recorder controls require preview/Apply integration");
-        if(operation=="project_imagej")owner.action("show_imagej_projection",{{"record",step}});
+        if(operation=="gaussian_blur_imagej") {
+          const auto& options=step.at("descriptor").at("command").at("options");
+          GaussianBlurCommandOptions intent{options.at("sigma").get<double>(),options.at("scaled_units").get<bool>()};
+          rankPanel.cancel([this]{cancelGaussianPreview();});gaussianPanel.cancel([this]{cancelGaussianPreview();});
+          cancelGaussianPreview();gaussianPanel.show(calibratedCapture(owner.nativeSnapshot()),intent);
+          gaussianReadbackRequested=true;
+        } else if(operation=="project_imagej")owner.action("show_imagej_projection",{{"record",step}});
         else if(operation=="axis_range_spacing")owner.action("show_axis_range_spacing",{{"record",step}});
         else if(operation=="axis_range_slicer_resize")owner.action("show_axis_range_slicer_resize",{{"record",step}});
         else showAxisExtraction(owner.nativeSnapshot(),operation=="axis_range_orientation"?AxisExtractionKind::OrientedRange:
@@ -14027,9 +14039,16 @@ void Window::Impl::draw() {
            requestGaussian(command, generation);
          },
          [this] { cancelGaussianPreview(); },
-         [this](const ResolvedGaussianBlurCommand &command) { requestGaussian(command); },
+         [this](const ResolvedGaussianBlurCommand &command) {
+           if(gaussianPanel.rebinding()) {
+             const auto frozen=resolve_calibrated_command(command.target(),command.options(),
+                 CalibratedCommandLimits{16ULL*1024*1024,processingCap()});
+             requestGaussian(command,{},&frozen);
+           } else requestGaussian(command);
+         },
          [this](PlanePosition position) { showPlaneOperationPreview(position); },
-         [this](PlanePosition position) { return planeOperationPreviewVisible(position); }});
+         [this](PlanePosition position) { return planeOperationPreviewVisible(position); },
+         [this](const ResolvedTarget& capture) {owner.controller_->validate_target(capture);}});
   });
   guard([&] {
     rankPanel.draw(gaussianCurrent(), owner.busy(),

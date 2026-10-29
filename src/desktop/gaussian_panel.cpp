@@ -1,4 +1,5 @@
 #include "gaussian_panel.hpp"
+#include "../native/calibration_preparation_internal.hpp"
 #include "../native/floating_charconv.hpp"
 
 #include <algorithm>
@@ -68,19 +69,28 @@ Json positionJson(PlanePosition position) {
 
 } // namespace
 
-void GaussianPanel::show(const DocumentSnapshot &source) {
+void GaussianPanel::show(const DocumentSnapshot &source) {open(source,{},{});}
+void GaussianPanel::show(const ResolvedTarget& capture,std::optional<GaussianBlurCommandOptions> options) {
+  open(capture.source(),capture,options);
+}
+void GaussianPanel::open(const DocumentSnapshot& source,std::optional<ResolvedTarget> capture,
+                         std::optional<GaussianBlurCommandOptions> options) {
   if (open_)
     throw std::logic_error("Cancel the visible Gaussian dialog before reopening");
-  const bool available =
-      gaussian_scaled_units_available(source.data().dataset.calibration());
-  const auto text = sigmaText(remembered_.sigma);
+  const auto spatial=capture?capture->calibration():source.data().dataset.calibration();
+  const bool available=gaussian_scaled_units_available(spatial);
+  const auto initial=options.value_or(remembered_);validate_gaussian_command_options(initial);
+  const auto text = sigmaText(initial.sigma);
+  calibrationCapture_=std::move(capture);spatial_=spatial;
+  contextCurrent_=true;contextError_.clear();rebind_=bool(options);
   source_ = source;
-  scientificTargets_ = scientificSource(source);
+  scientificTargets_ = rebind_ || scientificSource(source);
   targetPanel_.capture(source);
+  if(rebind_)targetPanel_.enablePositions();
   sourceId_ = source.id();
   sigmaText_ = text;
   scaledAvailable_ = available;
-  scaled_ = available && remembered_.scaled_units;
+  scaled_ = available && initial.scaled_units;
   preview_ = previewIssued_ = stackPrompt_ = applyBusy_ = false;
   // The host gets one release at the end even when Preview was never enabled.
   previewNeedsRelease_ = true;
@@ -96,6 +106,11 @@ void GaussianPanel::show(const DocumentSnapshot &source) {
   rebuildDraft();
 }
 
+ResolvedGaussianBlurCommand GaussianPanel::resolve(const TargetRequest& request,GaussianBlurCommandOptions options) const {
+  if(calibrationCapture_)
+    return resolve_gaussian_command(imagejxx::detail::CalibrationPreparation::target(*calibrationCapture_,request),options);
+  return resolve_gaussian_command(*source_,request,options);
+}
 void GaussianPanel::rebuildDraft() {
   draft_.reset();
   previewDraft_.reset();
@@ -107,11 +122,10 @@ void GaussianPanel::rebuildDraft() {
     GaussianBlurCommandOptions options{parseSigma(sigmaText_), scaled_};
     const auto request = scientificTargets_ ? targetPanel_.request()
                                             : TargetRequest{};
-    auto command = resolve_gaussian_command(*source_, request, options);
+    auto command = resolve(request, options);
     if (scientificTargets_) {
       targetPanel_.resolvePreview(command.target());
-      previewDraft_.emplace(resolve_gaussian_command(
-          *source_, targetPanel_.previewRequest(command.target()), options));
+      previewDraft_.emplace(resolve(targetPanel_.previewRequest(command.target()), options));
     } else {
       previewDraft_ = command;
     }
@@ -133,7 +147,7 @@ void GaussianPanel::releasePreview(const CancelPreview &cancel_preview) {
 }
 
 void GaussianPanel::requestPreview(const Callbacks &callbacks) {
-  if (!open_ || stackPrompt_ || !preview_ || !draftValid_ || !previewDraft_)
+  if (!open_ || stackPrompt_ || !preview_ || !contextCurrent_ || !draftValid_ || !previewDraft_)
     return;
   previewError_.clear();
   if (!callbacks.preview) {
@@ -157,7 +171,7 @@ void GaussianPanel::close(const CancelPreview &cancel_preview,
   open_ = focus_ = focusStack_ = stackPrompt_ = false;
   draftValid_ = false;
   preview_ = false;
-  source_.reset();
+  source_.reset();calibrationCapture_.reset();
   draft_.reset();
   previewDraft_.reset();
   accepted_.reset();
@@ -176,7 +190,7 @@ void GaussianPanel::setPreviewError(std::string error) {
 }
 
 void GaussianPanel::accept(const Callbacks &callbacks) {
-  if (!draftValid_ || !draft_ || !source_ || applyBusy_)
+  if (!draftValid_ || !contextCurrent_ || !draft_ || !source_ || applyBusy_)
     return;
   accepted_ = draft_;
   remembered_ = draft_->options();
@@ -192,7 +206,7 @@ void GaussianPanel::accept(const Callbacks &callbacks) {
 }
 
 void GaussianPanel::apply(bool all_z, const Callbacks &callbacks) {
-  if (!accepted_ || !source_ || applyBusy_)
+  if (!accepted_ || !contextCurrent_ || !source_ || applyBusy_)
     return;
   if (!callbacks.apply)
     throw std::logic_error("Gaussian Apply callback is unavailable");
@@ -209,7 +223,7 @@ void GaussianPanel::apply(bool all_z, const Callbacks &callbacks) {
   request.scope = all_z ? TargetScope::AllZ : TargetScope::CurrentPlane;
   // Resolving against the retained snapshot preserves the original C/T/Z/ROI.
   auto command =
-      resolve_gaussian_command(*source_, request, accepted_->options());
+      resolve(request, accepted_->options());
   target_ = metadataJson(command.target().record());
   close(callbacks.cancel_preview, "apply");
   callbacks.apply(command);
@@ -251,6 +265,14 @@ void GaussianPanel::draw(const std::optional<DocumentSnapshot> &current,
     close(callbacks.cancel_preview, "source_changed");
     return;
   }
+  contextCurrent_=true;contextError_.clear();
+  if(calibrationCapture_ && callbacks.validate_context) {
+    try {callbacks.validate_context(*calibrationCapture_);}
+    catch(const std::exception&) {
+      contextCurrent_=false;preview_=false;
+      contextError_="Calibration context changed; cancel and reopen Gaussian.";
+    }
+  }
   const auto &display = current->display();
   const PlanePosition canvas{display.t, display.c, display.crosshair[2]};
   bool staged = false;
@@ -275,7 +297,7 @@ void GaussianPanel::draw(const std::optional<DocumentSnapshot> &current,
   bool windowOpen = true;
   const bool contentsVisible = ImGui::Begin(
       stackPrompt_ ? "Process Stack?###ImageJGaussianPanel"
-                   : "Gaussian Blur###ImageJGaussianPanel",
+                   : rebind_ ? "Rebind Gaussian Blur###ImageJGaussianPanel" : "Gaussian Blur###ImageJGaussianPanel",
       &windowOpen,
       ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
   const auto *window = ImGui::GetCurrentWindowRead();
@@ -327,7 +349,7 @@ void GaussianPanel::draw(const std::optional<DocumentSnapshot> &current,
       focus_ = false;
       if (scaledAvailable_) {
         const std::string label = "Scaled Units (" +
-                                  source_->data().dataset.calibration().unit +
+                                  spatial_.unit +
                                   ")";
         changed |= ImGui::Checkbox(label.c_str(), &scaled_);
         control("scaled");
@@ -346,18 +368,19 @@ void GaussianPanel::draw(const std::optional<DocumentSnapshot> &current,
           rebuildDraft();
         }
       }
-      ImGui::BeginDisabled(!draftValid_);
+      ImGui::BeginDisabled(!draftValid_ || !contextCurrent_);
       ImGui::Checkbox("Preview", &preview_);
-      control("preview", draftValid_);
+      control("preview", draftValid_ && contextCurrent_);
       ImGui::EndDisabled();
       if (!error_.empty())
         ImGui::TextWrapped("%s", error_.c_str());
       if (!previewError_.empty())
         ImGui::TextWrapped("Preview: %s", previewError_.c_str());
-      ImGui::BeginDisabled(!draftValid_ || applyBusy_);
+      if(!contextError_.empty())ImGui::TextWrapped("%s",contextError_.c_str());
+      ImGui::BeginDisabled(!draftValid_ || !contextCurrent_ || applyBusy_);
       if (ImGui::Button(scientificTargets_ ? "Apply" : "OK"))
         action = Action::Accept;
-      control("ok", draftValid_ && !applyBusy_);
+      control("ok", draftValid_ && contextCurrent_ && !applyBusy_);
       ImGui::EndDisabled();
       ImGui::SameLine();
       if (ImGui::Button("Cancel"))
@@ -374,23 +397,24 @@ void GaussianPanel::draw(const std::optional<DocumentSnapshot> &current,
           action = Action::Accept;
       }
     } else {
+      if(!contextError_.empty())ImGui::TextWrapped("%s",contextError_.c_str());
       ImGui::TextWrapped(
           "Process all Z slices at the captured channel and time point?");
       int focusedChoice = 0;
-      ImGui::BeginDisabled(applyBusy_);
+      ImGui::BeginDisabled(applyBusy_ || !contextCurrent_);
       if (focusStack_)
         ImGui::SetKeyboardFocusHere();
       if (ImGui::Button("Yes"))
         action = Action::StackYes;
       if (focusStack_)
         ImGui::SetItemDefaultFocus();
-      control("stack_yes", !applyBusy_);
+      control("stack_yes", !applyBusy_ && contextCurrent_);
       ImGui::SameLine();
       if (ImGui::Button("No"))
         action = Action::StackNo;
       if (ImGui::IsItemFocused())
         focusedChoice = 1;
-      control("stack_no", !applyBusy_);
+      control("stack_no", !applyBusy_ && contextCurrent_);
       ImGui::EndDisabled();
       ImGui::SameLine();
       if (ImGui::Button("Cancel"))
@@ -404,18 +428,18 @@ void GaussianPanel::draw(const std::optional<DocumentSnapshot> &current,
           !io.KeySuper) {
         if (ImGui::IsKeyPressed(ImGuiKey_C, false))
           action = Action::Cancel;
-        else if (!applyBusy_ &&
+        else if (!applyBusy_ && contextCurrent_ &&
                  (ImGui::IsKeyPressed(ImGuiKey_N, false) ||
                   ImGui::IsKeyPressed(ImGuiKey_D, false)))
           action = Action::StackNo;
-        else if (!applyBusy_ &&
+        else if (!applyBusy_ && contextCurrent_ &&
                  (ImGui::IsKeyPressed(ImGuiKey_Y, false) ||
                   ImGui::IsKeyPressed(ImGuiKey_S, false)))
           action = Action::StackYes;
         else if (ImGui::IsKeyPressed(ImGuiKey_Enter, false)) {
           if (focusedChoice == 2)
             action = Action::Cancel;
-          else if (!applyBusy_)
+          else if (!applyBusy_ && contextCurrent_)
             action = focusedChoice == 1 ? Action::StackNo : Action::StackYes;
         }
       }
@@ -461,6 +485,8 @@ Json GaussianPanel::diagnostics() const {
           {"sigma_text", sigmaText_},
           {"sigma", draft_ ? Json(draft_->options().sigma) : Json(nullptr)},
           {"scaled_available", scaledAvailable_},
+          {"calibration_current",contextCurrent_},{"calibration_unit",spatial_.unit},
+          {"calibration_error",contextError_},{"rebind",rebind_},
           {"scaled_units", scaled_},
           {"preview", preview_},
           {"preview_requested", previewIssued_},

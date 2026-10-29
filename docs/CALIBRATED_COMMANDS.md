@@ -95,8 +95,8 @@ unsupported; scalar refusal coverage does not certify RGB functionality.
 
 ## Remaining integration
 
-Both ImGui hosts now use this envelope for six live global/bypassed actions and
-individual recorder replay/rebind. Dialogs capture on opening; captured geometry
+Both ImGui hosts now use this envelope for six axis/projection routes plus
+Gaussian preview/Apply and individual recorder replay/rebind. Dialogs capture on opening; captured geometry
 drives spacing/Slicer defaults/previews and changed context disables Apply.
 Projection reserves command admission and publishes through its original capture.
 Ordinary local actions retain old records with guard-only application bindings;
@@ -107,7 +107,7 @@ workflow conversion explicitly rejects unsupported schemas.
 Actual UI cases each use 119/128 frames. Installed verification passes 2,192 of
 2,194 cases with two optional skips; CI actual capture/reader and 23 transport
 checks pass. [UI evidence](parity/reviews/G034-calibrated-command-ui-progress001.json).
-Scaled Gaussian/live replay, display/XYZ/analysis caches and Global/bypass controls
+Display/XYZ/analysis caches, remaining consumer audit and Global/bypass controls
 remain open, along with global-state session/I/O migration, original Calibrator
 variants, supported platforms, RGB Slicer and matched speed/memory comparisons. Follow [the active plan](PLAN.md) and
 [the calibration contract](packets/G034-global-calibration-contract.md).
@@ -154,5 +154,14 @@ and update exhaustive visitors; this does not promise binary compatibility with
 the previous variant type. The installed Windows/Linux fixtures pass 4/4 clients.
 The 52 new Python cases pass in the 2,246-case installed union (2,244 passed/two
 optional skips). [Evidence](parity/reviews/G034-calibrated-gaussian-command-progress001.json).
-Live Gaussian preview/Apply/recorder integration remains pending; generic UI
-controls explicitly refuse this family until that integration is complete.
+Live Gaussian preview/Apply and recorder strict replay/rebind now use this
+envelope in both ImGui hosts. Dialogs retain a minted effective capture; context
+changes disable controls and stale jobs cannot publish. Replay retains original
+author limits/record while rechecking the current backend cap. Rebind prefills
+raw sigma/scaled intent and authors a complete new target; explicit calibrated
+rebind remains an envelope even after Global clear. Ordinary local actions and
+strict legacy replay preserve legacy semantics. Stack No retains captured Z;
+Yes uses all Z at captured C/T. Preview/cancel never auto-records.
+[UI evidence](parity/reviews/G034-calibrated-gaussian-ui-progress001.json).
+Live display/XYZ/analysis caches, remaining consumer audit and Global/bypass
+controls remain pending. See [the current plan](PLAN.md).

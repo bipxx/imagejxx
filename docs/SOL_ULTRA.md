@@ -5,10 +5,12 @@
 [PLAN](PLAN.md) owns status/counts. Use the verified opaque
 [calibrated command contract](CALIBRATED_COMMANDS.md) and
 [UI dispatch specification](packets/G034-global-calibration-contract.md).
-Six live routes/individual recorder replay are verified in both hosts. Next:
-Gaussian preview/Apply/recorder adoption of the verified envelope, then live
-cache generations and Global/bypass
-controls. Session/I/O and matched performance remain open.
+Six axis/projection routes plus Gaussian preview/Apply/recorder are verified
+in both hosts. Next: display/XYZ/world geometry, then measurement/profile/
+histogram/threshold/live-plot caches and remaining command consumers before
+Global/bypass controls. Use the detailed next packet in PLAN; keep local metadata
+accessors and captured independent plots stable. Session/I/O and matched
+performance remain open.
 Reuse private descriptor/factory bridges and current caches/SDKs; preserve old
 local record formats. Capture on the caller thread and avoid per-frame record/
 table decoding. Split capture-heavy verification into disjoint bounded batches;

@@ -1,14 +1,29 @@
 # Three-agent execution plan
 
+## Next packet ownership: live effective consumers
+
+These are handoff specifications, not currently running agents. PLAN owns counts.
+
+| Role | Files/responsibility | Required handoff |
+| --- | --- | --- |
+| Display/geometry | document.cpp/.hpp view-specific spacing inputs, orthogonal.cpp/.hpp geometry/cache seams; coordinate every Window edit with its sole owner. | Preserve local Document::calibration/persistence; pass typed captured values and existing guards. Verify aspect/world mapping, own bypass and ignored independence without per-frame record/table decoding. |
+| Consumer/Window owner | window.cpp, histogram_panel and threshold_panel integration; inventory measurement/profile/live-plot, playback, selection enlargement and remaining command paths. | Maintain one Window editor; stage display wiring first, analysis paths second. Existing caches/jobs own resources and validation. Retained independent plots freeze captured values. Controls remain gated until the audit is complete. |
+| Validation | tests/python, existing shared ImGui probes/CI registrations and concise evidence. | Add discriminating Set/Clear/bypass/source/plane/stale-close cases in both hosts. Preserve old union/fingerprints; sequential <=64MiB capture batches, terminal proof and member-hash retention. Core/header changes require installed SDK checks; UI-only work does not imply Linux qualification. |
+
+Deliver display/XYZ geometry before analysis caches. Each owner supplies exact
+input/invalidation/output policy and reviewable file boundaries before edits.
+Do not spawn workers from these role descriptions alone. Full specifications
+and acceptance cases are in [PLAN](PLAN.md).
+
 ## Calibrated command handoff — execution ownership
 
 [PLAN](PLAN.md) owns status/counts; the native envelope is a verified handoff.
-Six live axis/projection routes and individual recorder replay are verified.
+Six live axis/projection routes and Gaussian preview/Apply/recorder are verified.
 Remaining ownership follows [the UI specification](packets/G034-global-calibration-contract.md):
 
 | Role | Owned work | Handoff |
 | --- | --- | --- |
-| Command/controller | Six axis/projection routes and native Gaussian envelope verified; next live Gaussian preview/Apply/recorder adoption. | Preserve caller-thread captures, explicit new/legacy schema policy and guard-only local jobs. |
+| Command/controller | Own the remaining command-consumer audit and shared Window registration. Gaussian and six axis/projection routes are verified. | Preserve caller-thread captures, explicit new/legacy schema policy and guard-only local jobs. |
 | Live consumers/UI | Dedicated calibration pane and generation-aware display/XYZ/analysis cache modules. Coordinate Window registration with its owner. | Typed cached effective values; no local revision/dirty-history mutation. Enable controls after command/consumer coverage agrees. |
 | Validation | Native/Python and both actual ImGui fixtures, original provenance, cancellation/stale/history/metadata/replay and installed SDK checks. | Pin the exact disjoint test union; keep each capture batch bounded and retain failed producer/reader/receipt preimages. |
 
@@ -2722,8 +2737,10 @@ counts/assignments, preserved manifest bytes and diff hygiene. Do not compile
 the product or generate screenshot/test scratch just to update the plan. Product
 execution resumes from the P13i entry gates, not from an old construction prompt.
 
-## Next Gaussian UI execution handoff — 2026-10-28
+## Delivered Gaussian UI execution handoff — 2026-10-28
 
+This specification is delivered by the scoped Gaussian UI milestone above.
+Retain it as the handoff contract; use PLAN for remaining work.
 These are ownership boundaries, not running-agent status. The native envelope,
 existing kernel and memory estimator are verified; keep them fixed unless a
 concrete failing case requires a correction. C++ request-variant clients rebuild.

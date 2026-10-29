@@ -1,6 +1,63 @@
 # ImageJ and Fiji gap closure plan
 
-## Calibrated Gaussian native/Python command — current, 2026-10-28
+## Calibrated Gaussian live UI — current, 2026-10-28
+
+Gaussian preview/Apply, individual recorder strict replay/rebind and stack
+controls now use captured effective calibration in both ImGui hosts. Context
+changes disable the dialog and prevent stale queued publication. Strict replay
+retains frozen target/record/author limits while checking the current backend
+budget. Explicit calibrated rebind authors a complete new target and remains an
+envelope after Global clear; ordinary local actions retain legacy records.
+Stack No freezes original Z; Yes uses all Z at captured C/T. Source-local
+metadata and old record formats remain unchanged.
+
+Installed Windows: **2,252 collected / 2,250 passed / two optional hidden-OpenGL
+skips**. Exact previous 2,246-case union preserved plus six actual shared-host
+Gaussian UI cases (73/27/49 frames per host, cap128). Fifteen native controls,
+actual CI capture/reader and existing23 transport checks pass. 1,300 producer
+inputs and53 reader pins rechecked. Core archive/_native hashes unchanged;
+previous Windows/Linux SDK4/4 results retained, no new platform qualification.
+[Scoped evidence](parity/reviews/G034-calibrated-gaussian-ui-progress001.json).
+
+Owned scratch retired with lossless member-hash retention. Final batches remain
+below64MiB. Legacy diagnostic603 remains failed for110,559,692B retention;
+recovery604 preserved necessary captures and retired raw scratch. Its producer
+self-checks do not replace independent original-reference readers. Seven older
+full capture archives retired by583 are unavailable, with identities retained.
+Storage scope correction: residual denied build/ remnants add212 unknown
+subtrees to the two denied caches. **214 unknown subtrees keep the full8GiB
+budget unverified**; previous measurements retain their narrower root sets.
+
+Next, integrate typed effective inputs into live display/XYZ/world geometry and
+measurement/profile/histogram/threshold/live-plot caches. Audit remaining command
+consumers before enabling Global/bypass controls. Global-state session/I/O,
+bulk workflows, original/RGB/platform and matched speed/memory gates remain open.
+Tracker: **47 in progress /52 open /0 fully certified**; no measured speed advantage.
+
+### Next packet: live calibration consumers and cache correctness
+
+1. Inventory each consumer's spatial/density input, source/selection/plane revision,
+   current invalidation key and retained-output policy. Start at
+   Document::displaySpacing (document.cpp), orthogonal.cpp's spacing cache, Window
+   calibrated playback and selection enlargement. Audit histogram_panel,
+   threshold_panel and Window measurement/profile/live-plot paths, including
+   Rank/generic filter dispatch. Record consumers already contextual separately.
+2. Add view-specific typed effective inputs using existing Application captures
+   and validation. Preserve Document::calibration() as the local metadata accessor
+   and persistence source. Never substitute a synthetic source snapshot. Retain
+   captured density tables without decoding/copying them every frame.
+3. Reuse current cache ownership and job publication guards. Rebuild on own source,
+   selection/plane or relevant context change; ignored documents must survive
+   unrelated Global changes. Own bypass changes invalidate. Close/replacement
+   releases resources; retained independent plots preserve their captured values.
+4. First deliver display/XYZ/world geometry as one coherent slice, then analysis
+   caches and remaining command consumers. Test both hosts: effective aspect and
+   units, Set/Clear/own bypass, ignored independence, source/plane changes, stale
+   async rejection, local metadata/history preservation and close cleanup. Keep
+   previous exact test unions and original fingerprints; no UI-control enablement
+   until all consumer paths agree. Benchmark separately with matched output.
+
+## Previous milestone: calibrated Gaussian native/Python command — 2026-10-28
 
 The existing envelope now also accepts GaussianBlurCommandOptions. It captures
 raw/scaled sigma intent, effective values and complete C/Z/T/ROI/destination
@@ -19,7 +76,7 @@ Installed core SDKs pass 4/4 CTest clients on Windows/Linux, with 128 table and
 corrected its Float32 vertical-sigma oracle and no-op undo expectations; kernel,
 legacy tests, fingerprints and tolerances were unchanged. [Evidence](parity/reviews/G034-calibrated-gaussian-command-progress001.json).
 
-This does **not** finish live Gaussian preview/Apply/recorder integration. Generic
+At this historical milestone, live Gaussian preview/Apply/recorder integration was pending. Generic
 UI dispatch refuses the new family explicitly until that handoff is complete.
 Next: capture effective context in GaussianPanel, retain the envelope/admission
 in GaussianJobs, then use explicit recorder replay/rebind in both hosts. Reuse

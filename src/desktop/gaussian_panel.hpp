@@ -29,15 +29,18 @@ public:
     Apply apply;
     ShowPreviewPlane show_preview_plane;
     PreviewVisible preview_visible;
+    std::function<void(const ResolvedTarget&)> validate_context;
   };
 
   // Cancel an existing visible dialog before replacing its captured source.
   void show(const DocumentSnapshot &source);
+  void show(const ResolvedTarget&, std::optional<GaussianBlurCommandOptions> rebind_options = {});
   void draw(const std::optional<DocumentSnapshot> &current, bool apply_busy,
             const Callbacks &callbacks);
   void cancel(const CancelPreview &cancel_preview);
   void setPreviewError(std::string error);
   bool visible() const { return open_; }
+  bool rebinding() const {return rebind_;}
   Json diagnostics() const;
   const GaussianBlurCommandOptions &remembered_options() const {
     return remembered_;
@@ -45,6 +48,8 @@ public:
 
 private:
   enum class Action { None, Cancel, Accept, StackYes, StackNo };
+  void open(const DocumentSnapshot&,std::optional<ResolvedTarget>,std::optional<GaussianBlurCommandOptions>);
+  ResolvedGaussianBlurCommand resolve(const TargetRequest&,GaussianBlurCommandOptions) const;
   void rebuildDraft();
   void requestPreview(const Callbacks &callbacks);
   void releasePreview(const CancelPreview &cancel_preview);
@@ -63,6 +68,10 @@ private:
   std::uint64_t generation_ = 0, sourceId_ = 0;
   GaussianBlurCommandOptions remembered_;
   std::optional<DocumentSnapshot> source_;
+  std::optional<ResolvedTarget> calibrationCapture_;
+  SpatialCalibration spatial_;
+  bool contextCurrent_ = true, rebind_ = false;
+  std::string contextError_;
   std::optional<ResolvedGaussianBlurCommand> draft_, previewDraft_, accepted_;
   OperationTargetPanel targetPanel_;
   std::string sigmaText_, error_, previewError_, exitReason_;

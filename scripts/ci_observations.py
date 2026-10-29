@@ -138,6 +138,9 @@ EDITOR_READERS = {
     "axis-spacing": ("--axis-spacing-ui-case", "IMAGEJXX_SPACING_CPP_REPORT"),
     "slicer-resize": ("--slicer-resize-ui-case", "IMAGEJXX_SLICER_CPP_REPORT"),
     "calibrated-command": ("--calibrated-command-ui-case", "IMAGEJXX_CALIBRATED_COMMAND_CPP_REPORT"),
+    "calibrated-gaussian-flow": ("--calibrated-gaussian-flow-ui-case", "IMAGEJXX_CALIBRATED_GAUSSIAN_FLOW_CPP_REPORT"),
+    "calibrated-gaussian-stale": ("--calibrated-gaussian-stale-ui-case", "IMAGEJXX_CALIBRATED_GAUSSIAN_STALE_CPP_REPORT"),
+    "calibrated-gaussian-stack": ("--calibrated-gaussian-stack-ui-case", "IMAGEJXX_CALIBRATED_GAUSSIAN_STACK_CPP_REPORT"),
     "roi-manager": ("--scientific-roi-manager-ui-case", "IMAGEJXX_ROI_MANAGER_CPP_REPORT"),
 }
 

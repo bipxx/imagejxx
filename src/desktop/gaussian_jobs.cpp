@@ -1,4 +1,7 @@
 #include "gaussian_jobs.hpp"
+#include <imagejxx/calibrated_command.hpp>
+#include "../native/calibration_preparation_internal.hpp"
+#include <limits>
 #include "gaussian_resource_diagnostics.hpp"
 #include "../native/axis_command_record.hpp"
 #include <imagejxx/channel_display.hpp>
@@ -114,7 +117,7 @@ const char *GaussianJobs::command_name(const Command &command) {
 }
 
 void GaussianJobs::start(Lane &lane, const Command &command) {
-  lane.command = command;
+  lane.command = command;lane.record_working_bytes=0;
   lane.target = target(command).record();
   lane.command_record = std::visit([](const auto &value) {
     return value.record();
@@ -129,6 +132,23 @@ void GaussianJobs::start(Lane &lane, const Command &command) {
   lane.error.clear();
 }
 
+void GaussianJobs::admit_record(Lane& lane,const ResolvedCalibratedCommand* frozen) {
+  const auto gaussian=std::get_if<ResolvedGaussianBlurCommand>(&*lane.command);
+  if(!gaussian)return;
+  const auto& target=gaussian->target();
+  if(!frozen && !target.calibration_context() && !imagejxx::detail::CalibrationPreparation::ignores_global(target))return;
+  const auto configured=application_.job_scheduler()->limits().memory_budget;
+  const auto cap=configured?configured:std::numeric_limits<std::size_t>::max();
+  const auto command=frozen?*frozen:resolve_calibrated_command(target,gaussian->options(),
+      CalibratedCommandLimits{16ULL*1024*1024,cap});
+  if(command.working_bytes()>cap)throw std::invalid_argument("Gaussian command exceeds current processing memory budget");
+  lane.command_record=command.record();lane.record_working_bytes=command.working_bytes();
+  last_captured_command_record_=lane.command_record;
+}
+const MetadataObject& GaussianJobs::apply_record() const {
+  if(!apply_.command)throw std::logic_error("Gaussian Apply no longer owns its command record");
+  return apply_.command_record;
+}
 void GaussianJobs::release(Lane &lane, const char *exit, std::string error) {
   if (!lane.job && !lane.command)
     return; // Repeated cancellation must preserve the actual terminal error.
@@ -193,6 +213,7 @@ bool GaussianJobs::request_preview_command(const Command &command,
   }
   try {
     JobOptions options;
+    admit_record(preview_);options.resource_bytes=preview_.record_working_bytes;
     options.label = std::string(preview_.name) + " preview";
     options.retain_result_resources = true;
     options.supersedes = std::string("imagejxx.desktop.") +
@@ -227,7 +248,12 @@ bool GaussianJobs::request_apply(const ResolvedRankFilterCommand &command) {
   return request_apply_command(command);
 }
 
-bool GaussianJobs::request_apply_command(const Command &command) {
+bool GaussianJobs::request_apply(const ResolvedCalibratedCommand& command) {
+  if(command.operation()!="gaussian_blur_imagej")throw std::invalid_argument("Expected a calibrated Gaussian command");
+  return request_apply_command(resolve_gaussian_command(command.capture(),
+      std::get<GaussianBlurCommandOptions>(command.request())),&command);
+}
+bool GaussianJobs::request_apply_command(const Command &command,const ResolvedCalibratedCommand* frozen) {
   if (apply_busy()) {
     request_error_ = std::string(apply_.name) + " Apply is already outstanding";
     return false;
@@ -236,6 +262,7 @@ bool GaussianJobs::request_apply_command(const Command &command) {
   start(apply_, command);
   try {
     JobOptions options;
+    admit_record(apply_,frozen);options.resource_bytes=apply_.record_working_bytes;
     options.label = std::string(apply_.name) + " Apply";
     options.retain_result_resources = true;
     const auto parameters = std::visit([](const auto &value) {

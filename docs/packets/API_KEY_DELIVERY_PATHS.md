@@ -10,9 +10,10 @@ Strict replay takes a current capture; rebind validates original claims before a
 complete replacement within the same operation family. No live app identity or
 generation is restored from JSON. Existing local command classes/formats stay
 unchanged. Six live Window routes and individual recorder replay/rebind are
-verified in both hosts. The native Gaussian envelope also passes; next wire its
-existing panel/jobs/recorder routes, then live cache
-generations before Global/bypass controls. Preserve modal geometry and strict
+verified in both hosts, including Gaussian preview/Apply/recorder. Next reuse
+existing Application capture/validation for typed live display/XYZ/analysis
+cache inputs; start with Document::displaySpacing and orthogonal.cpp. Audit
+remaining command consumers before Global/bypass controls. Preserve modal geometry and strict
 legacy-local replay; do not restore global state from command records.
 
 ## Effective calibration processing integration — verified scope, 2026-10-28

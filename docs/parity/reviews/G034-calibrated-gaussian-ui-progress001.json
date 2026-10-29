@@ -1,0 +1,329 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-28",
+  "status": "scoped_verified",
+  "scope": "Live calibrated Gaussian preview/Apply, individual recorder replay/rebind and stack controls in the shared C++ and Python ImGui hosts. Not full ImageJ/Fiji, Global-control, original-reference, platform or performance certification.",
+  "implementation": [
+    "GaussianPanel retains the original local snapshot and a minted Application target. Effective spatial values drive units/scaled sigma; all draft/preview/AllZ targets derive from that capture. Context changes disable Preview/Apply/stack choices and retire preview resources.",
+    "GaussianJobs uses its existing worker, admission, cancellation, polling and Application publication guards. Resolve one envelope per contextual lane, copy its frozen record and working bound, recheck current scheduler cap and stage the same record before mutation. Ordinary local actions preserve legacy records; no per-frame envelope/table decoding.",
+    "Strict calibrated replay restores original target and record, including original author limits, while applying the current backend memory cap. Explicit calibrated rebind prefills raw sigma/scaled intent and authors a complete new target. It remains an envelope even after Global is cleared. Opening an ordinary local dialog afterward resets rebind intent and retains legacy recording.",
+    "Strict legacy replay remains local; explicit legacy rebind validates the old record and resolves new user scope against a current capture. In-place Apply preserves local calibration. Save/Open verifies local data and workflow blobs, not application Global-state migration.",
+    "Stack No retains the original captured Z despite navigation; Yes applies all Z at captured C/T. Context changes during the prompt disable both choices. Stale queued Apply cannot publish or record."
+  ],
+  "verification": {
+    "installed_windows": {
+      "state": "passed",
+      "original_case_count": 2246,
+      "collected": 2252,
+      "passed": 2250,
+      "skipped": 2,
+      "disjoint": true,
+      "original_case_union_preserved": true,
+      "additional_ui_cases": [
+        [
+          "tests.python.test_calibrated_gaussian_ui",
+          "test_calibrated_gaussian_controls_and_jobs[flow-imgui_cpp]"
+        ],
+        [
+          "tests.python.test_calibrated_gaussian_ui",
+          "test_calibrated_gaussian_controls_and_jobs[flow-imgui_python]"
+        ],
+        [
+          "tests.python.test_calibrated_gaussian_ui",
+          "test_calibrated_gaussian_controls_and_jobs[stack-imgui_cpp]"
+        ],
+        [
+          "tests.python.test_calibrated_gaussian_ui",
+          "test_calibrated_gaussian_controls_and_jobs[stack-imgui_python]"
+        ],
+        [
+          "tests.python.test_calibrated_gaussian_ui",
+          "test_calibrated_gaussian_controls_and_jobs[stale-imgui_cpp]"
+        ],
+        [
+          "tests.python.test_calibrated_gaussian_ui",
+          "test_calibrated_gaussian_controls_and_jobs[stale-imgui_python]"
+        ]
+      ],
+      "groups": {
+        "gaussian-ui-main627": {
+          "cases": 2168,
+          "scratch_bytes": 44078177,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-main627\\receipt.json",
+            "bytes": 131438,
+            "sha256": "15f63e3fdafc2e5a9dc31f6fcf9c964dc5cf4b70294bdb17ab02ab842e84a42c"
+          }
+        },
+        "gaussian-ui-axis628": {
+          "cases": 76,
+          "scratch_bytes": 36121277,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-axis628\\receipt.json",
+            "bytes": 26420,
+            "sha256": "70b055cb6d6df2f765002f7b22a810e74b14910b1208eb633d22109c3970ba9d"
+          }
+        },
+        "gaussian-ui-command-imgui_cpp629": {
+          "cases": 1,
+          "scratch_bytes": 19144059,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-command-imgui_cpp629\\receipt.json",
+            "bytes": 22472,
+            "sha256": "95bb8aee2caac3cd9e904e8dcdea603a9ed0be22d94cf4b8cf08d36eab6be9c1"
+          }
+        },
+        "gaussian-ui-command-imgui_python630": {
+          "cases": 1,
+          "scratch_bytes": 19158404,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-command-imgui_python630\\receipt.json",
+            "bytes": 20123,
+            "sha256": "06da98a96ccccb307b4f58e1f51ef3a27c32f6b2576450a5b2a5fd15e96230a8"
+          }
+        },
+        "gaussian-ui-flow-imgui_cpp631": {
+          "cases": 1,
+          "scratch_bytes": 10407580,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-flow-imgui_cpp631\\receipt.json",
+            "bytes": 22238,
+            "sha256": "d51713050f0ebf5c05d09f9a3cac2332386768bba3708543491fd018430df8c4"
+          }
+        },
+        "gaussian-ui-stale-imgui_cpp632": {
+          "cases": 1,
+          "scratch_bytes": 3292568,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-stale-imgui_cpp632\\receipt.json",
+            "bytes": 21976,
+            "sha256": "0b446aacd0a536f1c8be8a24bcd221624dc6bf0574861181ee9e67eb7ecf3b46"
+          }
+        },
+        "gaussian-ui-stack-imgui_cpp633": {
+          "cases": 1,
+          "scratch_bytes": 5236530,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-stack-imgui_cpp633\\receipt.json",
+            "bytes": 21970,
+            "sha256": "cece0598d103d617cedd427c09b7295396447cd7553dcc0e38659200bb947164"
+          }
+        },
+        "gaussian-ui-flow-imgui_python634": {
+          "cases": 1,
+          "scratch_bytes": 10416027,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-flow-imgui_python634\\receipt.json",
+            "bytes": 19884,
+            "sha256": "ec2459d0e62dbc66b82ba15352c3ec06354c6a64a76fdb7a7fd54b212ebc81e0"
+          }
+        },
+        "gaussian-ui-stale-imgui_python635": {
+          "cases": 1,
+          "scratch_bytes": 3295023,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-stale-imgui_python635\\receipt.json",
+            "bytes": 19563,
+            "sha256": "92f04189b1f8afb3d0ecf10f7e0343e30d6001ecb829f76c47f9a16c7e9f0e94"
+          }
+        },
+        "gaussian-ui-stack-imgui_python636": {
+          "cases": 1,
+          "scratch_bytes": 5240747,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-stack-imgui_python636\\receipt.json",
+            "bytes": 19559,
+            "sha256": "d04c19de9a0f7dd105075c0164f1ec186656641a4cccf98240485fe16aef5474"
+          }
+        }
+      },
+      "xml": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-main627\\results.xml",
+          "bytes": 330271,
+          "sha256": "3f51db6e526bef305db0290a233a240a751ce18cd46385311c12302d704f8be6"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-axis628\\results.xml",
+          "bytes": 9615,
+          "sha256": "6349cde18369a1682f5b817620094c8abd2c46025ba134d8df97e6653569d218"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-command-imgui_cpp629\\results.xml",
+          "bytes": 378,
+          "sha256": "1f8b58a36ff92eab91b631d8758ca4ea5d71f223b21407f3c100fe39134f3035"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-command-imgui_python630\\results.xml",
+          "bytes": 381,
+          "sha256": "1169eb18fea0943a9bd8c264f4c4a1f43841d77077ee389684439ff20335ec21"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-flow-imgui_cpp631\\results.xml",
+          "bytes": 385,
+          "sha256": "0ad53c78d8a616212fefd56d384c7aea89799e883f9124e3c8811d2bddf9f178"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-stale-imgui_cpp632\\results.xml",
+          "bytes": 386,
+          "sha256": "6989c6f2589df69b01335f1a9c6c0071da15c2e77fed6cac156e7928057d9e73"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-stack-imgui_cpp633\\results.xml",
+          "bytes": 386,
+          "sha256": "d3d4a1f8e592bdbddf62456a406ef73c5af86d3fd0491da7179ec4487b2ee1ab"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-flow-imgui_python634\\results.xml",
+          "bytes": 388,
+          "sha256": "3d4156bcdbcc2c8b642ab152ecbf5ca1ec2b53eb291e688956fd192d1823b306"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-stale-imgui_python635\\results.xml",
+          "bytes": 389,
+          "sha256": "581862dbf78a109ad298afe9dcb7c1d542e6722ac29f6127f94ed11409d7eccc"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-stack-imgui_python636\\results.xml",
+          "bytes": 389,
+          "sha256": "b50ed143a56759b7f8e50459b6956671ec1b24ce951f42d8071b539a919be4e6"
+        }
+      ],
+      "frames": {
+        "gaussian-ui-flow-imgui_cpp631": 73,
+        "gaussian-ui-stale-imgui_cpp632": 27,
+        "gaussian-ui-stack-imgui_cpp633": 49,
+        "gaussian-ui-flow-imgui_python634": 73,
+        "gaussian-ui-stale-imgui_python635": 27,
+        "gaussian-ui-stack-imgui_python636": 49
+      },
+      "producer_inputs_rechecked": 1300,
+      "reader_pins_rechecked": 53,
+      "core_and_native_binding_identity_unchanged": true,
+      "core_sdk": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "bytes": 58137610,
+        "sha256": "b5cb0cd12af3d4c9d9a44657cb83dd503e55149517827f9613490cae0d6fa6a1"
+      },
+      "native_binding": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+        "bytes": 7919104,
+        "sha256": "abe9fc97fedcd22020bf4ca5148fe0644b502d080d3ca5817fd5c2e40d1655e6"
+      },
+      "build_receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-gaussian-ui-windows-resume626\\receipt.json",
+        "bytes": 58861,
+        "sha256": "6e9c022e70091aa20a940dc9992fd1486c26a95a31799e7763ef0967bec1c3b0"
+      },
+      "native_controls": 15,
+      "actual_ci_cpp_cases": 3,
+      "ci_receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-ci637\\receipt.json",
+        "bytes": 25806,
+        "sha256": "6aaaa52ef832877a7d809769ae379babe39ff536206ac223e151514e88801d46"
+      },
+      "cases_sha256": "05cb913f874c666a116dc93f4d8a511827285ad5b535e6977f552d8a442a49c2",
+      "acceptance_claim": false
+    },
+    "ui_fixture": {
+      "hosts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "modes": [
+        "flow",
+        "stale",
+        "stack"
+      ],
+      "frames_per_host": {
+        "flow": 73,
+        "stale": 27,
+        "stack": 49
+      },
+      "frame_cap": 128,
+      "report_cap_bytes": 33554432,
+      "reader_scratch_cap_bytes": 67108864,
+      "scope": "Actual raw ImGui input traces; fixture actions install data/global context/bypass and scheduler limits, navigate, save/open and synchronize a worker. No GPU/OS-input qualification.",
+      "record_import": "Flow explicitly imports its actual preview record to exercise recorder controls. Normal preview/cancel does not append history or a workflow step.",
+      "tighter_budget": "After capture, backend budget becomes 8MiB, below the original author limit. Replay preserves the original record and its admitted resource bound stays within the current cap."
+    },
+    "existing_cpp_imgui_cases": 9,
+    "new_cpp_imgui_cases": 3,
+    "python_counterparts": true,
+    "ci_actual_cpp_capture_reader_cases": 3,
+    "existing_transport_checks": 23,
+    "core_sdk": "Core archive and _native hashes unchanged against native milestone575; existing Windows/Linux 4/4 installed SDK client results retained, not rerun or promoted by this UI-only change.",
+    "license_inventory": "scripts/check_licenses.py passed; no dependencies added."
+  },
+  "diagnostics": [
+    "An initial new reader expected Preview ranges; the exact frozen Preview target uses positions [[1,1,1]]. Corrected the reader to check those positions; old fingerprints/tolerances/kernel unchanged. Failed reader preimage/logs retained losslessly in retention620.",
+    "Review found explicit calibrated rebind after Global clear could fall back to legacy. Fixed explicit rebind record policy and added both clear/rebind and subsequent ordinary local Apply assertions.",
+    "Legacy C++ controls and replay self-check producers exited0 on predecessor596, but their combined110559692-byte scratch failed the unchanged64MiB retention cap (replay alone85247018). Receipt603 remains failed; necessary captures member-hash verified and raw retired by recovery604. Independent historical Gaussian reference readers were not configured/run. This is not an original-reference qualification."
+  ],
+  "storage": {
+    "before": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-before-final641.json",
+      "bytes": 66571,
+      "sha256": "5d3bcfc658859aa750e096974af9f501127f7c28e2099ca10c73646b0a3bf0d5"
+    },
+    "scope_correction": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-scope-correction623.json",
+      "bytes": 66571,
+      "sha256": "c9b03a74cde5db0ac186b3fb9ced43eb2c72c79aeaf39e3002fc10091856ae02"
+    },
+    "fallback": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-storage-fallback624.json",
+      "bytes": 64433,
+      "sha256": "13758f29037b2a6bc6615dd0f7cf55b919c2bdc44508d107890d968d1f7c5a42"
+    },
+    "budget_verified": false,
+    "unknown_subtrees": 214,
+    "explanation": "212 denied residual retired build/ subtrees plus two denied pytest caches. WSL UID1000 fallback also denied. Unknown is not zero. Historical snapshots preserve their original narrower root sets; no compiler cache was recreated in build/.",
+    "scratch": "All final reader scratch and compiler scratch retired after terminal proof and lossless member-SHA retention; same active caches/runtime/SDKs. Per-reader64MiB and build512MiB transient reserves, no cap enlargement.",
+    "retention": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-retention620\\receipt.json",
+        "bytes": 31064,
+        "sha256": "4d72147e104db7791122997fcbd823e05698c7ca0fa5b5f60c11388904653f85"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-final-retention643\\receipt.json",
+        "bytes": 3097,
+        "sha256": "e24433645ff5ac7e800e85bad8c2490045f4efb970bace13587ddef1014f82d4"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-legacy-recovery604\\receipt.json",
+        "bytes": 111403,
+        "sha256": "5103bf304a6ae4b3a3fddefaf14c78e4c845c9bf9b8a6bf059cf933538583ac3"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-superseded583\\receipt.json",
+        "bytes": 2545,
+        "sha256": "8f34024e99503f649b528f0574661778d901ba9d896eb3837c25a27319a47926"
+      }
+    ],
+    "superseded": "Seven earlier full capture archives retired by583 are unavailable; identities and small receipts preserved. Superseded607/608-618 bytes remain recoverable through retention620/643. Latest626/627-637 receipts and full captures retained.",
+    "after": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\gaussian-ui-final-storage645.json",
+      "bytes": 66570,
+      "sha256": "06be133d91f1821f3cddd9a2fa5c35a9922d07045c391f9ac5ce88a9cf4859e2",
+      "known_bytes": 8579965662,
+      "unknown_subtrees": 214,
+      "budget_verified": false
+    }
+  },
+  "remaining": [
+    "Live display/XYZ/world geometry and measurement/profile/histogram/threshold/live-plot cache context integration",
+    "Audit remaining command consumers before Global/bypass UI controls",
+    "Global-state persistence/session/I/O and bulk workflow migration",
+    "Original-reference variants, RGB Slicer and broader platform acceptance",
+    "Matched processing/interactive latency/peak-memory benchmarks against ImageJ/Fiji"
+  ],
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified": 0
+  },
+  "performance_claim": false,
+  "full_goal_complete": false
+}

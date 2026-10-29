@@ -2,9 +2,11 @@
 
 Status: native metadata, generic execution, dedicated factories and the new
 explicit calibrated command envelope/admission/replay API are scoped verified.
-Six live axis/projection ImGui routes are verified. Native Gaussian envelope
-support is verified; its live preview/Apply/recorder, live caches and persistence
-remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
+Six live axis/projection ImGui routes and Gaussian preview/Apply/recorder are
+verified in both hosts. Live display/XYZ/analysis caches, remaining consumer
+audit and persistence remain open; Global/bypass controls stay gated. Follow
+[the current next-packet specification](../PLAN.md) and
+[the explicit core API](../GLOBAL_CALIBRATION.md).
 The thirteen-case [reference](../parity/reviews/G034-global-calibration-reference002.json)
 comes from actual pinned ImageJ1.54r ImagePlus/Calibration execution. It does not
 invoke the private Calibrator dialog or qualify all calibration functions.
