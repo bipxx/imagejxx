@@ -107,7 +107,7 @@ workflow conversion explicitly rejects unsupported schemas.
 Actual UI cases each use 119/128 frames. Installed verification passes 2,192 of
 2,194 cases with two optional skips; CI actual capture/reader and 23 transport
 checks pass. [UI evidence](parity/reviews/G034-calibrated-command-ui-progress001.json).
-Display/XYZ/analysis caches, remaining consumer audit and Global/bypass controls
+Analysis caches, time/distance/remaining consumer audit and Global/bypass controls
 remain open, along with global-state session/I/O migration, original Calibrator
 variants, supported platforms, RGB Slicer and matched speed/memory comparisons. Follow [the active plan](PLAN.md) and
 [the calibration contract](packets/G034-global-calibration-contract.md).
@@ -163,5 +163,5 @@ rebind remains an envelope even after Global clear. Ordinary local actions and
 strict legacy replay preserve legacy semantics. Stack No retains captured Z;
 Yes uses all Z at captured C/T. Preview/cancel never auto-records.
 [UI evidence](parity/reviews/G034-calibrated-gaussian-ui-progress001.json).
-Live display/XYZ/analysis caches, remaining consumer audit and Global/bypass
-controls remain pending. See [the current plan](PLAN.md).
+Effective display/XYZ geometry is now scoped verified. Analysis caches, remaining
+consumer audit and Global/bypass controls remain pending. See [the current plan](PLAN.md).

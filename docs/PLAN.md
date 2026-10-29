@@ -1,6 +1,62 @@
 # ImageJ and Fiji gap closure plan
 
-## Calibrated Gaussian live UI — current, 2026-10-28
+## Effective display/XYZ geometry — current, 2026-10-28
+
+Ordinary canvas aspect/hover and linked XYZ spacing/world readouts now use a
+cached Application capture in both hosts. Existing guards refresh on relevant
+Global/own bypass/source changes; ignored documents survive unrelated changes.
+Z navigation reuses the calibration capture. Geometry changes reuse XYZ pixel
+caches. Local spatialCalibration(), metadata/history and persistence stay local.
+Fit/zoom inherit displaySpacing; broader effective fit/view variants remain open.
+
+Installed Windows: **2,254 collected / 2,252 passed / two optional hidden-OpenGL
+skips**. Exact previous 2,252-case union preserved plus two new host cases, each
+26/64 frames. Fifteen native controls, 13 C++ ImGui cases/Python counterparts,
+new actual CI capture/reader and existing 23 transport checks pass. 1,302 producer
+inputs and 54 reader pins rechecked. Core archive/_native unchanged; previous
+Windows/Linux SDK results retained without new platform qualification.
+[Evidence](parity/reviews/G034-effective-display-ui-progress001.json).
+
+Initial fixture650 activated an unrepresented native owner and failed; its
+receipt/captures remain failed and retained. Inactive adoption fixes the fixture.
+No production correction or expectation relaxation. Final captures each fit
+64 MiB and owned scratch is retired with lossless member hashes. Retention674
+recovers 472,672 B. Full storage remains unverified with 214 denied subtrees;
+historical narrower root measurements remain unchanged. Same caches/runtime/SDKs.
+Eleven superseded full capture archives retired by678 recover 1,663,088 B;
+their contents are unavailable, with receipts/XML/identities preserved. Latest
+display/regression full captures remain available.
+
+Next: measurement/profile/histogram/threshold/live-plot captured inputs and cache
+invalidation, then time/distance and remaining generic command consumers. Use the
+[consumer-by-consumer audit](packets/G034-live-view-consumer-audit.md). Keep
+Global/bypass controls gated. Effective fit-selection and virtual/RGB/composite
+variants, session/I/O, original/platform and matched performance remain open.
+Tracker **47 in progress / 52 open / 0 fully certified**; no speed superiority.
+
+### Next packet: captured analysis inputs and live ownership
+
+1. Inventory spatial and density dependencies together for measurement, profile,
+   histogram and threshold preparations. Record current source/selection/plane
+   guards, asynchronous owner, result snapshot policy and legacy replay schema.
+   Follow the audited seams; distinguish raw counts/bins from calibrated labels
+   and density values before changing a numerical path.
+2. Reuse Application captures and existing private preparation bridges. Preserve
+   local source provenance and old strict replay; explicit rebind must author a
+   complete current target. Share immutable typed calibration/table values, not
+   synthetic snapshots or per-frame JSON. Batch necessary public API/variant
+   changes after the family audit, then rebuild installed clients together.
+3. Keep current jobs/caches as owners. Validate context at result publication,
+   refresh live results on relevant source/ROI/plane/context changes, release on
+   close/replacement, and retain independent saved plots as captured snapshots.
+   Own bypass invalidates; ignored documents survive unrelated Global changes.
+4. Verify raw and calibrated pixels/values/units with independent references,
+   source-type density adaptation, stale queued/ready results, retained plots,
+   unchanged local metadata/history and both shared hosts. Preserve the exact
+   old union and fingerprints, bound captures per case, and retain failures.
+   Do not enable controls until all consumer paths agree.
+
+## Previous milestone: calibrated Gaussian live UI — 2026-10-28
 
 Gaussian preview/Apply, individual recorder strict replay/rebind and stack
 controls now use captured effective calibration in both ImGui hosts. Context
@@ -34,7 +90,7 @@ consumers before enabling Global/bypass controls. Global-state session/I/O,
 bulk workflows, original/RGB/platform and matched speed/memory gates remain open.
 Tracker: **47 in progress /52 open /0 fully certified**; no measured speed advantage.
 
-### Next packet: live calibration consumers and cache correctness
+### Prior handoff: live calibration consumers and cache correctness
 
 1. Inventory each consumer's spatial/density input, source/selection/plane revision,
    current invalidation key and retained-output policy. Start at
@@ -43,7 +99,7 @@ Tracker: **47 in progress /52 open /0 fully certified**; no measured speed advan
    threshold_panel and Window measurement/profile/live-plot paths, including
    Rank/generic filter dispatch. Record consumers already contextual separately.
 2. Add view-specific typed effective inputs using existing Application captures
-   and validation. Preserve Document::calibration() as the local metadata accessor
+   and validation. Preserve Document::spatialCalibration() as the local metadata accessor
    and persistence source. Never substitute a synthetic source snapshot. Retain
    captured density tables without decoding/copying them every frame.
 3. Reuse current cache ownership and job publication guards. Rebuild on own source,

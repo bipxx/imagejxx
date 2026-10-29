@@ -1,0 +1,330 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-28",
+  "status": "scoped_verified",
+  "scope": "Effective spatial input for ordinary canvas aspect/hover, linked XYZ spacing/world readouts and related display-spacing consumers in shared C++ and Python ImGui hosts. Not all calibration consumers, Global UI, full platform or ImageJ/Fiji certification.",
+  "implementation": [
+    "Document::displayCalibration uses one current whole-plane Application target in a private cache. Existing validate_target refreshes on source pixels/metadata, own bypass or relevant global changes. Navigation and selection are not calibration dependencies. Ignored documents survive unrelated global/bypass changes. No new generation grammar or per-frame record/table decoding.",
+    "The cache shares one current source capture with the facade; replacing, rebinding or closing releases it. Detached worker facades stay local. Local/bypassed guard-only target creation preserves the existing raw-display path for opaque future density records; this packet does not independently qualify every such UI variant.",
+    "displaySpacing uses captured geometry and existing direction-column norms. Ordinary canvas aspect and hover world values, OrthogonalViews geometry/world captions and headless world diagnostics use the view-specific input. Fit/zoom call sites inherit displaySpacing; effective fit-selection variants remain separately unqualified.",
+    "spatialCalibration, document-info local calibration/time fields and persistence remain local. Additive document-info display_calibration reports effective spatial values/world coordinates and cache build diagnostics. No source mutation or Global/bypass controls introduced."
+  ],
+  "verification": {
+    "installed_windows": {
+      "state": "passed",
+      "original_case_count": 2252,
+      "collected": 2254,
+      "passed": 2252,
+      "skipped": 2,
+      "disjoint": true,
+      "original_case_union_preserved": true,
+      "additional_ui_cases": [
+        [
+          "tests.python.test_effective_display_ui",
+          "test_effective_view_geometry_and_invalidation[imgui_cpp]"
+        ],
+        [
+          "tests.python.test_effective_display_ui",
+          "test_effective_view_geometry_and_invalidation[imgui_python]"
+        ]
+      ],
+      "groups": {
+        "effective-display-regression652": {
+          "cases": 2168,
+          "scratch_bytes": 44080831,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression652\\receipt.json",
+            "bytes": 135559,
+            "sha256": "34db9ea36b172cea292c4d787a997962be115cf024b834a71dc859db0a2ebadb"
+          }
+        },
+        "effective-display-regression653": {
+          "cases": 76,
+          "scratch_bytes": 36336948,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression653\\receipt.json",
+            "bytes": 26795,
+            "sha256": "b25200a47b8825bf15141953b1c89b91b288f4e227ac96b6c5af07b7b68e99ac"
+          }
+        },
+        "effective-display-regression654": {
+          "cases": 1,
+          "scratch_bytes": 19230401,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression654\\receipt.json",
+            "bytes": 22673,
+            "sha256": "0c47c6750061b0bffbebaa9547529fdebacbd09a7246b4803e8f738c287832e3"
+          }
+        },
+        "effective-display-regression655": {
+          "cases": 1,
+          "scratch_bytes": 19240335,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression655\\receipt.json",
+            "bytes": 20307,
+            "sha256": "5109216575a2849abcd21fd41c6995c8ef33cc6697baeb4b97e043940aa87435"
+          }
+        },
+        "effective-display-regression656": {
+          "cases": 1,
+          "scratch_bytes": 10460070,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression656\\receipt.json",
+            "bytes": 22486,
+            "sha256": "2809c1b41de41af5d23d4cce999dbed41ee95617fbe16ba22f321cc2fe127e76"
+          }
+        },
+        "effective-display-regression657": {
+          "cases": 1,
+          "scratch_bytes": 3311213,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression657\\receipt.json",
+            "bytes": 22180,
+            "sha256": "6ca02f3c55fa84307e393132d060c92e67ef0ff748e158d6cb1498f4c850faa4"
+          }
+        },
+        "effective-display-regression658": {
+          "cases": 1,
+          "scratch_bytes": 5270132,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression658\\receipt.json",
+            "bytes": 22187,
+            "sha256": "7cf5bfe0aecaf298b99e8bc564df6e93aefe88ae97cbd1b7eaec77e7c26674a5"
+          }
+        },
+        "effective-display-regression659": {
+          "cases": 1,
+          "scratch_bytes": 10465982,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression659\\receipt.json",
+            "bytes": 20083,
+            "sha256": "ace4ceb6f586ab20726cb47f6191f96789e2049d12ee641d3a975d684d21efb7"
+          }
+        },
+        "effective-display-regression660": {
+          "cases": 1,
+          "scratch_bytes": 3313376,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression660\\receipt.json",
+            "bytes": 19760,
+            "sha256": "de1586cdffdae8a40b354b85cbc7473e59f7528a4ecde3a6303cadade1056bff"
+          }
+        },
+        "effective-display-regression661": {
+          "cases": 1,
+          "scratch_bytes": 5273959,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression661\\receipt.json",
+            "bytes": 19760,
+            "sha256": "d0f5fde56c161b5ca5cebae9194c023f6ad540ed2bcfd51fa257b7ec40b14c9d"
+          }
+        },
+        "effective-display-imgui_cpp668": {
+          "cases": 1,
+          "scratch_bytes": 4094418,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-imgui_cpp668\\receipt.json",
+            "bytes": 22174,
+            "sha256": "01653f8e5bda93912597308ee7dce368736755657740c9a2cecf13a9bb3e2899"
+          }
+        },
+        "effective-display-imgui_python651": {
+          "cases": 1,
+          "scratch_bytes": 4097403,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-imgui_python651\\receipt.json",
+            "bytes": 19768,
+            "sha256": "912c6373b16a0c35f2f58ae742a460ed5a1ae92d0f45ff26b9d20826ceee004c"
+          }
+        }
+      },
+      "xml": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression652\\results.xml",
+          "bytes": 330271,
+          "sha256": "d1ce49415d61ad3fecdaf576ed95ff97d68146a937efa0cc4678747a86f10c9e"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression653\\results.xml",
+          "bytes": 9615,
+          "sha256": "d36997387fc29c1e0a8291b292f3212de3e96a75fb790a97973c23d4d5fcc68d"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression654\\results.xml",
+          "bytes": 378,
+          "sha256": "cb7d02bb47b8013d4108ed9c6365ad80922e0e56f555274f5069501896116ef9"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression655\\results.xml",
+          "bytes": 381,
+          "sha256": "2b8073f9dca63538e2ec3d4169743cd993e164a7ea30697083a15500a2338f9b"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression656\\results.xml",
+          "bytes": 385,
+          "sha256": "c99263d5f699ecb8ee1dc0991423cdd4f9cf1ec3665293f0c05a21a041c7f0bd"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression657\\results.xml",
+          "bytes": 386,
+          "sha256": "8d87c3ddffedb23ae17423909af5508915901418e89ce9e42244d22172b6045b"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression658\\results.xml",
+          "bytes": 386,
+          "sha256": "12ddfd96a0db42fafe374af90de1b4ba4f7d4a85eb0008a9dff5c96f33b62284"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression659\\results.xml",
+          "bytes": 388,
+          "sha256": "76e4332433b7d4c71eb97e0659e141489df0bdf8f60ab87bba89726b18d0adf4"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression660\\results.xml",
+          "bytes": 389,
+          "sha256": "10d27919142c3f0979b28cf149aaf4cfedf165e743836bd6a39cb5d22a6d5642"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-regression661\\results.xml",
+          "bytes": 389,
+          "sha256": "2b0fe337722c45a4775e5146f0cf12b388724b10270af6d13db6e4d5984d3595"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-imgui_cpp668\\results.xml",
+          "bytes": 381,
+          "sha256": "403146ae4c175f70ad3c05c50bdf85b7776a41dd9c89940b6221221bdc786d56"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-imgui_python651\\results.xml",
+          "bytes": 384,
+          "sha256": "f4e84b60db01f433d92453a972269e6ee6e7fb2fed373ee230234b5aa9e85a11"
+        }
+      ],
+      "frames": {
+        "effective-display-imgui_cpp668": 26,
+        "effective-display-imgui_python651": 26
+      },
+      "producer_inputs_rechecked": 1302,
+      "reader_pins_rechecked": 54,
+      "core_and_native_binding_identity_unchanged": true,
+      "core_sdk": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "bytes": 58137610,
+        "sha256": "b5cb0cd12af3d4c9d9a44657cb83dd503e55149517827f9613490cae0d6fa6a1"
+      },
+      "native_binding": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+        "bytes": 7919104,
+        "sha256": "abe9fc97fedcd22020bf4ca5148fe0644b502d080d3ca5817fd5c2e40d1655e6"
+      },
+      "build_receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-windows666\\receipt.json",
+        "bytes": 58845,
+        "sha256": "ec376cc59e19b7fcb071f022910d122644466d441c32c31fc8823c8f618bde27"
+      },
+      "native_controls": 15,
+      "actual_ci_cpp_cases": 1,
+      "ci_receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-ci662\\receipt.json",
+        "bytes": 23516,
+        "sha256": "593dda4cd0449029fcac6b579787a0ff3dfe37dfd0e5729d51f53e4c6e53de38"
+      },
+      "cases_sha256": "07281e7be90d30ff6d3c929b2675ddf14afca04881f6b61908a098f549415d23",
+      "acceptance_claim": false
+    },
+    "actual_shared_ui": {
+      "hosts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "frames_per_host": 26,
+      "frame_cap": 64,
+      "report_cap_bytes": 16777216,
+      "source": "UInt8 gray 5x4x3; global affine with rotated direction, nonzero origin and anisotropic spacing",
+      "cases": [
+        "ordinary XY aspect",
+        "linked XY/XZ/YZ spacing/scale",
+        "independent affine world arithmetic",
+        "Set/Clear/own bypass",
+        "ignored independence from Global and another document bypass",
+        "Z navigation retains calibration capture",
+        "source metadata refresh",
+        "unchanged local metadata/history/dirty state for calibration-only changes",
+        "no XYZ pixel resampling on calibration-only changes",
+        "close"
+      ],
+      "limitations": "Actual raw ImGui frame input and geometry diagnostics; not GPU/OS-input or all source-type/virtual/fit variants."
+    },
+    "existing_cpp_imgui_cases": 12,
+    "new_cpp_imgui_cases": 1,
+    "python_counterparts": true,
+    "actual_ci_new_capture_reader_cases": 1,
+    "existing_transport_checks": 23,
+    "core_sdk": "Core archive and _native hashes unchanged against626. Existing Windows/Linux installed SDK4/4 evidence retained, not rerun or promoted by this UI-only change.",
+    "license_inventory": "scripts/check_licenses.py passed; no dependencies added."
+  },
+  "diagnostics": {
+    "initial_failure": "650 failed after Global/ignore checks: fixture adopted and activated an unrepresented native document. Keep the other fixture owner inactive. No production correction or weakened expectation. Added explicit Z-navigation acceptance before final rebuild.",
+    "failed_receipt": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-imgui_cpp650\\receipt.json",
+      "bytes": 19280,
+      "sha256": "721a544d21eec99f5dcbfc23bda9aced8ee27a21302e42a15b9a188949e45e10"
+    },
+    "failed_capture": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-imgui_cpp650\\captures.tar.xz",
+      "bytes": 20764,
+      "sha256": "3890e47db7ba135ee72e1dbdd4af2fccbc0b6a6f20a69ee6606f3d1fad08f0b4"
+    },
+    "preimages": "Source/reader preimages664 and predecessor649 logs/freezes recover losslessly through retention674. Failed650 terminal scratch retired with member hashes; failure receipt remains failed."
+  },
+  "efficiency": {
+    "full_header_rebuild_seconds": 670.6089999999385,
+    "fixture_only_incremental_seconds": 20.687000000150874,
+    "interpretation": "Different build workloads, not processing-speed benchmarks. Internal desktop.hpp expansion causes broad probe fanout; keep future cache internals behind the new private structure, batch necessary facade changes, and audit remaining consumers before public variant expansion."
+  },
+  "storage": {
+    "before": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-before648.json",
+      "bytes": 66570,
+      "sha256": "8c23e6e6e7cab445546fc9fff66b2e7cfb4e0e5f667cdb4fafe506eb8e0250b5"
+    },
+    "budget_verified": false,
+    "unknown_subtrees": 214,
+    "explanation": "Residual denied retired build/ subtrees212 plus two pytest caches remain unknown, confirmed by earlier WSL fallback624. Earlier snapshots retain their narrower root sets. No cache configured in build/.",
+    "retention": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-retention674\\receipt.json",
+      "bytes": 6036,
+      "sha256": "9a0d1c2904d00875a16e93c9cc22eb185cfc2751813caeb7e7b8a4245da57c04"
+    },
+    "scratch": "Compiler scratch and every final/failed reader scratch retired after terminal proof and lossless member-SHA verification. Same active caches/runtime/SDKs; per-reader64MiB/build512MiB transient reserves, no cap enlargement.",
+    "availability": "Latest666 build inputs and652-662/668 captures retained. Historical installed UI product paths from649/626 are overwritten; identities retained, old bytes not claimed available. Seven older full capture sets retired by583 remain unavailable. Eleven superseded627-637 Gaussian milestone full archives retired by678 are now unavailable; receipts/XML/identities preserved. Latest display/regression captures retain successor evidence.",
+    "after": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-final-storage679.json",
+      "bytes": 66570,
+      "sha256": "e20d36ab8fa331ec209ec2bc5a87555f1f359c15398eef8da4e4ea024d1d2b6a",
+      "known_bytes": 8584210315,
+      "unknown_subtrees": 214,
+      "budget_verified": false
+    },
+    "superseded_capture_retirement": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\effective-display-retire-superseded678\\receipt.json",
+      "bytes": 3175,
+      "sha256": "bc07bd50921c26821c43a7a6c4be73b5cf033b0528562b988a3cfe095585e5ec"
+    }
+  },
+  "remaining": [
+    "Measurement/profile/histogram/threshold/live-plot captured inputs and invalidation",
+    "Time/playback, selection enlargement and remaining command-consumer audit",
+    "Effective fit-selection, non-unit direction norms, virtual/RGB/composite and broader view variants",
+    "Global/bypass controls after consumer coverage",
+    "Global-state session/I/O, bulk workflows, original-reference variants and platform acceptance",
+    "Matched processing/interactive latency/peak-memory benchmarks"
+  ],
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified": 0
+  },
+  "performance_claim": false,
+  "full_goal_complete": false
+}

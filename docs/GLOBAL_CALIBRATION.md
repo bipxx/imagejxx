@@ -1,12 +1,17 @@
 # Global and effective calibration API
 
+Current view integration: ordinary canvas aspect/hover and linked XYZ spacing/
+world readouts use a cached Application capture, with ignored independence and
+source/context invalidation. Local accessors/persistence stay local. Analysis
+caches, time/distance controls and remaining command consumers still need
+integration before Global/bypass controls. [Evidence](parity/reviews/G034-effective-display-ui-progress001.json).
+
 The native core provides immutable calibration values, a metadata-only resolver
 and Application-owned global state. This is the foundation for global editor
 integration. Application-minted targets carry effective values through generic
 execution, six axis/projection routes and Gaussian preview/Apply/replay in both
 ImGui hosts. Ordinary DocumentSnapshot reads and detached legacy commands stay
-local. Live display/XYZ/analysis caches and the shared Global/bypass controls
-remain pending. See [current progress](PLAN.md) and
+local. Live analysis caches and the shared Global/bypass controls remain pending. See [current progress](PLAN.md) and
 [Gaussian UI evidence](parity/reviews/G034-calibrated-gaussian-ui-progress001.json).
 
 ## Values and resolution

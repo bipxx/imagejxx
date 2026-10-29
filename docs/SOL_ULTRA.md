@@ -6,8 +6,9 @@
 [calibrated command contract](CALIBRATED_COMMANDS.md) and
 [UI dispatch specification](packets/G034-global-calibration-contract.md).
 Six axis/projection routes plus Gaussian preview/Apply/recorder are verified
-in both hosts. Next: display/XYZ/world geometry, then measurement/profile/
-histogram/threshold/live-plot caches and remaining command consumers before
+in both hosts; effective display/XYZ/world geometry is also scoped verified.
+Next: measurement/profile/histogram/threshold/live-plot captured inputs and
+remaining time/distance/command consumers before
 Global/bypass controls. Use the detailed next packet in PLAN; keep local metadata
 accessors and captured independent plots stable. Session/I/O and matched
 performance remain open.

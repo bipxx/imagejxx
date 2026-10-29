@@ -629,9 +629,10 @@ void Document::bindController(
   auto snap = controller->snapshot(id);
   if (!snap.same_document(native_->snapshot()))
     throw std::invalid_argument("Controller has a different document owner");
+  displayCalibrationCache_.reset();
   controller_ = std::move(controller);
 }
-void Document::releaseFrontend() { validation_.reset(); }
+void Document::releaseFrontend() { displayCalibrationCache_.reset(); validation_.reset(); }
 DocumentSnapshot Document::nativeSnapshot() const {
   return controller_ ? controller_->snapshot(id) : native_->snapshot();
 }
@@ -707,7 +708,7 @@ Json Document::viewJson() const {
   return result;
 }
 std::array<double, 3> Document::displaySpacing() const {
-  const auto cal = spatialCalibration();
+  const auto cal = displayCalibration();
   std::array<double, 3> spacing{};
   for (int axis = 0; axis < 3; ++axis) {
     double length = 0;
@@ -778,6 +779,41 @@ SpatialCalibration calibrationFromJson(const Json &value) {
   return session_metadata::calibration_from_json(value);
 }
 
+// One current whole-plane capture reuses Application guards without serializing
+// records or decoding density on each frame. It shares the facade's current
+// source; replacement/close releases the preceding capture.
+struct Document::DisplayCalibrationCache {
+  std::optional<ResolvedTarget> capture;
+  std::size_t builds = 0;
+};
+SpatialCalibration Document::displayCalibration() const {
+  if (!controller_) return spatialCalibration();
+  if (!displayCalibrationCache_)
+    displayCalibrationCache_ = std::make_shared<DisplayCalibrationCache>();
+  auto &cache = *displayCalibrationCache_;
+  if (cache.capture) {
+    try {
+      controller_->validate_target(*cache.capture);
+      return cache.capture->calibration();
+    } catch (const RevisionConflict &) {
+      // Source data/metadata, own bypass or a relevant global generation changed.
+      cache.capture.reset();
+    }
+  }
+  TargetRequest request; request.roi = RoiPolicy::WholePlane;
+  cache.capture = controller_->resolve_target(request, id);
+  ++cache.builds;
+  return cache.capture->calibration();
+}
+Json Document::displayCalibrationDiagnostics() const {
+  const auto cal = displayCalibration();
+  const auto xyz = nativeSnapshot().display().crosshair;
+  return {{"world_xyz",cal.voxel_to_world({double(xyz[0]),double(xyz[1]),double(xyz[2])})},
+      {"spacing",cal.spacing},{"origin",cal.origin},{"direction",cal.direction},
+      {"unit",cal.unit},{"frame_interval",cal.frame_interval},
+      {"time_origin",cal.time_origin},{"time_unit",cal.time_unit},
+      {"builds",displayCalibrationCache_ ? displayCalibrationCache_->builds : 0}};
+}
 SpatialCalibration Document::spatialCalibration() const {
   return nativeSnapshot().data().dataset.calibration();
 }

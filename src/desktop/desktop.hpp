@@ -196,6 +196,9 @@ public:
   std::array<double, 3> displaySpacing() const;
   void fitSelection(std::array<double, 2> extent);
   SpatialCalibration spatialCalibration() const;
+  // View-only effective input; local metadata/persistence stays spatialCalibration().
+  SpatialCalibration displayCalibration() const;
+  Json displayCalibrationDiagnostics() const;
   Image plane(Plane orientation, int coordinate) const;
   void checkpoint();
   DocumentSnapshot nativeSnapshot() const;
@@ -219,6 +222,8 @@ public:
                int sliceIndex = -1) const;
 
 private:
+  struct DisplayCalibrationCache;
+  mutable std::shared_ptr<DisplayCalibrationCache> displayCalibrationCache_;
   struct PathAdmission;
   std::shared_ptr<PathAdmission> pathAdmission_;
   void publishNativePaths(const std::function<void()> &);
@@ -228,6 +233,7 @@ private:
   // The exact facade is staged before native adoption; final attachment cannot
   // fail. Public bindController keeps its checked ownership contract.
   void bindPublishedController(std::shared_ptr<imagejxx::Application> controller) noexcept {
+    displayCalibrationCache_.reset();
     controller_ = std::move(controller);
   }
   Document(const DocumentSnapshot &source, WorkerTag);

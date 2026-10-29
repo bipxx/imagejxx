@@ -53,6 +53,7 @@
 #include "imagej_projection_ui_probe.hpp"
 #include "calibrated_command_ui_probe.hpp"
 #include "calibrated_gaussian_ui_probe.hpp"
+#include "effective_display_ui_probe.hpp"
 #include "plot_snapshot_ui_probe.hpp"
 #include "generic_plot_ui_probe.hpp"
 #include <cmath>
@@ -250,6 +251,9 @@ PYBIND11_MODULE(_desktop, m) {
              py::gil_scoped_release release;
              return zSubsetUiCase(window, "imgui_python", directory).dump();
            })
+      .def("_effective_display_ui_case",[](Window& window,const std::string& directory) {
+        return effectiveDisplayUiCase(window,"imgui_python",directory).dump();
+      },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
       .def("_calibrated_gaussian_ui_case",[](Window& window,const std::string& mode,const std::string& directory) {
         py::gil_scoped_release release;return calibratedGaussianUiCase(window,"imgui_python",mode,directory).dump();
       })

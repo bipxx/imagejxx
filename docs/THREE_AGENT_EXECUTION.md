@@ -1,16 +1,17 @@
 # Three-agent execution plan
 
-## Next packet ownership: live effective consumers
+## Execution ownership: live effective consumers
 
 These are handoff specifications, not currently running agents. PLAN owns counts.
 
 | Role | Files/responsibility | Required handoff |
 | --- | --- | --- |
-| Display/geometry | document.cpp/.hpp view-specific spacing inputs, orthogonal.cpp/.hpp geometry/cache seams; coordinate every Window edit with its sole owner. | Preserve local Document::calibration/persistence; pass typed captured values and existing guards. Verify aspect/world mapping, own bypass and ignored independence without per-frame record/table decoding. |
+| Analysis preparation | Native measurement/profile/histogram/threshold preparation and required headers, after the dependency audit; no Window edits. Display/XYZ is a delivered prerequisite. | Define typed captured inputs, source/context/ROI dependencies and density/output policy. Reuse current preparation bridges; batch necessary public API changes and rebuild Windows/Linux installed clients. Keep local legacy contracts explicit. |
 | Consumer/Window owner | window.cpp, histogram_panel and threshold_panel integration; inventory measurement/profile/live-plot, playback, selection enlargement and remaining command paths. | Maintain one Window editor; stage display wiring first, analysis paths second. Existing caches/jobs own resources and validation. Retained independent plots freeze captured values. Controls remain gated until the audit is complete. |
 | Validation | tests/python, existing shared ImGui probes/CI registrations and concise evidence. | Add discriminating Set/Clear/bypass/source/plane/stale-close cases in both hosts. Preserve old union/fingerprints; sequential <=64MiB capture batches, terminal proof and member-hash retention. Core/header changes require installed SDK checks; UI-only work does not imply Linux qualification. |
 
-Deliver display/XYZ geometry before analysis caches. Each owner supplies exact
+Display/XYZ geometry is scoped verified; the analysis handoff is now active.
+Each owner supplies exact
 input/invalidation/output policy and reviewable file boundaries before edits.
 Do not spawn workers from these role descriptions alone. Full specifications
 and acceptance cases are in [PLAN](PLAN.md).

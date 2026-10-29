@@ -292,7 +292,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   }
   for (auto &cache : caches_)
     cache.canvasVisible = cache.sliceFocused = cache.keyboardAdmitted = false;
-  const auto cal = d.spatialCalibration();
+  const auto cal = d.displayCalibration();
   const auto spacing = d.displaySpacing();
   auto cursor = d.view().crosshair;
   const auto &style = ImGui::GetStyle();

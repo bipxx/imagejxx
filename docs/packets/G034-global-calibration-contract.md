@@ -3,8 +3,9 @@
 Status: native metadata, generic execution, dedicated factories and the new
 explicit calibrated command envelope/admission/replay API are scoped verified.
 Six live axis/projection ImGui routes and Gaussian preview/Apply/recorder are
-verified in both hosts. Live display/XYZ/analysis caches, remaining consumer
-audit and persistence remain open; Global/bypass controls stay gated. Follow
+verified in both hosts. Effective display/XYZ geometry is scoped verified; analysis
+caches, remaining consumer audit and persistence remain open. Global/bypass
+controls stay gated. Follow
 [the current next-packet specification](../PLAN.md) and
 [the explicit core API](../GLOBAL_CALIBRATION.md).
 The thirteen-case [reference](../parity/reviews/G034-global-calibration-reference002.json)

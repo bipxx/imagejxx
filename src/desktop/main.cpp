@@ -25,6 +25,7 @@
 #include "imagej_projection_ui_probe.hpp"
 #include "calibrated_command_ui_probe.hpp"
 #include "calibrated_gaussian_ui_probe.hpp"
+#include "effective_display_ui_probe.hpp"
 #include "plot_snapshot_ui_probe.hpp"
 #include "generic_plot_ui_probe.hpp"
 #include "axis_spacing_ui_probe.hpp"
@@ -278,6 +279,12 @@ int run(const std::vector<std::string> &arguments) {
     imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
     imagejxx::desktop::calibratedGaussianUiCase(editor,"imgui_cpp",
         arguments[0]=="--calibrated-gaussian-flow-ui-case"?"flow":arguments[0]=="--calibrated-gaussian-stale-ui-case"?"stale":"stack",arguments[1]);return 0;
+  }
+  if (!arguments.empty() && arguments[0] == "--effective-display-ui-case") {
+    if(arguments.size()!=2)throw std::invalid_argument("Use --effective-display-ui-case FRESH_DIRECTORY");
+    const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));
+    imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
+    imagejxx::desktop::effectiveDisplayUiCase(editor,"imgui_cpp",arguments[1]);return 0;
   }
   if (!arguments.empty() && arguments[0] == "--calibrated-command-ui-case") {
     if(arguments.size()!=2)throw std::invalid_argument("Use --calibrated-command-ui-case FRESH_DIRECTORY");

@@ -6406,6 +6406,7 @@ Json Window::documentInfo(std::uint64_t id) const {
           {"time", calibration.time_origin + position.t * calibration.frame_interval},
           {"time_unit", calibration.time_unit},
           {"calibration", get(d->state().metadata, "calibration")},
+          {"display_calibration", d->displayCalibrationDiagnostics()},
           {"selection", get(d->state().metadata, "selection")},
           {"view", d->viewJson()},
           {"revision", d->revision()},
@@ -11926,7 +11927,7 @@ void Window::Impl::canvas(Pane &pane) {
     pane.selectionGesture.reset();
   }
   d->normalizeView();
-  const auto cal = d->spatialCalibration();
+  const auto cal = d->displayCalibration();
   const auto spacing = d->displaySpacing();
   pane.aspectY = float(spacing[1] / spacing[0]);
   if (!std::isfinite(pane.aspectY) || pane.aspectY <= 0)
@@ -15020,7 +15021,7 @@ Json Window::renderHeadless(int frames, bool exercise, bool exerciseCamera,
       const auto xyz = pane.doc->view().crosshair;
       observation["document_info"] = documentInfo();
       observation["crosshair_xyz"] = xyz;
-      observation["world_xyz"] = pane.doc->spatialCalibration().voxel_to_world(
+      observation["world_xyz"] = pane.doc->displayCalibration().voxel_to_world(
           {double(xyz[0]), double(xyz[1]), double(xyz[2])});
       observation["orthogonal_navigation"] = impl->navigation(pane);
     }
