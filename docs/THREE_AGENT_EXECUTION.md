@@ -1,18 +1,19 @@
 # Three-agent execution plan
 
-## Dedicated calibration consumers — execution ownership
+## Calibrated command handoff — execution ownership
 
-[PLAN's current card](PLAN.md) owns current status/counts. Next responsibilities:
+[PLAN](PLAN.md) owns status/counts; the native envelope is a verified handoff.
+Next ownership follows [the UI specification](packets/G034-global-calibration-contract.md):
 
 | Role | Owned work | Handoff |
 | --- | --- | --- |
-| Native | Command captures, effective admission/layout and explicit record/replay policy over the existing factories. | Freeze typed capture/record contract before frontend wiring. |
-| Frontend | Both shared ImGui routes, generation-aware display/XYZ/analysis caches and Global/bypass controls. | Use caller-thread captures; never resolve new application state inside workers. |
-| Validation | Original fixtures, stale/cancel/history/metadata cases, both actual hosts and current installed SDKs. | Preserve failed diagnostics, exact fingerprints and explicit unsupported RGB Slicer coverage. |
+| Command/controller | Window live action, queue/admission, recorder/replay dispatch; integration registration in Window. | Caller-thread captures and explicit new/legacy schema policy; preserve guard-only local jobs. |
+| Live consumers/UI | Dedicated calibration pane and generation-aware display/XYZ/analysis cache modules. Coordinate Window registration with its owner. | Typed cached effective values; no local revision/dirty-history mutation. Enable controls after command/consumer coverage agrees. |
+| Validation | Native/Python and both actual ImGui fixtures, original provenance, cancellation/stale/history/metadata/replay and installed SDK checks. | Pin the exact disjoint test union; keep each capture batch bounded and retain failed producer/reader/receipt preimages. |
 
-These are ownership boundaries, not a claim that agents are currently running.
-Use [the exact command seam](packets/G034-global-calibration-contract.md) and keep
-full family/platform/performance gates open until their own evidence passes.
+These are responsibility boundaries, not running-agent status. Preserve the
+[calibrated command API](CALIBRATED_COMMANDS.md); changes need a concrete failing
+case. Global UI, session/I/O, RGB Slicer and full platform/performance gates remain.
 
 ## Effective calibration processing integration — verified scope, 2026-10-28
 

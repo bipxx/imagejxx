@@ -36,6 +36,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/selection_codec.cpp src/native/saved_roi_geometry.cpp
   src/native/saved_roi_geometry_application.cpp
   src/native/global_calibration.cpp src/native/global_calibration_application.cpp
+  src/native/calibrated_command.cpp
   src/native/float32_display.cpp
   src/native/channel_display.cpp src/native/channel_display_command.cpp
   src/native/dataset_histogram.cpp src/native/rgb_histogram.cpp src/native/histogram_command.cpp src/native/histogram_job.cpp
@@ -130,7 +131,7 @@ if(IMAGEJXX_BUILD_PYTHON)
   target_sources(_native PRIVATE src/native/axis_extraction_command_bindings.cpp)
   target_sources(_native PRIVATE src/native/axis_orientation_command_bindings.cpp)
   target_sources(_native PRIVATE src/native/imagej_projection_bindings.cpp)
-  target_sources(_native PRIVATE src/native/global_calibration_bindings.cpp)
+  target_sources(_native PRIVATE src/native/global_calibration_bindings.cpp src/native/calibrated_command_bindings.cpp)
   target_sources(_native PRIVATE src/native/channel_display_bindings.cpp src/native/float32_display_bindings.cpp)
   target_sources(_native PRIVATE src/native/selection_creation_bindings.cpp)
   target_sources(_native PRIVATE src/native/roi_manager_bindings.cpp)

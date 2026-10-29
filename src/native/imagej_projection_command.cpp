@@ -1,5 +1,6 @@
 #include <imagejxx/imagej_projection_command.hpp>
 #include "calibration_preparation_internal.hpp"
+#include "calibrated_descriptor_internal.hpp"
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include "projection_record_internal.hpp"
 #include "contrast_command_record.hpp"
@@ -182,16 +183,27 @@ ImageJProjectionDocumentEstimate detail::estimate_calibrated_projection(
 }
 ResolvedImageJProjectionCommand resolve_imagej_projection_command(
     const DocumentSnapshot& source,const ImageJProjectionDocumentRequest& r) {
-  auto e=estimate_imagej_projection_document(source,r);
+  auto result=detail::projection_descriptor(source,nullptr,r);
+  return {source,r,std::move(result.first),std::move(result.second)};
+}
+std::pair<ImageJProjectionDocumentEstimate,MetadataObject> detail::projection_descriptor(
+    const DocumentSnapshot& source,const EffectiveCalibration* context,
+    const ImageJProjectionDocumentRequest& r) {
+  auto e=estimate_calibrated_projection(source,context,r);
+  auto metadata=source_metadata(source);
+  if(context)metadata.calibration=context->spatial();
   MetadataObject record{{"schema",std::string(schema)},{"version",1},{"profile",std::string("imagej154r")},
-    {"operation",std::string("project_imagej")},{"source",metadata_object(source_record(source_metadata(source)))},
+    {"operation",std::string("project_imagej")},{"source",metadata_object(source_record(metadata))},
     {"selection_revision",source.revisions().selection},{"display_revision",source.revisions().display},
-    {"intensity",read_imagej_intensity_calibration(source).record()},
+    {"intensity",(context?context->intensity():read_imagej_intensity_calibration(source)).record()},
     {"presentation",metadata_object(source.display().properties)},
     {"request",metadata_object(imagej_projection_request_record(r))},{"derived",metadata_object(derived(e.layout))},
     {"destination",std::string("new_document")}};
   Budget budget{r.max_record_bytes};budget.object(record);
-  return {source,r,std::move(e),std::move(record)};
+  return {std::move(e),std::move(record)};
+}
+ImageJProjectionDocumentRequest detail::projection_descriptor_request(const MetadataObject& record) {
+  return decode(record).request;
 }
 void validate_imagej_projection_command_record(const MetadataObject& record) {(void)decode(record);}
 ResolvedImageJProjectionCommand imagej_projection_command_from_record(

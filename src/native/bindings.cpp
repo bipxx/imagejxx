@@ -43,6 +43,7 @@ void bind_jobs(py::module_& module);
 void bind_gaussian_command(py::module_& module);
 void bind_imagej_projection(py::module_& module);
 void bind_global_calibration(py::module_& module);
+void bind_calibrated_command(py::module_& module);
 void bind_rank_command(py::module_& module);
 void bind_axis_extraction_command(py::module_& module);
 void bind_axis_orientation_command(py::module_& module);
@@ -259,6 +260,7 @@ PYBIND11_MODULE(_native, m) {
     bind_z_subset(m);
     bind_axis_spacing_command(m);
   bind_slicer_resize_command(m);
+  bind_calibrated_command(m);
   bind_rgb_dataset(m);
   bind_color_components(m);
   bind_indexed_color(m);

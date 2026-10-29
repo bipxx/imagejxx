@@ -1,4 +1,5 @@
 #include <imagejxx/axis_extraction_command.hpp>
+#include "calibrated_descriptor_internal.hpp"
 #include "axis_command_record.hpp"
 
 #include <algorithm>
@@ -113,8 +114,14 @@ ResolvedAxisExtractionCommand::ResolvedAxisExtractionCommand(
       record_(std::move(record)) {}
 
 ResolvedAxisExtractionCommand resolve_axis_extraction_command(
-    const DocumentSnapshot &source, const AxisExtractionRequest &request) {
-  const auto metadata = source_metadata(source);
+    const DocumentSnapshot& source, const AxisExtractionRequest& request) {
+  auto result=detail::extraction_descriptor(detail::axis_command_record::source_metadata(source),request);
+  const std::string operation=detail::axis_command_record::text_value(result.second.at("operation"));
+  return {source, request, std::move(result.first), operation, std::move(result.second)};
+}
+std::pair<AxisExtractionLayout,MetadataObject> detail::extraction_descriptor(
+    const axis_command_record::SourceRecord& metadata, const AxisExtractionRequest& request) {
+
   auto layout = describe(metadata, request);
   const std::string operation = operation_name(request);
   MetadataObject record{
@@ -124,7 +131,10 @@ ResolvedAxisExtractionCommand resolve_axis_extraction_command(
       {"request", metadata_object(request_record(request))},
       {"derived", metadata_object(layout_record(layout))},
       {"destination", std::string("new_document")}};
-  return {source, request, std::move(layout), operation, std::move(record)};
+  return {std::move(layout),std::move(record)};
+}
+AxisExtractionRequest detail::extraction_descriptor_request(const MetadataObject& record) {
+  return decode_record(record).request;
 }
 
 void validate_axis_extraction_command_record(const MetadataObject &record) {

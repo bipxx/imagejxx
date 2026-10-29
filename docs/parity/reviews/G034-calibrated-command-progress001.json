@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-28",
+  "status": "scoped_verified",
+  "scope": "Additive native/Python calibrated command envelope, effective descriptor/admission, explicit current-capture strict replay/rebind and preparation for six dedicated factories. Existing command classes/legacy records stay local. ImGui routes/recorder dispatch and live consumer caches remain open.",
+  "implementation": [
+    "Opaque ResolvedCalibratedCommand holds original ResolvedTarget and typed request; existing public headers/class layouts unchanged",
+    "New version1 envelope separates original local source, binding/bypass policy, optional effective spatial/intensity values, validated legacy-format effective descriptor and explicit record/working limits",
+    "No application identity or generation serialized. Fresh supplied captures mint live guards; strict replay matches source/context/provenance, explicit rebind validates original claims then resolves replacement within same operation family",
+    "Private metadata bridges reuse original request/layout/grid codecs; projection retains numerical/output policy. No synthetic source snapshot or image reads/callbacks during resolution/validation",
+    "Conservative original-source/envelope metadata plus factory payload admission; tighter runtime cap rejects before callbacks/reads. Returned requests/records/limits remain isolated",
+    "Old schemas and detached replay semantics unchanged; raw local axis commands do not decode unknown density records"
+  ],
+  "verification": {
+    "installed_windows": {
+      "collected": 2192,
+      "passed": 2190,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "new_command_cases": 119,
+      "main_group": 2116,
+      "axis_group": 76,
+      "main_scratch_bytes": 44081916,
+      "axis_scratch_bytes": 36092726,
+      "unchanged_per_group_limit_bytes": 67108864,
+      "exact_disjoint_original_case_union": true,
+      "partition_proof": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-partition532\\receipt.json",
+        "bytes": 1289,
+        "sha256": "1a3d972a73132a15e6351b1509c728dba81538226ccf125135193d7ae016cc56"
+      },
+      "main_xml": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-installed-main530\\results.xml",
+        "bytes": 321905,
+        "sha256": "4c6f2fdbbf4b1f084ee6c223817ebe7945da79618a5f2cfa349abc597bc83891"
+      },
+      "axis_xml": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-installed-axis531\\results.xml",
+        "bytes": 9615,
+        "sha256": "a4106775d87a916185d41847ebb88f3a6a9357daf2f1e82c50396ada9675afef"
+      },
+      "optional_skips": [
+        "hidden OpenGL settings/context",
+        "hidden OpenGL shared jobs panel"
+      ],
+      "cpp_imgui_cases": 8,
+      "cpp_imgui_scope": "Six prior regressions plus actual physical spacing and Slicer cases; existing per-case caps unchanged. No functional Global UI adoption claim."
+    },
+    "native_windows": "15 controls pass, including extraction/orientation/spacing/Slicer legacy command suites and extended global native/installed tests",
+    "installed_core_sdks": {
+      "windows": "4/4 CTest clients pass",
+      "linux": "4/4 CTest clients pass",
+      "profiles_each": {
+        "exact_table": 128,
+        "fit_dtype_cells": 86
+      }
+    },
+    "linux": "Current core SDK and installed-header core/projection/global clients pass after producer correction; no Python/UI claim",
+    "producer_inputs_rechecked": 1295,
+    "reader_pins_rechecked": 50,
+    "commercial_dependency_inventory": "passed using existing .venv",
+    "historical_expectations": "Legacy formats, reference fingerprints and tolerances unchanged",
+    "limits": [
+      "No Linux Python/full desktop/scientific-I/O SDK, macOS/GPU promotion",
+      "No session/I/O migration or original Calibrator UI/full ImageJ/Fiji acceptance",
+      "RGB Slicer remains unsupported; inherited scalar-only boundary retained"
+    ]
+  },
+  "failures_and_corrections": {
+    "producer518": "Legacy extraction regression failed before checks with invalid map key. Constructor call both read operation from result.second and moved it; two resolver wrappers now copy owned operation before moving layout/record. Exact producer preimages/log retained; original tests unchanged. Final15 native controls pass.",
+    "reader519": "Expanded legacy UI tests required two additional C++ report paths. Missing env/report setup caused2 reader failures; new119 cases already passed. Added actual existing C++ spacing/Slicer cases, no skips or expectations relaxed.",
+    "retention528": {
+      "functional": "All2192 tests completed:2190 pass/two optional skips",
+      "failure": "Eight C++ case sets plus Python captures total80,177,211B, exceeding the unchanged64MiB scratch cap. Finally assertion failed after an earlier saved passed receipt.",
+      "receipt_correction": "Original saved receipt preserved exactly; receipt528 now failed with retention_capacity phase and functional pass separated. Future split runners persist retention_pending until successful retirement and record failed on finally errors.",
+      "recovery": "Terminal process proofs checked; all oversized diagnostics losslessly compressed/member-hash verified and raw scratch immediately retired. No cap enlarged. Necessary oversized failure recovery documented separately.",
+      "final_fix": "Two sequential disjoint module batches each keep64MiB cap; exact combined case set equals original2192. Both pass complete retention."
+    }
+  },
+  "efficiency": {
+    "initial_windows_build_seconds": 76.875,
+    "producer_fix_windows_incremental_seconds": 63.109,
+    "initial_linux_core_seconds": 49.818221694,
+    "producer_fix_linux_incremental_seconds": 7.844064499,
+    "basis": "New opaque API and private descriptor bridges leave existing public headers unchanged, limiting rebuild fanout. Same caches/runtime/SDKs reused; these are differing build workloads, not matched speed benchmarks."
+  },
+  "receipts": {
+    "calibrated-command-windows-build518": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-windows-build518\\receipt.json",
+      "bytes": 36930,
+      "sha256": "2503048729833442117bd5b345fac6c05f267c90af941b962d2a9a6f04b33d7d"
+    },
+    "calibrated-command-windows-resume526": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-windows-resume526\\receipt.json",
+      "bytes": 58877,
+      "sha256": "98a614a9aa85e7f28961017e92b551c8f2928440cd16b69502895b4a17d17012"
+    },
+    "calibrated-command-linux521": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-linux521\\receipt.json",
+      "bytes": 197422,
+      "sha256": "58486416862be750c22748200ab24a3660bf69945cad3324c4551f04d07e64a1"
+    },
+    "calibrated-command-linux-resume527": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-linux-resume527\\receipt.json",
+      "bytes": 197825,
+      "sha256": "60285de7667315ff3bfb8b111f2c5ee0e8e5d22d27e21b555ebe3b2a9d88ac3b"
+    },
+    "calibrated-command-installed519": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-installed519\\receipt.json",
+      "bytes": 135872,
+      "sha256": "b4c546699d0e7db61d31171e30e9fcf3ce7b303887c9dadbd9422da098f8f7b8"
+    },
+    "calibrated-command-installed-resume528": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-installed-resume528\\receipt.json",
+      "bytes": 40765,
+      "sha256": "b30177d1b5dd34abcada616ad1eb39db2d34f602789e500931f27af858f06c88"
+    },
+    "calibrated-command-sdk-windows520": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-sdk-windows520\\receipt.json",
+      "bytes": 56839,
+      "sha256": "3e80ae68eca64750cd6348e9d21f001488af6e02e24f68547841e5b2da94d5d1"
+    },
+    "calibrated-command-sdk-linux520": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-sdk-linux520\\receipt.json",
+      "bytes": 35688,
+      "sha256": "8d0db16aa5f75daa6812bf87baec994ef7fcd23893040f090e96dbcf44065490"
+    },
+    "calibrated-command-retention-recovery529": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-retention-recovery529\\receipt.json",
+      "bytes": 101743,
+      "sha256": "aeaa246c497e379ac5d69159ee4ad290a18dacce9554b619ffaa5b4d25478d9b"
+    },
+    "calibrated-command-installed-main530": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-installed-main530\\receipt.json",
+      "bytes": 136175,
+      "sha256": "dcb89bfa506e7efac0a820dbd5405335a9d4abe95e77d471c7a33b600c68fd70"
+    },
+    "calibrated-command-installed-axis531": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-installed-axis531\\receipt.json",
+      "bytes": 25972,
+      "sha256": "bd23b60178e59839bc91abb6afc6f3c40e962d20f4f110e41b73efb2547c4c90"
+    },
+    "calibrated-command-partition532": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-partition532\\receipt.json",
+      "bytes": 1289,
+      "sha256": "1a3d972a73132a15e6351b1509c728dba81538226ccf125135193d7ae016cc56"
+    },
+    "calibrated-command-retention533": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-retention533\\receipt.json",
+      "bytes": 21063,
+      "sha256": "510a8457c74e5c9a4649ef4ea1f74e40caa6223ed65e8ffd58e886582f99b210"
+    }
+  },
+  "retention": {
+    "state": "All owned compiler/runtime/client scratch retired after terminal proofs; raw logs/freeze/dependencies/source preimages/failed XML/original528 receipt preimage losslessly retained and member-hash verified before retirement",
+    "recovered_bytes": 4377040,
+    "diagnostics": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-retention533\\diagnostics.zip",
+      "bytes": 275572,
+      "sha256": "30f2f69ea54df8189fc227c5fc11140b95b2ad1fd9ae1c62716bcd4d8aba9f18"
+    },
+    "retained_final_captures": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-installed-main530\\captures.tar.xz",
+        "bytes": 1275364,
+        "sha256": "9a4c6567e440b721b040610d83325ef19fbd7cc27ce3806ac521bfb5e97bf24e"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-installed-axis531\\captures.tar.xz",
+        "bytes": 64268,
+        "sha256": "38d78af2bf3ae1cdb752233167e664a01c24132e23eb0ee867d43a7821c0996e"
+      }
+    ],
+    "superseded_full_captures": "Failed519 and recovered528 full capture archives retired with identities; their full capture contents are unavailable. Failure logs/XML/source and receipt preimages recover from diagnostics archive. Final split captures retained.",
+    "historical_sdk_bytes": "Replaced archive/header identities retained; old bytes unavailable. No whole cache/runtime/SDK/checkout archive.",
+    "storage_snapshot": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-command-final534.json",
+      "bytes": 1523,
+      "sha256": "81fb01e8486bcd067653f4f368d565bd064b430b4e92e54ee8fce6f3c340dcc1",
+      "known_bytes": 8557299302,
+      "headroom_upper_bound_bytes": 32635290,
+      "budget_verified": false,
+      "unavailable_subtrees": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+        }
+      ]
+    },
+    "budget": "Complete normalized roots measured; two denied pytest subtrees remain unknown, so full8GiB budget unverified. Before517 unchanged scope retained. Necessary terminal oversized failure recovery documented; final split keeps original64MiB per batch."
+  },
+  "next": [
+    "Wire caller-thread captures into live axis/projection commands and worker admission using the new envelope when global is active; preserve legacy local record semantics and guard-only no-global work",
+    "Teach recorder/replay/rebind dispatch the new schema without interpreting old records as global",
+    "Add global/bypass generations to display/XYZ/distance/measurement/profile/histogram/live-plot cache keys, then both actual Global/bypass UI controls",
+    "Complete original spatial/time/Calibrator UI, scientific-I/O/session, RGB Slicer, full platform and matched performance gates"
+  ],
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified_complete": 0
+  },
+  "performance_claim": "No matched ImageJ/Fiji speed or memory superiority established. Build/test timings are not image-processing benchmarks."
+}

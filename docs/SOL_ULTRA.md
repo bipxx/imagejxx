@@ -1,12 +1,14 @@
 # Sol Ultra execution guide
 
-## Dedicated calibration consumers — current execution guidance
+## Calibrated commands — current execution guidance
 
-Use [PLAN's current card](PLAN.md) as the single status/count source and
-[the calibration contract](packets/G034-global-calibration-contract.md) for the
-next command/admission/record seam. Batch public command ABI changes before one
-build; reuse the private factory adapter and the active caches/SDKs. Preserve the
-scalar-only Slicer boundary until RGB support has original-reference evidence.
+[PLAN](PLAN.md) owns status/counts. Use the verified opaque
+[calibrated command contract](CALIBRATED_COMMANDS.md) and
+[UI dispatch specification](packets/G034-global-calibration-contract.md) next.
+Reuse private descriptor/factory bridges and current caches/SDKs; preserve old
+local record formats. Capture on the caller thread and avoid per-frame record/
+table decoding. Split capture-heavy verification into disjoint bounded batches;
+finally failures must never leave a passed receipt.
 
 ## Effective calibration processing integration — verified scope, 2026-10-28
 

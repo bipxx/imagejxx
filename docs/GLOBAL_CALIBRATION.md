@@ -145,3 +145,15 @@ regressions pass; RGB Slicer is explicit unsupported-refusal coverage. All11
 native control invocations and six C++ UI regressions pass. Both installed core
 SDKs pass4/4 CTest clients. No full platform/family acceptance follows.
 See [scoped evidence](parity/reviews/G034-global-calibration-consumers-progress001.json).
+
+## Calibrated command records
+
+[The additive command envelope](CALIBRATED_COMMANDS.md) now captures original
+local provenance, effective descriptor/density and explicit admission limits for
+all six dedicated factories. Strict replay takes a current minted capture;
+rebinding validates original claims before resolving a complete replacement.
+No application identity or generation is restored from serialized data. Existing
+local command formats/classes and detached replay stay unchanged. The new API
+passes119 cases within the exact2192-case installed union; record/command adoption
+in the current ImGui routes, recorder dispatch and live caches remains required.
+See [command evidence](parity/reviews/G034-calibrated-command-progress001.json).

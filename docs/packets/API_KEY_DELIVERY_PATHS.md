@@ -1,15 +1,16 @@
 # Shortest delivery paths by API and setting key
 
-## Dedicated calibration consumers — shortest API paths
+## Calibrated command APIs — shortest delivery path
 
-[PLAN's current card](../PLAN.md) owns verification status/counts. Existing
-Application.prepare_axis_* entrypoints now use the private captured factory;
-Application.prepare_imagej_projection takes the existing request type (Python:
-projection dictionary plus document_id/cancellation/progress/checkpoint).
-Pure snapshot functions and schema1 replay remain local. Do not call them from
-an Application binding when effective calibration is intended. Next: extend
-resolved command admission/record policy using the same captured input, then wire
-both ImGui hosts and cache generations. RGB Slicer remains a separate open gap.
+[PLAN](../PLAN.md) owns status/counts. Use
+[CalibratedCommandRequest/ResolvedCalibratedCommand](../CALIBRATED_COMMANDS.md)
+over the current Application target capture. Resolve once, use working_bytes for
+admission, prepare from the frozen command and publish through Application.
+Strict replay takes a current capture; rebind validates original claims before a
+complete replacement within the same operation family. No live app identity or
+generation is restored from JSON. Existing local command classes/formats stay
+unchanged. Next: actual Window/recorder dispatch and live cache generations,
+including scaled Gaussian consumers, before the Global control.
 
 ## Effective calibration processing integration — verified scope, 2026-10-28
 

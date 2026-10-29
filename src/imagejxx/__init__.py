@@ -1760,6 +1760,16 @@ from ._native import (
     rebind_imagej_projection_record as rebind_imagej_projection_record,
 )
 
+from ._native import (
+    CalibratedCommandLimits as CalibratedCommandLimits,
+    ResolvedCalibratedCommand as ResolvedCalibratedCommand,
+    resolve_calibrated_command as resolve_calibrated_command,
+    validate_calibrated_command_record as validate_calibrated_command_record,
+    calibrated_command_from_record as calibrated_command_from_record,
+    rebind_calibrated_command as rebind_calibrated_command,
+    prepare_calibrated_command as prepare_calibrated_command,
+)
+
 __all__ = [
     name
     for name, value in list(globals().items())

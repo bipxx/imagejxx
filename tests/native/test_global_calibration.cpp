@@ -1,4 +1,5 @@
 #include <imagejxx/application.hpp>
+#include <imagejxx/calibrated_command.hpp>
 #include <imagejxx/imagej_projection_execution.hpp>
 #include <atomic>
 #include <cstring>
@@ -105,6 +106,29 @@ void dedicated_consumers() {
   app.clear_global_calibration();rejects<RevisionConflict>([&]{app.publish(prepared);});
   check(owner->undo_steps()==0 && owner->snapshot().data().dataset.calibration().spacing[0]==1,"Dedicated processing mutated source history/calibration");
 }
+void calibrated_commands() {
+  Application app;auto owner=std::make_shared<Document>(pixels());app.adopt(owner);
+  app.set_global_calibration(global());
+  AxisPlaneExportRequest request;request.plane=Plane::XY;request.coordinate=0;
+  const auto command=resolve_calibrated_command(app.resolve_target(),request);
+  validate_calibrated_command_record(command.record());
+  auto replay=calibrated_command_from_record(app.resolve_target(),command.record());
+  check(replay.working_bytes()==command.working_bytes(),"Command replay changed admission bound");
+  ExecutionControl control;int callbacks=0;control.checkpoint=[&]{++callbacks;};
+  rejects<std::invalid_argument>([&]{prepare_calibrated_command(command,control,command.working_bytes()-1);});
+  check(!callbacks,"Tight command admission called a processing callback");
+  auto prepared=prepare_calibrated_command(command);
+  check(prepared.target().application_calibration_bound() && prepared.target().source().id()==owner->id,"Command lost original guarded capture");
+  app.set_global_calibration(global(.75));
+  rejects<RevisionConflict>([&]{app.publish(prepared);});
+  rejects<std::invalid_argument>([&]{calibrated_command_from_record(app.resolve_target(),command.record());});
+  auto rebound=rebind_calibrated_command(app.resolve_target(),command.record(),request);
+  check(rebound.capture().calibration().spacing[0]==.75,"Command rebind did not use explicit new capture");
+  auto bad=command.record();bad["binding"]=std::string("detached");
+  rejects<std::invalid_argument>([&]{rebind_calibrated_command(app.resolve_target(),bad,request);});
+  auto result=prepare_calibrated_command(rebound);app.publish(result);
+  check(owner->undo_steps()==0 && owner->snapshot().data().dataset.calibration().spacing[0]==1,"Command edited original local history");
+}
 void detached_values_and_threads() {
   Application app;auto owner=std::make_shared<Document>(pixels());std::weak_ptr<Document> weak=owner;
   const auto id=app.adopt(owner);app.set_global_calibration(GlobalCalibration::from_snapshot(owner->snapshot()));
@@ -119,4 +143,4 @@ void detached_values_and_threads() {
   writer.join();reader.join();check(!failed,"Concurrent calibration values/generations tore");
 }
 }
-int main(){try{resolution();ownership_and_guards();processing_guards();dedicated_consumers();detached_values_and_threads();std::cout<<"Global calibration native checks passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{resolution();ownership_and_guards();processing_guards();dedicated_consumers();calibrated_commands();detached_values_and_threads();std::cout<<"Global calibration native checks passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

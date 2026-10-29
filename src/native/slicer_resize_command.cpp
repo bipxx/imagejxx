@@ -1,4 +1,5 @@
 #include <imagejxx/slicer_resize_command.hpp>
+#include "calibrated_descriptor_internal.hpp"
 #include "axis_command_record.hpp"
 #include <algorithm>
 #include <utility>
@@ -54,14 +55,23 @@ Decoded decode(const MetadataObject &record) {
 ResolvedSlicerResizeCommand::ResolvedSlicerResizeCommand(DocumentSnapshot source,AxisRangeSlicerResizeRequest request,
     SlicerResizeLayoutDescriptor layout,MetadataObject record)
     :source_(std::move(source)),request_(request),layout_(std::move(layout)),record_(std::move(record)) {}
-ResolvedSlicerResizeCommand resolve_slicer_resize_command(const DocumentSnapshot &source,const AxisRangeSlicerResizeRequest &request) {
-  const auto metadata=detail::axis_command_record::source_metadata(source);
+ResolvedSlicerResizeCommand resolve_slicer_resize_command(
+    const DocumentSnapshot& source, const AxisRangeSlicerResizeRequest& request) {
+  auto result=detail::slicer_descriptor(detail::axis_command_record::source_metadata(source),request);
+  return {source, request, std::move(result.first), std::move(result.second)};
+}
+std::pair<SlicerResizeLayoutDescriptor,MetadataObject> detail::slicer_descriptor(
+    const axis_command_record::SourceRecord& metadata, const AxisRangeSlicerResizeRequest& request) {
+
   auto layout=describe_slicer_resize(metadata.shape,metadata.pixel_type,metadata.calibration,metadata.sample_policy,request);
   MetadataObject record{{"schema",std::string(detail::axis_command_record::schema_name)},{"version",4},
       {"operation",std::string("axis_range_slicer_resize")},{"source",metadata_object(detail::axis_command_record::source_record(metadata))},
       {"request",metadata_object(request_record(request))},{"derived",metadata_object(detail::axis_command_record::layout_record(layout.output))},
       {"grid",metadata_object(grid_record(layout.grid))},{"destination",std::string("new_document")}};
-  return {source,request,std::move(layout),std::move(record)};
+  return {std::move(layout),std::move(record)};
+}
+AxisRangeSlicerResizeRequest detail::slicer_descriptor_request(const MetadataObject& record) {
+  return decode(record).request;
 }
 void validate_slicer_resize_command_record(const MetadataObject &record) {(void)decode(record);}
 ResolvedSlicerResizeCommand slicer_resize_command_from_record(const DocumentSnapshot &source,const MetadataObject &record) {

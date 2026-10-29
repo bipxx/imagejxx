@@ -7,6 +7,7 @@ namespace imagejxx::detail {
 // Geometry and output policies remain owned by each existing factory.
 struct CalibrationPreparation {
   static ResolvedTarget target(const ResolvedTarget&, const TargetRequest&);
+  static bool ignores_global(const ResolvedTarget&);
   static PreparedOperation prepare_imagej_projection(const ResolvedTarget&,
       const ImageJProjectionDocumentRequest&, const ExecutionControl&);
   static PreparedOperation prepare_axis_plane_export(const ResolvedTarget&,

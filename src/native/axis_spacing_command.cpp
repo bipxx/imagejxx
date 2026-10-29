@@ -1,4 +1,5 @@
 #include <imagejxx/axis_spacing_command.hpp>
+#include "calibrated_descriptor_internal.hpp"
 #include "axis_command_record.hpp"
 #include <algorithm>
 #include <utility>
@@ -76,14 +77,23 @@ Decoded decode(const MetadataObject &record) {
 ResolvedAxisSpacingCommand::ResolvedAxisSpacingCommand(DocumentSnapshot source,AxisRangeSpacingRequest request,
     AxisSpacingLayout layout,MetadataObject record)
     :source_(std::move(source)),request_(request),layout_(std::move(layout)),record_(std::move(record)) {}
-ResolvedAxisSpacingCommand resolve_axis_spacing_command(const DocumentSnapshot &source,const AxisRangeSpacingRequest &request) {
-  const auto metadata=detail::axis_command_record::source_metadata(source);
+ResolvedAxisSpacingCommand resolve_axis_spacing_command(
+    const DocumentSnapshot& source, const AxisRangeSpacingRequest& request) {
+  auto result=detail::spacing_descriptor(detail::axis_command_record::source_metadata(source),request);
+  return {source, request, std::move(result.first), std::move(result.second)};
+}
+std::pair<AxisSpacingLayout,MetadataObject> detail::spacing_descriptor(
+    const axis_command_record::SourceRecord& metadata, const AxisRangeSpacingRequest& request) {
+
   auto layout=describe_axis_spacing(metadata.shape,metadata.pixel_type,metadata.calibration,metadata.sample_policy,request);
   MetadataObject record{{"schema",std::string(detail::axis_command_record::schema_name)},{"version",3},
       {"operation",std::string("axis_range_spacing")},{"source",metadata_object(detail::axis_command_record::source_record(metadata))},
       {"request",metadata_object(request_record(request))},{"derived",metadata_object(detail::axis_command_record::layout_record(layout.output))},
       {"grid",metadata_object(grid_record(layout.grid))},{"destination",std::string("new_document")}};
-  return {source,request,std::move(layout),std::move(record)};
+  return {std::move(layout),std::move(record)};
+}
+AxisRangeSpacingRequest detail::spacing_descriptor_request(const MetadataObject& record) {
+  return decode(record).request;
 }
 void validate_axis_spacing_command_record(const MetadataObject &record) {(void)decode(record);}
 ResolvedAxisSpacingCommand axis_spacing_command_from_record(const DocumentSnapshot &source,const MetadataObject &record) {

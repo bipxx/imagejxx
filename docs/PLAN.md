@@ -1,5 +1,39 @@
 # ImageJ and Fiji gap closure plan
 
+## Calibrated command capture and replay — verified scope, 2026-10-28
+
+The new opaque native/Python command envelope separates original local source
+provenance from effective calibration and derived descriptors for all six
+Application factories. It retains the minted target's publication guards, never
+serializes a live application identity/generation, and requires an explicit
+current capture for strict replay or deliberate rebinding. Existing command
+classes/legacy record formats stay local. Metadata-only admission includes the
+source/envelope bound; runtime caps reject before callbacks or image reads.
+[API/record contract](CALIBRATED_COMMANDS.md).
+
+Installed Windows: 2,192 collected, 2,190 passed, two optional hidden-OpenGL skips.
+All 119 new command cases, 15 native controls and eight actual C++ ImGui cases
+pass; both core SDKs pass 4/4 installed CTest clients with 128 table and 86 fit
+cells each. 1,295 producer and 50 reader pins rechecked. Source correction copies
+an operation before moving its record; existing legacy tests remain unchanged.
+Initial coherent Windows build: 76.875 s with existing public headers unchanged.
+This is build evidence, not an image-processing speed comparison.
+
+Expanded captures exceeded the old combined 64 MiB scratch cap after functional
+checks passed. Original receipt/preimages were preserved and its misleading
+passed state corrected. All 80,177,211 raw bytes were losslessly retained then
+retired. Final disjoint batches exactly cover the same 2,192 cases with 44,081,916
+and 36,092,726 bytes, each within the unchanged 64 MiB cap. Retention failures now
+persist failed receipts. Final hash-verified diagnostic retention recovered
+4,377,040 B; superseded failed full captures are unavailable with identities kept.
+Two denied caches keep full 8 GiB unverified. [Scoped evidence](parity/reviews/G034-calibrated-command-progress001.json).
+
+Next: caller-thread command capture, worker admission and recorder/replay dispatch
+in both ImGui routes, followed by generation-aware display/XYZ/analysis caches
+and the Global/bypass control. Session/I/O, original/platform, RGB Slicer and
+matched performance gates remain open. Tracker: 47 in progress, 52 open, 0 fully
+certified; no measured speed or memory superiority claim.
+
 ## Dedicated calibration consumers — verified scope, 2026-10-28
 
 Application plane export, range reslice/orientation/physical spacing/scalar

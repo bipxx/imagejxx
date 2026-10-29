@@ -1,5 +1,6 @@
 #include "kernel_control.hpp"
 #include "calibration_preparation_internal.hpp"
+#include "target_calibration_internal.hpp"
 #include <imagejxx/imagej_intensity_execution.hpp>
 #include "imagej_projection_document.hpp"
 #include "floating_charconv.hpp"
@@ -815,6 +816,9 @@ make_operation_output(const ResolvedTarget &target,
   return created;
 }
 } // namespace
+bool detail::CalibrationPreparation::ignores_global(const ResolvedTarget& captured) {
+  return captured.calibration_binding_ && captured.calibration_binding_->ignore;
+}
 ResolvedTarget detail::CalibrationPreparation::target(
     const ResolvedTarget& captured, const TargetRequest& request) {
   auto resolved=resolve_target(captured.source(),request);

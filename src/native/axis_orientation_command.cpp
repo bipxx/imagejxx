@@ -1,4 +1,5 @@
 #include <imagejxx/axis_orientation_command.hpp>
+#include "calibrated_descriptor_internal.hpp"
 #include "axis_command_record.hpp"
 
 #include <algorithm>
@@ -83,8 +84,14 @@ ResolvedAxisOrientationCommand::ResolvedAxisOrientationCommand(
       record_(std::move(record)) {}
 
 ResolvedAxisOrientationCommand resolve_axis_orientation_command(
-    const DocumentSnapshot &source, const AxisRangeOrientationRequest &request) {
-  const auto metadata = source_metadata(source);
+    const DocumentSnapshot& source, const AxisRangeOrientationRequest& request) {
+  auto result=detail::orientation_descriptor(detail::axis_command_record::source_metadata(source),request);
+  const std::string operation=detail::axis_command_record::text_value(result.second.at("operation"));
+  return {source, request, std::move(result.first), operation, std::move(result.second)};
+}
+std::pair<AxisExtractionLayout,MetadataObject> detail::orientation_descriptor(
+    const axis_command_record::SourceRecord& metadata, const AxisRangeOrientationRequest& request) {
+
   auto layout = describe_axis_range_orientation(
       metadata.shape, metadata.pixel_type, metadata.calibration, request);
   const std::string operation = orientation_operation;
@@ -95,7 +102,10 @@ ResolvedAxisOrientationCommand resolve_axis_orientation_command(
       {"request", metadata_object(request_record(request))},
       {"derived", metadata_object(layout_record(layout))},
       {"destination", std::string("new_document")}};
-  return {source, request, std::move(layout), operation, std::move(record)};
+  return {std::move(layout),std::move(record)};
+}
+AxisRangeOrientationRequest detail::orientation_descriptor_request(const MetadataObject& record) {
+  return decode_record(record).request;
 }
 
 void validate_axis_orientation_command_record(const MetadataObject &record) {

@@ -1,8 +1,8 @@
 # Global calibration: observed semantics and implementation path
 
-Status: native metadata, generic target/job/publication/scaled Gaussian and
-dedicated Application factory integration are scoped verified. Resolved command
-admission/records, shared UI/caches and persistence remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
+Status: native metadata, generic execution, dedicated factories and the new
+explicit calibrated command envelope/admission/replay API are scoped verified.
+Current ImGui command/recorder dispatch, live caches and persistence remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
 The thirteen-case [reference](../parity/reviews/G034-global-calibration-reference002.json)
 comes from actual pinned ImageJ1.54r ImagePlus/Calibration execution. It does not
 invoke the private Calibrator dialog or qualify all calibration functions.
@@ -182,3 +182,45 @@ mutation. This is negative compatibility coverage, not RGB Slicer support. Keep
 RGB Slicer as an explicit feature gap and qualify it against the pinned original
 before claiming that family complete. The reader preimage/failure diagnostics
 are retained. No production source change or rebuild was needed for this fix.
+
+## Current command handoff and UI execution specification
+
+[Calibrated commands](../CALIBRATED_COMMANDS.md) now provide the additive envelope
+and explicit current-capture replay/rebind API for all six dedicated factories.
+[Verified evidence](../parity/reviews/G034-calibrated-command-progress001.json)
+retains119 new cases, the exact2192-case installed union, old codec controls and
+current SDK consumers. Existing public command classes/formats are unchanged;
+the opaque new type/private descriptor bridges avoided a broad header rebuild.
+
+The next implementation owns actual dispatch, not another record abstraction:
+
+1. In Window live axis/projection actions, capture the target on the caller/UI
+   thread before enqueue. For active global state, resolve the new command once,
+   reserve its admitted bound, prepare from that frozen capture and stage/adopt
+   through the current Application publication path. Never query new application
+   state in the worker to fill missing record fields.
+2. Preserve legacy local records and explicit detached replay semantics. Detect
+   the new schema in recorder/replay/rebind dispatch; require the current capture
+   and deliberate context rebind when values differ. Validate original claims
+   before replacement intent. Guard-only no-global work must still become stale
+   if Global is enabled before publication, without building/serializing an
+   unnecessary density envelope every frame.
+3. Audit Gaussian and other scaled/resolved consumers as well: the existing
+   target-aware Gaussian resolver is a native seam, not complete UI/replay
+   integration. Extend explicit context/provenance coverage where needed; never
+   pass effective calibration through an old record that claims local geometry.
+4. Add generation keys and typed effective values to display/XYZ/selection-world
+   distances, measurements/profiles/histograms/thresholds and live plot caches.
+   Do not bump local document revisions or dirty history to force invalidation.
+   Independent retained plot snapshots keep their captured data/context.
+5. Only then expose the shared Global/bypass controls. Both actual ImGui hosts
+   must cover create/use/clear/ignore, new/open documents, queued/callback state
+   changes, cancellation, derived metadata, local history and new/legacy replay.
+   Existing scalar Slicer refusal does not close RGB Slicer support.
+
+Verification storage handoff: include required C++ report producers when adding
+legacy UI readers. Batch capture-heavy modules sequentially under the unchanged
+64MiB cap. A finally/retention exception must persist failed workflow state;
+functional pass alone is not complete verification. Preserve original receipt
+preimages when correcting a false passed state, then losslessly retain diagnostics
+and retire scratch. Source/fixture expectations and per-case limits stay fixed.
