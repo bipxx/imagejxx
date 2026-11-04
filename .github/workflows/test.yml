@@ -63,6 +63,7 @@ jobs:
           name: native-${{ matrix.os }}
           path: |
             build/ci-native/receipt.json
+            build/ci-native/analysis-profiles.txt
             build/ci-native/*.log
             build/ci-native/*.xml
           if-no-files-found: error

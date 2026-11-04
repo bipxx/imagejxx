@@ -4,6 +4,14 @@ The original imagejxx C++ and Python code is licensed under MIT (see `LICENSE`).
 No ImageJ Java source, Fiji plugin source, JARs or pretrained models are redistributed.
 Non-commercial, research-only, unlicensed and unreviewed components are excluded.
 
+The calibrated scalar statistics and straight-line profile compatibility kernels
+follow reviewed public-domain ImageJ 1.54r ImageStatistics and ProfilePlot behavior.
+They are original C++ implementations; the Java observers in tests/reference are
+verification code and are not installed in product distributions. Original
+observations and input identities are recorded by the calibrated-analysis
+evidence linked from docs/CALIBRATED_ANALYSIS.md.
+
+
 The native selection-enlargement compatibility implementation follows the
 public-domain ImageJ 1.54r RoiEnlarger and EDM behavior, including Michael
 Schmid's EDM candidate propagation. The C++ implementation is original imagejxx

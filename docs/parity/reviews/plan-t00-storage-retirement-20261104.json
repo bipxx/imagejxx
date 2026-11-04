@@ -1,0 +1,28 @@
+{
+  "state": "retired",
+  "reason": "Superseded capture007 predates protected source019/focused successors named in p13i-path-filter001/superseded-p13h-retirement.json; bounded retention for T00 SDK verification. Historical expectations unchanged; full retired capture becomes unavailable evidence.",
+  "retired": {
+    "path": ".tmp/p13h-verification/linux-capture007-native.tar.gz",
+    "bytes": 136540673,
+    "sha256": "769b09f6642660b75b85e5a90c4e01f7b9d952b8cf1247f552ee7ca63e76c4f2"
+  },
+  "preserved_summary": {
+    "path": ".tmp/p13h-verification/linux-capture007-summary-20261104.zip",
+    "bytes": 4875,
+    "sha256": "5e7af131498e354bb217b66c209b086904eaee44485c6b02ac7fdab6e3139053",
+    "members": [
+      {
+        "path": "receipt.json",
+        "bytes": 22660,
+        "sha256": "e88e25b2ec7b18365187d042f9300f5f8d87bf8827c7e58647fc52352730f091"
+      },
+      {
+        "path": "reader-environment.json",
+        "bytes": 15060,
+        "sha256": "dbfef8d338e10b149755efbb996513e3884bd917be8838fbf89df26f1c65c490"
+      }
+    ]
+  },
+  "retained_original_manifest": ".tmp/p13h-verification/linux-capture007-native-retention.json",
+  "recovered_bytes": 136535798
+}

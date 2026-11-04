@@ -1,3 +1,4 @@
+#include "imagej_intensity_function_value_internal.hpp"
 #include <imagejxx/imagej_intensity_execution.hpp>
 #include <imagejxx/imagej_intensity_plot.hpp>
 #include "kernel_control.hpp"
@@ -125,6 +126,27 @@ ImageJIntensityCalibration ImageJIntensityCalibration::lookup(PixelType type,
   record.emplace("source_parameters", std::move(provenance));
   record.emplace("signed16", signed16);
   return {metadata_object(std::move(record)), ImageJIntensityMode::Lookup, bits, signed16};
+}
+namespace detail {
+std::optional<double> imagej_function_calibrated_value(const ImageJIntensityCalibration& c,double raw) {
+  const auto& fields=c.source_parameters();const auto producer=fields.find("producer");
+  if(producer==fields.end() || !std::holds_alternative<std::string>(producer->second) ||
+      std::get<std::string>(producer->second)!="imagej154r.function")return std::nullopt;
+  const auto version=fields.find("version");
+  if(version==fields.end() || wire::unsigned_value(version->second)!=1)return std::nullopt;
+  const auto required=[&](const char* name)->const MetadataValue& {
+    const auto found=fields.find(name);
+    if(found==fields.end())throw std::invalid_argument(std::string("Analysis function provenance missing ")+name);
+    return found->second;
+  };
+  const auto id=function_id(text(required("function")));if(id==14)return std::nullopt;
+  const auto& coefficients=wire::array_value(required("coefficients"));
+  if(coefficients.size()!=function_lengths[id])throw std::invalid_argument("Invalid analysis function coefficients");
+  std::vector<double> p;for(const auto& v:coefficients){const auto x=wire::number_value(v);require_finite(x,"Analysis function coefficient");p.push_back(x);}
+  auto result=function_value(id,p,raw);
+  if(boolean(required("zero_clip")) && result<0)result=0;
+  return result;
+}
 }
 ImageJIntensityCalibration ImageJIntensityCalibration::function(PixelType type,
     const std::string& name_input, const std::vector<double>& p_input, std::string unit,

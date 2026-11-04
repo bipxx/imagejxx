@@ -1,5 +1,6 @@
 #include "imagejxx/image.hpp"
 #include <imagejxx/stack_projection.hpp>
+#include <imagejxx/calibrated_analysis.hpp>
 #include <imagejxx/auto_threshold.hpp>
 #include <imagejxx/binary.hpp>
 #include <imagejxx/conversion.hpp>
@@ -469,6 +470,26 @@ PYBIND11_MODULE(_native, m) {
         auto image = read_image(a); auto selection = read_optional(mask);
         auto stats = [&]() { py::gil_scoped_release release; return statistics(image, selection.get()); }(); return statistics_dict(stats);
     });
+    m.def("imagej_calibrated_statistics", [](const py::array& a,const SpatialCalibration& spatial,
+        const ImageJIntensityCalibration& density,const py::object& mask,std::size_t cap) {
+        auto image=read_image(a);auto selection=read_optional(mask);
+        const auto frozen=spatial;const auto calibration=density;
+        auto s=[&]{py::gil_scoped_release release;return imagej_calibrated_statistics(image,frozen,calibration,selection.get(),cap);}();
+        py::dict result;
+        result["pixel_count"]=s.pixel_count;result["area"]=s.area;result["mean"]=s.mean;result["raw_mean"]=s.raw_mean;
+        result["stddev"]=s.stddev;result["minimum"]=s.minimum;result["maximum"]=s.maximum;result["median"]=s.median;
+        result["mode_index"]=s.mode_index;result["mode_value"]=s.mode_value;result["integrated_density"]=s.integrated_density;
+        py::array_t<std::uint64_t> h(s.histogram.size()),h16(s.histogram16.size());
+        std::copy(s.histogram.begin(),s.histogram.end(),h.mutable_data());std::copy(s.histogram16.begin(),s.histogram16.end(),h16.mutable_data());
+        result["histogram"]=std::move(h);result["histogram16"]=std::move(h16);return result;
+    },py::arg("image"),py::arg("spatial"),py::arg("density"),py::arg("mask")=py::none(),py::arg("max_working_bytes")=128ULL*1024*1024);
+    m.def("imagej_calibrated_line_profile", [](const py::array& a,const ImageJIntensityCalibration& density,
+        double x1,double y1,double x2,double y2,bool interpolate,std::size_t cap) {
+        auto image=read_image(a);
+        auto values=[&]{py::gil_scoped_release release;return imagej_calibrated_line_profile(image,density,x1,y1,x2,y2,interpolate,cap);}();
+        py::array_t<double> result(values.size());std::copy(values.begin(),values.end(),result.mutable_data());return result;
+    },py::arg("image"),py::arg("density"),py::arg("x1"),py::arg("y1"),py::arg("x2"),py::arg("y2"),py::arg("interpolate")=true,
+       py::arg("max_working_bytes")=128ULL*1024*1024);
     m.def("auto_threshold", [](const py::array& a, const std::string& method, int bins,bool ignore_black,bool ignore_white) {
         auto image = read_image(a); py::gil_scoped_release release; return auto_threshold(image, method, bins,ignore_black,ignore_white);
     },py::arg("image"),py::arg("method"),py::arg("bins"),py::arg("ignore_black").noconvert()=false,py::arg("ignore_white").noconvert()=false);

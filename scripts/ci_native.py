@@ -7,6 +7,7 @@ Each command must finish successfully before the next one is launched.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 from pathlib import Path
 import shutil
@@ -65,8 +66,16 @@ def run_profile(source: Path, output: Path, cmake: str, ctest: str) -> None:
         run("test", [ctest, "--test-dir", cache, "-C", "Release", "--output-on-failure",
             "--no-tests=error", "--timeout", "180", "--output-junit", output / "native.xml"], 900)
         run("install", [cmake, "--install", cache, "--config", "Release", "--prefix", prefix])
+        definition = source / "scripts/calibrated_analysis_sdk_cases.py"
+        spec = importlib.util.spec_from_file_location("analysis_sdk_cases", definition)
+        generator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(generator)
+        analysis_carrier = output / "analysis-profiles.txt"
+        receipt["analysis_profiles"] = generator.write_cases(analysis_carrier)
+        save()
         run("sdk-configure", [cmake, "-S", source / "examples/cpp", "-B", sdk,
             "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_PREFIX_PATH=" + str(prefix),
+            "-DIMAGEJXX_SDK_ANALYSIS_CARRIER=" + str(analysis_carrier),
             "-DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF"])
         run("sdk-build", [cmake, "--build", sdk, "--config", "Release", "--parallel", "2"])
         run("sdk-test", [ctest, "--test-dir", sdk, "-C", "Release", "--output-on-failure",

@@ -1,0 +1,823 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-29",
+  "status": "scoped_verified",
+  "scope": "Native C++/Python calibrated scalar numerical kernels and original reference observations. Not completed measurement/profile/histogram/threshold UI, read-only target admission/publication, recorder integration or full ImageJ/Fiji certification.",
+  "implementation": [
+    "Add independent calibrated_analysis.hpp API, ImageJScalarStatistics and imagej_calibrated_statistics/imagej_calibrated_line_profile. Existing raw statistics/line_profile APIs and record formats unchanged. No expanded public command variant or existing public type layout/signature change.",
+    "UInt8/UInt16/finite canonical Float32 statistics: raw processor histograms, ImageJ sample standard deviation, dtype-specific median/mode/NaN/infinity/empty behavior, area and integrated density. UInt16 raw_mean deliberately follows original umean/calibrated-mean behavior. Compact small-image histogram results do not retain65536 bins; both installed SDKs check this.",
+    "Known version1 function provenance shares the existing native double function evaluator for median, including16-bit zero-clip differences. Mean still uses Float32 table. Custom/future table provenance remains opaque. Malformed recognized function provenance gives a validation error without normalizing its record.",
+    "Scalar thin straight-line values use round(pixel length)+1 samples, repeated-addition coordinates, nearest or linear sampling, and density-before-interpolation. Endpoints restricted to inside-image; zero length allowed. No wide/polyline/bicubic/outside-domain/physical-axis/custom-count or non-finite Float32-source qualification.",
+    "Working cap bounds histogram/table/median/profile scratch and returned vectors, not caller-owned pixels/masks, Python conversions, allocator overhead or RSS. Python freezes mutable spatial input before GIL release. Outputs are detached; kernels do not query an Application or validate context/publication.",
+    "Original observers use the existing reviewed ImageJ1.54r/JDK cache. Pin complete original Java-source/class-tree identities plus JDK java/javac/modules/release before/after.77 independent rows:59 base,12 edge,6 function precision; deterministic gzip fixtures. No native-generated oracle or upstream Java/classes installed in products."
+  ],
+  "verification": {
+    "installed_windows": {
+      "state": "passed",
+      "original_case_count": 2254,
+      "collected": 2337,
+      "passed": 2335,
+      "skipped": 2,
+      "original_case_union_preserved": true,
+      "disjoint": true,
+      "additional_analysis_cases": [
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_admission_and_profile_domain[float32]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_admission_and_profile_domain[uint16]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_admission_and_profile_domain[uint8]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_frozen_context_and_detached_histograms"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_function_median_precision[uint16_clip]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_function_median_precision[uint16_line]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_function_median_precision[uint16_poly]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_function_median_precision[uint8_clip]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_function_median_precision[uint8_line]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_function_median_precision[uint8_poly]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_future_table_provenance_stays_opaque"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_malformed_recognized_function_provenance_refuses"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_linear_interpolated_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_linear_interpolated_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_linear_nearest_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_linear_nearest_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_lookup_interpolated_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_lookup_interpolated_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_lookup_nearest_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_lookup_nearest_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_raw_interpolated_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_raw_interpolated_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_raw_nearest_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_float32_raw_nearest_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_linear_interpolated_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_linear_interpolated_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_linear_nearest_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_linear_nearest_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_lookup_interpolated_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_lookup_interpolated_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_lookup_nearest_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_lookup_nearest_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_raw_interpolated_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_raw_interpolated_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_raw_nearest_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint16_raw_nearest_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_linear_interpolated_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_linear_interpolated_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_linear_nearest_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_linear_nearest_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_lookup_interpolated_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_lookup_interpolated_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_lookup_nearest_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_lookup_nearest_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_raw_interpolated_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_raw_interpolated_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_raw_nearest_diagonal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[profile_uint8_raw_nearest_horizontal]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_float32_linear_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_all_nan_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_decreasing_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_infinite_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_linear_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_linear_global_ignored]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_linear_local]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_linear_roi_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_lookup_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_nan_gap_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_nan_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint16_raw_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_all_nan_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_decreasing_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_infinite_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_linear_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_linear_global_ignored]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_linear_local]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_linear_roi_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_lookup_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_nan_gap_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_nan_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_analysis[stats_uint8_raw_global]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[float32_constant]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[float32_empty]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[float32_single]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[uint16_constant]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[uint16_empty]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[uint16_nan_gap]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[uint16_signed]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[uint16_single]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[uint8_constant]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[uint8_empty]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[uint8_nan_gap]"
+        ],
+        [
+          "tests.python.test_calibrated_analysis",
+          "test_original_edges[uint8_single]"
+        ]
+      ],
+      "groups": {
+        "calibrated-analysis-regression696": {
+          "cases": 2168,
+          "scratch_bytes": 44081277,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression696\\receipt.json",
+            "bytes": 137817,
+            "sha256": "7ad5a4cb141a5e7e973f7c8659c3c86ae1ce86da73cd2f675a9a4306c044669c"
+          }
+        },
+        "calibrated-analysis-regression697": {
+          "cases": 76,
+          "scratch_bytes": 36335868,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression697\\receipt.json",
+            "bytes": 28447,
+            "sha256": "837cbacef2c5e35b7d64ee470c12800d975ded6987da07ff415f93a8c17efc30"
+          }
+        },
+        "calibrated-analysis-regression698": {
+          "cases": 1,
+          "scratch_bytes": 19231357,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression698\\receipt.json",
+            "bytes": 24310,
+            "sha256": "b16acf7e853fb20535fb891ad8f5b89b3361a2cf72673c9bcd7ff7381f0ac234"
+          }
+        },
+        "calibrated-analysis-regression699": {
+          "cases": 1,
+          "scratch_bytes": 19240884,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression699\\receipt.json",
+            "bytes": 21958,
+            "sha256": "d1131caa0fb68156438279f803da6b79b0c7a71568c759cc5e89f535a8075596"
+          }
+        },
+        "calibrated-analysis-regression700": {
+          "cases": 1,
+          "scratch_bytes": 10460363,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression700\\receipt.json",
+            "bytes": 24141,
+            "sha256": "46c8d94e8fbcd91cacb37d9a46976cc7c7bf39af46425a64d55a5a57eae93b81"
+          }
+        },
+        "calibrated-analysis-regression701": {
+          "cases": 1,
+          "scratch_bytes": 3311321,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression701\\receipt.json",
+            "bytes": 23835,
+            "sha256": "afcea7f749065d8018a1510fa38a6fa7398458b589eb7939262e66afd78f6b06"
+          }
+        },
+        "calibrated-analysis-regression702": {
+          "cases": 1,
+          "scratch_bytes": 5270185,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression702\\receipt.json",
+            "bytes": 23841,
+            "sha256": "43d1a81c979af140a94975c0cc03f2f20ae5196f4a2afe780490d714d553f636"
+          }
+        },
+        "calibrated-analysis-regression703": {
+          "cases": 1,
+          "scratch_bytes": 10466205,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression703\\receipt.json",
+            "bytes": 21735,
+            "sha256": "e9669251d298ca8969cdde03400d74b52faf26738b21a9ce8543e6821a62c718"
+          }
+        },
+        "calibrated-analysis-regression704": {
+          "cases": 1,
+          "scratch_bytes": 3312803,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression704\\receipt.json",
+            "bytes": 21408,
+            "sha256": "9c5fdfc4e05d3f777237d4dc2555da652edfd760e19cf3eceb8a3bfbbb79ac04"
+          }
+        },
+        "calibrated-analysis-regression705": {
+          "cases": 1,
+          "scratch_bytes": 5273485,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression705\\receipt.json",
+            "bytes": 21409,
+            "sha256": "8c141927ca70ec8c2a58335a6dc912d1702501322847c7d41840283977cc563d"
+          }
+        },
+        "calibrated-analysis-regression706": {
+          "cases": 1,
+          "scratch_bytes": 4093998,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression706\\receipt.json",
+            "bytes": 23832,
+            "sha256": "d75414c9bb83e55dce14d7db1ef8a19667e0ef2e246d70ea556b08017b65ec74"
+          }
+        },
+        "calibrated-analysis-regression707": {
+          "cases": 1,
+          "scratch_bytes": 4097629,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression707\\receipt.json",
+            "bytes": 21407,
+            "sha256": "27c2fba44ec9067485dcc6c86438400f10960e0e61a941f6a47fef1645f35768"
+          }
+        },
+        "calibrated-analysis-installed713": {
+          "cases": 83,
+          "scratch_bytes": 0,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-installed713\\receipt.json",
+            "bytes": 21032,
+            "sha256": "32e3b070c5edc65689a1fd6880b7c2c75038be86677c08f39357e7ea7df3a3c5"
+          }
+        }
+      },
+      "xml": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression696\\results.xml",
+          "bytes": 330271,
+          "sha256": "9e529d8493af95c834feccc8e489ebe792260c92383be2bb4b5dc24f1f3da716"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression697\\results.xml",
+          "bytes": 9615,
+          "sha256": "00c3d67d9c4e6fdc44ba83b125fa837009263d7179c7caced65ac04adfccb270"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression698\\results.xml",
+          "bytes": 378,
+          "sha256": "d8dcbe9e31b35ecbef1cb0bb4f2bac9a5038d6ede4e2527e6cff257d6a14e9c6"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression699\\results.xml",
+          "bytes": 381,
+          "sha256": "d9ce7909d64aa7f70958363b67312a575384a826bf793dcc6a788c33d5bcd75c"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression700\\results.xml",
+          "bytes": 385,
+          "sha256": "f037f214c950cd3a2aa78427055ab4309172c6ffee2ace91fc29849ed860aee5"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression701\\results.xml",
+          "bytes": 386,
+          "sha256": "b28d13566ff292e2566bdcef6a97d34aecf6cb92c54375cfd9cb65a3cc1dbfda"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression702\\results.xml",
+          "bytes": 386,
+          "sha256": "bc6b6e22ecdb8b2d1cee114dbaac1c3b2b988bcf9761b9ffdf3465e48a949800"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression703\\results.xml",
+          "bytes": 388,
+          "sha256": "ec790d922ad4dac1276609389f49e3410ee33b6db632ef3a238649873c78fc03"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression704\\results.xml",
+          "bytes": 389,
+          "sha256": "fe2b57ea2041dbfc563a6f707af6a0179eac70194cf22748adb4193ba1b6d25e"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression705\\results.xml",
+          "bytes": 389,
+          "sha256": "df773c851489a1fc28ab85c6f7e1622e1bdd1a959cc4a7661a39f64c626a3f91"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression706\\results.xml",
+          "bytes": 381,
+          "sha256": "ce8b6ac5bcd2e0916933339d52e32680929959f853f2e544c18fee8ddf11e76a"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-regression707\\results.xml",
+          "bytes": 384,
+          "sha256": "fb7f3068f8c6b060af96800c441f4e89ed5a9a8970d0819d00eaa28aa34c0a40"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-installed713\\results.xml",
+          "bytes": 11546,
+          "sha256": "7b127d3df29f6c24af01554689d999112a901f115b6862912099ebc521863445"
+        }
+      ],
+      "producer_inputs_rechecked": 1307,
+      "reader_pins_rechecked": 61,
+      "native_controls": 15,
+      "build_receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-windows711\\receipt.json",
+        "bytes": 59544,
+        "sha256": "aaf84ce3f6a6ac50ffe8ef227043a54fe388d8751ed9c1ceb53d065b5c0e8a6b"
+      },
+      "sdks": {
+        "windows": {
+          "tests": 5,
+          "passed": 5,
+          "original_analysis_cases": 77,
+          "table_profiles": 128,
+          "fit_dtype_cells": 86,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-sdk-windows694\\receipt.json",
+            "bytes": 96788,
+            "sha256": "238f79a33dfb3c2e7dd69af95b6326476fb573261248f81f5275625e0fb6afc5"
+          },
+          "xml": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-sdk-windows694\\results.xml",
+            "bytes": 1660,
+            "sha256": "a62ababee16b802ad4039f89269fed4c22837e02179735aaa3245dabac2851d1"
+          },
+          "archive": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+            "bytes": 58213930,
+            "sha256": "8751b73ef5b4ec89a7fa05b4ee542e7e418cd992cf42339398d173baa46acfbd"
+          }
+        },
+        "linux": {
+          "tests": 5,
+          "passed": 5,
+          "original_analysis_cases": 77,
+          "table_profiles": 128,
+          "fit_dtype_cells": 86,
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-sdk-linux694\\receipt.json",
+            "bytes": 71119,
+            "sha256": "5b84bdb2e931043c54efae2746e210d0a5a9b5d99907a80cea606e6f0e8cd12a"
+          },
+          "xml": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-sdk-linux694\\results.xml",
+            "bytes": 1614,
+            "sha256": "7954b266a36c9a488f8ec9f47745ef527f0650e765e85315dfea78a1fab212ab"
+          },
+          "archive": {
+            "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+            "bytes": 20037120,
+            "sha256": "d22b8d5f17e7aec65e7e9bf05e7f33949986086baaf7c2fe421fc246bfd24229"
+          }
+        }
+      },
+      "references": [
+        {
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-reference681\\receipt.json",
+            "bytes": 8721,
+            "sha256": "8af154002e1f73f792e1f1f1a5cea99091b13325bfb424b6c63db2c7db5c2a98"
+          },
+          "cases": 59,
+          "fixture": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-calibrated-analysis-reference001.jsonl.gz",
+            "bytes": 1370,
+            "sha256": "87aac9288ff5f61a97a301439f82f8cdf49d0750ae05a22871d955f50b4c878c"
+          },
+          "reference_identity": [
+            {
+              "root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\source",
+              "files": 438,
+              "bytes": 6302495,
+              "tree_sha256": "9f1ef06ff9b7d5da4355d66142173af6aae3bbaf8b2fc60599da688826a9ee0e"
+            },
+            {
+              "root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes",
+              "files": 475,
+              "bytes": 4096092,
+              "tree_sha256": "b7298fa3295bd2d39192555862677dcc60d4fbe16f60c6c63680b3ca2d3448be"
+            }
+          ]
+        },
+        {
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-reference682\\receipt.json",
+            "bytes": 9354,
+            "sha256": "ea1cfe7316501e6148f74efa7deedecb7f881fcea94edd35b2da80aa3e4281c3"
+          },
+          "cases": 12,
+          "fixture": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-calibrated-analysis-reference002.jsonl.gz",
+            "bytes": 610,
+            "sha256": "70f1b257006207a3fe5764ad8bfefc8d068299dc9fcc0fd10d2046c6f0d57f2e"
+          },
+          "reference_identity": [
+            {
+              "root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\source",
+              "files": 438,
+              "bytes": 6302495,
+              "tree_sha256": "9f1ef06ff9b7d5da4355d66142173af6aae3bbaf8b2fc60599da688826a9ee0e"
+            },
+            {
+              "root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes",
+              "files": 475,
+              "bytes": 4096092,
+              "tree_sha256": "b7298fa3295bd2d39192555862677dcc60d4fbe16f60c6c63680b3ca2d3448be"
+            }
+          ]
+        },
+        {
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-reference683\\receipt.json",
+            "bytes": 9353,
+            "sha256": "cd2b03ead1ea79273fc9d11559cc5b84119e9bf69a66c86d763aef8b6a8b255d"
+          },
+          "cases": 6,
+          "fixture": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-calibrated-analysis-reference003.jsonl.gz",
+            "bytes": 287,
+            "sha256": "f12034f07af917c025861b8831cdf22649079ecc4d34dce0e95d7fb1784166dd"
+          },
+          "reference_identity": [
+            {
+              "root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\source",
+              "files": 438,
+              "bytes": 6302495,
+              "tree_sha256": "9f1ef06ff9b7d5da4355d66142173af6aae3bbaf8b2fc60599da688826a9ee0e"
+            },
+            {
+              "root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes",
+              "files": 475,
+              "bytes": 4096092,
+              "tree_sha256": "b7298fa3295bd2d39192555862677dcc60d4fbe16f60c6c63680b3ca2d3448be"
+            }
+          ]
+        }
+      ],
+      "linux_core_receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-linux712\\receipt.json",
+        "bytes": 169211,
+        "sha256": "af707acb327105387f61ba0722ec5c2cd9fc1fa792d3dde0885424881812d8fe"
+      },
+      "cases_sha256": "02544189e905ff188dad2f61becfa426f9075811ff539e646783377f4b53117e",
+      "acceptance_claim": false
+    },
+    "original_reference_cases": 77,
+    "new_python_cases": 83,
+    "installed_core_sdk": {
+      "windows": {
+        "tests": 5,
+        "passed": 5,
+        "original_analysis_cases": 77,
+        "table_profiles": 128,
+        "fit_dtype_cells": 86,
+        "receipt": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-sdk-windows694\\receipt.json",
+          "bytes": 96788,
+          "sha256": "238f79a33dfb3c2e7dd69af95b6326476fb573261248f81f5275625e0fb6afc5"
+        },
+        "xml": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-sdk-windows694\\results.xml",
+          "bytes": 1660,
+          "sha256": "a62ababee16b802ad4039f89269fed4c22837e02179735aaa3245dabac2851d1"
+        },
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+          "bytes": 58213930,
+          "sha256": "8751b73ef5b4ec89a7fa05b4ee542e7e418cd992cf42339398d173baa46acfbd"
+        }
+      },
+      "linux": {
+        "tests": 5,
+        "passed": 5,
+        "original_analysis_cases": 77,
+        "table_profiles": 128,
+        "fit_dtype_cells": 86,
+        "receipt": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-sdk-linux694\\receipt.json",
+          "bytes": 71119,
+          "sha256": "5b84bdb2e931043c54efae2746e210d0a5a9b5d99907a80cea606e6f0e8cd12a"
+        },
+        "xml": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-sdk-linux694\\results.xml",
+          "bytes": 1614,
+          "sha256": "7954b266a36c9a488f8ec9f47745ef527f0650e765e85315dfea78a1fab212ab"
+        },
+        "archive": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+          "bytes": 20037120,
+          "sha256": "d22b8d5f17e7aec65e7e9bf05e7f33949986086baaf7c2fe421fc246bfd24229"
+        }
+      }
+    },
+    "sdk_registration": "Existing four installed tests remain registered. Optional fifth analysis client consumes77 original rows through a stdlib-generated carrier; no duplicate smoke additions to the original profile client.128 exact table/86 fit dtype cells remain per platform.",
+    "existing_cpp_imgui_cases": 13,
+    "python_counterparts": true,
+    "ui_scope": "Existing shared UI regressions retained; no new analysis UI cases or platform/GPU qualification.",
+    "license_inventory": "scripts/check_licenses.py passed; no dependency added; attribution/verification scope recorded in THIRD_PARTY_NOTICES.md."
+  },
+  "diagnostics": {
+    "initial_reader": "687 failed30 of81 cases before relevant kernel calls: reader used nonexistent Python lookup constructor and positional keyword-only zero_clip. Corrected to established from_record and keyword argument. Original kernel outputs, old tests/fingerprints and all numerical tolerances unchanged.",
+    "failed_receipt": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-installed687\\receipt.json",
+      "bytes": 21072,
+      "sha256": "31656291862b917795bfeed06f022b97142f93eaa753417c8dc80a4d0b78c8f0"
+    },
+    "failed_xml": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-installed687\\results.xml",
+      "bytes": 74993,
+      "sha256": "b3f68622eda10c3b52139a68226abccdd5161738688dcd1967e3470279af61d1"
+    },
+    "preimages": "688 incorrect reader and708 pre-refinement source/reader preimages recover losslessly from719. Final refinement fixes malformed-function validation and retained histogram capacity; no numeric oracle change.",
+    "final_focused_receipt": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-installed713\\receipt.json",
+      "bytes": 21032,
+      "sha256": "32e3b070c5edc65689a1fd6880b7c2c75038be86677c08f39357e7ea7df3a3c5"
+    }
+  },
+  "efficiency": {
+    "windows_build_seconds": [
+      83.48399999993853,
+      54.67200000002049,
+      59.17200000002049
+    ],
+    "linux_build_seconds": [
+      538.381946071,
+      9.009368036
+    ],
+    "interpretation": "Different full/incremental build workloads, not processing-speed comparisons. Linux693 cache identity unchanged by configure, but full core rebuilt. Current generated Make rules give138 object dependencies on shared flags.make, which includes the added strict-FP entry; prior flags bytes unavailable, so this is a supported fanout explanation/inference, not an old-file diff proof. Batch per-source FP-list changes or consider isolated private numerical object targets when justified; retain FP policy/current cache/generator."
+  },
+  "storage": {
+    "before": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-before680.json",
+      "bytes": 66557,
+      "sha256": "c2c28f7ad3409eb6683a7c96391eb53c30f8e1e01d204427ace8499450ac4183"
+    },
+    "before_retention": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-before-retention717.json",
+      "bytes": 66572,
+      "sha256": "97423beba835b8776428785cf5c5128d782bfb4d40bd0f9c1e5a3592444759cd"
+    },
+    "after_retention": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-after-retention720.json",
+      "bytes": 66570,
+      "sha256": "01db46d086fc0c5c3c50e824c9d4152cb485f761ba0233df6d04747c7a901498"
+    },
+    "known_bytes_after_retention": 8588538870,
+    "budget_verified": false,
+    "unknown_subtrees": 214,
+    "explanation": "212 denied residual retired build/ subtrees plus two pytest caches remain unknown. No build generation created there. Preserve historical narrower inventory scopes. Known bytes briefly exceeded8GiB during necessary verification/evidence retention under documented reserves; after cleanup known bytes are below8GiB, full budget still unverified.",
+    "retention": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-retire-superseded718\\receipt.json",
+        "bytes": 4918,
+        "sha256": "38f267336446c60d83644d50fca72f4c255d4bbaf3344d8851780dae60ae2c9e"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibrated-analysis-retention719\\receipt.json",
+        "bytes": 11666,
+        "sha256": "35ab2cbb4789f391f7638e18ea28f0ea2e822bac7dbce0c06af3f77047249c70"
+      }
+    ],
+    "recovered_bytes": 4083852,
+    "policy": "Same active compiler caches/runtimes/installed SDKs. Compiler, observer, SDK and reader scratch retired after terminal proof; necessary captures/diagnostics losslessly member-hash verified. No whole SDK/runtime/cache/source-checkout archive. Build512MiB, reader/SDK64MiB and focused observer/kernel4MiB reserves; no cap enlargement.",
+    "availability": "17 superseded numerical/Gaussian/display full capture archives retired by718 are unavailable; original receipts/XML/identities preserved. Earlier583/678 retired capture limitations remain.719 losslessly retains superseded685/692 logs/freezes and explicit source/reader preimages. Current711/696-707/713 and reference/SDK diagnostics retained. Replaced installed library/runtime bytes unavailable with identities retained."
+  },
+  "remaining": [
+    "Metadata-only target analysis admission including plane/mask/kernel/record/result bounds before provider reads or callbacks",
+    "Caller-thread captures and existing measurement/profile/histogram/threshold jobs, result adoption, live cache invalidation and independent saved plots",
+    "Physical profile axes/custom samples, wide/polyline/bicubic/edge and non-finite-source/RGB/Float64 variants",
+    "Time/distance/other command audit, Global/bypass controls, original Analyzer/UI references and broader platform acceptance",
+    "Session/I/O, bulk workflows and matched processing/latency/peak-memory benchmarks"
+  ],
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified": 0
+  },
+  "performance_claim": false,
+  "full_goal_complete": false
+}

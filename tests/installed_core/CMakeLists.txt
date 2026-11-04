@@ -36,3 +36,11 @@ add_test(NAME installed_calibration_profiles
   COMMAND calibration_profiles "${IMAGEJXX_SDK_PROFILE_CARRIER}")
 file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/import-$<CONFIG>.txt"
   CONTENT "archive=$<TARGET_FILE:imagejxx::core>\ninclude=$<TARGET_PROPERTY:imagejxx::core,INTERFACE_INCLUDE_DIRECTORIES>\n")
+
+# Optional additive analysis client; the original four clients remain registered.
+if(IMAGEJXX_SDK_ANALYSIS_CARRIER)
+  add_executable(calibrated_analysis ../native/test_calibrated_analysis_sdk.cpp)
+  target_link_libraries(calibrated_analysis PRIVATE imagejxx::core)
+  add_test(NAME installed_calibrated_analysis
+    COMMAND calibrated_analysis "${IMAGEJXX_SDK_ANALYSIS_CARRIER}")
+endif()

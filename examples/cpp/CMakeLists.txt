@@ -365,3 +365,13 @@ target_link_libraries(imagejxx_native_bare_import_example PRIVATE imagejxx::core
 if(BUILD_TESTING)
   add_test(NAME imagejxx_native_bare_import_example COMMAND imagejxx_native_bare_import_example)
 endif()
+
+# Original scalar-analysis matrix supplied by the SDK CI driver.
+if(BUILD_TESTING AND IMAGEJXX_SDK_ANALYSIS_CARRIER)
+  add_executable(imagejxx_calibrated_analysis_example ../../tests/native/test_calibrated_analysis_sdk.cpp)
+  target_link_libraries(imagejxx_calibrated_analysis_example PRIVATE imagejxx::core)
+  add_test(NAME imagejxx_calibrated_analysis_example
+    COMMAND imagejxx_calibrated_analysis_example "${IMAGEJXX_SDK_ANALYSIS_CARRIER}")
+  file(GENERATE OUTPUT "analysis-import-$<CONFIG>.txt"
+    CONTENT "archive=$<TARGET_FILE:imagejxx::core>\ninclude=$<TARGET_PROPERTY:imagejxx::core,INTERFACE_INCLUDE_DIRECTORIES>\n")
+endif()

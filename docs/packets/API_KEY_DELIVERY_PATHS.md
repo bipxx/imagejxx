@@ -1,5 +1,14 @@
 # Shortest delivery paths by API and setting key
 
+## Calibrated scalar analysis APIs
+
+`imagej_calibrated_statistics` and `imagej_calibrated_line_profile` are verified
+numerical building blocks. [Contract](../CALIBRATED_ANALYSIS.md). The shortest
+next path is an existing-target metadata estimate/preparation bridge, then the
+current Window measurement/profile and histogram/threshold owners. Preserve raw
+processor bins, capture effective units/values once, and validate before live
+result adoption. No second job controller or dummy document publication.
+
 ## Calibrated command APIs — shortest delivery path
 
 [PLAN](../PLAN.md) owns status/counts. Use

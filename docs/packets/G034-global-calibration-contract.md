@@ -1,5 +1,10 @@
 # Global calibration: observed semantics and implementation path
 
+Numerical progress,2026-10-29: explicit calibrated scalar statistics/profile
+values are verified against77 original cases on both installed SDKs. This does
+not finish target admission, analysis UI/cache/recorder integration or Global
+controls. Follow [the kernel contract](../CALIBRATED_ANALYSIS.md) and current PLAN.
+
 Status: native metadata, generic execution, dedicated factories and the new
 explicit calibrated command envelope/admission/replay API are scoped verified.
 Six live axis/projection ImGui routes and Gaussian preview/Apply/recorder are

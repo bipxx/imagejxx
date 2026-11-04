@@ -1,0 +1,340 @@
+{
+  "state": "passed",
+  "scope": "Changed CI analysis carrier and real installed CMake SDK consumer; not full CI platform profile",
+  "source_config_delta_after_product_freeze": [
+    {
+      "logical_path": ".github/workflows/test.yml",
+      "previous": {
+        "logical_path": ".github/workflows/test.yml",
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.github\\workflows\\test.yml",
+        "bytes": 10730,
+        "sha256": "7f257b03b9905fd093ab66c7c169f2f902ac82dc85c382802f7b95c8acb2654f"
+      },
+      "current": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.github\\workflows\\test.yml",
+        "bytes": 10781,
+        "sha256": "0c8e0a7b1de5776cda6ddaee85bcb3e5a425e1637ea7293ab94c7ace715970a9"
+      }
+    },
+    {
+      "logical_path": "scripts/ci_native.py",
+      "previous": {
+        "logical_path": "scripts/ci_native.py",
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\ci_native.py",
+        "bytes": 4525,
+        "sha256": "908fc06e78c0d9af035c365fd961f6e37ced669fa5ada89bd92e0055c79aacdc"
+      },
+      "current": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\ci_native.py",
+        "bytes": 5044,
+        "sha256": "a0a83993e55c52370b61484e8a8236c858031da998aee584230955b925ec0db2"
+      }
+    }
+  ],
+  "analysis_profiles": {
+    "inputs": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-calibrated-analysis-reference001.jsonl.gz",
+        "bytes": 1370,
+        "sha256": "87aac9288ff5f61a97a301439f82f8cdf49d0750ae05a22871d955f50b4c878c"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-calibrated-analysis-reference002.jsonl.gz",
+        "bytes": 610,
+        "sha256": "70f1b257006207a3fe5764ad8bfefc8d068299dc9fcc0fd10d2046c6f0d57f2e"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-calibrated-analysis-reference003.jsonl.gz",
+        "bytes": 287,
+        "sha256": "f12034f07af917c025861b8831cdf22649079ecc4d34dce0e95d7fb1784166dd"
+      }
+    ],
+    "cases": 77,
+    "bytes": 9696,
+    "sha256": "40d48daa2dc65377901621e8fdf0dfd58cca51118812442b0dcd3d715ca12ed8"
+  },
+  "inputs": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\examples\\cpp\\CMakeLists.txt",
+      "bytes": 23327,
+      "sha256": "724940bd04d45423c0bf73aa78db3cea0aec54ff0e7d79541062284a759e65cd"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\ci_native.py",
+      "bytes": 5044,
+      "sha256": "a0a83993e55c52370b61484e8a8236c858031da998aee584230955b925ec0db2"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\calibrated_analysis_sdk_cases.py",
+      "bytes": 2250,
+      "sha256": "b2aef3eac63246b6c0402773e8d9a9fec9a2c15daa62bf7e5016c5a845e62233"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_calibrated_analysis_sdk.cpp",
+      "bytes": 4932,
+      "sha256": "0e540158fff13e2ed3d0b8867ae5327ffce1627fd7e8775e5a734c27447397ca"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.github\\workflows\\test.yml",
+      "bytes": 10781,
+      "sha256": "0c8e0a7b1de5776cda6ddaee85bcb3e5a425e1637ea7293ab94c7ace715970a9"
+    }
+  ],
+  "installed_archive": {
+    "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+    "bytes": 58213930,
+    "sha256": "8751b73ef5b4ec89a7fa05b4ee542e7e418cd992cf42339398d173baa46acfbd"
+  },
+  "commands": [
+    {
+      "label": "sdk-configure",
+      "proof": {
+        "schema": "imagejxx.owned-command.001",
+        "platform": "win32",
+        "state": "exited",
+        "argv": [
+          "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+          "-S",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\examples\\cpp",
+          "-B",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plan-t00-sdk-20261104\\scratch\\consumer",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DCMAKE_PREFIX_PATH=C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed",
+          "-DIMAGEJXX_SDK_ANALYSIS_CARRIER=C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plan-t00-sdk-20261104\\scratch\\analysis-profiles.txt",
+          "-DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF",
+          "-DBUILD_TESTING=ON"
+        ],
+        "cwd": "C:\\Users\\HEQ\\Projects\\imagejxx",
+        "timeout_seconds": 180.0,
+        "cleanup_timeout_seconds": 10.0,
+        "started": 1793804711.832399,
+        "started_monotonic": 1844735.4504923,
+        "target_pid": 156952,
+        "target_completed": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "descendants_remained_after_target_completion": false,
+        "cleanup_complete": true,
+        "ownership": {
+          "method": "windows-job",
+          "supervisor_pid": 165832,
+          "kill_on_close": true,
+          "breakaway_allowed": false,
+          "assigned_before_resume": true,
+          "resumed": true,
+          "console_policy": "inherit_existing",
+          "caller_console_cp": 936,
+          "target_identity": {
+            "pid": 156952,
+            "creation_filetime": 134382783118457715,
+            "image_path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe"
+          },
+          "handles_closed": true
+        },
+        "helper": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\ci_owned_process.py",
+          "bytes": 32771,
+          "sha256": "960a6d76a70863d1227bcae16e2153b5c62c57100ea1b8c5924e7f177f5230fd"
+        },
+        "cleanup": {
+          "actions": [],
+          "observed": [],
+          "reaped": [],
+          "remaining": [],
+          "initial_job_members": [],
+          "membership_scope": "all members of the retained Windows Job",
+          "waited": [
+            {
+              "pid": 156952,
+              "exit_code": 0
+            }
+          ],
+          "waited_count": 1,
+          "terminal_wait": "job_empty_and_target_signalled",
+          "terminated_job_count": 0,
+          "elapsed_seconds": 9.96000599116087e-05
+        },
+        "ended": 1793804718.1119306,
+        "elapsed_seconds": 6.279528199927881
+      }
+    },
+    {
+      "label": "sdk-build",
+      "proof": {
+        "schema": "imagejxx.owned-command.001",
+        "platform": "win32",
+        "state": "exited",
+        "argv": [
+          "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+          "--build",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plan-t00-sdk-20261104\\scratch\\consumer",
+          "--config",
+          "Release",
+          "--parallel",
+          "2",
+          "--target",
+          "imagejxx_calibrated_analysis_example"
+        ],
+        "cwd": "C:\\Users\\HEQ\\Projects\\imagejxx",
+        "timeout_seconds": 180.0,
+        "cleanup_timeout_seconds": 10.0,
+        "started": 1793804718.1233008,
+        "started_monotonic": 1844741.7413907,
+        "target_pid": 185892,
+        "target_completed": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "descendants_remained_after_target_completion": false,
+        "cleanup_complete": true,
+        "ownership": {
+          "method": "windows-job",
+          "supervisor_pid": 165832,
+          "kill_on_close": true,
+          "breakaway_allowed": false,
+          "assigned_before_resume": true,
+          "resumed": true,
+          "console_policy": "inherit_existing",
+          "caller_console_cp": 936,
+          "target_identity": {
+            "pid": 185892,
+            "creation_filetime": 134382783182744395,
+            "image_path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe"
+          },
+          "handles_closed": true
+        },
+        "helper": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\ci_owned_process.py",
+          "bytes": 32771,
+          "sha256": "960a6d76a70863d1227bcae16e2153b5c62c57100ea1b8c5924e7f177f5230fd"
+        },
+        "cleanup": {
+          "actions": [],
+          "observed": [],
+          "reaped": [],
+          "remaining": [],
+          "initial_job_members": [],
+          "membership_scope": "all members of the retained Windows Job",
+          "waited": [
+            {
+              "pid": 185892,
+              "exit_code": 0
+            }
+          ],
+          "waited_count": 1,
+          "terminal_wait": "job_empty_and_target_signalled",
+          "terminated_job_count": 0,
+          "elapsed_seconds": 6.969994865357876e-05
+        },
+        "ended": 1793804720.159023,
+        "elapsed_seconds": 2.0357220000587404
+      }
+    },
+    {
+      "label": "sdk-test",
+      "proof": {
+        "schema": "imagejxx.owned-command.001",
+        "platform": "win32",
+        "state": "exited",
+        "argv": [
+          "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+          "--test-dir",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plan-t00-sdk-20261104\\scratch\\consumer",
+          "-C",
+          "Release",
+          "--output-on-failure",
+          "--no-tests=error",
+          "--timeout",
+          "180",
+          "-R",
+          "^imagejxx_calibrated_analysis_example$",
+          "--output-junit",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plan-t00-sdk-20261104\\sdk.xml"
+        ],
+        "cwd": "C:\\Users\\HEQ\\Projects\\imagejxx",
+        "timeout_seconds": 180.0,
+        "cleanup_timeout_seconds": 10.0,
+        "started": 1793804720.1633122,
+        "started_monotonic": 1844743.7814021,
+        "target_pid": 101560,
+        "target_completed": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "descendants_remained_after_target_completion": false,
+        "cleanup_complete": true,
+        "ownership": {
+          "method": "windows-job",
+          "supervisor_pid": 165832,
+          "kill_on_close": true,
+          "breakaway_allowed": false,
+          "assigned_before_resume": true,
+          "resumed": true,
+          "console_policy": "inherit_existing",
+          "caller_console_cp": 936,
+          "target_identity": {
+            "pid": 101560,
+            "creation_filetime": 134382783201723637,
+            "image_path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe"
+          },
+          "handles_closed": true
+        },
+        "helper": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\ci_owned_process.py",
+          "bytes": 32771,
+          "sha256": "960a6d76a70863d1227bcae16e2153b5c62c57100ea1b8c5924e7f177f5230fd"
+        },
+        "cleanup": {
+          "actions": [],
+          "observed": [],
+          "reaped": [],
+          "remaining": [],
+          "initial_job_members": [],
+          "membership_scope": "all members of the retained Windows Job",
+          "waited": [
+            {
+              "pid": 101560,
+              "exit_code": 0
+            }
+          ],
+          "waited_count": 1,
+          "terminal_wait": "job_empty_and_target_signalled",
+          "terminated_job_count": 0,
+          "elapsed_seconds": 4.2400090023875237e-05
+        },
+        "ended": 1793804720.3600717,
+        "elapsed_seconds": 0.19675939995795488
+      }
+    }
+  ],
+  "storage_before": ".tmp/manual-workflow-verification/plan-t00-before-20261104.json",
+  "temporary_reserve_bytes": 67108864,
+  "actual_import": "archive=C:/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib\ninclude=C:/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/windows/sdk-installed/include\n",
+  "retention": {
+    "state": "retired",
+    "compiler_cache_archived": false,
+    "removed_files": 238,
+    "scratch_bytes": 8811046,
+    "scratch_tree_identity": "552437af7eab19f0aa86be23116af416ca745411ed352eeb70427bb47fa952a3",
+    "necessary_capture_archive": {
+      "path": ".tmp/manual-workflow-verification/plan-t00-sdk-20261104/analysis-inputs.zip",
+      "bytes": 1911,
+      "sha256": "97d2f63274b083667e6fbbd1677838c9c7aa9d025349e36f8bef078ce9fc1f81"
+    },
+    "members": [
+      {
+        "path": ".tmp/manual-workflow-verification/plan-t00-sdk-20261104/scratch/analysis-profiles.txt",
+        "bytes": 9696,
+        "sha256": "40d48daa2dc65377901621e8fdf0dfd58cca51118812442b0dcd3d715ca12ed8"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/plan-t00-sdk-20261104/scratch/consumer/analysis-import-Release.txt",
+        "bytes": 200,
+        "sha256": "1891069ab62f559670f76cb0860b4cfbdb1c07133f27bc4f883d7cac48153894"
+      }
+    ],
+    "built_consumer": {
+      "path": ".tmp/manual-workflow-verification/plan-t00-sdk-20261104/scratch/consumer/Release/imagejxx_calibrated_analysis_example.exe",
+      "bytes": 144896,
+      "sha256": "cf4878145114331fb61405ccf2c4c708a919a039ac030923ea9fe143cdd4408f"
+    }
+  }
+}

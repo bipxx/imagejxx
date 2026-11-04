@@ -1,5 +1,10 @@
 # Calibrated command capture and replay
 
+Read-only analysis handoff: [scalar numerical kernels](CALIBRATED_ANALYSIS.md)
+are verified separately. Pure statistics/profile values do not imply a new
+command envelope, target admission or editor publication. Audit and batch their
+actual consumer/recorder contracts before extending this request variant.
+
 Status: seven native/Python command families and six shared ImGui routes are
 scoped verified. Installed verification passes 2,244 of 2,246 cases with two
 optional hidden-OpenGL skips, including 119 original envelope and 52 new Gaussian

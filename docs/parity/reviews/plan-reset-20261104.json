@@ -1,0 +1,201 @@
+{
+  "date": "2026-11-04",
+  "scope": "Documentation-only full delivery-plan reset and per-task waste-management policy; no product implementation or verification promotion.",
+  "base_commit": "894146829267efd39a3fbf96200ad1bce615bad2",
+  "archives": [
+    {
+      "original": "docs/PLAN.md",
+      "preserved_as": "docs/PLAN_HISTORY.md",
+      "bytes": 575432,
+      "sha256": "e1e3bad18cc074559ca2a31fb268dceab5e626b296dec8c111c49519b325e3d6",
+      "lines": 6393,
+      "compatibility_anchors": [
+        "closure-review-and-efficient-delivery-2026-10-15",
+        "closure-strategy-after-this-review",
+        "concrete-closure-assignments-from-this-review",
+        "decisions-from-this-gap-review",
+        "entry-decisions-still-missing",
+        "execution-review-2026-10-17",
+        "gap-review-and-dependency-order-2026-10-13",
+        "m12-finish-automation-macros-and-extension-management",
+        "ordered-follow-on-work",
+        "priority-editor-workflows",
+        "service-reuse-and-throughput-decisions",
+        "traceability-for-all-99-audited-capability-areas"
+      ]
+    },
+    {
+      "original": "docs/SOL_ULTRA.md",
+      "preserved_as": "docs/SOL_ULTRA_HISTORY.md",
+      "bytes": 329101,
+      "sha256": "046be5c34d2e43c2a2c880ac6179113d3ed4b3ae731b4801fac6c8236962bbe4",
+      "lines": 4363,
+      "compatibility_anchors": [
+        "4-record-once-and-refresh-archives-after-metadata-changes",
+        "current-checkpoint",
+        "execution-queue",
+        "p01-option-schemas-and-real-certification-validators",
+        "windows-validation-runbook"
+      ]
+    },
+    {
+      "original": "docs/THREE_AGENT_EXECUTION.md",
+      "preserved_as": "docs/THREE_AGENT_EXECUTION_HISTORY.md",
+      "bytes": 202303,
+      "sha256": "7533dbca1e69b2239204213a1ce948934f42b20db72e4419e4e61b32170528d9",
+      "lines": 2780,
+      "compatibility_anchors": [
+        "c0-specification-evidence-and-portable-verification",
+        "current-execution-card--2026-10-25",
+        "exactly-three-execution-agents",
+        "ordered-queue-and-complete-delivery-horizon"
+      ]
+    }
+  ],
+  "capability_coverage": {
+    "T06": [
+      "G013",
+      "G014",
+      "G015",
+      "G016",
+      "G017",
+      "G018",
+      "G019",
+      "G020",
+      "G021",
+      "G022",
+      "G023",
+      "G024",
+      "G025"
+    ],
+    "T07": [
+      "G026",
+      "G027",
+      "G028",
+      "G029",
+      "G030",
+      "G031",
+      "G032",
+      "G033",
+      "G034",
+      "G035",
+      "G036",
+      "G037",
+      "G038",
+      "G039",
+      "G057",
+      "G058",
+      "G059",
+      "G060",
+      "G061",
+      "G062",
+      "G063",
+      "G064",
+      "G065",
+      "G075"
+    ],
+    "T08": [
+      "G042",
+      "G043",
+      "G044",
+      "G045",
+      "G046",
+      "G047",
+      "G048",
+      "G049",
+      "G050",
+      "G051",
+      "G052",
+      "G053",
+      "G054",
+      "G055",
+      "G056"
+    ],
+    "T09": [
+      "G066",
+      "G067",
+      "G068",
+      "G069",
+      "G070",
+      "G071",
+      "G072",
+      "G073"
+    ],
+    "T10": [
+      "G074",
+      "G075",
+      "G076",
+      "G077",
+      "G078",
+      "G079",
+      "G080",
+      "G081",
+      "G082"
+    ],
+    "T11": [
+      "G040",
+      "G041",
+      "G090",
+      "G091"
+    ],
+    "T12": [
+      "G083",
+      "G084",
+      "G085",
+      "G086",
+      "G087",
+      "G088",
+      "G089"
+    ],
+    "T13": [
+      "G092",
+      "G093",
+      "G094",
+      "G095",
+      "G096",
+      "G097",
+      "G098",
+      "G099"
+    ],
+    "T15": [
+      "G001",
+      "G002",
+      "G003",
+      "G004",
+      "G005",
+      "G006",
+      "G007",
+      "G008",
+      "G009",
+      "G010",
+      "G011",
+      "G012"
+    ]
+  },
+  "capabilities_covered": 99,
+  "historical_inventory_modified": false,
+  "task_closeout": {
+    "implemented": "Concise current queue, full remaining horizon, independent delivery states, risk-based checks and recurring waste review.",
+    "verification": "All three archive byte counts/SHA-256 hashes match; all 99 inventory IDs mapped; current-guide local links and fragments pass; git diff --check passes. Historical artifact availability is not requalified.",
+    "waste_review": "Live plan histories consolidated into immutable sibling ledgers; no compiler runs or new disposable verification scripts. Existing implementation/CI WIP preserved.",
+    "deferred": {
+      "T00": "Current numerical packet/CI publication",
+      "T01": "Python conversion copies",
+      "T02": "Harness/build overhead",
+      "T07": "Repeated view calibration queries",
+      "T04/T06-T12": "Incremental Window modularization"
+    }
+  },
+  "validation": {
+    "archive_hashes_matched": 3,
+    "capability_ids_covered": 99,
+    "local_links_and_fragments_checked": 37,
+    "live_document_lines": {
+      "PLAN": 211,
+      "SOL_ULTRA": 70,
+      "THREE_AGENT_EXECUTION": 62
+    },
+    "product_builds_run": 0,
+    "temporary_verifier_files_created": 0
+  }
+}

@@ -1,5 +1,10 @@
 # Global and effective calibration API
 
+Calibrated scalar numerical kernels are now available through
+[explicit C++/Python APIs](CALIBRATED_ANALYSIS.md). They consume frozen values;
+analysis target admission, UI/cache adoption and Global/bypass controls remain
+open. Their callers must preserve source/context guards and local persistence.
+
 Current view integration: ordinary canvas aspect/hover and linked XYZ spacing/
 world readouts use a cached Application capture, with ignored independence and
 source/context invalidation. Local accessors/persistence stay local. Analysis

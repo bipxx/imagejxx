@@ -33,3 +33,29 @@
 - Keep historical expectations and fingerprints unchanged. A retired artifact
   is unavailable evidence; report that limitation instead of repinning it or
   claiming the full ImageJ/Fiji goal is complete from focused checks.
+
+## Task closeout and waste management
+
+- Use `docs/PLAN.md` as the current queue and completion policy. The historical
+  ledgers preserve prior scope/evidence. Archived commands are evidence, not the
+  current execution queue. Do not append milestone histories to the
+  three live execution guides.
+- After every task, perform the brief waste review in
+  `docs/PLAN.md#task-closeout-and-waste-review`, including documentation/fix tasks.
+  Record delivered scope, relevant checks, cleanup and a fix/defer/no-action
+  decision. Assign material deferred waste to an owning task and update the
+  current queue when the evidence changes priority or dependencies.
+- Review unnecessary copies/scans, duplicated logic/guards, new controllers,
+  shared-header/build fanout, redundant verification, one-off runners, repeated
+  documentation and retained generated data. Distinguish measured effects from
+  hypotheses. Do not turn each closeout into a full audit or speculative rewrite.
+- Prefer existing checked-in CI/ownership/retention tools and parameter data to
+  a new temporary executable runner. Preserve referenced historical identities
+  before retiring superseded tools or artifacts; do not edit old expectations.
+- Select checks by changed behavior/dependencies. Reuse green results for
+  unchanged consumed inputs; broaden for shared changes, failures or release
+  gates. Documentation-only tasks require document checks, not product builds.
+- Report implemented, verified (with scope), integrated and release-ready aspects
+  separately. A full-family certification counter is not the daily progress
+  measure. Preserve strict licensing, numerical, data/history and applicable
+  resource/cancellation guarantees.

@@ -1,5 +1,10 @@
 # Effective calibration: live consumer integration
 
+Numerical handoff,2026-10-29: [calibrated scalar kernels](../CALIBRATED_ANALYSIS.md)
+now pass77 original rows on both installed SDKs. Their pure Image APIs do not
+provide target/provider admission or automatic Application publication. Add that
+bridge and adopt the actual UI paths below; none is closed by kernel tests alone.
+
 This is a source audit and execution specification. [PLAN](../PLAN.md) owns
 verified status and counts. Global/bypass controls remain gated until command
 and consumer coverage agree. Local metadata and old record formats remain local.
