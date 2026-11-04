@@ -4,6 +4,9 @@
 #include <imagejxx/target_histogram.hpp>
 
 namespace imagejxx::detail {
+struct AnalysisMaskEstimate {std::size_t geometry_bytes=0,raster_bytes=0;};
+AnalysisMaskEstimate estimate_analysis_mask(const Selection&,DatasetShape,
+    const DatasetHistogramLimits&);
 
 // Shared metadata-only sampling/raster/record charge. Profile-only consumers
 // retain the original target guard but do not rasterize its selection.

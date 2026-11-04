@@ -140,6 +140,7 @@ EDITOR_READERS = {
     "calibrated-command": ("--calibrated-command-ui-case", "IMAGEJXX_CALIBRATED_COMMAND_CPP_REPORT"),
     "effective-display": ("--effective-display-ui-case", "IMAGEJXX_EFFECTIVE_DISPLAY_CPP_REPORT"),
     "captured-measurement": ("--captured-measurement-ui-case", "IMAGEJXX_CAPTURED_MEASUREMENT_CPP_REPORT"),
+    "captured-roi-measurement": ("--captured-roi-measurement-ui-case", "IMAGEJXX_CAPTURED_ROI_MEASUREMENT_CPP_REPORT"),
     "captured-profile": ("--captured-profile-ui-case", "IMAGEJXX_CAPTURED_PROFILE_CPP_REPORT"),
     "generic-plot": ("--generic-plot-ui-case", "IMAGEJXX_GENERIC_PLOT_CPP_REPORT"),
     "plot-snapshots": ("--plot-snapshots-ui-case", "IMAGEJXX_PLOT_SNAPSHOTS_CPP_REPORT"),

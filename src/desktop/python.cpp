@@ -257,6 +257,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_captured_measurement_ui_case",[](Window& window,const std::string& directory) {
         return capturedMeasurementUiCase(window,"imgui_python",directory).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_captured_roi_measurement_ui_case",[](Window& window,const std::string& directory) {
+        return capturedRoiMeasurementUiCase(window,"imgui_python",directory).dump();
+      },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
       .def("_captured_profile_ui_case",[](Window& window,const std::string& directory) {
         return capturedProfileUiCase(window,"imgui_python",directory).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
@@ -1220,7 +1223,7 @@ PYBIND11_MODULE(_desktop, m) {
           [](Window &w, const std::string &name, const std::string &p) {
             auto params = Json::parse(p);
             py::gil_scoped_release release;
-            const bool sampled=name=="measure" || name=="profile";
+            const bool sampled=name=="measure" || name=="measure_rois" || name=="profile";
             const bool wasBusy=sampled && w.busy();
             w.action(name, params);
             // Scripted Measure/Profile historically return their data immediately.

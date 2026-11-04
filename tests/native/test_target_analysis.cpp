@@ -80,6 +80,19 @@ int main(){
     check(measured.midpoint_world==std::array<double,3>{1,.5,0});
     refuses<std::invalid_argument>([&]{imagej_calibrated_line_measurement(*source->read_plane({0,0,0}),
         SpatialCalibration{},ImageJIntensityCalibration::uncalibrated(),0,0,2,1,true,1);});
+    auto manager=temporary.begin_edit();
+    manager.set_rois({Roi{"area",Selection("rectangle",{{0,0},{2,1}}),0,0,0,{}},
+                      Roi{"line",Selection("line",{{0,0},{2,1}}),0,0,0,{}}});temporary.commit(manager);
+    const auto request=roi_measurement_target_request(temporary.snapshot(),{1,0});
+    TargetAnalysisOptions batch;batch.measurement=TargetMeasurementMode::RoiManager;batch.roi_indices={1,0};
+    source->reads.clear();const auto prepared_rows=resolve_target_analysis(resolve_target(temporary.snapshot(),request),batch);
+    check(source->reads.empty() && prepared_rows.estimate().plane_count==1 && prepared_rows.estimate().row_count==2);
+    const auto rows=execute_target_analysis(prepared_rows);
+    check(source->reads.size()==1 && rows.planes.size()==2);
+    check(rows.planes[0].roi_index==1 && rows.planes[1].roi_index==0);
+    check(rows.planes[0].statistics->mean==2.5 && rows.planes[1].statistics->mean==.5);
+    check(rows.planes[0].length && rows.planes[0].midpoint_world==measured.midpoint_world);
+    check(rows.record.at("version")==MetadataValue(std::int64_t(3)));
   }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
 }

@@ -1790,10 +1790,11 @@ struct Window::Impl {
       for (const auto &source : owner.documents_)
         if (source->scientific())
           return false;
-    if(action=="measure" && !owner.documents_.empty()) {
+    if((action=="measure" || action=="measure_rois") && !owner.documents_.empty()) {
       const auto source=owner.documentById(id);
-      if(captured_measurement_available(source->nativeSnapshot()))
-        return !owner.busy() && owner.controller_->active_document_id()==source->id;
+      if(action=="measure_rois"?captured_roi_measurement_available(source->nativeSnapshot()):captured_measurement_available(source->nativeSnapshot()))
+        return !owner.busy() && owner.controller_->active_document_id()==source->id &&
+            (action!="measure_rois" || !source->nativeSnapshot().data().rois.empty());
     }
     if(action=="profile" && !owner.documents_.empty()) {
       const auto source=owner.documentById(id);
@@ -4176,11 +4177,13 @@ struct Window::Impl {
     }
     status = "Processing...";
   }
-  void startMeasurement(const std::shared_ptr<Document>& facade) {
+  void startMeasurement(const std::shared_ptr<Document>& facade,bool manager=false) {
     if(owner.busy())throw std::invalid_argument("Wait for the current edit to finish");
     TargetAnalysisLimits limits;limits.max_working_bytes=processingCap();
-    const auto target=owner.controller_->resolve_target({},facade->id);
-    const auto command=resolve_target_analysis(target,{},limits);
+    const auto request=manager?roi_measurement_target_request(facade->nativeSnapshot(),{},limits.max_measurement_rows):TargetRequest{};
+    const auto target=owner.controller_->resolve_target(request,facade->id);
+    TargetAnalysisOptions options;options.measurement=manager?TargetMeasurementMode::RoiManager:TargetMeasurementMode::Selection;
+    const auto command=resolve_target_analysis(target,options,limits);
     const auto rows=captured_measurement_row_bytes(command);
     const auto workspace=RenderMemory::add(command.estimate().working_bytes,rows);
     if(workspace>processingCap())throw std::invalid_argument("Measurement exceeds current processing memory budget");
@@ -6869,11 +6872,12 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
-  if(name=="measure" && !documents_.empty()) {
+  if((name=="measure" || name=="measure_rois") && !documents_.empty()) {
     const auto facade=document();
-    if(captured_measurement_available(facade->nativeSnapshot())) {
+    const bool manager=name=="measure_rois";
+    if(manager?captured_roi_measurement_available(facade->nativeSnapshot()):captured_measurement_available(facade->nativeSnapshot())) {
       if(!p.is_object() || !p.empty())throw std::invalid_argument("Measurement uses the current captured selection and plane");
-      impl->startMeasurement(facade);return;
+      impl->startMeasurement(facade,manager);return;
     }
   }
   if(name=="profile" && !documents_.empty()) {
@@ -9837,9 +9841,10 @@ void Window::poll() {
         const auto& command=*completed.analysis_command;
         const auto current=nativeSnapshot();const auto& captured=command.target().source();
         controller_->validate_target(command.target());
-        if(current.id()!=captured.id() || current.display().t!=captured.display().t ||
+        if(current.id()!=captured.id() || (command.options().measurement!=TargetMeasurementMode::RoiManager &&
+            (current.display().t!=captured.display().t ||
             current.display().c!=captured.display().c ||
-            current.display().crosshair[2]!=captured.display().crosshair[2])throw RevisionConflict();
+            current.display().crosshair[2]!=captured.display().crosshair[2])))throw RevisionConflict();
         if(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command))>impl->processingCap())
           throw std::invalid_argument("Analysis exceeds current processing memory budget");
         if(completed.analysis_profile) {
@@ -10992,6 +10997,7 @@ void Window::Impl::rois() {
   ImGui::TextDisabled("Position: 1-based; 0 = all. Update keeps the saved position.");
   ImGui::SameLine();
   act("Measure all", "measure_rois");
+  observeRoiManagerControl("measure_rois");
   ImGui::BeginDisabled(!actionAllowed("load_rois"));
   if (ImGui::Button("Import"))
     file("Import ROI JSON", false,

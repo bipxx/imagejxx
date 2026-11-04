@@ -3,6 +3,7 @@
 #include <imagejxx/execution.hpp>
 
 namespace imagejxx {
+enum class TargetMeasurementMode { Area, Selection, RoiManager };
 struct TargetAnalysisOptions {
   bool statistics = true;
   // Explicit, frozen, single-pixel-width line, in source XY voxel coordinates.
@@ -14,17 +15,23 @@ struct TargetAnalysisOptions {
   // Zero uses ImageJ round(length)+1 for line; path uses the editor's
   // max(2,ceil(length)+1) per segment. Otherwise 2..1,000,000 per segment.
   std::size_t samples_per_segment = 0;
+  // Explicit Analyzer selection/manager modes require statistics and no
+  // independent profile options. Area preserves the original API semantics.
+  TargetMeasurementMode measurement = TargetMeasurementMode::Area;
+  // Manager mode: empty means every stored row; otherwise ordered unique IDs.
+  std::vector<std::size_t> roi_indices;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
   std::size_t max_working_bytes = 128ULL * 1024 * 1024;
   std::size_t max_record_bytes = 16ULL * 1024 * 1024;
+  std::size_t max_measurement_rows = 100000;
 };
 struct TargetAnalysisEstimate {
   std::size_t plane_count=0, plane_pixels=0, total_pixels=0,
       working_bytes=0, plane_bytes=0, mask_bytes=0, geometry_bytes=0,
       record_bytes=0, calibration_bytes=0, kernel_bytes=0,
-      result_bytes=0, plot_bytes=0, profile_samples=0;
+      result_bytes=0, plot_bytes=0, profile_samples=0, row_count=0;
 };
 struct TargetAnalysisPlane {
   PlanePosition position;
@@ -33,6 +40,9 @@ struct TargetAnalysisPlane {
   // Tight geometric mask membership, independent of density NaN exclusions.
   // nullopt denotes an empty geometric mask or a profile-only row.
   std::optional<std::array<int,4>> bounds;
+  std::optional<std::size_t> roi_index;
+  std::optional<double> length, angle_degrees;
+  std::optional<std::array<double,3>> midpoint_world;
 };
 // Detached results retain no source/provider or application. Distances are
 // Euclidean lengths in the captured spatial affine, not screen coordinates.
@@ -72,6 +82,12 @@ private:
 // external. No source plane is acquired or cached by preparation.
 TargetAnalysisEstimate estimate_target_analysis(const ResolvedTarget&,
     const TargetAnalysisOptions& = {}, const TargetAnalysisLimits& = {});
+// Metadata-only manager target. Unset ROI axes use the captured source view;
+// output row order follows indices (or stored order), not grouped read order.
+// The returned whole-plane guard depends on pixels/metadata (including ROIs),
+// not the unrelated active selection. Resolve through Application when bound.
+TargetRequest roi_measurement_target_request(const DocumentSnapshot&,
+    const std::vector<std::size_t>& indices = {}, std::size_t max_rows = 100000);
 ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget&,
     const TargetAnalysisOptions& = {}, const TargetAnalysisLimits& = {});
 // The frozen target is never recomputed from current navigation/global state.

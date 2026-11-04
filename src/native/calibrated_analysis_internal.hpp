@@ -1,11 +1,16 @@
 #pragma once
 #include <imagejxx/calibrated_analysis.hpp>
+#include <imagejxx/line_measurement.hpp>
 namespace imagejxx::detail {
 // Borrow a once-decoded lookup from an admitted immutable preparation.
 ImageJScalarStatistics calibrated_statistics_with_table(const Image&,
     const SpatialCalibration&, const ImageJIntensityCalibration&,
     const std::vector<std::uint32_t>&, const Image*, std::size_t,
-    std::optional<std::array<int,4>>* bounds = nullptr);
+    std::optional<std::array<int,4>>* bounds = nullptr, bool source_validated = false);
+ImageJLineMeasurement calibrated_line_measurement_with_table(const Image&,
+    const SpatialCalibration&,const ImageJIntensityCalibration&,
+    const std::vector<std::uint32_t>&,const std::array<double,4>&,bool,std::size_t,
+    bool source_validated = false,double voxel_z = 0);
 void validate_analysis_source(const Image&);
 std::size_t calibrated_profile_sample_count(const std::array<double,4>&,
     std::size_t requested = 0);

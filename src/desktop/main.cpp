@@ -292,6 +292,12 @@ int run(const std::vector<std::string> &arguments) {
     imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
     imagejxx::desktop::capturedMeasurementUiCase(editor,"imgui_cpp",arguments[1]);return 0;
   }
+  if (!arguments.empty() && arguments[0] == "--captured-roi-measurement-ui-case") {
+    if(arguments.size()!=2)throw std::invalid_argument("Use --captured-roi-measurement-ui-case FRESH_DIRECTORY");
+    const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));
+    imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
+    imagejxx::desktop::capturedRoiMeasurementUiCase(editor,"imgui_cpp",arguments[1]);return 0;
+  }
   if (!arguments.empty() && arguments[0] == "--captured-profile-ui-case") {
     if(arguments.size()!=2)throw std::invalid_argument("Use --captured-profile-ui-case FRESH_DIRECTORY");
     const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));

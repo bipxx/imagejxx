@@ -1741,6 +1741,8 @@ from ._native import RgbContrastSessionEditor, RgbContrastSessionTransition
 from ._native import (
     ImageJIntensityCalibration as ImageJIntensityCalibration,
     TargetAnalysisOptions as TargetAnalysisOptions,
+    TargetMeasurementMode as TargetMeasurementMode,
+    roi_measurement_target_request as roi_measurement_target_request,
     TargetAnalysisLimits as TargetAnalysisLimits,
     TargetAnalysisEstimate as TargetAnalysisEstimate,
     TargetAnalysisPlane as TargetAnalysisPlane,

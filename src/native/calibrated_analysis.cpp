@@ -58,7 +58,7 @@ double deviation(double n,double sum,double sum2) {
 static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalibration& spatial,
     const ImageJIntensityCalibration& density,const Image* mask,std::size_t maximum,
     const std::vector<std::uint32_t>* supplied,
-    std::optional<std::array<int,4>>* bounds=nullptr) {
+    std::optional<std::array<int,4>>* bounds=nullptr,bool source_validated=false) {
   const auto n=shape(im);spatial.validate();density.validate_for(im.type,im.channels);
   if(mask && (mask->channels!=1 || mask->width!=im.width || mask->height!=im.height || mask->pixels.size()!=n))
     throw std::invalid_argument("Analysis mask must match the source");
@@ -66,7 +66,7 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
   auto bytes=add(4096,add(mul(bins,sizeof(std::uint64_t)),256*sizeof(std::uint64_t)));
   if(density.mode()==ImageJIntensityMode::Lookup)bytes=add(bytes,mul(bins,sizeof(std::uint32_t)));
   if(im.type==PixelType::Float32)bytes=add(bytes,mul(n,sizeof(float)));
-  cap(bytes,maximum);pixels(im);
+  cap(bytes,maximum);if(!source_validated)pixels(im);
   if(mask)for(double v:mask->pixels){kernel_checkpoint_periodic();if(!std::isfinite(v))throw std::invalid_argument("Analysis mask must be finite");}
   std::vector<std::uint32_t> owned_lut;
   if(!supplied)owned_lut=table(density);
@@ -207,9 +207,10 @@ std::vector<double> imagej_calibrated_line_profile(const Image& im,const ImageJI
     double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum) {
   return profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,nullptr);
 }
-ImageJLineMeasurement imagej_calibrated_line_measurement(const Image& im,
+static ImageJLineMeasurement line_measurement_impl(const Image& im,
     const SpatialCalibration& spatial,const ImageJIntensityCalibration& density,
-    double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum) {
+    double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum,
+    const std::vector<std::uint32_t>* supplied,bool source_validated,double voxel_z=0) {
   shape(im);spatial.validate();density.validate_for(im.type,im.channels);
   const auto count=detail::calibrated_profile_sample_count({x1,y1,x2,y2});
   const auto bins=density.mode()==ImageJIntensityMode::Lookup?
@@ -222,11 +223,11 @@ ImageJLineMeasurement imagej_calibrated_line_measurement(const Image& im,
   ImageJLineMeasurement out;
   out.length=std::hypot(d[0]*dx+d[1]*dy,d[3]*dx+d[4]*dy,d[6]*dx+d[7]*dy);
   out.angle_degrees=(180.0/3.141592653589793)*std::atan2((y1-y2)*spatial.spacing[1],dx);
-  out.midpoint_world=spatial.voxel_to_world({x1+(x2-x1)/2,y1+(y2-y1)/2,0});
+  out.midpoint_world=spatial.voxel_to_world({x1+(x2-x1)/2,y1+(y2-y1)/2,voxel_z});
   if(!std::isfinite(out.length) || !std::isfinite(out.angle_degrees) ||
       !std::all_of(out.midpoint_world.begin(),out.midpoint_world.end(),[](double v){return std::isfinite(v);}))
     throw std::invalid_argument("Line measurement geometry must be finite");
-  auto values=profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,nullptr);
+  auto values=profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,supplied,0,source_validated);
   for(auto& value:values) {
     kernel_checkpoint_periodic();
     if(!std::isfinite(value) || std::abs(value)>std::numeric_limits<float>::max())
@@ -237,6 +238,11 @@ ImageJLineMeasurement imagej_calibrated_line_measurement(const Image& im,
   samples.pixels=std::move(values);
   out.statistics=statistics_impl(samples,spatial,ImageJIntensityCalibration::uncalibrated(),nullptr,maximum,nullptr);
   return out;
+}
+ImageJLineMeasurement imagej_calibrated_line_measurement(const Image& im,
+    const SpatialCalibration& spatial,const ImageJIntensityCalibration& density,
+    double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum) {
+  return line_measurement_impl(im,spatial,density,x1,y1,x2,y2,interpolate,maximum,nullptr,false);
 }
 namespace detail {
 void validate_analysis_source(const Image& image){shape(image);pixels(image);}
@@ -250,8 +256,14 @@ std::size_t calibrated_profile_sample_count(const std::array<double,4>& p,std::s
 }
 ImageJScalarStatistics calibrated_statistics_with_table(const Image& im,const SpatialCalibration& spatial,
     const ImageJIntensityCalibration& density,const std::vector<std::uint32_t>& lut,const Image* mask,std::size_t maximum,
-    std::optional<std::array<int,4>>* bounds) {
-  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds);
+    std::optional<std::array<int,4>>* bounds,bool source_validated) {
+  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds,source_validated);
+}
+ImageJLineMeasurement calibrated_line_measurement_with_table(const Image& im,
+    const SpatialCalibration& spatial,const ImageJIntensityCalibration& density,
+    const std::vector<std::uint32_t>& lut,const std::array<double,4>& p,bool interpolate,
+    std::size_t maximum,bool source_validated,double voxel_z) {
+  return line_measurement_impl(im,spatial,density,p[0],p[1],p[2],p[3],interpolate,maximum,&lut,source_validated,voxel_z);
 }
 std::vector<double> calibrated_profile_with_table(const Image& im,const ImageJIntensityCalibration& density,
     const std::vector<std::uint32_t>& lut,double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum,

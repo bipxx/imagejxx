@@ -1,0 +1,521 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-04",
+  "task": "T04a.2 captured selection/ROI-manager increment",
+  "state": "verified_scoped",
+  "base_commit": "0a953ea4a1cd257e39a501cc5e13aad1b1dd886b",
+  "aspects": {
+    "implemented": "Explicit selection/manager modes, frozen rows and positions, grouped source execution and Python bindings.",
+    "verified": "365 focused Windows product cases; 23 capture-tool contracts; two native controls and six installed SDK clients per Windows/Linux platform.",
+    "integrated": "Actual Analyze Measure/Measure ROIs and ROI Manager Measure all in both Windows ImGui hosts; existing jobs/leases/formatter/atomic adoption.",
+    "release_ready": false
+  },
+  "contracts": [
+    "Default AREA mode retains old area plus independent profile behavior and diagnostic version1/2 records. New modes require statistics without independent profile options; diagnostic records use version3.",
+    "Manager request factory resolves stored optional T/C/Z against captured view, ordered unique indices or all stored rows, whole-plane pixel/metadata guard. Native target must match unique row positions exactly.",
+    "Rows preserve requested order, while grouped execution acquires and validates each source plane once. One lookup is decoded per preparation and borrowed by line/area kernels.",
+    "row_count counts returned rows; plane_count/total_pixels count distinct acquisitions. Conservative row/record/mask/kernel/output/frontend allowances refuse before source reads/callbacks.",
+    "Current-line result adoption checks C/Z/T; frozen manager rows tolerate navigation/active-selection changes, but source/ROI/calibration changes reject adoption.",
+    "All result rows publish atomically; pending Clear, close/cancel or later-row failure cannot append earlier rows. Scripted Measure ROIs preserves immediate results while physical UI is asynchronous.",
+    "Area/thin-line scalar finite-policy UInt8/UInt16/Float32 only; line geometry includes selected plane Z in world midpoint. Names/positions/units/precision persist in independent table/CSV."
+  ],
+  "verification": {
+    "windows_python_unique_product_cases": 365,
+    "new_product_cases": 23,
+    "new_native_batch_cases": 19,
+    "new_ui_cases": 4,
+    "attempts": [
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/python-native.xml",
+          "bytes": 37890,
+          "sha256": "fa84ae36b369dd288e8348098f8f4a4b3083ae736363b7c1233c7e093df1f691"
+        },
+        "passed": 271
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/python-final.xml",
+          "bytes": 49831,
+          "sha256": "d4dc183abe464b993b5e7f051d01d5cb4d52f57621266d8c793334f8e1374835"
+        },
+        "passed": 365
+      }
+    ],
+    "observation_tool_contracts": 23,
+    "native_controls_each_windows_linux": 2,
+    "installed_sdk_clients_each_windows_linux": 6,
+    "preserved_original_analysis_rows_each_sdk": 77,
+    "preserved_table_profiles_each_sdk": 128,
+    "preserved_fit_dtype_cells_each_sdk": 86,
+    "actual_hosts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "actual_host_platform": "Windows",
+    "batch_observation": {
+      "rows": 4,
+      "source_plane_reads": 3,
+      "mixed_area_line": true
+    },
+    "checked_lifecycle": [
+      "Global/bypass values",
+      "C/Z/T/ROI order and captured wildcard axes",
+      "actual menu and panel controls",
+      "settings/profile-sampling independence and CSV precision",
+      "manager navigation/selection invariance",
+      "ROI metadata stale refusal",
+      "READY current-line pose refusal",
+      "pending Clear",
+      "source closure and independent CSV",
+      "late-row failure preserves prior table",
+      "source/history invariance and job resource release"
+    ]
+  },
+  "limitations": [
+    "T04a.2 still requires angle/point/irregular-polyline, line Bounds, remaining area geometry/measurement options and required manager variants.",
+    "Line Bounds are null because the Analyzer line has no area mask; endpoint/rectangle-column behavior remains explicit geometry work.",
+    "Frozen manager wildcard policy is documented; this is not full original ROI Manager workflow parity.",
+    "Recorder/replay/rebind and broader session persistence remain T04a.3.",
+    "No Linux/macOS UI, full-family/release completion or matched processing-speed superiority claim.",
+    "T00 reference availability/remote qualification remains separate pending work."
+  ],
+  "waste_review": {
+    "fixed": [
+      "Share decoded calibration and source validation across rows on each plane",
+      "Group four rows into three source acquisitions without unioning row geometry",
+      "Reuse shared raster admission with pointer argument, eliminating implicit optional Selection copy",
+      "Extend existing Window job/result owner and formatter; no new controller or Window header edit",
+      "Observe actual ROI Manager button in maintained capture path",
+      "Clean touched native shadow/misleading-indentation warnings before final installed-client verification"
+    ],
+    "deferred": [
+      {
+        "owner": "T04a.2",
+        "work": "Remaining selection geometry/bounds/columns/options and manager variants, preserving qualified batching/adoption."
+      },
+      {
+        "owner": "T04a.3",
+        "work": "Persist and replay explicit analysis operations through existing session/recorder owners."
+      },
+      {
+        "owner": "T02",
+        "work": "Only measured shared-header fanout or remaining allocation cost justifies further extraction."
+      }
+    ],
+    "verification_policy": "Shared public layout change rebuilt installed clients per platform. Keep consumers through final review; frontend/control follow-ups use the active cache. No whole caches/SDKs/runtimes or repeated source trees archived.",
+    "performance_claim": false
+  },
+  "retention": {
+    "archive": {
+      "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/captures.zip",
+      "bytes": 3999759,
+      "sha256": "30d98ad9a73c6d53fb29f50959d8451d85885e8508ed195aa05f0c18a77a481c"
+    },
+    "manifest": {
+      "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/captures.manifest.json",
+      "bytes": 69918,
+      "sha256": "e4b509b13124c2cdb837fdd38d91265c43d35f723ed7f4a2edb72a968afb700d"
+    },
+    "pack": {
+      "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/captures.pack.json",
+      "bytes": 1459,
+      "sha256": "ad48db78be66c076fdc403cbeb618b40251fb50c732135529b3683ec0e436fe3"
+    },
+    "verify": {
+      "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/captures.verify.json",
+      "bytes": 1369,
+      "sha256": "2d9afd1909ed28c2d20579d0e1444e61507e0ed8422f888b209388a7c7c1b7de"
+    },
+    "scratch_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/scratch-retirement.json",
+      "bytes": 325,
+      "sha256": "6438d78af0b77e5398cb2c6238a7f2a3405d1a9fdfed761db08e26be336eb678"
+    },
+    "sdk_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/sdk-retirement.json",
+      "bytes": 3018,
+      "sha256": "8f7441b698e2ca4bd3d3f64a443404b51ad74cfa93194e1c5140fd3f86d813fa"
+    },
+    "sdk_bytes_retired": 28701850,
+    "capture_source_bytes_retired": 40481494,
+    "compressed_capture_bytes": 3999759,
+    "scratch_absent": true,
+    "active_caches_runtimes_sdks_reused": true
+  },
+  "storage": {
+    "snapshot": {
+      "path": ".tmp/manual-workflow-verification/t04a2-batch-final-20261104.json",
+      "bytes": 66572,
+      "sha256": "982e101c164e79f41fcb8b18be0b121e38cc16a00e544ad543a2d16e99d17fd7"
+    },
+    "known_bytes": 8364347185,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "scope": "Complete non-overlapping project/generated/dependency/runtime/Linux roots before final small public receipt/doc growth."
+  },
+  "processes": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/install-app.process.json",
+        "bytes": 2098,
+        "sha256": "92e9e9eb776ddfae445213fde884fb1825dc9a339d2c41d6985ce6817ab86389"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.15600000019185245
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/install-native-final.process.json",
+        "bytes": 2118,
+        "sha256": "868edb4a849f09fe416fd0ecebf51d931dc1c935ed21fe50b2a985e689eb1263"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.09399999980814755
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/install-python-ui.process.json",
+        "bytes": 2112,
+        "sha256": "52d2f5ed82943e71b718a1e3b686d6cf43fef8da22a439eb1fdb5286ef3f1bd0"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.15600000019185245
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/linux-final-build.process.json",
+        "bytes": 1574,
+        "sha256": "50adb06306525c9ddb8e1755ceaeae7853064b932b1167380c32f1616bdaa7f7"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 9.01530852
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/linux-install.process.json",
+        "bytes": 1602,
+        "sha256": "9cd1f92d8941c0491b5e7c93c12473b7fcca86c576e25f82d4ad594326de1461"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 1.0501371249999991
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/linux-native-build.process.json",
+        "bytes": 1582,
+        "sha256": "a93b5d03a29f73cf6bd122b4bceebab263e3101cd283c9733579585fcf9fa9cf"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 24.344798937000007
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/linux-native.process.json",
+        "bytes": 1556,
+        "sha256": "8cb32fba727d6b44d8483f43510a5dab1c1e3234a0982802b183dba6a0f34b94"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.10465217700000018
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/linux-sdk-build.process.json",
+        "bytes": 1535,
+        "sha256": "fe6af312546587cf82d51e8f9997917302aa8bae000da50ec0fbb89ffe87ab8a"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 12.747346898
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/linux-sdk-configure.process.json",
+        "bytes": 2029,
+        "sha256": "822b1719b71c1c55da8a65ceac1ed1fe96cb80e6c78e00ffc37db54aa2f5c3cc"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 4.543737050000001
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/linux-sdk-tests.process.json",
+        "bytes": 1543,
+        "sha256": "dbc4299d4ee9b7b650a58bf1637c02a055dc65a50f4cf96a43b7dfb169d1ddc8"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5853448910000019
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/observation-tools.process.json",
+        "bytes": 2267,
+        "sha256": "06e92caabae53f6f6ca9b6c8e8d4f2549bc1613317cf568cd9bbbed20a840f56"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 3.218000000109896
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/python-final.process.json",
+        "bytes": 2783,
+        "sha256": "b6d44e9f484a8e0028a268446977838a6b527ad2449e7f724d85789927f43cc8"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 6.5780000002123415
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/python-native.process.json",
+        "bytes": 2449,
+        "sha256": "111e073265cc2e6adc7c5b87e270f4a98e0108221e648abe5e77e84fa11518dd"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 2.405999999959022
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-final-build.process.json",
+        "bytes": 2113,
+        "sha256": "f06487eed3674e27678b046578d43e3be466720cf04ab0ecebd54faf66e3f514"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 88.25
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-install-native.process.json",
+        "bytes": 2113,
+        "sha256": "7b298fc4a211c22af680efec5237030fd0b8b6b28d6458cbe506b75c5bbdf10a"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.125
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-install-sdk.process.json",
+        "bytes": 2115,
+        "sha256": "3111b2309616300c2dff14f3c635f3e5e77d02e89148047c33eb4840e7c28aa5"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.28100000019185245
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-native-build.process.json",
+        "bytes": 2625,
+        "sha256": "88880b54727c56f04129fba209bd7c64313ee581097ab6722a1252443d5291c4"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 47.48399999993853
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-native-final.process.json",
+        "bytes": 2052,
+        "sha256": "74d9723bdadc0e08bfce40517f0271b5f797e8fbb84946c0519bca5ae047cb1b"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.21899999980814755
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-native.process.json",
+        "bytes": 2047,
+        "sha256": "4a73118765c9ab5b635761d2ed40126df7126deb437b1ff925f181ad60ab5d70"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1869999999180436
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-sdk-build.process.json",
+        "bytes": 2039,
+        "sha256": "12b8d859adf3ca38e078b181b6fe54624b7a0861be1c693b0fcedf46c3d75fa4"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 6.844000000040978
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-sdk-configure.process.json",
+        "bytes": 2548,
+        "sha256": "ef461061f3090ee45e3b7d009d641acb33cc611d84148938bc00efc5f128aa82"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 4.890999999828637
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-sdk-tests.process.json",
+        "bytes": 2029,
+        "sha256": "8e8bfb5da659be7249d25a235733d795f3eb4ef130236809842adc036615659c"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.625
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-batch-20261104/windows-ui-build.process.json",
+        "bytes": 2021,
+        "sha256": "7182584b87c8b0fede00fc69c24f268352b82657d4931c5ef223055426c111c0"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 53.25
+    }
+  ],
+  "producer_inputs": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 4529,
+      "sha256": "8b3e9ca5a6f8b2e9a7988df0e886a9b0cd8723be4ba5df1edd114461aec80fe1"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 138504,
+      "sha256": "cda09c8f3e8e71a24ef40719f6b7e7cf8c8ecceb5caf1ded87724cba9e4cd71f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 7373,
+      "sha256": "ef811533a218604ba0694a019d4afe26586d6523a52ecdc1df2e708d8c2aa9e0"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 33277,
+      "sha256": "0b27c587c08b783d1ace1659e639f53ddd9c1f623d38f4151796bdfc35e4cc5e"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 3978,
+      "sha256": "0a02aeb68ce5e9177a1c7c8224d3f66d011d40ad323421209ddae327c0b9f46e"
+    },
+    {
+      "path": "docs/TARGET_ANALYSIS.md",
+      "bytes": 16861,
+      "sha256": "0bd83f015c92a74680cd38b19bf835188e4f1a06ed3aea49240e805e0ee0074c"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 4428,
+      "sha256": "3d1202c8cd1f967581f1c146b3c14453300a5268d2000b61ecdcfa6cca2a0ed2"
+    },
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 5241,
+      "sha256": "f3fc9bde8114a9368604c76e6bb0f4b98e6c83e7273bbfdc6a159b25ed9796bc"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 59332,
+      "sha256": "81a7982caace62859bc8a7b9c729ede669234a8da069513bfeb12b6fdfe0e45c"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 5147,
+      "sha256": "4072db7ed2b395f086405fbe614bdf9c9492be7ec3c9fcf76b6a2641c496020d"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.hpp",
+      "bytes": 543,
+      "sha256": "0435e9169004b0e02440f0b27e22398dfaf13913644177d26dfb6236d37b47b5"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 23339,
+      "sha256": "778816068625b66422832845657b686c8fc9d0f21c0e4eb12a61cd9419f1f805"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 553,
+      "sha256": "86c29b3b3463af7bd5a55a2ba634f960f99217ad912ab0c7eeb29788443bd9dc"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 62988,
+      "sha256": "8cb269c895e8a6c4f20620f0b37e61de67b727c01ae58cf88cd596d571717704"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 61631,
+      "sha256": "651b2315af0386999907caa9ceb239edf4796d53bad46f75a36bcf556f5038bf"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 871894,
+      "sha256": "ee7231436555a5722694efafc904d087cdf506f7f8907d43309e4aff182f58b6"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 81355,
+      "sha256": "483ce51c2f9b38e597231d078b674fdeb7c0791c0c27fa43ebc1ee322c37fbdd"
+    },
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 16103,
+      "sha256": "e401b43adb6c5b12e2d0c27ee0ce832070b76946005addce6a2742f0b7b909f6"
+    },
+    {
+      "path": "src/native/calibrated_analysis_internal.hpp",
+      "bytes": 1169,
+      "sha256": "2f4dd65ebc1c15fda3a7c5eef0386557e374cd44d478ed158a6389e9109cb4f1"
+    },
+    {
+      "path": "src/native/dataset_histogram.cpp",
+      "bytes": 30099,
+      "sha256": "edef7af6cc018f6d7fd89d4ad227c6cb6d9b0dd1c8e9ce75c54def58a34b81b2"
+    },
+    {
+      "path": "src/native/dataset_histogram_internal.hpp",
+      "bytes": 1013,
+      "sha256": "1956decddf7af0ce1845bd9c512936d3c86841912053aba77e866d2659d6a685"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 25408,
+      "sha256": "f337852084fd9b2815b9301688968f61cccf6225f7542abe4971248fb927d960"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 6351,
+      "sha256": "c923e375f62fda05ced78205793c9625e5d1f945e2c251c94e7fa1d281d4fecd"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 7154,
+      "sha256": "682c0ff0f65f5ebd8adbcd635a1d1cdee3822a0df04c07922dab5c3ae59e8a38"
+    },
+    {
+      "path": "tests/python/test_captured_roi_measurement_ui.py",
+      "bytes": 4926,
+      "sha256": "a8def0bac8e09231e719e4ff9b086ed7a180a27d062ceefea7fd2fdeaa66148a"
+    },
+    {
+      "path": "tests/python/test_target_measurements.py",
+      "bytes": 7846,
+      "sha256": "e4eb7ff40a10a1580f3cb4cbec78a7e579107f3c7e2de432c1c30d6257294e79"
+    }
+  ]
+}

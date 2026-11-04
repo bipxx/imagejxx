@@ -21,7 +21,13 @@ bool captured_measurement_available(const DocumentSnapshot& source) {
        dataset.pixel_type()!=PixelType::Float32))return false;
   if(!data.selection)return true;
   const auto& kind=data.selection->kind;
+  if(kind=="line")return captured_profile_available(source);
   return kind!="line" && kind!="polyline" && kind!="angle" && kind!="point" && kind!="multipoint";
+}
+bool captured_roi_measurement_available(const DocumentSnapshot& source) {
+  const auto& dataset=source.data().dataset;
+  return dataset.shape().s==1 && dataset.sample_policy()==FloatingSamplePolicy::FiniteOnly &&
+      (dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16 || dataset.pixel_type()==PixelType::Float32);
 }
 std::size_t captured_measurement_row_bytes(const ResolvedTargetAnalysis& command) {
   const auto& source=command.target().source();
@@ -30,7 +36,13 @@ std::size_t captured_measurement_row_bytes(const ResolvedTargetAnalysis& command
   // Map/value/key holders plus owned strings and formatting slack. No sampled
   // array is retained by a measurement row. Getter/externally injected rows are
   // outside this managed frontend allocation.
-  return RenderMemory::mul(command.estimate().plane_count,RenderMemory::add(8192,RenderMemory::mul(text,8)));
+  auto bytes=RenderMemory::mul(command.estimate().row_count,RenderMemory::add(8192,RenderMemory::mul(text,8)));
+  if(command.options().measurement==TargetMeasurementMode::RoiManager) {
+    const auto& rois=source.data().rois;const auto& indices=command.options().roi_indices;
+    for(std::size_t n=0;n<command.estimate().row_count;++n)
+      bytes=RenderMemory::add(bytes,RenderMemory::mul(rois[indices.empty()?n:indices[n]].name.size(),8));
+  }
+  return bytes;
 }
 namespace {
 Json scalar(double value) {
@@ -41,7 +53,7 @@ Json scalar(double value) {
 }
 }
 Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const TargetAnalysisResult& result) {
-  if(result.planes.size()!=command.estimate().plane_count)
+  if(result.planes.size()!=command.estimate().row_count)
     throw std::invalid_argument("Measurement result differs from its captured extent");
   Json rows=Json::array();rows.get_ref<Json::array_t&>().reserve(result.planes.size());
   const auto& source=command.target().source();
@@ -55,9 +67,20 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       {"mean",scalar(s.mean)},{"stddev",scalar(s.stddev)},{"median",scalar(s.median)},
       {"sum",scalar(s.mean*double(s.pixel_count))},{"integrated_density",scalar(s.integrated_density)},
       {"Area",scalar(s.area)},{"Unit",result.spatial.unit},{"Value unit",command.intensity().value_unit()}};
-    if(command.target().roi_policy()==RoiPolicy::ActiveSelection && source.data().selection) {
+    if(row.roi_index) {
+      const auto& roi=source.data().rois[*row.roi_index];values["ROI"]=roi.name;
+      values["ROI index"]=*row.roi_index;values["ROI kind"]=roi.selection.kind;
+      values["Bounds"]=row.bounds?Json(*row.bounds):Json();
+    }else if(command.target().roi_policy()==RoiPolicy::ActiveSelection && source.data().selection) {
       values["ROI"]=source.data().selection->kind;
       values["Bounds"]=row.bounds?Json(*row.bounds):Json();
+    }
+    if(row.length)values["Length"]=scalar(*row.length);
+    if(row.angle_degrees)values["Angle"]=scalar(*row.angle_degrees);
+    if(row.midpoint_world) {
+      values["X"]=(*row.midpoint_world)[0];values["Y"]=(*row.midpoint_world)[1];
+      values["centroid_x"]=(*row.midpoint_world)[0];values["centroid_y"]=(*row.midpoint_world)[1];
+      values["centroid_z"]=(*row.midpoint_world)[2];
     }
     rows.push_back(std::move(values));
   }

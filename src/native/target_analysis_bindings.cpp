@@ -6,14 +6,19 @@ namespace py=pybind11;
 using namespace imagejxx;
 ExecutionControl axis_range_python_control(std::shared_ptr<CancellationToken>,py::object,py::object);
 void bind_target_analysis(py::module_& m) {
+  py::enum_<TargetMeasurementMode>(m,"TargetMeasurementMode")
+    .value("AREA",TargetMeasurementMode::Area).value("SELECTION",TargetMeasurementMode::Selection)
+    .value("ROI_MANAGER",TargetMeasurementMode::RoiManager);
   py::class_<TargetAnalysisOptions>(m,"TargetAnalysisOptions")
     .def(py::init<>()).def_readwrite("statistics",&TargetAnalysisOptions::statistics)
     .def_readwrite("line",&TargetAnalysisOptions::line).def_readwrite("interpolate",&TargetAnalysisOptions::interpolate)
-    .def_readwrite("path",&TargetAnalysisOptions::path).def_readwrite("samples_per_segment",&TargetAnalysisOptions::samples_per_segment);
+    .def_readwrite("path",&TargetAnalysisOptions::path).def_readwrite("samples_per_segment",&TargetAnalysisOptions::samples_per_segment)
+    .def_readwrite("measurement",&TargetAnalysisOptions::measurement).def_readwrite("roi_indices",&TargetAnalysisOptions::roi_indices);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
     .def_readwrite("max_working_bytes",&TargetAnalysisLimits::max_working_bytes)
-    .def_readwrite("max_record_bytes",&TargetAnalysisLimits::max_record_bytes);
+    .def_readwrite("max_record_bytes",&TargetAnalysisLimits::max_record_bytes)
+    .def_readwrite("max_measurement_rows",&TargetAnalysisLimits::max_measurement_rows);
   py::class_<TargetAnalysisEstimate>(m,"TargetAnalysisEstimate")
     .def_readonly("plane_count",&TargetAnalysisEstimate::plane_count)
     .def_readonly("plane_pixels",&TargetAnalysisEstimate::plane_pixels)
@@ -27,10 +32,14 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("kernel_bytes",&TargetAnalysisEstimate::kernel_bytes)
     .def_readonly("result_bytes",&TargetAnalysisEstimate::result_bytes)
     .def_readonly("plot_bytes",&TargetAnalysisEstimate::plot_bytes)
-    .def_readonly("profile_samples",&TargetAnalysisEstimate::profile_samples);
+    .def_readonly("profile_samples",&TargetAnalysisEstimate::profile_samples)
+    .def_readonly("row_count",&TargetAnalysisEstimate::row_count);
   py::class_<TargetAnalysisPlane>(m,"TargetAnalysisPlane")
     .def_readonly("position",&TargetAnalysisPlane::position)
     .def_readonly("bounds",&TargetAnalysisPlane::bounds)
+    .def_readonly("roi_index",&TargetAnalysisPlane::roi_index)
+    .def_readonly("length",&TargetAnalysisPlane::length).def_readonly("angle_degrees",&TargetAnalysisPlane::angle_degrees)
+    .def_readonly("midpoint_world",&TargetAnalysisPlane::midpoint_world)
     .def_property_readonly("statistics",[](const TargetAnalysisPlane& v)->py::object{
       if(v.statistics)return bindings::calibrated_statistics_python(*v.statistics);
       return py::none();})
@@ -50,6 +59,9 @@ void bind_target_analysis(py::module_& m) {
     .def_property_readonly("spatial",[](const ResolvedTargetAnalysis& v){return v.spatial();})
     .def_property_readonly("intensity",[](const ResolvedTargetAnalysis& v){return v.intensity();})
     .def_property_readonly("record",[](const ResolvedTargetAnalysis& v){return bindings::metadata_python(v.record());});
+  m.def("roi_measurement_target_request",[](const DocumentSnapshot& source,const std::vector<std::size_t>& indices,std::size_t maximum){
+    py::gil_scoped_release release;return roi_measurement_target_request(source,indices,maximum);
+  },py::arg("source"),py::arg("indices")=std::vector<std::size_t>{},py::arg("max_rows")=100000);
   m.def("estimate_target_analysis",[](const ResolvedTarget& target,TargetAnalysisOptions options,TargetAnalysisLimits limits){
     py::gil_scoped_release release;return estimate_target_analysis(target,options,limits);
   },py::arg("target"),py::arg("options")=TargetAnalysisOptions{},py::arg("limits")=TargetAnalysisLimits{});

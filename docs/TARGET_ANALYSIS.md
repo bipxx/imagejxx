@@ -33,7 +33,7 @@ samples are validated even outside the ROI. Profile values use explicit frozen
 coordinates independently of area membership; profile-only targets do not
 rasterize selections and may retain a non-area selection dependency.
 
-Results contain one row per plane, optional scalar statistics and optional
+Default area/profile results contain one row per plane, optional scalar statistics and optional
 profile values. A shared profile-distance array measures Euclidean length in the
 captured spatial affine. A default zero-length `line` has one sample at distance
 zero. Rows also expose optional tight `[x, y, width, height]` geometric mask
@@ -67,8 +67,8 @@ with the old defaults does not establish binary compatibility.
 ## Straight-line Analyzer primitive (T04a.2 increment)
 
 `line_measurement.hpp` adds `imagej_calibrated_line_measurement`, with the same
-named Python function. This is a pure synchronous image API, not yet a captured
-manager/UI operation. It derives intensity statistics from the original
+named Python function. The pure synchronous image API is now also consumed
+by the explicit captured selection/manager modes below. It derives intensity statistics from the original
 thin-line automatic profile, converting calibrated samples to Float32 before
 statistics, as Analyzer does. It does not rasterize the line as an area ROI.
 `statistics.area` is sample count times pixel width/height, not physical stroke
@@ -102,19 +102,75 @@ original line rows across UInt8/UInt16/Float32), one native control and six inst
 Windows/Linux platform. This does not qualify manager/UI adoption; existing
 T04a.1 UI evidence is unchanged.
 
+### Captured selection and manager modes
+
+`TargetAnalysisOptions.measurement` defaults to `TargetMeasurementMode.AREA`,
+preserving all original area-plus-independent-profile options and version-1/2
+diagnostic record meaning. Explicit `SELECTION` and `ROI_MANAGER` modes require
+statistics with no `line`, `path` or configured profile sampling options. They
+support current finite-scalar area selections and thin in-image straight lines.
+
+For a stored-row batch, prepare its target from the same document snapshot and
+resolve it through the owning Application:
+
+```python
+request = imagejxx.roi_measurement_target_request(owner.snapshot(), [2, 0])
+options = imagejxx.TargetAnalysisOptions()
+options.measurement = imagejxx.TargetMeasurementMode.ROI_MANAGER
+options.roi_indices = [2, 0]  # empty means all rows, in stored order
+prepared = imagejxx.resolve_target_analysis(app.resolve_target(request), options)
+result = imagejxx.execute_target_analysis(prepared)
+app.validate_target(prepared.target)
+```
+
+Each row freezes its stored T/C/Z; an unset axis uses the captured source view.
+The manager target must cover exactly those unique positions. Manager rows are
+measured individually, never unioned. Acquisition groups rows by plane and
+validates source samples once per acquired plane, while retaining requested row
+order in `result.planes`. `estimate.row_count` counts output rows;
+`estimate.plane_count` and total pixels count distinct acquired planes. Row
+fields include optional zero-based `roi_index`, length, image-axis heading and
+world midpoint. Area `bounds` remain tight mask bounds; non-area line bounds
+are null and remain a required geometry-column gap.
+
+The metadata-only request factory and preparation dispatch no callbacks/read no
+planes. Row limits (default 100,000, configurable up to 1,000,000) complement
+working/metadata/pixel caps; those byte caps can admit fewer rows. State/group/
+record growth, serial masks/raster, one lookup, largest kernel workspace, all
+rows and simultaneous frontend copies are included. Preparation reuses shared
+area-mask estimates; line execution borrows the once-decoded table. Version-3
+records describe frozen rows/mode and are diagnostic, not replay instructions.
+Public native layouts changed; installed SDK clients were rebuilt on both
+Windows/Linux. This does not establish binary compatibility with old clients.
+
+Shared Measure and Measure ROIs menus, plus ROI Manager's Measure all button,
+use these jobs in both Windows hosts. Python scripted `measure_rois` waits,
+matching Measure's immediate-result contract; physical UI remains asynchronous.
+All rows publish together after source/calibration validation. Failure in a later
+row, pending Clear or source close appends no earlier rows. Manager results
+remain valid across active-selection/navigation changes because their positions
+are already frozen; a stored-ROI metadata change rejects adoption. Current-line
+results still reject a changed C/Z/T pose. JSON rows/CSV carry captured positions,
+ROI names and units independently after source closure. Existing table columns
+and precision apply. [Scoped evidence](parity/reviews/T04a2-captured-manager-20261104.json)
+covers 365 focused Windows Python cases, 23 capture-tool contracts, two native
+controls and six installed SDK clients per Windows/Linux platform. Manager
+wildcard handling is the explicit frozen-view policy above, not a full original
+ROI Manager workflow-parity claim.
+
 ### Measurement consumer handoff
 
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
-| `measure` | Whole/area finite scalar routes use captured analysis. Adopt the new thin-line primitive through the same frozen target/job/result owner; preserve profile-independent Analyzer sampling. Angle/point/polyline/shape variants remain open. |
-| `measure_rois` | Legacy frontend loops rasterized rows and Z slices, ignoring stored T/C. Replace with native frozen manager rows, explicit optional-axis/wildcard rules, grouping by source plane, bounded aggregate output and atomic adoption. Active selection and source history must remain untouched. |
+| `measure` | Whole/area and thin-line finite scalar routes now use explicit captured selection measurements with Analyzer sampling. Angle/point/irregular-polyline, line bounds and remaining area/shape columns stay open. |
+| `measure_rois` | Finite scalar area/thin-line rows now use frozen native T/C/Z/defaults, grouping and atomic adoption through actual menus/panel. Unsupported geometry/dtype and remaining manager options stay explicit requirements; active selection/history remain untouched. |
 | `measurements` | Selects existing output columns. It is not a substitute for missing centroid/Feret/shape, threshold-limited or redirected-intensity calculations. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
 
-Before the next public API batch, settle the complete row/result and geometry
-options together. Preserve existing TargetAnalysis area-plus-profile semantics;
-new selection measurement cannot reinterpret that old option combination.
+The explicit mode/row API above preserves existing profile meaning. Extend
+remaining geometry/options coherently in the next public batch. Preserve existing TargetAnalysis area-plus-profile semantics;
+selection measurement cannot reinterpret that old option combination.
 Freeze stored row order and T/C/Z/defaults once, validate the original source/
 manager/calibration on adoption, and reject partial publication on any failed
 row. Retained original polyline samples and programmatic angle cases are

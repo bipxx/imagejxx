@@ -4,6 +4,8 @@
 #include "dataset_histogram_internal.hpp"
 #include "kernel_control.hpp"
 #include <cmath>
+#include <map>
+#include <set>
 
 namespace imagejxx {
 namespace {
@@ -44,10 +46,135 @@ std::size_t segment_samples(const TargetAnalysisOptions& options,const std::arra
   }
   return count;
 }
+using PositionKey=std::array<int,3>;
+PositionKey position_key(PlanePosition p){return {p.t,p.c,p.z};}
+std::vector<std::size_t> manager_indices(const DocumentSnapshot& source,
+    const std::vector<std::size_t>& requested,std::size_t maximum) {
+  const auto count=requested.empty()?source.data().rois.size():requested.size();
+  if(!maximum || maximum>1000000 || !count || count>maximum)
+    invalid("ROI measurement requires a nonempty bounded row selection");
+  std::vector<std::size_t> out;out.reserve(count);std::set<std::size_t> seen;
+  for(std::size_t n=0;n<count;++n) {
+    const auto index=requested.empty()?n:requested[n];
+    if(index>=source.data().rois.size() || !seen.insert(index).second)
+      invalid("ROI measurement indices must be unique valid rows");
+    out.push_back(index);
+  }
+  return out;
+}
+PlanePosition manager_position(const DocumentSnapshot& source,std::size_t index) {
+  const auto& roi=source.data().rois[index];const auto& view=source.display();
+  return {roi.t.value_or(view.t),roi.c.value_or(view.c),roi.z.value_or(view.crosshair[2])};
+}
+struct MeasurementRowPlan {PlanePosition position;std::optional<std::size_t> roi;};
+struct MeasurementGroup {PlanePosition position;std::vector<std::size_t> rows;};
+struct MeasurementPlan {std::vector<MeasurementRowPlan> rows;std::vector<MeasurementGroup> groups;};
+const Selection* measurement_selection(const ResolvedTarget& target,const MeasurementRowPlan& row) {
+  const auto& data=target.source().data();
+  if(row.roi)return &data.rois[*row.roi].selection;
+  return target.roi_policy()==RoiPolicy::ActiveSelection && data.selection?&*data.selection:nullptr;
+}
+std::array<double,4> measurement_line(const Selection& selection,DatasetShape shape) {
+  if(selection.kind!="line" || selection.points.size()!=2 || selection.width>1)
+    invalid("Selection measurement currently supports areas and thin straight lines");
+  selection.validate(shape.x,shape.y);
+  const auto& a=selection.points[0];const auto& b=selection.points[1];
+  const std::array<double,4> line{a[0],a[1],b[0],b[1]};
+  for(int axis=0;axis<4;++axis)if(!std::isfinite(line[axis]) || line[axis]<0 || line[axis]>(axis%2?shape.y-1:shape.x-1))
+    invalid("Measurement line endpoints must be inside the source image");
+  return line;
+}
+TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const TargetAnalysisOptions& options,
+    const TargetAnalysisLimits& limits,MeasurementPlan* retained) {
+  if(!options.statistics || options.line || !options.path.empty() || options.samples_per_segment)
+    invalid("Selection measurement requires statistics without independent profile options");
+  const bool manager=options.measurement==TargetMeasurementMode::RoiManager;
+  if((manager && target.roi_policy()!=RoiPolicy::WholePlane) ||
+      (!manager && target.roi_policy()==RoiPolicy::PositionedRois))
+    invalid("Measurement target ROI policy disagrees with its mode");
+  const auto& source=target.source();const auto& data=source.data();const auto shape=data.dataset.shape();
+  const auto count=manager?(options.roi_indices.empty()?data.rois.size():options.roi_indices.size()):target.position_count();
+  if(!limits.max_measurement_rows || limits.max_measurement_rows>1000000 || !count || count>limits.max_measurement_rows)
+    invalid("Measurement exceeds its row limit");
+  // Admit bounded map/group/record growth before building either collection.
+  within(add(4096,mul(count,1024)),limits.max_working_bytes);
+  if(add(4096,mul(count,2048))>limits.max_record_bytes)invalid("Measurement rows exceed metadata budget");
+  DatasetHistogramLimits sampling;sampling.max_pixels=limits.max_pixels;sampling.max_working_bytes=limits.max_working_bytes;
+  const auto base=detail::estimate_target_histogram_resources(target,{},sampling,false);
+  if(base.plane_pixels>std::size_t(std::numeric_limits<int>::max()))invalid("Analysis plane count is unsupported");
+  MeasurementPlan plan;plan.rows.reserve(count);plan.groups.reserve(std::min(count,target.position_count()));
+  const auto indices=manager?manager_indices(source,options.roi_indices,limits.max_measurement_rows):std::vector<std::size_t>{};
+  std::map<PositionKey,std::size_t> groups;
+  TargetAnalysisEstimate out;out.row_count=count;out.plane_pixels=base.plane_pixels;out.plane_bytes=base.plane_bytes;
+  bool has_area=false,has_mask=false;std::size_t raster_peak=0,line_peak=0;
+  for(std::size_t n=0;n<count;++n) {
+    MeasurementRowPlan row;
+    if(manager){row.roi=indices[n];row.position=manager_position(source,*row.roi);}
+    else row.position=target.position(n);
+    const auto key=position_key(row.position);auto found=groups.find(key);
+    if(found==groups.end()) {
+      const auto ordinal=plan.groups.size();groups.emplace(key,ordinal);
+      plan.groups.push_back({row.position,{}});found=groups.find(key);
+    }
+    plan.groups[found->second].rows.push_back(n);plan.rows.push_back(row);
+    const auto* selection=measurement_selection(target,row);
+    if(selection && selection->kind=="line") {
+      const auto line=measurement_line(*selection,shape);
+      line_peak=std::max(line_peak,detail::calibrated_profile_sample_count(line));
+      profile_length(target.calibration(),line);
+      // Validate the actual plane affine before provider acquisition.
+      const auto midpoint=target.calibration().voxel_to_world({(line[0]+line[2])/2,(line[1]+line[3])/2,double(row.position.z)});
+      for(double value:midpoint)if(!std::isfinite(value))invalid("Measurement midpoint must be finite");
+    } else {
+      has_area=true;
+      if(selection) {
+        has_mask=true;
+        if(manager || n==0) {
+          const auto mask=detail::estimate_analysis_mask(*selection,shape,sampling);
+          out.geometry_bytes=add(out.geometry_bytes,mask.geometry_bytes);raster_peak=std::max(raster_peak,mask.raster_bytes);
+          within(add(base.working_bytes,add(out.geometry_bytes,raster_peak)),limits.max_working_bytes);
+        }
+      }
+    }
+  }
+  if(manager) {
+    if(target.position_count()!=groups.size())invalid("ROI measurement target must contain exactly its row positions");
+    for(std::size_t n=0;n<target.position_count();++n)
+      if(!groups.count(position_key(target.position(n))))invalid("ROI measurement target must contain exactly its row positions");
+  }
+  out.plane_count=plan.groups.size();out.total_pixels=mul(out.plane_pixels,out.plane_count);
+  out.mask_bytes=has_mask?out.plane_bytes:0;out.geometry_bytes=add(out.geometry_bytes,raster_peak);
+  const auto type=data.dataset.pixel_type();const std::size_t bins=type==PixelType::UInt8?256:type==PixelType::UInt16?65536:0;
+  const auto histogram=mul(add(has_area && bins==65536?65536:0,256),sizeof(std::uint64_t));
+  out.result_bytes=add(sizeof(TargetAnalysisResult),mul(count,add(sizeof(TargetAnalysisPlane)+1024,histogram)));
+  out.plot_bytes=out.result_bytes;
+  const auto area_kernel=has_area?add(4096,add(mul(bins,sizeof(std::uint64_t)),type==PixelType::Float32?mul(out.plane_pixels,sizeof(float)):0)):0;
+  out.kernel_bytes=std::max(area_kernel,add(8192,mul(line_peak,sizeof(double)+sizeof(float))));
+  Budget budget{limits.max_record_bytes};budget.take(add(base.record_bytes,add(4096,mul(count,2048))));
+  budget.text(target.calibration().unit);budget.text(target.calibration().time_unit);
+  const auto before=budget.used;if(const auto record=density_record(target))budget.value(*record,0);
+  out.record_bytes=budget.used;out.calibration_bytes=add(mul(budget.used-before,2),mul(bins,sizeof(std::uint32_t)));
+  out.calibration_bytes=add(out.calibration_bytes,mul(add(target.calibration().unit.size(),target.calibration().time_unit.size()),4));
+  out.working_bytes=base.working_bytes;
+  for(auto bytes:{out.mask_bytes,out.geometry_bytes,out.kernel_bytes,out.record_bytes,out.calibration_bytes,out.result_bytes,out.plot_bytes,
+      mul(count,256),sizeof(ResolvedTargetAnalysis)+sizeof(TargetAnalysisOptions)+sizeof(TargetAnalysisLimits)+4096}) {
+    out.working_bytes=add(out.working_bytes,bytes);within(out.working_bytes,limits.max_working_bytes);
+  }
+  if(retained)*retained=std::move(plan);
+  return out;
+}
 TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysisOptions& options,
-    const TargetAnalysisLimits& limits) {
+    const TargetAnalysisLimits& limits,MeasurementPlan* retained=nullptr) {
   if(!limits.max_pixels || !limits.max_working_bytes || !limits.max_record_bytes ||
       limits.max_record_bytes>16ULL*1024*1024)invalid("Invalid target analysis limits");
+  if(options.measurement!=TargetMeasurementMode::Area && options.measurement!=TargetMeasurementMode::Selection &&
+      options.measurement!=TargetMeasurementMode::RoiManager)invalid("Invalid measurement mode");
+  if(options.measurement!=TargetMeasurementMode::RoiManager && !options.roi_indices.empty())invalid("ROI indices require manager measurement mode");
+  if(options.measurement!=TargetMeasurementMode::Area) {
+    if(target.source().data().dataset.sample_policy()!=FloatingSamplePolicy::FiniteOnly)
+      invalid("Target analysis requires finite-policy scalar storage");
+    target.calibration().validate();return estimate_measurement(target,options,limits,retained);
+  }
   if(options.line && !options.path.empty())invalid("Analysis accepts line or path, not both");
   if(!options.path.empty() && (options.path.size()<2 || options.path.size()>4096))invalid("Analysis path requires 2..4096 vertices");
   if(!options.statistics && !segment_count(options))invalid("Analysis requires statistics or a profile");
@@ -61,7 +188,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
   std::size_t segment_peak=0;double distance=0;
   for(std::size_t i=0;i<segment_count(options);++i) {
     const auto p=segment(options,i);
-    for(int i=0;i<4;++i)if(!std::isfinite(p[i]) || p[i]<0 || p[i]>(i%2?shape.y-1:shape.x-1))
+    for(int axis=0;axis<4;++axis)if(!std::isfinite(p[axis]) || p[axis]<0 || p[axis]>(axis%2?shape.y-1:shape.x-1))
       invalid("Analysis profile endpoints must be inside the source image");
     const auto count=segment_samples(options,p);segment_peak=std::max(segment_peak,count);
     out.profile_samples=add(out.profile_samples,count-(i?1:0));
@@ -70,7 +197,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
   DatasetHistogramLimits sampling;sampling.max_pixels=limits.max_pixels;
   sampling.max_working_bytes=limits.max_working_bytes;
   const auto base=detail::estimate_target_histogram_resources(target,{},sampling,options.statistics);
-  out.plane_count=base.plane_count;out.plane_pixels=base.plane_pixels;out.total_pixels=base.total_pixels;
+  out.plane_count=base.plane_count;out.row_count=out.plane_count;out.plane_pixels=base.plane_pixels;out.total_pixels=base.total_pixels;
   if(out.plane_pixels>std::size_t(std::numeric_limits<int>::max()))invalid("Analysis plane count is unsupported");
   out.plane_bytes=base.plane_bytes;out.mask_bytes=base.mask_bytes;out.geometry_bytes=base.geometry_bytes;
   const auto type=dataset.pixel_type();const std::size_t bins=type==PixelType::UInt8?256:type==PixelType::UInt16?65536:0;
@@ -110,6 +237,7 @@ struct ResolvedTargetAnalysis::State {
   ImageJIntensityCalibration intensity;
   std::vector<std::uint32_t> lookup;
   MetadataObject record;
+  MeasurementPlan measurements;
 };
 ResolvedTargetAnalysis::ResolvedTargetAnalysis(std::shared_ptr<const State> state):state_(std::move(state)){}
 const ResolvedTarget& ResolvedTargetAnalysis::target()const{return state_->target;}
@@ -123,10 +251,20 @@ TargetAnalysisEstimate estimate_target_analysis(const ResolvedTarget& target,
     const TargetAnalysisOptions& options,const TargetAnalysisLimits& limits) {
   return detail::without_execution_callbacks([&]{return estimate(target,options,limits);});
 }
+TargetRequest roi_measurement_target_request(const DocumentSnapshot& source,
+    const std::vector<std::size_t>& indices,std::size_t maximum) {
+  return detail::without_execution_callbacks([&]{
+    const auto rows=manager_indices(source,indices,maximum);TargetRequest request;
+    request.scope=TargetScope::Positions;request.roi=RoiPolicy::WholePlane;
+    std::set<PositionKey> seen;
+    for(const auto row:rows){const auto p=manager_position(source,row);if(seen.insert(position_key(p)).second)request.positions.push_back(p);}
+    return request;
+  });
+}
 ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     const TargetAnalysisOptions& options,const TargetAnalysisLimits& limits) {
   return detail::without_execution_callbacks([&] {
-    const auto admitted=estimate(target,options,limits);
+    MeasurementPlan measurements;const auto admitted=estimate(target,options,limits,&measurements);
     auto intensity=target.intensity_calibration();
     intensity.validate_for(target.source().data().dataset.pixel_type(),1);
     auto lookup=intensity.table_words();
@@ -138,10 +276,20 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     MetadataObject requested{{"statistics",options.statistics},{"interpolate",options.interpolate}};
     if(options.line)requested["line"]=metadata_array({(*options.line)[0],(*options.line)[1],(*options.line)[2],(*options.line)[3]});
     else requested["line"]=std::monostate{};
+    const bool measurement=options.measurement!=TargetMeasurementMode::Area;
     const bool extended=!options.path.empty() || options.samples_per_segment!=0;
     if(extended){MetadataArray path;for(const auto& p:options.path)path.push_back(metadata_array({p[0],p[1]}));
       requested["path"]=metadata_array(std::move(path));requested["samples_per_segment"]=std::uint64_t(options.samples_per_segment);}
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",extended?2:1},
+    if(measurement) {
+      requested["measurement"]=options.measurement==TargetMeasurementMode::RoiManager?"roi_manager":"selection";
+      MetadataArray rows;for(const auto& row:measurements.rows) {
+        MetadataObject item{{"position",metadata_array({row.position.t,row.position.c,row.position.z})}};
+        if(row.roi)item["roi_index"]=std::uint64_t(*row.roi);
+        rows.push_back(metadata_object(std::move(item)));
+      }
+      requested["rows"]=metadata_array(std::move(rows));
+    }
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?3:extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -150,7 +298,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     Budget bounded{limits.max_record_bytes};bounded.object(record);
     if(bounded.used>admitted.record_bytes)invalid("Analysis record exceeds admitted metadata");
     return ResolvedTargetAnalysis(std::make_shared<const ResolvedTargetAnalysis::State>(
-        ResolvedTargetAnalysis::State{target,options,limits,admitted,spatial,std::move(intensity),std::move(lookup),std::move(record)}));
+        ResolvedTargetAnalysis::State{target,options,limits,admitted,spatial,std::move(intensity),std::move(lookup),std::move(record),std::move(measurements)}));
   });
 }
 TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& command,
@@ -159,7 +307,39 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
   const auto& state=*command.state_;within(state.estimate.working_bytes,runtime_maximum);
   const auto control=requested;ExecutionScope scope(control);kernel_checkpoint();
   TargetAnalysisResult out;out.spatial=state.spatial;out.intensity_record=state.intensity.record();
-  out.record=state.record;out.estimate=state.estimate;out.planes.reserve(state.estimate.plane_count);
+  out.record=state.record;out.estimate=state.estimate;
+  if(state.options.measurement!=TargetMeasurementMode::Area) {
+    out.planes.resize(state.estimate.row_count);
+    const auto& dataset=state.target.source().data().dataset;const auto shape=dataset.shape();
+    execution_progress(0,state.measurements.rows.size());kernel_checkpoint();
+    std::size_t completed=0;KernelStage stage("Selection measurements",state.measurements.rows.size());
+    for(const auto& group:state.measurements.groups) {
+      kernel_checkpoint();const auto image=dataset.plane(group.position);kernel_checkpoint();
+      if(!image || image->width!=shape.x || image->height!=shape.y || image->channels!=1 ||
+          image->type!=dataset.pixel_type() || image->pixels.size()!=state.estimate.plane_pixels)
+        invalid("Analysis acquired plane has a different shape/type/storage");
+      detail::validate_analysis_source(*image);
+      for(const auto ordinal:group.rows) {
+        stage.checkpoint(completed);const auto& plan=state.measurements.rows[ordinal];auto& row=out.planes[ordinal];
+        row.position=plan.position;row.roi_index=plan.roi;
+        const auto* selection=measurement_selection(state.target,plan);
+        if(selection && selection->kind=="line") {
+          const auto line=measurement_line(*selection,shape);
+          auto measured=detail::calibrated_line_measurement_with_table(*image,state.spatial,state.intensity,state.lookup,
+              line,state.options.interpolate,state.limits.max_working_bytes,true,double(row.position.z));
+          row.statistics=std::move(measured.statistics);row.length=measured.length;
+          row.angle_degrees=measured.angle_degrees;row.midpoint_world=measured.midpoint_world;
+        } else {
+          auto mask=selection?std::optional<Image>{selection->mask(shape.x,shape.y)}:std::optional<Image>{};
+          row.statistics=detail::calibrated_statistics_with_table(*image,state.spatial,state.intensity,state.lookup,
+              mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true);
+        }
+        kernel_checkpoint();execution_progress(++completed,state.measurements.rows.size());
+      }
+    }
+    stage.finish();kernel_checkpoint();return out;
+  }
+  out.planes.reserve(state.estimate.plane_count);
   if(segment_count(state.options)) {
     out.profile_distances.reserve(state.estimate.profile_samples);double distance=0;
     for(std::size_t s=0;s<segment_count(state.options);++s) {
@@ -187,10 +367,10 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
       row.profile_values.reserve(state.estimate.profile_samples);
       for(std::size_t s=0;s<segment_count(state.options);++s) {
         const auto p=segment(state.options,s);
-        const auto requested=state.options.path.empty()?state.options.samples_per_segment:segment_samples(state.options,p);
+        const auto samples=state.options.path.empty()?state.options.samples_per_segment:segment_samples(state.options,p);
         auto values=detail::calibrated_profile_with_table(*image,state.intensity,state.lookup,
-            p[0],p[1],p[2],p[3],state.options.interpolate,state.limits.max_working_bytes,requested,true);
-        for(std::size_t i=s?1:0;i<values.size();++i){kernel_checkpoint_periodic();row.profile_values.push_back(values[i]);}
+            p[0],p[1],p[2],p[3],state.options.interpolate,state.limits.max_working_bytes,samples,true);
+        for(std::size_t sample=s?1:0;sample<values.size();++sample){kernel_checkpoint_periodic();row.profile_values.push_back(values[sample]);}
       }
     }
     kernel_checkpoint();out.planes.push_back(std::move(row));execution_progress(i+1,state.estimate.plane_count);

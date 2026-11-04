@@ -143,7 +143,7 @@ std::size_t selection_charge(const Selection &selection, DatasetShape shape,
   return charge.bytes;
 }
 
-std::size_t raster_scratch(const std::optional<Selection> &selection) {
+std::size_t raster_scratch(const Selection* selection) {
   if (!selection) return 0;
   if (selection->is_rounded_box()) {
     // Four cubics at subdivision depth ten: <=4101 edges, vector growth
@@ -211,7 +211,7 @@ Layout layout(const Dataset &source, const DatasetHistogramRequest &request,
   if (request.area_roi)
     estimate.selection_bytes = selection_charge(*request.area_roi, out.shape, limits);
   bytes = add(bytes, estimate.selection_bytes);
-  bytes = add(bytes, raster_scratch(request.area_roi));
+  bytes = add(bytes, raster_scratch(request.area_roi?&*request.area_roi:nullptr));
   if (request.area_roi && request.area_roi->is_rounded_box())
     bytes = add(bytes, add(estimate.pixel_count / 8, (estimate.pixel_count % 8 != 0)));
   bytes = add(bytes, sizeof(DatasetHistogramResult) + sizeof(DatasetHistogramRequest) +
@@ -427,6 +427,16 @@ DatasetHistogramResult accumulate_dataset_histogram_stages(
   return accumulate_histogram(source, request, limits, control, false);
 }
 } // namespace detail
+detail::AnalysisMaskEstimate detail::estimate_analysis_mask(const Selection& selection,
+    DatasetShape shape,const DatasetHistogramLimits& limits) {
+  AnalysisMaskEstimate out;out.geometry_bytes=selection_charge(selection,shape,limits);
+  out.raster_bytes=raster_scratch(&selection);
+  if(selection.is_rounded_box()) {
+    const auto n=multiply(std::size_t(shape.x),std::size_t(shape.y));
+    out.raster_bytes=add(out.raster_bytes,add(n/8,n%8!=0));
+  }
+  within(add(out.geometry_bytes,out.raster_bytes),limits);return out;
+}
 TargetHistogramEstimate detail::estimate_target_histogram_resources(const ResolvedTarget &target,
     const TargetHistogramOptions &options,const DatasetHistogramLimits &limits,bool raster_membership) {
   if(target.execution_mode()!=ExecutionMode::Planes || target.destination()!=OutputDestination::InPlace)
@@ -446,7 +456,7 @@ TargetHistogramEstimate detail::estimate_target_histogram_resources(const Resolv
   auto area=[&](const Selection &selection) {
     const auto retained=selection_charge(selection,shape,limits);
     out.geometry_bytes=add(out.geometry_bytes,retained);
-    auto temporary=raster_scratch(selection);
+    auto temporary=raster_scratch(&selection);
     if(selection.is_rounded_box())temporary=add(temporary,add(out.plane_pixels/8,out.plane_pixels%8!=0));
     scratch=std::max(scratch,temporary);
     within(add(bytes,add(out.geometry_bytes,scratch)),limits);
