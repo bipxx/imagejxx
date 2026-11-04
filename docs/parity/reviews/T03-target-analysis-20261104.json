@@ -1,0 +1,405 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-04",
+  "status": "scoped_verified",
+  "base_commit": "9a01b4d1c1845d849b654382ecfd149fe5270b92",
+  "scope": "T03 finite scalar captured target analysis admission/preparation/execution and native/Python APIs. Not actual editor integration, recorder replay, full-family certification, macOS or release readiness.",
+  "implementation": [
+    "Metadata-only estimates reuse target histogram/mask/record admission and bounded metadata matching, with added encoded/typed calibration, one lookup, kernel/median scratch, retained per-plane rows and simultaneous plot allowance.",
+    "Immutable source/target/options/limits/effective values; serial one-read-per-plane execution preserves C/Z/T/ROI membership and explicit order. Profile-only targets retain non-area selection guards without rasterization.",
+    "Statistics and thin straight-line values reuse existing numerical kernels; shared physical distance axis uses the captured affine. Finite-policy UInt8/UInt16/Float32 only; other variants remain in the roadmap.",
+    "Existing execution scopes provide cancellation/checkpoints and exception disposal. Detached output retains no provider; source/global/membership validation remains mandatory for owner-controlled UI adoption. No document/history edit or new controller.",
+    "Lookup decoding once per preparation and shared Python statistics formatter eliminate repeated work. Effective records are built directly rather than temporarily copying displaced local calibration strings; existing sampling estimates already conservatively charged that copy, so no cap violation is asserted."
+  ],
+  "producer_inputs": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\CMakeLists.txt",
+      "bytes": 138462,
+      "sha256": "644c18f3a7b3ef3ab8ecb4e1ec58a3a71ed1269791c93f312cebcd95bbbacb33"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\target_analysis.cpp",
+      "bytes": 10543,
+      "sha256": "3dbdfa92c61642b8ab9d061debb426369f5995de5aaa848b9cb9c26b1c8dc37b"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\include\\imagejxx\\target_analysis.hpp",
+      "bytes": 3682,
+      "sha256": "edc4f878adf2e65aaf359bbda216af90671422c5a57abb54f82282c9013b018e"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\calibrated_analysis.cpp",
+      "bytes": 11800,
+      "sha256": "56050fa9d836eee129c8caee63c0b743880294cbe4aacf236207ab0876c18cb9"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\calibrated_analysis_internal.hpp",
+      "bytes": 552,
+      "sha256": "ea9613b0a3967e2b2733fc7dcd260c837f8c4affa63d8c3dfac3fa4e780b6882"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\dataset_histogram.cpp",
+      "bytes": 29548,
+      "sha256": "31a15d187d774d9e3c0d6d0a6c048a3562faef5b88107b7508226504c73eca8d"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\dataset_histogram_internal.hpp",
+      "bytes": 826,
+      "sha256": "af8056b7264f60d607f26239d17d39d3140a686cb00d42ac2d01a16a248338b4"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\bindings.cpp",
+      "bytes": 40676,
+      "sha256": "dade447a13599e65545d9a7518febc9727b7de1551f6c37cba885e859714351d"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\target_analysis_bindings.cpp",
+      "bytes": 5056,
+      "sha256": "bbbc07436b5155cc2fb66897bc1ccfc73baa5ac409df844c57596d6f0479426c"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\binding_calibrated_analysis.hpp",
+      "bytes": 903,
+      "sha256": "1c581bd8344d59230611702411dff126d1cce76722c76ea546ff909fa721ec79"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+      "bytes": 81152,
+      "sha256": "d5a1514c2d56804b5328070dce40502d93b3df0b170b1676b145fd34ca75aff4"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_target_analysis.cpp",
+      "bytes": 4219,
+      "sha256": "83a3f8ba372feb1f8816761b67a050f6dd34055a9620898e39ace7e8854d46b6"
+    }
+  ],
+  "reader_inputs": [
+    {
+      "path": "tests/python/test_target_analysis.py",
+      "bytes": 13729,
+      "sha256": "fbb839442a7667537e26246145f9becc81786600efec62ff4a8fc3e8b16d9fc1"
+    },
+    {
+      "path": "tests/python/test_calibrated_analysis.py",
+      "bytes": 7841,
+      "sha256": "ab430c350c5923cd9126f80e750dbc0f7bf7a2be981807460a014db74cfb6959"
+    },
+    {
+      "path": "tests/python/test_target_histogram.py",
+      "bytes": 14045,
+      "sha256": "797447519857f4e2784b60ab6d3144bae86a883c256a0e7dba9ab1ad8042276c"
+    },
+    {
+      "path": "tests/python/test_dataset_histogram.py",
+      "bytes": 24821,
+      "sha256": "c83af2085c366e36fac01cf8777968324e3f40c4b76e8d2e0ae3071af4c4e5b0"
+    },
+    {
+      "path": "tests/python/test_global_calibration.py",
+      "bytes": 12528,
+      "sha256": "c6489cb93c49a5ae2a5f67f3f196cc3c4ae991623bdd298710db5406851373e7"
+    },
+    {
+      "path": "tests/python/test_global_calibration_execution.py",
+      "bytes": 8002,
+      "sha256": "d88605a15a588f660f32d07295342c8b41eaa5f011930ba59df6432062e1eac2"
+    },
+    {
+      "path": "tests/python/test_numpy_ingress.py",
+      "bytes": 4358,
+      "sha256": "b575d1468207d3a473feb26e1b76f0e7a14f66a0e1b814fa018443cb25b0963c"
+    },
+    {
+      "path": "tests/python/test_numeric.py",
+      "bytes": 12789,
+      "sha256": "0c4adfe4a9cbdca4e837a40149f869ed8c71417ee36bfd168275268d9156abe1"
+    }
+  ],
+  "verification": {
+    "windows_python_unique_cases_ultimately_passed": 625,
+    "new_target_analysis_cases": 39,
+    "python_runs": [
+      {
+        "evidence": {
+          "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/tests.xml",
+          "bytes": 83375,
+          "sha256": "f09511fe844d82a219f0bd05938bddcca86d0677bdfe5e6eb57ed3cad7251b98"
+        },
+        "tests": 616,
+        "failures": [
+          [
+            "tests.python.test_target_analysis",
+            "test_profile_only_nonarea_selection_affine_axis_and_frozen_inputs[False]"
+          ],
+          [
+            "tests.python.test_target_analysis",
+            "test_profile_only_nonarea_selection_affine_axis_and_frozen_inputs[True]"
+          ]
+        ]
+      },
+      {
+        "evidence": {
+          "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/retry-tests.xml",
+          "bytes": 6962,
+          "sha256": "28b9bdea527ddb3c1ea612554518b976bbe656410370e41c003eb75f0190f5b5"
+        },
+        "tests": 38,
+        "failures": [
+          [
+            "tests.python.test_target_analysis",
+            "test_adoption_requires_current_source_and_membership[close]"
+          ]
+        ]
+      },
+      {
+        "evidence": {
+          "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/close-tests.xml",
+          "bytes": 379,
+          "sha256": "03b7b8abcce6cdcfb77c9dfe58e9d8b67f1c504393e6eaedb059eebff297ca16"
+        },
+        "tests": 1,
+        "failures": []
+      },
+      {
+        "evidence": {
+          "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/final-tests.xml",
+          "bytes": 18281,
+          "sha256": "251f8d74a9e91c2f93dff0b22eb9b8f948e3b689d99415543088e08afb06e854"
+        },
+        "tests": 122,
+        "failures": [
+          [
+            "tests.python.test_target_analysis",
+            "test_effective_metadata_budget_does_not_copy_displaced_local_units"
+          ]
+        ]
+      },
+      {
+        "evidence": {
+          "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/metadata-tests.xml",
+          "bytes": 386,
+          "sha256": "34b9bcac62be95b319601e529d60bc17b0e8ef6061cb76d1ab465b5edb04efd2"
+        },
+        "tests": 1,
+        "failures": []
+      },
+      {
+        "evidence": {
+          "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/area-tests.xml",
+          "bytes": 520,
+          "sha256": "5e8ba458f69c387a014e28b06353fc620bfe3804f3bcc523199defcd57c81a4c"
+        },
+        "tests": 2,
+        "failures": []
+      }
+    ],
+    "native_controls": {
+      "windows": 4,
+      "linux": 4
+    },
+    "installed_sdk": {
+      "windows": 6,
+      "linux": 6,
+      "profiles_per_platform": {
+        "table_profiles": 128,
+        "fit_dtype_cells": 86,
+        "calibrated_analysis_rows": 77
+      }
+    },
+    "windows_products": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+        "bytes": 8005120,
+        "sha256": "e49e68b15e40fd5ddb56292c4d935dbda0b6b65e61e84e08d10445754b7d3aad"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "bytes": 58549016,
+        "sha256": "83112abbe6d2c8e2310c4089cbb4422caf7548eac626491e9966572ab5ff3e07"
+      }
+    ],
+    "linux_installed_archive": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+      "bytes": 20212490,
+      "sha256": "69e58852a2dea740952db2f4594930489bc8782ba1f0ba400f0cee6666498dc8"
+    },
+    "windows_actual_import": "archive=C:/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib\ninclude=C:/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/windows/sdk-installed/include\n",
+    "linux_actual_import": "archive=/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a\ninclude=/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/include\n",
+    "historical_expectations_modified": false
+  },
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/final-validation-receipt.json",
+      "bytes": 14138,
+      "sha256": "4df228d60aeb7810867d51544715bb9d0e1fae0d5feb6a41ebb10f2716da0bb2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/final-receipt.json",
+      "bytes": 17911,
+      "sha256": "59edd6b1495eb566b87383149e11009b4ca343d51278bd41d3f96078f915f356"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/linux/final-receipt.json",
+      "bytes": 17957,
+      "sha256": "9863b0c07498b8063673646c2d22a1edf61b14f764fe2d9e1fc6309ca214ec9d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/final-native.xml",
+      "bytes": 1150,
+      "sha256": "c42ab4adc737968fb425828c2f8e5758374ac608b207cb8884b89c4c765e17cf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/final-sdk.xml",
+      "bytes": 1961,
+      "sha256": "d32ad19c2594bfafaf93423be500f54b108ba2dfe32765d77cdc779a4af3aad2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/linux/final-native.xml",
+      "bytes": 1119,
+      "sha256": "6df75702aaae9509674fada42e5f7b06497e5f6392911a124a73c00ddcfc703d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/linux/final-sdk.xml",
+      "bytes": 1911,
+      "sha256": "141da8ca21181799366bfce4ee1a5df357d8ea8ebfd02d52d85bc1b4e15e7efe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/retention.json",
+      "bytes": 1905,
+      "sha256": "bcf940dc4b401fa69f35591c2a19e649837445ca6e8ca4ab4c68f1631ce3288e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/windows-final-sdk-retirement.json",
+      "bytes": 5121,
+      "sha256": "46458a2bc7a366a37c507bff65fb2e34d9b217fcdd571153ce2457ea2a96d6d0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/linux-final-sdk-retirement.json",
+      "bytes": 1887,
+      "sha256": "b071099cc24b30ad613498055b2a0570e97ab0af4f4a5d240e81ff352fdbf04b"
+    }
+  ],
+  "diagnostics": {
+    "retained_failures": [
+      "Windows test initially used a Document where Application.adopt requires a shared handle; fixed the test, preserving source/log/receipt.",
+      "Python assertions initially assumed a writable SpatialCalibration and the wrong closed-document exception; corrected to actual read-only/DocumentUnavailable contracts.",
+      "Linux unknown-target build required explicit CMake configure before selecting a newly added Make target; no source change.",
+      "Metadata-budget test initially omitted the inherited conservative local-unit charge; corrected the assertion, not production admission or references."
+    ],
+    "preimages": [
+      {
+        "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/failed-test_target_analysis-metadata-budget.py",
+        "bytes": 13567,
+        "sha256": "362c2fc7339e10c3b8279a99f651b86bab4d1eb0055eac57dbb441e6aca60dee"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/failed-test_target_analysis-retry.py",
+        "bytes": 12610,
+        "sha256": "eb2fc35ceba0720f8a814a1b85b2040d9e6b0dd60d34a04e6761a214d51b6295"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/failed-test_target_analysis.py",
+        "bytes": 8910,
+        "sha256": "dbdb185d28ead182e9104c59a18d82276afda35ef079ede74708d9d4062256cd"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/failed-test_target_analysis.cpp",
+        "bytes": 4195,
+        "sha256": "3ace5814606562fbd5c0ad162071043db6683b32484b8923d0285085a8480e12"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/target_analysis-before-copy-review.cpp",
+        "bytes": 10413,
+        "sha256": "58f71e68fbb9cbac73e822ba188005a08a7ead6145c57134fd500353f7256d0e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/target_analysis-before-area-review.py",
+        "bytes": 13648,
+        "sha256": "55cbbba1725db1c9cc0e5f2cdce726ce5946602379238f76c93e85a472379783"
+      }
+    ],
+    "historical_before_review_receipts": "Retain their original states/hashes; final receipts and retention close the task without relabeling superseded source identities."
+  },
+  "waste_review": {
+    "fixed_now": [
+      "Reuse existing admission, metadata budget, kernel, execution, Python formatter and benchmark/reference infrastructure; no second job/controller or disposable verifier executable.",
+      "Remove repeated per-plane lookup decoding and displaced local-string copying.",
+      "Deduplicate identical Windows/Linux carrier payloads in the lossless scratch archive."
+    ],
+    "process_improvement": "Confirm API signatures, binding mutability/exception types and changed allocation paths before expensive installed clients. Keep consumer scratch until final source review; premature retirement required avoidable SDK reconfiguration in this task. Policy added to AGENTS.md.",
+    "deferred": {
+      "T04": "Existing job/result owners, atomic UI adoption, settings/replay and live/saved plots in both hosts.",
+      "T02": "Do not aggressively tighten inherited conservative metadata charges without producer/reservation evidence. Continue checked-in runner reuse."
+    },
+    "cleanup": {
+      "scratch_retired": {
+        "state": "retired",
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plan-t03-analysis-20261104\\scratch",
+        "scratch_bytes": 1466552,
+        "members": [
+          {
+            "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/scratch/analysis.txt",
+            "bytes": 9696,
+            "sha256": "40d48daa2dc65377901621e8fdf0dfd58cca51118812442b0dcd3d715ca12ed8",
+            "archive_member": "contents/40d48daa2dc65377901621e8fdf0dfd58cca51118812442b0dcd3d715ca12ed8"
+          },
+          {
+            "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/scratch/profiles.txt",
+            "bytes": 723580,
+            "sha256": "2c87bb77fd6fe3a58485f0e7665fa6f7337ca53e6b7d4fe2a87c97e3de9c7a89",
+            "archive_member": "contents/2c87bb77fd6fe3a58485f0e7665fa6f7337ca53e6b7d4fe2a87c97e3de9c7a89"
+          },
+          {
+            "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/scratch/linux/analysis.txt",
+            "bytes": 9696,
+            "sha256": "40d48daa2dc65377901621e8fdf0dfd58cca51118812442b0dcd3d715ca12ed8",
+            "archive_member": "contents/40d48daa2dc65377901621e8fdf0dfd58cca51118812442b0dcd3d715ca12ed8"
+          },
+          {
+            "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/scratch/linux/profiles.txt",
+            "bytes": 723580,
+            "sha256": "2c87bb77fd6fe3a58485f0e7665fa6f7337ca53e6b7d4fe2a87c97e3de9c7a89",
+            "archive_member": "contents/2c87bb77fd6fe3a58485f0e7665fa6f7337ca53e6b7d4fe2a87c97e3de9c7a89"
+          }
+        ],
+        "links": [],
+        "archive": {
+          "path": ".tmp/manual-workflow-verification/plan-t03-analysis-20261104/scratch-diagnostics.zip",
+          "bytes": 99529,
+          "sha256": "b753f20bed2d408c2b8062ab33d16f53e68882ef38e828d7f194c33a5c05d125"
+        },
+        "unique_payloads": 2,
+        "duplicate_payload_bytes_avoided": 733276,
+        "lossless_member_hashes_verified": true,
+        "compiler_caches_archived": false
+      },
+      "final_sdk_cache_bytes_removed": 28344125,
+      "previous_sdk_cache_bytes_removed": 28345127,
+      "area_followup_scratch_removed_bytes": 0,
+      "caches_runtimes_sdks_archived": false
+    },
+    "source_review_before_more_verification": "Final extra check strengthened captured area coverage with a non-unit effective scale; only the two affected Python cases reran."
+  },
+  "prior_commit_ci_intake": {
+    "run": 41856511200,
+    "commit": "9a01b4d1c1845d849b654382ecfd149fe5270b92",
+    "headless_windows_linux": "passed",
+    "macos": "cancelled/unqualified",
+    "complete_linux_python": "original-reference readiness unavailable",
+    "complete_windows_python_3_10": "original-reference readiness unavailable; history/appearance/drawing/playback stages pass",
+    "evidence": {
+      "path": "C:/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/plan-t03-analysis-20261104/ci-intake/receipt.json",
+      "bytes": 2471,
+      "sha256": "3dda469084a78dad3c5ea8bfabbc9c766d2d50282a173cccfca21fc231cfb412"
+    },
+    "scope": "Prior commit, not T03 remote qualification. Windows3.12 was still running at observation."
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/plan-t03-before-20261104.json",
+    "after": ".tmp/manual-workflow-verification/plan-t03-final-storage-20261104.json",
+    "known_bytes": 8485109186,
+    "unknown_subtrees": 214,
+    "full_budget_verified": false,
+    "scope": "Normalized complete owned project/output/dependency/runtime/Linux roots; denied subtrees are unknown, not zero. Snapshot predates these final small storage fields."
+  }
+}

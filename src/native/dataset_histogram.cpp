@@ -2,6 +2,7 @@
 #include "regional_geometry.hpp"
 #include <imagejxx/target_histogram.hpp>
 #include "dataset_histogram_internal.hpp"
+#include "target_mask_resources.hpp"
 #include <imagejxx/operations.hpp>
 
 #include "kernel_control.hpp"
@@ -426,19 +427,8 @@ DatasetHistogramResult accumulate_dataset_histogram_stages(
   return accumulate_histogram(source, request, limits, control, false);
 }
 } // namespace detail
-namespace {
-bool histogram_roi_matches(const ResolvedTarget &target,const Roi &roi) {
-  const std::array<std::optional<int>,3> fixed{roi.t,roi.c,roi.z};
-  if(target.scope()==TargetScope::Ranges) {
-    for(int a=0;a<3;++a)if(fixed[a]){const auto &r=target.ranges()[a];const auto v=*fixed[a];if(v<r.start || v>=*r.stop || (v-r.start)%r.step)return false;}
-    return true;
-  }
-  for(auto p:target.explicit_positions())if((!roi.t||*roi.t==p.t)&&(!roi.c||*roi.c==p.c)&&(!roi.z||*roi.z==p.z))return true;
-  return false;
-}
-}
-TargetHistogramEstimate estimate_target_histogram(const ResolvedTarget &target,
-    const TargetHistogramOptions &options,const DatasetHistogramLimits &limits) {
+TargetHistogramEstimate detail::estimate_target_histogram_resources(const ResolvedTarget &target,
+    const TargetHistogramOptions &options,const DatasetHistogramLimits &limits,bool raster_membership) {
   if(target.execution_mode()!=ExecutionMode::Planes || target.destination()!=OutputDestination::InPlace)
     invalid("Target histogram requires a read-only plane target with in-place destination");
   const auto &data=target.source().data();const auto shape=data.dataset.shape();
@@ -448,8 +438,8 @@ TargetHistogramEstimate estimate_target_histogram(const ResolvedTarget &target,
   out.total_pixels=multiply(out.plane_pixels,out.plane_count);
   if(out.total_pixels>limits.max_pixels)invalid("Target histogram exceeds its total target pixel limit");
   out.plane_bytes=base.estimate.plane_bytes;out.histogram_bytes=base.estimate.histogram_bytes;
-  const bool positioned=target.roi_policy()==RoiPolicy::PositionedRois;
-  const bool active=target.roi_policy()==RoiPolicy::ActiveSelection && bool(data.selection);
+  const bool positioned=raster_membership && target.roi_policy()==RoiPolicy::PositionedRois;
+  const bool active=raster_membership && target.roi_policy()==RoiPolicy::ActiveSelection && bool(data.selection);
   out.mask_bytes=multiply(out.plane_bytes,positioned?2:active?1:0);
   auto bytes=add(base.estimate.working_bytes,out.mask_bytes);within(bytes,limits);
   std::size_t scratch=0;
@@ -462,7 +452,11 @@ TargetHistogramEstimate estimate_target_histogram(const ResolvedTarget &target,
     within(add(bytes,add(out.geometry_bytes,scratch)),limits);
   };
   if(active)area(*data.selection);
-  if(positioned)for(const auto &roi:data.rois)if(histogram_roi_matches(target,roi))area(roi.selection);
+  detail::MaskTargetWork work;
+  if(positioned)for(const auto &roi:data.rois) {
+    work.poll();
+    if(detail::mask_roi_consumed(target,roi,false,work))area(roi.selection);
+  }
   out.geometry_bytes=add(out.geometry_bytes,scratch);bytes=add(bytes,out.geometry_bytes);
   // Fixed map/value holders plus compact range records. Explicit position
   // arrays have bounded nested metadata/temporary growth and a target copy.
@@ -471,6 +465,10 @@ TargetHistogramEstimate estimate_target_histogram(const ResolvedTarget &target,
   bytes=add(bytes,out.record_bytes);
   bytes=add(bytes,sizeof(TargetHistogramResult)+sizeof(ResolvedTarget)+sizeof(TargetHistogramOptions));
   within(bytes,limits);out.working_bytes=bytes;return out;
+}
+TargetHistogramEstimate estimate_target_histogram(const ResolvedTarget &target,
+    const TargetHistogramOptions &options,const DatasetHistogramLimits &limits) {
+  return detail::without_execution_callbacks([&]{return detail::estimate_target_histogram_resources(target,options,limits,true);});
 }
 TargetHistogramResult accumulate_target_histogram(const ResolvedTarget &requested,
     const TargetHistogramOptions &requested_options,const DatasetHistogramLimits &limits,

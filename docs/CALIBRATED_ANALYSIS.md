@@ -5,7 +5,10 @@ ImageJ-compatible scalar statistics and straight-line profile values. They are
 distinct from the existing raw `statistics` and configurable `line_profile`
 functions. Native numerical kernels are scoped verified against77 original cases
 on both installed C++ SDKs and83 Windows Python cases. Live editor measurement,
-histogram, threshold and plot adoption remains open.
+histogram, threshold and plot adoption remains open. The additive
+[captured target preparation](TARGET_ANALYSIS.md) now supplies metadata-only
+admission, frozen C/Z/T/ROI/effective values, retained results and physical profile
+axes; it does not publish UI state or reinterpret existing records.
 [Evidence](parity/reviews/G034-calibrated-analysis-kernels-progress001.json). [PLAN](PLAN.md)
 owns current verification status and counts.
 

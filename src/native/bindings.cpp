@@ -1,6 +1,7 @@
 #include "imagejxx/image.hpp"
 #include <imagejxx/stack_projection.hpp>
 #include <imagejxx/calibrated_analysis.hpp>
+#include "binding_calibrated_analysis.hpp"
 #include <imagejxx/auto_threshold.hpp>
 #include <imagejxx/binary.hpp>
 #include <imagejxx/conversion.hpp>
@@ -70,6 +71,7 @@ void bind_dataset_histogram(py::module_& module);
 void bind_auto_contrast(py::module_& module);
 void bind_contrast_apply(py::module_& module);
 void bind_session(py::module_& module);
+void bind_target_analysis(py::module_& module);
 namespace {
 int dimension(const py::array& a, int axis) {
     auto n = a.shape(axis);
@@ -292,6 +294,7 @@ PYBIND11_MODULE(_native, m) {
     bind_saved_roi_geometry(m);
     bind_application(m);
     bind_session(m);
+    bind_target_analysis(m);
     m.doc() = "C++17 imagejxx processing kernels";
     m.attr("__version__") = "0.2.0";
     m.def("convert_image", [](const py::array& a, const std::string& dtype, ConversionOptions options) {
@@ -484,13 +487,7 @@ PYBIND11_MODULE(_native, m) {
         auto image=read_image(a);auto selection=read_optional(mask);
         const auto frozen=spatial;const auto calibration=density;
         auto s=[&]{py::gil_scoped_release release;return imagej_calibrated_statistics(image,frozen,calibration,selection.get(),cap);}();
-        py::dict result;
-        result["pixel_count"]=s.pixel_count;result["area"]=s.area;result["mean"]=s.mean;result["raw_mean"]=s.raw_mean;
-        result["stddev"]=s.stddev;result["minimum"]=s.minimum;result["maximum"]=s.maximum;result["median"]=s.median;
-        result["mode_index"]=s.mode_index;result["mode_value"]=s.mode_value;result["integrated_density"]=s.integrated_density;
-        py::array_t<std::uint64_t> h(s.histogram.size()),h16(s.histogram16.size());
-        std::copy(s.histogram.begin(),s.histogram.end(),h.mutable_data());std::copy(s.histogram16.begin(),s.histogram16.end(),h16.mutable_data());
-        result["histogram"]=std::move(h);result["histogram16"]=std::move(h16);return result;
+        return bindings::calibrated_statistics_python(s);
     },py::arg("image"),py::arg("spatial"),py::arg("density"),py::arg("mask")=py::none(),py::arg("max_working_bytes")=128ULL*1024*1024);
     m.def("imagej_calibrated_line_profile", [](const py::array& a,const ImageJIntensityCalibration& density,
         double x1,double y1,double x2,double y2,bool interpolate,std::size_t cap) {

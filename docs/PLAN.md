@@ -40,19 +40,23 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | --- | --- | --- |
 | Axis/projection and Gaussian routes | Scoped integration verified in both Windows ImGui hosts; published base includes 8941468. | Preserve the working paths; audit remaining options/consumers. |
 | Canvas/XYZ geometry | Effective spatial input integrated and scoped verified in both hosts. | Finish remaining view/fit/source variants through T07/T11. |
-| Calibrated analysis kernels | Implemented; recorded verification has 77 original numerical cases on both installed SDKs and 83 Windows Python cases. Published as 1d43ea8; changed Windows CI consumer passes. | T00 tracks remote CI/reference availability; T03/T04 finish admission and UI integration. |
+| Calibrated analysis kernels | Implemented; recorded verification has 77 original numerical cases on both installed SDKs and 83 Windows Python cases. Published as 1d43ea8; changed Windows CI consumer passes. | T00 tracks remote CI/reference availability; T03 provides admission, T04 owns UI integration. |
+| Captured analysis preparation | T03 implemented and scoped verified: 625 unique Windows Python cases ultimately pass (39 new); four native controls and six installed SDK clients per platform on Windows/Linux. | T04 integrates actual UI/jobs/settings/replay; no full-family or UI completion claim. |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | 2026-11-04 known total 8,452,279,019 bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Last T03 inventory: 8,485,109,186 known bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Near-term queue
 
-1. **T00 — Publication and CI follow-through.** Packet published as `1d43ea8`.
-   The added installed Windows SDK consumer passed all 77 original cases with
-   its expected archive. [Remote run](https://github.com/bipxx/imagejxx/actions/runs/41854450974)
-   is active; Linux Python preflight reports six unavailable original inputs.
-   Recover/configure their exact pinned bytes where available; preserve unknown
-   availability and expected hashes. Other ready work continues independently.
+1. **T00 — Publication and CI follow-through.** Published numerical/ingress
+   packets precede T03. [Prior-commit run](https://github.com/bipxx/imagejxx/actions/runs/41856511200)
+   passes complete headless C++/installed SDK on Windows and Linux; macOS jobs
+   are cancelled. Complete Linux Python and Windows Python3.10 qualification stop at the
+   original-reference readiness gate. Six exact required inputs remain missing
+   in the recorded readiness checks. Reuse earlier file/Git searches; investigate
+   unsearched archive/Linux/external locations only where recovery is plausible.
+   Preserve expected hashes and report unavailable evidence. Follow T03 remote
+   checks after publication; independent product work continues.
 2. **T01 — Delivered for shared image/stack ingress.** Direct NumPy conversion
    now fills the owned native buffer, preserving dtype/byte order, strides,
    shape, finite rejection and lifetime at GIL release. Installed Windows
@@ -62,17 +66,35 @@ preservation and stale-result/resource guarantees stay strict where applicable.
    and median from 172.894 to 124.750 ms. Native vectors/RSS are outside tracing.
    [Evidence](parity/reviews/T01-numpy-ingress-20261104.json). No general speed or
    full-platform claim; other binding modules retain their separate contracts.
-3. **T03 — Prepare captured analysis.** Use existing ResolvedTarget and native
-   analysis kernels. Admit plane acquisition, ROI/raster, histogram/lookup,
-   median/profile, record and simultaneous result/plot storage from metadata
-   before provider reads/callbacks. Freeze C/Z/T/ROI and effective values once.
-   Check zero-read cap refusal, cancellation, source changes and stale adoption.
-4. **T04 — Integrate the actual analysis UI.** Adopt through existing jobs and
-   cache owners in both hosts. Finish measurements, profile physical axes and
-   configured sampling, histograms and calibrated threshold units. Keep raw bins
-   distinct from calibrated summaries; handle non-finite values deliberately.
-   Validate local/global/bypass behavior, selection/plane changes, saved plots,
-   close/cancel, persistence and replay without dummy document edits.
+3. **T03 — Delivered native preparation.** Metadata-only sampling/mask/ROI/
+   record admission plus frozen effective calibration, one decoded lookup,
+   median/profile scratch, all retained rows and simultaneous plot allowance.
+   Serial finite-scalar statistics/thin-profile execution preserves C/Z/T/ROI,
+   physical affine axes, cancellation and source/history. Owner adoption still
+   validates the captured target. [Contract](TARGET_ANALYSIS.md) and
+   [evidence](parity/reviews/T03-target-analysis-20261104.json). Current numerical
+   mode limits remain explicit requirements for their owning follow-on work.
+4. **T04a — Actual measurement/profile UI and ownership.** This is the next
+   executable product task. Inspect `Document::measure`, Window measure/ROI/
+   profile actions and live/saved plot owners before editing. Reuse T03 and
+   existing jobs/resource leases; capture source, options, selection, C/Z/T and
+   calibration once. Implement consumed area/length/angle, measurement columns,
+   precision/units and configured profile sampling, including required native
+   variants before adopting them. Validate stale queued/ready results, source/
+   selection/plane/global/bypass changes, close/cancel, independent saved plots,
+   persistence and strict replay/rebind. Use actual inputs in both ImGui hosts;
+   no dummy document edit or second controller. Complete owning options and
+   independent geometric/numeric references before closing this task.
+5. **T04b — Histogram/threshold calibrated consumers.** Reuse existing target
+   configuration, histogram jobs and threshold transient preview/Apply. Keep
+   processor bins raw while calibrated summaries/labels and threshold units are
+   explicit. Define required non-finite-source policies before wiring unsupported
+   storage into T03. Freeze effective values, preserve retained-result resource
+   leases, stale guards and legacy record meaning; consume settings/defaults and
+   finish Save/Open/replay/rebind/error paths in both hosts. Test scaled/reversed/
+   non-finite density boundaries, source/ROI/plane/context changes and cancelled
+   adoption without metadata/history mutation. This follows T04a ownership work
+   and may reuse it; neither subtask closes unrelated analysis variants.
 
 T02 runs alongside a useful delivery when it removes demonstrated overhead; it
 must not become a prerequisite for all feature work. Prepare detailed specs only
@@ -91,7 +113,7 @@ whole subsystems. Dependencies block their consumers, not independent work.
 | T00 Packet closeout | Current numerical APIs, Python bindings and CI registration published coherently. | Changed CI consumer verified; source/product identities and pending limitations recorded. |
 | T01 Python conversion | Delivered in shared image/stack ingress (G089); other module ingress remains separately scoped. | Installed Windows: 2,328 cases ultimately pass, including 168 new cases; measured allocation/time and matching outputs. See linked receipt above. |
 | T02 Verification/build efficiency | Reuse checked-in CI/ownership/retention helpers; express cases/retries as data. Consolidate new work onto a few runners. | Existing failure/ownership guarantees preserved; fewer new executable harnesses. Batch shared-header/FP-list edits; isolate build dependencies only when measured cost justifies it. |
-| T03 Analysis preparation | Metadata-only admission and frozen read-only target/result contracts (G066/G068/G069/G070). | No provider reads/callbacks on rejection; retained resources/cancellation/stale source tests. |
+| T03 Analysis preparation | Delivered finite-scalar statistics/thin-profile preparation and frozen target/result contracts (G066/G068/G069/G070). | 625 Windows Python cases ultimately pass; four native and six installed SDK clients per Windows/Linux platform. UI/adoption and other numerical modes remain T04/T09. |
 | T04 Analysis integration | Measurements, profile/histogram/threshold UI and live/saved result ownership (G009/G038/G047/G049/G066/G068/G069/G070/G071). | Original Analyzer/ProfilePlot semantics, both hosts, unit/density/axis/configuration variants and state lifecycle. |
 | T05 Calibration completion | Remaining time/playback, calibrated distance, generic command and view consumers; Global/bypass controls; global-state session migration (G037/G068 and affected consumers). | Consumer audit complete before controls; legacy replay stays explicit; session Save/Open and context changes preserve local data/history. |
 | T06 Selections and ROI | Remaining tools, gestures, constraints, subpixel/numeric/style options, transformations/fits/conversions, manager C/Z/T operations, ROI/ZIP/clipboard/text/overlay variants (G013-G025; interchange with T10). | Native/API/shared UI options, original geometry/interchange references, undo/cancel and round trips. |
@@ -163,24 +185,31 @@ feature or block unrelated ready work.
 | Shared headers/Make flags fanout | T02 plus each source owner: batch coherent edits; consider isolation after measurement. | Recorded full Linux core 538 s vs 9 s successor; desktop 671 s vs 21 s successor are different workloads, not speed benchmarks. |
 | Repeated calibration queries per draw | T07 owner: capture once per draw and derive spacing from that value when correct. | Confirm repeated validation calls; measure frame cost before claiming a speed gain. |
 | Window hub responsibilities | T04/T06-T12 owners: extract cohesive controllers at touched seams. | No whole-file rewrite based only on its roughly 15,500-line size; preserve input/publication ownership. |
+| Late test/API assumptions and early SDK scratch retirement | Fixed process in AGENTS.md: inspect signatures/read-only bindings/exception types and review allocations before installed-client checks; retire scratch after final review. | T03 diagnostics preserve the avoided assumptions and repeated configuration cost. No new audit framework. |
 | Repeated live planning history | This task: three concise current documents, exact historical ledgers, compatible links. | Future task closeout updates rows in place. |
 
 ## Latest task closeout
 
-2026-11-04 T01: direct image/stack conversion implemented and scoped verified;
-2,327/2,328 initial cases passed and the license-check subprocess passed its
-single retry with the existing dependency path. Initial failed log/XML and
-terminal process proof remain. One active cache/runtime reused; only `_native`
-rebuilt (36.9 s), native core archive unchanged. Existing benchmark, process and
-storage tools reused; no temporary executable verifier added. Necessary scratch
-was compressed/member-hash verified and 3,813 bytes retired. Known storage after
-T01 is 8,452,816,494 bytes; 214 denied subtrees still leave the full budget unknown.
+2026-11-04 T03: native preparation and Python interfaces implemented and scoped
+verified. 625 unique Python cases ultimately pass, including 39 new cases; four
+native controls and six installed SDK clients pass on each of Windows/Linux.
+Original 77-row analysis, 128 table profiles and 86 fit dtype cells remain
+unchanged. Actual UI/job adoption/settings/replay and macOS remain open.
 
-Waste decision: fix the measured full-size conversion copy now; retain necessary
-finite validation and current Image initialization contract. Defer other module
-conversion audits to touched seams rather than a speculative ownership rewrite.
-T00 publication is done; remote CI/reference availability remains open. T03 and
-T04 are the next product tasks. Detailed evidence is linked once above.
+Waste review reused admission, bounded metadata matching, execution scopes,
+numeric kernels, a shared Python formatter, existing carriers and active caches/
+runtimes/SDKs. One lookup is decoded per preparation; direct effective-record
+construction removes displaced local-text copying. Existing sampling estimates
+already conservatively charged that copy; no cap violation or speed/RSS claim.
+
+Retired both terminal SDK consumer trees, hash-verified/deduplicated necessary
+scratch captures and retained failed diagnostics/source identities. Initial
+signature/mutability/exception assumptions and premature SDK retirement caused
+avoidable retries; AGENTS.md now puts those checks before installed clients and
+cleanup. A final non-unit effective-area check reran only its two affected cases.
+[The receipt](parity/reviews/T03-target-analysis-20261104.json) owns exact evidence
+and cleanup counts. Next product tasks are T04a/T04b above; T00 recovery is
+independent. No original fingerprints or full-family status counters changed.
 
 ## Historical link compatibility
 

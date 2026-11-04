@@ -29,12 +29,14 @@ required/authorized or a concrete risk warrants it, not as an automatic ceremony
 
 ## Current analysis handoff
 
-The numerical module and original 77-row carrier are recorded verified. Next:
-metadata-only target admission with zero-read refusal, typed caller capture,
-existing analysis job/result adoption and actual UI/default/configuration paths.
-Validation adds missing physical-axis/Analyzer/consumer cases rather than
-re-running Java to regenerate unchanged expectations. Keep Global controls gated
-until relevant consumers agree. No dummy document edits for read-only results.
+The numerical module and original 77-row carrier remain verified. T03 now adds
+metadata-only target admission, frozen effective values and retained scalar
+statistics/profile results; see [the preparation contract](TARGET_ANALYSIS.md).
+Next: existing analysis job/result adoption and actual UI/default/configuration
+paths in both hosts. Preserve the capture guard, physical-axis tests, resource
+leases and independent saved plots. Reuse original numeric references. Keep
+Global controls gated until relevant consumers agree. No dummy document edits
+for read-only results.
 
 ## Task completion
 

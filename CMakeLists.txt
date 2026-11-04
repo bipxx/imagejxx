@@ -22,6 +22,7 @@ add_library(imagejxx_core STATIC
   src/native/segmentation.cpp src/native/analysis.cpp src/native/frequency.cpp src/native/binary.cpp src/native/conversion.cpp
   src/native/dataset.cpp src/native/dataset_projection.cpp src/native/dataset_projection_command.cpp src/native/imagej_projection_numeric.cpp src/native/imagej_dataset_projection.cpp src/native/imagej_intensity_calibration.cpp src/native/calibrated_analysis.cpp src/native/imagej_projection_document.cpp src/native/imagej_projection_command.cpp src/native/settings.cpp src/native/preferences.cpp src/native/document.cpp src/native/axis_remap.cpp src/native/axis_region_remap.cpp src/native/z_subset_command.cpp src/native/manual_threshold.cpp src/native/manual_threshold_command.cpp src/native/selection_edit.cpp src/native/selection_boolean.cpp src/native/selection_region_boolean.cpp src/native/selection_region_rotation.cpp src/native/roi_style.cpp src/native/application.cpp src/native/metadata.cpp src/native/session_metadata.cpp src/native/operations.cpp src/native/targets.cpp src/native/execution.cpp src/native/jobs.cpp src/native/kernel_control.cpp)
 add_library(imagejxx::core ALIAS imagejxx_core)
+target_sources(imagejxx_core PRIVATE src/native/target_analysis.cpp)
 set(IMAGEJXX_PRIVATE_ZLIB_SOURCES
   third_party/zlib/adler32.c third_party/zlib/compress.c
   third_party/zlib/crc32.c third_party/zlib/deflate.c
@@ -153,6 +154,7 @@ if(IMAGEJXX_BUILD_PYTHON)
   target_sources(_native PRIVATE src/native/auto_contrast_bindings.cpp src/native/contrast_apply_bindings.cpp)
   target_sources(_native PRIVATE src/native/shortcuts_bindings.cpp)
   target_sources(_native PRIVATE src/native/startup_bindings.cpp)
+  target_sources(_native PRIVATE src/native/target_analysis_bindings.cpp)
   target_link_libraries(_native PRIVATE imagejxx_core)
   target_include_directories(_native SYSTEM PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nlohmann_json/include)
@@ -876,6 +878,10 @@ if(BUILD_TESTING)
   add_test(NAME native_histogram_command COMMAND imagejxx_histogram_command_tests)
   set_tests_properties(native_histogram_command PROPERTIES TIMEOUT 30)
   add_executable(imagejxx_target_histogram_tests tests/native/test_target_histogram.cpp)
+  add_executable(imagejxx_target_analysis_tests tests/native/test_target_analysis.cpp)
+  target_link_libraries(imagejxx_target_analysis_tests PRIVATE imagejxx::core)
+  add_test(NAME native_target_analysis COMMAND imagejxx_target_analysis_tests)
+  set_tests_properties(native_target_analysis PROPERTIES TIMEOUT 30)
   target_link_libraries(imagejxx_target_histogram_tests PRIVATE imagejxx::core)
   add_test(NAME native_target_histogram COMMAND imagejxx_target_histogram_tests)
   set_tests_properties(native_target_histogram PROPERTIES TIMEOUT 30)

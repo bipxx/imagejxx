@@ -367,6 +367,11 @@ if(BUILD_TESTING)
 endif()
 
 # Original scalar-analysis matrix supplied by the SDK CI driver.
+if(BUILD_TESTING)
+  add_executable(imagejxx_target_analysis_example ../../tests/native/test_target_analysis.cpp)
+  target_link_libraries(imagejxx_target_analysis_example PRIVATE imagejxx::core)
+  add_test(NAME imagejxx_target_analysis_example COMMAND imagejxx_target_analysis_example)
+endif()
 if(BUILD_TESTING AND IMAGEJXX_SDK_ANALYSIS_CARRIER)
   add_executable(imagejxx_calibrated_analysis_example ../../tests/native/test_calibrated_analysis_sdk.cpp)
   target_link_libraries(imagejxx_calibrated_analysis_example PRIVATE imagejxx::core)

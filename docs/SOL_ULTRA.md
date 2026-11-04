@@ -7,19 +7,17 @@ Do not grow this file with packet histories or duplicate the roadmap.
 
 ## Resume card
 
-Read PLAN for the current states. Calibrated analysis and the plan were published
-as `1d43ea8`; the added Windows CI consumer passes 77 original cases. Full remote
-CI remains pending, with missing original-reference inputs reported by Linux
-Python preflight. T01 shared image/stack conversion is now implemented and scoped
-verified on installed Windows Python3.12; T03/T04 are next. Preserve unrelated
-changes. Do not infer running processes or agents from old receipts/role names.
+Read PLAN for current states. T01 shared ingress and T03 captured analysis
+preparation are delivered with scoped Windows/Linux evidence; UI integration is
+still open. Prior-commit headless Windows/Linux CI passes; full Python reference
+readiness and macOS qualification remain incomplete. Preserve unrelated source
+changes and do not infer live processes/agents from old receipts or role names.
 
 ## Near-term delivery order
 
-T00 remote CI/reference follow-through alongside T03 read-only analysis
-preparation and T04 actual analysis UI. T01 shared ingress is delivered. T02 removes demonstrated verification/build
-waste alongside a delivery. Use the complete T05-T15 horizon in PLAN for the rest.
-Expand only the next two executable tasks into detailed specifications.
+T04a measurement/profile UI ownership, then T04b histogram/threshold consumers.
+T00 remote CI/reference recovery and T02 demonstrated build/verification waste
+run alongside ready work. See PLAN for detailed next-two specs and T05-T15 scope.
 
 ## Bounded packet format and operating loop
 
