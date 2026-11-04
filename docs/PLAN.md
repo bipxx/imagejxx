@@ -384,6 +384,8 @@ old fixture meanings. Actual row input initially targeted an unexposed lower
 row; the corrected producer uses the child clip rectangle and verifies physical
 scroll progress before clicking. Failed diagnostics remain retained. Reuse green
 core/SDK evidence for frontend-only reveal/export corrections.
+Live-guide writes now preserve repository LF bytes to avoid Windows newline
+churn in review; documentation checks require no product rebuild.
 Final domain review also rejects selected-row payloads on unsupported RGB storage
 and disables the button there; a focused refusal/control check prevents silent
 legacy measure-all fallback. Reuse installed-core results for this frontend fix.
