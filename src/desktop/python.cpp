@@ -345,6 +345,9 @@ PYBIND11_MODULE(_desktop, m) {
              return nativeWorkflowUiCase(window, "imgui_python", directory)
                  .dump();
            })
+      .def("_point_roi_interchange_ui_case",[](Window& window,const std::string& directory) {
+        return pointRoiInterchangeUiCase(window,"imgui_python",directory).dump();
+      },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
       .def("_bare_edit_ui_case",
            [](Window &window, const std::string &directory) {
              py::gil_scoped_release release;

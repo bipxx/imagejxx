@@ -194,9 +194,9 @@ still require the owning explicit interchange mapping.
 [Scoped annotation evidence](parity/reviews/T04a2-point-annotations-20261104.json)
 covers 70 original cases/196 rows, installed clients, native session attribute
 roundtrip and actual Measure/CSV Counter/Count output in both Windows hosts.
-The M2b.2a increment below adds editing and vertex alignment. Automatic importer/
-exporter mapping, XZ/YZ/rebind policy and remaining point-tool configuration stay
-M2b.2b/T06/T10. No complete point-tool UI or analysis-session replay claim follows.
+M2b.2a below adds editing/vertex alignment; the explicit XY interchange
+increment below adds promotion/projection consumers. XZ/YZ policy and remaining
+point-tool configuration stay M2b.2b/T06/T10. No complete point-tool UI or analysis-session replay claim follows.
 
 For point/multipoint selections, **Edit > Selection > Geometry and properties**
 opens the shared native properties panel in both Windows hosts, including
@@ -233,8 +233,50 @@ legacy-area properties remain refused.
 [Scoped editing evidence](parity/reviews/T04a2-point-editing-20261104.json) covers
 701 unique focused Windows product cases and 23 tool checks, including both
 actual hosts; two native controls and six installed SDK clients pass on each of
-Windows/Linux. UI qualification here is Windows only. Automatic ROI/ZIP semantic
-mapping, full point-tool configuration and recorder/replay remain separate.
+Windows/Linux. UI qualification here is Windows only. Full point-tool
+configuration and analysis recorder/replay remain separate.
+
+### Explicit XY point ROI interchange
+
+`annotated_imagej_point_mapping(mapped, limits=...)` promotes raw packed point
+counters into the existing typed selection attribute as an explicit native
+replacement. It decodes indices using `mapped.source_mapping.extent` and then
+validates positions against the target extent. It never decodes original words
+using a rebound target shape. Already annotated native rows are validated and
+preserved, including edits; changed unannotated vertices refuse an inferred
+association with old source counters. Empty raw counter sidecars stay untagged.
+Malformed/unsupported counters or positions refuse while original raw bytes stay
+available through the unchanged byte codec/source record.
+
+`imagej_roi_annotation_projection(annotation, extent, metadata=None, limits=...)`
+constructs a standard carrier from the current native row. Its typed point
+annotations replace stale template counters, even when retaining source metadata.
+It projects name/geometry/parent positions/style and clears legacy position;
+other wire-only metadata remains caller chosen. Opaque native fields stay in the
+native row/envelope. Fresh metadata is the default. An untagged row keeps the
+chosen template's raw counters; choose fresh metadata or reset retained fields
+when those raw counters must also be cleared. This explicit projection differs
+from the older rounded-only helper, which preserves opaque fields for subsequent
+byte-codec refusal. Neither existing raw codecs nor envelope decoder meanings
+change. Existing native-envelope V2 and source-archive V4 already retain this
+explicit replacement, so no new serialization version is introduced.
+
+In **File > Import ROIs**, choose the standard point ROI's XY mapping and use
+**Use point counters and positions...**. Review the explicit replacement and
+confirm its destination before Apply. The import editor keeps annotations aligned
+when adding/removing vertices, displays the selected point's counter/position,
+and offers explicit clear before replacing geometry or changing to an unsupported
+plane. The ordinary and mixed ROI/ZIP exporters share the projection helper.
+The new physical workflow qualifies single-ROI import/promotion/vertex edit/
+retained-metadata export/reopen in both Windows hosts; API cases also cover ZIP
+and session roundtrips. Original source bytes remain independent provenance.
+
+[Scoped interchange evidence](parity/reviews/T04a2-point-interchange-20261104.json)
+covers 765 focused product cases and 23 tool checks; two native controls and six
+installed SDK clients per Windows/Linux platform pass. Required point-specific
+ZIP composition UI, imported-point transfer to active/stored ROI editing and
+measurement, non-XY scientific position policy, remaining point-tool options and
+broader persistence/replay remain open. XY proof does not qualify those paths.
 
 `measure_rois` still measures all rows with `{}`. An explicit nonempty
 `indices` array selects ordered unique rows; optional `document_id` and

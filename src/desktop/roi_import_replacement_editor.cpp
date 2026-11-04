@@ -5,6 +5,7 @@
 #include <charconv>
 #include <imagejxx/roi_style.hpp>
 #include <imagejxx/selection_edit.hpp>
+#include <imagejxx/point_annotations.hpp>
 #include <imgui_internal.h>
 #include <imgui_stdlib.h>
 namespace imagejxx::desktop {
@@ -63,6 +64,8 @@ Selection RoiImportReplacementEditor::vertex_geometry() const {
 }
 void RoiImportReplacementEditor::change_geometry(int kind,
                                                  DatasetShape target) {
+  if(base_.selection.attributes.count(point_annotations_attribute))
+    throw std::invalid_argument("Clear point annotations before replacing the geometry");
   const auto dims = planar_annotation_geometry(target, Plane(plane_));
   const double u = dims.width, v = dims.height;
   const char *names[]{"rectangle", "ellipse",  "line",      "point",
@@ -136,6 +139,11 @@ RoiImportReplacementEditor::replacement(DatasetShape target) const {
          {"fill_color", fill_},
          {"stroke_width", parse_geometry_number(stroke_width_)}});
   row.validate(target);
+  if(row.selection.attributes.count(point_annotations_attribute)) {
+    if(row.plane!=Plane::XY)
+      throw std::invalid_argument("Scientific point annotations require XY; clear them before changing plane");
+    validate_point_annotations(point_annotations(row.selection,65536),target);
+  }
   (void)encode_planar_annotations(target, {row});
   return {target, std::move(row)};
 }
@@ -300,7 +308,9 @@ int RoiImportReplacementEditor::draw(
       try {
         if (point_dirty_)
           base_.selection = vertex_geometry();
-        base_.selection.points.push_back(base_.selection.points.back());
+        const auto dims=planar_annotation_geometry(target,Plane(plane_));
+        base_.selection=SelectionEditor(base_.selection,dims.width,dims.height)
+            .inserted_vertex(base_.selection.points.size(),base_.selection.points.back(),SelectionEditLimits{});
         vertex_ = int(base_.selection.points.size());
         load_vertex();
       } catch (const std::exception &e) {
@@ -314,17 +324,33 @@ int RoiImportReplacementEditor::draw(
         variable && base_.selection.points.size() > minimum && vertex_ > 0 &&
         std::size_t(vertex_) <= base_.selection.points.size();
     ImGui::BeginDisabled(!removable);
-    if (ImGui::Button("Remove vertex")) {
-      base_.selection.points.erase(base_.selection.points.begin() + vertex_ -
-                                   1);
+    if (ImGui::Button("Remove vertex"))try {
+      const auto dims=planar_annotation_geometry(target,Plane(plane_));
+      base_.selection=SelectionEditor(base_.selection,dims.width,dims.height)
+          .removed_vertex(std::size_t(vertex_-1),SelectionEditLimits{});
       vertex_ = std::min(vertex_, int(base_.selection.points.size()));
       load_vertex();
-    }
+    }catch(const std::exception& error){error_=error.what();}
     observe("remove_vertex", removable);
     ImGui::EndDisabled();
   } else
     ImGui::TextWrapped("Mask size is retained. Load a compatible image "
                        "annotation or choose another geometry.");
+  if(base_.selection.attributes.count(point_annotations_attribute)) {
+    try {
+      const auto entries=point_annotations(base_.selection,65536);
+      validate_point_annotations(entries,target);
+      if(vertex_>0 && std::size_t(vertex_)<=entries.size()) {
+        const auto& point=entries[std::size_t(vertex_-1)];
+        if(point.position)ImGui::Text("Counter %u; T %d C %d Z %d",point.counter,
+            point.position->t+1,point.position->c+1,point.position->z+1);
+        else ImGui::Text("Counter %u; unbound position",point.counter);
+      }
+    }catch(const std::exception& error){ImGui::TextWrapped("%s",error.what());}
+    if(ImGui::Button("Clear point annotations"))
+      base_.selection=without_point_annotations(base_.selection);
+    observe("clear_point_annotations");
+  }
   style_dirty_ |= text("Stroke (#AARRGGBB/none)", stroke_, "stroke", 130);
   ImGui::SameLine();
   style_dirty_ |= text("Fill (#AARRGGBB/none)", fill_, "fill", 130);

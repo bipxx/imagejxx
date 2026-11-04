@@ -6,7 +6,7 @@ std::string export_error(const std::exception &);
 bool same_source(const DocumentSnapshot &, const DocumentSnapshot &);
 std::filesystem::path destination(const std::string &, bool zip);
 ImageJRoi fill_geometric_projection(ImageJRoi, const PlanarAnnotation &,
-                                    bool reset);
+                                    bool reset, DatasetShape, const ImageJRoiLimits &);
 ImageJAnnotationProjection display_projection(
     const PlanarDisplayAnnotation &, std::optional<ImageJAnnotationProjection>,
     bool reset, bool regenerate_image, const ImageJDisplayProjectionOptions &);

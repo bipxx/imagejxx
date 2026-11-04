@@ -254,6 +254,8 @@ from ._native import (
     map_imagej_roi as map_imagej_roi,
     imagej_roi_standard_projection as imagej_roi_standard_projection,
     editable_imagej_roi_mapping as editable_imagej_roi_mapping,
+    annotated_imagej_point_mapping as annotated_imagej_point_mapping,
+    imagej_roi_annotation_projection as imagej_roi_annotation_projection,
     decode_imagej_roi_mapped as decode_imagej_roi_mapped,
     rebind_imagej_roi_mapping as rebind_imagej_roi_mapping,
     validate_imagej_roi_mapping as validate_imagej_roi_mapping,

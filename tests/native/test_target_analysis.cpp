@@ -3,6 +3,7 @@
 #include <imagejxx/application.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/selection_edit.hpp>
+#include <imagejxx/imagej_roi_projection.hpp>
 #include <cmath>
 #include <iostream>
 using namespace imagejxx;
@@ -137,6 +138,17 @@ int main(){
     check(removed==annotated && point_editor.selection()==annotated);
     SelectionEditLimits edit_limits;edit_limits.max_working_bytes=8192;
     refuses<std::length_error>([&]{point_editor.inserted_vertex(1,{2,1},edit_limits);});
+    ImageJRoi raw;raw.roi={"points",without_point_annotations(annotated),{},{},0,{}};
+    raw.point_counters=words;
+    ImageJRoiPlaneMapping mapping;mapping.extent=source->shape();
+    const auto bare=map_imagej_roi(raw,mapping);
+    check(!bare.annotation().selection.attributes.count(point_annotations_attribute));
+    const auto promoted=annotated_imagej_point_mapping(bare);
+    check(promoted.annotation().selection==annotated);
+    auto projected=imagej_roi_annotation_projection(promoted.annotation(),source->shape());
+    check(projected.point_counters==words && !projected.roi.selection.attributes.count(point_annotations_attribute));
+    const auto restored=decode_imagej_roi_envelope(encode_imagej_roi_native_envelope(promoted,projected));
+    check(restored.annotation()==promoted.annotation() && restored.source_record().point_counters==words);
   }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
 }

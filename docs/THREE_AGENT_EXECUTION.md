@@ -40,8 +40,9 @@ scoped integrated in both Windows hosts, with installed Windows/Linux clients.
 M2a expanded point rows and selected manager are also scoped integrated.
 M2b.1 typed annotation core, explicit adapters and Measure/CSV output are scoped
 verified. M2b.2a point properties/vertex alignment is scoped integrated in both
-Windows hosts with affected native/installed Windows/Linux checks. Next M2b.2b
-interchange/point-tool configuration, then M2b.3 manager variants,
+Windows hosts with affected native/installed Windows/Linux checks. M2b.2b now
+adds scoped explicit XY point interchange; finish remaining
+ZIP/editor/non-XY/configuration consumers, then M2b.3 manager variants,
 M3 area/shape/options and M4 reconciliation;
 then T04a.3 persistence/replay. No full measurement/platform completion claim.
 Use PLAN for concrete exits and the per-task waste decision/revisit trigger.

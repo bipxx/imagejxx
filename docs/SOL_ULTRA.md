@@ -23,8 +23,8 @@ M2 points/manager variants, M3 area/shape/options and M4 reconciliation. M1 is
 scoped integrated in both Windows hosts with original/native/installed checks;
 M2a point rows/selected manager and M2b.1 annotation core/Measure output are
 scoped verified. M2b.2a point properties/vertex alignment now works in both
-Windows hosts, with scoped native/installed Windows/Linux checks. Next M2b.2b
-interchange/point-tool configuration, then M2b.3 manager variants. See PLAN for policy/platform limits.
+Windows hosts, with scoped native/installed Windows/Linux checks. M2b.2b now
+has explicit XY point import/projection/export integration; finish its remaining ZIP/editor/non-XY/configuration consumers, then M2b.3 manager variants. See PLAN for policy/platform limits.
 Then T04a.3 persistence/replay. Checkpoint details live only in PLAN.
 T04b histogram/threshold consumers can reuse the qualified ownership seam.
 See the current PLAN receipt for exact verification/platform limits.

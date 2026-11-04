@@ -1,0 +1,734 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-04",
+  "task": "T04a.2 M2b.2b explicit XY point ROI interchange increment",
+  "state": "verified_scoped",
+  "base_commit": "33ea48a7a2413bc6ca68ca9b300845397b702fde",
+  "aspects": {
+    "implemented": "Explicit source-extent point promotion and current-native-row standard projection; shared ordinary/mixed export consumer and aligned import-editor topology.",
+    "verified": "765 unique focused Windows product cases and 23 observation-tool checks pass; two native controls and six installed SDK clients on each Windows/Linux platform.",
+    "integrated": "Physical single-ROI import/promotion/vertex edit/add/retained-source-metadata export/reopen in both Windows ImGui hosts; affected legacy/mixed/bare/rounded UI consumers pass. API cases cover ZIP/session preservation.",
+    "release_ready": false
+  },
+  "contract": {
+    "apis": [
+      "annotated_imagej_point_mapping(mapped, limits)",
+      "imagej_roi_annotation_projection(annotation, extent, metadata=None, limits)"
+    ],
+    "position_rule": "Decode retained packed words against original source extent, then validate native positions against target; never decode against rebound target shape.",
+    "geometry_rule": "Changed unannotated vertices refuse inferred association; annotated edits validate/persist. Insertion adds counter0/unbound through existing SelectionEditor.",
+    "projection": "Typed native annotations replace stale template counters; opaque metadata remains native. Untagged rows keep explicitly chosen wire-only counters. Fresh/default Python metadata is None.",
+    "compatibility": "Existing raw codecs, map defaults and V1/V2/V3 envelope meanings unchanged. Existing explicit native replacement and V4 source archive suffice; no new serialization version or default mapping flag.",
+    "source_provenance": "Retain original raw bytes/mapping independently from edited native row; no automatic source-index/current-row association.",
+    "domain": "Scientific per-point positions are XY only; XZ/YZ refuse until a complete explicit representable policy is delivered."
+  },
+  "verification": {
+    "passing_unique_product_cases": 765,
+    "passing_unique_tool_cases": 23,
+    "new_api_cases": 25,
+    "new_physical_host_cases": 2,
+    "attempts": [
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-api002.xml",
+          "bytes": 4254,
+          "sha256": "6dd55b511c897e4b02171e52948a88a768677a4d8f72edc86173217c6077f3a9"
+        },
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-regression001.xml",
+          "bytes": 106495,
+          "sha256": "225f19fceab49f20b127b9c94da728b1566a42b0deda95c763b8f46b864f78f5"
+        },
+        "passed": 711,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-rounded-ui001.xml",
+          "bytes": 520,
+          "sha256": "10a6981387e2d84261b7e7504c66b8b2f9d3ba3ab8f65cc1372a8c05ded34783"
+        },
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-tools001.xml",
+          "bytes": 3862,
+          "sha256": "abd1339d1ff3cf4e5d03fbb473faee2f544d692317792e6731bbb4ef134166bc"
+        },
+        "passed": 23,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-ui-regression001.xml",
+          "bytes": 3839,
+          "sha256": "b9c484a428f76377cdfa17c07ff1f22bdfd64678d869a0a7bbd417236a22bd2f"
+        },
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-ui001.xml",
+          "bytes": 586,
+          "sha256": "b33bcd2d01d3ea930ded69607cd42a36b29aee41853f837e11d53118e23f0727"
+        },
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "startup_failure": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-api001.log",
+      "bytes": 592,
+      "sha256": "9e9087cd02fab90c9aa4d4ca5a2ba2b80b3bd8fac421a7e8740e19fb4a3b5492"
+    },
+    "process_receipts": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-app001.process.json",
+          "bytes": 2097,
+          "sha256": "ef3cd57f5b8dd554f1300995f41dbe693696ce0856e0bba51efbf461b152acdb"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-app002.process.json",
+          "bytes": 2098,
+          "sha256": "3e2f6d517eadf5c683c5494501fe23abee1fdd32e5c0c95541a4eac40a04d70f"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-app003.process.json",
+          "bytes": 2096,
+          "sha256": "d801eec9f31ba624319d7accad2fd8467aac93b6aa7cce7edb627897a16e2785"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-app004.process.json",
+          "bytes": 2096,
+          "sha256": "63c3a091eb314325e4092e960e3bf533e3370de43348a6a4c26335ac759933a5"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-desktop001.process.json",
+          "bytes": 2111,
+          "sha256": "cf741daf794bb4aafd1ba250a369549e3bcccd5c0f8ebad015c62a65d35eb247"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-desktop002.process.json",
+          "bytes": 2112,
+          "sha256": "02ef88fef501321d17b587acf8e9f66e08522ec1bd3f5375ee6833ebac9591b4"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-desktop003.process.json",
+          "bytes": 2111,
+          "sha256": "5f0546eb7d3a6308416febb755d67ff7e953ba1b6c208705a5dcec83f1f945ad"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-desktop004.process.json",
+          "bytes": 2109,
+          "sha256": "535f5aefbae14e04c7c22413cd4895ebc9918742df6325c7581e9ebaa74fd0c9"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-processing001.process.json",
+          "bytes": 2116,
+          "sha256": "9e2884c4feb7e72d7706c956ce284622ee4031580949901c3ed5ded25a34e7e7"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-processing002.process.json",
+          "bytes": 2118,
+          "sha256": "69c79a355d62f9f35e7eeb656d7c293e6f7178a64f02c66e0befffccc158f723"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/install-sdk001.process.json",
+          "bytes": 2103,
+          "sha256": "76954a2ddda96fd486d90426d107bb63d36a1f9b95f6f253f8ded48676f6131f"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/linux-build001.process.json",
+          "bytes": 1537,
+          "sha256": "1dc8cb6fca624dfeccb9833df2a4c8d5dfded92bf0fc9014fcc18d9d93bd3f95"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/linux-build002.process.json",
+          "bytes": 1541,
+          "sha256": "77140615870af0d2822d49e001dde94a4ba83983a8aa2e718f1af2a9e38eca09"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/linux-install-sdk001.process.json",
+          "bytes": 1603,
+          "sha256": "69a3913f6b5181e7814c45d994b48624d38ac3a78f01233501c01c311fcf02fe"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/linux-native-tests001.process.json",
+          "bytes": 1577,
+          "sha256": "79d7735f768bb39daba4346c38b5d00e751a72ce75b48a1719ac156f5d33643d"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/linux-sdk-build001.process.json",
+          "bytes": 1544,
+          "sha256": "d135840f77b0821c0839b4bec3b36e7e96adf16d902741f4f3c90b8da8d306f5"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/linux-sdk-configure001.process.json",
+          "bytes": 2060,
+          "sha256": "ba235eea56d1f0e0908b2169a84083ea4818d4de29a190ed158581ea45176fa8"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/linux-sdk-test001.process.json",
+          "bytes": 1573,
+          "sha256": "3d27db6c078f36b859526732f20497e5532e787e726acc3c3930be2d13a59910"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-api001.process.json",
+          "bytes": 2316,
+          "sha256": "33dbb93ee79d970768f1fadbf9930d54350ef486a74f93c3786826c7470f4eff"
+        },
+        "exit_code": 1,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-api002.process.json",
+          "bytes": 2301,
+          "sha256": "ed2a174ae54a1330285b094b6102b878e0e3192e7501c3778a0320f20410b396"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-regression001.process.json",
+          "bytes": 2828,
+          "sha256": "d3a86309827d6a8e3bfdad1886ef97929d81c276eff13673784de0403638c91f"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-rounded-ui001.process.json",
+          "bytes": 2342,
+          "sha256": "966049df3e7e08425dde9890e066cb61c750eede60591fea5cb606008c7410b7"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-tools001.process.json",
+          "bytes": 2291,
+          "sha256": "f7d4e3fa5ca05ad7af32bf492eae950d223a68010b9370690e98fcb03802df78"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-ui-regression001.process.json",
+          "bytes": 2467,
+          "sha256": "81b05b453f1503d2cf4ef568db851abd408d1bd797dcbc43fdde7f0ddded457e"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/python-ui001.process.json",
+          "bytes": 2297,
+          "sha256": "aee1fbf0090ab60e6466bf6cb17d90f5cbf521f14b873789dd00766650dd0b00"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/sdk-build001.process.json",
+          "bytes": 2032,
+          "sha256": "b0554ec8a41f1f7cc438aa0d6a36389f257fb6547990fed0fd185b2a0a799e13"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/sdk-configure001.process.json",
+          "bytes": 2539,
+          "sha256": "2effb064821baf18cf1dac6ed9f6ce4a5055c0c5074657f6ef1d16dd45a0ec6c"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/sdk-test001.process.json",
+          "bytes": 2055,
+          "sha256": "a548828333b65b5074367890acdda77adf17996f27d88496b916da0a4363b55d"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/windows-binding-build003.process.json",
+          "bytes": 2012,
+          "sha256": "d4f1a105464566ae40b85ee4fa72d744df600335abbb6872f79ba2d31830e130"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/windows-build001.process.json",
+          "bytes": 2915,
+          "sha256": "06beb4480ac757ae19f9baeb75aa24348056861ff4aa96921e030262534e8285"
+        },
+        "exit_code": 1,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/windows-build002.process.json",
+          "bytes": 2086,
+          "sha256": "994f69a12937c52c89eda097c9e2db6a9fcf27b8bfd834d19130f7d83745ffe4"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/windows-native-tests001.process.json",
+          "bytes": 2060,
+          "sha256": "174bd1d75d5a1757715d03262239068c69c0e617b67aa99141501233b21ba9c3"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/windows-probe-build004.process.json",
+          "bytes": 2033,
+          "sha256": "f4a0554ed199cabd72075adc997bda43dc62f0269330b68163cf87df0a229ea0"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/windows-probe-build005.process.json",
+          "bytes": 2878,
+          "sha256": "5fadd508fae78ffaea8dba727a4da455eb24a08c01e70d592ca56e97a2514f00"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/windows-probe-build006.process.json",
+          "bytes": 2870,
+          "sha256": "f74c38aa8714b48a876feac43c4ef7ce01f0d73dd92de627602ac2b32063ed74"
+        },
+        "exit_code": 0,
+        "terminal": true,
+        "cleanup_complete": true
+      }
+    ],
+    "native_controls_per_platform": {
+      "windows": 2,
+      "linux": 2
+    },
+    "sdk_clients_per_platform": {
+      "windows": 6,
+      "linux": 6
+    },
+    "unchanged_sdk_carriers": {
+      "scalar_analysis_rows": 77,
+      "table_profiles": 128,
+      "fit_dtype_cells": 86
+    },
+    "physical_cpp": {
+      "archive_member": "cpp-capture004/private/point-roi-interchange/legacy/capture/case.json",
+      "frames": 141,
+      "controls": [
+        "menu.File",
+        "menu.file.import_rois",
+        "path",
+        "load",
+        "plane",
+        "plane.1",
+        "promote_points",
+        "replacement.confirm",
+        "replacement.vertex_u",
+        "replacement.add_vertex",
+        "replacement.keep",
+        "validate",
+        "apply",
+        "menu.File",
+        "menu.file.export_roi",
+        "source",
+        "source.1",
+        "kind",
+        "kind.0",
+        "annotation",
+        "annotation.0",
+        "metadata",
+        "metadata.1",
+        "confirm",
+        "validate",
+        "path",
+        "export"
+      ],
+      "imported_words": [
+        2050,
+        0,
+        258,
+        0
+      ],
+      "outer_words": [
+        2050,
+        0,
+        258,
+        0
+      ],
+      "restored_words": [
+        2050,
+        0,
+        258,
+        0
+      ],
+      "original_retained": true,
+      "export_source_preserved": true,
+      "archive_version": 4,
+      "workflow_count": 2
+    },
+    "source_inputs": [
+      {
+        "path": "include/imagejxx/imagej_roi_projection.hpp",
+        "bytes": 2699,
+        "sha256": "5e941bba44d3dc5b38bcfbe04d41dcd5596e06cf1bb4749c7858ee093f6fe867"
+      },
+      {
+        "path": "scripts/ci_observations.py",
+        "bytes": 59665,
+        "sha256": "706c49299331b16b90e87e938a2a536b95e2ef9a18382dc4714a3c49e64efc05"
+      },
+      {
+        "path": "src/desktop/main.cpp",
+        "bytes": 64417,
+        "sha256": "b563c619ef7fa2f6b5356a8adf1321508b2705d71e33106f178122eae7d05a59"
+      },
+      {
+        "path": "src/desktop/python.cpp",
+        "bytes": 62388,
+        "sha256": "a6ee745818bbcdc63a198fc376e07b71b69467fe06d21028cf66b423bdc11259"
+      },
+      {
+        "path": "src/desktop/roi_bare_edit_ui_probe.cpp",
+        "bytes": 24960,
+        "sha256": "140fdef4c9a2f26af007380ee53ca8b52e907bb5e7bfd2405bad05597cd1999e"
+      },
+      {
+        "path": "src/desktop/roi_export_common.cpp",
+        "bytes": 6230,
+        "sha256": "d2987d13dcce38bc52d54e398bd82ffb3838c9836846f87b19c1b8b554f12120"
+      },
+      {
+        "path": "src/desktop/roi_export_common.hpp",
+        "bytes": 740,
+        "sha256": "41e499cb137a0440082725c5986e945cc54817998ecd8fca2854b7faef46685d"
+      },
+      {
+        "path": "src/desktop/roi_export_panel.cpp",
+        "bytes": 35643,
+        "sha256": "e3c9798ff16e7e216f496b1bc98b11ed68c7a8b68f29f73221273acf0cc2e28b"
+      },
+      {
+        "path": "src/desktop/roi_import_panel.cpp",
+        "bytes": 53905,
+        "sha256": "61b70b00a1afae5a9c1b909c9fceca3dd707e109db86a949d45808e1459f0994"
+      },
+      {
+        "path": "src/desktop/roi_import_replacement_editor.cpp",
+        "bytes": 17070,
+        "sha256": "0ce380f3b23b1f36e25b8ac303662d56ae4b6b20650e3c186b99954f3a5a6391"
+      },
+      {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1848,
+        "sha256": "4dc7000d292ecff9db245b2004a44de079805f9892cc4a04ea7540adcb575ee6"
+      },
+      {
+        "path": "src/desktop/roi_mixed_export_panel.cpp",
+        "bytes": 47304,
+        "sha256": "81f8c6daf8398d2943d9908cb7b4e54a5bbf309fde27930b5139bab460017be9"
+      },
+      {
+        "path": "src/desktop/roi_mixed_export_ui_probe.cpp",
+        "bytes": 21495,
+        "sha256": "8357bbb459f3a59afa64c3b176a97a8e674dbe4b2af848e2a63ec0e825af3466"
+      },
+      {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 81921,
+        "sha256": "ff4e8de1044434a52ee759747805e3c62aed4d0cd779a6c307ad2a8e463e4d87"
+      },
+      {
+        "path": "src/native/imagej_roi_bindings.cpp",
+        "bytes": 35171,
+        "sha256": "dbe9f40430b38d833fb847d59e81f0d1fea70a9f4c3c1dd6351157e99ecb19b1"
+      },
+      {
+        "path": "src/native/imagej_roi_mapping.cpp",
+        "bytes": 8859,
+        "sha256": "80629d95ffaf6a6c679b9f11128c1870862178f2c88fce3272beb3d81b97dbda"
+      },
+      {
+        "path": "tests/native/test_target_analysis.cpp",
+        "bytes": 12003,
+        "sha256": "ee122644776b65d4dcc8e66b3f41d8bffd4c40bca7e90cca9f154b163106f830"
+      },
+      {
+        "path": "tests/python/test_point_roi_interchange.py",
+        "bytes": 10413,
+        "sha256": "e0cd93ee278b2e07602de1a4d57c8453dc8602d311b150d411759ede3d5472c2"
+      }
+    ],
+    "products": [
+      {
+        "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+        "bytes": 20060672,
+        "sha256": "2f192da26860b1831b761066dfaf6aeed07d842a9e67204880d3b82216b12259"
+      },
+      {
+        "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+        "bytes": 59064098,
+        "sha256": "767a56d2b710edb9410b3c2425f164e14ffbb51b352c6383f6d3eb105c83568c"
+      },
+      {
+        "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "bytes": 8122368,
+        "sha256": "857a4517efb51c798a0c289004e53c4e4fb58ed3c6c1e65e278e02b9c3e936d2"
+      },
+      {
+        "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "bytes": 19968512,
+        "sha256": "c275ee376795787aef0482b4fe8c1b79d9a9c42c56255bbc6f969937ab8bee57"
+      },
+      {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+        "bytes": 20440888,
+        "sha256": "2662e89d6d7e339188476b9fb15f4da33d5a3c5e8b610a8f3c2a8384cfd6921e"
+      }
+    ]
+  },
+  "waste_review": {
+    "fixed": [
+      "Reuse existing explicit native replacements/envelope grammar instead of a new serializer.",
+      "Share ordinary/mixed native-row projection and existing aligned SelectionEditor insertion/deletion.",
+      "Preflight promotion before cloning a rebound row; no performance claim."
+    ],
+    "observed_retries": [
+      "Private helper signature missed a UI-probe caller; updated that caller without weakening checks.",
+      "Default Python ROI object was instantiated before type registration; defer construction through None while owning the value before GIL release.",
+      "Physical probe confused array/object bounds and missing visibility across import/mixed-export surfaces; use actual diagnostic shape and bounded physical scrolling."
+    ],
+    "disposition": "Failures retained; narrow retries only. Probe/binding-only corrections reused green unchanged native/SDK evidence. Next owner searches all callers and exact surface/registration contracts before extension.",
+    "deferred": {
+      "owner": "T02 and next UI verification owner",
+      "action": "Reduce duplicate private/reader capture payload retention in the maintained helper while preserving hashes/provenance; implement per-large-group assertions/retention/retirement before starting another.",
+      "revisit": "Next large UI group must show group-level storage/retirement receipts; recurrence is not solved by policy text alone."
+    }
+  },
+  "retention": {
+    "consumer_compiler_bytes_retired": 29327071,
+    "consumer_manifests": [
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/sdk-windows001-retirement.json",
+        "bytes": 119315,
+        "sha256": "07a128ce1dcdfcbc79848c32269bc69a3d47574289f272c0d1dca349519d5ea0"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/sdk-linux001-retirement.json",
+        "bytes": 52431,
+        "sha256": "13129f439bd3e7aa837d930ec0d61fa4a314a911a21f1d2922333f7ac08bd224"
+      }
+    ],
+    "scratch_bytes_retired": 628673482,
+    "archive": {
+      "bytes": 45807090,
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/captures.zip",
+      "sha256": "badd92fff19dd37992e832e0e07e719a9a533d3dba932de214479ce7e0cac5c5"
+    },
+    "manifest": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/captures.manifest.json",
+      "bytes": 105483,
+      "sha256": "100e55313e69ba99d796378da2357a7a38b020ba080c50e9a02312393477e8b8"
+    },
+    "pack_receipt": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/retention-pack.json",
+      "bytes": 1521,
+      "sha256": "9425855ea61a4411a675d1b94c24e971b6265d206363d7837744d0a16e1bb5b2"
+    },
+    "verify_receipt": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/retention-verify.json",
+      "bytes": 1422,
+      "sha256": "75ae73bcd9c1e3e9484d3a808844989bca6a39b8a40a92fb8496f2e2fc577edb"
+    },
+    "scratch_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/scratch-retirement.json",
+      "bytes": 503,
+      "sha256": "f871f2831c73f3e92280feaacdf09ff93a4880a348d4b2b252410e7f1ea07854"
+    },
+    "compiler_caches_archived": false,
+    "scratch_removed": true
+  },
+  "storage": {
+    "before": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-before-20261104.json",
+      "bytes": 66573,
+      "sha256": "aaa942966fc35d17147285253f280b58890de2d48a9ee11a57903f3d5bdd8ee9"
+    },
+    "observed_pre_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-pre-retirement-20261104.json",
+      "bytes": 66574,
+      "sha256": "d1d77d31c4556a70b96b9314e4ca3d8a850ab7f57634cb342c236480703e50c1"
+    },
+    "after": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-after-20261104.json",
+      "bytes": 66572,
+      "sha256": "719e09ae631ae7963a4194e9e670af83f7fa63eee18245cc5e143713a39136f2"
+    },
+    "normal_limit_bytes": 8589934592,
+    "observed_known_bytes_pre_retirement": 9040925635,
+    "known_bytes_after": 8429126334,
+    "unknown_subtrees": 214,
+    "complete_budget_verified": false,
+    "budget_overrun_occurred": true,
+    "absolute_peak_measured": false,
+    "exception": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-interop-20261104/storage-exception.json",
+      "bytes": 918,
+      "sha256": "6edc17335466358e0deca2b8d2ae963f07b7bead8ddcc0a1706342047aa5f7be"
+    },
+    "explanation": "Affected large UI reports accumulated across producer/private/reader/Python copies; temporary known bytes exceeded normal 8GiB. Terminal compiler/capture scratch retired immediately after measurement with verified retention. Post-retirement known bytes are below limit, but inaccessible subtrees leave complete budget unverified. Inventories precede small receipt/doc changes."
+  },
+  "remaining": [
+    "M2b.2b remains open: point-specific ZIP composition UI and imported XY point active-selection/stored-ROI/Measure handoff.",
+    "Required non-XY point position/projection/rebind policies and point-tool marker/counter/position/label/configuration/default persistence.",
+    "M2b.3 remaining manager layouts/Z/T/options, M3/M4 and T04a.3 analysis persistence/replay.",
+    "All remaining T00-T15 inventory, platform/release and matched performance requirements."
+  ]
+}

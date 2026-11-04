@@ -551,7 +551,8 @@ Json roiMixedExportUiCase(Window &w, const std::string &context,
         std::numeric_limits<std::size_t>::max(),
         ImageJAnnotationKind::Selection,
         0,
-        roi_export_detail::fill_geometric_projection(ImageJRoi{}, row, false),
+        roi_export_detail::fill_geometric_projection(ImageJRoi{}, row, false,
+            source.data().dataset.shape(),ImageJRoiLimits{}),
         {},
         true};
     auto record = resolve_imagej_annotation_export(source, generated).record();

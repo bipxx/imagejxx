@@ -1,6 +1,6 @@
 # ImageJ and Fiji delivery plan
 
-Updated 2026-11-04 after scoped point-editing integration and waste closeout. This is the
+Updated 2026-11-04 after explicit XY point-interchange integration and waste closeout. This is the
 authoritative current queue and completion policy.
 [Inventory](parity/inventory.json) owns the 99 capability families and their
 remaining requirements; [command inventory](parity/commands.json) and
@@ -51,8 +51,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 M2a point rows/selected manager | Scoped integrated in both Windows hosts: 308 original point cases/392 rows, 860 unique focused product cases and 23 tool checks pass; two native controls and six installed clients per Windows/Linux platform pass. | M2b per-point annotations and remaining manager variants, then M3/M4. [Evidence](parity/reviews/T04a2-point-rows-20261104.json). Point indices do not substitute for counters/positions. |
 | T04a.2 M2b.1 annotation core/Measure consumer | Versioned native/Python counters and scientific positions, explicit wire adapters and frozen grouped measurements are scoped verified: 70 original cases/196 rows; 1,990 unique product cases ultimately pass and 23 tool checks pass; native controls and six SDK clients per Windows/Linux platform. | Both Windows hosts emit Counter/Count in Measure/CSV. M2b.2a editing/vertex preservation is scoped delivered; M2b.2b interchange follows; manager variants follow. [Evidence](parity/reviews/T04a2-point-annotations-20261104.json). |
 | T04a.2 M2b.2a point editing/vertex alignment | Scoped integrated in both Windows hosts: 701 unique focused product cases and 23 tool checks pass; two native controls and six installed SDK clients per Windows/Linux platform. | Properties Counter/T/C/Z, Apply/Cancel/clear, aligned insert/delete, store/update and session reopen work. Next M2b.2b actual interchange/point-tool configuration; no replay/full-tool claim. [Evidence](parity/reviews/T04a2-point-editing-20261104.json). |
+| T04a.2 M2b.2b XY interchange increment | Explicit source-extent promotion and native-row projection work in both Windows hosts; 765 focused product cases and 23 tool checks pass, plus two native controls and six installed SDK clients per Windows/Linux platform. | Finish point-specific ZIP controls, imported-point active/stored-ROI handoff, non-XY policies and point-tool configuration. M2b.2b remains open. [Evidence](parity/reviews/T04a2-point-interchange-20261104.json). |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,380,600,321 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,429,126,334 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Near-term queue
@@ -95,7 +96,8 @@ preservation and stale-result/resource guarantees stay strict where applicable.
    calibrated/reflex angles and open Bounds. M2a adds expanded point/multipoint
    rows and selected manager controls. M2b.1 adds typed annotations, explicit
    wire adapters and their captured Measure/CSV consumer. M2b.2a now delivers
-   scoped properties/vertex preservation. Next M2b.2b interchange,
+   scoped properties/vertex preservation, and the first M2b.2b XY interchange
+   increment is scoped integrated. Finish its remaining consumers/configuration,
    remaining manager variants and area geometry/measurement
    options with independent references. Complete the required owning columns
    and manager variants before closing T04a.2. See the handoff below.
@@ -132,7 +134,7 @@ do not authorize spawning agents.
   | M2a — Delivered scoped point rows/selected manager | Expand vertices through the existing captured result owner; reuse one-pixel statistics, grouped reads, row selection, settings/CSV and maintained observer/probe. | Original fractional/repeated/outside-image/calibrated point rows, expanded admission/order/cancel, selected indices/guards and actual Ctrl-selection/export pass. Parent-positioned points are supported; this is not all point metadata or manager variants. |
   | M2b.1 — Delivered scoped annotation core/consumer | Version1 typed metadata and explicit XY wire adapters reuse immutable selection/session owners, bounded row preparation and grouped execution. Existing Measure/CSV emits original Counter/Count semantics. | Original positions/populations, single-point behavior, strict malformed/extent admission, cancellation and installed clients pass. Dedicated editing/import/export controls and geometry-edit alignment are not delivered by this core increment. |
   | M2b.2a — Delivered scoped point editing/aligned vertices | Existing SelectionPanel/SelectionEditor and shared native publication serve supported scientific points; annotation-only edits avoid coordinate transforms. | Actual Counter/position edit, Apply/Cancel/clear, insert/delete, stale/cap refusal and store/update/reopen pass in the linked scope. Scientific legacy-area refusal stays intact; automatic interchange is not qualified. |
-  | M2b.2b — Annotation interchange and remaining point-tool configuration | Extend the actual ROI mapper/importer/exporter and explicit projection; reuse typed annotations and raw codec sidecars. Reconcile point-tool configuration with T06/T15. | Actual ROI/ZIP import/export/save/reopen and required tool options work in both hosts. Versioned compatibility preserves old envelopes; no silent metadata loss or implicit XZ/YZ/extent reinterpretation. |
+  | M2b.2b — Active: interchange and remaining point-tool configuration | Explicit XY promotion and shared native-row projection are scoped integrated without changing codec/envelope versions. Finish remaining importer/editor/ZIP consumers and point-tool configuration with T06/T10/T15. | Actual ROI/ZIP import/export/save/reopen and required tool options work in both hosts. Versioned compatibility preserves old envelopes; no silent metadata loss or implicit XZ/YZ/extent reinterpretation. |
   | M2b.3 — Remaining manager commands | Reconcile original required MultiMeasure/Z/T layouts/options and implement on the current owner, not another batching engine. | Every required manager layout/target/append-label option has native/Python/actual UI consumers, references, bounded output and lifecycle checks. |
   | M3 — Required area/shape/measurement options | Reconcile Analyzer columns and every owning option/key against inventory and `TARGET_ANALYSIS.md`. Reuse existing masks/statistics and fused bounds; add missing geometry kernels only once. Specify threshold/redirect source capture and admission before implementing those consumers. | Every required column/option has supported behavior, default, validation, units/precision, API and UI consumer, and an independent reference. Cross-source/threshold failure and lifecycle checks pass where applicable. Any numerical work deferred to T09 has explicit requirement IDs and blocks a claim of complete measurement scope. |
   | M4 — Measurement integration reconciliation | Exercise representative whole/area/line/path/angle/point and manager workflows together using the existing capture reader. Audit formatter/CSV, settings, source/history and result memory; reuse unchanged numerical evidence. | No unowned command/option residual; scoped integration receipt names platforms and missing evidence. Hand stable command/options/state contracts to T04a.3. Do not run a second full reference suite solely to refresh counts. |
@@ -172,12 +174,34 @@ work together. Untagged points stay untagged until edited; unknown metadata
 requires explicit clear/replacement. Current source/selection/T/C/Z/cap guards,
 selection-only history and explicit stored-ROI update remain part of the contract.
 
-### Ready task 1: M2b.2b — Wire ROI interchange and point-tool options
+### Ready task 1: M2b.2b — Finish point interchange consumers and point-tool options
 
 **Dependency:** consume the reviewed M2b.2a typed edit contract. Inspect actual
-mapper/envelope compatibility before coding; raw wire adapter tests alone are
-not an importer/exporter integration test.
+mapper/envelope compatibility before coding. The [explicit XY helpers and
+single-ROI workflow](TARGET_ANALYSIS.md#explicit-xy-point-roi-interchange) are now
+scoped delivered: promotion decodes the source extent, projection uses the edited
+native row, and existing envelope V2/source archive V4 preserve the replacement.
+Raw defaults and historical envelope meanings remain unchanged. Do not introduce
+another mapping flag/serializer or redo the completed XY implementation.
 
+- **Remaining consumer/configuration work:** finish point-specific actual ZIP
+  composition/export/reopen, and expose an explicit imported XY point annotation
+  -> active selection/stored ROI handoff for normal properties/Measure workflows.
+  Reuse the existing document selection/ROI transactions and captured parent
+  T/C/Z rules; preserve the independent imported source archive. Do not mistake
+  a planar annotation row for an ROI Manager row or add an automatic association.
+  Qualify required non-XY policies separately instead of reinterpreting raw
+  positions that cannot fit the current typed T/C/Z model.
+- **Point-tool key contract:** audit the pinned Point Tool/Properties options
+  against G013/G014/G017/G020-G022 and T15. Existing native `point_size` is a
+  numeric raster diameter (default 8, range 1..256), not the byte codec's size
+  code. Reuse it where meanings match; explicitly specify marker-type/size
+  projection, active counter, position capture, labels and required creation/
+  manager behaviors before adding missing keys. Each key needs its actual
+  default/range, C++/Python accessor, tool/panel consumer, default/revert/persist
+  and recorder/session ownership. Keep read-only per-vertex property edits
+  distinct from defaults for newly created points. Do not infer defaults from
+  similarly named wire fields.
 - **Reuse/ownership:** extend `imagej_roi_mapping.cpp`,
   `imagej_roi_envelope.cpp`, `imagej_roi_native_envelope.cpp` and their existing
   native/Python/desktop callers. Preserve the byte codec's arbitrary raw packed
@@ -399,7 +423,15 @@ task; recording cleanup as future work does not complete it:
    with a reason**. Fix small low-risk waste in the same task; larger refactors
    need a concrete benefit and bounded scope. Do not launch a full audit or large
    rewrite automatically after every task.
-4. Retire terminal owned scratch under AGENTS.md: preserve necessary failure
+4. Before a large physical UI group, estimate producer/private, transported
+   reader and Python copies against the measured storage scope. Verify/retain
+   and retire each terminal group before starting another when accumulated
+   captures could exceed the normal budget; do not wait for a whole campaign.
+   Schedule disposable SDK consumers after large capture groups when practical,
+   keeping their scratch through final source/allocation review. Unknown storage
+   is not available headroom. A necessary over-budget check needs an explicit
+   reason, observed measurements and immediate post-check cleanup.
+   Retire terminal owned scratch under AGENTS.md: preserve necessary failure
    diagnostics and hashes, compress/verify required captures, then clean safely.
    Measure complete non-overlapping storage roots around substantial checks;
    unknown paths remain unknown. Reuse active caches/runtimes/SDKs.
@@ -457,36 +489,44 @@ feature or block unrelated ready work.
 | Capability/menu/dispatch drift on scientific sources | Fixed for M2b.2a by shared native property publication and matching gate; next consumer task checks the complete route before broad validation. | Original gate/legacy-publication failures retained. Supported point route and stale-draft handling pass in both hosts; unsupported scientific area route still refuses. |
 | Late probe/wrapper contract mistakes | T02 plus next validation owner: inspect maintained InputInt observations, physical text-event schema and capture helper return value before extending them. | M2b.2a reused settings IDs, corrected text `value` and command-wrapper naming; capture-helper return mistake reused successful capture without regeneration. No new harness. Revisit on another contract-assumption retry; do not claim policy alone prevents recurrence. |
 | Legacy plan-checker shape | T02, next traceability-tool change: adapt existing `scripts/check_plan.py::validate_inventory` to the current roadmap/inventory contract; do not restore 99 duplicate prose rows or add a second checker. | Static inspection shows it expects historical per-G table rows absent from the current guide. Exit: the maintained checker covers all inventory IDs and flags a deliberately omitted mapping; this documentation task used scoped in-memory coverage/link/hash checks instead. |
+| Accumulated duplicate large UI captures exceeded the normal budget | Fix execution order now: retain/retire one large terminal UI group before another; T02 owns reviewing unnecessary private/reader payload duplication in the existing capture helper. | Observed pre-retirement known storage 9,040,925,635 B versus 8 GiB normal limit; one report is 51,619,575 B in both producer and reader paths. After verified retirement: 8,429,126,334 known B plus 214 unknown subtrees. Next large group records copies/admission and immediate retention; do not mark the overall budget verified. |
+| Private helper and observation-schema assumptions | T02/next consumer owner: search all callers, including probes, before a signature change; inspect binding registration order and each surface's actual diagnostic shape before extension. | This packet missed one private probe caller, eagerly constructed an unregistered binding default, and confused import-array/export-object bounds and clipped visibility. Narrow corrections pass; all failures retained, unchanged SDK/core checks reused for probe-only corrections. Recurrence remains a process issue. |
 | Repeated live planning history | This task: three concise current documents, exact historical ledgers, compatible links. | Future task closeout updates rows in place. |
 
 ## Latest task closeout
 
-2026-11-04 M2b.2a: point properties and aligned vertex editing are implemented
-and scoped integrated in both Windows hosts. 701 unique focused product cases
-and 23 tool checks pass; two native controls and six installed SDK clients pass
-per Windows/Linux platform. Counter/complete T/C/Z edit, Apply/Cancel/clear,
-stale/cap refusal, store/update, session reopen and Measure/CSV are covered.
-[Receipt](parity/reviews/T04a2-point-editing-20261104.json). Automatic ROI mapping,
-remaining point-tool options, manager variants and analysis replay stay open.
+2026-11-04 M2b.2b XY interchange increment: explicit point promotion from the
+retained source extent, shared native-row projection and both-host single-ROI
+import/edit/export/reopen are scoped delivered. 765 focused product cases and
+23 tool checks pass; two native controls and six installed SDK clients pass per
+Windows/Linux platform. API ZIP/session roundtrips and affected legacy/mixed/
+rounded UI paths pass. [Receipt](parity/reviews/T04a2-point-interchange-20261104.json).
+M2b.2b remains open for the ready-task residuals; no full point-tool, non-XY,
+imported-point Measure, ZIP-specific UI or release claim.
 
-Waste decisions: **fixed now** — reuse the typed metadata, current panel/job/
-publication/observer owners; share scripted/physical property publication;
-avoid coordinate transforms on annotation-only edits and observe actual grouped
-InputInt fields using the maintained settings convention. **Managed retries** —
-preserve initial gate/legacy-route failures and probe/wrapper mistakes, retry
-only affected paths, and reuse the successful physical capture after a helper
-return-value mistake. The next task inspects exact consumer/helper contracts
-before a broad run. Existing unrelated compiler warnings are outside this
-increment; no speculative Window rewrite or new verification runner.
+Waste decisions: **fixed now** — reuse existing V2/V4 replacements and raw codec,
+share standard projection across ordinary/mixed exporters, use aligned native
+vertex edits in the importer, and preflight promotion before cloning a rebound
+row. **Managed retries** — retain the missed private caller, binding default
+registration and physical-probe schema/clipping failures; retry only affected
+routes, reusing unchanged core/SDK evidence for probe-only corrections. No new
+codec/controller/runner/cache/runtime or historical expectation changes.
 
-SDK consumers remained through final allocation/API review, then 28,942,073
-compiler bytes were retired using file identities rather than whole-cache
-archives. Verified 1,878,455 capture/diagnostic bytes in a 235,954-byte lossless
-archive before removing owned scratch. Known storage is 8,380,600,321 bytes
-before small public/doc changes plus 214 inaccessible subtrees; full budget
-remains unverified. Historical fingerprints/expectations stay unchanged.
-**Next:** M2b.2b explicit interchange/point-tool options, then M2b.3 manager
-variants. Update the compilexx note with these observed costs and prevention.
+**Observed storage overrun:** necessary affected UI checks accumulated large
+producer/reader/Python reports; pre-retirement known storage reached
+9,040,925,635 bytes. This was not a compliant 8 GiB run, and is not a measured
+absolute peak or complete total. Retired 29,327,071 disposable compiler bytes by
+identity, then losslessly verified 628,673,482 scratch bytes in a 45,807,090-byte
+archive before safe deletion. Post-retirement known storage is 8,429,126,334
+bytes before small receipt/doc changes, plus 214 inaccessible subtrees; complete
+budget remains unverified. **Plan correction:** retain/retire each large UI
+group before another; T02 reviews duplicated transport payloads without weakening
+hash/provenance checks. The next validation owner must demonstrate the corrected
+sequence, not treat this rule alone as proof the recurrence is solved.
+
+**Next:** finish the remaining M2b.2b consumer/configuration contract above,
+then M2b.3 manager variants. The compilexx note records these actual costs and
+revisit conditions.
 
 ## Historical link compatibility
 

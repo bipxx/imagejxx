@@ -905,19 +905,28 @@ void RoiImportPanel::draw(
         s.observe("promote_rounded", !running);
         ImGui::SetItemTooltip("Create an editable rounded box while retaining the source ROI and mapping. Review and confirm the replacement before importing.");
       }
+      const bool point_source=!e.display && !e.envelope && !e.has_edit() &&
+          wire.size()>=64 && wire[6]==10;
+      bool promote_points=false;
+      if(point_source) {
+        promote_points=ImGui::Button("Use point counters and positions...");
+        s.observe("promote_points",!running);
+        ImGui::SetItemTooltip("Decode counters and scientific T/C/Z using the declared XY source extent. Retain original bytes and stage an explicit native replacement. Invalid or ambiguous values refuse; no XZ/YZ reinterpretation.");
+      }
       const bool edit_replacement = ImGui::Button(e.envelope?"Edit native replacement...":"Edit mapped annotation...");
       s.observe("edit_replacement",!running);
-      if(edit_replacement || promote)try{
+      if(edit_replacement || promote || promote_points)try{
         s.invalidate();s.editor_cap=cap;
         const auto entry=e;const auto source=*s.source;const auto index=std::size_t(s.selected);
         const ImageJAnnotationImportLimits limits{s.limits,s.display_retained};
-        s.start(4,[entry,source,index,limits,promote]{
+        s.start(4,[entry,source,index,limits,promote,promote_points]{
           detail::validate_imagej_annotation_import_limits(limits);
           auto items=State::typed_request({entry},source,false,true);
           auto admitted=detail::admit_imagej_annotation_import_item(items.at(0),limits);
           Result result;
           if(const auto g=std::get_if<MappedImageJRoi>(&admitted)){
-            const auto mapped = promote ? editable_imagej_roi_mapping(*g, limits.batch.roi) : *g;
+            const auto mapped = promote ? editable_imagej_roi_mapping(*g, limits.batch.roi)
+                : promote_points ? annotated_imagej_point_mapping(*g,limits.batch.roi) : *g;
             result.editor.emplace(index,mapped.target_extent(),mapped.annotation());
             result.editor_rows=planar_annotations(source.data());
             if(!entry.envelope)result.editor_mapping=g->source_mapping();

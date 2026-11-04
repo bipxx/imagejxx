@@ -100,22 +100,6 @@ ImageJRoi projection(const ResolvedImageJRoiPairing &pair, int choice,
     out.point_type = out.point_size = 0;
     out.options = 8192;
   }
-  auto selection = pair.mapped().annotation().selection;
-  for (auto it = selection.attributes.begin();
-       it != selection.attributes.end();)
-    if (it->first != roi_style_attribute && !(selection.is_rounded_box() && it->first == "corner_diameter"))
-      it = selection.attributes.erase(it);
-    else
-      ++it;
-  if (selection.is_rounded_box() && !reset_geometry && out.roi.selection.kind == "mask" &&
-      (out.rounded_rectangle || !out.composite_path.empty())) {
-    auto retained=out.roi.selection;
-    retained.width=selection.width;retained.attributes=selection.attributes;
-    retained.attributes.erase("corner_diameter");selection=std::move(retained);
-  }
-  const auto &row = pair.mapped().annotation();
-  out.roi = {row.name, std::move(selection), row.t, row.c, row.coordinate, {}};
-  out.legacy_position = 0;
   if (group_override) {
     if (group < 0 || group > 255)
       throw std::invalid_argument("Group must be between 0 and 255");
@@ -123,8 +107,8 @@ ImageJRoi projection(const ResolvedImageJRoiPairing &pair, int choice,
   }
   if (properties_override)
     out.properties = properties;
-  const auto geometry=planar_annotation_geometry(pair.mapped().target_extent(),row.plane);
-  return imagej_roi_standard_projection(std::move(out),geometry.width,geometry.height,limits);
+  return imagej_roi_annotation_projection(pair.mapped().annotation(),
+      pair.mapped().target_extent(),std::move(out),limits);
 }
 } // namespace
 struct RoiExportPanel::State {

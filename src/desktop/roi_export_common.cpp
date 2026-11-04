@@ -5,6 +5,7 @@
 #include <climits>
 #include <cmath>
 #include <imagejxx/roi_style.hpp>
+#include <imagejxx/imagej_roi_projection.hpp>
 namespace imagejxx::desktop::roi_export_detail {
 std::string export_error(const std::exception &error) {
   if (const auto file =
@@ -41,7 +42,7 @@ std::filesystem::path destination(const std::string &text, bool zip) {
   return path;
 }
 ImageJRoi fill_geometric_projection(ImageJRoi out, const PlanarAnnotation &row,
-                                    bool reset) {
+                                    bool reset, DatasetShape extent, const ImageJRoiLimits &limits) {
   if (reset) {
     out.source_type.reset();
     out.source_subtype = 0;
@@ -54,16 +55,7 @@ ImageJRoi fill_geometric_projection(ImageJRoi out, const PlanarAnnotation &row,
     out.point_type = out.point_size = 0;
     out.options = 8192;
   }
-  auto selection = row.selection;
-  for (auto it = selection.attributes.begin();
-       it != selection.attributes.end();)
-    if (it->first != roi_style_attribute)
-      it = selection.attributes.erase(it);
-    else
-      ++it;
-  out.roi = {row.name, std::move(selection), row.t, row.c, row.coordinate, {}};
-  out.legacy_position = 0;
-  return out;
+  return imagej_roi_annotation_projection(row,extent,std::move(out),limits);
 }
 namespace {
 template <class T>

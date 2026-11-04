@@ -818,7 +818,8 @@ void RoiMixedExportPanel::draw(
                       }
                     }
                     projection = fill_geometric_projection(
-                        std::move(original), inputs->rows.at(row), reset);
+                        std::move(original), inputs->rows.at(row), reset,
+                        inputs->catalog.source().data().dataset.shape(), inputs->limits.output.roi);
                   } else
                     projection = display_projection(inputs->displays.at(row),
                                                     std::move(base), reset,

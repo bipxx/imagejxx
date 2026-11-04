@@ -24,6 +24,10 @@
   unknown, never zero; report the budget as unverified until it can be measured.
   Preserve historical measurements and add a scope correction rather than
   relabeling their old root sets as complete.
+- Before large UI verification groups, estimate producer/private, transported
+  reader and Python capture copies against measured storage. Retain and retire
+  terminal groups serially when accumulation could exceed the normal budget;
+  do not wait for a full campaign closeout. Unknown subtrees are not headroom.
 - Keep local capture retention bounded. Retain concise receipts and hashes
   before retiring superseded bulky captures; record their retirement explicitly.
   Prefer CI artifact retention for historical full capture sets.

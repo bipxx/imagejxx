@@ -116,6 +116,7 @@ EDITOR_READERS = {
     "rgb-dataset": ("--rgb-dataset-ui-case", "IMAGEJXX_RGB_CPP_REPORT"),
     "scientific-process": ("--scientific-process-ui-case", "IMAGEJXX_SCIENTIFIC_PROCESS_CPP_REPORT"),
     "bare-edit": ("--bare-edit-ui-case", "IMAGEJXX_BARE_EDIT_CPP_REPORT"),
+    "point-roi-interchange": ("--point-roi-interchange-ui-case", "IMAGEJXX_POINT_ROI_INTERCHANGE_CPP_REPORT"),
     "mixed-import": ("--mixed-import-ui-case", "IMAGEJXX_MIXED_IMPORT_CPP_REPORT"),
     "roi-import": ("--roi-import-ui-case", "IMAGEJXX_ROI_IMPORT_CPP_REPORT"),
     "display-annotation": ("--display-annotation-ui-case", "IMAGEJXX_DISPLAY_CPP_REPORT"),

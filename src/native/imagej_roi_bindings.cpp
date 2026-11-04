@@ -336,6 +336,20 @@ void bind_imagej_roi(py::module_ &m) {
   m.def("editable_imagej_roi_mapping", &editable_imagej_roi_mapping,
         py::arg("mapped"),py::arg("limits")=ImageJRoiLimits{},
         py::call_guard<py::gil_scoped_release>());
+  m.def("annotated_imagej_point_mapping", [](MappedImageJRoi mapped,ImageJRoiLimits limits) {
+    py::gil_scoped_release release;
+    return annotated_imagej_point_mapping(mapped,limits);
+  },py::arg("mapped"),py::arg("limits")=ImageJRoiLimits{});
+  m.def("imagej_roi_annotation_projection", [](PlanarAnnotation row,py::handle extent,
+                                                py::object metadata,ImageJRoiLimits limits) {
+    const auto shape=mapping_shape(extent);
+    // ImageJRoi is registered later during module initialization. Defer its
+    // default construction/conversion until the call, and own it before release.
+    auto value=metadata.is_none()?ImageJRoi{}:metadata.cast<ImageJRoi>();
+    py::gil_scoped_release release;
+    return imagej_roi_annotation_projection(row,shape,std::move(value),limits);
+  },py::arg("annotation"),py::arg("extent"),py::arg("metadata")=py::none(),
+     py::arg("limits")=ImageJRoiLimits{});
   m.def(
       "decode_imagej_roi_mapped",
       [](py::bytes blob, ImageJRoiPlaneMapping mapping,

@@ -3,6 +3,7 @@
 #include "window.hpp"
 #include <fstream>
 #include <imagejxx/imagej_annotation_import.hpp>
+#include <imagejxx/point_annotations.hpp>
 #include <thread>
 namespace imagejxx::desktop {
 namespace {
@@ -484,5 +485,86 @@ Json roiBareEditUiCase(Window &w, const std::string &context,
   writeJson((dir / "case.json").u8string(), report);
   guard.done = true;
   return report;
+}
+Json pointRoiInterchangeUiCase(Window& w,const std::string& context,const std::string& directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(directory));
+  require(!fs::exists(dir) && w.documents().empty(),"Fresh point interchange fixture required");
+  fs::create_directories(dir);const DatasetShape shape{2,2,2,5,7,1};
+  Stack planes;for(int i=0;i<8;++i)planes.emplace_back(7,5,1,PixelType::UInt8);
+  auto doc=std::make_shared<imagejxx::Document>(Dataset::from_planes(shape,std::move(planes)));
+  w.addNativeDocument(doc);w.recording=true;const auto before=doc->snapshot();
+  ImageJRoi raw;raw.roi={"points",Selection("multipoint",{{1.25,1},{2,2},{1.25,1}}),{},{},0,{}};
+  raw.point_counters={2050,0,258};raw.group=7;raw.properties="original: points\n";
+  const auto original=encode_imagej_roi(raw);bytes(dir/"source.roi",original);
+  Json report{{"contract","g066.point-roi-interchange.ui.001"},{"context",context},
+      {"acceptance_claim",false},{"frames",Json::array()},{"controls",Json::array()},
+      {"fixture_actions",{"attach TCZYX source and write bare point ROI fixture"}}};
+  try {
+    HeadlessInputSession session(w);Json last;std::string panelName="roi_import";
+    auto frame=[&](const Json& events=Json::array()) {
+      require(report["frames"].size()<700,"Point interchange frame bound");last=session.frame(events);
+      report["frames"].push_back({{"events",events},{"input_frame",last.at("input_frame")}});
+    };
+    auto panel=[&](){return last.at(panelName);};
+    auto click=[&](const Json& hit,const std::string& key) {
+      require(hit.at("enabled").get<bool>() && hit.at("id").get<std::uint64_t>(),"Unavailable point interchange control: "+key);
+      report["controls"].push_back({{"name",key},{"control",hit}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit.at("point")}}}));
+      for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+    };
+    auto control=[&](const std::string& key) {
+      for(int attempt=0;attempt<30;++attempt) {
+        const auto p=panel();require(p.at("controls").contains(key),"Missing point interchange control: "+key+" "+p.dump());
+        const auto hit=p.at("controls").at(key);
+        const auto window=key.rfind("replacement.",0)==0?p.at("replacement_editor").at("window"):p.at("window");
+        const auto bounds=window.is_object()?window.at("choices"):window;
+        const auto y=hit.at("point")[1].get<double>();
+        if(hit.value("visible",y>bounds[1].get<double>()+4 && y<bounds[3].get<double>()-5))return hit;
+        frame(Json::array({{{"type","position"},{"space","screen"},
+            {"point",{bounds[2].get<double>()-14,(bounds[1].get<double>()+bounds[3].get<double>())/2}}},
+            {{"type","wheel"},{"x",0},{"y",y<bounds[1].get<double>()?3:-3}}}));frame();
+      }
+      throw std::runtime_error("Point interchange reveal bound: "+key);
+    };
+    auto press=[&](const std::string& key){click(control(key),key);};
+    auto choose=[&](const std::string& key,int index){press(key);press(key+"."+std::to_string(index));};
+    auto type=[&](const std::string& key,const std::string& value) {
+      press(key);
+      for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
+      frame(Json::array({{{"type","text"},{"value",value}}}));frame();
+    };
+    auto settle=[&](){w.wait();w.poll();frame();frame();};
+    auto menu=[&](const std::string& key){click(last.at("host_controls").at(key),key);};
+    frame();frame();frame();menu("menu.File");menu("menu.file.import_rois");
+    type("path",(dir/"source.roi").u8string());press("load");settle();choose("plane",1);
+    press("promote_points");settle();
+    require(!panel().at("replacement_editor").is_null(),"Point promotion did not open replacement editor");
+    press("replacement.confirm");type("replacement.vertex_u","3.125");press("replacement.add_vertex");
+    press("replacement.keep");press("validate");settle();report["review"]=panel();
+    require(panel().at("ready").get<bool>(),"Point import review failed: "+panel().dump());
+    report["unpublished"]=doc->snapshot().shares_data(before);press("apply");settle();report["after_apply"]=panel();
+    const auto imported=doc->snapshot();const auto importedRows=planar_annotations(imported.data());
+    require(importedRows.size()==1,"Point import row count");
+    report["imported_words"]=imagej_point_counters(importedRows[0].selection,shape);
+    report["imported_points"]=importedRows[0].selection.points;report["import_undo"]=doc->undo_steps();
+    report["archive_version"]=metadataJson(imported.data().metadata.extensions.at(imagej_roi_import_sources_extension)).at("version");
+    const auto sources=inspect_imagej_annotation_sources(imported);
+    report["original_retained"]=std::get<ImageJRoiImportItem>(sources.at(0)).data==original;
+    panelName="roi_export";menu("menu.File");menu("menu.file.export_roi");settle();
+    if(panel().value("mixed",false)) {
+      choose("source",1);choose("kind",0);choose("annotation",0);choose("metadata",1);
+    }else {choose("source",0);choose("annotation",0);choose("metadata",2);}
+    press("confirm");
+    press("validate");settle();require(panel().at("ready").get<bool>(),"Point export review failed: "+panel().dump());
+    type("path",(dir/"edited.roi").u8string());press("export");settle();
+    require(fs::is_regular_file(dir/"edited.roi"),"Point export output missing");
+    std::ifstream file(dir/"edited.roi",std::ios::binary);const std::vector<unsigned char> wire{std::istreambuf_iterator<char>(file),{}};
+    const auto restored=decode_imagej_roi_envelope(wire);report["restored_words"]=imagej_point_counters(restored.annotation().selection,shape);
+    report["outer_words"]=decode_imagej_roi(wire).point_counters;
+    report["export_preserved_source"]=doc->snapshot().shares_data(imported);
+    report["pixels_shared"]=doc->snapshot().data().dataset.shares_pixels(before.data().dataset);
+    report["workflow_count"]=w.workflow.size();report["state"]="observed";
+    session.close();writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){w.cancel();w.wait();report["failure"]=error.what();writeJson((dir/"failure.json").u8string(),report);throw;}
 }
 } // namespace imagejxx::desktop
