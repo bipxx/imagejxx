@@ -274,9 +274,57 @@ and session roundtrips. Original source bytes remain independent provenance.
 [Scoped interchange evidence](parity/reviews/T04a2-point-interchange-20261104.json)
 covers 765 focused product cases and 23 tool checks; two native controls and six
 installed SDK clients per Windows/Linux platform pass. Required point-specific
-ZIP composition UI, imported-point transfer to active/stored ROI editing and
-measurement, non-XY scientific position policy, remaining point-tool options and
-broader persistence/replay remain open. XY proof does not qualify those paths.
+ZIP composition UI and imported-point transfer are qualified by the following
+increment. Non-XY scientific position policy, remaining point-tool options and
+broader persistence/replay remain open; XY proof does not qualify those paths.
+
+### Explicit annotation selection and ROI Manager copies
+
+`planar_annotations(source, max_working_bytes=None)` retains its existing no-cap
+behavior. A supplied strict nonnegative integer admits logical metadata before
+JSON/geometry expansion (minimum8192 bytes, conservative sixteen-times logical
+allowance plus8192). This bounds decoder/transfer staging, not existing source,
+provider/history, unrelated transaction copies, allocator overhead or process RSS.
+
+Native/Python `prepare_select_planar_annotation(source,index,max_working_bytes)`
+and `prepare_store_planar_annotation_roi(...)` return the existing prepared ROI
+manager edit type. Both default to256MiB, reject non-XY/missing rows and perform
+no image reads. Selection adoption copies exact geometry/attributes and navigates
+explicit T/C/Z; wildcard T/C retain the captured view. It is transient, without
+pixel/metadata dirty/history. Storage copies row name/attributes and exact
+selection, retains wildcard T/C/fixed Z, and adds one metadata history step
+without changing the active selection/display. Explicit zero positions survive.
+Original planar rows and retained source provenance remain independent.
+
+`resolve_planar_annotation_from_selection(source,index,max_working_bytes=256MiB)`
+freezes a complete XY selection replacement using the existing planar Update
+command. It retains the row's name/parent positions/attributes and admits decoded
+rows and selection geometry before cloning. Later active-selection changes do
+not alter that frozen request. Existing planar source/metadata guards, atomic
+publication, history and record/replay apply. Forward select/store use existing
+manager guards; their recording gap remains T04a.3/T12, not a new record format.
+
+In **ROI Manager > Plane annotations**, choose an annotation and use **Use as
+selection**, **Copy to ROI Manager**, or **Replace from selection**. These are
+explicit independent copies, not live associations. Unsupported XZ/YZ controls
+are disabled; replacement needs an active selection. The UI caches only row
+indices/names/planes by immutable annotation binding, document and current cap.
+Actions `select_planar_annotation`, `store_planar_annotation_roi`, and
+`update_planar_annotation_selection` accept required `index` and optional
+`document_id`/`metadata_revision`; unknown parameters, stale metadata, inactive
+targets and busy edits refuse before publication. Current processing-memory
+settings supply the decode allowance. Native snapshot dispatch preserves
+scientific-source support without materializing pixels.
+
+[Scoped handoff/ZIP evidence](parity/reviews/T04a2-point-handoff-20261104.json)
+covers787 unique focused Windows product cases and23 tools, plus two native
+controls and six installed SDK clients per Windows/Linux platform. Both Windows
+hosts qualify physical transfer/copy-back/store/Measure/CSV/native export and
+point-specific ZIP Edit a member/name/add/validate/export/reopen controls. The
+probe discloses its existing scripted properties fixture edit; properties input
+has separate prior qualification. Two named ZIP members retain equal native
+payloads and independent original source bytes. No non-XY/full-tool or Linux UI
+qualification is inferred.
 
 `measure_rois` still measures all rows with `{}`. An explicit nonempty
 `indices` array selects ordered unique rows; optional `document_id` and

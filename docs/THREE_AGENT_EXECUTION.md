@@ -41,8 +41,9 @@ M2a expanded point rows and selected manager are also scoped integrated.
 M2b.1 typed annotation core, explicit adapters and Measure/CSV output are scoped
 verified. M2b.2a point properties/vertex alignment is scoped integrated in both
 Windows hosts with affected native/installed Windows/Linux checks. M2b.2b now
-adds scoped explicit XY point interchange; finish remaining
-ZIP/editor/non-XY/configuration consumers, then M2b.3 manager variants,
+adds scoped explicit XY interchange, independent handoff/copy-back and
+point-specific ZIP integration; finish
+point-tool configuration/non-XY policy, then M2b.3 manager variants,
 M3 area/shape/options and M4 reconciliation;
 then T04a.3 persistence/replay. No full measurement/platform completion claim.
 Use PLAN for concrete exits and the per-task waste decision/revisit trigger.
@@ -58,6 +59,14 @@ state the delivered scope, select relevant checks, review waste, safely retire
 owned scratch, assign any deferred improvement and update PLAN in place.
 Role success is not full-feature or full-platform completion. A feature may be
 implemented/verified while another integration or release aspect remains open.
+
+The imported XY annotation handoff and point-specific ZIP increment is now
+scoped verified:787 focused product cases,23 tools; native/installed clients on
+Windows/Linux and actual UI in both Windows hosts. Owned scratch is retired with
+verified hashes. Next: point-tool configuration/non-XY policy, then manager
+variants. Follow PLAN for exact scope, remaining recorder gaps and per-task waste
+feedback. Keep capture groups serial; overall storage remains unverified where
+paths are inaccessible. Reuse unchanged checks and existing receipts/helpers.
 
 ## Historical link compatibility
 

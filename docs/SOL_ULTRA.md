@@ -24,7 +24,9 @@ scoped integrated in both Windows hosts with original/native/installed checks;
 M2a point rows/selected manager and M2b.1 annotation core/Measure output are
 scoped verified. M2b.2a point properties/vertex alignment now works in both
 Windows hosts, with scoped native/installed Windows/Linux checks. M2b.2b now
-has explicit XY point import/projection/export integration; finish its remaining ZIP/editor/non-XY/configuration consumers, then M2b.3 manager variants. See PLAN for policy/platform limits.
+has explicit XY interchange, independent handoff/copy-back and point-specific
+ZIP integration. Finish point-tool configuration/non-XY policy, then M2b.3
+manager variants. See PLAN for policy/platform limits.
 Then T04a.3 persistence/replay. Checkpoint details live only in PLAN.
 T04b histogram/threshold consumers can reuse the qualified ownership seam.
 See the current PLAN receipt for exact verification/platform limits.
@@ -62,6 +64,14 @@ waste decision. Preserve historical fingerprints, failed attempts and unavailabl
 artifact limitations. No speed claim from language choice or build timings.
 [Three-role ownership](THREE_AGENT_EXECUTION.md) is a coordination template;
 agent execution requires authorization under current instructions.
+
+The imported XY annotation handoff and point-specific ZIP increment is now
+scoped verified:787 focused product cases,23 tools; native/installed clients on
+Windows/Linux and actual UI in both Windows hosts. Owned scratch is retired with
+verified hashes. Next: point-tool configuration/non-XY policy, then manager
+variants. Follow PLAN for exact scope, remaining recorder gaps and per-task waste
+feedback. Keep capture groups serial; overall storage remains unverified where
+paths are inaccessible. Reuse unchanged checks and existing receipts/helpers.
 
 ## Historical link compatibility
 

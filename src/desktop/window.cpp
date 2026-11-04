@@ -1038,6 +1038,14 @@ struct Window::Impl {
   // An immutable staged snapshot has a non-throwing pointer swap after commit.
   // DocumentSnapshot's value swap is not noexcept on every supported STL.
   std::shared_ptr<const DocumentSnapshot> roiManagerSource;
+  struct AnnotationRoiEntry {std::size_t index;std::string name;Plane plane;};
+  std::vector<AnnotationRoiEntry> annotationRoiEntries;
+  std::optional<MetadataValue> annotationRoiBinding;
+  std::uint64_t annotationRoiOwner=0;
+  std::size_t annotationRoiCap=0;
+  std::size_t annotationRoiBuilds=0;
+  int annotationRoiIndex=-1;
+  std::string annotationRoiError;
   std::uint64_t scientificRoiCreationOwner = 0;
   // A changed saved-row publication stages focus before committing. The next
   // normal manager refresh consumes this exact owner/Metadata revision without
@@ -1860,6 +1868,9 @@ struct Window::Impl {
     }
     if (!source->scientific())
       return true;
+    if(action=="select_planar_annotation" || action=="store_planar_annotation_roi" ||
+        action=="update_planar_annotation_selection")
+      return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if(action=="show_display_annotations" || action=="replay_display_annotation")return owner.controller_->active_document_id()==source->id;
     if(action=="replay_planar_annotation" || action=="show_planar_annotation_rebind" || action=="replay_imagej_roi_import" || action=="replay_imagej_annotation_import" || action=="show_roi_import" || action=="show_roi_import_record" || action=="show_roi_export" || action=="show_roi_zip_export" || action=="show_roi_export_record")
       return owner.controller_->active_document_id()==source->id;
@@ -4734,6 +4745,8 @@ struct Window::Impl {
     roiIndex = -1;
     roiManagerControls = Json::object();
     roiManagerRows = Json::array();
+    annotationRoiEntries.clear();annotationRoiBinding.reset();annotationRoiOwner=0;
+    annotationRoiIndex=-1;annotationRoiError.clear();
   }
   void synchronizeRoiManager() {
     if (owner.documents_.empty()) {
@@ -4850,7 +4863,7 @@ struct Window::Impl {
                        });
   }
   void observeRoiManagerControl(const std::string &name, bool enabled = true) {
-    observeControl("roi_manager." + name, enabled);
+    observeControl("roi_manager." + name, enabled, nullptr, nullptr, ImGui::GetCurrentWindowRead());
     if (headlessDiagnostics)
       roiManagerControls[name] = hostControls["roi_manager." + name];
   }
@@ -4871,7 +4884,9 @@ struct Window::Impl {
             {"area_operands_valid", roiManagerCanCombine()},
             {"can_combine", roiManagerVisible && roiManagerCanCombine() &&
                                 !owner.busy()},
-            {"controls", roiManagerControls}, {"rows", roiManagerRows}};
+            {"controls", roiManagerControls}, {"rows", roiManagerRows},
+            {"annotation_transfer",{{"selected_index",annotationRoiIndex<0?Json():Json(annotationRoiEntries.at(std::size_t(annotationRoiIndex)).index)},
+              {"count",annotationRoiEntries.size()},{"catalog_builds",annotationRoiBuilds},{"error",annotationRoiError}}}};
   }
   Json headlessReport();
   void menu();
@@ -7261,6 +7276,7 @@ void Window::action(const std::string &name, const Json &p) {
   }
   static const std::set<std::string> targeted{
       "show_movie_export", "view", "fit_selection", "close_document", "combine_rois", "undo", "redo",
+      "select_planar_annotation", "store_planar_annotation_roi", "update_planar_annotation_selection",
       "show_manual_threshold", "configure_threshold_target", "auto_manual_threshold", "set_manual_threshold", "reset_manual_threshold",
       "manual_threshold_to_selection", "apply_manual_threshold",
       "replay_manual_threshold",
@@ -7736,6 +7752,31 @@ void Window::action(const std::string &name, const Json &p) {
     impl->scientificRoiCreationOwner = facade->id;
     impl->creationMode = SelectionCreationOperation::Replace;
     impl->tool.swap(rectangle);
+    return;
+  }
+  if(name=="select_planar_annotation" || name=="store_planar_annotation_roi" || name=="update_planar_annotation_selection") {
+    if(busy())throw std::invalid_argument("Wait for the current edit");
+    const auto source=nativeSnapshot(targetId);
+    if(source.id()!=controller_->active_document_id())throw std::invalid_argument("Annotation transfer requires the active document");
+    for(const auto &field:p.items())
+      if(field.key()!="document_id" && field.key()!="index" && field.key()!="metadata_revision")
+        throw std::invalid_argument("Unknown annotation transfer parameter: "+field.key());
+    const auto &index=get(p,"index");
+    if(!index.is_number_integer() || index<0 || index.get<std::uint64_t>()>std::numeric_limits<std::size_t>::max())
+      throw std::invalid_argument("Annotation transfer requires a nonnegative index");
+    if(p.contains("metadata_revision")) {
+      const auto &revision=p.at("metadata_revision");
+      if(!revision.is_number_integer() || revision<0)throw std::invalid_argument("Annotation metadata revision must be nonnegative");
+      if(revision.get<std::uint64_t>()!=source.revisions().metadata)throw RevisionConflict();
+    }
+    const auto row=index.get<std::size_t>();const auto cap=impl->selectionCreationLimits().max_working_bytes;
+    if(name=="update_planar_annotation_selection")
+      impl->publishPlanarAnnotation(resolve_planar_annotation_from_selection(source,row,cap));
+    else {
+      auto edit=name=="select_planar_annotation"?prepare_select_planar_annotation(source,row,cap)
+          :prepare_store_planar_annotation_roi(source,row,cap);
+      impl->commitRoiManager(source,std::move(edit));
+    }
     return;
   }
   if ((name == "add_roi" || name == "select_roi" || name == "update_roi" ||
@@ -11111,6 +11152,52 @@ void Window::Impl::rois() {
     ImGui::TextWrapped("Boolean operations require every selected ROI to be an area.");
   ImGui::EndDisabled();
   if (source) {
+    const bool annotationsOpen=ImGui::CollapsingHeader("Plane annotations");
+    observeRoiManagerControl("annotation_bridge.section");
+    if(annotationsOpen) {
+      const auto cap=selectionCreationLimits().max_working_bytes;
+      const auto &extensions=source->data().metadata.extensions;
+      const auto found=extensions.find(planar_annotations_extension);
+      const auto binding=found==extensions.end()?std::optional<MetadataValue>{}:found->second;
+      if(annotationRoiOwner!=source->id() || annotationRoiBinding!=binding || annotationRoiCap!=cap) {
+        annotationRoiEntries.clear();annotationRoiIndex=-1;annotationRoiError.clear();
+        annotationRoiOwner=source->id();annotationRoiBinding=binding;annotationRoiCap=cap;
+        try {
+          const auto rows=planar_annotations(source->data(),cap);
+          annotationRoiEntries.reserve(rows.size());
+          for(std::size_t i=0;i<rows.size();++i)annotationRoiEntries.push_back({i,rows[i].name,rows[i].plane});
+          ++annotationRoiBuilds;
+        }catch(const std::exception& error){annotationRoiError=error.what();}
+      }
+      const char *label=annotationRoiIndex<0?"Choose an annotation":annotationRoiEntries.at(std::size_t(annotationRoiIndex)).name.c_str();
+      if(ImGui::BeginCombo("Annotation",label)) {
+        for(std::size_t i=0;i<annotationRoiEntries.size();++i) {
+          ImGui::PushID(int(i));const auto &entry=annotationRoiEntries[i];
+          const auto name=entry.name+" ("+(entry.plane==Plane::XY?"XY":entry.plane==Plane::XZ?"XZ":"YZ")+")";
+          if(ImGui::Selectable(name.c_str(),annotationRoiIndex==int(i)))annotationRoiIndex=int(i);
+          observeRoiManagerControl("annotation_bridge.rows."+std::to_string(entry.index));ImGui::PopID();
+        }
+        ImGui::EndCombo();
+      }
+      observeRoiManagerControl("annotation_bridge.rows");
+      const bool xy=annotationRoiIndex>=0 && annotationRoiEntries.at(std::size_t(annotationRoiIndex)).plane==Plane::XY;
+      auto transfer=[&](const char *label,const char *command,bool needsSelection=false) {
+        const bool allowed=xy && !owner.busy() && (!needsSelection || source->data().selection.has_value());
+        ImGui::BeginDisabled(!allowed);
+        if(ImGui::Button(label))guard([&] {
+          owner.action(command,{{"document_id",source->id()},
+              {"index",annotationRoiEntries.at(std::size_t(annotationRoiIndex)).index},
+              {"metadata_revision",source->revisions().metadata}});
+        });
+        observeRoiManagerControl(command,allowed);ImGui::EndDisabled();
+      };
+      transfer("Use as selection","select_planar_annotation");
+      transfer("Copy to ROI Manager","store_planar_annotation_roi");
+      transfer("Replace from selection","update_planar_annotation_selection",true);
+      ImGui::TextWrapped("Copies stay independent. Replacing an annotation keeps its name and parent positions.");
+      if(annotationRoiIndex>=0 && !xy)ImGui::TextWrapped("Selection editing requires XY. Use the plane editor for XZ/YZ annotations.");
+      if(!annotationRoiError.empty())ImGui::TextWrapped("%s",annotationRoiError.c_str());
+    }
     const auto &saved = source->data().rois;
     ImGui::BeginChild("saved_roi_rows", {0, 0}, false);
     for (std::size_t i = 0; i < saved.size(); ++i) {

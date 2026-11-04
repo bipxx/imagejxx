@@ -8,7 +8,7 @@ Json nativeWorkflowBatchUiCase(Window &,const std::string &,const std::string &)
 Json nativeWorkflowUiCase(Window &,const std::string &,const std::string &);
 Json scientificProcessUiCase(Window &,const std::string &,const std::string &);
 Json roiBareEditUiCase(Window &,const std::string &,const std::string &);
-Json pointRoiInterchangeUiCase(Window &,const std::string &,const std::string &);
+Json pointRoiInterchangeUiCase(Window &,const std::string &,const std::string &,int variant=0);
 Json displayAnnotationUiCase(Window &,const std::string &context,const std::string &fresh_directory);
 Json roiMixedImportUiCase(Window &,const std::string &context,const std::string &fresh_directory);
 Json roiZipExportUiCase(Window &,const std::string &context,const std::string &fresh_directory);

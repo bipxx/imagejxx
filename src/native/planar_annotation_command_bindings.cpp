@@ -2,6 +2,7 @@
 #include <imagejxx/planar_annotation_command.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <limits>
 namespace py=pybind11;
 using namespace imagejxx;
 namespace {
@@ -31,6 +32,14 @@ void bind_planar_annotation_command(py::module_ &m) {
   m.def("resolve_planar_annotation_command",[](DocumentSnapshot source,PlanarAnnotationRequest request) {
     py::gil_scoped_release release;return resolve_planar_annotation_command(source,request);
   },py::arg("source"),py::arg("request"));
+  m.def("resolve_planar_annotation_from_selection",[](DocumentSnapshot source,py::handle index,py::handle cap) {
+    auto integer=[](py::handle value) {
+      if(PyBool_Check(value.ptr()) || !PyLong_Check(value.ptr()))throw py::type_error("Annotation index/working limit must be an integer");
+      const auto result=PyLong_AsSize_t(value.ptr());if(PyErr_Occurred())throw py::error_already_set();return result;
+    };
+    const auto row=integer(index),bound=integer(cap);py::gil_scoped_release release;
+    return resolve_planar_annotation_from_selection(source,row,bound);
+  },py::arg("source"),py::arg("index"),py::arg("max_working_bytes")=256*1048576);
   m.def("validate_planar_annotation_command_record",[](py::dict record) {
     auto value=bindings::metadata_object_value(record);py::gil_scoped_release release;validate_planar_annotation_command_record(value);
   },py::arg("record"));

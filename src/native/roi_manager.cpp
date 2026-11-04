@@ -1,5 +1,6 @@
 #include <imagejxx/roi_manager.hpp>
 #include <imagejxx/roi_style.hpp>
+#include <imagejxx/planar_annotations.hpp>
 #include <stdexcept>
 #include <utility>
 
@@ -27,6 +28,25 @@ PreparedRoiManagerEdit replace(const DocumentSnapshot &source, std::size_t index
     result.transaction.set_rois(std::move(rows));
   }
   return result;
+}
+PreparedRoiManagerEdit select_value(const DocumentSnapshot &source,const Roi &value,
+                                    std::optional<std::size_t> index) {
+  PreparedRoiManagerEdit result{source.begin_edit(Change::All),source.display(),index};
+  if(!source.data().selection || *source.data().selection!=value.selection)
+    result.transaction.select(value.selection);
+  if(value.t)result.display->t=*value.t;
+  if(value.c)result.display->c=*value.c;
+  if(value.z)result.display->crosshair[2]=*value.z;
+  result.display->validate(source.data().dataset.shape());
+  return result;
+}
+Roi annotation_roi(const DocumentSnapshot &source,std::size_t index,std::size_t cap) {
+  auto rows=planar_annotations(source.data(),cap);
+  if(index>=rows.size())throw std::out_of_range("Select a native annotation");
+  auto &value=rows[index];
+  if(value.plane!=Plane::XY)
+    throw std::invalid_argument("Only XY annotations can be copied without projection");
+  return {std::move(value.name),std::move(value.selection),value.t,value.c,value.coordinate,std::move(value.attributes)};
 }
 } // namespace
 
@@ -68,16 +88,20 @@ PreparedRoiManagerEdit prepare_delete_roi(const DocumentSnapshot &source,
 }
 PreparedRoiManagerEdit prepare_select_roi(const DocumentSnapshot &source,
                                          std::size_t index) {
-  const auto &value = row(source, index);
-  PreparedRoiManagerEdit result{source.begin_edit(Change::All), source.display(), index};
-  if (!source.data().selection || *source.data().selection != value.selection)
-    result.transaction.select(value.selection);
-  // optional presence, rather than truthiness of the stored integer, preserves
-  // explicit index zero. Absent axes retain the current position.
-  if (value.t) result.display->t = *value.t;
-  if (value.c) result.display->c = *value.c;
-  if (value.z) result.display->crosshair[2] = *value.z;
-  result.display->validate(source.data().dataset.shape());
+  return select_value(source,row(source,index),index);
+}
+PreparedRoiManagerEdit prepare_select_planar_annotation(const DocumentSnapshot &source,
+    std::size_t index,std::size_t cap) {
+  const auto value=annotation_roi(source,index,cap);
+  return select_value(source,value,{});
+}
+PreparedRoiManagerEdit prepare_store_planar_annotation_roi(const DocumentSnapshot &source,
+    std::size_t index,std::size_t cap) {
+  auto value=annotation_roi(source,index,cap);
+  const auto target=source.data().rois.size();
+  auto rows=source.data().rois;rows.push_back(std::move(value));
+  PreparedRoiManagerEdit result{source.begin_edit(Change::All),{},target};
+  result.transaction.set_rois(std::move(rows));
   return result;
 }
 PreparedRoiManagerEdit prepare_roi_properties(const DocumentSnapshot &source,

@@ -43,8 +43,9 @@ void charge(const MetadataValue &value,std::size_t &nodes,std::size_t &bytes) {
     else for(const auto &[key,item]:std::get<MetadataObject>((*tree)->value)) {add(key.size());charge(item,nodes,bytes);}
   }
 }
-void preflight(const MetadataValue &value) {
+std::size_t preflight(const MetadataValue &value) {
   validate_metadata(value);std::size_t nodes=0,bytes=0;charge(value,nodes,bytes);
+  return bytes;
 }
 Json extent(DatasetShape shape) {shape.validate();return Json::array({shape.t,shape.c,shape.z,shape.y,shape.x});}
 Json row_json(const PlanarAnnotation &row, bool regional,bool paths) {
@@ -136,8 +137,8 @@ std::vector<PlanarAnnotation> planar_annotations(const DocumentData &data) {
   if(found==data.metadata.extensions.end())return {};
   return decode_planar_annotations(data.dataset.shape(),found->second);
 }
-std::vector<PlanarAnnotation> decode_planar_annotations(DatasetShape shape,const MetadataValue &value) {
-  preflight(value);const auto record=codec::to_json(value);
+static std::vector<PlanarAnnotation> decode_admitted_annotations(DatasetShape shape,const MetadataValue &value) {
+  const auto record=codec::to_json(value);
   fields(record,{"schema","version","extent","rows"});
   const auto version=index(record.at("version"));
   require(record.at("schema")=="imagejxx.planar-annotations" && (version==1 || version==2 || version==3),"Unsupported planar annotation schema");
@@ -167,6 +168,17 @@ std::vector<PlanarAnnotation> decode_planar_annotations(DatasetShape shape,const
   }
   if(version==3)admit_rows(shape,result,true);
   return result;
+}
+std::vector<PlanarAnnotation> decode_planar_annotations(DatasetShape shape,const MetadataValue &value) {
+  (void)preflight(value);return decode_admitted_annotations(shape,value);
+}
+std::vector<PlanarAnnotation> planar_annotations(const DocumentData &data,std::size_t cap) {
+  require(cap>=8192,"Planar annotation working limit exceeded");
+  const auto found=data.metadata.extensions.find(planar_annotations_extension);
+  if(found==data.metadata.extensions.end())return {};
+  const auto bytes=preflight(found->second);
+  require(bytes<=(cap-8192)/16,"Planar annotation working limit exceeded");
+  return decode_admitted_annotations(data.dataset.shape(),found->second);
 }
 void validate_planar_annotations(const DocumentData &data) {(void)planar_annotations(data);}
 DocumentTransaction prepare_store_planar_annotation(const DocumentSnapshot &source,const PlanarAnnotation &value) {

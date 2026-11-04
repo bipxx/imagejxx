@@ -1,0 +1,878 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-04",
+  "task": "T04a.2 M2b.2b imported XY annotation handoff and point ZIP increment",
+  "state": "verified_scoped",
+  "base_commit": "91d2ea581c8bf5dac41870072bc3076682e37f19",
+  "aspects": {
+    "implemented": "Bounded planar read; explicit XY annotation select/store/copy-back APIs; shared ROI Manager controls and physical ZIP composition.",
+    "verified": "787 unique focused Windows product cases ultimately pass;23 tool checks; two native controls and six installed SDK clients per Windows/Linux platform.",
+    "integrated": "Actual both-Windows-host imported point adoption, copy-back, stored ROI Measure/Counter/Count and native export/reopen; two-member ZIP controls and affected old manager consumers.",
+    "release_ready": false
+  },
+  "contract": {
+    "apis": [
+      "planar_annotations(source,max_working_bytes=None)",
+      "prepare_select_planar_annotation(source,index,max_working_bytes=268435456)",
+      "prepare_store_planar_annotation_roi(source,index,max_working_bytes=268435456)",
+      "resolve_planar_annotation_from_selection(source,index,max_working_bytes=268435456)"
+    ],
+    "actions": [
+      "select_planar_annotation",
+      "store_planar_annotation_roi",
+      "update_planar_annotation_selection"
+    ],
+    "ui": "ROI Manager > Plane annotations: Use as selection; Copy to ROI Manager; Replace from selection.",
+    "copies": "Independent exact XY selection/attributes. Forward copies preserve planar row/provenance; explicit copy-back retains annotation name/parent positions. Selecting wildcard T/C retains view; storing retains wildcards. Explicit zero positions preserved.",
+    "history": "Selection transient; storage one metadata history step; copy-back existing planar Update record. No new record grammar/live association.",
+    "recording": "Copy-back existing planar record/replay; forward copies retain ROI Manager recorder gap owned by T04a.3/T12.",
+    "working_limit": "Logical metadata preflight before JSON/geometry expansion; conservative decode/transfer allowance only. Existing transaction background copies, source/cache/history, allocator overhead and process RSS are outside this bound.",
+    "cache": "Catalog stores index/name/plane keyed by immutable annotation binding/document/cap; unchanged selection edits reuse it.",
+    "domain": "XY only; no implicit non-XY projection. Unknown point metadata remains opaque. Existing finite-scalar captured Measure domain unchanged."
+  },
+  "verification": {
+    "passing_unique_product_cases": 787,
+    "passing_unique_tool_cases": 23,
+    "new_api_cases": 35,
+    "new_actual_host_cases": 4,
+    "attempts": [
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-api-cap001.xml",
+          "bytes": 394,
+          "sha256": "c4ebbfce79d771ef1a8626e6c005935cfe3f837cb53a18cf9784409efdda10c5"
+        },
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-api-retry001.xml",
+          "bytes": 392,
+          "sha256": "9f97403a3dad99b775ef1d2d388a57e58d6df7f153d6860ba11904ce5933e542"
+        },
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-api001.xml",
+          "bytes": 7829,
+          "sha256": "27cb89d7674976715b60cea28ed51008b75e4c9eac43ff554d09bd65065e8e9f"
+        },
+        "passed": 33,
+        "failed": 1,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-captured-manager001.xml",
+          "bytes": 844,
+          "sha256": "f8b83cf260b8a7bc7010f73fce277e856a5dad626a73bc6a50145ab30be036b1"
+        },
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-handoff001.xml",
+          "bytes": 9387,
+          "sha256": "5bbededc0bd310a13967889a724238c32564c2f87eb7f87175afe150424ac5ea"
+        },
+        "passed": 2,
+        "failed": 2,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-manager001.xml",
+          "bytes": 4145,
+          "sha256": "c715a9106b3761c479f2106faa20360291cf0749d6b850ca28573a58a9878fff"
+        },
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-regression001.xml",
+          "bytes": 99933,
+          "sha256": "20744ff6bf3211e0bcbef206008a0c4f7570410015a8fbf02ab6cd2ab481a57a"
+        },
+        "passed": 742,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-zip001.xml",
+          "bytes": 538,
+          "sha256": "ad1531782496eb040ba1a7c81bcc5abdf50f8acdd9835142543efe5acc0f6b65"
+        },
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "process_receipts": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/install-app001.process.json",
+          "bytes": 2093,
+          "sha256": "420e39010e549a44cf0adb1ea11350e859cfa1e4d2534df264dfc6afe17c5b19"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.1410000000614673,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/install-app002.process.json",
+          "bytes": 2098,
+          "sha256": "b308ee5c42be51b66187cd893627f0226afa688a36ed8d18db8a6403bd37fb4e"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.14099999982863665,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/install-app003.process.json",
+          "bytes": 2099,
+          "sha256": "722b60a053e5ec6bfab80746a2ed0c28328825a26da2790e8ee7097cfa432824"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.14099999982863665,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/install-desktop001.process.json",
+          "bytes": 2110,
+          "sha256": "71c693336bb183bf6d6a28ca92ed844bcbec9361140a786c8027ad2660cc7322"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.17199999978765845,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/install-desktop002.process.json",
+          "bytes": 2110,
+          "sha256": "230513ce3bfc0f30b486aae4e39f59b9725c2e60866730e3f4be645b30724e02"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.1410000000614673,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/install-desktop003.process.json",
+          "bytes": 2098,
+          "sha256": "807c0281a37f2f31f714a632028a042f46c7ad60987d6ae5c0b668928981240e"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.125,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/install-processing001.process.json",
+          "bytes": 2113,
+          "sha256": "c4560ded681b81b4d40414be7bbdca729018aad88602f7ea407c0e770382976d"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.23400000017136335,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/install-sdk001.process.json",
+          "bytes": 2087,
+          "sha256": "161362c7045d0f2531cb5a73cd6e0df64a20c9761c5cdd825c7c22be9e184609"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.75,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/linux-build001.process.json",
+          "bytes": 1576,
+          "sha256": "acf35f005ff35712c1e8c855f003aeeefc25c4802bb03d6f20bd09776cfdcad6"
+        },
+        "exit_code": 2,
+        "elapsed_seconds": 80.460803502,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/linux-build002.process.json",
+          "bytes": 1577,
+          "sha256": "57bb424628662fa35366137cdce8285dc1dc9f1748c1cbc09cafeecddca88727"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 5.502625785999999,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/linux-install-sdk001.process.json",
+          "bytes": 1605,
+          "sha256": "cd3b7a383d3b6e5823cfdf4916e1aeab67b8f4b5cc58851ddb4afcc33607ab04"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.8661880150000059,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/linux-native-tests001.process.json",
+          "bytes": 1576,
+          "sha256": "e0af7446ca7e57e416ef738b7230ead7099a94065f2dbb100427a858ffbad2fc"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.17385051900000015,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/linux-sdk-build001.process.json",
+          "bytes": 1546,
+          "sha256": "54bf71931374c2249a86bbc610f2651ecaf5a289fc87e3675872ad65a144a60f"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 11.052261274000017,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/linux-sdk-configure001.process.json",
+          "bytes": 2063,
+          "sha256": "105d6ce390abfd6c67cbf575aa2d24d97f711dbe33bb95056e84938771d0711c"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 3.6521891900000014,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/linux-sdk-test001.process.json",
+          "bytes": 1572,
+          "sha256": "d4b21e05caf7398901e8e440fc7123ef5ee13d88f3508978b7cdaf584961dd67"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.4179944340000077,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-api-cap001.process.json",
+          "bytes": 2346,
+          "sha256": "d9b0e7fbc9c797b7d32d48133bd131ad2addf402c7befc5014d2589b2d837b84"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.7659999998286366,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-api-retry001.process.json",
+          "bytes": 2327,
+          "sha256": "cef5a039a91b295d11ded517a88e5467aafbac2828beb648a389dd47f19930b6"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.828999999910593,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-api001.process.json",
+          "bytes": 2313,
+          "sha256": "2c63157a30b436e25889b2d06bb2c1efe9d12ce97ab83339a0e62bf3bfc67f15"
+        },
+        "exit_code": 1,
+        "elapsed_seconds": 0.9529999999795109,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-captured-manager001.process.json",
+          "bytes": 2318,
+          "sha256": "3295f678d7c0c8f5fc1a175c06e58f94e6857615572b0b862f68cf847b431c14"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.1090000001713634,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-handoff001.process.json",
+          "bytes": 2328,
+          "sha256": "3c103b1158a507bd72efc512b66717621e91379a40622853bff8047d5fff3826"
+        },
+        "exit_code": 1,
+        "elapsed_seconds": 1.3600000001024455,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-manager001.process.json",
+          "bytes": 2342,
+          "sha256": "c7af2f3891076b3eb80f8df4bd783709f0c29e7426b8c8f396d283575f59abf5"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 3.281999999890104,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-regression001.process.json",
+          "bytes": 2655,
+          "sha256": "2654a6a20e01b5bae78084d7f98b9022cd52d9438bd7b82c6c6813f698e3df7e"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 3.094000000040978,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/python-zip001.process.json",
+          "bytes": 2470,
+          "sha256": "9ee71de95af60e42606e505694379114a75427be63013bdf81fc77b677526706"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.1870000001508743,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-build001.process.json",
+          "bytes": 2032,
+          "sha256": "6f84aa4a2f98e97a37d44190688718711c9c29fc420d85cdf89a282acfd32d3e"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 6.312000000150874,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-configure001.process.json",
+          "bytes": 2541,
+          "sha256": "43282ea8112992064e48d3606d46e16b73fe47e5863d178d1085414444688c81"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 4.187999999849126,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-test001.process.json",
+          "bytes": 2051,
+          "sha256": "7b119eb668ca1da2addfafc74b03b637549712e6cc7167a1d2b05706c75ba8d3"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.5630000000819564,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/windows-build001.process.json",
+          "bytes": 2087,
+          "sha256": "6378c0ce435b864667c763c61a4396af63a34a6d5e3313c4ab0cb1d42edcf7af"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 372.9220000000205,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/windows-native-tests001.process.json",
+          "bytes": 2049,
+          "sha256": "0e874bedb88189f8b5c52cb01d3e8e02d7579e4724e9c0dd67a52176fcdd85c9"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.125,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/windows-ui-build002.process.json",
+          "bytes": 2033,
+          "sha256": "24f1259134fdd5b4613d494b4df2ea95f84146f0c87fee7ae7177f511f186202"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 63.92200000002049,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/windows-ui-build003.process.json",
+          "bytes": 2032,
+          "sha256": "6983acaae8e3b3428017be4f46fe3cd665c6835d868ab4f67576b292390ecaf9"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 13.640000000130385,
+        "terminal": true
+      }
+    ],
+    "native_controls_per_platform": 2,
+    "sdk_clients_per_platform": 6,
+    "sdk_logs": [
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-test001.log",
+        "bytes": 1041,
+        "sha256": "b82191cd6518c0c7d9031c6dc3bc47173e453499832cf710a8f431623cc11d00"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/linux-sdk-test001.log",
+        "bytes": 1045,
+        "sha256": "c1a36d63b333013205f0a9f38c873518304836ced0747159c40a016b698f5918"
+      }
+    ],
+    "limits": [
+      "Actual UI on Windows C++ and Python hosts; not Linux/macOS UI.",
+      "No full point-tool/family/release or broad speed claim.",
+      "Original77 analysis,128 table-profile and86 fit dtype cells unchanged."
+    ]
+  },
+  "retention": {
+    "group_retirements": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/api-regression001-retirement.json",
+          "bytes": 475,
+          "sha256": "d43092c13e53af2478819b6485b0ad003b744e784cdb8e4ae771f2732f5d77f7"
+        },
+        "result": {
+          "state": "retired",
+          "group": "api-regression001",
+          "source_bytes": 4163,
+          "source_snapshot_sha256": "5caa817d0a5b23023da460f4cbadb5c002926b6b82f3628965e8ae885a5b1969",
+          "archive": {
+            "bytes": 6014,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/api-regression001.zip",
+            "sha256": "6c9f821f8702d3b205d77c4857fc1de7e455e0be3e742783c20cb3691322a9da"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/api001-retirement.json",
+          "bytes": 1647,
+          "sha256": "7ee9fdbe386e734bf96cbdfa73b0823db68dcf4f2d5b6e46acccd0c77e197fc2"
+        },
+        "result": {
+          "state": "retired_empty_scratch",
+          "group": "api001",
+          "source_bytes": 0,
+          "directories": [
+            {
+              "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/scratch/api001",
+              "device": 15157005065845190331,
+              "inode": 2251799826663237
+            },
+            {
+              "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/scratch/api001/pytest",
+              "device": 15157005065845190331,
+              "inode": 1407374896533953
+            },
+            {
+              "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/scratch/api001/pytest/test_desktop_guards_and_comple0",
+              "device": 15157005065845190331,
+              "inode": 1407374896533954
+            },
+            {
+              "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/scratch/api001/pytest-retry",
+              "device": 15157005065845190331,
+              "inode": 1407374896534005
+            },
+            {
+              "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/scratch/api001/pytest-retry/test_desktop_guards_and_comple0",
+              "device": 15157005065845190331,
+              "inode": 1407374896534006
+            }
+          ],
+          "directory_manifest_sha256": "4f2b74f144a0ed8b0da52abd2c7c71f5e292cb985643d119b131c152047c9b44",
+          "retired_before_next_group": true,
+          "evidence": "No test fixture files were produced; logs/JUnit and process receipts remain in the parent. The retention helper correctly refused an empty source; no fabricated archive was created.",
+          "scope_correction": "The preceding api-after-retirement inventory was taken after the empty-tree refusal, before directory removal. Its file-byte/root measurement remains valid; it was not proof of retirement."
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/captured-manager001-retirement.json",
+          "bytes": 482,
+          "sha256": "d65509b0e9c5d8bde688f5f290b35ea860bcd172102d73bc779a124fe1db4e58"
+        },
+        "result": {
+          "state": "retired",
+          "group": "captured-manager001",
+          "source_bytes": 223504,
+          "source_snapshot_sha256": "78b807084e41983f2ff392c35c7f4b187e4bc4c21c93897507a8322bdee2e52a",
+          "archive": {
+            "bytes": 19423,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/captured-manager001.zip",
+            "sha256": "e292b36bd092c77e90e4ded5c6c15485529de814e624f6cdc039e16604ee495f"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/closeout001-retirement.json",
+          "bytes": 467,
+          "sha256": "d37b5fcf9876ae16f4daac659654add37708b22f717971f5f5fb99b4a9cf4469"
+        },
+        "result": {
+          "state": "retired",
+          "group": "closeout001",
+          "source_bytes": 733276,
+          "source_snapshot_sha256": "c3c03022477d6bfbfee89584c33659eacbce7a8ea3218a3f491bb8e8e3f84231",
+          "archive": {
+            "bytes": 100392,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/closeout001.zip",
+            "sha256": "35caf5fceb2544d78299d587e2e44f2310f59c134a4f0ba2d791c6ce68065d77"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/handoff001-retirement.json",
+          "bytes": 465,
+          "sha256": "6e4de24d20fd11a5f9cb445c53c6e9d1f268dadc03f777e88adf6d89d166759a"
+        },
+        "result": {
+          "state": "retired",
+          "group": "handoff001",
+          "source_bytes": 1011257,
+          "source_snapshot_sha256": "689c971ac67b80ba9ad174b158c8bd7d4ff80f586f3c80437e0e148e985ba4b0",
+          "archive": {
+            "bytes": 57752,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/handoff001.zip",
+            "sha256": "55047fc632f96733eac8c2fc59a66a80d9a3be9b08977b7b1e97f6c7fc6ce9fa"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/manager001-retirement.json",
+          "bytes": 468,
+          "sha256": "cb8d13f7472de05a5bf79af99b510b4e96f65476d28a7e2a0e18c75a78bdcf5a"
+        },
+        "result": {
+          "state": "retired",
+          "group": "manager001",
+          "source_bytes": 36290210,
+          "source_snapshot_sha256": "b609df4ace8ca35e96571b3bb7e59b27710a8ed3e0ac536c6cfe433c619ac671",
+          "archive": {
+            "bytes": 3284307,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/manager001.zip",
+            "sha256": "c6f992e5a4e34548d406d72c2ec1c54e8bb7bdf77d0c364b40a435712a652431"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-retirement.json",
+          "bytes": 1058,
+          "sha256": "90d1bbf73c543bd727609a93b012a8f827aa04887c05ba7eb6a5af00939b61e8"
+        },
+        "result": [
+          {
+            "root": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/scratch/sdk-windows001",
+            "bytes": 7968885,
+            "snapshot_sha256": "63b71030104fcb7fd9dc19c37730f890a796ab43fd3872bfe62831be87155ea6",
+            "identity": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-windows001-identity.json",
+            "preserved_log": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-windows001-LastTest.log",
+            "state": "retired_after_final_review",
+            "compiler_archive_created": false
+          },
+          {
+            "root": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/scratch/sdk-linux001",
+            "bytes": 21524015,
+            "snapshot_sha256": "cccae721b6a3892585edc0f429744efbad1e9226afed92b3439006e2a5a365c1",
+            "identity": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-linux001-identity.json",
+            "preserved_log": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-linux001-LastTest.log",
+            "state": "retired_after_final_review",
+            "compiler_archive_created": false
+          }
+        ]
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/zip001-retirement.json",
+          "bytes": 456,
+          "sha256": "b345a6d5004f93a735d27284bbe8b37e931951a7f4bae5b87119d8e121fbda65"
+        },
+        "result": {
+          "state": "retired",
+          "group": "zip001",
+          "source_bytes": 797517,
+          "source_snapshot_sha256": "8551693c2880d5c24c825e62e4541e3e6abd944dc49f637f6b77db3a4ab7d554",
+          "archive": {
+            "bytes": 39708,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/zip001.zip",
+            "sha256": "3862f7481a988d14146df82203bf470e6d8a674c73b9e93b9541c08465fb33fb"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      }
+    ],
+    "sdk_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-20261104/sdk-retirement.json",
+      "bytes": 1058,
+      "sha256": "90d1bbf73c543bd727609a93b012a8f827aa04887c05ba7eb6a5af00939b61e8"
+    },
+    "compiler_caches_archived": false,
+    "all_task_scratch_removed": true,
+    "storage_measurements": [
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-after-20261104.json",
+        "bytes": 66560,
+        "sha256": "26b5a2e48ffa02a166588c8c531d847e73f350f3c9c0f02d84789a637ce77af4"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-api-after-retirement-20261104.json",
+        "bytes": 66573,
+        "sha256": "22fb458526afb33e8d0516c8638d058d52eaf376aa1b7ea8d92026be76ddf8f8"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-api-before-retirement-20261104.json",
+        "bytes": 66572,
+        "sha256": "370d215e4618d5e706a3cd55dad925ab966d690f0bf034ae51adc2d92973d4f7"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-before-20261104.json",
+        "bytes": 66572,
+        "sha256": "7f5034df7e8ed6f16b78eb831e196315c60659f6552a7253f9a7772c6e1aec06"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-captured-manager-after-20261104.json",
+        "bytes": 66573,
+        "sha256": "21b20d60d881029cd6b6000032def7f2645dd577e75cd0b09530576e0643ca4e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-manager-after-20261104.json",
+        "bytes": 66573,
+        "sha256": "58ace33949521f2746c2d66e1f6b097df08fb19dc02c79554fb49d2fbd8a3339"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-sdk-before-retirement-20261104.json",
+        "bytes": 66573,
+        "sha256": "e0f0d38ecefaffdccc0d0e1fd1ac5fbc22592118d4d8ef4d042e79574b23c210"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-ui-handoff-after-20261104.json",
+        "bytes": 66573,
+        "sha256": "e319e7f6520fee6ae8cd935cf421cf85dd4afb3df4aa092017ccf8e5cce5297b"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-ui-handoff-before-20261104.json",
+        "bytes": 66572,
+        "sha256": "537ec30229d748f79d0e91a7538272d5abeed255b4f28a57eaab775de39c4431"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-ui-handoff-retry-before-20261104.json",
+        "bytes": 66572,
+        "sha256": "86d54dfee1c7d03cfac8cb924a7e0427feb0b20a9b1ade069e3254af0284b550"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-ui-zip-after-20261104.json",
+        "bytes": 66572,
+        "sha256": "9ecb3ac1e43f1b3c081ca65af75820f9428fb86bba8dcc503d33aff1289601e2"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-handoff-ui-zip-before-20261104.json",
+        "bytes": 66572,
+        "sha256": "cc078cedb8f64f6d67d3881f899833279d550faf68362ae791a08379463f10e5"
+      }
+    ],
+    "after_known_bytes": 8435794142,
+    "unknown_subtrees": 214,
+    "complete_budget_verified": false,
+    "observed_known_before_sdk_retirement": 8465679153,
+    "normal_budget_bytes": 8589934592,
+    "scope_correction": "api-after-retirement inventory preceded empty API directory removal; api001-retirement records removal. Empty source was not archived or fabricated.",
+    "sequence": "API then handoff then ZIP then manager then captured-manager, each terminal group retired before next. SDK clients ran afterward and stayed through final review."
+  },
+  "waste_review": [
+    {
+      "finding": "Decode expansion / repeated selection route",
+      "decision": "Reuse one admitted decode body and shared select_value; retain trust/revision guards. No source image reads before analysis."
+    },
+    {
+      "finding": "Temporary transaction / results accessor assumptions",
+      "decision": "Correct exact C++/Python contracts; keep failures/narrow retries. Recurring process issue remains open, next validation owner inspects declarations before assertions."
+    },
+    {
+      "finding": "ROI Manager observations lacked window/clip data",
+      "decision": "Pass current window to existing observeControl; frontend-only retry reused native evidence."
+    },
+    {
+      "finding": "Broad filter matched module filename and selected ZIP without producer; probe skipped member-edit transition",
+      "decision": "Exact mode node IDs/producer; physically toggle existing Edit a member control and assert its observation. Both-host ZIP passes."
+    },
+    {
+      "finding": "Prior capture accumulation exceeded budget",
+      "decision": "Retain/verify/retire each group serially. Observed known points below8GiB; no absolute-peak/full-budget claim. T02 owns duplicated transport payload review."
+    },
+    {
+      "finding": "SDK compiler trees unnecessary as evidence",
+      "decision": "Retire29492900 bytes by identity and preserved LastTest logs after final review; no compiler archive."
+    },
+    {
+      "finding": "Closeout count assumed two captured-manager cases",
+      "decision": "Derive unique case identities from JUnit: captured-manager has4, yielding787 product cases. No test rerun needed for reporting correction."
+    }
+  ],
+  "remaining": [
+    "M2b.2b point-tool defaults/options and non-XY position/rebind policies.",
+    "M2b.3 manager layouts/Z/T; M3 measurement geometry/options; M4 reconciliation.",
+    "T04a.3 analysis persistence/recorder/replay including forward manager copies.",
+    "T05-T15 editor/data/Fiji/release horizon and T00 unavailable references/platform evidence."
+  ],
+  "source_identity": [
+    {
+      "path": "include/imagejxx/planar_annotation_command.hpp",
+      "bytes": 2460,
+      "sha256": "481b601e542689527249704d6354a83b794beacd41a45e65bb0f9cac186efa44"
+    },
+    {
+      "path": "include/imagejxx/planar_annotations.hpp",
+      "bytes": 3209,
+      "sha256": "c12a2684d05a7a8d695b4018d8057b91fa7d1dcb04c4abbccd7fbc3d4d102343"
+    },
+    {
+      "path": "include/imagejxx/roi_manager.hpp",
+      "bytes": 2367,
+      "sha256": "8a2695ee65fe590efe208ef040f17b6c321cef7c2be3cd50c9000207c4ab7532"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 59875,
+      "sha256": "021307d0f000f562edf163377107a622e193534bd7fb4d78673cfd8f35dfe79a"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 64982,
+      "sha256": "ffe11abbb9528707f39cd97b5213d85bded3519162acb5befcb0a0ce33d6dc5d"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 62892,
+      "sha256": "ab3f2cb8665cd3775eb5b6e0c61fc5779319d1162cbc87c722ea3d66cd96aa0c"
+    },
+    {
+      "path": "src/desktop/roi_bare_edit_ui_probe.cpp",
+      "bytes": 27816,
+      "sha256": "cca922f7b01cfaa4be830d877f1203956262cf17dc45bb73239e58f6012037ed"
+    },
+    {
+      "path": "src/desktop/roi_import_ui_probe.hpp",
+      "bytes": 1862,
+      "sha256": "ed6b13c17231092016da6a65a4e0108164985f476242812eba8712ab07638dc5"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 880742,
+      "sha256": "a5946e067cc7312f71a4118e1116a42a1f2bf75cbc09482cf2f0ac7f9e8028c4"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 82168,
+      "sha256": "dd68dc83ffa5e661a1689d57225c93ec4c3593a838b6553a2799c0bfc09a48c7"
+    },
+    {
+      "path": "src/native/planar_annotation_command.cpp",
+      "bytes": 9609,
+      "sha256": "d64b5148c88b53a22cff2b952018e1644c76221b64270e9b6cdf1549ac9dd794"
+    },
+    {
+      "path": "src/native/planar_annotation_command_bindings.cpp",
+      "bytes": 3733,
+      "sha256": "d214ac0d0820e475adc0d43f489bed00441cca4ccfaaed936078ca61cb67a893"
+    },
+    {
+      "path": "src/native/planar_annotations.cpp",
+      "bytes": 13213,
+      "sha256": "1ffba897d2f231228f9c55b318228c776b358e656566fce4fefd0e35bd491eb4"
+    },
+    {
+      "path": "src/native/planar_annotations_bindings.cpp",
+      "bytes": 3340,
+      "sha256": "aea918a2abcb26bf0e2f570e64b503463f2814e8a57964bca7606bc47a451ed4"
+    },
+    {
+      "path": "src/native/roi_manager.cpp",
+      "bytes": 5194,
+      "sha256": "e14d6ad75ea3823fde80b131a46621f848ff4532d4c101bf6b0565ff15b69113"
+    },
+    {
+      "path": "src/native/roi_manager_bindings.cpp",
+      "bytes": 3201,
+      "sha256": "7f3cdd78c0894a7d16c9d741f5f5731373f3079e3e0963932716812b8ee3dfae"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 13021,
+      "sha256": "3d55e1dfe35df0e4d1a81c727f0f37543c690e3ec50345f719254f07720103db"
+    },
+    {
+      "path": "tests/python/test_planar_roi_handoff.py",
+      "bytes": 13119,
+      "sha256": "c4b55b5928f560f9215402c212f5032074c0b13c8d637aaf27d78c2ec1680faa"
+    }
+  ],
+  "installed_products": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 19996160,
+      "sha256": "557e7196da8097cf3e627861c35b1fce55093ceade1ec12bde0a0beea560e888"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8132608,
+      "sha256": "723a7372516d683270620e36541ac6ee30bbeb59d22f6633eb89c5c7ae9c5886"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_scientific_io.cp312-win_amd64.pyd",
+      "bytes": 591872,
+      "sha256": "7e11dfe2b9ff4fdb06c627c444f305e286a5bc124b7daf0333fa32cf425915a6"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20085248,
+      "sha256": "caa6b4fbf3f58020c43806688fd452423e79af42ccd79a4a20f690d4d58f5916"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+      "bytes": 59108206,
+      "sha256": "b534cfbf97d1953944be1c926deb7828d396ad12a2f31af1655815fc7798fa67"
+    }
+  ],
+  "documentation_checks": {
+    "local_links_and_anchors": 71,
+    "inventory_capabilities": 99,
+    "historical_archive_hashes_unchanged": 3,
+    "ready_tasks": 2,
+    "source_and_installed_product_pins_match": true,
+    "retained_archive_hashes_match": true,
+    "task_scratch_absent": true,
+    "diff_hygiene": true,
+    "legacy_plan_checker": "Not claimed; existing historical row-shape migration remains T02."
+  }
+}

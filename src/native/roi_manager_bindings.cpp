@@ -41,6 +41,14 @@ void bind_roi_manager(py::module_ &m) {
   m.def("prepare_select_roi", [](const DocumentSnapshot &s, py::handle i) {
     return prepare_select_roi(s, row_index(i));
   }, py::arg("source"), py::arg("index"));
+  m.def("prepare_select_planar_annotation", [](DocumentSnapshot source,py::handle i,py::handle cap) {
+    const auto index=row_index(i),bound=row_index(cap);py::gil_scoped_release release;
+    return prepare_select_planar_annotation(source,index,bound);
+  },py::arg("source"),py::arg("index"),py::arg("max_working_bytes")=256*1048576);
+  m.def("prepare_store_planar_annotation_roi", [](DocumentSnapshot source,py::handle i,py::handle cap) {
+    const auto index=row_index(i),bound=row_index(cap);py::gil_scoped_release release;
+    return prepare_store_planar_annotation_roi(source,index,bound);
+  },py::arg("source"),py::arg("index"),py::arg("max_working_bytes")=256*1048576);
   m.def("prepare_rename_roi", [](const DocumentSnapshot &s, py::handle i, std::string name) {
     return prepare_rename_roi(s, row_index(i), std::move(name));
   }, py::arg("source"), py::arg("index"), py::arg("name"));

@@ -1,4 +1,5 @@
 #include <imagejxx/planar_annotation_command.hpp>
+#include "selection_region_rotation.hpp"
 #include "axis_command_record.hpp"
 #include <limits>
 #include <algorithm>
@@ -108,6 +109,19 @@ ResolvedPlanarAnnotationCommand resolve_planar_annotation_command(const Document
   return {source,request,std::move(record)};
 }
 void validate_planar_annotation_command_record(const MetadataObject &record) {(void)decode(record);}
+ResolvedPlanarAnnotationCommand resolve_planar_annotation_from_selection(
+    const DocumentSnapshot &source,std::size_t index,std::size_t cap) {
+  auto rows=planar_annotations(source.data(),cap/2);
+  if(index>=rows.size())throw std::out_of_range("Select a native annotation");
+  auto &row=rows[index];
+  if(row.plane!=Plane::XY)throw std::invalid_argument("Only XY annotations accept the active selection without projection");
+  if(!source.data().selection)throw std::invalid_argument("Draw a selection first");
+  SelectionEditLimits limits;limits.max_working_bytes=cap/2;
+  const auto shape=source.data().dataset.shape();
+  (void)detail::admit_selection_geometry(*source.data().selection,shape.x,shape.y,limits,{});
+  row.selection=*source.data().selection;
+  return resolve_planar_annotation_command(source,{PlanarAnnotationOperation::Update,index,std::move(row)});
+}
 ResolvedPlanarAnnotationCommand planar_annotation_command_from_record(const DocumentSnapshot &source,const MetadataObject &record) {
   const auto decoded=decode(record);const auto current=source_metadata(source);
   if(current.document_id!=decoded.source.document_id)throw std::invalid_argument("Annotation command belongs to another source");

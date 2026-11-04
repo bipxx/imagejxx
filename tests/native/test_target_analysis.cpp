@@ -4,6 +4,8 @@
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/selection_edit.hpp>
 #include <imagejxx/imagej_roi_projection.hpp>
+#include <imagejxx/roi_manager.hpp>
+#include <imagejxx/planar_annotation_command.hpp>
 #include <cmath>
 #include <iostream>
 using namespace imagejxx;
@@ -149,6 +151,18 @@ int main(){
     check(projected.point_counters==words && !projected.roi.selection.attributes.count(point_annotations_attribute));
     const auto restored=decode_imagej_roi_envelope(encode_imagej_roi_native_envelope(promoted,projected));
     check(restored.annotation()==promoted.annotation() && restored.source_record().point_counters==words);
+    auto imported_annotation=prepare_store_planar_annotation(temporary.snapshot(),promoted.annotation());
+    temporary.commit(imported_annotation);
+    const auto before_transfer=temporary.snapshot();
+    auto adoption=prepare_select_planar_annotation(before_transfer,0);
+    temporary.commit(adoption.transaction,std::move(adoption.display));
+    check(temporary.snapshot().data().selection==annotated && source->reads.size()==2);
+    auto stored=prepare_store_planar_annotation_roi(temporary.snapshot(),0);
+    const auto new_index=*stored.row_index;temporary.commit(stored.transaction);
+    check(temporary.snapshot().data().rois.at(new_index).selection==annotated);
+    const auto copyback=resolve_planar_annotation_from_selection(temporary.snapshot(),0);
+    validate_planar_annotation_command_record(copyback.record());
+    refuses<std::invalid_argument>([&]{prepare_select_planar_annotation(temporary.snapshot(),0,8192);});
   }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
 }

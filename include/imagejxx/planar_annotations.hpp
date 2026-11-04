@@ -6,7 +6,8 @@ inline constexpr const char *planar_annotations_extension = "imagejxx.planar_ann
 
 // Plane-local image-cell boundaries. Fixed coordinates name voxel centers.
 // T/C null means wildcard; fixed-axis zero remains a real positioned plane.
-// These records never become the legacy XY processing selection.
+// These records remain independent of the XY processing selection. Explicit
+// copy operations may transfer compatible XY geometry; there is no live link.
 struct PlanarAnnotation {
   std::string name;
   Selection selection;
@@ -41,6 +42,11 @@ MetadataValue encode_planar_annotations(DatasetShape,
                                       const std::vector<PlanarAnnotation> &);
 std::vector<PlanarAnnotation> decode_planar_annotations(DatasetShape,const MetadataValue &);
 std::vector<PlanarAnnotation> planar_annotations(const DocumentData &);
+// Admission before JSON/geometry expansion. The conservative working allowance
+// covers decoded annotations and transfer staging, excluding retained source
+// providers and the existing document transaction's unrelated data copies.
+std::vector<PlanarAnnotation> planar_annotations(const DocumentData &,
+                                               std::size_t max_working_bytes);
 void validate_planar_annotations(const DocumentData &);
 DocumentTransaction prepare_store_planar_annotation(const DocumentSnapshot &,
                                                    const PlanarAnnotation &);

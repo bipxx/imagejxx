@@ -30,7 +30,11 @@ void bind_planar_annotations(py::module_ &m) {
       .def_readonly("coordinate",&PlanarAnnotation::coordinate)
       .def_readonly("t",&PlanarAnnotation::t).def_readonly("c",&PlanarAnnotation::c)
       .def_property_readonly("attributes",[](const PlanarAnnotation &v){return bindings::metadata_python(v.attributes);});
-  m.def("planar_annotations",[](const DocumentSnapshot &source){return planar_annotations(source.data());});
+  m.def("planar_annotations",[](DocumentSnapshot source,py::object cap) {
+    const auto bound=cap.is_none()?std::optional<std::size_t>{}:index(cap);
+    py::gil_scoped_release release;
+    return bound?planar_annotations(source.data(),*bound):planar_annotations(source.data());
+  },py::arg("source"),py::arg("max_working_bytes")=py::none());
   m.def("planar_annotation_voxel",&planar_annotation_voxel);
   m.def("planar_annotation_world",&planar_annotation_world);
   m.def("planar_annotation_boundary",&planar_annotation_boundary);
