@@ -7,16 +7,17 @@ Do not grow this file with packet histories or duplicate the roadmap.
 
 ## Resume card
 
-Read the current gap summary and near-term queue in PLAN. Numerical analysis
-kernels have recorded Windows/Linux verification; the later Windows CI consumer now passes its 77 original cases.
-T00 still tracks publication and the full remote CI matrix. The last recorded checkout base is
-8941468. Preserve pre-existing unrelated changes; inspect current state before
-acting. Do not infer running processes or agents from old receipts or role names.
+Read PLAN for the current states. Calibrated analysis and the plan were published
+as `1d43ea8`; the added Windows CI consumer passes 77 original cases. Full remote
+CI remains pending, with missing original-reference inputs reported by Linux
+Python preflight. T01 shared image/stack conversion is now implemented and scoped
+verified on installed Windows Python3.12; T03/T04 are next. Preserve unrelated
+changes. Do not infer running processes or agents from old receipts/role names.
 
 ## Near-term delivery order
 
-T00 current packet closeout, T01 conversion waste, T03 read-only analysis
-preparation, T04 actual analysis UI. T02 removes demonstrated verification/build
+T00 remote CI/reference follow-through alongside T03 read-only analysis
+preparation and T04 actual analysis UI. T01 shared ingress is delivered. T02 removes demonstrated verification/build
 waste alongside a delivery. Use the complete T05-T15 horizon in PLAN for the rest.
 Expand only the next two executable tasks into detailed specifications.
 

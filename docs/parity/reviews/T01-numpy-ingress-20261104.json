@@ -1,0 +1,178 @@
+{
+  "date": "2026-11-04",
+  "state": "scoped_verified",
+  "scope": "T01 direct owned image/stack NumPy ingress, installed Windows Python3.12. No general ImageJ/Fiji speed or full UI/platform release claim.",
+  "source_inputs": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\bindings.cpp",
+      "bytes": 41217,
+      "sha256": "657d3c363f1c9bf8b546530334e96b8100c6593b5147ca522a5f470436c46b30"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\benchmark_kernels.py",
+      "bytes": 8972,
+      "sha256": "649c052f94e4a922b58a4b7a9de3dfba70aec2e4a4e1d2e1ae1cc35719379a1d"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\python\\test_numpy_ingress.py",
+      "bytes": 4358,
+      "sha256": "b575d1468207d3a473feb26e1b76f0e7a14f66a0e1b814fa018443cb25b0963c"
+    }
+  ],
+  "installed_native": {
+    "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+    "bytes": 7944192,
+    "sha256": "ac190d468c3dd70df5b7803b8305b31ae194d153e9a1146b3fa6447ecc1e4203"
+  },
+  "unchanged_core": {
+    "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx_core.lib",
+    "bytes": 58213930,
+    "sha256": "8751b73ef5b4ec89a7fa05b4ee542e7e418cd992cf42339398d173baa46acfbd"
+  },
+  "verification": {
+    "unique_cases": 2328,
+    "initial_passed": 2327,
+    "initial_failed": [
+      {
+        "classname": "tests.python.test_frequency_io_validation",
+        "name": "test_noise_repeatability_and_license_gate",
+        "time": "0.539"
+      }
+    ],
+    "retry_passed": 1,
+    "reason": "License-check subprocess could not see packaging; retry inherited the existing .venv dependency path through PYTHONPATH. No product change or test exclusion. Initial failed XML/log/terminal proof retained.",
+    "new_ingress_cases": 168
+  },
+  "benchmark": {
+    "route": "End-to-end raw histogram, including owned ingress and kernel; traced peak counts Python/NumPy allocations, not native vectors or RSS.",
+    "repeats": 10,
+    "cases": {
+      "u8-64/histogram": {
+        "before_median_ms": 0.025750000000000002,
+        "after_median_ms": 0.02495,
+        "median_ratio": 0.9689320388349514,
+        "before_python_numpy_peak_bytes": 32909,
+        "after_python_numpy_peak_bytes": 8653,
+        "outputs_match": true
+      },
+      "u8-4096/histogram": {
+        "before_median_ms": 172.8937,
+        "after_median_ms": 124.7499,
+        "median_ratio": 0.7215410393785314,
+        "before_python_numpy_peak_bytes": 134217869,
+        "after_python_numpy_peak_bytes": 8653,
+        "outputs_match": true
+      },
+      "u16-transposed/histogram": {
+        "before_median_ms": 14.675899999999999,
+        "after_median_ms": 11.5414,
+        "median_ratio": 0.7864185501400255,
+        "before_python_numpy_peak_bytes": 8388749,
+        "after_python_numpy_peak_bytes": 8653,
+        "outputs_match": true
+      },
+      "f32-reversed/histogram": {
+        "before_median_ms": 10.516,
+        "after_median_ms": 7.4571000000000005,
+        "median_ratio": 0.7091194370483074,
+        "before_python_numpy_peak_bytes": 8388749,
+        "after_python_numpy_peak_bytes": 8653,
+        "outputs_match": true
+      },
+      "f64-contiguous/histogram": {
+        "before_median_ms": 8.3783,
+        "after_median_ms": 7.6486,
+        "median_ratio": 0.9129059594428465,
+        "before_python_numpy_peak_bytes": 8653,
+        "after_python_numpy_peak_bytes": 8653,
+        "outputs_match": true
+      },
+      "u16-swapped/histogram": {
+        "before_median_ms": 10.63805,
+        "after_median_ms": 7.7232,
+        "median_ratio": 0.725997715746777,
+        "before_python_numpy_peak_bytes": 8389349,
+        "after_python_numpy_peak_bytes": 8653,
+        "outputs_match": true
+      }
+    }
+  },
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/before.json",
+      "bytes": 4941,
+      "sha256": "cff89b08fe69ce12f1ceb2347ed4389f0a6f45eed4fd3b8d3852e85dc45c0b8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/after.json",
+      "bytes": 5391,
+      "sha256": "69347a42b402e51fe3cc816fb446649354b592370853a80cbc834b7ba3b1705d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/tests.xml",
+      "bytes": 334092,
+      "sha256": "603f22edb7782f409dba527f07624e1b5b9063486cf36f3786a0eb749d1ffe05"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/retry-tests.xml",
+      "bytes": 369,
+      "sha256": "8c77fc3f8b80e53cc7978bb3284fa20b0fafa7fb426b90b0c31273d9a41433a6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/build-receipt.json",
+      "bytes": 6765,
+      "sha256": "223bc07fcd359ad48e1e2e3259f614a372ce192d0322d07565d8bea0838ef092"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/retention.json",
+      "bytes": 3200,
+      "sha256": "fb8298d7acc3831ae04b41d4474f41c55f5a05e445f47a751c0fc6b86b3b4c17"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/before.log",
+      "bytes": 362,
+      "sha256": "1ddf840d5f5b9121f904e8253341d45bc6846eba9ff8d21bd93a337de03a7d8c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/pytest.log",
+      "bytes": 5017,
+      "sha256": "7b05b415696068e51b32fae965bbfbf89824870da9239fec1177fa587ebf0e7a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/pytest-retry.log",
+      "bytes": 873,
+      "sha256": "dd09d04f00778ad2c84c2788d22ea520519e202118deeee2c40bfae50069862f"
+    }
+  ],
+  "waste_review": {
+    "fixed": "Eliminated full-sized double temporaries from both image and stack ingress; reused benchmark and process ownership tools. Rebuilt only _native in the active cache; native core archive unchanged.",
+    "deferred": "Other binding modules have their own ingress contracts. Audit them when touched; do not generalize these measurements to their paths. Existing native Image zero initialization and finite scan remain required by current contracts.",
+    "cleanup": {
+      "state": "retired",
+      "scratch_bytes": 3813,
+      "diagnostics": {
+        "path": ".tmp/manual-workflow-verification/plan-t01-ingress-20261104/scratch-diagnostics.zip",
+        "bytes": 5109,
+        "sha256": "3f1dcefefa06a318ee179cd9d3a4ec736eafbe3833b946e5d51f9d96f5bc55d3"
+      }
+    },
+    "one_off_executable_scripts_added": 0
+  },
+  "storage_after": {
+    "receipt": ".tmp/manual-workflow-verification/plan-t01-after-20261104.json",
+    "known_bytes": 8452816494,
+    "unknown_subtrees": 214,
+    "full_budget_verified": false
+  },
+  "remote_ci_observation": {
+    "run": 41854450974,
+    "commit": "1d43ea8c34a1b079523dd8904375e06ce4c054cb",
+    "scope": "Preceding calibrated-analysis commit, not this T01 successor",
+    "state": "active_with_Linux_Python_preflight_failures",
+    "reference_readiness_artifact_id": 13336274528,
+    "missing_original_inputs": 6,
+    "prior_regular_file_search": ".tmp/manual-workflow-verification/reference-retained-files-search001.json",
+    "prior_git_blob_search": ".tmp/manual-workflow-verification/reference-git-object-search001.json",
+    "next_action": "Reuse previous searches; investigate remaining archive/Linux/external availability only if evidence supports recovery. Do not rehash unchanged whole trees or repin missing inputs."
+  }
+}

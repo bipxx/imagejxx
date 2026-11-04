@@ -40,24 +40,28 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | --- | --- | --- |
 | Axis/projection and Gaussian routes | Scoped integration verified in both Windows ImGui hosts; published base includes 8941468. | Preserve the working paths; audit remaining options/consumers. |
 | Canvas/XYZ geometry | Effective spatial input integrated and scoped verified in both hosts. | Finish remaining view/fit/source variants through T07/T11. |
-| Calibrated analysis kernels | Implemented; recorded verification has 77 original numerical cases on both installed SDKs and 83 Windows Python cases. Local packet is ready for publication; changed Windows CI consumer now passes. | T00 tracks remote CI/publication; T03/T04 finish admission and UI integration. |
+| Calibrated analysis kernels | Implemented; recorded verification has 77 original numerical cases on both installed SDKs and 83 Windows Python cases. Published as 1d43ea8; changed Windows CI consumer passes. | T00 tracks remote CI/reference availability; T03/T04 finish admission and UI integration. |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
 | Storage | 2026-11-04 known total 8,452,279,019 bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Near-term queue
 
-1. **T00 — Close the current packet.** The Windows added CI SDK route passed (77 original cases); see [receipt](parity/reviews/G034-calibrated-analysis-ci-20261104.json). Publish the packet and inspect remote CI. Reuse the
-   existing installed runtime/SDK; check its generator/consumer and imported
-   archive identity, retain diagnostics, review the diff, then commit/push only
-   owned completed work. The earlier tests do not prove the later CI edits.
-2. **T01 — Remove the extra Python conversion buffer.** Convert supported NumPy
-   input directly into the existing owned native Image buffer. Preserve dtype,
-   byte order, strides, shape, finite-value checks and ownership during GIL
-   release. Include contiguous, transposed, reversed and non-native-endian
-   inputs. Measure conversion time and allocated bytes/peak memory separately;
-   the old 4096-square UInt8 two-double-buffer calculation is 256 MiB, not a
-   measured RSS result. Avoid a premature zero-copy ownership redesign.
+1. **T00 — Publication and CI follow-through.** Packet published as `1d43ea8`.
+   The added installed Windows SDK consumer passed all 77 original cases with
+   its expected archive. [Remote run](https://github.com/bipxx/imagejxx/actions/runs/41854450974)
+   is active; Linux Python preflight reports six unavailable original inputs.
+   Recover/configure their exact pinned bytes where available; preserve unknown
+   availability and expected hashes. Other ready work continues independently.
+2. **T01 — Delivered for shared image/stack ingress.** Direct NumPy conversion
+   now fills the owned native buffer, preserving dtype/byte order, strides,
+   shape, finite rejection and lifetime at GIL release. Installed Windows
+   Python3.12 regression: 2,328 cases ultimately pass (one dependency-path retry,
+   original failure retained). Six before/after histogram outputs match; the
+   4096-square UInt8 traced Python/NumPy peak fell from 134,217,869 to 8,653 bytes
+   and median from 172.894 to 124.750 ms. Native vectors/RSS are outside tracing.
+   [Evidence](parity/reviews/T01-numpy-ingress-20261104.json). No general speed or
+   full-platform claim; other binding modules retain their separate contracts.
 3. **T03 — Prepare captured analysis.** Use existing ResolvedTarget and native
    analysis kernels. Admit plane acquisition, ROI/raster, histogram/lookup,
    median/profile, record and simultaneous result/plot storage from metadata
@@ -85,7 +89,7 @@ whole subsystems. Dependencies block their consumers, not independent work.
 | Task | Required outcome and coverage | Dependency / completion evidence |
 | --- | --- | --- |
 | T00 Packet closeout | Current numerical APIs, Python bindings and CI registration published coherently. | Changed CI consumer verified; source/product identities and pending limitations recorded. |
-| T01 Python conversion | One necessary owned conversion, with behavior and ownership preserved (G089; shared processing ingress). | Dtype/stride/endian/refusal tests plus measured allocation/time comparison. |
+| T01 Python conversion | Delivered in shared image/stack ingress (G089); other module ingress remains separately scoped. | Installed Windows: 2,328 cases ultimately pass, including 168 new cases; measured allocation/time and matching outputs. See linked receipt above. |
 | T02 Verification/build efficiency | Reuse checked-in CI/ownership/retention helpers; express cases/retries as data. Consolidate new work onto a few runners. | Existing failure/ownership guarantees preserved; fewer new executable harnesses. Batch shared-header/FP-list edits; isolate build dependencies only when measured cost justifies it. |
 | T03 Analysis preparation | Metadata-only admission and frozen read-only target/result contracts (G066/G068/G069/G070). | No provider reads/callbacks on rejection; retained resources/cancellation/stale source tests. |
 | T04 Analysis integration | Measurements, profile/histogram/threshold UI and live/saved result ownership (G009/G038/G047/G049/G066/G068/G069/G070/G071). | Original Analyzer/ProfilePlot semantics, both hosts, unit/density/axis/configuration variants and state lifecycle. |
@@ -154,7 +158,7 @@ feature or block unrelated ready work.
 
 | Finding | Owner / action | Evidence or closeout condition |
 | --- | --- | --- |
-| Two full double buffers in Python ingress | T01: direct conversion into one owned buffer. | Allocation and dtype/stride/endian tests; keep safe lifetime semantics. |
+| Two full double buffers in shared Python ingress | Fixed by T01 for image/stack conversion; inspect other binding paths when touched. | One owned destination, allocation regression and 168 layout/refusal cases. Six measured workloads; no general speed claim. |
 | Many temporary harness generations | T02: reuse existing drivers and data inputs; retire superseded scripts only with evidence identities preserved. | Prior audit counted 732 Python/171 PowerShell scripts; not every retained script is disposable. |
 | Shared headers/Make flags fanout | T02 plus each source owner: batch coherent edits; consider isolation after measurement. | Recorded full Linux core 538 s vs 9 s successor; desktop 671 s vs 21 s successor are different workloads, not speed benchmarks. |
 | Repeated calibration queries per draw | T07 owner: capture once per draw and derive spacing from that value when correct. | Confirm repeated validation calls; measure frame cost before claiming a speed gain. |
@@ -163,11 +167,20 @@ feature or block unrelated ready work.
 
 ## Latest task closeout
 
-2026-11-04 plan reset: full remaining scope mapped; delivery states separated
-from legacy whole-family certification; risk-based checks and per-task waste
-review made operational. Long histories preserved byte-for-byte in sibling
-history documents. No product builds or disposable verification scripts needed.
-T00 follow-up: installed Windows CI consumer passes all 77 original cases with the expected imported archive. Product freeze is unchanged apart from two recorded CI configuration inputs; broader CI remains pending publication. Waste review reused the installed SDK and existing ownership/storage tools, added no verifier script, removed 8,811,046 scratch bytes and retired a superseded 136,540,673-byte capture after preserving its summary and hashes. See [SDK receipt](parity/reviews/G034-calibrated-analysis-ci-20261104.json) and [retirement](parity/reviews/plan-t00-storage-retirement-20261104.json). T01 remains next; T02 needs no new framework.
+2026-11-04 T01: direct image/stack conversion implemented and scoped verified;
+2,327/2,328 initial cases passed and the license-check subprocess passed its
+single retry with the existing dependency path. Initial failed log/XML and
+terminal process proof remain. One active cache/runtime reused; only `_native`
+rebuilt (36.9 s), native core archive unchanged. Existing benchmark, process and
+storage tools reused; no temporary executable verifier added. Necessary scratch
+was compressed/member-hash verified and 3,813 bytes retired. Known storage after
+T01 is 8,452,816,494 bytes; 214 denied subtrees still leave the full budget unknown.
+
+Waste decision: fix the measured full-size conversion copy now; retain necessary
+finite validation and current Image initialization contract. Defer other module
+conversion audits to touched seams rather than a speculative ownership rewrite.
+T00 publication is done; remote CI/reference availability remains open. T03 and
+T04 are the next product tasks. Detailed evidence is linked once above.
 
 ## Historical link compatibility
 

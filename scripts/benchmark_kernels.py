@@ -11,6 +11,7 @@ import platform
 import statistics
 import sys
 import time
+import tracemalloc
 
 import imagejxx as ij
 import imagejxx._native as native
@@ -29,10 +30,12 @@ def main():
     parser.add_argument("--warmup", type=int, default=5)
     parser.add_argument("--build-label", default="unspecified")
     parser.add_argument("--entrypoint", choices=("raw", "prepare"), default="raw")
-    parser.add_argument("--suite", choices=("filters", "processing", "segmentation"), default="filters")
+    parser.add_argument("--suite", choices=("filters", "processing", "segmentation", "ingress"), default="filters")
     args = parser.parse_args()
     if args.repeats < 10 or args.warmup < 1:
         parser.error("Use at least ten timed repeats and one warmup")
+    if args.suite == "ingress" and args.entrypoint != "raw":
+        parser.error("Ingress measures the raw NumPy-to-native histogram route")
     reference = None
     if args.compare:
         reference = json.loads(args.compare.read_text(encoding="utf-8"))
@@ -110,11 +113,23 @@ def main():
             "u8-mask-256": (rng.random((256, 256)) > 0.35).astype(np.uint8) * 255,
             "f32-gray-128": gray,
         }
+    if args.suite == "ingress":
+        operations = {"histogram": {}}
+        fixtures = {
+            "u8-64": np.arange(64 * 64, dtype=np.uint8).reshape(64, 64),
+            "u8-4096": np.zeros((4096, 4096), dtype=np.uint8),
+            "u16-transposed": np.arange(1024 * 1024, dtype=np.uint16).reshape(1024, 1024).T,
+            "f32-reversed": np.ones((1024, 1024), dtype=np.float32)[::-1, ::-1],
+            "f64-contiguous": np.ones((1024, 1024), dtype=np.float64),
+            "u16-swapped": np.arange(1024 * 1024, dtype=np.uint16).astype(np.dtype(np.uint16).newbyteorder("S")).reshape(1024, 1024),
+        }
+        result["scope"] = "End-to-end raw histogram, including owned ingress and kernel; traced peak counts Python/NumPy allocations, not native vectors or RSS."
     for fixture_name, pixels in fixtures.items():
         input_hash = array_hash(pixels)
-        app = ij.Application()
-        app.adopt(ij.Document(ij.Dataset(pixels, axes="YX" if pixels.ndim == 2 else "YXS")))
-        target = app.resolve_target()
+        if args.suite != "ingress":
+            app = ij.Application()
+            app.adopt(ij.Document(ij.Dataset(pixels, axes="YX" if pixels.ndim == 2 else "YXS")))
+            target = app.resolve_target()
         for operation, parameters in operations.items():
             if pixels.ndim != 2 and operation in gray_only:
                 continue
@@ -134,6 +149,9 @@ def main():
                     if value != before[key]:
                         parser.error(f"{case_name}: comparison requires matching {key}")
             def evaluate():
+                if args.suite == "ingress":
+                    counts, edges = native.histogram(pixels, 256, 0.0, 65536.0)
+                    return np.concatenate((counts, edges))
                 if args.entrypoint == "prepare":
                     return app.prepare(operation, target, parameters).preview.dataset.plane()
                 return ij.execute_operation(operation, pixels, parameters)
@@ -152,6 +170,14 @@ def main():
                 output_dtype=str(output.dtype),
                 output_sha256=array_hash(output),
             )
+            if args.suite == "ingress":
+                # Separate from timing: instrumentation changes execution cost.
+                tracemalloc.start()
+                try:
+                    evaluate()
+                    case["python_numpy_peak_bytes"] = tracemalloc.get_traced_memory()[1]
+                finally:
+                    tracemalloc.stop()
             if array_hash(pixels) != input_hash:
                 raise RuntimeError(f"{case_name}: input changed")
             if before:

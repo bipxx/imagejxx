@@ -92,15 +92,23 @@ PixelType named_type(const std::string& name) {
     if (name == "float64") return PixelType::Float64;
     throw std::invalid_argument("Unsupported output dtype");
 }
+void read_pixels(const py::array& array, Image& image, const char* label) {
+    // Non-owning destination view exists only while the GIL and Image owner are
+    // held here. CopyInto handles strides, unaligned data and byte order directly
+    // into native storage, without a second full-sized double array. The pinned
+    // pybind11 NumPy bridge supplies the compatible NumPy 1/2 API entry point.
+    std::vector<py::ssize_t> shape(array.shape(), array.shape() + array.ndim());
+    py::array_t<double> destination(shape, image.pixels.data(), py::none());
+    if (py::detail::npy_api::get().PyArray_CopyInto_(destination.ptr(), array.ptr()) < 0)
+        throw py::error_already_set();
+    for (double v : image.pixels) require_finite(v, label);
+}
 Image read_image(const py::array& array) {
     if (array.ndim() != 2 && array.ndim() != 3) throw std::invalid_argument("Image must have shape (H,W) or (H,W,3/4); use stack functions for volumes");
     int c = array.ndim() == 3 ? dimension(array, 2) : 1;
     if (array.ndim() == 3 && c != 3 && c != 4) throw std::invalid_argument("Color images must have three or four channels");
     Image image(dimension(array, 1), dimension(array, 0), c, pixel_type(array));
-    auto values = py::array_t<double, py::array::c_style | py::array::forcecast>::ensure(array);
-    if (!values) throw std::invalid_argument("Could not convert image pixels");
-    std::copy_n(values.data(), image.pixels.size(), image.pixels.data());
-    for (double v : image.pixels) require_finite(v, "Image pixel");
+    read_pixels(array, image, "Image pixel");
     return image;
 }
 std::unique_ptr<Image> read_optional(const py::object& array) {
@@ -114,13 +122,14 @@ Stack read_stack(const py::array& array) {
     int depth = dimension(array, 0), h = dimension(array, 1), w = dimension(array, 2), c = array.ndim() == 4 ? dimension(array, 3) : 1;
     if (array.ndim() == 4 && c != 3 && c != 4) throw std::invalid_argument("Stack color channels must be three or four");
     auto type = pixel_type(array);
-    auto values = py::array_t<double, py::array::c_style | py::array::forcecast>::ensure(array);
-    if (!values) throw std::invalid_argument("Could not convert stack pixels");
+    std::vector<py::ssize_t> shape(array.shape() + 1, array.shape() + array.ndim());
+    std::vector<py::ssize_t> strides(array.strides() + 1, array.strides() + array.ndim());
     Stack out; out.reserve(static_cast<std::size_t>(depth));
     for (int z = 0; z < depth; ++z) {
         Image slice(w, h, c, type);
-        std::copy_n(values.data() + static_cast<std::size_t>(z) * slice.pixels.size(), slice.pixels.size(), slice.pixels.data());
-        for (double v : slice.pixels) require_finite(v, "Stack pixel");
+        py::array plane(array.dtype(), shape, strides,
+            static_cast<const char*>(array.data()) + z * array.strides(0), array);
+        read_pixels(plane, slice, "Stack pixel");
         out.push_back(std::move(slice));
     }
     return out;
