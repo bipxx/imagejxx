@@ -6,6 +6,7 @@
 #include <atomic>
 #include <chrono>
 #include <thread>
+#include <imgui_internal.h>
 
 namespace imagejxx::desktop {
 namespace {
@@ -211,6 +212,43 @@ Json capturedPathMeasurementUiCase(Window& window,const std::string& context,con
     n=reads.counts().plane_reads;window.action("measure_rois");window.wait();
     report["batch_reads"]={{"before",n},{"after",reads.counts().plane_reads}};
     window.action("save_results",{{"path",(dir/"paths.csv").u8string()}});
+    const Selection points("multipoint",{{.5,.5},{2.25,1.75},{.5,.5}},7);
+    source->select(points);before=source->snapshot();const auto point_undo=source->undo_steps();frame();measure();
+    report["point_rows"]=Json::array();
+    for(std::size_t i=window.results.size()-3;i<window.results.size();++i)report["point_rows"].push_back(window.results.at(i));
+    report["point_source_unchanged"]=source->snapshot().shares_data(before) && source->undo_steps()==point_undo;
+    auto edit=source->begin_edit();edit.set_rois({Roi{"points",points,{},{},{},{}},
+      Roi{"angle",angle,{},{},{},{}},Roi{"area",Selection("rectangle",{{0,0},{2,2}}),{},{},{},{}}});source->commit(edit);
+    frame();frame();
+    if(last.at("roi_manager").at("controls").contains("tab") &&
+        !last.at("roi_manager").at("controls").at("tab").value("selected",false))
+      clickControl(last.at("roi_manager").at("controls").at("tab"),"manager.tab");
+    clickControl(last.at("roi_manager").at("controls").at("row.0"),"manager.row.0");
+    // Scroll from the actual child clip area, not from a potentially occluded row.
+    for(int attempt=0;attempt<4;++attempt) {
+      const auto root=ImGui::FindWindowByName("ROI manager");ImGuiWindow* child=nullptr;
+      require(root && root->Active,"ROI manager unavailable for point selection");
+      for(auto window:root->DC.ChildWindows)if(window->ParentWindow==root &&
+          std::string(window->Name).find("saved_roi_rows")!=std::string::npos)child=window;
+      require(child && child->Active,"ROI rows unavailable for point selection");
+      const auto point=last.at("roi_manager").at("controls").at("row.2").at("point");
+      const auto clip=child->InnerClipRect;const auto y=point[1].get<float>();
+      if(y>clip.Min.y+1 && y<clip.Max.y-1 && y<ImGui::GetIO().DisplaySize.y)break;
+      require(attempt<3 && child->ScrollMax.y>0,"Point measurement row remains clipped");
+      const auto previous=child->Scroll.y;
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",{(clip.Min.x+clip.Max.x)/2,(clip.Min.y+clip.Max.y)/2}}}}));
+      frame(Json::array({{{"type","wheel"},{"x",0},{"y",-4}}}));frame();frame();
+      report["point_scroll"]=Json{{"before",previous},{"after",child->Scroll.y},{"maximum",child->ScrollMax.y}};
+      require(child->Scroll.y>previous,"Point measurement rows did not scroll");
+    }
+    frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",true}}}));
+    clickControl(last.at("roi_manager").at("controls").at("row.2"),"manager.row.2");
+    frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",false}}}));
+    report["selected_before_count"]=window.results.size();
+    clickControl(last.at("roi_manager").at("controls").at("measure_selected"),"manager.measure_selected");
+    window.wait();frame();report["selected_rows"]=window.results;
+    window.updateSettings({{"measurements",{"ROI","Point index","X","Y","mean","Area","integrated_density"}}},false);
+    window.action("save_results",{{"path",(dir/"points.csv").u8string()}});
     report["workflow_count"]=window.workflow.size();
     report["jobs_reserved_after"]=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
     report["state"]="observed";session.close();writeJson((dir/"case.json").u8string(),report);return report;

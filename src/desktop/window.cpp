@@ -4177,12 +4177,14 @@ struct Window::Impl {
     }
     status = "Processing...";
   }
-  void startMeasurement(const std::shared_ptr<Document>& facade,bool manager=false) {
+  void startMeasurement(const std::shared_ptr<Document>& facade,bool manager=false,
+      const std::vector<std::size_t>& indices={}) {
     if(owner.busy())throw std::invalid_argument("Wait for the current edit to finish");
     TargetAnalysisLimits limits;limits.max_working_bytes=processingCap();
-    const auto request=manager?roi_measurement_target_request(facade->nativeSnapshot(),{},limits.max_measurement_rows):TargetRequest{};
+    const auto request=manager?roi_measurement_target_request(facade->nativeSnapshot(),indices,limits.max_measurement_rows):TargetRequest{};
     const auto target=owner.controller_->resolve_target(request,facade->id);
     TargetAnalysisOptions options;options.measurement=manager?TargetMeasurementMode::RoiManager:TargetMeasurementMode::Selection;
+    options.roi_indices=indices;
     options.reflex_angle=preferenceState.settings.boolean("reflex_angle");
     const auto command=resolve_target_analysis(target,options,limits);
     const auto rows=captured_measurement_row_bytes(command);
@@ -6876,9 +6878,31 @@ void Window::action(const std::string &name, const Json &p) {
   if((name=="measure" || name=="measure_rois") && !documents_.empty()) {
     const auto facade=document();
     const bool manager=name=="measure_rois";
+    if(manager && p.is_object() && !p.empty() && !captured_roi_measurement_available(facade->nativeSnapshot()))
+      throw std::invalid_argument("Selected ROI measurement requires finite scalar storage");
     if(manager?captured_roi_measurement_available(facade->nativeSnapshot()):captured_measurement_available(facade->nativeSnapshot())) {
-      if(!p.is_object() || !p.empty())throw std::invalid_argument("Measurement uses the current captured selection and plane");
-      impl->startMeasurement(facade,manager);return;
+      if(!p.is_object() || (!manager && !p.empty()))throw std::invalid_argument("Measurement uses the current captured selection and plane");
+      std::vector<std::size_t> indices;
+      if(manager) {
+        for(const auto& field:p.items())if(field.key()!="indices" && field.key()!="document_id" && field.key()!="metadata_revision")
+          throw std::invalid_argument("Unknown ROI measurement field");
+        const auto captured=facade->nativeSnapshot();
+        for(const auto* key:{"document_id","metadata_revision"})if(p.contains(key)) {
+          const auto& value=p.at(key);
+          if(!value.is_number_integer() || value<0)throw std::invalid_argument("Invalid ROI measurement source guard");
+          const auto expected=std::string(key)=="document_id"?captured.id():captured.revisions().metadata;
+          if(value.get<std::uint64_t>()!=expected)throw RevisionConflict();
+        }
+        if(p.contains("indices")) {
+          if(!p.at("indices").is_array() || p.at("indices").empty() || p.at("indices").size()>100000)
+            throw std::invalid_argument("Selected ROI measurement requires nonempty bounded indices");
+          for(const auto& value:p.at("indices")) {
+            if(!value.is_number_integer() || value<0)throw std::invalid_argument("Invalid ROI measurement index");
+            indices.push_back(value.get<std::size_t>());
+          }
+        }
+      }
+      impl->startMeasurement(facade,manager,indices);return;
     }
   }
   if(name=="profile" && !documents_.empty()) {
@@ -11027,6 +11051,17 @@ void Window::Impl::rois() {
   auto &io = ImGui::GetIO();
   ImGui::SameLine();
   ImGui::Text("%zu selected", roiSelectedIndices.size());
+  const bool canMeasureSelected=!roiSelectedIndices.empty() && roiManagerSource &&
+      captured_roi_measurement_available(*roiManagerSource) && actionAllowed("measure_rois");
+  ImGui::BeginDisabled(!canMeasureSelected);
+  if(ImGui::Button("Measure selected"))guard([&] {
+    synchronizeRoiManager();
+    if(!roiManagerSource || roiSelectedIndices.empty())throw std::invalid_argument("Select saved ROIs to measure");
+    const auto captured=*roiManagerSource;
+    owner.action("measure_rois",{{"indices",std::vector<std::size_t>(roiSelectedIndices.begin(),roiSelectedIndices.end())},
+        {"document_id",captured.id()},{"metadata_revision",captured.revisions().metadata}});
+  });
+  observeRoiManagerControl("measure_selected",canMeasureSelected);ImGui::EndDisabled();
   const bool canCombine = roiManagerCanCombine();
   ImGui::BeginDisabled(!canCombine);
   auto combine = [&](const char *label, const char *operation) {

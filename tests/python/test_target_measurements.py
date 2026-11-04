@@ -146,7 +146,7 @@ def test_cancellation_discards_partial_group_and_unsupported_rows_refuse():
         ij.execute_target_analysis(command, cancellation=token, progress=progress)
     assert reads.counts().plane_reads == n + 1
     edit = owner.begin_edit()
-    edit.set_rois([ij.ROI("unsupported", ij.Selection("point", [(0, 0)]))])
+    edit.set_rois([ij.ROI("unsupported", ij.Selection("line", [(0, 0), (1, 1)], width=2))])
     owner.commit(edit)
     n = reads.counts().plane_reads
     with pytest.raises(ValueError):

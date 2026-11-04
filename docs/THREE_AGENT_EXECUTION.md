@@ -37,7 +37,8 @@ T04a.1 bounds/configured profiles and scoped lifecycle are now verified in both
 Windows hosts and installed native clients. T04a.2 now integrates captured
 scalar area/line and grouped manager measurements. M1 path/angle/Bounds is now
 scoped integrated in both Windows hosts, with installed Windows/Linux clients.
-Next M2 points/manager, M3 area/shape/options and M4 reconciliation;
+M2a expanded point rows and selected manager are also scoped integrated.
+Next M2b point annotations/manager variants, M3 area/shape/options and M4 reconciliation;
 then T04a.3 persistence/replay. No full measurement/platform completion claim.
 Use PLAN for concrete exits and the per-task waste decision/revisit trigger.
 Preserve the capture guard, physical-axis tests, resource

@@ -25,7 +25,7 @@ def test_actual_path_angle_and_mixed_manager_controls(context, tmp_path):
     for frame in report["frames"]:
         assert frame["events"] == frame["input_frame"]["raw_inputs"]
     controls = [row["name"] for row in report["controls"]]
-    assert controls.count("menu.action.measure") == 3
+    assert controls.count("menu.action.measure") == 4
     assert "menu.action.measure_rois" in controls and "manager.measure_rois" in controls
     for row in report["controls"]:
         assert row["control"]["enabled"] and row["control"]["id"] > 0
@@ -50,3 +50,19 @@ def test_actual_path_angle_and_mixed_manager_controls(context, tmp_path):
     assert len(rows) == 13 and rows[0]["mean"] == "5.000"
     assert report["preferences"]["values"]["reflex_angle"] is True
     assert report["persisted_reflex"] is True
+    assert report["point_source_unchanged"]
+    points = report["point_rows"]
+    assert [r["Point index"] for r in points] == [0, 1, 2]
+    assert [r["mean"] for r in points] == [11, 22, 11]
+    assert [r["Area"] for r in points] == [0, 0, 0]
+    assert [r["integrated_density"] for r in points] == [11, 22, 11]
+    assert [r["X"] for r in points] == [.25, 1.125, .25]
+    selected = report["selected_rows"]
+    assert len(selected) == report["selected_before_count"] + 4
+    assert [r["ROI index"] for r in selected[-4:]] == [0, 0, 0, 2]
+    assert "manager.measure_selected" in controls
+    with path.with_name("points.csv").open(newline="", encoding="utf-8") as f:
+        exported = list(csv.DictReader(f))
+    assert len(exported) == len(selected)
+    assert [r["Point index"] for r in exported[-4:]] == ["0", "1", "2", ""]
+    assert exported[-4]["X"] == "0.250" and exported[-4]["Area"] == "0.000"

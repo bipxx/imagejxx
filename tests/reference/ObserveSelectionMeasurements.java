@@ -14,6 +14,7 @@ import ij.process.FloatProcessor;
 public class ObserveSelectionMeasurements {
   static String inputType="uint8";
   static boolean geometry=false,interpolate=true,reflex=false;
+  static boolean pointOrigin=false;
   static String number(double value) {
     if (Double.isNaN(value)) return "\"nan\"";
     if (Double.isInfinite(value)) return value > 0 ? "\"inf\"" : "\"-inf\"";
@@ -32,6 +33,8 @@ public class ObserveSelectionMeasurements {
     } else image=new ImagePlus("selection measurement",new ByteProcessor(7,5,pixels));
     image.setGlobalCalibration(null);
     Calibration cal=image.getLocalCalibration();cal.pixelWidth=sx;cal.pixelHeight=sy;cal.setUnit("um");
+    boolean point=kind.equals("point") || kind.equals("multipoint");
+    if(pointOrigin){cal.xOrigin=-11/sx;cal.yOrigin=7/sy;}
     if (!density.equals("raw")) cal.setFunction(density.equals("linear")?Calibration.STRAIGHT_LINE:Calibration.POLY2,
       density.equals("linear")?new double[]{10,2}:new double[]{0,0,1},"value");
     Roi roi;
@@ -39,7 +42,7 @@ public class ObserveSelectionMeasurements {
     else {
       float[] x=new float[xy.length/2],y=new float[x.length];
       for(int i=0;i<x.length;i++){x[i]=(float)xy[2*i];y[i]=(float)xy[2*i+1];}
-      roi=new PolygonRoi(x,y,x.length,kind.equals("angle")?Roi.ANGLE:Roi.POLYLINE);
+      roi=point?new ij.gui.PointRoi(x,y,x.length):new PolygonRoi(x,y,x.length,kind.equals("angle")?Roi.ANGLE:Roi.POLYLINE);
     }
     image.setRoi(roi);roi.setStrokeWidth(1);
     ij.gui.PlotWindow.interpolate=interpolate;ij.Prefs.reflexAngle=reflex;
@@ -51,7 +54,7 @@ public class ObserveSelectionMeasurements {
     ResultsTable table=new ResultsTable();
     Analyzer analyzer=new Analyzer(image,Measurements.AREA|Measurements.MEAN|Measurements.STD_DEV|
       Measurements.MIN_MAX|Measurements.MEDIAN|Measurements.CENTROID|Measurements.INTEGRATED_DENSITY|
-      (geometry?Measurements.RECT:0),table);
+      (geometry || point?Measurements.RECT:0),table);
     String failure=null;
     try {analyzer.measure();}catch(RuntimeException error){if(!geometry)throw error;failure=error.getClass().getName();}
     StringBuilder row=new StringBuilder("{\"kind\":\"").append(kind).append("\",\"spacing\":[")
@@ -59,6 +62,19 @@ public class ObserveSelectionMeasurements {
     for(int i=0;i<xy.length;i++){if(i>0)row.append(',');row.append(xy[i]);}
     row.append(']');
     if(!inputType.equals("uint8"))row.append(",\"type\":\"").append(inputType).append('"');
+    if(point) {
+      row.append(",\"origin\":[").append(pointOrigin?11:0).append(',').append(pointOrigin?-7:0).append(']');
+      row.append(",\"rows\":[");
+      for(int index=0;index<table.size();index++) {
+        if(index>0)row.append(',');row.append('{');boolean first=true;
+        for(String heading:table.getHeadings()) {
+          if(!first)row.append(',');first=false;
+          row.append('"').append(heading).append("\":").append(number(table.getValue(heading,index)));
+        }
+        row.append('}');
+      }
+      System.out.println(row.append("]}"));return;
+    }
     if(geometry) {
       java.awt.Rectangle bounds=roi.getBounds();
       row.append(",\"bounds\":[").append(bounds.x).append(',').append(bounds.y).append(',').append(bounds.width).append(',').append(bounds.height).append(']');
@@ -102,6 +118,17 @@ public class ObserveSelectionMeasurements {
   public static void main(String[] args) {
     if(args.length>0)inputType=args[0];
     if(!inputType.equals("uint8") && !inputType.equals("uint16") && !inputType.equals("float32"))throw new IllegalArgumentException("Unknown input type");
+    if(args.length>1 && args[1].equals("points")) {
+      Analyzer.setRedirectImage(null);
+      for(boolean offset:new boolean[]{false,true})for(double[] spacing:new double[][]{{1,1},{.5,2}})
+        for(String density:inputType.equals("float32")?new String[]{"raw"}:new String[]{"raw","linear","square"}) {
+          pointOrigin=offset;
+          for(double[] xy:new double[][]{{0,0},{6,4},{.49,.49},{.5,.5},{2.25,1.75},{6.49,4.49},
+              {6.5,4.5},{-.25,-.25},{-.6,1},{8,9}})observe("point",xy,spacing[0],spacing[1],density);
+          observe("multipoint",new double[]{2.25,1.75,0,0,2.25,1.75,6,4},spacing[0],spacing[1],density);
+        }
+      return;
+    }
     geometry=args.length>1 && args[1].equals("geometry");
     if(geometry){geometryCases();return;}
     Analyzer.setRedirectImage(null);

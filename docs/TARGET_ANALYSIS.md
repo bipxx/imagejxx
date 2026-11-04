@@ -109,7 +109,8 @@ preserving all original area-plus-independent-profile options and version-1/2
 diagnostic record meaning. Explicit `SELECTION` and `ROI_MANAGER` modes require
 statistics with no `line`, `path` or configured profile sampling options. They
 support current finite-scalar areas, thin in-image straight/irregular paths and
-three-vertex angles. Point/multipoint and remaining area/shape options are open.
+three-vertex angles, points and multipoints. Remaining point annotations and
+area/shape options are open as described below.
 
 For a stored-row batch, prepare its target from the same document snapshot and
 resolve it through the owning Application:
@@ -135,6 +136,35 @@ world midpoint. Area `bounds` remain tight mask bounds; straight/path/angle
 Bounds use the original open-selection drawing rectangle, including endpoints.
 Angle-only groups acquire no image plane; mixed groups acquire a plane once
 only when an intensity/area/path row needs it.
+
+Point/multipoint selections expand to one row per vertex, retaining repeated
+points and stored parent order. `point_index` is zero-based within that parent;
+`point_world` applies the captured native affine to its Float32-relative
+PointRoi coordinate and plane Z. Pixel statistics round XY to the nearest pixel,
+while X/Y report the subpixel coordinate. Point diameter does not change this
+Analyzer sampling. Area is zero, but integrated density retains sampled physical
+pixel area times mean. Outside-image points produce dtype-specific original
+empty statistics and `[0,0,0,0]` Bounds. A point needs no full-plane raster mask.
+Expanded row/metadata/results and repeated-name storage are admitted before
+reads. A shared source validation and lookup serve each grouped plane.
+
+Point rows use diagnostic version 5 with frozen point coordinates/policy; old
+versions retain their meaning. JSON/CSV add `Point index` and captured X/Y.
+This index is not an ImageJ Counter/Count column. Per-point counter/position
+adapters remain M2b: current T/C/Z comes from the parent stored ROI or captured
+view. Native layout additions require installed clients to be rebuilt.
+
+`measure_rois` still measures all rows with `{}`. An explicit nonempty
+`indices` array selects ordered unique rows; optional `document_id` and
+`metadata_revision` guards reject a stale request before work. Invalid/empty/
+duplicate indices refuse without partial results. The actual Measure selected
+panel button consumes existing Ctrl/Shift row selection in stored order;
+scripted calls preserve immediate return timing. Selected requests refuse on
+unsupported storage and that button is disabled, avoiding legacy measure-all
+fallback for the new payload. Required MultiMeasure/Z/T and
+annotation variants remain open. [Point/selected-row evidence](parity/reviews/T04a2-point-rows-20261104.json)
+qualifies both Windows hosts and installed Windows/Linux clients, not all ROI
+Manager workflows or session replay.
 
 `reflex_angle` defaults to false in both options and the shared Measurements
 settings schema. Angle semantics explicitly refresh geometry using calibrated
@@ -184,8 +214,8 @@ ROI Manager workflow-parity claim.
 
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
-| `measure` | Whole/area, thin straight/irregular paths and refreshed/reflex angles use captured selection measurement. Point/multipoint and remaining area/shape/options stay open. |
-| `measure_rois` | Supported area/path/angle rows use frozen native T/C/Z/defaults, grouping and atomic adoption through actual menus/panel. Unsupported geometry/dtype and remaining manager options stay explicit requirements; active selection/history remain untouched. |
+| `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded point rows use captured selection measurement. Point annotations and remaining area/shape/options stay open. |
+| `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
 | `measurements` | Selects existing output columns. It is not a substitute for missing centroid/Feret/shape, threshold-limited or redirected-intensity calculations. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |

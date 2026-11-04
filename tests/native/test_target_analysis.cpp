@@ -104,6 +104,18 @@ int main(){
     check(geometry.estimate().plane_count==0 && geometry.estimate().total_pixels==0);
     const auto angle_rows=execute_target_analysis(geometry);
     check(source->reads.empty() && angle_rows.planes[0].angle_degrees && std::abs(*angle_rows.planes[0].angle_degrees-90)<1e-12);
+    auto points=temporary.begin_edit();points.set_rois({Roi{"points",Selection("multipoint",{{.5,.5},{0,0},{.5,.5}}),0,0,0,{}}});temporary.commit(points);
+    const auto point_target=resolve_target(temporary.snapshot(),roi_measurement_target_request(temporary.snapshot()));
+    TargetAnalysisLimits point_limits;point_limits.max_measurement_rows=2;
+    refuses<std::invalid_argument>([&]{resolve_target_analysis(point_target,batch,point_limits);});
+    check(source->reads.empty());
+    const auto point_command=resolve_target_analysis(point_target,batch);
+    check(point_command.estimate().row_count==3 && point_command.estimate().plane_count==1);
+    const auto point_rows=execute_target_analysis(point_command);
+    check(source->reads.size()==1 && point_rows.planes.size()==3);
+    check(point_rows.planes[0].point_index==0 && point_rows.planes[2].point_index==2);
+    check(point_rows.planes[0].point_world==std::array<double,3>{.5,.5,0});
+    check(point_rows.planes[0].statistics->mean==4 && point_rows.planes[0].statistics->area==0 && point_rows.planes[0].statistics->integrated_density==4);
   }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
 }

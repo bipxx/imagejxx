@@ -23,6 +23,7 @@ bool captured_measurement_available(const DocumentSnapshot& source) {
   const auto& kind=data.selection->kind;
   if(kind=="line" || kind=="polyline")return captured_profile_available(source);
   if(kind=="angle")return data.selection->points.size()==3;
+  if(kind=="point" || kind=="multipoint")return !data.selection->points.empty();
   return kind!="line" && kind!="polyline" && kind!="angle" && kind!="point" && kind!="multipoint";
 }
 bool captured_roi_measurement_available(const DocumentSnapshot& source) {
@@ -40,8 +41,12 @@ std::size_t captured_measurement_row_bytes(const ResolvedTargetAnalysis& command
   auto bytes=RenderMemory::mul(command.estimate().row_count,RenderMemory::add(8192,RenderMemory::mul(text,8)));
   if(command.options().measurement==TargetMeasurementMode::RoiManager) {
     const auto& rois=source.data().rois;const auto& indices=command.options().roi_indices;
-    for(std::size_t n=0;n<command.estimate().row_count;++n)
-      bytes=RenderMemory::add(bytes,RenderMemory::mul(rois[indices.empty()?n:indices[n]].name.size(),8));
+    const auto parent_count=indices.empty()?rois.size():indices.size();
+    for(std::size_t n=0;n<parent_count;++n) {
+      const auto& roi=rois[indices.empty()?n:indices[n]];
+      const auto count=roi.selection.kind=="point" || roi.selection.kind=="multipoint"?roi.selection.points.size():1;
+      bytes=RenderMemory::add(bytes,RenderMemory::mul(RenderMemory::mul(roi.name.size(),8),count));
+    }
   }
   return bytes;
 }
@@ -78,7 +83,13 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
     }
     if(row.length)values["Length"]=scalar(*row.length);
     if(row.angle_degrees)values["Angle"]=scalar(*row.angle_degrees);
-    if(row.midpoint_world) {
+    if(row.point_index) {
+      if(!row.point_world)throw std::invalid_argument("Point measurement requires captured coordinates");
+      values["Point index"]=*row.point_index;
+      values["X"]=(*row.point_world)[0];values["Y"]=(*row.point_world)[1];
+      values["centroid_x"]=(*row.point_world)[0];values["centroid_y"]=(*row.point_world)[1];
+      values["centroid_z"]=(*row.point_world)[2];
+    }else if(row.midpoint_world) {
       values["X"]=(*row.midpoint_world)[0];values["Y"]=(*row.midpoint_world)[1];
       values["centroid_x"]=(*row.midpoint_world)[0];values["centroid_y"]=(*row.midpoint_world)[1];
       values["centroid_z"]=(*row.midpoint_world)[2];
