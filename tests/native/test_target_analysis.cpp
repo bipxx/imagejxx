@@ -1,6 +1,7 @@
 #include <imagejxx/target_analysis.hpp>
 #include <imagejxx/line_measurement.hpp>
 #include <imagejxx/application.hpp>
+#include <imagejxx/point_annotations.hpp>
 #include <cmath>
 #include <iostream>
 using namespace imagejxx;
@@ -116,6 +117,18 @@ int main(){
     check(point_rows.planes[0].point_index==0 && point_rows.planes[2].point_index==2);
     check(point_rows.planes[0].point_world==std::array<double,3>{.5,.5,0});
     check(point_rows.planes[0].statistics->mean==4 && point_rows.planes[0].statistics->area==0 && point_rows.planes[0].statistics->integrated_density==4);
+    const std::vector<std::uint32_t> words{256,3074,258};
+    const auto annotated=with_imagej_point_counters(Selection("multipoint",{{0,0},{.5,.5},{0,0}}),words,source->shape());
+    check(imagej_point_counters(annotated,source->shape())==words);
+    check(point_annotations(annotated)[1].position->t==1 && point_annotations(annotated)[1].position->z==2);
+    auto annotations=temporary.begin_edit();annotations.set_rois({Roi{"annotated",annotated,0,0,0,{}}});temporary.commit(annotations);
+    source->reads.clear();const auto annotated_request=roi_measurement_target_request(temporary.snapshot());
+    check(annotated_request.positions.size()==2);
+    const auto annotation_command=resolve_target_analysis(resolve_target(temporary.snapshot(),annotated_request),batch);
+    check(source->reads.empty());const auto annotation_rows=execute_target_analysis(annotation_command);
+    check(source->reads.size()==2 && annotation_rows.planes[1].statistics->mean==94);
+    check(annotation_rows.planes[1].point_counter==2 && annotation_rows.planes[1].point_counter_count==2);
+    check(annotation_rows.record.at("version")==MetadataValue(std::int64_t(6)));
   }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
 }

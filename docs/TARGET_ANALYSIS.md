@@ -148,11 +148,55 @@ empty statistics and `[0,0,0,0]` Bounds. A point needs no full-plane raster mask
 Expanded row/metadata/results and repeated-name storage are admitted before
 reads. A shared source validation and lookup serve each grouped plane.
 
-Point rows use diagnostic version 5 with frozen point coordinates/policy; old
-versions retain their meaning. JSON/CSV add `Point index` and captured X/Y.
-This index is not an ImageJ Counter/Count column. Per-point counter/position
-adapters remain M2b: current T/C/Z comes from the parent stored ROI or captured
-view. Native layout additions require installed clients to be rebuilt.
+Plain point rows use diagnostic version 5; annotated rows use version 6 with
+their frozen annotation policy/counters. Old versions retain their meaning.
+JSON/CSV add `Point index` and captured X/Y. This index is not an ImageJ counter.
+Native layout additions require installed clients to be rebuilt.
+
+### Typed point annotations
+
+[PointAnnotation](../include/imagejxx/point_annotations.hpp) adds counter 0..99
+and an optional complete zero-based scientific T/C/Z position. Native/Python
+`with_point_annotations`, `point_annotations` and `without_point_annotations`
+write/read/clear the version-1 `imagejxx.point_annotations` selection attribute.
+Entries align exactly with vertices; unrelated attributes remain intact.
+Unknown versions/fields, count mismatches and invalid values refuse explicitly.
+Python Selection attributes are read-only: provide opaque fields using its
+constructor or use these pure replacement functions.
+
+```python
+selection = imagejxx.with_point_annotations(selection, [
+    imagejxx.PointAnnotation(0),  # unbound: frozen parent position
+    imagejxx.PointAnnotation(2, imagejxx.PlanePosition(t=1, c=0, z=3)),
+])  # selection must have exactly two vertices
+```
+
+Multipoint positions override the parent pose; unbound points use that parent.
+A single-point measurement ignores its stored per-point position, matching the
+original Analyzer while preserving the metadata. Context validation still
+requires positions inside the dataset. Manager request preparation includes
+exactly the actual point planes and excludes an unused parent plane. Grouping
+preserves parent/vertex order and one source validation/read per acquired plane.
+`point_counter` retains the annotated ID; `point_counter_count` and exported
+`Counter`/`Count` occur only when multiple distinct counters are used. Populations
+count all parent points, independently of plane grouping and intensity validity.
+Lowercase `count` remains the number of sampled pixels.
+
+Explicit wire adapters `with_imagej_point_counters(selection, words, extent)`
+and `imagej_point_counters(selection, extent)` use ImageJ's low-eight counter bits
+and upper position bits: zero unbound, otherwise one-based C-fastest hyperstack
+index for the declared TCZYXS extent. Unsupported counter/signed-position ranges
+and out-of-extent values refuse. These XY adapters do not silently modify the raw
+ROI codec: an explicit standard projection removes only the annotation attribute
+and supplies the returned `ImageJRoi.point_counters`. Opaque/native attributes
+still require the owning explicit interchange mapping.
+
+[Scoped annotation evidence](parity/reviews/T04a2-point-annotations-20261104.json)
+covers 70 original cases/196 rows, installed clients, native session attribute
+roundtrip and actual Measure/CSV Counter/Count output in both Windows hosts.
+Point annotation editing controls, automatic importer/exporter mapping,
+XZ/YZ/rebind policy and vertex-edit alignment are the next M2b.2 work. No complete
+point-tool UI, automatic interchange or analysis-session replay claim follows.
 
 `measure_rois` still measures all rows with `{}`. An explicit nonempty
 `indices` array selects ordered unique rows; optional `document_id` and
@@ -214,7 +258,7 @@ ROI Manager workflow-parity claim.
 
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
-| `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded point rows use captured selection measurement. Point annotations and remaining area/shape/options stay open. |
+| `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Annotation editing/interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
 | `measurements` | Selects existing output columns. It is not a substitute for missing centroid/Feret/shape, threshold-limited or redirected-intensity calculations. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |

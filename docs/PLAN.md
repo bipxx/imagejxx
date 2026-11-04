@@ -48,8 +48,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 captured line/manager increment | Integrated/scoped verified in both Windows hosts: 365 focused product cases, 23 capture-tool checks, two native controls and six installed SDK clients per Windows/Linux platform pass. | Finish non-area/shape/options and line bounds; [evidence](parity/reviews/T04a2-captured-manager-20261104.json). Full T04a.2 remains open. |
 | T04a.2 M1 path/angle/Bounds | Scoped integrated in both Windows hosts; 220 new original observations, 553 unique product cases ultimately pass (one optional skip), 23 tool contracts, two native controls and six installed SDK clients per Windows/Linux platform. | M2 points/manager variants, then M3 options and M4 reconciliation. [Evidence](parity/reviews/T04a2-path-angle-20261104.json). Preserve cached versus refreshed angle meanings; no full T04a.2 claim. |
 | T04a.2 M2a point rows/selected manager | Scoped integrated in both Windows hosts: 308 original point cases/392 rows, 860 unique focused product cases and 23 tool checks pass; two native controls and six installed clients per Windows/Linux platform pass. | M2b per-point annotations and remaining manager variants, then M3/M4. [Evidence](parity/reviews/T04a2-point-rows-20261104.json). Point indices do not substitute for counters/positions. |
+| T04a.2 M2b.1 annotation core/Measure consumer | Versioned native/Python counters and scientific positions, explicit wire adapters and frozen grouped measurements are scoped verified: 70 original cases/196 rows; 1,990 unique product cases ultimately pass and 23 tool checks pass; native controls and six SDK clients per Windows/Linux platform. | Both Windows hosts emit Counter/Count in Measure/CSV. M2b.2 editing/interchange/vertex preservation remains next; manager variants follow. [Evidence](parity/reviews/T04a2-point-annotations-20261104.json). |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,371,082,086 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,375,316,193 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Near-term queue
@@ -90,7 +91,8 @@ preservation and stale-result/resource guarantees stay strict where applicable.
    finite scalar area/line manager batches preserve row order and stored T/C/Z
    in actual menus and panel controls. M1 now adds irregular-polyline sampling,
    calibrated/reflex angles and open Bounds. M2a adds expanded point/multipoint
-   rows and selected manager controls. Next finish per-point annotations,
+   rows and selected manager controls. M2b.1 adds typed annotations, explicit
+   wire adapters and their captured Measure/CSV consumer. Next finish annotation editing/interchange,
    remaining manager variants and area geometry/measurement
    options with independent references. Complete the required owning columns
    and manager variants before closing T04a.2. See the handoff below.
@@ -125,13 +127,15 @@ do not authorize spawning agents.
   | --- | --- | --- |
   | M1 — Delivered scoped path/angle/Bounds increment | Existing `line_measurement`, `target_analysis`, settings/bindings and shared formatter extended. Configured Profile and Analyzer sampling stay separate; existing observer/jobs/grouping reused. | Original irregular/empty/repeated-vertex samples, calibrated/reflex angles and open Bounds pass. Work/byte admission, zero-read angles, mixed ordering, actual menu/panel append, settings persistence and affected installed clients pass within the linked scope. M2-M4 remain required. |
   | M2a — Delivered scoped point rows/selected manager | Expand vertices through the existing captured result owner; reuse one-pixel statistics, grouped reads, row selection, settings/CSV and maintained observer/probe. | Original fractional/repeated/outside-image/calibrated point rows, expanded admission/order/cancel, selected indices/guards and actual Ctrl-selection/export pass. Parent-positioned points are supported; this is not all point metadata or manager variants. |
-  | M2b — Point annotations and remaining manager commands | Inspect original packed point counters/positions and required manager MultiMeasure/Z/T commands. Reuse existing ROI interchange/state and target/result owner; define adapters and table layouts before implementation. | Native/Python/actual UI agree on counter populations, per-point positions, defaults and required manager layouts/target extents. Independent original references, bounded expansion, source/history and lifecycle checks; no silent annotation loss. |
+  | M2b.1 — Delivered scoped annotation core/consumer | Version1 typed metadata and explicit XY wire adapters reuse immutable selection/session owners, bounded row preparation and grouped execution. Existing Measure/CSV emits original Counter/Count semantics. | Original positions/populations, single-point behavior, strict malformed/extent admission, cancellation and installed clients pass. Dedicated editing/import/export controls and geometry-edit alignment are not delivered by this core increment. |
+  | M2b.2 — Annotation editing and interchange consumers | Reuse current selection/ROI properties and actual importer/exporter mapping. Wire typed metadata, explicit projections and vertex edits into native/Python/both hosts; freeze their contracts first. | Actual edit/apply/revert/store/update/save/reopen and wire roundtrips; inserting/deleting points preserves aligned annotations or refuses atomically. No silent metadata loss or implicit XZ/YZ/extent reinterpretation. |
+  | M2b.3 — Remaining manager commands | Reconcile original required MultiMeasure/Z/T layouts/options and implement on the current owner, not another batching engine. | Every required manager layout/target/append-label option has native/Python/actual UI consumers, references, bounded output and lifecycle checks. |
   | M3 — Required area/shape/measurement options | Reconcile Analyzer columns and every owning option/key against inventory and `TARGET_ANALYSIS.md`. Reuse existing masks/statistics and fused bounds; add missing geometry kernels only once. Specify threshold/redirect source capture and admission before implementing those consumers. | Every required column/option has supported behavior, default, validation, units/precision, API and UI consumer, and an independent reference. Cross-source/threshold failure and lifecycle checks pass where applicable. Any numerical work deferred to T09 has explicit requirement IDs and blocks a claim of complete measurement scope. |
   | M4 — Measurement integration reconciliation | Exercise representative whole/area/line/path/angle/point and manager workflows together using the existing capture reader. Audit formatter/CSV, settings, source/history and result memory; reuse unchanged numerical evidence. | No unowned command/option residual; scoped integration receipt names platforms and missing evidence. Hand stable command/options/state contracts to T04a.3. Do not run a second full reference suite solely to refresh counts. |
 
 - **Current handoff:** captured finite-scalar areas/lines and grouped manager
   rows are scoped integrated in both Windows hosts. [Command/key gaps](TARGET_ANALYSIS.md#measurement-consumer-handoff)
-  identify remaining consumers. Next specify/implement per-point metadata,
+  identify remaining consumers. Next specify/implement annotation editing/interchange,
   required manager variants and complete required
   area/shape/threshold/redirect columns with their options. Expand selected-row/
   other manager variants where required; preserve the delivered batch owner. Inspect actual `Document::measure`, Window/ROI-manager actions,
@@ -157,16 +161,25 @@ do not authorize spawning agents.
   closes. Remove duplicated formatting/raster/measurement logic where safe;
   defer larger refactors with an owner and a concrete validation condition.
 
-**Next M2b contract:** inventory the existing `ImageJRoi.point_counters` packing,
-import/export choices, PointRoi Counter/Count and per-point position behavior,
-and every required manager command/option before editing. Specify a typed,
-versioned native annotation representation and its Python/UI exposure; preserve
-unknown metadata and refuse incompatible mappings explicitly. Define zero/
-unset versus positioned point axes, C-fastest ImageJ stack-index conversion,
-single versus multipoint behavior and counter populations with original
-observations. Extend the existing request factory to include every required
-point plane, retain parent/vertex order and validate all referenced extents.
-Do not reinterpret the delivered zero-based Point index as a counter.
+**Next M2b.2 contract:** consume the delivered
+[typed point API](TARGET_ANALYSIS.md#typed-point-annotations), not a second
+annotation representation. Inspect the exact owning Python bindings before
+test setup: Selection fields/attributes are read-only; opaque attributes enter
+through its constructor, and typed edits use pure replacement helpers. Freeze
+point-index/counter/position controls, apply/revert/default behavior, transient
+selection versus stored-ROI update/history, and source/selection revision guards.
+Positions are complete scientific T/C/Z or unbound, not independently defaulted
+axes. Preserve the original single-point exception and conditional Counter/Count.
+
+Connect actual ROI import/export mapping with retained raw source sidecars and
+an explicit standard projection. Qualify XY first, then required XZ/YZ/rebind
+policies; never reinterpret a raw packed index using an undeclared extent.
+For vertex insert/delete/append, preserve the corresponding annotation entry and
+counter population, define the new point default, or refuse before publication
+when metadata cannot be reconciled. Unknown versions stay opaque until explicit
+replacement/clear. Verify actual properties/point-tool consumers, store/update,
+native session and ROI/ZIP roundtrips in both hosts. Existing Measure/CSV proof
+does not qualify those missing controls or automatic interchange.
 
 For manager variants, first reconcile rows-per-plane versus dense MultiMeasure
 tables, selected/all rows, required Z/T extents, append/replace and labels. Agree
@@ -360,47 +373,45 @@ feature or block unrelated ready work.
 | Repeated calibration queries per draw | T07 owner: capture once per draw and derive spacing from that value when correct. | Confirm repeated validation calls; measure frame cost before claiming a speed gain. |
 | Window hub responsibilities | T04/T06-T12 owners: extract cohesive controllers at touched seams. | No whole-file rewrite based only on its roughly 15,500-line size; preserve input/publication ownership. |
 | Area measurement Bounds reraster / per-segment validation | Fixed in T04a.1: bounds collected during membership scan; profile source validation once per plane and lookup once per preparation. | Independent membership/calibrated sampling, one-read and admission/cancel checks pass. No measured speed claim. |
-| Late test/API assumptions and early SDK scratch retirement | Fixed process in AGENTS.md: inspect signatures/read-only bindings/exception types and review allocations before installed-client checks; retire scratch after final review. | T03 diagnostics preserve the avoided assumptions and repeated configuration cost. No new audit framework. |
+| Late test/API assumptions and early SDK scratch retirement | Existing AGENTS.md process remains required. Binding assumptions recurred in M2b.1: T02 plus next validation owner must inspect actual Python constructors/read-only getters before writing setup. Keep SDK scratch through final review. | Seven annotation setups assumed a setter; constructor correction and narrow retry pass. Exit: next packet avoids retries from C++/Python mutability assumptions. No additional audit framework. |
 | Repeated live planning history | This task: three concise current documents, exact historical ledgers, compatible links. | Future task closeout updates rows in place. |
 
 ## Latest task closeout
 
-2026-11-04 T04a.2 M2a: captured point/multipoint selections expand in vertex
-order with original subpixel coordinates, rounded scalar samples, zero Area
-and retained integrated density, including dtype-specific empty outside-image
-rows. Explicit selected manager indices and actual Measure selected reuse the
-existing owner and row-selection controls. 860 unique focused product cases and
-23 tool checks pass; two native controls and six installed SDK clients pass on
-each Windows/Linux platform. Both actual Windows hosts cover point Measure,
-Ctrl-selected mixed rows, row-count growth and configured point CSV export.
-[Receipt](parity/reviews/T04a2-point-rows-20261104.json). Next M2b annotations and
-manager variants; M3/M4 and T04a.3 remain required. No whole-family/release claim.
+2026-11-04 T04a.2 M2b.1: typed native/Python point annotations and explicit
+wire adapters now feed captured per-point scientific T/C/Z/counter populations.
+70 original cases/196 rows qualify the single-point position exception and
+conditional Counter/Count output. Both actual Windows hosts consume these in
+Measure/selected-manager tables and CSV. 1,990 unique focused product cases
+ultimately pass, plus 23 tool checks; two native controls and six installed SDK
+clients pass per Windows/Linux platform. Native session attribute roundtrip is
+scoped proof, not complete analysis persistence/replay.
+[Receipt](parity/reviews/T04a2-point-annotations-20261104.json).
 
-Waste review: **fixed** per-point full-plane masks by reusing single-pixel
-statistics, with one grouped source validation and decoded lookup. Expanded
-rows and repeated ROI-name bytes are admitted before reads; no second controller
-or runner. Existing observer and actual path/angle probe extended, preserving
-old fixture meanings. Actual row input initially targeted an unexposed lower
-row; the corrected producer uses the child clip rectangle and verifies physical
-scroll progress before clicking. Failed diagnostics remain retained. Reuse green
-core/SDK evidence for frontend-only reveal/export corrections.
-Live-guide writes now preserve repository LF bytes to avoid Windows newline
-churn in review; documentation checks require no product rebuild.
-Final domain review also rejects selected-row payloads on unsupported RGB storage
-and disables the button there; a focused refusal/control check prevents silent
-legacy measure-all fallback. Reuse installed-core results for this frontend fix.
+Waste review: **avoided** per-vertex annotation decoding/population scans by
+performing bounded metadata passes per parent in each request/preparation;
+reuse grouped provider reads, one lookup, existing statistics/jobs/formatter and
+maintained observer/probe. Explicit adapters preserve the raw codec boundary;
+no second annotation engine or controller. Reviewed exact extent binding before
+exposure, and cleaned the new misleading-indentation warning before installed
+clients. All affected clients use the new public header/layout; no ABI claim.
 
-**Deferred to T02:** batch complete probe/CSV requirements before final frontend
-compilation; extract a shared row-reveal helper when another touched probe needs
-the same clip/hover/scroll behavior, rather than adding another independent copy.
-**Deferred to M2b:** typed per-point counter/position mapping and required manager
-MultiMeasure/Z/T variants, with explicit native/Python/UI contracts before edits.
-**No action:** no new cache/runtime/SDK generation or speculative numeric rewrite.
-Retired 28,677,282 consumer compiler bytes after final review; verified 2,682,220
-capture/diagnostic bytes in two archives totaling 248,923 bytes before deleting scratch.
-Known roots are 8,371,082,086 bytes before small public/doc edits, plus 214
-inaccessible subtrees; full budget remains unverified. Historical references and
-archive fingerprints are unchanged.
+**Recurring process waste:** seven setups assumed a setter on read-only Python
+Selection.attributes. The existing instruction was insufficiently followed;
+use its documented constructor, retain the failures and retry only those seven.
+T02 plus the next validation owner must inspect the actual binding before new
+assertions; do not mark this recurring issue fixed merely by restating policy.
+SDK scratch stayed through final allocation/API review, then retired without a
+reconfiguration retry. Binding values stay owned across GIL release; no
+speculative copy/validation removal or another runner/cache/runtime generation.
+
+**Next:** M2b.2 dedicated annotation editing controls, actual import/export
+mapping and vertex-edit preservation; M2b.3 manager layouts/options, M3/M4 and
+T04a.3 remain open. Counter/Count Measure output does not close those consumers.
+Retired 28,758,378 consumer compiler bytes; verified 1,571,519 capture/diagnostic
+bytes in a 176,948-byte lossless archive, then removed scratch. Known storage is
+8,375,316,193 bytes before small public/doc updates, plus 214 inaccessible
+subtrees; full budget remains unverified. Historical fingerprints are unchanged.
 
 ## Historical link compatibility
 

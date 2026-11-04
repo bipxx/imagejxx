@@ -2,6 +2,7 @@
 #include "headless_session_internal.hpp"
 #include "window.hpp"
 #include <imagejxx/imagej_intensity_calibration.hpp>
+#include <imagejxx/point_annotations.hpp>
 #include <stdexcept>
 #include <atomic>
 #include <chrono>
@@ -212,7 +213,8 @@ Json capturedPathMeasurementUiCase(Window& window,const std::string& context,con
     n=reads.counts().plane_reads;window.action("measure_rois");window.wait();
     report["batch_reads"]={{"before",n},{"after",reads.counts().plane_reads}};
     window.action("save_results",{{"path",(dir/"paths.csv").u8string()}});
-    const Selection points("multipoint",{{.5,.5},{2.25,1.75},{.5,.5}},7);
+    const auto points=with_point_annotations(Selection("multipoint",{{.5,.5},{2.25,1.75},{.5,.5}},7),
+        {{0,{}},{2,{}},{2,{}}});
     source->select(points);before=source->snapshot();const auto point_undo=source->undo_steps();frame();measure();
     report["point_rows"]=Json::array();
     for(std::size_t i=window.results.size()-3;i<window.results.size();++i)report["point_rows"].push_back(window.results.at(i));
@@ -247,7 +249,7 @@ Json capturedPathMeasurementUiCase(Window& window,const std::string& context,con
     report["selected_before_count"]=window.results.size();
     clickControl(last.at("roi_manager").at("controls").at("measure_selected"),"manager.measure_selected");
     window.wait();frame();report["selected_rows"]=window.results;
-    window.updateSettings({{"measurements",{"ROI","Point index","X","Y","mean","Area","integrated_density"}}},false);
+    window.updateSettings({{"measurements",{"ROI","Point index","X","Y","mean","Area","integrated_density","Counter","Count"}}},false);
     window.action("save_results",{{"path",(dir/"points.csv").u8string()}});
     report["workflow_count"]=window.workflow.size();
     report["jobs_reserved_after"]=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;

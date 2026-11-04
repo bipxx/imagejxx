@@ -7,6 +7,7 @@
 #include <limits>
 #include <imagejxx/imagej_roi.hpp>
 #include <imagejxx/imagej_roi_mapping.hpp>
+#include <imagejxx/point_annotations.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 namespace py = pybind11;
@@ -452,6 +453,33 @@ void bind_imagej_roi(py::module_ &m) {
                          bytes.size());
       },
       py::arg("record"), py::arg("limits") = ImageJRoiLimits{});
+  py::class_<PointAnnotation>(m,"PointAnnotation")
+      .def(py::init([](py::handle counter,std::optional<PlanePosition> position){
+        const auto n=size(counter);if(n>=100)throw py::value_error("Point counter must be in 0..99");
+        PointAnnotation value{unsigned(n),position};
+        if(position && (position->t<0 || position->c<0 || position->z<0))throw py::value_error("Point position must be nonnegative");
+        return value;
+      }),py::arg("counter")=0,py::arg("position")=std::optional<PlanePosition>{})
+      .def_property("counter",[](const PointAnnotation& value){return value.counter;},[](PointAnnotation& value,py::handle counter){
+        const auto n=size(counter);if(n>=100)throw py::value_error("Point counter must be in 0..99");value.counter=unsigned(n);
+      }).def_readwrite("position",&PointAnnotation::position);
+  m.def("point_annotations",[](Selection selection,std::size_t maximum){
+    py::gil_scoped_release release;return point_annotations(selection,maximum);
+  },py::arg("selection"),py::arg("max_points")=100000);
+  m.def("with_point_annotations",[](Selection selection,std::vector<PointAnnotation> entries,std::size_t maximum){
+    py::gil_scoped_release release;return with_point_annotations(selection,entries,maximum);
+  },py::arg("selection"),py::arg("annotations"),py::arg("max_points")=100000);
+  m.def("without_point_annotations",[](Selection selection){
+    py::gil_scoped_release release;return without_point_annotations(selection);
+  },py::arg("selection"));
+  m.def("with_imagej_point_counters",[](Selection selection,std::vector<std::uint32_t> words,py::handle extent,std::size_t maximum){
+    const auto shape=mapping_shape(extent);
+    py::gil_scoped_release release;return with_imagej_point_counters(selection,words,shape,maximum);
+  },py::arg("selection"),py::arg("words"),py::arg("extent"),py::arg("max_points")=100000);
+  m.def("imagej_point_counters",[](Selection selection,py::handle extent,std::size_t maximum){
+    const auto shape=mapping_shape(extent);
+    py::gil_scoped_release release;return imagej_point_counters(selection,shape,maximum);
+  },py::arg("selection"),py::arg("extent"),py::arg("max_points")=100000);
   py::class_<ImageJRoi>(m, "ImageJRoi")
       .def(py::init([](Roi roi) {
              ImageJRoi result;

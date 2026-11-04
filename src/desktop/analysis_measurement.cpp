@@ -86,6 +86,7 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
     if(row.point_index) {
       if(!row.point_world)throw std::invalid_argument("Point measurement requires captured coordinates");
       values["Point index"]=*row.point_index;
+      if(row.point_counter_count){values["Counter"]=*row.point_counter;values["Count"]=*row.point_counter_count;}
       values["X"]=(*row.point_world)[0];values["Y"]=(*row.point_world)[1];
       values["centroid_x"]=(*row.point_world)[0];values["centroid_y"]=(*row.point_world)[1];
       values["centroid_z"]=(*row.point_world)[2];

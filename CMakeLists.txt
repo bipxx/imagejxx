@@ -22,7 +22,7 @@ add_library(imagejxx_core STATIC
   src/native/segmentation.cpp src/native/analysis.cpp src/native/frequency.cpp src/native/binary.cpp src/native/conversion.cpp
   src/native/dataset.cpp src/native/dataset_projection.cpp src/native/dataset_projection_command.cpp src/native/imagej_projection_numeric.cpp src/native/imagej_dataset_projection.cpp src/native/imagej_intensity_calibration.cpp src/native/calibrated_analysis.cpp src/native/imagej_projection_document.cpp src/native/imagej_projection_command.cpp src/native/settings.cpp src/native/preferences.cpp src/native/document.cpp src/native/axis_remap.cpp src/native/axis_region_remap.cpp src/native/z_subset_command.cpp src/native/manual_threshold.cpp src/native/manual_threshold_command.cpp src/native/selection_edit.cpp src/native/selection_boolean.cpp src/native/selection_region_boolean.cpp src/native/selection_region_rotation.cpp src/native/roi_style.cpp src/native/application.cpp src/native/metadata.cpp src/native/session_metadata.cpp src/native/operations.cpp src/native/targets.cpp src/native/execution.cpp src/native/jobs.cpp src/native/kernel_control.cpp)
 add_library(imagejxx::core ALIAS imagejxx_core)
-target_sources(imagejxx_core PRIVATE src/native/target_analysis.cpp)
+target_sources(imagejxx_core PRIVATE src/native/target_analysis.cpp src/native/point_annotations.cpp)
 set(IMAGEJXX_PRIVATE_ZLIB_SOURCES
   third_party/zlib/adler32.c third_party/zlib/compress.c
   third_party/zlib/crc32.c third_party/zlib/deflate.c

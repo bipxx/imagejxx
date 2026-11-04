@@ -47,6 +47,9 @@ struct TargetAnalysisPlane {
   // Point/multipoint rows expand in vertex order. Zero-based within the ROI.
   std::optional<std::size_t> point_index;
   std::optional<std::array<double,3>> point_world;
+  std::optional<unsigned> point_counter;
+  // Present only when this parent uses more than one distinct counter.
+  std::optional<std::size_t> point_counter_count;
   std::optional<double> length, angle_degrees;
   std::optional<std::array<double,3>> midpoint_world;
 };

@@ -42,6 +42,8 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("roi_index",&TargetAnalysisPlane::roi_index)
     .def_readonly("point_index",&TargetAnalysisPlane::point_index)
     .def_readonly("point_world",&TargetAnalysisPlane::point_world)
+    .def_readonly("point_counter",&TargetAnalysisPlane::point_counter)
+    .def_readonly("point_counter_count",&TargetAnalysisPlane::point_counter_count)
     .def_readonly("length",&TargetAnalysisPlane::length).def_readonly("angle_degrees",&TargetAnalysisPlane::angle_degrees)
     .def_readonly("midpoint_world",&TargetAnalysisPlane::midpoint_world)
     .def_property_readonly("statistics",[](const TargetAnalysisPlane& v)->py::object{

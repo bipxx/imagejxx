@@ -115,9 +115,54 @@ public class ObserveSelectionMeasurements {
       }
     }
   }
+  static void annotationCases() {
+    int[][] counters={{0,0,0,0},{0,2,2,99},{2,2,2,2},{2},{0}};
+    int[][] positions={{0,0,0,0},{0,1,4,8},{8,7,2,0},{8},{0}};
+    for(double[] spacing:new double[][]{{1,1},{.5,2}})
+      for(String density:inputType.equals("float32")?new String[]{"raw"}:new String[]{"raw","linear","square"})
+        for(int test=0;test<counters.length;test++) {
+          ij.ImageStack stack=new ij.ImageStack(7,5);
+          for(int index=0;index<8;index++) {
+            int base=80*(index/4)+30*(index%2)+10*((index/2)%2);
+            if(inputType.equals("uint16")) {
+              short[] values=new short[35];for(int y=0;y<5;y++)for(int x=0;x<7;x++)values[y*7+x]=(short)((base+x+10*y)*257);
+              stack.addSlice(new ShortProcessor(7,5,values,null));
+            } else if(inputType.equals("float32")) {
+              float[] values=new float[35];for(int y=0;y<5;y++)for(int x=0;x<7;x++)values[y*7+x]=(base+x+10*y)*.25f-8;
+              stack.addSlice(new FloatProcessor(7,5,values));
+            } else {
+              byte[] values=new byte[35];for(int y=0;y<5;y++)for(int x=0;x<7;x++)values[y*7+x]=(byte)(base+x+10*y);
+              stack.addSlice(new ByteProcessor(7,5,values));
+            }
+          }
+          ImagePlus image=new ImagePlus("point annotations",stack);image.setDimensions(2,2,2);image.setOpenAsHyperStack(true);
+          image.setGlobalCalibration(null);Calibration cal=image.getLocalCalibration();
+          cal.pixelWidth=spacing[0];cal.pixelHeight=spacing[1];cal.pixelDepth=3;cal.xOrigin=-11/spacing[0];cal.yOrigin=7/spacing[1];cal.setUnit("um");
+          if(!density.equals("raw"))cal.setFunction(density.equals("linear")?Calibration.STRAIGHT_LINE:Calibration.POLY2,
+            density.equals("linear")?new double[]{10,2}:new double[]{0,0,1},"value");
+          image.setPosition(2,1,2);
+          int n=counters[test].length;float[] x=new float[n],y=new float[n];int[] words=new int[n];
+          for(int i=0;i<n;i++){x[i]=new float[]{0,2.25f,1,2.25f}[i];y[i]=new float[]{0,1.75f,1,1.75f}[i];words[i]=(positions[test][i]<<8)|counters[test][i];}
+          ij.gui.PointRoi roi=new ij.gui.PointRoi(x,y,n);image.setRoi(roi);roi.setCounters(words);
+          ResultsTable table=new ResultsTable();new Analyzer(image,Measurements.AREA|Measurements.MEAN|Measurements.STD_DEV|
+            Measurements.MIN_MAX|Measurements.MEDIAN|Measurements.CENTROID|Measurements.INTEGRATED_DENSITY|Measurements.STACK_POSITION,table).measure();
+          StringBuilder row=new StringBuilder("{\"type\":\"").append(inputType).append("\",\"density\":\"").append(density)
+            .append("\",\"spacing\":[").append(spacing[0]).append(',').append(spacing[1]).append("],\"points\":[");
+          for(int i=0;i<n;i++){if(i>0)row.append(',');row.append('[').append(x[i]).append(',').append(y[i]).append(']');}
+          row.append("],\"words\":[");for(int i=0;i<n;i++){if(i>0)row.append(',');row.append(words[i]);}
+          row.append("],\"rows\":[");
+          for(int i=0;i<table.size();i++) {
+            if(i>0)row.append(',');row.append('{');boolean first=true;
+            for(String heading:table.getHeadings()){if(!first)row.append(',');first=false;row.append('"').append(heading).append("\":").append(number(table.getValue(heading,i)));}
+            row.append('}');
+          }
+          System.out.println(row.append("]}"));
+        }
+  }
   public static void main(String[] args) {
     if(args.length>0)inputType=args[0];
     if(!inputType.equals("uint8") && !inputType.equals("uint16") && !inputType.equals("float32"))throw new IllegalArgumentException("Unknown input type");
+    if(args.length>1 && args[1].equals("annotations")){annotationCases();return;}
     if(args.length>1 && args[1].equals("points")) {
       Analyzer.setRedirectImage(null);
       for(boolean offset:new boolean[]{false,true})for(double[] spacing:new double[][]{{1,1},{.5,2}})

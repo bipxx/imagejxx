@@ -3,6 +3,7 @@
 #include "contrast_command_record.hpp"
 #include "dataset_histogram_internal.hpp"
 #include "kernel_control.hpp"
+#include <imagejxx/point_annotations.hpp>
 #include <cmath>
 #include <algorithm>
 #include <map>
@@ -70,6 +71,8 @@ PlanePosition manager_position(const DocumentSnapshot& source,std::size_t index)
 struct MeasurementRowPlan {
   PlanePosition position;std::optional<std::size_t> roi,point_index;
   std::array<double,2> point{};
+  std::optional<unsigned> counter;
+  std::optional<std::size_t> counter_count;
 };
 struct MeasurementGroup {PlanePosition position;std::vector<std::size_t> rows;bool pixels=false;};
 struct MeasurementPlan {std::vector<MeasurementRowPlan> rows;std::vector<MeasurementGroup> groups;};
@@ -147,29 +150,40 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   const auto base=detail::estimate_target_histogram_resources(target,{},layout_limits,false);
   MeasurementPlan plan;plan.rows.reserve(count);plan.groups.reserve(std::min(count,target.position_count()));
   std::map<PositionKey,std::size_t> groups;
+  auto group_for=[&](PlanePosition position) {
+    const auto key=position_key(position);const auto found=groups.find(key);
+    if(found!=groups.end())return found->second;
+    const auto ordinal=plan.groups.size();groups.emplace(key,ordinal);plan.groups.push_back({position,{}});return ordinal;
+  };
   TargetAnalysisEstimate out;out.row_count=count;out.plane_pixels=base.plane_pixels;out.plane_bytes=base.plane_bytes;
   bool has_area=false,has_mask=false,has_points=false;std::size_t raster_peak=0,line_peak=0,path_peak=0,path_work=0;
   for(std::size_t n=0;n<parent_count;++n) {
     auto row=parent(n);
-    const auto key=position_key(row.position);auto found=groups.find(key);
-    if(found==groups.end()) {
-      const auto ordinal=plan.groups.size();groups.emplace(key,ordinal);
-      plan.groups.push_back({row.position,{}});found=groups.find(key);
-    }
     const auto* selection=measurement_selection(target,row);
     if(point_selection(selection)) {
       const auto low=point_origin(*selection,shape);has_points=true;
-      plan.groups[found->second].pixels=true;
+      const auto entries=point_annotations(*selection,limits.max_measurement_rows);
+      validate_point_annotations(entries,shape);
+      std::array<std::size_t,100> counts{};std::size_t distinct=0;
+      for(const auto& entry:entries)if(counts[entry.counter]++==0)++distinct;
+      const auto base_position=row.position;
       for(std::size_t index=0;index<selection->points.size();++index) {
         row.point_index=index;
+        row.position=!entries.empty() && selection->points.size()>1 && entries[index].position?*entries[index].position:base_position;
+        if(!entries.empty()) {
+          row.counter=entries[index].counter;
+          if(distinct>1)row.counter_count=counts[*row.counter];
+        }
         for(int axis=0;axis<2;++axis)row.point[axis]=float(float(selection->points[index][axis])-low[axis])+low[axis];
         const auto world=target.calibration().voxel_to_world({row.point[0],row.point[1],double(row.position.z)});
         for(double coordinate:world)if(!std::isfinite(coordinate))invalid("Point world coordinate must be finite");
-        plan.groups[found->second].rows.push_back(plan.rows.size());plan.rows.push_back(row);
+        const auto group=group_for(row.position);plan.groups[group].pixels=true;
+        plan.groups[group].rows.push_back(plan.rows.size());plan.rows.push_back(row);
       }
       continue;
     }
-    plan.groups[found->second].rows.push_back(plan.rows.size());plan.rows.push_back(row);
+    const auto group=group_for(row.position);
+    plan.groups[group].rows.push_back(plan.rows.size());plan.rows.push_back(row);
     if(selection && selection->kind=="angle") {
       imagej_calibrated_angle(measurement_angle(*selection,shape),target.calibration(),options.reflex_angle);
     }else if(selection && selection->kind=="polyline") {
@@ -179,9 +193,9 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
           selection->points,limits.max_working_bytes-add(4096,mul(count,1024)),limits.max_measurement_work);
       path_work=add(path_work,path.work_steps);
       if(path_work>limits.max_measurement_work)invalid("Measurement batch exceeds its path work limit");
-      path_peak=std::max(path_peak,path.working_bytes);plan.groups[found->second].pixels=true;
+      path_peak=std::max(path_peak,path.working_bytes);plan.groups[group].pixels=true;
     }else if(selection && selection->kind=="line") {
-      plan.groups[found->second].pixels=true;
+      plan.groups[group].pixels=true;
       const auto line=measurement_line(*selection,shape);
       line_peak=std::max(line_peak,detail::calibrated_profile_sample_count(line));
       profile_length(target.calibration(),line);
@@ -190,7 +204,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       for(double value:midpoint)if(!std::isfinite(value))invalid("Measurement midpoint must be finite");
       imagej_line_bounds(line);
     } else {
-      plan.groups[found->second].pixels=true;
+      plan.groups[group].pixels=true;
       has_area=true;
       if(selection) {
         has_mask=true;
@@ -328,7 +342,22 @@ TargetRequest roi_measurement_target_request(const DocumentSnapshot& source,
     const auto rows=manager_indices(source,indices,maximum);TargetRequest request;
     request.scope=TargetScope::Positions;request.roi=RoiPolicy::WholePlane;
     std::set<PositionKey> seen;
-    for(const auto row:rows){const auto p=manager_position(source,row);if(seen.insert(position_key(p)).second)request.positions.push_back(p);}
+    std::size_t expanded=0;
+    for(const auto row:rows) {
+      const auto& selection=source.data().rois[row].selection;
+      expanded=add(expanded,point_selection(&selection)?selection.points.size():1);
+      if(expanded>maximum)invalid("ROI measurement request exceeds expanded row limit");
+    }
+    auto append=[&](PlanePosition position){if(seen.insert(position_key(position)).second)request.positions.push_back(position);};
+    for(const auto row:rows) {
+      const auto p=manager_position(source,row);const auto& selection=source.data().rois[row].selection;
+      if(point_selection(&selection)) {
+        const auto entries=point_annotations(selection,maximum);validate_point_annotations(entries,source.data().dataset.shape());
+        if(selection.points.empty())invalid("Point measurement requires a nonempty point selection");
+        if(entries.empty() || entries.size()==1)append(p);
+        else for(const auto& entry:entries)append(entry.position.value_or(p));
+      }else append(p);
+    }
     return request;
   });
 }
@@ -351,7 +380,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     const bool extended=!options.path.empty() || options.samples_per_segment!=0;
     if(extended){MetadataArray path;for(const auto& p:options.path)path.push_back(metadata_array({p[0],p[1]}));
       requested["path"]=metadata_array(std::move(path));requested["samples_per_segment"]=std::uint64_t(options.samples_per_segment);}
-    bool geometry=false,points=false;
+    bool geometry=false,points=false,annotated=false;
     if(measurement) {
       requested["measurement"]=options.measurement==TargetMeasurementMode::RoiManager?"roi_manager":"selection";
       MetadataArray rows;for(const auto& row:measurements.rows) {
@@ -361,6 +390,8 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
           points=true;item["point_index"]=std::uint64_t(*row.point_index);
           item["point"]=metadata_array({row.point[0],row.point[1]});
         }
+        if(row.counter){annotated=true;item["counter"]=std::uint64_t(*row.counter);}
+        if(row.counter_count)item["counter_count"]=std::uint64_t(*row.counter_count);
         rows.push_back(metadata_object(std::move(item)));
         const auto* selection=measurement_selection(target,row);
         geometry|=selection && (selection->kind=="angle" || selection->kind=="polyline");
@@ -369,8 +400,9 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(geometry || options.reflex_angle){requested["reflex_angle"]=options.reflex_angle;
         requested["geometry_policy"]="calibrated-angle-refresh/irregular-path-v1";}
       if(points)requested["point_policy"]="float32-relative/rounded-pixel/expanded-rows-v1";
+      if(annotated)requested["annotation_policy"]="scientific-czt/counters-v1";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -406,6 +438,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
         const auto* selection=measurement_selection(state.target,plan);
         if(plan.point_index) {
           row.point_index=plan.point_index;row.bounds=point_bounds(plan.point,shape);
+          row.point_counter=plan.counter;row.point_counter_count=plan.counter_count;
           row.point_world=state.spatial.voxel_to_world({plan.point[0],plan.point[1],double(row.position.z)});
           Image sample(1,1,1,dataset.pixel_type());
           const bool inside=(*row.bounds)[2]!=0;

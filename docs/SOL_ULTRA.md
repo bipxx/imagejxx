@@ -21,8 +21,9 @@ T04a.2 captured scalar area/line and grouped manager measurements now work in
 both Windows hosts. T04a.2 now runs as M1 path/angle/Bounds qualification,
 M2 points/manager variants, M3 area/shape/options and M4 reconciliation. M1 is
 scoped integrated in both Windows hosts with original/native/installed checks;
-M2a point rows/selected manager is also scoped integrated; M2b point annotations
-and remaining manager variants is next. See PLAN for policies/platform limits.
+M2a point rows/selected manager and M2b.1 annotation core/Measure output are
+scoped verified. Next M2b.2 editing/interchange/vertex preservation, then M2b.3
+manager variants. See PLAN for policy/platform limits.
 Then T04a.3 persistence/replay. Checkpoint details live only in PLAN.
 T04b histogram/threshold consumers can reuse the qualified ownership seam.
 See the current PLAN receipt for exact verification/platform limits.

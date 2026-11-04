@@ -57,6 +57,8 @@ def test_actual_path_angle_and_mixed_manager_controls(context, tmp_path):
     assert [r["Area"] for r in points] == [0, 0, 0]
     assert [r["integrated_density"] for r in points] == [11, 22, 11]
     assert [r["X"] for r in points] == [.25, 1.125, .25]
+    assert [r["Counter"] for r in points] == [0, 2, 2]
+    assert [r["Count"] for r in points] == [1, 2, 2]
     selected = report["selected_rows"]
     assert len(selected) == report["selected_before_count"] + 4
     assert [r["ROI index"] for r in selected[-4:]] == [0, 0, 0, 2]
@@ -66,3 +68,5 @@ def test_actual_path_angle_and_mixed_manager_controls(context, tmp_path):
     assert len(exported) == len(selected)
     assert [r["Point index"] for r in exported[-4:]] == ["0", "1", "2", ""]
     assert exported[-4]["X"] == "0.250" and exported[-4]["Area"] == "0.000"
+    assert [r["Counter"] for r in exported[-4:]] == ["0", "2", "2", ""]
+    assert [r["Count"] for r in exported[-4:]] == ["1", "2", "2", ""]
