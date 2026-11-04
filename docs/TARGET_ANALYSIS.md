@@ -194,9 +194,47 @@ still require the owning explicit interchange mapping.
 [Scoped annotation evidence](parity/reviews/T04a2-point-annotations-20261104.json)
 covers 70 original cases/196 rows, installed clients, native session attribute
 roundtrip and actual Measure/CSV Counter/Count output in both Windows hosts.
-Point annotation editing controls, automatic importer/exporter mapping,
-XZ/YZ/rebind policy and vertex-edit alignment are the next M2b.2 work. No complete
-point-tool UI, automatic interchange or analysis-session replay claim follows.
+The M2b.2a increment below adds editing and vertex alignment. Automatic importer/
+exporter mapping, XZ/YZ/rebind policy and remaining point-tool configuration stay
+M2b.2b/T06/T10. No complete point-tool UI or analysis-session replay claim follows.
+
+For point/multipoint selections, **Edit > Selection > Geometry and properties**
+opens the shared native properties panel in both Windows hosts, including
+scientific TCZYX documents. Select the zero-based Vertex, edit Counter (0..99),
+and optionally enable Positioned point. Frame/Channel/Slice are one-based in the
+UI, bounded by the dataset, and become complete zero-based T/C/Z in metadata.
+Enabling a position starts at the captured view. Untagged points start with
+counter 0/unbound drafts; metadata is added only after an annotation edit.
+Clear point annotations removes the tag in the draft; Cancel discards the draft,
+and Apply publishes selection changes without changing pixels or creating a
+pixel undo step. Updating a stored ROI is a separate action. Session Save/Open
+preserves both the active and stored annotations independently.
+
+The existing desktop actions `show_selection_properties`,
+`selection_properties_draft`, `apply_selection_properties` and
+`cancel_selection_properties` expose the same lifecycle. A draft patch accepts
+`point_annotations` as an exact-length array of `{"counter": 0, "position": null}`
+rows (or complete `[t,c,z]` positions), or null for explicit clear. A combined
+`points`/`point_annotations` patch is order-independent; changing the vertex count
+of a tagged draft requires aligned replacement annotations or explicit clear.
+Invalid patches preserve the previous draft/source. Apply refuses a stale
+source/selection/pose or a newly lowered working cap; pan/zoom alone is allowed.
+No image plane is read by the draft/edit/apply path. The conservative properties
+admission includes existing geometry and annotation staging; it is not a measured
+allocation or performance claim.
+
+`SelectionEditor.inserted_vertex` inserts counter 0/unbound at the new index;
+`removed_vertex` removes that exact entry, and movement/rotation preserve the
+association. Unknown/malformed annotation versions refuse topology changes
+atomically. The panel displays invalid metadata safely and offers explicit
+clear/replacement; it does not silently reinterpret it. Existing scientific
+legacy-area properties remain refused.
+
+[Scoped editing evidence](parity/reviews/T04a2-point-editing-20261104.json) covers
+701 unique focused Windows product cases and 23 tool checks, including both
+actual hosts; two native controls and six installed SDK clients pass on each of
+Windows/Linux. UI qualification here is Windows only. Automatic ROI/ZIP semantic
+mapping, full point-tool configuration and recorder/replay remain separate.
 
 `measure_rois` still measures all rows with `{}`. An explicit nonempty
 `indices` array selects ordered unique rows; optional `document_id` and
@@ -258,7 +296,7 @@ ROI Manager workflow-parity claim.
 
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
-| `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Annotation editing/interchange and remaining area/shape/options stay open. |
+| `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Point properties/vertex alignment are scoped delivered; interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
 | `measurements` | Selects existing output columns. It is not a substitute for missing centroid/Feret/shape, threshold-limited or redirected-intensity calculations. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |

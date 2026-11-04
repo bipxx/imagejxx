@@ -6,6 +6,7 @@
 #include <imagejxx/selection_edit.hpp>
 #include <imagejxx/composite_path.hpp>
 #include <imagejxx/selection_region.hpp>
+#include <imagejxx/point_annotations.hpp>
 #include <limits>
 #include <type_traits>
 #include <utility>
@@ -693,6 +694,11 @@ Selection SelectionEditor::inserted_vertex(std::size_t index,
   if (result.kind == "point")
     result.kind = "multipoint";
   result.points.insert(result.points.begin() + index, point);
+  if(selection_.attributes.count(point_annotations_attribute)) {
+    auto entries=point_annotations(selection_);
+    entries.insert(entries.begin()+index,PointAnnotation{});
+    result=with_point_annotations(result,entries);
+  }
   return checked(std::move(result));
 }
 Selection SelectionEditor::removed_vertex(std::size_t index) const {
@@ -708,6 +714,11 @@ Selection SelectionEditor::removed_vertex(std::size_t index) const {
   kernel_checkpoint();
   Selection result = selection_;
   result.points.erase(result.points.begin() + index);
+  if(selection_.attributes.count(point_annotations_attribute)) {
+    auto entries=point_annotations(selection_);
+    entries.erase(entries.begin()+index);
+    result=with_point_annotations(result,entries);
+  }
   return checked(std::move(result));
 }
 Selection
@@ -967,7 +978,14 @@ Selection SelectionEditor::inserted_vertex(
   if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
       selection_.kind == "angle" || index > selection_.points.size())
     throw std::invalid_argument("Selection does not support this vertex insertion");
-  return controlled_geometry(*this, width_, height_, limits, control, 1,
+  auto admitted=limits;
+  if(selection_.attributes.count(point_annotations_attribute)) {
+    // Additional metadata node plus entry/return staging, beyond vertex growth.
+    constexpr std::size_t extra=8192;
+    if(admitted.max_working_bytes<=extra)throw std::length_error("Point insertion metadata working limit exceeded");
+    admitted.max_working_bytes-=extra;
+  }
+  return controlled_geometry(*this, width_, height_, admitted, control, 1,
       [index, point](const auto &editor) {
         return editor.inserted_vertex(index, point);
       });

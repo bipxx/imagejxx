@@ -2,6 +2,7 @@
 #include <imagejxx/line_measurement.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/point_annotations.hpp>
+#include <imagejxx/selection_edit.hpp>
 #include <cmath>
 #include <iostream>
 using namespace imagejxx;
@@ -129,6 +130,13 @@ int main(){
     check(source->reads.size()==2 && annotation_rows.planes[1].statistics->mean==94);
     check(annotation_rows.planes[1].point_counter==2 && annotation_rows.planes[1].point_counter_count==2);
     check(annotation_rows.record.at("version")==MetadataValue(std::int64_t(6)));
+    const SelectionEditor point_editor(annotated,3,2);
+    const auto inserted=point_editor.inserted_vertex(1,{2,1});
+    check(imagej_point_counters(inserted,source->shape())==std::vector<std::uint32_t>({256,0,3074,258}));
+    const auto removed=SelectionEditor(inserted,3,2).removed_vertex(1);
+    check(removed==annotated && point_editor.selection()==annotated);
+    SelectionEditLimits edit_limits;edit_limits.max_working_bytes=8192;
+    refuses<std::length_error>([&]{point_editor.inserted_vertex(1,{2,1},edit_limits);});
   }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
 }

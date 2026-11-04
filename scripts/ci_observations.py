@@ -142,6 +142,7 @@ EDITOR_READERS = {
     "captured-measurement": ("--captured-measurement-ui-case", "IMAGEJXX_CAPTURED_MEASUREMENT_CPP_REPORT"),
     "captured-roi-measurement": ("--captured-roi-measurement-ui-case", "IMAGEJXX_CAPTURED_ROI_MEASUREMENT_CPP_REPORT"),
     "captured-path-measurement": ("--captured-path-measurement-ui-case", "IMAGEJXX_CAPTURED_PATH_MEASUREMENT_CPP_REPORT"),
+    "point-annotations": ("--point-annotations-ui-case", "IMAGEJXX_POINT_ANNOTATIONS_CPP_REPORT"),
     "captured-profile": ("--captured-profile-ui-case", "IMAGEJXX_CAPTURED_PROFILE_CPP_REPORT"),
     "generic-plot": ("--generic-plot-ui-case", "IMAGEJXX_GENERIC_PLOT_CPP_REPORT"),
     "plot-snapshots": ("--plot-snapshots-ui-case", "IMAGEJXX_PLOT_SNAPSHOTS_CPP_REPORT"),

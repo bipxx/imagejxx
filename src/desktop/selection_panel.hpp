@@ -4,16 +4,18 @@
 #include "path_authoring_controls.hpp"
 #include <imagejxx/selection_edit.hpp>
 #include <imagejxx/saved_roi_geometry.hpp>
+#include <imagejxx/point_annotations.hpp>
 #include <imgui.h>
 #include <map>
 #include <algorithm>
+#include <limits>
 
 namespace imagejxx::desktop {
 class SelectionPanel {
 public:
   using Apply =
       std::function<void(const Selection &, const DocumentSnapshot &)>;
-  void show(const DocumentSnapshot &source);
+  void show(const DocumentSnapshot &source,std::size_t point_working_cap=std::numeric_limits<std::size_t>::max());
   void show_saved_roi_geometry(const DocumentSnapshot &source,
                                const Selection &selection, std::size_t row,
                                const SavedRoiGeometryLimits &limits,
@@ -34,8 +36,9 @@ public:
 private:
   void initialize(const DocumentSnapshot &, const Selection &, bool,
                   std::optional<std::size_t>, const SavedRoiGeometryLimits &,
-                  const ExecutionControl &);
+                  const ExecutionControl &,std::size_t point_working_cap=std::numeric_limits<std::size_t>::max());
   void rebuild(const ExecutionControl &control = {});
+  void admit_point_annotations(std::size_t count,const ExecutionControl&) const;
   PathSegmentControls pathControls_;
   PathResizeControls resizeControls_;
   bool pathTransform_ = false;
@@ -57,6 +60,9 @@ private:
   std::optional<Selection> preview_;
   std::array<double, 2> center_{}, size_{}, translation_{};
   std::vector<std::array<double, 2>> points_;
+  std::vector<PointAnnotation> pointAnnotations_;
+  bool pointMode_=false, pointAnnotationsChanged_=false, pointAnnotationsCleared_=false;
+  std::string pointAnnotationError_;
   double angle_ = 0, rotation_ = 0, width_ = 1, strokeWidth_ = 1;
   std::string label_, color_ = "#ffd54bff", strokeColor_, fillColor_ = "none",
                       error_;

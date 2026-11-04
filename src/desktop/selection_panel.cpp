@@ -2,6 +2,7 @@
 #include "path_visual.hpp"
 #include <imagejxx/composite_path.hpp>
 #include "geometry_number.hpp"
+#include "../native/selection_region_rotation.hpp"
 #include <algorithm>
 #include <charconv>
 #include <limits>
@@ -45,10 +46,10 @@ void checkColor(const std::string &value) {
     throw std::invalid_argument("Selection color must be #RRGGBB or #RRGGBBAA");
 }
 } // namespace
-void SelectionPanel::show(const DocumentSnapshot &source) {
+void SelectionPanel::show(const DocumentSnapshot &source,std::size_t point_working_cap) {
   if (!source.data().selection)
     throw std::invalid_argument("Draw a selection first");
-  initialize(source, *source.data().selection, false, {}, {}, {});
+  initialize(source, *source.data().selection, false, {}, {}, {},point_working_cap);
 }
 void SelectionPanel::show_saved_roi_geometry(
     const DocumentSnapshot &source, const Selection &selection, std::size_t row,
@@ -72,7 +73,7 @@ void SelectionPanel::show_saved_roi_geometry(
 void SelectionPanel::initialize(
     const DocumentSnapshot &source, const Selection &selection,
     bool geometryOnly, std::optional<std::size_t> row,
-    const SavedRoiGeometryLimits &limits, const ExecutionControl &control) {
+    const SavedRoiGeometryLimits &limits, const ExecutionControl &control,std::size_t point_working_cap) {
   SelectionPanel next;
   next.source_ = std::make_shared<const DocumentSnapshot>(source);
   next.geometryOnly_ = geometryOnly;
@@ -82,12 +83,22 @@ void SelectionPanel::initialize(
   next.geometryLimits_ = {limits.max_xy_pixels, limits.max_vertices,
                           limits.max_working_bytes};
   const auto shape = source.data().dataset.shape();
-  if (geometryOnly)
+  next.pointMode_=selection.kind=="point" || selection.kind=="multipoint";
+  if(next.pointMode_)next.geometryLimits_.max_working_bytes=std::min(next.geometryLimits_.max_working_bytes,point_working_cap);
+  if(next.pointMode_)next.admit_point_annotations(selection.points.size(),control);
+  if (geometryOnly || next.pointMode_)
     next.editor_.emplace(selection, shape.x, shape.y, next.geometryLimits_, control);
   else
     next.editor_.emplace(selection, shape.x, shape.y);
   next.preview_ = selection;
   next.points_ = planarControlPoints(*next.preview_);
+  if(next.pointMode_) {
+    try {
+      next.pointAnnotations_=point_annotations(selection,next.geometryLimits_.max_vertices);
+      validate_point_annotations(next.pointAnnotations_,shape);
+    }catch(const std::invalid_argument& error){next.pointAnnotationError_=error.what();next.pointAnnotations_.assign(selection.points.size(),PointAnnotation{});}
+    if(next.pointAnnotations_.size()!=selection.points.size())next.pointAnnotations_.assign(selection.points.size(),PointAnnotation{});
+  }
   next.width_ = next.preview_->width;
   next.rounded_ = next.preview_->is_rounded_box();
   if (next.rounded_) next.cornerDiameter_ = next.preview_->corner_diameter();
@@ -129,10 +140,22 @@ void SelectionPanel::initialize(
 bool SelectionPanel::matches(const DocumentSnapshot &current) const {
   return source_ && source_->same_document(current) &&
          source_->revisions().matches(current.revisions(), Change::Data) &&
-         (!(geometryOnly_ || (source_->data().selection && source_->data().selection->is_path())) ||
+         (!(geometryOnly_ || pointMode_ || (source_->data().selection && source_->data().selection->is_path())) ||
           (source_->display().t == current.display().t &&
            source_->display().c == current.display().c &&
            source_->display().crosshair[2] == current.display().crosshair[2]));
+}
+void SelectionPanel::admit_point_annotations(std::size_t count,const ExecutionControl& control) const {
+  if(!count || count>geometryLimits_.max_vertices || geometryLimits_.max_working_bytes<8192 ||
+      count>(geometryLimits_.max_working_bytes-8192)/2048)
+    throw std::length_error("Point properties annotation working/vertex limit exceeded");
+  if(source_ && source_->data().selection) {
+    const auto shape=source_->data().dataset.shape();
+    const auto used=detail::admit_selection_geometry(*source_->data().selection,shape.x,shape.y,geometryLimits_,control);
+    const auto extra=8192+count*2048;
+    if(used>geometryLimits_.max_working_bytes-extra)
+      throw std::length_error("Point properties annotation working limit exceeded");
+  }
 }
 void SelectionPanel::rebuild(const ExecutionControl &control) {
   Selection result = editor_->selection();
@@ -167,6 +190,15 @@ void SelectionPanel::rebuild(const ExecutionControl &control) {
     }
   }
   if (cornerChanged_) result.attributes["corner_diameter"] = std::int64_t(cornerDiameter_);
+  if(pointMode_) {
+    if(pointAnnotationsCleared_)result=without_point_annotations(result);
+    else if(pointAnnotationsChanged_) {
+      admit_point_annotations(result.points.size(),control);
+      validate_point_annotations(pointAnnotations_,shape);
+      result=with_point_annotations(result,pointAnnotations_,geometryLimits_.max_vertices);
+    }else if(result.attributes.count(point_annotations_attribute) && result.points.size()!=editor_->selection().points.size())
+      throw std::invalid_argument("Point count change requires aligned annotations or explicit clear");
+  }
   if (geometryOnly_) {
     const auto admitted = resolve_saved_roi_geometry(*source_,
         SavedRoiGeometryRequest(*savedRow_, std::move(result)), savedLimits_, control);
@@ -280,6 +312,9 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
         throw std::invalid_argument("Box position uses center coordinates");
       next.translation_ = pair(value, geometryOnly_ || editor_->selection().is_path());
       next.geometryChanged_ = true;
+    } else if (name == "point_annotations") {
+      if(!pointMode_)throw std::invalid_argument("Point annotations require a point selection");
+      // Decode after geometry fields, so a combined patch is order-independent.
     } else if (name == "points") {
       if (box_ || editor_->selection().kind == "mask" || !value.is_array())
         throw std::invalid_argument(
@@ -288,6 +323,7 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
         throw std::invalid_argument("Path controls cannot change segment topology");
       if (geometryOnly_ && value.size() > geometryLimits_.max_vertices)
         throw std::invalid_argument("Saved area vertex limit exceeded");
+      if(pointMode_)next.admit_point_annotations(value.size(),control);
       next.points_.clear();
       for (const auto &point : value)
         next.points_.push_back(pair(point, geometryOnly_ || editor_->selection().is_path()));
@@ -341,6 +377,35 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
     }
     for (const auto &entry : next.rawNumbers_) (void)parse_geometry_number(entry.second);
   }
+  if(values.contains("point_annotations")) {
+    const auto& annotations=values.at("point_annotations");
+    next.admit_point_annotations(next.points_.size(),control);
+    next.pointAnnotationError_.clear();
+    next.pointAnnotationsCleared_=annotations.is_null();next.pointAnnotationsChanged_=!annotations.is_null();
+    if(annotations.is_null())next.pointAnnotations_.assign(next.points_.size(),PointAnnotation{});
+    else {
+      // Bound conversion before constructing metadata nodes from caller JSON.
+      if(!annotations.is_array() || annotations.size()!=next.points_.size())
+        throw std::invalid_argument("Point annotation count differs from vertices");
+      for(const auto& entry:annotations) {
+        if(!entry.is_object() || entry.size()!=2 || !entry.contains("counter") || !entry.contains("position") ||
+            !entry.at("counter").is_number_integer())throw std::invalid_argument("Invalid point annotation fields");
+        const auto& position=entry.at("position");
+        if(!position.is_null()) {
+          if(!position.is_array() || position.size()!=3)throw std::invalid_argument("Point position requires T/C/Z");
+          for(const auto& axis:position)if(!axis.is_number_integer())throw std::invalid_argument("Point position requires integer axes");
+        }
+      }
+      auto candidate=next.editor_->selection();candidate.points=next.points_;
+      candidate.attributes[point_annotations_attribute]=metadataFromJson(Json{{"version",1},{"points",annotations}});
+      next.pointAnnotations_=point_annotations(candidate,next.geometryLimits_.max_vertices);
+      validate_point_annotations(next.pointAnnotations_,next.source_->data().dataset.shape());
+    }
+  }else if(next.pointMode_ && !next.pointAnnotationsChanged_ &&
+      (next.pointAnnotationsCleared_ || !next.editor_->selection().attributes.count(point_annotations_attribute))) {
+    next.admit_point_annotations(next.points_.size(),control);
+    next.pointAnnotations_.resize(next.points_.size());
+  }
   next.rebuild(control);
   if (!open_ || draftIdentity_ != next.draftIdentity_)
     throw OperationCancelled();
@@ -360,6 +425,7 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
 void SelectionPanel::apply(const Apply &publish) {
   if (!open_ || !preview_ || !error_.empty() || pathControls_.invalid() || resizeControls_.invalid())
     throw std::invalid_argument("Fix the selection draft before applying");
+  if(pointMode_)admit_point_annotations(preview_->points.size(),{});
   if (geometryOnly_) {
     const auto selection = *preview_;
     const auto source = *source_;
@@ -378,6 +444,7 @@ void SelectionPanel::cancel() {
   rawNumbers_.clear();
   pathControls_.reset(); resizeControls_.reset(); pathTransform_ = false; pathEdited_ = false;
   std::vector<std::array<double, 2>>().swap(points_);
+  std::vector<PointAnnotation>().swap(pointAnnotations_);pointAnnotationError_.clear();
 }
 void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
                           bool busy, const Apply &publish,
@@ -400,14 +467,14 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
     open_ = false;
     if (geometryOnly_) { ImGui::End(); cancel(); return; }
   }
-  bool changed = false;
+  bool changed = false, pointChanged = false;
   std::string numericError;
   controls_ = Json::object();
   controlStates_ = Json::object();
-  auto control = [&](const char *name, bool disabled = false, bool outsideBusy = false) {
+  auto control = [&](const char *name, bool disabled = false, bool outsideBusy = false, ImGuiID editorId = 0) {
     const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
     controls_[name] = {a.x + (b.x - a.x) / 4, (a.y + b.y) / 2};
-    controlStates_[name] = {{"id", ImGui::GetItemID()},
+    controlStates_[name] = {{"id", editorId ? editorId : ImGui::GetItemID()},
         {"rect", {a.x, a.y, b.x, b.y}}, {"focused", ImGui::IsItemFocused()},
         {"active", ImGui::IsItemActive()}, {"hovered", ImGui::IsItemHovered()},
         {"disabled", disabled || (!outsideBusy && busy)}};
@@ -471,16 +538,53 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
     changed |= number("Move Y", &translation_[1]);
     changed |= number("Rotate (degrees)", &rotation_);
     if (!points_.empty() && editor_->selection().kind != "mask") {
+      const auto vertexId=ImGui::GetID("Vertex");
       if(editor_->selection().is_path())ImGui::InputInt("Vertex", &vertex_,0,0);
       else ImGui::InputInt("Vertex", &vertex_);
-      control("Vertex");
+      control("Vertex",false,false,vertexId);
       vertex_ = std::clamp(vertex_, 0, int(points_.size() - 1));
       changed |= number("Vertex X", &points_[vertex_][0]);
       changed |= number("Vertex Y", &points_[vertex_][1]);
+      if(pointMode_) {
+        ImGui::SeparatorText("Point counter and position");
+        if(!pointAnnotationError_.empty())ImGui::TextWrapped("%s. Clear or replace annotations to edit them.",pointAnnotationError_.c_str());
+        ImGui::BeginDisabled(!pointAnnotationError_.empty());
+        auto& entry=pointAnnotations_[std::size_t(vertex_)];int counter=int(entry.counter);
+        // InputInt ends with a group item; its editable field has the scoped
+        // label ID (the same observation contract used by SettingsPanel).
+        const auto counterId=ImGui::GetID("Counter");
+        if(ImGui::InputInt("Counter",&counter)) {
+          entry.counter=unsigned(std::clamp(counter,0,99));pointAnnotationsChanged_=true;pointAnnotationsCleared_=false;pointChanged=true;
+        }
+        control("Counter",!pointAnnotationError_.empty(),false,counterId);
+        bool positioned=bool(entry.position);
+        if(ImGui::Checkbox("Positioned point",&positioned)) {
+          if(positioned)entry.position=PlanePosition{source_->display().t,source_->display().c,source_->display().crosshair[2]};
+          else entry.position.reset();
+          pointAnnotationsChanged_=true;pointAnnotationsCleared_=false;pointChanged=true;
+        }
+        control("Positioned point",!pointAnnotationError_.empty());
+        if(points_.size()==1)ImGui::TextDisabled("Single-point measurements use the captured view.");
+        if(entry.position) {
+          const auto shape=source_->data().dataset.shape();
+          int axes[]{entry.position->t+1,entry.position->c+1,entry.position->z+1};
+          const int extents[]{shape.t,shape.c,shape.z};const char* names[]{"Frame (1-based)","Channel (1-based)","Slice (1-based)"};
+          bool edited=false;
+          for(int axis=0;axis<3;++axis){const auto id=ImGui::GetID(names[axis]);edited|=ImGui::InputInt(names[axis],&axes[axis]);control(names[axis],!pointAnnotationError_.empty(),false,id);axes[axis]=std::clamp(axes[axis],1,extents[axis]);}
+          if(edited){entry.position=PlanePosition{axes[0]-1,axes[1]-1,axes[2]-1};pointAnnotationsChanged_=true;pointAnnotationsCleared_=false;pointChanged=true;}
+        }
+        ImGui::EndDisabled();
+        if(ImGui::Button("Clear point annotations")) {
+          pointAnnotations_.assign(points_.size(),PointAnnotation{});pointAnnotationError_.clear();
+          pointAnnotationsCleared_=true;pointAnnotationsChanged_=false;pointChanged=true;
+        }
+        control("Clear point annotations");
+      }
     }
   }
   if (changed)
     geometryChanged_ = true;
+  changed |= pointChanged;
   if (rounded_) {
     const bool edited = ImGui::InputText("Corner diameter", &cornerText_);
     control("Corner diameter");
@@ -602,6 +706,7 @@ Json SelectionPanel::diagnostics() const {
           {"geometry_only", geometryOnly_},
           {"saved_row_index", savedRow_ ? Json(*savedRow_) : Json()},
           {"path_edited",pathEdited_},
+          {"point_mode",pointMode_},{"point_annotation_error",pointAnnotationError_},
           {"segments",pathControls_.diagnostics()},
           {"transform",pathTransform_},{"resize",resizeControls_.diagnostics()},
           {"numeric_text", rawNumbers_},

@@ -1876,9 +1876,16 @@ struct Window::Impl {
     if(action=="enlarge_selection" || action=="grow_selection" || action=="shrink_selection" ||
        action=="show_selection_enlargement" || action=="replay_selection_enlargement")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
-    if((action=="show_selection_properties" || action=="selection_properties_draft" || action=="apply_selection_properties" || action=="cancel_selection_properties") &&
-        source->nativeSnapshot().data().selection && source->nativeSnapshot().data().selection->is_path())
-      return owner.controller_->active_document_id()==source->id;
+    if(action=="show_selection_properties" || action=="selection_properties_draft" ||
+        action=="apply_selection_properties" || action=="cancel_selection_properties") {
+      const auto captured=source->nativeSnapshot();
+      // Keep a stale draft reachable so Apply can perform its revision check
+      // and Cancel still works after the active selection changes or disappears.
+      const auto& selection=action!="show_selection_properties" && selectionPanel.visible()
+          ? selectionPanel.preview():captured.data().selection;
+      if(selection && (selection->is_path() || selection->kind=="point" || selection->kind=="multipoint"))
+        return owner.controller_->active_document_id()==source->id;
+    }
     if(action=="select_all" || action=="select_none" || action=="restore_selection" || action=="invert_selection")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action == "combine_rois" || action == "create_roi" || action == "add_roi" || action == "select_roi" || action == "update_roi" ||
@@ -3032,6 +3039,15 @@ struct Window::Impl {
       if(creationRebindOwner!=source.id())throw RevisionConflict();
       owner.replaySelectionCreation(*creationRebind,request,source.id());creationRebind.reset();creationRebindOwner=0;
     } else owner.applySelectionCreation(source,request);
+  }
+  void publishSelectionProperties(const Selection &value,const DocumentSnapshot &source) {
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit");
+    if(source.data().selection && value==*source.data().selection)return;
+    if(selectionPanel.path_edited()) {publishAuthoredPath(source,value);return;}
+    auto edit=source.begin_edit(Change::Data);
+    edit.select(value);
+    if(owner.documentById(source.id())->scientific())owner.controller_->commit(edit);
+    else owner.commitEdit(edit);
   }
   void updateCreationPreview(Pane &pane) {
     auto &draft = *pane.creation;
@@ -8443,7 +8459,7 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (name == "show_selection_properties") {
-    impl->selectionPanel.show(nativeSnapshot());
+    impl->selectionPanel.show(nativeSnapshot(),impl->selectionCreationLimits().max_working_bytes);
     return;
   }
   if (name == "selection_properties_draft") {
@@ -8466,10 +8482,7 @@ void Window::action(const std::string &name, const Json &p) {
     impl->selectionPanel.working_limit(impl->selectionCreationLimits().max_working_bytes);
     impl->selectionPanel.apply(
         [&](const Selection &value, const DocumentSnapshot &source) {
-          if (source.data().selection && value == *source.data().selection)
-            return;
-          if(impl->selectionPanel.path_edited())impl->publishAuthoredPath(source,value);
-          else {auto edit=source.begin_edit(Change::Data);edit.select(value);commitEdit(edit);}
+          impl->publishSelectionProperties(value,source);
         });
     return;
   }
@@ -14323,10 +14336,7 @@ void Window::Impl::draw() {
           applySavedRoiNumeric(value);
           return;
         }
-        if (source.data().selection && value == *source.data().selection)
-          return;
-        if(selectionPanel.path_edited())publishAuthoredPath(source,value);
-        else {auto edit=source.begin_edit(Change::Data);edit.select(value);owner.commitEdit(edit);}
+        publishSelectionProperties(value,source);
       });
   if (savedRoiEdit.active() && !savedRoiEdit.pointer_active()) {
     if (!selectionPanel.visible()) {

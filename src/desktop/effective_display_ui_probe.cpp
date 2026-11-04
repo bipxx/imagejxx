@@ -230,8 +230,8 @@ Json capturedPathMeasurementUiCase(Window& window,const std::string& context,con
     for(int attempt=0;attempt<4;++attempt) {
       const auto root=ImGui::FindWindowByName("ROI manager");ImGuiWindow* child=nullptr;
       require(root && root->Active,"ROI manager unavailable for point selection");
-      for(auto window:root->DC.ChildWindows)if(window->ParentWindow==root &&
-          std::string(window->Name).find("saved_roi_rows")!=std::string::npos)child=window;
+      for(auto childWindow:root->DC.ChildWindows)if(childWindow->ParentWindow==root &&
+          std::string(childWindow->Name).find("saved_roi_rows")!=std::string::npos)child=childWindow;
       require(child && child->Active,"ROI rows unavailable for point selection");
       const auto point=last.at("roi_manager").at("controls").at("row.2").at("point");
       const auto clip=child->InnerClipRect;const auto y=point[1].get<float>();
@@ -255,6 +255,81 @@ Json capturedPathMeasurementUiCase(Window& window,const std::string& context,con
     report["jobs_reserved_after"]=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
     report["state"]="observed";session.close();writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& e){window.cancel();window.wait();report["failure"]=e.what();writeJson((dir/"failure.json").u8string(),report);throw;}
+}
+Json pointAnnotationEditingUiCase(Window& window,const std::string& context,const std::string& fresh_directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
+  require(!fs::exists(dir) && window.documents().empty(),"Fresh point-edit fixture required");fs::create_directories(dir);
+  Stack planes;for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z) {
+    Image image(7,5,1,PixelType::UInt8);for(int y=0;y<5;++y)for(int x=0;x<7;++x)image.at(x,y)=80*t+30*c+10*z+x+10*y;
+    planes.push_back(std::move(image));
+  }
+  const Selection points("multipoint",{{.5,.5},{2.25,1.75},{.5,.5}});
+  DocumentData data{Dataset::from_planes({2,2,2,5,7,1},std::move(planes)),{},{},{},{},{},{}};
+  data.selection=points;data.rois={Roi{"stored",points,{},{},{},{}}};
+  auto source=std::make_shared<imagejxx::Document>(std::move(data));window.addNativeDocument(source);
+  Json report{{"contract","g066.point-annotation-edit.ui.001"},{"context",context},{"acceptance_claim",false},
+      {"frames",Json::array()},{"controls",Json::array()},
+      {"fixture_actions",{"attach scalar TCZYX source/plain points and stored row","open later drafts through existing action","save session/results and update stored ROI through existing actions"}}};
+  try {
+    HeadlessInputSession session(window);Json last;
+    auto frame=[&](const Json& events=Json::array()) {
+      require(report["frames"].size()<180,"Point-edit frame bound");last=session.frame(events);
+      require(last.at("input_frame").at("raw_inputs")==events,"Point-edit input mismatch");
+      report["frames"].push_back({{"events",events},{"input_frame",last.at("input_frame")}});
+    };
+    auto click=[&](const Json& observed,const std::string& key) {const auto control=observed;
+      if(!control.at("enabled").get<bool>() || control.at("id").get<std::uint64_t>()==0)
+        report["unavailable_control"]={{"name",key},{"control",control},{"panel",last.value("selection_properties",Json::object())}};
+      require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"Point-edit control unavailable");
+      report["controls"].push_back({{"name",key},{"control",control}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+      for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+    };
+    auto menu=[&](const std::string& key){click(last.at("host_controls").at(key),key);};
+    auto field=[&](const std::string& key) {
+      for(int attempt=0;attempt<6;++attempt) {
+        const auto state=last.at("selection_properties").at("control_states").at(key);
+        const auto point=last.at("selection_properties").at("controls").at(key);
+        const auto panel=ImGui::FindWindowByName("Selection properties");require(panel && panel->Active,"Point properties panel unavailable");
+        const auto y=point[1].get<float>();const auto clip=panel->InnerClipRect;
+        if(y>clip.Min.y+1 && y<clip.Max.y-1 && y<ImGui::GetIO().DisplaySize.y)
+          return Json{{"enabled",!state.at("disabled").get<bool>()},{"id",state.at("id")},{"rect",state.at("rect")},{"point",point}};
+        require(attempt<5 && panel->ScrollMax.y>0,"Point-edit control cannot be revealed");
+        const auto previous=panel->Scroll.y;
+        frame(Json::array({{{"type","position"},{"space","screen"},{"point",{clip.Max.x-8,(clip.Min.y+clip.Max.y)/2}}}}));
+        frame(Json::array({{{"type","wheel"},{"x",0},{"y",y<clip.Min.y?3:-3}}}));frame();frame();
+        require(panel->Scroll.y!=previous,"Point-edit panel did not scroll");
+      }
+      throw std::runtime_error("Point-edit reveal bound");
+    };
+    auto button=[&](const std::string& key){click(field(key),key);};
+    auto text=[&](const std::string& key,const std::string& value) {
+      button(key);
+      for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
+      frame(Json::array({{{"type","text"},{"value",value}}}));
+      for(bool down:{true,false})frame(Json::array({{{"type","key"},{"name","Enter"},{"down",down}}}));
+    };
+    frame();frame();frame();const auto before=source->snapshot();const auto undo=source->undo_steps();
+    menu("menu.Edit");menu("menu.Edit.Selection");menu("menu.action.show_selection_properties");
+    text("Counter","2");button("Positioned point");
+    text("Frame (1-based)","2");text("Channel (1-based)","2");text("Slice (1-based)","2");
+    report["draft"]=last.at("selection_properties").at("preview");
+    report["unpublished"]=source->snapshot().shares_data(before) && source->undo_steps()==undo;
+    button("Apply");report["applied"]=selectionJson(*source->snapshot().data().selection);
+    report["undo_after_apply"]=source->undo_steps();window.action("update_roi",{{"index",0}});
+    report["stored"]=selectionJson(source->snapshot().data().rois[0].selection);
+    menu("menu.Analyze");menu("menu.action.measure");window.wait();frame();report["rows"]=window.results;
+    window.action("save_results",{{"path",(dir/"points.csv").u8string()}});
+    window.action("save_document",{{"path",(dir/"points.ijx").u8string()}});
+    const auto applied=source->snapshot();window.action("show_selection_properties");frame();
+    button("Clear point annotations");report["cleared_draft"]=last.at("selection_properties").at("preview");button("Cancel");
+    report["cancel_preserved"]=source->snapshot().shares_data(applied);
+    window.action("show_selection_properties");frame();button("Clear point annotations");button("Apply");
+    report["cleared"]=selectionJson(*source->snapshot().data().selection);
+    report["stored_after_clear"]=selectionJson(source->snapshot().data().rois[0].selection);
+    report["workflow_count"]=window.workflow.size();report["state"]="observed";session.close();
+    writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){window.cancel();window.wait();report["failure"]=error.what();writeJson((dir/"failure.json").u8string(),report);throw;}
 }
 Json capturedProfileUiCase(Window& window,const std::string& context,const std::string& fresh_directory) {
   namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));

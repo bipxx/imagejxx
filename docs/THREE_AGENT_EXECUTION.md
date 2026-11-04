@@ -39,8 +39,10 @@ scalar area/line and grouped manager measurements. M1 path/angle/Bounds is now
 scoped integrated in both Windows hosts, with installed Windows/Linux clients.
 M2a expanded point rows and selected manager are also scoped integrated.
 M2b.1 typed annotation core, explicit adapters and Measure/CSV output are scoped
-verified; new editing/interchange controls remain open. Next M2b.2 consumers,
-M2b.3 manager variants, M3 area/shape/options and M4 reconciliation;
+verified. M2b.2a point properties/vertex alignment is scoped integrated in both
+Windows hosts with affected native/installed Windows/Linux checks. Next M2b.2b
+interchange/point-tool configuration, then M2b.3 manager variants,
+M3 area/shape/options and M4 reconciliation;
 then T04a.3 persistence/replay. No full measurement/platform completion claim.
 Use PLAN for concrete exits and the per-task waste decision/revisit trigger.
 Preserve the capture guard, physical-axis tests, resource
