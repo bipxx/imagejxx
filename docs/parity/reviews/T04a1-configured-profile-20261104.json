@@ -1,0 +1,547 @@
+{
+  "schema_version": 1,
+  "task": "T04a.1",
+  "date": "2026-11-04",
+  "state": "verified_scoped",
+  "base_commit": "bc1866e176ad586ec68198644b65aac510939bc6",
+  "acceptance_claim": "Only the stated feature/input/platform scope; not full ImageJ/Fiji/profile-family parity or release completion.",
+  "delivered": [
+    "Tight geometric bounds fused into mask membership, including density-excluded pixels",
+    "Frozen configured line/path sampling, affine cumulative axes and calibration before interpolation; original default-line semantics preserved",
+    "Shared actual C++/Python ImGui Profile menus, consumed sample settings/persistence and CSV",
+    "Live source/selection/calibration/CZT guards, pan stability, targeted Clear/close cancellation, queued/READY checks and detached saved plots"
+  ],
+  "verification": {
+    "windows_python_unique_product_cases": 318,
+    "attempts": [
+      {
+        "junit": {
+          "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\python-native.xml",
+          "bytes": 20149,
+          "sha256": "a50aa44a9232e93bdeca850fb487c02fc6429705bec4f6e924f60a6b95c22ddf"
+        },
+        "counts": {
+          "passed": 142,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "junit": {
+          "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\python-ui001.xml",
+          "bytes": 29590,
+          "sha256": "400e1d994a51932ff4166b065c20f14e1d15cbe11978ad1be0b9dfde2efe16fb"
+        },
+        "counts": {
+          "passed": 175,
+          "failed": 1,
+          "skipped": 0
+        }
+      },
+      {
+        "junit": {
+          "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\python-ui-smoke-retry.xml",
+          "bytes": 356,
+          "sha256": "4fe69f719ccd8637dad6a31562095ae90c1aa0bbd8bc201054dd89ef32210694"
+        },
+        "counts": {
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0
+        }
+      }
+    ],
+    "observation_tool_contracts": 23,
+    "windows_native_controls": 2,
+    "linux_native_controls": 3,
+    "installed_sdk_clients_each_windows_linux": 6,
+    "original_numerical_cases_each_sdk": 77,
+    "table_profiles_each_sdk": 128,
+    "fit_dtype_cells_each_sdk": 86,
+    "actual_ui_platform": "Windows",
+    "actual_ui_hosts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "reuse_after_smoke_only_fix": "175 passing UI tests/capture routes retain their consumed source semantics; smoke-only explicit wait fix reran the one failed interchange consumer. Core/SDK code unchanged.",
+    "post_check_header_documentation": {
+      "policy": "Post-check public header edit changes comments only; declarations match the qualified installed SDK. Refresh installed header without recompiling unchanged code.",
+      "qualified_header": {
+        "path": ".tmp\\p13g-verification\\windows\\sdk-installed\\include\\imagejxx\\target_analysis.hpp",
+        "bytes": 4103,
+        "sha256": "d937e4ad96779dcaa22af6b7b4ce0138accc781d839241820ade8be64773ee6b"
+      },
+      "final_header": {
+        "path": "include\\imagejxx\\target_analysis.hpp",
+        "bytes": 4173,
+        "sha256": "afaec24e45cb98a56af6d490de2983d7799e154672c55e9b388820889a0408e8"
+      },
+      "linux_installed_header": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/include/imagejxx/target_analysis.hpp",
+        "sha256": "afaec24e45cb98a56af6d490de2983d7799e154672c55e9b388820889a0408e8"
+      }
+    }
+  },
+  "limitations": [
+    "Thin in-image scalar finite-policy profiles only; wider/outside/bicubic/IEEE/color/other dtype and advanced modes remain owned requirements",
+    "Editor per-segment automatic sampling is not certified original ImageJ polyline parity",
+    "ROI-manager/measurement geometry and analysis recording/replay/broader persistence remain T04a.2/T04a.3",
+    "No Linux/macOS UI or full-platform release qualification; T00 exact original-reference availability remains open",
+    "No matched processing speed superiority claim"
+  ],
+  "waste_review": {
+    "fixed": [
+      "frontend second bounds raster",
+      "per-segment full source validation / repeated calibration decode",
+      "broad editor cancellation for analysis Clear/close",
+      "C++ smoke fixture immediate Measure assumption"
+    ],
+    "reused": [
+      "existing Window jobs, targeted cancel, render leases and plot owner",
+      "maintained capture driver with registered profile/generic/snapshot routes",
+      "bounded archive_test_evidence pack/verify helper",
+      "active compiler/runtime/installed SDK prefixes"
+    ],
+    "deferred": [
+      {
+        "owner": "T02",
+        "finding": "109 compilation entries/830.906 seconds in coherent header/API batch; one-entry UI fix38.328s and smoke fix17.406s; distinct workloads",
+        "exit": "Audit actual header dependencies and isolate common compilation only if repeated cost justifies bounded change."
+      }
+    ],
+    "cleanup_caller_correction": "Wrong expected pack/verify state refused before deletion; inspected helper contract and corrected caller. Diagnostic retained."
+  },
+  "retention": {
+    "archive": {
+      "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\captures.zip",
+      "bytes": 1698293,
+      "sha256": "a8bde44687ed4c8473ab7d468dd34b955860526c9b5ba01832fde1ccc3f23801"
+    },
+    "manifest": {
+      "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\captures.manifest.json",
+      "bytes": 127709,
+      "sha256": "88f9a587118dfcd19afef297f9ae0f6dc4978d9f04cc32615f71342282ef0a28"
+    },
+    "pack": {
+      "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\captures.pack.json",
+      "bytes": 1469,
+      "sha256": "884a4a3f9609939d6c5250c0a16fe9315b6b3093e52d0b96fd99277e0a02afff"
+    },
+    "verify": {
+      "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\captures.verify.json",
+      "bytes": 1377,
+      "sha256": "2305bf51afb36901145e958a7ec032d45319d1ef72c9dd38bac714d60ce23e5c"
+    },
+    "scratch_retirement": {
+      "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\scratch-retirement.json",
+      "bytes": 418,
+      "sha256": "ec49c42622c16cffc1336ed0b129d01ba6d0e880025e595f323606857ec5e9a0"
+    },
+    "sdk_retirement": {
+      "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\sdk-consumer-retirement.json",
+      "bytes": 4381,
+      "sha256": "37ff23a254fc55ab17692e7d256011d123d03cb604824b7c211c6f21844e57d5"
+    },
+    "scratch_exists": false,
+    "failed_attempt_diagnostics_retained": true
+  },
+  "storage": {
+    "snapshot": {
+      "path": ".tmp\\manual-workflow-verification\\t04a-profile-final-20261104.json",
+      "bytes": 66572,
+      "sha256": "c405ad4f4b6b32824ca4f9326910073b7d9a5ccba541a1e2f1cd86575d1503bf"
+    },
+    "known_bytes": 8355003388,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "scope": "All normalized project/dependency/runtime/Linux roots; before small public receipt/doc updates."
+  },
+  "processes": [
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\linux-build.process.json",
+        "bytes": 1622,
+        "sha256": "49a23db61adc8752756212a7c26fac468452634461ccaa3d37cbf0fe51fc02aa"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 31.593250609000002
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\linux-install.process.json",
+        "bytes": 1602,
+        "sha256": "dec09c90adf246da4c07198e5c4b9b63d59ca723133a8c17a42eb3172767e4a6"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 1.5266147629999978
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\linux-native.process.json",
+        "bytes": 1574,
+        "sha256": "f53360221f62fb0b8d1f7f519a473c9805b2e30419d0ec8890fd346cf057b885"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2237673800000053
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\linux-sdk-build.process.json",
+        "bytes": 1542,
+        "sha256": "1d8e305911cc7734470006dabdd1f2a69a6c6e76a0394a3c91856e6658b164dd"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 20.412304988999992
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\linux-sdk-configure.process.json",
+        "bytes": 2033,
+        "sha256": "3ed663c32845734aeb7593d7d9c2e6fcf2edd6eff55f91d173300d9a6320fe38"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 7.988378871000009
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\linux-sdk-tests.process.json",
+        "bytes": 1546,
+        "sha256": "2cd9f656d79a43a2cb8c2b3200e2b3a42e91bac0f8531efc1d5b6c97f6ae6807"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5777696020000036
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\observation-tools-final.process.json",
+        "bytes": 2281,
+        "sha256": "077c6bc8c40e73db5319e777f724b49ab4c2338ec8de06e39b2cb19a2d9d4c11"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 4.530999999959022
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\observation-tools.process.json",
+        "bytes": 2269,
+        "sha256": "bb4620a450ac81b5e0cd02bd9e62dcb9a38aeec39385355d18dafb68e659d10d"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 5.155999999959022
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\python-native.process.json",
+        "bytes": 2316,
+        "sha256": "a98bea65ee38393911926ac3775ac044a1a08db8cbcdf395fbbe3268a7a15672"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 2.4839999999385327
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\python-ui-smoke-retry.process.json",
+        "bytes": 2318,
+        "sha256": "0f8728414da08b6693088140fb616655549887cb37671111429d9e01f32a11d1"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 1.9380000000819564
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\python-ui001.process.json",
+        "bytes": 2592,
+        "sha256": "ff95e7d24fa671d06c80b0ef3ca89ef10a47d56b3feba241969050f26f1313f4"
+      },
+      "state": "exited",
+      "exit_code": 1,
+      "elapsed_seconds": 9.797000000020489
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-build.process.json",
+        "bytes": 2133,
+        "sha256": "6eca4fd4cc86be92e49c7b0682fec61422c60c0eb99d5dd343c35b7b32a2d159"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 830.905999999959
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-install-app-final.process.json",
+        "bytes": 2098,
+        "sha256": "2fae0d6576ab593309226d09e2c0a3e2ed4476ffdd95ca9f8e0afe0311a82b8d"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.13999999989755452
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-install-app.process.json",
+        "bytes": 2096,
+        "sha256": "86c64b8387299049a5d4c57099ede62e445b4992d90f85ccf3ec232e07277f36"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.23499999986961484
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-install-native.process.json",
+        "bytes": 2117,
+        "sha256": "cb193ea7a0a632da8ef6dd5aea2f369cc13926b96bd842caba95482e938d061f"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.7809999999590218
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-install-python-ui-final.process.json",
+        "bytes": 2110,
+        "sha256": "bc816fb9b4850c43e97cc7d4c3ddd514b3be66705ee1781830428b6362eaa37b"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-install-python-ui.process.json",
+        "bytes": 2106,
+        "sha256": "2ed7e49214623c0926fe4bc79907f39b9362e244412d3f81fe8be63582bbf403"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-install-sdk.process.json",
+        "bytes": 2113,
+        "sha256": "16da8aaeee0b6955e7dca54eaa9d897fb1693af94901b219204736ab450a6549"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 1.6100000001024455
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-native.process.json",
+        "bytes": 2025,
+        "sha256": "e236b609986c15acd19f2e4262d26fdc1d721bbb9f5d91b80f1931ab227f6fed"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 0.25
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-sdk-build.process.json",
+        "bytes": 2889,
+        "sha256": "af2e9dd79cebb6529b6c9623b8591a8527e6d1566b8712cabd61144aacda06ef"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 15.608999999938533
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-sdk-configure.process.json",
+        "bytes": 2552,
+        "sha256": "94bb071229539c0d46776d6528054dd4785918df56be2bf07cabfc0fc7eb32b8"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 9.141000000061467
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-sdk-tests.process.json",
+        "bytes": 2040,
+        "sha256": "0a74872869cddb5762fb27a163927824c760356e45a9823fd540090f25b5f041"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 1.4530000002123415
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-smoke-timing-fix.process.json",
+        "bytes": 2034,
+        "sha256": "7bca1ee22921025118a49b00d414941ab2596c28632816f9ad13ced619f2694b"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 17.405999999959022
+    },
+    {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\t04a-profile-20261104\\windows-ui-review-fix.process.json",
+        "bytes": 2032,
+        "sha256": "085524fa4689e121b66d1be3e5dea00aaf776e6f4b86b6779086fa48cb76162e"
+      },
+      "state": "exited",
+      "exit_code": 0,
+      "elapsed_seconds": 38.32799999997951
+    }
+  ],
+  "producer_inputs": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 4529,
+      "sha256": "8b3e9ca5a6f8b2e9a7988df0e886a9b0cd8723be4ba5df1edd114461aec80fe1"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 138504,
+      "sha256": "cda09c8f3e8e71a24ef40719f6b7e7cf8c8ecceb5caf1ded87724cba9e4cd71f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 7373,
+      "sha256": "ef811533a218604ba0694a019d4afe26586d6523a52ecdc1df2e708d8c2aa9e0"
+    },
+    {
+      "path": "docs\\PLAN.md",
+      "bytes": 31735,
+      "sha256": "b7f962e868e654a022d8e491558e77630d2940e64bcb281018780d4ae2f308e5"
+    },
+    {
+      "path": "docs\\SOL_ULTRA.md",
+      "bytes": 3869,
+      "sha256": "35b2e3ced772977a48d5d897c9a1714e13e4913724f44549d57bf0b314471a2b"
+    },
+    {
+      "path": "docs\\TARGET_ANALYSIS.md",
+      "bytes": 9225,
+      "sha256": "77783b624a92dd7d80295df53eb79b76adb27d4beef09dca9ef4082d94de75a6"
+    },
+    {
+      "path": "docs\\THREE_AGENT_EXECUTION.md",
+      "bytes": 4339,
+      "sha256": "fb7976a733a7a524b6bae5f1346a0cfaa6a95c30435fe892bde936d343ea7691"
+    },
+    {
+      "path": "include\\imagejxx\\target_analysis.hpp",
+      "bytes": 4173,
+      "sha256": "afaec24e45cb98a56af6d490de2983d7799e154672c55e9b388820889a0408e8"
+    },
+    {
+      "path": "scripts\\ci_observations.py",
+      "bytes": 59212,
+      "sha256": "d761390448074ab9a8bb1ff5f1cd3c7dfaadafa75d99a2bbe0f2ecb8a14d7dfb"
+    },
+    {
+      "path": "src\\desktop\\analysis_measurement.cpp",
+      "bytes": 3742,
+      "sha256": "e1b9d4e037086224c7f93a2121c41513ce2d75a7d2deab71e0a57a8a4910f8df"
+    },
+    {
+      "path": "src\\desktop\\analysis_measurement.hpp",
+      "bytes": 477,
+      "sha256": "05ff7d89acb140e1e6fb5af8eb1f0498e9a239ec672105ac2f0af9ef51e504b2"
+    },
+    {
+      "path": "src\\desktop\\effective_display_ui_probe.cpp",
+      "bytes": 16202,
+      "sha256": "aafb1fec4c508d42ec5292219414b6d763f1bc4cd8984ce50153dbab48c4f9f1"
+    },
+    {
+      "path": "src\\desktop\\effective_display_ui_probe.hpp",
+      "bytes": 447,
+      "sha256": "455bdd9bd1f2e8471c36d35863bc1371403efe6ed931e4ae3a4811a0f24904c9"
+    },
+    {
+      "path": "src\\desktop\\generic_plot_payload.hpp",
+      "bytes": 3603,
+      "sha256": "e563dd7a75ce8e0d4a3e310f11db990e9e9bb0b9d6e3f18abe0436dcc4dc633d"
+    },
+    {
+      "path": "src\\desktop\\generic_plot_ui_probe.cpp",
+      "bytes": 7596,
+      "sha256": "4e9059966500d5f8397839035777569937b30928dcfd9063b2d8bf41e9abf667"
+    },
+    {
+      "path": "src\\desktop\\main.cpp",
+      "bytes": 62505,
+      "sha256": "2ffd13ae391c9173dd416776f144410dbec037beb2fceb21223d98f7e9fe7c36"
+    },
+    {
+      "path": "src\\desktop\\python.cpp",
+      "bytes": 61351,
+      "sha256": "dbc77e074782fd7eeadab45c78381e8fe71b34b627ac8f1c6fbdf91e860e4f77"
+    },
+    {
+      "path": "src\\desktop\\smoke.cpp",
+      "bytes": 18918,
+      "sha256": "04dcb613fedfc89332aa97271484a78773a306888dee79a049c24e8fbad5ea5f"
+    },
+    {
+      "path": "src\\desktop\\window.cpp",
+      "bytes": 871122,
+      "sha256": "b889b43b5bcc9da25729f153c62abcbf79193b40a069d2990432ea6ab6cc378c"
+    },
+    {
+      "path": "src\\desktop\\window.hpp",
+      "bytes": 15499,
+      "sha256": "accb7cae537eb5506dd6c386dce83b6e2dcb81ca3e03cb6b69175ebb852ae4f5"
+    },
+    {
+      "path": "src\\native\\calibrated_analysis.cpp",
+      "bytes": 13076,
+      "sha256": "e1604cb9eef3d99b6978c19b9f8844f12a1c695171f3b61d84007e2223fc84cb"
+    },
+    {
+      "path": "src\\native\\calibrated_analysis_internal.hpp",
+      "bytes": 818,
+      "sha256": "187e1ab160b8f62cc6b65734a8d88ee70e34609a972f7d87f5fad9d39f92c6d7"
+    },
+    {
+      "path": "src\\native\\target_analysis.cpp",
+      "bytes": 13096,
+      "sha256": "473baef715ccdbf3ee52cf94a4a4ad00598ed0d9dd1b5b0d960a2ebf956d6646"
+    },
+    {
+      "path": "src\\native\\target_analysis_bindings.cpp",
+      "bytes": 5250,
+      "sha256": "e45be0f28b555ccde8e6529ac2e3ea653edeeba4299a522520a8b91db6c9bf33"
+    },
+    {
+      "path": "tests\\native\\test_target_analysis.cpp",
+      "bytes": 5408,
+      "sha256": "c8ef0de620db33f4ce31f20fa48cc2fbd0e26ecda15cb60cbd786925b421bd53"
+    },
+    {
+      "path": "tests\\python\\test_captured_measurement_ui.py",
+      "bytes": 6308,
+      "sha256": "59d34c6b14dc080be86f9e866ddf87476cb7b36204a46f892aadce1a6654e6a5"
+    },
+    {
+      "path": "tests\\python\\test_captured_profile_ui.py",
+      "bytes": 3139,
+      "sha256": "4fb9b0b4d78f8faeab8398d5d1e7f60b056f54ea10ef2dd0a2e236f30e3fb9c6"
+    },
+    {
+      "path": "tests\\python\\test_target_analysis.py",
+      "bytes": 19676,
+      "sha256": "f370d109014a82b354f2d55651ed21183c27f62a54997890d1b204e45b5efde2"
+    }
+  ],
+  "next_tasks": [
+    "T04a.2 measurement geometry and ROI-manager",
+    "T04a.3 persistence/recorder/strict replay and rebind"
+  ]
+}

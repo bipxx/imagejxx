@@ -6,4 +6,5 @@ Json effectiveDisplayUiCase(Window&, const std::string& context,
                             const std::string& fresh_directory);
 Json capturedMeasurementUiCase(Window&, const std::string& context,
                               const std::string& fresh_directory);
+Json capturedProfileUiCase(Window&, const std::string& context,const std::string& fresh_directory);
 }

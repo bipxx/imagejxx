@@ -83,6 +83,7 @@ public:
   Json documentInfo(std::uint64_t id = 0) const;
   Json virtualViewCacheInfo() const;
   Json renderMemoryInfo() const;
+  void clearResults();
   Json plotSnapshotsInfo() const;
   Json plotSampleAt(const Json& parameters) const;
   DocumentSnapshot nativeSnapshot(std::uint64_t id = 0) const;

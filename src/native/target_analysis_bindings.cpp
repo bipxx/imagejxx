@@ -8,7 +8,8 @@ ExecutionControl axis_range_python_control(std::shared_ptr<CancellationToken>,py
 void bind_target_analysis(py::module_& m) {
   py::class_<TargetAnalysisOptions>(m,"TargetAnalysisOptions")
     .def(py::init<>()).def_readwrite("statistics",&TargetAnalysisOptions::statistics)
-    .def_readwrite("line",&TargetAnalysisOptions::line).def_readwrite("interpolate",&TargetAnalysisOptions::interpolate);
+    .def_readwrite("line",&TargetAnalysisOptions::line).def_readwrite("interpolate",&TargetAnalysisOptions::interpolate)
+    .def_readwrite("path",&TargetAnalysisOptions::path).def_readwrite("samples_per_segment",&TargetAnalysisOptions::samples_per_segment);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
     .def_readwrite("max_working_bytes",&TargetAnalysisLimits::max_working_bytes)
@@ -29,6 +30,7 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("profile_samples",&TargetAnalysisEstimate::profile_samples);
   py::class_<TargetAnalysisPlane>(m,"TargetAnalysisPlane")
     .def_readonly("position",&TargetAnalysisPlane::position)
+    .def_readonly("bounds",&TargetAnalysisPlane::bounds)
     .def_property_readonly("statistics",[](const TargetAnalysisPlane& v)->py::object{
       if(v.statistics)return bindings::calibrated_statistics_python(*v.statistics);
       return py::none();})

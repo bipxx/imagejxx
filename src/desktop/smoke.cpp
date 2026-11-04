@@ -191,6 +191,8 @@ int Window::smokeTest(const std::string &directory) {
         "ImGui worker edit");
   inputTest.action("add_roi");
   inputTest.action("measure");
+  inputTest.wait();
+  check(inputTest.error().empty(), "Captured measurement completion");
   inputTest.action("copy");
   inputTest.action("paste_new");
   check(inputTest.document()->frame().width == 10 &&

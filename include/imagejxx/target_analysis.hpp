@@ -9,6 +9,11 @@ struct TargetAnalysisOptions {
   // Profile sampling is independent of area ROI membership. Both may be enabled.
   std::optional<std::array<double,4>> line;
   bool interpolate = true;
+  // Alternative to line: 2..4096 vertices, shared endpoints emitted once.
+  std::vector<std::array<double,2>> path;
+  // Zero uses ImageJ round(length)+1 for line; path uses the editor's
+  // max(2,ceil(length)+1) per segment. Otherwise 2..1,000,000 per segment.
+  std::size_t samples_per_segment = 0;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -25,6 +30,9 @@ struct TargetAnalysisPlane {
   PlanePosition position;
   std::optional<ImageJScalarStatistics> statistics;
   std::vector<double> profile_values;
+  // Tight geometric mask membership, independent of density NaN exclusions.
+  // nullopt denotes an empty geometric mask or a profile-only row.
+  std::optional<std::array<int,4>> bounds;
 };
 // Detached results retain no source/provider or application. Distances are
 // Euclidean lengths in the captured spatial affine, not screen coordinates.

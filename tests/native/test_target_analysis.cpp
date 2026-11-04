@@ -56,5 +56,22 @@ int main(){
     TargetRequest whole;whole.roi=RoiPolicy::WholePlane;
     detached=execute_target_analysis(resolve_target_analysis(resolve_target(temporary.snapshot(),whole)));}
   check(weak.expired() && detached.planes[0].statistics->mean==2.5);
+  check(detached.planes[0].bounds && *detached.planes[0].bounds==std::array<int,4>{0,0,3,2});
+  {
+    auto source=std::make_shared<Source>();Document temporary{Dataset(source)};
+    TargetRequest whole;whole.roi=RoiPolicy::WholePlane;
+    TargetAnalysisOptions configured;configured.statistics=false;
+    configured.path={{0,0},{2,0},{2,1}};configured.samples_per_segment=3;
+    const auto prepared=resolve_target_analysis(resolve_target(temporary.snapshot(),whole),configured);
+    check(source->reads.empty() && prepared.estimate().profile_samples==5);
+    const auto result=execute_target_analysis(prepared);
+    check(source->reads.size()==1 && !result.planes[0].bounds);
+    check(result.planes[0].profile_values==std::vector<double>({0,1,2,3.5,5}));
+    check(result.profile_distances==std::vector<double>({0,1,2,2.5,3}));
+    auto edit=temporary.begin_edit();edit.select(Selection("rectangle",{{1,0},{3,1}}));temporary.commit(edit);
+    const auto area=execute_target_analysis(resolve_target_analysis(resolve_target(temporary.snapshot())));
+    check(area.planes[0].bounds && *area.planes[0].bounds==std::array<int,4>{1,0,2,1});
+    check(area.planes[0].statistics->mean==1.5);
+  }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
 }

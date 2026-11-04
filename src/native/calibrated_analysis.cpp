@@ -56,7 +56,8 @@ double deviation(double n,double sum,double sum2) {
 }
 static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalibration& spatial,
     const ImageJIntensityCalibration& density,const Image* mask,std::size_t maximum,
-    const std::vector<std::uint32_t>* supplied) {
+    const std::vector<std::uint32_t>* supplied,
+    std::optional<std::array<int,4>>* bounds=nullptr) {
   const auto n=shape(im);spatial.validate();density.validate_for(im.type,im.channels);
   if(mask && (mask->channels!=1 || mask->width!=im.width || mask->height!=im.height || mask->pixels.size()!=n))
     throw std::invalid_argument("Analysis mask must match the source");
@@ -69,7 +70,14 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
   std::vector<std::uint32_t> owned_lut;
   if(!supplied)owned_lut=table(density);
   const auto& lut=supplied?*supplied:owned_lut;ImageJScalarStatistics out;out.histogram.resize(256);
-  auto included=[&](std::size_t i){return !mask || mask->pixels[i]!=0;};
+  int x0=im.width,y0=im.height,x1=-1,y1=-1;
+  if(bounds){*bounds=std::nullopt;if(!mask)*bounds=std::array<int,4>{0,0,im.width,im.height};}
+  auto included=[&](std::size_t i){
+    if(mask && mask->pixels[i]==0)return false;
+    if(bounds && mask){const auto x=int(i%im.width),y=int(i/im.width);
+      x0=std::min(x0,x);y0=std::min(y0,y);x1=std::max(x1,x);y1=std::max(y1,y);}
+    return true;
+  };
   double sum=0,sum2=0,raw_sum=0;
   if(bins) {
     // ShortStatistics uses its compact histogram path for small ROI bounds.
@@ -152,22 +160,21 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
   out.mean=out.pixel_count?sum/double(out.pixel_count):nan;
   out.raw_mean=out.pixel_count?raw_sum/double(out.pixel_count):nan;
   out.stddev=deviation(double(out.pixel_count),sum,sum2);out.integrated_density=out.area*out.mean;
+  if(bounds && mask && x1>=0)*bounds=std::array<int,4>{x0,y0,x1-x0+1,y1-y0+1};
   return out;
 }
 static std::vector<double> profile_impl(const Image& im,const ImageJIntensityCalibration& density,
     double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum,
-    const std::vector<std::uint32_t>* supplied) {
+    const std::vector<std::uint32_t>* supplied,std::size_t requested=0,bool source_validated=false) {
   shape(im);density.validate_for(im.type,im.channels);
   for(const auto& p:{std::array<double,2>{x1,y1},std::array<double,2>{x2,y2}})
     if(!std::isfinite(p[0]) || !std::isfinite(p[1]) || p[0]<0 || p[1]<0 || p[0]>im.width-1 || p[1]>im.height-1)
       throw std::invalid_argument("Profile endpoints must be inside the image");
-  const double vx=x2-x1,vy=y2-y1;
-  const double length=std::sqrt(vx*vx+vy*vy);
-  if(length>std::numeric_limits<int>::max()-1)throw std::invalid_argument("Profile is too long");
-  const auto intervals=std::size_t(std::floor(length+.5));const auto count=intervals+1;
+  const auto count=detail::calibrated_profile_sample_count({x1,y1,x2,y2},requested);
+  const auto intervals=count-1;
   auto bytes=add(4096,mul(count,sizeof(double)));
   if(density.mode()==ImageJIntensityMode::Lookup)bytes=add(bytes,mul(im.type==PixelType::UInt8?256:65536,sizeof(std::uint32_t)));
-  cap(bytes,maximum);pixels(im);
+  cap(bytes,maximum);if(!source_validated)pixels(im);
   std::vector<std::uint32_t> owned_lut;if(!supplied)owned_lut=table(density);
   const auto& lut=supplied?*supplied:owned_lut;
   auto sample=[&](int x,int y) {const auto raw=im.at(x,y);return im.type==PixelType::Float32?raw:value(std::size_t(raw),density,lut);};
@@ -177,7 +184,9 @@ static std::vector<double> profile_impl(const Image& im,const ImageJIntensityCal
     kernel_checkpoint_periodic();
     // Repeated addition is the original getLine coordinate progression. Clamp
     // only accumulated roundoff at admitted image edges.
-    const auto px=std::clamp(x,0.0,double(im.width-1)),py=std::clamp(y,0.0,double(im.height-1));
+    const auto i=std::size_t(&v-result.data());const auto t=requested && intervals?double(i)/double(intervals):0;
+    const auto px=std::clamp(requested?x1+(x2-x1)*t:x,0.0,double(im.width-1)),
+        py=std::clamp(requested?y1+(y2-y1)*t:y,0.0,double(im.height-1));
     if(!interpolate)v=sample(int(std::floor(px+.5)),int(std::floor(py+.5)));
     else {
       const auto ix=int(px),iy=int(py),jx=std::min(ix+1,im.width-1),jy=std::min(iy+1,im.height-1);
@@ -198,13 +207,24 @@ std::vector<double> imagej_calibrated_line_profile(const Image& im,const ImageJI
   return profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,nullptr);
 }
 namespace detail {
+void validate_analysis_source(const Image& image){shape(image);pixels(image);}
+std::size_t calibrated_profile_sample_count(const std::array<double,4>& p,std::size_t requested) {
+  if(requested && (requested<2 || requested>1000000))
+    throw std::invalid_argument("Profile samples per segment must be zero or 2..1000000");
+  const auto dx=p[2]-p[0],dy=p[3]-p[1];const auto length=std::sqrt(dx*dx+dy*dy);
+  if(!std::isfinite(length) || length>std::numeric_limits<int>::max()-1)
+    throw std::invalid_argument("Profile is too long");
+  return requested?requested:std::size_t(std::floor(length+.5))+1;
+}
 ImageJScalarStatistics calibrated_statistics_with_table(const Image& im,const SpatialCalibration& spatial,
-    const ImageJIntensityCalibration& density,const std::vector<std::uint32_t>& lut,const Image* mask,std::size_t maximum) {
-  return statistics_impl(im,spatial,density,mask,maximum,&lut);
+    const ImageJIntensityCalibration& density,const std::vector<std::uint32_t>& lut,const Image* mask,std::size_t maximum,
+    std::optional<std::array<int,4>>* bounds) {
+  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds);
 }
 std::vector<double> calibrated_profile_with_table(const Image& im,const ImageJIntensityCalibration& density,
-    const std::vector<std::uint32_t>& lut,double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum) {
-  return profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,&lut);
+    const std::vector<std::uint32_t>& lut,double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum,
+    std::size_t samples,bool source_validated) {
+  return profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,&lut,samples,source_validated);
 }
 }
 }

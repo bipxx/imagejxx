@@ -45,6 +45,10 @@ def test_grid_membership_calibration_order_and_no_edits(dtype, policy, use_globa
         if use_global and dtype == np.uint8:
             values = 10 + 2 * values
         stats = row.statistics
+        expected_bounds = ([0, 0, 2, 4] if policy == "active" else
+                           None if policy == "positioned" and t == 1 and z == 3 else
+                           [2, 0, 2, 4] if policy == "positioned" and z == 3 else [0, 0, 4, 4])
+        assert row.bounds == expected_bounds
         assert stats["pixel_count"] == values.size
         assert stats["area"] == values.size  # Global .5 * 2 = local 1 * 1.
         assert sum(stats["histogram"]) == values.size
@@ -157,6 +161,113 @@ def test_bad_profile_admission(point):
     with pytest.raises(ValueError, match="endpoints"):
         ij.resolve_target_analysis(target, options)
     assert reads.counts().plane_reads == n
+
+
+@pytest.mark.parametrize("samples", [0, 2, 5])
+@pytest.mark.parametrize("interpolate", [False, True])
+def test_configured_path_calibrates_before_sampling_and_freezes_options(samples, interpolate):
+    reads = ij.DatasetReadObserver()
+    owner = ij.Document(ij.Dataset(np.arange(6, dtype=np.uint8).reshape(2, 3),
+                                  axes="YX", calibration=ij.SpatialCalibration(
+                                      spacing=[.5, 2, 1], unit="um")).observe_reads(reads))
+    ij.set_imagej_intensity_calibration(owner, ij.ImageJIntensityCalibration.function(
+        "uint8", "poly2", [0, 0, 1], "sq"))
+    app = ij.Application()
+    app.adopt(owner)
+    options = ij.TargetAnalysisOptions()
+    options.statistics, options.path = False, [[0, 0], [2, 0], [2, 1]]
+    options.samples_per_segment, options.interpolate = samples, interpolate
+    n = reads.counts().plane_reads
+    command = ij.resolve_target_analysis(app.resolve_target(), options)
+    assert reads.counts().plane_reads == n
+    assert command.record["version"] == 2
+    options.path, options.samples_per_segment = [[0, 0], [0, 0]], 2
+    exposed = command.options
+    exposed.path, exposed.samples_per_segment = [[0, 0], [1, 0]], 7
+    result = ij.execute_target_analysis(command)
+    assert reads.counts().plane_reads == n + 1 and result.planes[0].bounds is None
+    counts = [3, 2] if samples == 0 else [samples, samples]
+    expected, distances = [], []
+    squared = np.arange(6, dtype=float).reshape(2, 3) ** 2
+    for segment, count in enumerate(counts):
+        for index in range(1 if segment else 0, count):
+            fraction = index / (count - 1)
+            x, y = (2 * fraction, 0) if segment == 0 else (2, fraction)
+            if interpolate:
+                ix, iy = int(x), int(y)
+                jx, jy = min(ix + 1, 2), min(iy + 1, 1)
+                value = ((1 - y + iy) * ((1 - x + ix) * squared[iy, ix] + (x - ix) * squared[iy, jx])
+                         + (y - iy) * ((1 - x + ix) * squared[jy, ix] + (x - ix) * squared[jy, jx]))
+            else:
+                value = squared[int(math.floor(y + .5)), int(math.floor(x + .5))]
+            expected.append(value)
+            distances.append(fraction if segment == 0 else 1 + 2 * fraction)
+    np.testing.assert_allclose(result.planes[0].profile_values, expected)
+    np.testing.assert_allclose(result.profile_distances, distances)
+    assert result.estimate.profile_samples == len(expected)
+    assert command.options.samples_per_segment == samples and owner.undo_steps == 1
+
+
+@pytest.mark.parametrize("kind,samples,count", [("line", 0, 2), ("path", 0, 3),
+                                               ("line", 5, 5), ("path", 5, 5)])
+def test_line_default_and_editor_path_sampling_remain_distinct(kind, samples, count):
+    _, _, target, _, _ = fixture()
+    options = ij.TargetAnalysisOptions()
+    options.statistics = False
+    setattr(options, kind, [0, 0, 1.2, 0] if kind == "line" else [[0, 0], [1.2, 0]])
+    options.samples_per_segment = samples
+    command = ij.resolve_target_analysis(target, options)
+    result = ij.execute_target_analysis(command)
+    assert len(result.profile_distances) == count
+    assert command.record["version"] == (1 if kind == "line" and samples == 0 else 2)
+
+
+@pytest.mark.parametrize("path,samples,line", [([[0, 0]], 0, None),
+    ([[0, 0]] * 4097, 0, None), ([[0, 0], [99, 0]], 0, None),
+    ([[0, 0], [1, 0]], 1, None), ([[0, 0], [1, 0]], 1000001, None),
+    ([[0, 0], [1, 0]], 0, [0, 0, 1, 0]), ([], 2, None)])
+def test_path_admission_refuses_before_reads(path, samples, line):
+    _, reads, target, _, _ = fixture()
+    options = ij.TargetAnalysisOptions()
+    options.path, options.samples_per_segment, options.line = path, samples, line
+    n = reads.counts().plane_reads
+    for prepare in [ij.estimate_target_analysis, ij.resolve_target_analysis]:
+        with pytest.raises(ValueError):
+            prepare(target, options)
+    assert reads.counts().plane_reads == n
+
+
+def test_degenerate_path_and_exact_admission_limit():
+    _, reads, target, _, _ = fixture()
+    options = ij.TargetAnalysisOptions()
+    options.statistics, options.path = False, [[0, 0], [0, 0], [0, 0]]
+    estimate = ij.estimate_target_analysis(target, options)
+    assert estimate.profile_samples == 3
+    limits = ij.TargetAnalysisLimits()
+    limits.max_working_bytes = estimate.working_bytes - 1
+    n = reads.counts().plane_reads
+    with pytest.raises(ValueError):
+        ij.resolve_target_analysis(target, options, limits)
+    assert reads.counts().plane_reads == n
+    limits.max_working_bytes += 1
+    result = ij.execute_target_analysis(ij.resolve_target_analysis(target, options, limits))
+    np.testing.assert_array_equal(result.profile_distances, [0, 0, 0])
+    assert all(len(row.profile_values) == 3 for row in result.planes)
+
+
+@pytest.mark.parametrize("members", [np.zeros((3, 5), np.uint8),
+    np.array([[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 0]], np.uint8)])
+def test_bounds_follow_geometric_mask_even_when_density_has_no_members(members):
+    from test_calibrated_analysis import density
+    owner = ij.Document(ij.Dataset(np.zeros((3, 5), np.uint8), axes="YX"))
+    ij.set_imagej_intensity_calibration(owner, density("all_nan", "uint8"))
+    edit = owner.begin_edit()
+    edit.select(ij.Selection.from_mask(members))
+    owner.commit(edit)
+    target = ij.resolve_target(owner.snapshot(), ij.TargetRequest(roi=ij.RoiPolicy.ACTIVE_SELECTION))
+    row = ij.execute_target_analysis(ij.resolve_target_analysis(target)).planes[0]
+    assert row.statistics["pixel_count"] == 0
+    assert row.bounds == ([1, 1, 3, 2] if members.any() else None)
 
 
 def test_cancellation_callbacks_and_no_partial_result():

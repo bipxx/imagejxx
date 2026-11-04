@@ -42,9 +42,10 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | Canvas/XYZ geometry | Effective spatial input integrated and scoped verified in both hosts. | Finish remaining view/fit/source variants through T07/T11. |
 | Calibrated analysis kernels | Implemented; recorded verification has 77 original numerical cases on both installed SDKs and 83 Windows Python cases. Published as 1d43ea8; changed Windows CI consumer passes. | T00 tracks remote CI/reference availability; T03 provides admission, T04 owns UI integration. |
 | Captured analysis preparation | T03 implemented and scoped verified: 625 unique Windows Python cases ultimately pass (39 new); four native controls and six installed SDK clients per platform on Windows/Linux. | T04 integrates actual UI/jobs/settings/replay; no full-family or UI completion claim. |
-| Area measurement UI | First T04a increment: actual Measure menus in both Windows ImGui hosts use frozen scalar area analysis; settings/CSV, Global/bypass, cancellation and stale Global refusal pass. | Finish T04a geometry, profiles, ROI-manager scope, lifecycle and replay; this is not completed T04a. |
+| Area measurement UI | Published first T04a increment: actual Measure menus in both Windows ImGui hosts use frozen scalar area analysis; settings/CSV, Global/bypass, cancellation and stale Global refusal pass. | Finish T04a geometry, profiles, ROI-manager scope, lifecycle and replay; this is not completed T04a. |
+| T04a.1 bounds/profile increment | Implemented and scoped integrated in both Windows hosts. 318 unique affected Windows Python cases ultimately pass, 23 observation-tool checks pass; two Windows/three Linux native controls and six installed SDK clients per platform pass. | T04a.2 geometry/ROI-manager, then T04a.3 persistence/replay. [Evidence](parity/reviews/T04a1-configured-profile-20261104.json); no full-profile-family or release completion claim. |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Last T04a inventory: 8,350,208,707 known bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,355,003,388 known bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Near-term queue
@@ -75,40 +76,115 @@ preservation and stale-result/resource guarantees stay strict where applicable.
    validates the captured target. [Contract](TARGET_ANALYSIS.md) and
    [evidence](parity/reviews/T03-target-analysis-20261104.json). Current numerical
    mode limits remain explicit requirements for their owning follow-on work.
-4. **T04a — Actual measurement/profile UI and ownership.** In progress: the
-   first finite-scalar area Measure increment is integrated in both Windows
-   hosts; [evidence](parity/reviews/T04a-area-measurement-ui-20261104.json).
-   Python scripted Measure retains immediate results; actual UI work is
-   asynchronous. Next batch native tight mask bounds, non-area geometry and
-   configured/profile primitives before expanding frontend consumers. Remove
-   the temporary second bounds raster, preserving results and source-read
-   counts. Include ROI-manager, pending-result Clear, and queued/ready/close/CZT cases in that batch's
-   specifications; the remaining T04a outcome is still required. Inspect `Document::measure`, Window measure/ROI/
-   profile actions and live/saved plot owners before editing. Reuse T03 and
-   existing jobs/resource leases; capture source, options, selection, C/Z/T and
-   calibration once. Implement consumed area/length/angle, measurement columns,
-   precision/units and configured profile sampling, including required native
-   variants before adopting them. Validate stale queued/ready results, source/
-   selection/plane/global/bypass changes, close/cancel, independent saved plots,
-   persistence and strict replay/rebind. Use actual inputs in both ImGui hosts;
-   no dummy document edit or second controller. Complete owning options and
-   independent geometric/numeric references before closing this task.
-5. **T04b — Histogram/threshold calibrated consumers.** Reuse existing target
-   configuration, histogram jobs and threshold transient preview/Apply. Keep
-   processor bins raw while calibrated summaries/labels and threshold units are
-   explicit. Define required non-finite-source policies before wiring unsupported
-   storage into T03. Freeze effective values, preserve retained-result resource
-   leases, stale guards and legacy record meaning; consume settings/defaults and
-   finish Save/Open/replay/rebind/error paths in both hosts. Test scaled/reversed/
-   non-finite density boundaries, source/ROI/plane/context changes and cancelled
-   adoption without metadata/history mutation. This follows T04a ownership work
-   and may reuse it; neither subtask closes unrelated analysis variants.
+4. **T04a.1 — Delivered scoped bounds/profile increment.** Frozen configured
+   paths, fused geometric bounds and actual shared Profile menus now use existing
+   jobs/plot ownership. Queued cancel, READY pose refusal, pending Clear, source
+   close and independent snapshots are checked. See current gap/evidence above;
+   wider/outside-image/IEEE/interpolation variants remain explicit T04/T09 scope.
+5. **T04a.2 — Complete measurement geometry and ROI-manager consumers.**
+   Next executable task after T04a.1. Use its bounds/result owner; specify and
+   implement missing length/angle/area and measurement options rather than
+   routing unsupported modes through misleading calibrated labels. See below.
+6. **T04a.3 — Complete analysis persistence and replay.** After consumer
+   contracts stabilize, finish Save/Open, recorder/replay/rebind, defaults and
+   live/saved result ownership for all supported Measure/Profile variants.
+   Audit each option/setting key and close the remaining T04a requirements.
+7. **T04b — Histogram/threshold calibrated consumers.** Start after the shared
+   read-only ownership contract is verified; independent histogram work need
+   not wait for unrelated geometry. Reuse existing histogram jobs and transient
+   preview/Apply. Keep processor bins raw; make calibrated summaries, units and
+   threshold conversions explicit, including reversed/non-monotonic and
+   non-finite policies. Finish settings, Save/Open/replay/rebind and stale/cancel
+   behavior in both hosts. Do not close other analysis variants implicitly.
 
 T02 runs alongside a useful delivery when it removes demonstrated overhead; it
 must not become a prerequisite for all feature work. Prepare detailed specs only
 for the next two executable tasks. Keep one Window editor; use the ownership
 boundaries in [THREE_AGENT_EXECUTION.md](THREE_AGENT_EXECUTION.md). Role descriptions
 do not authorize spawning agents.
+
+## Next two executable task specifications
+
+### T04a.2 — Measurement options, geometry and ROI-manager adoption
+
+- **First step:** inspect actual `Document::measure`, Window/ROI-manager actions,
+  Analyzer options and inventory residuals. List each required command, option,
+  setting key and C++/Python entry point with its current consumer, easiest reuse
+  path and missing behavior. Include precision/units, target extents, geometric
+  and density columns, result table/CSV and ROI-position rules. Do not assume
+  that a raw legacy API meets calibrated semantics.
+- **Implementation:** extend the existing numerical/result contracts only for
+  demonstrated gaps; implement missing line/angle/area primitives in the core,
+  then wire the same paths through bindings and both hosts. Group manager
+  measurements using frozen ROI/C/Z/T and bounded execution; define ordering,
+  empty/degenerate/unsupported geometry, partial-failure and atomic publication
+  semantics before coding. Reuse T04a.1 adoption and result-memory ownership.
+- **Verification:** use independent geometric/numeric references and original
+  Analyzer cases where required. Cover local/Global/bypass units, subpixel and
+  positioned ROIs, mixed manager selections, columns/precision, cancellation,
+  stale source/ROI/context and unchanged data/history. Check menu/shortcut,
+  settings/defaults, scripted return timing and CSV in both actual hosts.
+- **Exit/waste:** each enumerated requirement has a delivered or explicitly
+  owned residual state; unfinished numerical variants stay T09, never vanish.
+  Required T04a geometry/manager scope must be delivered before that subtask
+  closes. Remove duplicated formatting/raster/measurement logic where safe;
+  defer larger refactors with an owner and a concrete validation condition.
+
+### T04a.3 — Analysis persistence, recorder and strict replay/rebind
+
+- **Scope/owners:** G038/G066/G068-G071 and G083-G089 as consumed by Measure/
+  Profile. Consumer owner handles existing action/recorder/session/result paths;
+  core owner handles versioned options/validation only where needed; validation
+  owner covers original references and both hosts. One Window editor.
+- **Contract before editing:** enumerate every supported analysis command and
+  setting key with its default, immediate/asynchronous return timing, source/
+  ROI/C/Z/T capture, unit/density policy, persisted representation and replay
+  result. Distinguish diagnostic provenance from executable records. Do not
+  treat the target-analysis version-2 diagnostic record as a replay command.
+- **Easiest path:** reuse the existing operation registry, settings schema,
+  session format and replay/rebind owners. Add explicit versioned analysis
+  records only for missing behavior, with stable source references and exact
+  options. Session Save/Open preserves independent tables/plots and supported
+  options; stale live bindings must resolve explicitly or remain unavailable.
+  Saved values must not keep source/provider handles alive.
+- **Compatibility/errors:** preserve legacy record meaning and raw API behavior;
+  reject malformed/unsupported versions, missing sources and invalid option
+  combinations without partial rows/history/settings publication. Define
+  rebind compatibility for geometry/dtype/calibration and multiple sources.
+  Respect unknown-field and migration rules of the owning format.
+- **Verification/exit:** real menus and scripted APIs in both hosts, default/
+  apply/revert/persist/reopen, round trips, recorder capture/replay equality,
+  source rename/relink/close and missing-file recovery, cancellation and cap
+  refusal. Check standalone without Python and installed binding clients when
+  their contracts change. All enumerated T04a persistence/replay requirements
+  must be delivered before closure; unrelated analysis modes stay explicitly
+  owned. Review duplicated record decoders, serialization copies and retained
+  providers; reuse fixtures/runners and retire owned scratch at closeout.
+
+## Turning the remaining horizon into executable work
+
+Use the full roadmap below as the scope ledger. Before starting any later task,
+expand only that task and its next ready successor using the format above:
+requirement/command IDs, API signatures, each option/setting key and consumer,
+reuse path, ownership, unsupported cases, checks, storage allowance and exit.
+A key is complete only when its default, validation, consumer, UI/API exposure,
+persistence and replay behavior (where applicable) agree. Reference the existing
+inventory; do not maintain a second competing option registry in prose.
+
+| Delivery stage | Efficient path and handoff required before advancing |
+| --- | --- |
+| Analysis/calibration: T04-T05 | Finish the current shared owner first, then geometry/manager, persistence and histogram/threshold consumers. Audit remaining calibrated time/distance/view consumers before enabling controls globally. |
+| Everyday editing: T06-T08 + owning T15 keys | Close selection/ROI primitives used by slicing and filters first; reuse existing target/preview/Apply paths. Deliver one complete tool/filter/axis operation with its controls and options at a time. Independent filters need not wait for all ROI tools. |
+| Scientific data/views: T10-T11 + T07 | Pick a reader/layout needed by a real view; qualify region/tile access, then XYZ/reslice and large-data/volume interaction on that source. Do not build every vendor codec before useful viewing. |
+| Advanced analysis/automation: T09/T12 | Reuse measured geometry, retained results and versioned operations. Add particle/stack/table tools and recorder/script/plugin consumers against stable contracts; C++ app remains usable without Python. |
+| Eligible Fiji workflows: T13 | Review each candidate's code, transitive dependencies and assets before incorporation. Deliver workflows individually on existing processing/ROI/view foundations; exclude non-commercial candidates explicitly. Candidate inventory entries are not approved scope or implemented plugins. |
+| Release: T14 + final T15 audit | Run representative end-to-end workflows, matched output/performance comparisons, supported-platform install/recovery and final command/option/settings coverage. Close required inventory residuals or obtain an explicit scope change; missing evidence stays open. |
+
+T00 reference recovery is a separate bounded investigation. Do not repeat
+unchanged full-tree/hash searches or let missing references stop independent
+product work. T02 efficiency work must remove demonstrated overhead from an
+active delivery. No additional implementation starts while its shared owner is
+still being changed by the current task.
 
 ## Complete remaining delivery horizon
 
@@ -180,6 +256,14 @@ After **every task**, including documentation and fixes:
    entries. Link detailed evidence once. Change dependency/order/validation only
    when the findings justify it; do not append another historical report here.
 
+Use one concise closeout record, linked from the current task, with:
+`task/requirement IDs; delivered and remaining scope; check/evidence identities;
+waste finding and fix/defer/no-action reason; deferred owner/exit; storage and
+scratch disposition; next task/dependency change`. This is a record format,
+not a request for a new runner or certification framework. Failed checks retain
+diagnostics and keep the affected task open. A material cleanup/fix is part of
+the task; if it reveals another issue, record and manage it in the same loop.
+
 A task is not closed with unowned material waste. Cleanup/recording is part of
 its completion. A justified deferred improvement does not erase a delivered
 feature or block unrelated ready work.
@@ -190,38 +274,43 @@ feature or block unrelated ready work.
 | --- | --- | --- |
 | Two full double buffers in shared Python ingress | Fixed by T01 for image/stack conversion; inspect other binding paths when touched. | One owned destination, allocation regression and 168 layout/refusal cases. Six measured workloads; no general speed claim. |
 | Many temporary harness generations | T02: reuse existing drivers and data inputs; retire superseded scripts only with evidence identities preserved. | Prior audit counted 732 Python/171 PowerShell scripts; not every retained script is disposable. |
-| Shared headers/Make flags fanout | T02 plus each source owner: batch coherent edits; consider isolation after measurement. | Recorded full Linux core 538 s vs 9 s successor; desktop 671 s vs 21 s successor are different workloads, not speed benchmarks. |
+| Shared headers/Make flags fanout | T02 plus source owners: batch coherent edits; inspect consumer dependencies before adding shared declarations and isolate only where measured reuse justifies it. | T04a.1 full batch: 109 compile entries/830.9 s; UI-only fix: one/38.3 s; smoke-only fix: one/17.4 s. Different workloads, not processing-speed comparisons. Core/SDK results reused for frontend-only fixes. |
 | Repeated calibration queries per draw | T07 owner: capture once per draw and derive spacing from that value when correct. | Confirm repeated validation calls; measure frame cost before claiming a speed gain. |
 | Window hub responsibilities | T04/T06-T12 owners: extract cohesive controllers at touched seams. | No whole-file rewrite based only on its roughly 15,500-line size; preserve input/publication ownership. |
-| Area measurement Bounds reraster | T04a next native geometry/profile API batch: return bounds while the first mask is resident, then remove frontend reraster. | Preserve tight bounds, ROI membership, cancellation, one provider read and memory-cap refusal. Current duplicate stays inside admitted serial mask workspace. |
+| Area measurement Bounds reraster / per-segment validation | Fixed in T04a.1: bounds collected during membership scan; profile source validation once per plane and lookup once per preparation. | Independent membership/calibrated sampling, one-read and admission/cancel checks pass. No measured speed claim. |
 | Late test/API assumptions and early SDK scratch retirement | Fixed process in AGENTS.md: inspect signatures/read-only bindings/exception types and review allocations before installed-client checks; retire scratch after final review. | T03 diagnostics preserve the avoided assumptions and repeated configuration cost. No new audit framework. |
 | Repeated live planning history | This task: three concise current documents, exact historical ledgers, compatible links. | Future task closeout updates rows in place. |
 
 ## Latest task closeout
 
-2026-11-04 T04a area increment: shared actual Measure menu now adopts frozen
-finite-scalar whole/area results through existing Window jobs, including
-scientific T/C/Z, Global/bypass units and row-memory ownership. Python scripted
-Measure keeps its synchronous return contract. Results columns/precision and
-independent scientific CSV export work; IEEE summaries remain explicit strings.
-196 of 199 focused Python cases ultimately pass, with three optional OS/standalone
-checks skipped; all 11 new cases and 23 observation-tool contracts pass. Native
-processing archive/module stayed unchanged, so installed SDK checks were reused.
+2026-11-04 T04a.1: implemented native tight geometric bounds and configured
+thin paths; actual Profile menus in both Windows ImGui hosts consume frozen
+calibration/options through existing jobs and plot leases. Verified scoped:
+318 unique affected Windows Python cases ultimately pass; 23 observation-tool
+contracts pass; two Windows/three Linux native controls and six installed SDK
+clients per platform pass. Original 77 numerical expectations remain unchanged.
+Integrated scope includes calibrated sampling/axes, Global/bypass, configured
+samples/persistence/CSV, queued cancel, READY C/Z/T refusal, pan stability,
+pending Clear, close and independent saved plots. Release-ready/full-family
+scope remains open. [Receipt](parity/reviews/T04a1-configured-profile-20261104.json).
 
-Waste review: no new scheduler/controller or disposable verifier; cohesive row
-helpers extracted from Window. After a timing-compatibility fix only _desktop
-rebuilt; unchanged C++ app evidence reused. Actual UI caught a scientific CSV
-action gate and old tests caught return-timing drift; fixes preserve consumers.
-The Store Python alias could not prove executable identity, so tool contracts
-used the active physical runtime. Failed diagnoses and source patches retained.
+Waste review: **fixed** bounds reraster, per-segment full source validation and
+broad cancellation for Clear/close; reused existing jobs, targeted cancellation,
+plot leases, capture/retention tools and installed clients. Actual interchange
+check exposed the old C++ smoke sequence assuming synchronous Measure; added
+an explicit wait/check and reran only the failed consumer. Failed evidence stays
+retained. **Deferred to T02:** measured shared-header build fanout; do not rewrite
+controllers speculatively. A cleanup caller initially confused pack/verify state
+names and refused before deletion; inspected contract and corrected the caller.
 
-A temporary second ROI raster preserves the tight Bounds column. T04a owns
-removing it in the next native API batch; it is not an unowned cost or a completed
-geometry path. Necessary captures were compressed/hash verified, terminal scratch
-retired, and superseded capture summaries retained before recovering 137,212,965
-bytes. [The receipt](parity/reviews/T04a-area-measurement-ui-20261104.json) owns
-exact identities/limitations. Full T04a/profile/ROI/replay/lifecycle work and T04b
-remain open; no full-family counters or original references changed.
+After final review/checks, retired 28,508,812 bytes of SDK consumer compiler
+scratch (identities/logs retained); losslessly archived and verified 12,326,386
+bytes of remaining captures/diagnostics into 1,698,293 bytes, then retired the
+scratch. Existing compiler caches/runtimes/SDK prefixes reused. Known final
+storage is 8,355,003,388 bytes before this small public receipt/doc update; 214
+unknown subtrees still leave the full budget unverified. Next is T04a.2, with
+T04a.3 specified above; T04b follows the shared ownership seam independently of
+unrelated geometry. No original reference/family status was repinned.
 
 ## Historical link compatibility
 

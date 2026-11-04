@@ -75,11 +75,78 @@ Json capturedMeasurementUiCase(Window& window,const std::string& context,const s
     app.set_global_calibration(GlobalCalibration(spatial,ImageJIntensityCalibration::uncalibrated(),PixelType::UInt8));
     release=true;window.wait();report["stale_error"]=window.error();report["stale_rows"]=window.results;
     require(!window.error().empty() && window.results.size()==2,"Stale measurement was adopted");
+    n=reads.counts().plane_reads;startGate();window.clearResults();release=true;window.wait();
+    report["pending_clear"]={{"rows",window.results.size()},{"reads_before",n},{"reads_after",reads.counts().plane_reads}};
     report["source_unchanged"]=source->snapshot().shares_data(original) && source->undo_steps()==undo;
     report["workflow_count"]=window.workflow.size();report["jobs_reserved_after"]=app.job_scheduler()->usage().reserved_bytes;
     report["state"]="observed";session.close();require(report.dump().size()<8*1024*1024,"Measurement report byte bound");
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& e){release=true;window.wait();report["failure"]=e.what();writeJson((dir/"failure.json").u8string(),report);throw;}
+}
+Json capturedProfileUiCase(Window& window,const std::string& context,const std::string& fresh_directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
+  require(!fs::exists(dir) && window.documents().empty(),"Fresh profile fixture required");fs::create_directories(dir);
+  Stack planes;for(int z=0;z<2;++z){Image im(3,2,1,PixelType::UInt8);for(int i=0;i<6;++i)im.pixels[i]=10*z+i;planes.push_back(std::move(im));}
+  SpatialCalibration local;local.spacing={3,4,1};local.unit="local";
+  DatasetReadObserver reads;DocumentData data{Dataset::from_planes({1,1,2,2,3,1},std::move(planes),local).observe_reads(reads),{},{},{},{},{},{}};
+  data.metadata.title="Captured profile";data.selection=Selection("polyline",{{0,0},{2,0},{2,1}});
+  auto source=std::make_shared<imagejxx::Document>(std::move(data));window.addNativeDocument(source);
+  window.updateSettings({{"profile_samples",3}},false);
+  Json report{{"contract","g034.captured-profile.ui.001"},{"context",context},{"acceptance_claim",false},
+    {"frames",Json::array()},{"controls",Json::array()}};
+  std::atomic<bool> release{false};std::atomic<std::size_t> entered{0};std::vector<Job> blockers;
+  try {
+    HeadlessInputSession session(window);auto& app=session.fixtureApplication();Json last;
+    SpatialCalibration spatial;spatial.spacing={.5,2,1};spatial.unit="um";
+    app.set_global_calibration(GlobalCalibration(spatial,
+        ImageJIntensityCalibration::function(PixelType::UInt8,"poly2",{0,0,1},"sq"),PixelType::UInt8));
+    auto frame=[&](const Json& events=Json::array()){
+      require(report["frames"].size()<96,"Profile frame bound");last=session.frame(events);
+      report["frames"].push_back({{"events",events},{"input_frame",last.at("input_frame")}});
+    };
+    auto click=[&](const std::string& key){const auto control=last.at("host_controls").at(key);
+      require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"Profile control unavailable");
+      report["controls"].push_back({{"name",key},{"control",control}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+      frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
+      frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
+    };
+    auto waitUntil=[&](const auto& predicate){const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);
+      while(!predicate() && std::chrono::steady_clock::now()<deadline)std::this_thread::sleep_for(std::chrono::milliseconds(1));
+      require(predicate(),"Profile lifecycle checkpoint timeout");};
+    frame();frame();frame();const auto before=source->snapshot();const auto undo=source->undo_steps();
+    click("menu.Analyze");click("menu.action.profile");window.wait();frame();report["global"]=last.at("plot");
+    click("plot.snapshot");frame();report["snapshot_id"]=window.plotSnapshotsInfo()[0].at("plot_id");
+    auto display=source->snapshot().display();display.pan={7,9};source->set_display(display);frame();report["panned"]=last.at("plot");
+    spatial.spacing[0]=1;app.set_global_calibration(GlobalCalibration(spatial,ImageJIntensityCalibration::uncalibrated(),PixelType::UInt8));
+    frame();report["changed_global"]=last.at("plot");report["saved_after_global"]=last.at("plot_snapshots");
+    app.set_ignore_global_calibration(true,source->id);
+    click("menu.Analyze");click("menu.action.profile");window.wait();frame();report["bypassed"]=last.at("plot");
+    display=source->snapshot().display();display.crosshair[2]=1;source->set_display(display);frame();report["changed_plane"]=last.at("plot");
+    window.updateSettings({{"profile_samples",5}},true);window.action("profile");window.wait();frame();report["configured"]=last.at("plot");
+    report["persisted_samples"]=readJson((dir.parent_path()/"preferences.json").u8string()).at("values").at("profile_samples");
+    window.action("export_plot_csv",{{"path",(dir/"profile.csv").u8string()}});
+    app.set_global_calibration(GlobalCalibration(spatial,ImageJIntensityCalibration::uncalibrated("changed"),PixelType::UInt8));
+    frame();report["bypassed_global_change"]=last.at("plot");
+    auto scheduler=app.job_scheduler();const auto workers=scheduler->limits().workers;
+    for(std::size_t i=0;i<workers;++i)blockers.push_back(scheduler->submit([&](const JobContext& c){
+      ++entered;while(!release){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}}));
+    waitUntil([&]{return entered.load()==workers;});const auto n=reads.counts().plane_reads;
+    window.action("profile");bool queued=false;for(const auto& job:scheduler->jobs())if(job.label=="Profile" && job.state==JobState::Queued)queued=true;
+    window.cancel();window.wait();report["queued_cancel"]={{"queued",queued},{"reads_before",n},{"reads_after",reads.counts().plane_reads}};
+    release=true;for(auto& job:blockers)job.wait();blockers.clear();
+    // READY work has finished but creator publication has not run.
+    window.action("profile");waitUntil([&]{for(const auto& job:scheduler->jobs())if(job.label=="Profile" && job.state==JobState::Ready)return true;return false;});
+    display=source->snapshot().display();display.crosshair[2]=0;source->set_display(display);window.wait();
+    report["ready_stale_error"]=window.error();frame();report["ready_stale_plot"]=last.at("plot");
+    release=false;entered=0;session.fixtureWorkerGate([&](const JobContext& c){++entered;while(!release){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}});
+    window.action("profile");waitUntil([&]{return entered.load()!=0;});window.closeDocument(source->id,true);release=true;window.wait();frame();
+    report["closed_count"]=window.documents().size();report["saved_after_close"]=last.at("plot_snapshots");
+    report["source_unchanged"]=source->snapshot().shares_data(before) && source->undo_steps()==undo;
+    report["jobs_reserved_after"]=scheduler->usage().reserved_bytes;report["state"]="observed";
+    session.close();require(report.dump().size()<8*1024*1024,"Profile report byte bound");writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& e){release=true;for(auto& job:blockers)job.cancel();window.wait();
+    report["failure"]=e.what();writeJson((dir/"failure.json").u8string(),report);throw;}
 }
 Json effectiveDisplayUiCase(Window& window,const std::string& context,const std::string& fresh_directory) {
   namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));

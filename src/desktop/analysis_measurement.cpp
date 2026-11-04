@@ -4,6 +4,16 @@
 #include <cmath>
 
 namespace imagejxx::desktop {
+bool captured_profile_available(const DocumentSnapshot& source) {
+  const auto& data=source.data();const auto& dataset=data.dataset;
+  if(dataset.shape().s!=1 || dataset.sample_policy()!=FloatingSamplePolicy::FiniteOnly ||
+      (dataset.pixel_type()!=PixelType::UInt8 && dataset.pixel_type()!=PixelType::UInt16 && dataset.pixel_type()!=PixelType::Float32))return false;
+  if(!data.selection)return false;const auto& s=*data.selection;
+  if((s.kind!="line" && s.kind!="polyline") || s.width>1 || s.points.size()<2 || s.points.size()>4096)return false;
+  const auto shape=dataset.shape();
+  for(const auto& p:s.points)if(p[0]<0 || p[1]<0 || p[0]>shape.x-1 || p[1]>shape.y-1)return false;
+  return true;
+}
 bool captured_measurement_available(const DocumentSnapshot& source) {
   const auto& data=source.data();const auto& dataset=data.dataset;
   if(dataset.shape().s!=1 || dataset.sample_policy()!=FloatingSamplePolicy::FiniteOnly ||
@@ -35,7 +45,6 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
     throw std::invalid_argument("Measurement result differs from its captured extent");
   Json rows=Json::array();rows.get_ref<Json::array_t&>().reserve(result.planes.size());
   const auto& source=command.target().source();
-  std::size_t ordinal=0;
   for(const auto& row:result.planes) {
     kernel_checkpoint();
     if(!row.statistics)throw std::invalid_argument("Measurement requires scalar statistics");
@@ -48,20 +57,9 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       {"Area",scalar(s.area)},{"Unit",result.spatial.unit},{"Value unit",command.intensity().value_unit()}};
     if(command.target().roi_policy()==RoiPolicy::ActiveSelection && source.data().selection) {
       values["ROI"]=source.data().selection->kind;
-      // Preserve the existing tight raster Bounds column. The preparation
-      // currently returns statistics without mask bounds; this serial raster
-      // fits its admitted mask workspace and performs no provider read.
-      const auto mask=command.target().mask(ordinal);
-      int x0=mask->width,y0=mask->height,x1=-1,y1=-1;
-      for(std::size_t i=0;i<mask->pixels.size();++i) {
-        kernel_checkpoint_periodic();
-        if(mask->pixels[i]){const auto x=int(i%mask->width),y=int(i/mask->width);
-          x0=std::min(x0,x);y0=std::min(y0,y);x1=std::max(x1,x);y1=std::max(y1,y);}
-      }
-      values["Bounds"]=x1<0?Json():Json::array({x0,y0,x1-x0+1,y1-y0+1});
+      values["Bounds"]=row.bounds?Json(*row.bounds):Json();
     }
     rows.push_back(std::move(values));
-    ++ordinal;
   }
   return rows;
 }

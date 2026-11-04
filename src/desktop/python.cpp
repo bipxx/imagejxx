@@ -257,6 +257,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_captured_measurement_ui_case",[](Window& window,const std::string& directory) {
         return capturedMeasurementUiCase(window,"imgui_python",directory).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_captured_profile_ui_case",[](Window& window,const std::string& directory) {
+        return capturedProfileUiCase(window,"imgui_python",directory).dump();
+      },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
       .def("_calibrated_gaussian_ui_case",[](Window& window,const std::string& mode,const std::string& directory) {
         py::gil_scoped_release release;return calibratedGaussianUiCase(window,"imgui_python",mode,directory).dump();
       })
@@ -1026,6 +1029,7 @@ PYBIND11_MODULE(_desktop, m) {
             auto rows = Json::parse(s);
             if (!rows.is_array())
               throw std::invalid_argument("Results must be an array");
+            if(rows.empty()){w.clearResults();return;}
             w.results = std::move(rows);
           })
       .def_property(
@@ -1216,12 +1220,13 @@ PYBIND11_MODULE(_desktop, m) {
           [](Window &w, const std::string &name, const std::string &p) {
             auto params = Json::parse(p);
             py::gil_scoped_release release;
-            const bool wasBusy=name=="measure" && w.busy();
+            const bool sampled=name=="measure" || name=="profile";
+            const bool wasBusy=sampled && w.busy();
             w.action(name, params);
-            // Scripted Measure historically returns its rows immediately.
+            // Scripted Measure/Profile historically return their data immediately.
             // Physical menus/shortcuts call Window::action directly and keep
             // their asynchronous, cancellable creator-thread UI behavior.
-            if(name=="measure" && !wasBusy && w.busy())w.wait();
+            if(sampled && !wasBusy && w.busy())w.wait();
           },
           py::arg("name"), py::arg("parameters") = "{}")
       .def("select",

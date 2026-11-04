@@ -39,7 +39,7 @@ Json genericPlotUiCase(Window& window,const std::string& context,const std::stri
     return snapshot(id).at("cursor");
   };
   const auto before=source->snapshot();const auto undo=source->undo_steps();
-  window.action("profile");for(int i=0;i<4;++i)frame();report["profile"]=last.at("plot");
+  window.action("profile");window.wait();for(int i=0;i<4;++i)frame();report["profile"]=last.at("plot");
   report["producer_source_unchanged"]=source->snapshot().shares_data(before) && source->undo_steps()==undo;
   click(last.at("host_controls").at("plot.snapshot"),"keep_profile");frame();frame();
   const auto profile=window.plotSnapshotsInfo()[0]["plot_id"].get<std::uint64_t>();

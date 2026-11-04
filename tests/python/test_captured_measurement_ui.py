@@ -44,6 +44,8 @@ def test_captured_measurement_menu_units_and_stale_cancel(context, tmp_path):
     assert report["cancel"]["reads_before"] == report["cancel"]["reads_after"]
     assert report["cancel"]["rows"] == 2
     assert report["stale_error"] and report["stale_rows"] == report["bypassed_rows"]
+    assert report["pending_clear"]["rows"] == 0
+    assert report["pending_clear"]["reads_before"] == report["pending_clear"]["reads_after"]
     assert report["workflow_count"] == 0 and report["jobs_reserved_after"] == 0
     with path.with_name("global.csv").open(newline="", encoding="utf-8") as f:
         csv_rows = list(csv.DictReader(f))

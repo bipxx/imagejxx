@@ -1151,6 +1151,7 @@ struct Window::Impl {
   FloatingSamplePolicy clipboardSamplePolicy = FloatingSamplePolicy::FiniteOnly;
   struct FitPlotBinding {
     std::uint64_t document_id=0;Revisions expected;
+    std::shared_ptr<const ResolvedTarget> calibration;
     std::uint64_t id() const noexcept{return document_id;}
     bool same_document(const DocumentSnapshot& source) const noexcept{return document_id==source.id();}
   };
@@ -1167,9 +1168,12 @@ struct Window::Impl {
     std::optional<FitPlotBinding> fit_plot_source;
     std::shared_ptr<const void> reservation;
     std::optional<ResolvedTargetAnalysis> analysis_command;
+    std::optional<TargetAnalysisResult> analysis_profile;
     Json analysis_rows;
     JobResult(ResolvedTargetAnalysis command,Json rows)
         :analysis_command(std::move(command)),analysis_rows(std::move(rows)){}
+    JobResult(ResolvedTargetAnalysis command,TargetAnalysisResult profile)
+        :analysis_command(std::move(command)),analysis_profile(std::move(profile)){}
     JobResult(PreparedOperation value, MetadataObject capture, bool recordStep)
         : prepared(std::move(value)), record(std::move(capture)), recorded(recordStep) {}
     JobResult(State value, ComponentCounts counts = {})
@@ -1196,6 +1200,8 @@ struct Window::Impl {
   std::shared_ptr<std::optional<JobResult>> jobResult;
   RenderMemory::Lease measurementPendingMemory;
   std::vector<RenderMemory::Lease> measurementRowMemory;
+  enum class ReadOnlyTask { None, Measurement, Profile };
+  ReadOnlyTask analysisTask=ReadOnlyTask::None;
   std::shared_ptr<Document> jobDocument;
   Revisions jobRevisions;
   int jobSlice = 0;
@@ -1789,6 +1795,10 @@ struct Window::Impl {
       if(captured_measurement_available(source->nativeSnapshot()))
         return !owner.busy() && owner.controller_->active_document_id()==source->id;
     }
+    if(action=="profile" && !owner.documents_.empty()) {
+      const auto source=owner.documentById(id);
+      if(captured_profile_available(source->nativeSnapshot()))return !owner.busy() && owner.controller_->active_document_id()==source->id;
+    }
     if (action == "calculate" && owner.documents_.size() > 1 &&
         owner.documents_[(owner.activeIndex() + 1) % owner.documents_.size()]
             ->scientific())
@@ -1833,7 +1843,7 @@ struct Window::Impl {
     }
     if(action=="show_intensity_plot_limits" || action=="set_intensity_plot_limits" || action=="zoom_intensity_plot_rectangle")
       return !owner.busy() && livePlot.payload && livePlot.source && owner.controller_->active_document_id()==source->id &&
-          livePlot.source->same_document(source->nativeSnapshot()) && livePlot.source->expected.matches(source->nativeSnapshot().revisions(),Change::All);
+          plotBindingCurrent(*livePlot.source);
     if(action=="show_intensity_calibration" || action=="set_intensity_calibration" || action=="fit_intensity_calibration")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action=="show_imagej_projection" || action=="show_imagej_grouped_projection" ||
@@ -4118,6 +4128,7 @@ struct Window::Impl {
       target->requireLegacyEditable();
     if (owner.busy())
       throw std::invalid_argument("Wait for the current edit to finish");
+    analysisTask=ReadOnlyTask::None;
     animating = false;
     cancelled = false;
     jobDocument = std::move(target);
@@ -4180,11 +4191,29 @@ struct Window::Impl {
         auto result=execute_target_analysis(command,{},cap);
         return JobResult(command,captured_measurement_rows(command,result));
       },facade,false,"Measurement","Measurement",workspace,{},true);
+      analysisTask=ReadOnlyTask::Measurement;
+    }catch(...){measurementPendingMemory.reset();throw;}
+  }
+  void startProfile(const std::shared_ptr<Document>& facade) {
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit to finish");
+    const auto target=owner.controller_->resolve_target({},facade->id);
+    TargetAnalysisOptions options;options.statistics=false;options.path=target.source().data().selection->points;
+    options.samples_per_segment=std::size_t(preferenceState.settings.integer("profile_samples"));
+    TargetAnalysisLimits limits;limits.max_working_bytes=processingCap();
+    const auto command=resolve_target_analysis(target,options,limits);
+    const auto text=captured_measurement_row_bytes(command);
+    const auto workspace=RenderMemory::add(command.estimate().working_bytes,text);
+    if(workspace>processingCap())throw std::invalid_argument("Profile exceeds current processing memory budget");
+    measurementPendingMemory=renderMemory->acquire(RenderMemory::add(command.estimate().plot_bytes,text));
+    try{start([command,cap=limits.max_working_bytes]{return JobResult(command,execute_target_analysis(command,{},cap));},
+        facade,false,"Profile","Profile",workspace,{},true);
+      analysisTask=ReadOnlyTask::Profile;
     }catch(...){measurementPendingMemory.reset();throw;}
   }
   void requestClose(std::shared_ptr<Document> d) {
-    if (legacyBusy())
+    if (legacyBusy() && analysisTask==ReadOnlyTask::None)
       return;
+    if(legacyBusy() && jobDocument && jobDocument->id==d->id)owner.cancelJob(job.info().id);
     if (d->dirty()) {
       pendingClose = d;
       return;
@@ -4889,14 +4918,23 @@ struct Window::Impl {
     auto payload=retain_calibration_plot(*renderMemory,std::move(data),std::move(annotation),table,sourceId,nextPlotPayloadId,std::move(sourceTitle),std::move(context));
     ++nextPlotPayloadId;return payload;
   }
+  bool plotBindingCurrent(const FitPlotBinding& binding) const {
+    if(owner.documents_.empty())return false;
+    const auto current=owner.nativeSnapshot();if(!binding.same_document(current))return false;
+    if(!binding.calibration)return binding.expected.matches(current.revisions(),Change::All);
+    const auto& captured=binding.calibration->source().display();const auto& view=current.display();
+    if(captured.t!=view.t || captured.c!=view.c || captured.crosshair[2]!=view.crosshair[2])return false;
+    try{owner.controller_->validate_target(*binding.calibration);return true;}
+    catch(const RevisionConflict&){return false;}
+    catch(const DocumentUnavailable&){return false;}
+  }
   CalibrationPlotState& requireCalibrationPlot(std::uint64_t plotId=0) {
     if(plotId) {
       for(auto& snapshot:plotSnapshots)if(snapshot->id==plotId && snapshot->open && snapshot->state.payload)return snapshot->state;
       throw std::invalid_argument("Plot snapshot is closed");
     }
     if(!livePlot.payload || !livePlot.source || owner.documents_.empty())throw std::invalid_argument("Open a calibration plot first");
-    const auto current=owner.nativeSnapshot();
-    if(!livePlot.source->same_document(current) || !livePlot.source->expected.matches(current.revisions(),Change::All))throw RevisionConflict();
+    if(!plotBindingCurrent(*livePlot.source))throw RevisionConflict();
     return livePlot;
   }
   std::uint64_t keepPlotSnapshot(std::uint64_t plotId=0) {
@@ -4916,6 +4954,7 @@ struct Window::Impl {
     const auto bytes=RenderMemory::add(sizeof(PlotSnapshot)+256,RenderMemory::add(snapshot->title.capacity()+1,snapshot->controlId.capacity()+1));
     auto memory=renderMemory->acquire(bytes);
     snapshot->state.payload=source.payload;snapshot->state.view=source.view;snapshot->state.style=source.style;snapshot->state.source=source.source;
+    if(snapshot->state.source)snapshot->state.source->calibration.reset();
     snapshot->state.generation=1;snapshot->state.focus=true;
     snapshot->memory=memory.retain(bytes);
     plotSnapshots.reserve(plotSnapshots.size()+1);
@@ -4923,10 +4962,17 @@ struct Window::Impl {
     livePlot.focus=false;for(auto& existing:plotSnapshots)existing->state.focus=existing->id==id;
     return id;
   }
-  void publishNumericPlot(std::shared_ptr<const CalibrationPlotPayload> payload,const DocumentSnapshot& source) {
+  void publishNumericPlot(std::shared_ptr<const CalibrationPlotPayload> payload,const DocumentSnapshot& source,
+      const ResolvedTarget* calibration=nullptr) {
     const auto current=owner.nativeSnapshot();
-    if(!source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
+    if(!source.same_document(current))throw RevisionConflict();
+    if(calibration) {
+      owner.controller_->validate_target(*calibration);
+      if(source.display().t!=current.display().t || source.display().c!=current.display().c ||
+          source.display().crosshair[2]!=current.display().crosshair[2])throw RevisionConflict();
+    }else if(!source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
     std::optional<FitPlotBinding> binding{FitPlotBinding{source.id(),source.revisions()}};
+    if(calibration){owner.controller_->validate_target(*calibration);binding->calibration=std::make_shared<const ResolvedTarget>(*calibration);}
     livePlot.payload.swap(payload);livePlot.source.swap(binding);livePlot.view={};livePlot.drag.reset();++livePlot.generation;focusLivePlot();
   }
   std::uint64_t nextNumericPayloadId() const {
@@ -6056,6 +6102,11 @@ Json Window::renderMemoryInfo() const {
   checkThread();const auto &m=*impl->renderMemory;
   return {{"limit_bytes",m.limit()},{"retained_bytes",m.retained()},{"working_bytes",m.working()},{"peak_reserved_bytes",m.peak()},{"denied_requests",m.denied()}};
 }
+void Window::clearResults() {
+  checkThread();
+  if(impl->analysisTask==Impl::ReadOnlyTask::Measurement && impl->job.valid())cancelJob(impl->job.info().id);
+  results=Json::array();impl->measurementRowMemory.clear();impl->resultsColumnPage=0;
+}
 Json Window::plotSnapshotsInfo() const {checkThread();return impl->plotSnapshotsInfo();}
 Json Window::plotSampleAt(const Json& parameters) const {
   checkThread();
@@ -6735,12 +6786,13 @@ void Window::commitEdit(DocumentTransaction &transaction) {
 }
 void Window::closeDocument(std::uint64_t id, bool discard) {
   checkThread();
-  if (impl->legacyBusy())
+  if (impl->legacyBusy() && impl->analysisTask==Impl::ReadOnlyTask::None)
     throw std::invalid_argument("Wait for the current edit");
   auto d = documentById(id);
   if (d->dirty() && !discard)
     throw std::invalid_argument(
         "Save the document or explicitly discard its changes");
+  if(impl->legacyBusy() && impl->jobDocument && impl->jobDocument->id==d->id)cancelJob(impl->job.info().id);
   impl->remove(d);
 }
 void Window::openFile(const std::string &path) {
@@ -6822,6 +6874,12 @@ void Window::action(const std::string &name, const Json &p) {
     if(captured_measurement_available(facade->nativeSnapshot())) {
       if(!p.is_object() || !p.empty())throw std::invalid_argument("Measurement uses the current captured selection and plane");
       impl->startMeasurement(facade);return;
+    }
+  }
+  if(name=="profile" && !documents_.empty()) {
+    const auto facade=document();if(captured_profile_available(facade->nativeSnapshot())) {
+      if(!p.is_object() || !p.empty())throw std::invalid_argument("Profile uses the captured selection and sampling settings");
+      impl->startProfile(facade);return;
     }
   }
   static constexpr std::pair<const char*,const char*> aliases[]={
@@ -9783,7 +9841,21 @@ void Window::poll() {
             current.display().c!=captured.display().c ||
             current.display().crosshair[2]!=captured.display().crosshair[2])throw RevisionConflict();
         if(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command))>impl->processingCap())
-          throw std::invalid_argument("Measurement exceeds current processing memory budget");
+          throw std::invalid_argument("Analysis exceeds current processing memory budget");
+        if(completed.analysis_profile) {
+          auto& profile=*completed.analysis_profile;
+          if(profile.planes.size()!=1)throw std::invalid_argument("Profile UI requires one captured plane");
+          const auto unit=command.spatial().unit;const auto valueUnit=command.intensity().value_unit();
+          const auto yLabel=!command.intensity().has_density() && valueUnit=="Gray Value"?
+              std::string("Pixel value (raw)"):"Pixel value ("+valueUnit+")";
+          auto payload=retain_profile_plot(*impl->renderMemory,std::move(profile.profile_distances),
+              std::move(profile.planes.front().profile_values),"Line profile ("+unit+")","Distance ("+unit+")",
+              captured.id(),impl->nextNumericPayloadId(),captured.data().metadata.title,
+              plot_plane_caption(captured,"XY profile")+" | "+plot_selection_caption(captured),yLabel,&impl->measurementPendingMemory);
+          std::string status="Profile complete";
+          impl->publishNumericPlot(std::move(payload),captured,&command.target());++impl->nextPlotPayloadId;
+          impl->status.swap(status);return;
+        }
         auto* array=OutputPublication::reserve(results,completed.analysis_rows.size(),"Results");
         impl->measurementRowMemory.reserve(impl->measurementRowMemory.size()+1);
         std::string status="Measurement complete";
@@ -9863,6 +9935,7 @@ void Window::poll() {
   }
   impl->jobDocument.reset();
   impl->measurementPendingMemory.reset();
+  impl->analysisTask=Impl::ReadOnlyTask::None;
 }
 void Window::wait() {
   checkThread();
@@ -11070,9 +11143,7 @@ void Window::Impl::resultTable() {
   const bool clear = ImGui::Button("Clear");
   observed("clear");
   if (clear) {
-    owner.results = Json::array();
-    measurementRowMemory.clear();
-    resultsColumnPage = 0;
+    owner.clearResults();
   }
   auto current = owner.settings();
   auto columns = resultColumns(owner.results, current);
@@ -11782,8 +11853,7 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
 }
 void Window::Impl::plots() {
   fitPlotObservation=nullptr;snapshotPlotObservations=Json::array();
-  if(livePlot.payload && livePlot.source && (owner.documents_.empty() || !livePlot.source->same_document(owner.nativeSnapshot()) ||
-      !livePlot.source->expected.matches(owner.nativeSnapshot().revisions(),Change::All))) {
+  if(livePlot.payload && livePlot.source && !plotBindingCurrent(*livePlot.source)) {
     livePlot.payload.reset();livePlot.source.reset();livePlot.drag.reset();
   }
   if(livePlot.payload)drawCalibrationPlot(livePlot,"Plot",0,fitPlotObservation);

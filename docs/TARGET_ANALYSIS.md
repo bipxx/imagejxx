@@ -1,10 +1,11 @@
 # Captured read-only analysis
 
 `target_analysis.hpp` and the corresponding Python interfaces prepare calibrated
-scalar statistics and thin straight-line profiles from an immutable
+scalar statistics and thin straight-line/configured-path profiles from an immutable
 `ResolvedTarget`. This is the native preparation bridge for T03. The shared
-editor's current-plane area Measure action now uses it; remaining measurement,
-profile, job lifecycle, replay and plot persistence work remains T04.
+editor's current-plane area Measure and eligible thin-path Profile actions use
+it; remaining geometry/ROI-manager, profile variants, replay and broader plot
+persistence work remains T04/T09.
 
 ```python
 target = app.resolve_target(imagejxx.TargetRequest(
@@ -34,17 +35,40 @@ rasterize selections and may retain a non-area selection dependency.
 
 Results contain one row per plane, optional scalar statistics and optional
 profile values. A shared profile-distance array measures Euclidean length in the
-captured spatial affine. A zero-length profile has one sample at distance zero.
+captured spatial affine. A default zero-length `line` has one sample at distance
+zero. Rows also expose optional tight `[x, y, width, height]` geometric mask
+bounds (null for an empty mask or profile-only row), collected during the
+existing membership scan. Bounds do not shrink when a density lookup excludes
+otherwise selected pixels.
 Spatial/density values and provenance remain available after the source closes;
 results retain no source/provider/application handles. Python getters return
 detached arrays/metadata and copied configuration values.
+
+## Configured path contract
+
+`TargetAnalysisOptions.path` accepts 2..4096 in-image vertices as an alternative
+to `line`. `samples_per_segment` is zero (automatic) or 2..1,000,000; a nonzero
+count requires a profile. For `line`, automatic sampling preserves original
+ImageJ round(length)+1 and coordinate progression. For `path`, automatic
+sampling preserves the editor convention max(2, ceil(length)+1) per segment.
+Configured samples are evenly spaced within each segment. Adjacent segments
+share their common endpoint once; a repeated vertex is permitted and adds
+zero physical distance. Integer density lookup occurs before interpolation.
+These path/configured-count extensions are not certified original ImageJ
+polyline semantics. Old default-line diagnostic records remain version 1;
+path or configured-count records use version 2 with their frozen options.
+
+The captured service validates source samples once per acquired plane and
+reuses one decoded lookup across segments. Admission includes the largest
+segment's temporary values as well as the concatenated result and plot copy.
+The new layout requires rebuilding installed C++ consumers; source compatibility
+with the old defaults does not establish binary compatibility.
 
 ## Admission and ownership
 
 The source must use scalar UInt8/UInt16/Float32 finite-policy storage and a
 read-only plane target with in-place destination. Wider dtype/color/IEEE-source
-policies, wide/polyline/bicubic/outside-image profiles and configured sample
-counts remain separate requirements. The numerical behavior stays that of the
+policies and wide/bicubic/outside-image profiles remain separate requirements. The numerical behavior stays that of the
 [existing scalar kernels](CALIBRATED_ANALYSIS.md); this preparation does not
 establish additional ImageJ numeric parity for the affine distance axis.
 
@@ -93,14 +117,24 @@ before pixel reads; managed leases retire when the table is cleared.
 actual menu input in both Windows ImGui hosts, Global/bypass values, cancellation,
 stale Global results, columns/precision, non-finite output and row-memory release.
 It does not complete T04a: geometry/non-area/dtype policies, ROI-manager
-measurements, configured profile modes, the remaining queued/ready/close cases,
-recording/replay and persistence still require delivery. Unsupported existing
+measurements, wider profile modes, recording/replay and broader persistence
+still require delivery. Configured thin paths and scoped queued/ready/close
+behavior are qualified separately below. Unsupported existing
 routes retain their legacy behavior while those requirements remain explicit.
 
-The current tight `Bounds` column uses one additional bounded selection raster
-after numerical analysis, with no additional provider read. T04a's next native
-API batch owns capturing those bounds while the first mask is resident and
-removing the duplicate raster. No additional controller was introduced.
+The published area receipt predates the new native bounds/path layout. Current
+T04a.1 removes the frontend Bounds reraster and adds configured profile menus
+through the same Window job/plot owners.
+[Scoped evidence](parity/reviews/T04a1-configured-profile-20261104.json) records
+318 affected Windows Python cases ultimately passing and six installed SDK
+clients on each Windows/Linux platform. Both actual Windows hosts cover the
+profile menus/lifecycle; Linux UI and full ImageJ polyline parity are not inferred. Live profiles validate captured source/selection,
+C/Z/T and applicable calibration, while pan/zoom alone leaves values usable.
+Saved snapshots strip the live target guard and retain independent values.
+Pending table Clear cancels measurement publication; read-only source closure
+cancels the owning task without blocking the event loop. Python scripted
+`action("profile")` preserves immediate results. Unsupported profile routes
+retain legacy behavior; recording/replay and broader persistence remain open.
 
 [T03 evidence](parity/reviews/T03-target-analysis-20261104.json) records installed
 Windows Python checks, both native control groups and both installed C++ SDKs.
