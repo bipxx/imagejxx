@@ -34,6 +34,7 @@ def planar_cases():
                   "multipoint", "escape", "focus", "context", "source", "wheel",
                   "zoom", "preferences", "resize", "vertex", "rotate", "mask_move", "mask_hole",
                   "busy", "scientific_busy", "modal", "time", "channel", "owner", "style", "mask_rotate"]
+    operations.append("point_defaults")
     modifiers = ("none", "shift", "alt", "both")
     for gesture in ("resize", "cross"):
         operations.extend(f"{gesture}_{handle}_{modifier}"

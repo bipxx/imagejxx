@@ -35,6 +35,16 @@ void bind_planar_annotations(py::module_ &m) {
     py::gil_scoped_release release;
     return bound?planar_annotations(source.data(),*bound):planar_annotations(source.data());
   },py::arg("source"),py::arg("max_working_bytes")=py::none());
+  m.def("planar_point_creation_selection",[](const DocumentSnapshot &source,const PlanarAnnotation &row,
+      py::handle counter,py::handle capture,py::handle cap) {
+    const auto category=index(counter),bound=index(cap);
+    if(category>=100)throw py::value_error("Point counter must be in 0..99");
+    if(!PyBool_Check(capture.ptr()))throw py::type_error("Point position capture must be Boolean");
+    // Metadata-only transformation holds the GIL: immutable Python arguments
+    // stay borrowed and admission precedes geometry copies.
+    return planar_point_creation_selection(source,row,unsigned(category),py::cast<bool>(capture),bound);
+  },py::arg("source"),py::arg("annotation"),py::arg("counter")=0,
+    py::arg("capture_position")=true,py::arg("max_working_bytes")=256*1048576);
   m.def("planar_annotation_voxel",&planar_annotation_voxel);
   m.def("planar_annotation_world",&planar_annotation_world);
   m.def("planar_annotation_boundary",&planar_annotation_boundary);

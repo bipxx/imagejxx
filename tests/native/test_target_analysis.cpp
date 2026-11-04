@@ -124,6 +124,12 @@ int main(){
     const auto created=point_creation_annotation(source->shape(),{1,1,2},99,true);
     check(created.counter==99 && created.position->z==2);
     check(!point_creation_annotation(source->shape(),{1,1,2},99,false).position);
+    PlanarAnnotation plane_points{"new",Selection("multipoint",{{1,1},{2,2}}),Plane::XZ,0,0,1,{}};
+    const auto plane_created=planar_point_creation_selection(temporary.snapshot(),plane_points,7,true);
+    const auto plane_entries=point_annotations(plane_created);
+    check(plane_entries.size()==2 && plane_entries[0].counter==7 && plane_entries[0].position->t==0);
+    check(plane_entries[0].position->c==1 && plane_entries[0].position->z==1 && plane_entries[1].position->z==2);
+    check(!point_annotations(planar_point_creation_selection(temporary.snapshot(),plane_points,7,false))[0].position);
     check(!point_creation_annotation({1,1,1,2,2,1},{0,0,0}).position);
     refuses<std::invalid_argument>([&]{point_creation_annotation(source->shape(),{2,0,0},0,false);});
     const std::vector<std::uint32_t> words{256,3074,258};

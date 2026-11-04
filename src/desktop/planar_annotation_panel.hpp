@@ -30,6 +30,7 @@ public:
   void draw(Document &,const PlanarCanvas &,ImDrawList *,bool show,bool editable=true);
   // Read-only canvas lane without drawing editor controls.
   void begin_draw(Document &,std::size_t max_working_bytes);
+  void point_creation_defaults(unsigned counter,bool capture_position);
   void cancel(const char *reason);
   bool active() const;
   Json diagnostics() const;

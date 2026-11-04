@@ -249,8 +249,8 @@ non-Boolean capture flags.
 
 | Setting / accessor | Default and validation | Current consumer and state owner |
 | --- | --- | --- |
-| `point_counter`: `Settings.integer` / Python `settings["point_counter"]` | Integer0..99, default0. | Ordinary Multipoint clicks capture their own counter. Existing vertices and single-point clicks are unchanged; single-point creation uses counter0. |
-| `point_capture_position`: `Settings.boolean` / Python indexed accessor | Strict Boolean, defaulttrue. | Ordinary Point/Multipoint clicks capture current T/C/Z for a multi-plane source; false leaves each new point unbound. Singleton points stay unbound. |
+| `point_counter`: `Settings.integer` / Python `settings["point_counter"]` | Integer0..99, default0. | Ordinary/scientific Multipoint creation captures its counter. Existing vertices and single-point clicks are unchanged; single-point creation uses counter0. |
+| `point_capture_position`: `Settings.boolean` / Python indexed accessor | Strict Boolean, defaulttrue. | Ordinary Point/Multipoint clicks capture current T/C/Z; scientific creation uses fixed XY Z or the vertical XZ/YZ Z cell. False and singleton positions stay unbound. |
 
 **Preferences > Drawing** uses the existing generated controls and atomic
 Apply/reset/save/load behavior. The ordinary Multipoint draft keeps aligned
@@ -272,12 +272,52 @@ creation or Linux UI. Earlier singleton UI IDs normalize to the final False-stac
 parameter so retries/renames do not inflate unique counts.
 
 This increment does not change raster `point_size` (default8,1..256). Marker
-style/size codes, labels/visibility, automatic actions, scientific plane-editor
-creation defaults, non-XY/rebind policy and complete point-creation recording
+style/size codes, labels/visibility, automatic actions, wider non-XY/edit/rebind policy and complete point-creation recording
 remain required P1-P4/T12 work in PLAN. A retained selection/session is not proof
 of executable creation replay. Original PointToolOptions/PointRoi/Prefs source
 review informs the counter/stack rules; no new original Java runtime observation
 or full ImageJ point-tool parity is claimed here.
+
+### Scientific plane point creation defaults
+
+`planar_point_creation_selection(source, annotation, counter=0,
+capture_position=True, max_working_bytes=268435456)` initializes an untagged new
+point/multipoint candidate in C++ and Python. Single-point counter is 0; multipoint
+uses 0..99. Explicit parent T/C including zero override captured view defaults;
+wildcard parents remain wildcard while bound vertices freeze captured T/C. XY
+captures the row's fixed Z. XZ/YZ use `floor(v)`, the nearest vertical sample in
+the plane editor's cell-boundary coordinates. An out-of-source bound Z refuses;
+explicit capture-off permits an unbound point. Singleton positions stay unbound.
+
+The pure helper preserves geometry/raster width/unrelated attributes, refuses
+implicit replacement of existing point tags and reads no provider images. It
+admits up to 65,536 vertices, conservative annotation staging and existing
+geometry/opaque-metadata storage before owned output copies. Existing source,
+command/history/publication/provider storage and RSS are outside this bound.
+The Python binding holds the GIL over immutable borrowed arguments for this
+metadata-only transform, avoiding a pre-admission geometry copy.
+
+Existing Settings feed OrthogonalInputContext and the existing plane creator.
+The draft freezes source/defaults/cap at start. Defaults or cap changes cancel
+pending point creation; source/navigation/escape guards retain their existing
+ownership. Each new vertex is validated without rebuilding a full annotation
+record; complete metadata is encoded once at finish. Existing-row geometry edits
+retain explicit point metadata and do not reapply creation defaults. Required
+wider transformation/rebind/display policy remains P2/P4 work.
+
+Existing planar Store records, atomic history, replay guards and session formats
+retain the completed typed selection; no new grammar or live association. Native
+non-XY point creation does not authorize implicit ImageJ ROI projection: current
+exporters still refuse that path. Broader non-XY edit/rebind/interchange scope
+remains required, with explicit retention/projection recovery.
+
+[Scoped evidence](parity/reviews/T04a2-planar-point-defaults-20261104.json) records
+664 unique focused Windows product cases ultimately passing, 23 tool checks,
+two native controls and six installed SDK clients per Windows/Linux platform.
+Both Windows hosts exercise bound/unbound/single creation and lifecycle guards
+on XY/XZ/YZ; affected legacy creation paths pass. Fixture settings/source changes
+are disclosed API interventions; prior Preferences input qualification is reused.
+No Linux UI/full point-tool or broad speed claim follows from this increment.
 
 ### Explicit XY point ROI interchange
 

@@ -358,6 +358,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     ImGui::TextUnformatted("Focused canvas: Up/Down or PageUp/PageDown: slice  |  "
                            "Shift-arrows: global XY  |  Escape: exit views");
   const bool importReview=input.import_preview && input.import_preview->matches(d.nativeSnapshot(),input.annotation_max_working_bytes);
+  planar_.point_creation_defaults(input.point_counter,input.point_capture_position);
   if (input.read_only) planar_.begin_draw(d,input.annotation_max_working_bytes);
   else planar_.controls(d,input.active_document && input.input_enabled && !savedOwner() && !importReview,input.annotation_max_working_bytes,input.planar_publish);
   }

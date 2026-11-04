@@ -65,15 +65,15 @@ artifact limitations. No speed claim from language choice or build timings.
 [Three-role ownership](THREE_AGENT_EXECUTION.md) is a coordination template;
 agent execution requires authorization under current instructions.
 
-Ordinary point creation defaults are now scoped integrated:507 focused product
-cases ultimately pass, one optional OpenGL skip; native/installed clients on
-Windows/Linux and actual singleton/classic-Z creation/preferences in both Windows
-hosts. Next P1 scientific plane-editor defaults, then marker/label/visibility,
-automatic actions and explicit non-XY/replay policies before manager variants.
-Read PLAN's P1-P4 exits; this is not full point-tool completion. All task scratch
-is retired with verified hashes; overall storage stays unverified where paths
-are inaccessible. Reuse unchanged checks, current caches and existing helpers;
-after each task update the queue and its concise waste decision/cleanup record.
+P1 creation counters/positions are now scoped integrated for ordinary tools and
+scientific XY/XZ/YZ. The latest packet has664 focused product cases and23 tools,
+native/installed clients on Windows/Linux and actual both-Windows-host creation/
+lifecycle checks. Next P2 marker presentation, P3 automatic actions and P4 wider
+edit/rebind/replay reconciliation, then manager variants. PLAN owns the two ready
+specs and exact limits. All task scratch is retired with verified hashes; overall
+storage stays unverified where paths are inaccessible. Encode full point metadata
+once at completion, verify actual input ownership and batch focused API changes.
+After each task, update the queue and its concise waste/cleanup decision record.
 
 ## Historical link compatibility
 

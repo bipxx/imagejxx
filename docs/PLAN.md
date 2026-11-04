@@ -1,6 +1,6 @@
 # ImageJ and Fiji delivery plan
 
-Updated 2026-11-04 after scoped ordinary point-creation defaults integration,
+Updated 2026-11-04 after scoped scientific point-creation defaults integration,
 verified group retention and per-task waste closeout. This is the
 authoritative current queue and completion policy.
 [Inventory](parity/inventory.json) owns the 99 capability families and their
@@ -54,18 +54,20 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 M2b.2a point editing/vertex alignment | Scoped integrated in both Windows hosts: 701 unique focused product cases and 23 tool checks pass; two native controls and six installed SDK clients per Windows/Linux platform. | Properties Counter/T/C/Z, Apply/Cancel/clear, aligned insert/delete, store/update and session reopen work. Next M2b.2b actual interchange/point-tool configuration; no replay/full-tool claim. [Evidence](parity/reviews/T04a2-point-editing-20261104.json). |
 | T04a.2 M2b.2b XY interchange increment | Explicit source-extent promotion and native-row projection work in both Windows hosts; 765 focused product cases and 23 tool checks pass, plus two native controls and six installed SDK clients per Windows/Linux platform. | Point-specific ZIP and explicit imported-point handoff are now scoped integrated; finish non-XY policies and point-tool configuration. M2b.2b remains open. [Evidence](parity/reviews/T04a2-point-interchange-20261104.json). |
 | T04a.2 M2b.2b annotation handoff/point ZIP | Scoped integrated in both Windows hosts: 787 unique focused product cases ultimately pass, 23 tool checks; two native controls and six installed SDK clients per Windows/Linux platform. | Independent selection/store/copy-back, Measure/Counter/Count and two-member ZIP controls/reopen pass. Next point-tool configuration/non-XY policy; forward manager recording remains T04a.3/T12. [Evidence](parity/reviews/T04a2-point-handoff-20261104.json). |
-| T04a.2 M2b.2b P1 ordinary creation defaults | Native per-click helper and consumed counter/capture settings; actual singleton/classic-Z creation and preference persistence pass in both Windows hosts. 507 focused product cases ultimately pass, one optional OpenGL skip; two native controls and six SDK clients per Windows/Linux platform. | Next scientific plane-editor defaults, then marker presentation/auto-actions/non-XY/replay. No full P1/point-tool claim. [Evidence](parity/reviews/T04a2-point-creation-defaults-20261104.json). |
+| T04a.2 M2b.2b P1 ordinary creation defaults | Native per-click helper and consumed counter/capture settings; actual singleton/classic-Z creation and preference persistence pass in both Windows hosts. 507 focused product cases ultimately pass, one optional OpenGL skip; two native controls and six SDK clients per Windows/Linux platform. | Scientific defaults are delivered in the following increment; next P2-P4. No full point-tool claim. [Evidence](parity/reviews/T04a2-point-creation-defaults-20261104.json). |
+| T04a.2 M2b.2b P1 scientific creation defaults | Native plane-aware helper and frozen defaults/cap work on XY/XZ/YZ in both Windows hosts. 664 unique focused product cases ultimately pass and23 tool checks; two native controls and six installed SDK clients per Windows/Linux platform. | P1 creation counters/positions are scoped delivered. Next P2 presentation, P3 automatic actions and P4 wider edit/rebind/interchange/replay. [Evidence](parity/reviews/T04a2-planar-point-defaults-20261104.json). |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,437,599,352 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,445,899,014 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Active work and immediate sequence
 
 The explicit XY-interchange baseline is `91d2ea5`; the current handoff/ZIP
 increment is scoped verified in the [new receipt](parity/reviews/T04a2-point-handoff-20261104.json).
-Ordinary point tools also capture per-click counter/position defaults in the
+Ordinary point tools capture per-click counter/position defaults in the
 [new scoped increment](parity/reviews/T04a2-point-creation-defaults-20261104.json).
-Imported annotations have independent selection/store/copy-back controls;
+Scientific creation now captures the corresponding native positions on all three
+planes. Imported annotations have independent selection/store/copy-back controls;
 actual point-specific ZIP composition/export/reopen also passes in both Windows
 hosts. This does not complete point-tool configuration, non-XY policy or broader
 analysis persistence/replay. Preserve unrelated reference-contract work.
@@ -73,8 +75,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Order | Task boundary | Exit / next handoff |
 | --- | --- | --- |
 | Delivered scoped | Imported XY handoff and point-specific ZIP increment. | 787 focused product cases,23 tools; native/installed clients on Windows/Linux; all owned scratch retired with failures/hashes retained. |
-| Now | Adopt creation defaults in the scientific plane editor; finish marker presentation, automatic actions and explicit non-XY/replay policy. | Ordinary counter/position controls are scoped delivered; complete remaining P1-P4 consumers rather than redoing that path. |
-| Next | M2b.3 manager layouts/Z/T, then M3 measurement options and M4 reconciliation. | Complete each separately on the captured owner; hand stable contracts to T04a.3. |
+| Now | P2 marker presentation, labels/visibility and corresponding interchange. | P1 counters/positions are scoped integrated for ordinary and scientific creation; reuse those owners and freeze all presentation keys before coding. |
+| Next | P3 automatic point actions and P4 edit/rebind/replay reconciliation, then M2b.3 manager layouts/Z/T, M3 options and M4. | Complete each on existing owners; hand stable contracts to T04a.3. |
 | Following | T04a.3, T04b, T05, then the delivery stages and T06-T15 roadmap below. | Each stage closes its concrete inventory residuals, including UI/configuration/state, before claiming completion. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -206,75 +208,93 @@ independent. Copy-back uses the existing planar update record; forward manager
 copies retain the recorder gap owned by T04a.3/T12. No new codec/serializer/job
 owner was introduced. Do not redo this integration to qualify point-tool defaults.
 
-### Ready task 1: M2b.2b — Point-tool configuration and position policy
+### Ready task 1: M2b.2b P2 — Point marker presentation and interchange
 
-**Execution checkpoints (keep this task open until all required options close):**
+| Point-tool checkpoint | Current scope / required exit |
+| --- | --- |
+| P1 — Creation counters/positions | Scoped delivered for ordinary tools and scientific XY/XZ/YZ. Existing-row edits retain explicit metadata; creation defaults do not retag old points. [Scientific contract](TARGET_ANALYSIS.md#scientific-plane-point-creation-defaults). |
+| P2 — Marker presentation | Active next: Hybrid/Cross/Dot/Circle, seven ImageJ sizes, colors, labels and show-on-all-slices across required active/ROI/plane/export roles. Raster width remains a distinct setting. |
+| P3 — Creation side effects | Required next: single-point Auto-measure/Auto-next slice/Add to overlay/Add to ROI Manager and remaining multipoint creation behaviors. |
+| P4 — Plane/rebind and reconciliation | Required: remaining edit/position/rebind/projection policies, all key consumers/defaults/state and executable ordinary creation replay. P1 native creation does not close non-XY ImageJ ROI export. |
 
-| Checkpoint | Required implementation and reuse | Current state / exit |
-| --- | --- | --- |
-| P1 — Creation counters/positions | Typed native per-click capture, strict Python API, existing Settings/Preferences and ordinary point/multipoint tool consumers. Capture every vertex at its own click; changes to defaults do not retag earlier points. | Ordinary increment scoped delivered:507 unique product cases ultimately pass (one optional skip), both Windows hosts qualify singleton/classic-Z/default persistence, native and installed clients pass on Windows/Linux; scratch retired. Scientific plane-editor adoption remains required within P1; do not close the whole checkpoint. |
-| P2 — Marker presentation | Hybrid/Cross/Dot/Circle, seven ImageJ size choices, selection/cross colors, labels and show-on-all-slices on existing selection/ROI/plane rendering and interchange owners. | Required; freeze display size versus numeric raster diameter and visibility/label policies before keys. Existing point_size remains raster diameter8 (1..256). No presentation claim from raw codec bytes. |
-| P3 — Creation side effects | Required single-point Auto-measure, Auto-next slice, Add to overlay/ROI Manager plus multipoint creation/manager behaviors using existing jobs/history and result owners. | Required; specify option interactions, ordering, atomic failure/cancel and recorder/session semantics from pinned source. No second automation controller. |
-| P4 — Plane/rebind and reconciliation | Explicit XY/XZ/YZ position/extent policies, all required setting consumers/persistence/replay, UI/API errors and original-reference reconciliation. | Required; do not drop non-XY/default options into an unowned residual or infer completion from P1. |
+- **Contract before editing:** inspect the pinned PointRoi draw/type/size/label/
+  visibility/counter-color rules and PointToolOptions/codec consumers. Reconcile
+  required keys with G013/G014/G017/G020-G022 and T15 in the existing consumer
+  contract. Record default, valid values, API/control, role, Apply/Cancel/reset,
+  persistence and recorder ownership. Add keys only with actual consumers.
+- **Size/type meanings:** pinned types are Hybrid=0/Cross=1/Dot=2/Circle=3; size
+  choices Tiny/Small/Medium/Large/Extra Large/XXL/XXXL correspond to 1/3/5/7/11/17/25
+  display sizes. Verify codec index versus pixel/screen units before projection.
+  Existing numeric `point_size` remains a raster diameter (default 8, 1..256), not
+  a size code. Explicitly label and reconcile its intended creation/processing
+  consumers; marker changes must not change measured samples or geometry.
+- **Easiest native/API path:** use a focused point-presentation header/module
+  alongside existing typed annotations, ROI style and glyph/visual ownership.
+  Keep ImGui out of the core contract; both hosts consume the same descriptors.
+  Batch public declarations before qualification. The last coherent shared-header
+  batch observed 94 Windows compile lines/379.047s; do not add unrelated point
+  presentation fields to the widely consumed planar annotation header.
+- **Rendering/visibility:** extend existing visual caches/draw/flatten owners,
+  keyed by immutable geometry/style, view and applicable settings. Define
+  active-selection, stored-ROI, overlay and scientific-plane roles individually,
+  including parent wildcards versus per-point T/C/Z. Show-all is display policy;
+  it must not erase bindings. Specify counter palette, label numbering/placement,
+  zoom/DPI, clipping, unknown metadata and bounded glyph/label output. Preserve
+  opaque future tags; do not silently reinterpret them or decode full metadata
+  every frame. No second renderer/controller or per-point source reads.
+- **Editing/interchange:** reuse properties/defaults and existing native envelopes/
+  source archives. Derive standard point type/size/label fields from current
+  native style on explicit projection; preserve old raw codec/default mapping
+  meanings and source bytes. Explicit semantic promotion refuses unsupported
+  wire codes without destroying raw data. Do not claim non-XY projection from
+  native styling; P4/T10 owns representability/recovery.
+- **Acceptance/exit:** independent original/analytic marker geometry and output
+  checks for all four types/seven sizes, labels/colors/visibility and role/pose
+  variants; actual controls in both hosts; defaults/reset/cancel/persist/reopen,
+  ROI/session/export roundtrips, stale/cap refusal and unchanged measurement/
+  history where applicable. Qualify raster flatten and UI rendering separately;
+  declare font/pixel tolerances explicitly. Reuse unchanged numeric evidence.
+  Finish allocation review, installed clients only for changed public surfaces,
+  sequential capture retention and the short waste/queue update before P3.
 
-Source review uses the existing pinned ImageJ1.54r PointToolOptions/PointRoi/Prefs;
-no new dependency or reference generation is needed just to inspect these files.
-Preserve all published expectations. The current defaults patch adds only keys
-with creation consumers; marker/auto-action keys follow their actual consumers.
+### Ready task 2: M2b.2b P3 — Point-tool automatic actions
 
-**Dependency:** consume the scoped handoff/ZIP contract above. Use typed annotations,
-aligned SelectionEditor edits, existing tool settings and one shared host route.
-Start by inspecting the pinned Point Tool/Properties option names and current
-creation/style consumers; do not infer parity from a codec field or properties UI.
+- **Dependency/contract:** consume P1 capture and stable P2 style. Review pinned
+  PointToolOptions plus actual event/Analyzer/overlay/manager consumers before
+  choosing order. Required flags are Auto-measure, Auto-next slice, Add to overlay
+  and Add to ROI Manager; source interactions include overlay disabling manager
+  and auto-next enabling measurement when manager is off. Confirm original
+  defaults and final-slice behavior; do not infer them from option labels.
+- **Easiest path:** compose existing point initialization, document selection/
+  metadata transactions, captured Measure jobs/results, ROI-manager/overlay and
+  display publication. Preflight source/dtype/pose/options, all retained outputs
+  and work before reads. Freeze accepted settings and targets once. No new
+  automation controller, batching engine, record parser or Python requirement.
+- **State/error behavior:** specify publication order, transient selection versus
+  one metadata history step, result ownership, advance versus no-op/wrap boundary,
+  partial-failure/cancel and unsupported-domain recovery. Automatic operations
+  may not silently sample another plane, reinterpret RGB/IEEE or leave half a
+  requested workflow published. Source/cap/default/busy changes must follow the
+  owning capture guards. Saved values must not keep a closed provider alive.
+- **API/UI/configuration:** add consumed keys/controls through current Settings,
+  creation lanes and both hosts; include apply/reset/persist/reopen. Extend
+  existing command/recorder/session owners for missing executable behavior,
+  preserving old records. Keep diagnostic provenance separate from replay.
+- **Acceptance/exit:** flags individually and in required combinations, counter/
+  position/style preservation, last-slice policy, manager/overlay handoff,
+  Measure/CSV, cancel/error/stale/close/cap behavior and supported headless/native
+  clients. Check actual UI effects, not merely checkbox state. Waste review
+  covers duplicated reads/row copies, multiple commits, queued source retention
+  and redundant captures; close only enumerated delivered scope and update P4.
 
-- **Next executable slice: scientific plane-editor creation defaults.** Inspect
-  `PlanarAnnotationPanel::State::Draft`, its controls/pointer completion and the
-  existing OrthogonalInputContext. Pass defaults through that existing lane and
-  freeze the intended values before publication; do not patch resolved records
-  late in Window or reread changed defaults when finishing. Reuse the native
-  helper, existing typed attributes and planar Store command/session/replay.
-  Specify exact per-vertex XYZ/T/C/Z meaning for XY/XZ/YZ before binding any
-  position; a plane coordinate is not automatically a native Z. Preserve source
-  archives, parent positions and unknown attributes. Qualify counter/position
-  defaults, mid-draft settings/source/cap/navigation changes, cancel/error and
-  explicit recovery through both hosts. Keep P4's broader rebind requirements
-  open. Use the maintained plane matrix and counter-control evidence where
-  their consumed inputs are unchanged; no second creator or runner.
-- **Point-tool key contract:** audit the pinned Point Tool/Properties options
-  against G013/G014/G017/G020-G022 and T15. Existing native `point_size` is a
-  numeric raster diameter (default 8, range 1..256), not the byte codec's size
-  code. Reuse it where meanings match; explicitly specify marker-type/size
-  projection, active counter, position capture, labels and required creation/
-  manager behaviors before adding missing keys. Each key needs its actual
-  default/range, C++/Python accessor, tool/panel consumer, default/revert/persist
-  and recorder/session ownership. Keep read-only per-vertex property edits
-  distinct from defaults for newly created points. Do not infer defaults from
-  similarly named wire fields.
-- **Small contract before implementation:** for each required existing command/
-  setting ID, record default/range, C++ accessor, Python accessor, actual control,
-  creation versus existing-selection behavior, Apply/Cancel/reset and session/
-  recorder owner in the existing consumer contract. Add only missing keys.
-- **Creation and presentation:** active counter, complete position capture,
-  marker/size and label options affect the intended new points and rendered
-  selection. Preserve duplicate vertices, untagged defaults and explicit edits;
-  a style change must not move a point or change a measurement unexpectedly.
-- **Position policy:** enumerate required XY/XZ/YZ and rebind cases. Specify
-  whether each has an exact supported mapping or requires an explicit projection;
-  implement required mappings on existing owners. Reject ambiguous/lossy cases
-  atomically with a usable recovery path. Retaining raw source bytes does not by
-  itself deliver a non-XY editing workflow.
-- **Acceptance:** representative defaults, limits, mixed counters, positioned/
-  unbound points, insert/delete, cancel/reset and session/replay behavior pass
-  through native/Python APIs and actual controls in both Windows hosts. Test
-  affected core/installed consumers only when their contracts change. Reuse
-  original unchanged point/wire observations; do not refresh every hash.
-- **Waste/exit:** review per-frame annotation decoding, settings duplication,
-  geometry rebuilds for style-only changes and repeated capture payloads. Record
-  fix/defer/no-action, safely retire owned scratch, update the remaining key IDs
-  and next manager contract. Close M2b.2 only when all required .2a/.2b behaviors
-  are delivered; required non-XY/configuration work cannot disappear into T15.
+**Following P4:** reconcile remaining required edit/rebind/extent/position and
+interchange behaviors explicitly. Creation initializes bindings; existing moves
+currently preserve explicit metadata. Define required transformations versus
+retention before changing that meaning. Close every point-tool option/setting and
+ordinary/scientific record/session requirement, including unsupported projection
+recovery, before declaring M2b.2 complete. Preserve historical expectations.
 
-### Ready task 2: M2b.3 — Complete manager layouts and Z/T variants
+### Following task: M2b.3 — Complete manager layouts and Z/T variants
 
 - **Dependency/ownership:** use stable M2b.2 annotations and the existing frozen
   manager job/result owner. Core/API owns request/options/admission; consumer
@@ -539,48 +559,46 @@ feature or block unrelated ready work.
 | Legacy plan-checker shape | T02, next traceability-tool change: adapt existing `scripts/check_plan.py::validate_inventory` to the current roadmap/inventory contract; do not restore 99 duplicate prose rows or add a second checker. | Static inspection shows it expects historical per-G table rows absent from the current guide. Exit: the maintained checker covers all inventory IDs and flags a deliberately omitted mapping; this documentation task used scoped in-memory coverage/link/hash checks instead. |
 | Accumulated duplicate large UI captures exceeded the normal budget | Fix execution order now: retain/retire one large terminal UI group before another; T02 owns reviewing unnecessary private/reader payload duplication in the existing capture helper. | Observed pre-retirement known storage 9,040,925,635 B versus 8 GiB normal limit; one report is 51,619,575 B in both producer and reader paths. After verified retirement: 8,429,126,334 known B plus 214 unknown subtrees. Next large group records copies/admission and immediate retention; do not mark the overall budget verified. |
 | Private helper and observation-schema assumptions | T02/next consumer owner: search all callers, including probes, before a signature change; inspect binding registration order and each surface's actual diagnostic shape before extension. | This packet missed one private probe caller, eagerly constructed an unregistered binding default, and confused import-array/export-object bounds and clipped visibility. Narrow corrections pass; all failures retained, unchanged SDK/core checks reused for probe-only corrections. Recurrence remains a process issue. |
+| Shared-header/API integration fanout | P2 core/API owner: keep new point-presentation declarations focused, freeze keys/callers and batch public changes before verification. T02 isolates dependencies only where repeated measured cost justifies it. | Current coherent Windows batch94 compile-line observations/379.047s; private preview/probe fixes each1/12.390s and1/13.390s. Different workloads, not processing-speed comparisons. No speculative whole-header rewrite. |
 | Historical drawing reader exact setting count | T02, next drawing qualification-tool change: support the additive current schema explicitly, retaining old source/expectation identities and negative controls. | Reader currently requires61 keys; installed schema64 includes the two new point keys plus an earlier addition. Do not repin old references or claim that historical campaign passes; current point controls have independent scoped checks. |
 | Repeated live planning history | This task: three concise current documents, exact historical ledgers, compatible links. | Future task closeout updates rows in place. |
 
 ## Latest task closeout
 
-2026-11-04 M2b.2b P1 ordinary point creation: native per-vertex capture and strict
-Python API now feed existing Point/Multipoint tools. Counter0..99 and capture
-settings use Preferences > Drawing, atomic Apply/reset/save/load. Each delivered
-multipoint click freezes its own values; later defaults cannot retag old vertices.
-Both Windows hosts qualify singleton/classic-Z creation, actual controls, saved
-bytes and reopened Editor settings.507 unique focused product cases ultimately
-pass, one optional hidden-OpenGL skip; two native controls and six installed SDK
-clients per Windows/Linux platform pass. [Receipt](parity/reviews/T04a2-point-creation-defaults-20261104.json).
-Scientific plane-editor defaults, markers/labels/visibility, auto-actions,
-non-XY/rebind and complete executable creation recording remain P1-P4/T12.
-No full P1/point-tool/family/platform/release or broad speed claim.
+2026-11-04 P1 scientific point defaults: native plane-aware initialization and
+strict Python API now feed the existing scientific editor. XY binds fixed Z;
+XZ/YZ bind each vertical Z cell. Wildcard/zero parents, singleton/unbound policy,
+opaque fields, early-cap refusal and native Store/replay/session/undo/redo pass.
+Both Windows hosts qualify all three planes, frozen defaults/cap cancellation,
+source/navigation/escape cancellation and recovery. 664 unique focused product
+cases ultimately pass, 23 tool checks; two native controls and six installed SDK
+clients pass per Windows/Linux platform. [Receipt](parity/reviews/T04a2-planar-point-defaults-20261104.json).
+P1 creation counter/position scope is delivered; P2-P4 and the wider plan stay
+required. No non-XY ImageJ projection/full point-tool/release/speed claim.
 
 | Waste finding | Decision / next start |
 | --- | --- |
-| Per-click growth could reserve exact lengths; cancelled typed drafts could retain large buffers. | Fixed before final review: geometric growth, admit/copy/reserve before aligned append, encode metadata only at completion and release typed buffers on terminal reset. |
-| Assertion guessed a top-level undo_steps field. | Correct from observed history.undo_steps, preserve failures and reread genuine existing captures. The recurring contract-inspection process problem remains open; next owner inspects source/schema before assertions. |
-| Singleton proof did not demonstrate stack position capture. | Extend the existing actor with an explicit classic-Z fixture and both-host assertions. Reuse unchanged native/SDK results after frontend-only fixes; no new runner/binding/report format. |
-| Capture transport and accumulation. | Read C++ originals directly for this consumer; verified API/UI/regression groups retired serially. Wider transport duplication remains T02. |
-| Old drawing comparator assumes61 settings while current schema has64. | Defer explicit additive-schema/tooling migration with negative checks to T02; preserve historical expectations. Current scope has independent assertions; no historical drawing-qualification claim. |
-| SDK/compiler retention. | Keep consumers through final review; retire29,499,951 compiler bytes by identity/LastTest logs. Losslessly verify6,690,385 scratch bytes in516,087 archive bytes, then remove all owned scratch. |
+| Prototype encoded all point annotations after every click. | Fixed: validate each new vertex and encode full metadata once at finish; reuse plain geometry preview and captured defaults. No second creator/controller. |
+| Multi-stage XY fixture clicked image locations clipped after controls grew. | Retain failed captures, fit only that recipe and require actual control/canvas hover IDs. Retry affected UI only; native/API results reused. All three planes and legacy point/multipoint/rectangle pass in both hosts. |
+| Shared-header/API batch amplified build work. | 94 Windows compile-line observations/379.047s; private preview fix1/12.390s, probe fix1/13.390s; Linux native85.664s. P2 uses a focused presentation header and batches declarations. These are different workloads, not product speed. |
+| Settings tooltip still named ordinary tools only. | Update it for both consumers. Reuse unchanged new-UI logic across this description-only delta; final legacy UI/installed clients use updated products. |
+| Literal/newline orchestration assumptions recurred. | Inspect exact sites and validate a file's anchors before writing its in-memory edit. No new runner; recurrence remains a process problem, not solved by policy alone. |
+| Capture/compiler accumulation. | Retire each failed/successful large group before next; keep SDK consumers through final review, then retire 30,205,863 compiler bytes by identity/logs. Verify 126,337,969 scratch bytes in 5,869,671 archive bytes and remove all owned scratch. Empty API/tools roots need checked removal, not fabricated archives. |
 
-Observed known storage before SDK retirement:8,467,490,307 bytes; after cleanup:
-8,437,599,352 before small receipt/doc updates, plus214 inaccessible subtrees.
-These are observations, not an absolute peak or complete budget pass. Existing
-cache/runtime/SDK roots are reused; no compiler/cache archive, new dependency or
-historical expectation change. Windows coherent build107.171s, frontend review
-fix39.187s and Linux native13.998s are different build workloads, not product
-performance comparisons. No broad rerun solely to refresh hashes.
+Known storage before SDK retirement:8,476,491,358 bytes; after cleanup:
+8,445,899,014 before small receipt/doc updates plus 214 inaccessible subtrees.
+These are observations, not an absolute peak or complete budget pass. Historical
+measurements/expectations remain unchanged. Existing cache/runtime/SDK reused.
 
-Document checks pass:74 local links/anchors,99 capability IDs, three unchanged
-historical archive hashes, source/product/reference/retention pins and diff hygiene.
+Document checks pass: 77 local links/anchors, all 99 capability IDs, three
+unchanged historical archive hashes, source/product/SDK-header/retention pins
+and diff hygiene. Linux SDK/header identities are retained separately.
 
-**Next:** finish scientific creation-default adoption within P1, then P2-P4 and
-manager layouts/Z/T. Update the owning receipt/queue after every task with scoped
-evidence, waste fix/defer/no-action, cleanup and the next-start prevention step.
-The compilexx notebook retains the actual costs and unresolved process/tooling
-issues. Keep the full T00-T15 scope open until its requirements are delivered.
+**Next:** P2 presentation, then P3 automatic actions and P4 reconciliation before
+manager variants. The two ready specs above now follow that actual order. Every
+task updates scope/evidence, waste disposition/deferred owner, cleanup and the
+next start; compilexx retains the measured costs and unresolved process issues.
+The full T00-T15 horizon remains open until its requirements are delivered.
 
 ## Historical link compatibility
 

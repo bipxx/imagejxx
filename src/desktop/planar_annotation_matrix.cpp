@@ -2,6 +2,7 @@
 #include "planar_annotation_matrix.hpp"
 #include "headless_session_internal.hpp"
 #include "window.hpp"
+#include <imgui_internal.h>
 #include "gaussian_cancellation_internal.hpp"
 #include "../native/operation_job_probe_internal.hpp"
 #include <condition_variable>
@@ -15,7 +16,7 @@ std::vector<std::string> cases() {
   std::vector<std::string> result;
   for(const auto *plane:{"XY","XZ","YZ"})
     for(const auto *op:{"rectangle","ellipse","line","point","freehand","polygon","multipoint",
-        "escape","focus","context","source","wheel","zoom","preferences","resize","vertex","rotate","mask_move","mask_hole"})
+        "escape","focus","context","source","wheel","zoom","preferences","resize","vertex","rotate","mask_move","mask_hole","point_defaults"})
       result.push_back(std::string(plane)+"."+op);
   for(const auto *plane:{"XY","XZ","YZ"}) {
     for(const auto *op:{"busy","scientific_busy","modal","time","channel","owner","style","mask_rotate"})result.push_back(std::string(plane)+"."+op);
@@ -90,7 +91,7 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
         {{"Seed",selection,plane,view==0?2:view==1?3:4,1,1,{{"tag",std::string("row")}}}});
   }
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));auto display=owner->snapshot().display();
-  display.orthogonal=true;display.zoom=op=="rotate"?2:4;display.crosshair={4,3,2};display.t=shape.t-1;display.c=shape.c-1;owner->set_display(display);
+  display.orthogonal=true;display.zoom=op=="point_defaults"?1:op=="rotate"?2:4;display.crosshair={4,3,2};display.t=shape.t-1;display.c=shape.c-1;owner->set_display(display);
   window.addNativeDocument(owner);window.recording=true;
   if(op=="owner") {
     auto other=std::make_shared<imagejxx::Document>(owner->snapshot().data());
@@ -100,6 +101,10 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
       {"frames",Json::array()},{"controls",Json::array()},{"states",{{"before",state(window)}}},
       {"api_fixture_actions",{"dataset/seed attachment"}}};
   report["profile"]=profile;
+  if(op=="point_defaults") {
+    window.updateSettings({{"point_counter",std::int64_t(7)},{"point_capture_position",true}},false);
+    report["api_fixture_actions"].push_back("Initial point defaults via existing settings API; Preferences controls qualified separately");
+  }
   auto session=std::make_unique<HeadlessInputSession>(window);Json last;
   auto frame=[&](const Json &events=Json::array()) {
     require(report["frames"].size()<160,"Matrix frame bound");last=session->frame(events);
@@ -114,6 +119,8 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
   auto click=[&](const Json &control,const std::string &name) {
     report["controls"].push_back({{"name",name},{"control",control}});
     frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+    if(op=="point_defaults")require(ImGui::GetCurrentContext()->HoveredId==control.at("id").get<ImGuiID>(),
+        "Point defaults control is not exposed to actual input");
     frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
     frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
   };
@@ -125,14 +132,18 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
     const auto p=last.at("orthogonal_planes").at(view);
     return Json::array({p["origin"][0].get<double>()+u*p["scale"][0].get<double>(),p["origin"][1].get<double>()+v*p["scale"][1].get<double>()});
   };
-  auto position=[&](double u,double v){frame(Json::array({{{"type","position"},{"space","screen"},{"point",point(u,v)}}}));};
+  auto position=[&](double u,double v){
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",point(u,v)}}}));
+    if(op=="point_defaults")require(ImGui::GetCurrentContext()->HoveredId==last.at("orthogonal_planes").at(view).at("canvas_id").get<ImGuiID>(),
+        "Point defaults vertex is clipped or owned by another widget");
+  };
   auto button=[&](bool down){frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));};
   auto key=[&](const char *name,bool down){frame(Json::array({{{"type","keys"},{"keys",{{{"name",name},{"down",down}}}}}}));};
   auto vertex=[&](double u,double v){position(u,v);button(true);button(false);frame();};
   frame();frame();frame();report["before_render"]=last.at("orthogonal_planes");
-  const bool multi=op=="polygon" || op=="multipoint";
+  const bool multi=op=="polygon" || op=="multipoint" || op=="point_defaults";
   const bool creation=op=="rectangle" || op=="ellipse" || op=="line" || op=="point" || op=="freehand" || multi;
-  click(panel().at("controls").at(edit?"edit":creation?op:"rectangle"),"tool");
+  click(panel().at("controls").at(op=="point_defaults"?"multipoint":edit?"edit":creation?op:"rectangle"),"tool");
   if(op=="rotate" || op=="style" || op=="mask_rotate" || invalid) {
     click(panel().at("controls").at("rows"),"rows");click(panel().at("controls").at("row.0"),"row.0");
   }
@@ -144,7 +155,25 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
   // Arm shortcut ownership on this canvas before beginning the interrupted
   // gesture. A zero-distance rectangle click has no candidate/publication.
   if(op=="modal")vertex(1,1);
-  if(invalid) {
+  if(op=="point_defaults") {
+    auto remember=[&](const char *name){report["states"][name]=state(window);report["point_panels"][name]=panel();};
+    auto defaults=[&](unsigned counter,bool capture) {
+      report["api_fixture_actions"].push_back("Existing settings API: point counter/capture change");
+      window.updateSettings({{"point_counter",std::int64_t(counter)},{"point_capture_position",capture}},false);frame();
+    };
+    vertex(1,1);vertex(5,3);click(panel().at("controls").at("finish"),"bound.finish");remember("bound");
+    defaults(7,false);vertex(1,1);vertex(5,3);click(panel().at("controls").at("finish"),"unbound.finish");remember("unbound");
+    defaults(99,true);click(panel().at("controls").at("point"),"single.tool");vertex(1.25,1.75);remember("single");
+    click(panel().at("controls").at("multipoint"),"multipoint.tool");vertex(1,1);
+    defaults(2,true);remember("defaults_cancelled");
+    vertex(2,2);vertex(6,4);click(panel().at("controls").at("finish"),"recovery.finish");remember("recovered");
+    vertex(1,1);window.updateSettings({{"processing_memory_mb",std::int64_t(1)}},false);frame();remember("cap_cancelled");
+    window.updateSettings({{"processing_memory_mb",std::int64_t(0)}},false);frame();
+    vertex(1,1);report["api_fixture_actions"].push_back("Concurrent metadata title edit during point draft");
+    auto tx=owner->snapshot().begin_edit(Change::Metadata);tx.set_title("Point source changed");owner->commit(tx);frame();remember("source_cancelled");
+    vertex(1,1);frame(Json::array({{{"type","wheel"},{"x",0},{"y",1}}}));button(false);frame();remember("navigation_cancelled");
+    vertex(1,1);key("Escape",true);key("Escape",false);button(false);frame();remember("escape_cancelled");
+  } else if(invalid) {
     const bool scope=op=="invalid_fixed_negative" || op=="invalid_time_zero" || op=="invalid_channel_over";
     click(panel().at("controls").at(scope?"scope":"geometry_section"),"invalid.section");
     const char *field="box_width",*bad="0",*restore="4";

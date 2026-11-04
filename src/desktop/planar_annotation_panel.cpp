@@ -46,8 +46,13 @@ struct PlanarAnnotationPanel::State {
     std::optional<Selection> candidate;
     std::vector<std::array<double,2>> points;
     bool invalid = false;
+    unsigned point_counter=0;
+    bool point_capture=true;
+    std::size_t point_cap=256*1048576;
   };
   Mode mode_=Mode::Navigate;
+  unsigned point_counter_=0;
+  bool point_capture_=true;
   std::uint64_t owner_=0,metadata_revision_=~std::uint64_t(0);
   std::vector<PlanarAnnotation> rows_;
   std::optional<std::size_t> selected_;
@@ -76,6 +81,7 @@ struct PlanarAnnotationPanel::State {
   bool all_t_=false,all_c_=false,finish_requested_=false,vertices_requested_=false,resource_refused_=false;
   bool multi() const {return mode_==Mode::Polygon || mode_==Mode::Multipoint;}
   void update_vertices();
+  Selection capture_points(const Draft &,Selection) const;
   void sync(Document &);
   void select(std::size_t);
   void commit(Document &,const DocumentSnapshot &,std::optional<std::size_t>,const PlanarAnnotation &,const PlanarAnnotationPublisher &,std::optional<std::size_t> control={});
@@ -162,12 +168,18 @@ void PlanarAnnotationPanel::State::select(std::size_t row) {
   }
 
 }
+Selection PlanarAnnotationPanel::State::capture_points(const Draft &state,Selection selection) const {
+  auto row=state.original;row.selection=std::move(selection);
+  // Leave half for the prior draft, point carrier and existing UI staging.
+  return planar_point_creation_selection(state.source,row,state.point_counter,state.point_capture,state.point_cap/2);
+}
 void PlanarAnnotationPanel::State::update_vertices() {
   auto &state=*draft_;
   if(state.points.size()>65536)throw std::invalid_argument("Planar annotation vertex cap exceeded");
-  if(state.points.size()>=(mode_==Mode::Polygon?3u:1u))
-    state.candidate=Selection(mode_==Mode::Polygon?"polygon":"multipoint",state.points);
-  else state.candidate.reset();
+  if(state.points.size()>=(mode_==Mode::Polygon?3u:1u)) {
+    auto selection=Selection(mode_==Mode::Polygon?"polygon":"multipoint",state.points);
+    state.candidate=std::move(selection);
+  } else state.candidate.reset();
 }
 void PlanarAnnotationPanel::State::commit(Document &d,const DocumentSnapshot &source,
                                   std::optional<std::size_t> row,const PlanarAnnotation &value,const PlanarAnnotationPublisher &publish,std::optional<std::size_t> control) {
@@ -221,6 +233,9 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
     if(ImGui::RadioButton(names[i],mode_==Mode(i))) {cancel("tool_changed");mode_=Mode(i);}
     observe(ids[i],enabled);
   }
+  if(mode_==Mode::Point || mode_==Mode::Multipoint)
+    ImGui::Text("New point counter: %u; positions: %s (XZ/YZ: vertical Z cell)",
+        mode_==Mode::Point?0:point_counter_,point_capture_?"captured":"unbound");
   if(mode_==Mode::Path) {
     pathAuthoring_.sync(d.nativeSnapshot(),enabled,cap_);
     pathAuthoring_.controls(enabled,[&](const DocumentSnapshot &source,const Selection &selection,const PathAuthoringCanvas &canvas) {
@@ -475,6 +490,12 @@ bool PlanarAnnotationPanel::State::pointer(Document &d,const PlanarCanvas &canva
       (context->ActiveId==0 || context->ActiveId==canvas.id || completion_active);
   const bool consumed=mode_!=Mode::Navigate && (hovered || draft_.has_value());
   if(draft_ && draft_->canvas.plane==canvas.plane) {
+    if(!draft_->row && (mode_==Mode::Point || mode_==Mode::Multipoint)) {
+      if(draft_->point_counter!=point_counter_ || draft_->point_capture!=point_capture_) {
+        cancel("point_defaults_changed");return consumed;
+      }
+      if(draft_->point_cap!=cap_) {cancel("point_limit_changed");return consumed;}
+    }
     const auto current=d.nativeSnapshot();
     if(!allowed || !(draft_->canvas==canvas) || !current.same_document(draft_->source) ||
        !current.revisions().matches(draft_->source.revisions(),Change::All) ||
@@ -489,13 +510,22 @@ bool PlanarAnnotationPanel::State::pointer(Document &d,const PlanarCanvas &canva
             (mode_==Mode::Polygon && std::hypot((point[0]-first[0])*canvas.scale[0],(point[1]-first[1])*canvas.scale[1])<=6));
         if(!finish && draft_->points.back()!=vertex) {
           if(draft_->points.size()>=65536)throw std::invalid_argument("Planar annotation vertex cap exceeded");
+          if(mode_==Mode::Multipoint) {
+            const auto cap=draft_->point_cap/2;
+            if(cap<=32768 || draft_->points.size()+1>(cap-32768)/1024)
+              throw std::invalid_argument("Point draft working limit exceeded");
+            // Validate only the new vertex. Complete metadata is encoded once at finish.
+            (void)capture_points(*draft_,Selection("multipoint",{vertex}));
+          }
           draft_->points.push_back(vertex);update_vertices();
         }
       }
       if(finish && draft_->candidate) {
         auto completed=std::move(*draft_);draft_.reset();finish_requested_=false;
         visuals_.erase(std::numeric_limits<std::size_t>::max());
-        auto value=completed.original;value.selection=*completed.candidate;
+        auto value=completed.original;
+        value.selection=!completed.row && (mode_==Mode::Point || mode_==Mode::Multipoint)
+            ?capture_points(completed,std::move(*completed.candidate)):std::move(*completed.candidate);
         commit(d,completed.source,{},value,publish);input_["phase"]="finished";
       }
       return consumed;
@@ -504,7 +534,9 @@ bool PlanarAnnotationPanel::State::pointer(Document &d,const PlanarCanvas &canva
       auto completed=std::move(*draft_);draft_.reset();
       visuals_.erase(std::numeric_limits<std::size_t>::max());
       if(completed.candidate && !completed.invalid) {
-        auto value=completed.original;value.selection=*completed.candidate;
+        auto value=completed.original;
+        value.selection=!completed.row && (mode_==Mode::Point || mode_==Mode::Multipoint)
+            ?capture_points(completed,std::move(*completed.candidate)):std::move(*completed.candidate);
         const auto control=completed.handle && completed.handle->kind==SelectionHandleKind::Vertex
             ?std::optional<std::size_t>(completed.handle->index):std::nullopt;
         commit(d,completed.source,completed.row,value,publish,control);
@@ -569,11 +601,17 @@ bool PlanarAnnotationPanel::State::pointer(Document &d,const PlanarCanvas &canva
     PlanarAnnotation row{"Annotation "+std::to_string(rows_.size()+1),Selection("rectangle"),canvas.plane,canvas.coordinate,
         source.display().t,source.display().c,{}};
     draft_.emplace(Draft{source,canvas,row,{},point,{},{},{},{point}});
+    draft_->point_counter=point_counter_;draft_->point_capture=point_capture_;draft_->point_cap=cap_;
     if(mode_==Mode::Rectangle || mode_==Mode::Ellipse)
       draft_->box=begin_selection_creation_box(mode_==Mode::Rectangle?SelectionCreationBoxKind::Rectangle:SelectionCreationBoxKind::Ellipse,canvas.width,canvas.height,snap(point,canvas));
-    else if(mode_==Mode::Point)draft_->candidate=Selection("point",{point});
+    else if(mode_==Mode::Point) {
+      draft_->candidate=Selection("point",{point});
+      (void)capture_points(*draft_,*draft_->candidate);
+    }
     else if(multi()) {
-      const auto p=snap(point,canvas);draft_->points={{double(p[0]),double(p[1])}};update_vertices();
+      const auto p=snap(point,canvas);draft_->points={{double(p[0]),double(p[1])}};
+      if(mode_==Mode::Multipoint)(void)capture_points(*draft_,Selection("multipoint",draft_->points));
+      update_vertices();
     }
   }
   if(draft_)input_={{"phase","began"},{"plane",planeName(canvas.plane)},{"point",point},{"canvas_id",canvas.id}};
@@ -658,6 +696,7 @@ Json PlanarAnnotationPanel::State::diagnostics() const {
       {"revisions",{{"pixels",r.pixels},{"metadata",r.metadata},{"selection",r.selection},{"display",r.display}}}};}
   return {{"mode",int(mode_)},{"active",active()},{"selected",selected_?Json(*selected_):Json()},{"visual_builds",visual_builds_},{"cached_visuals",visuals_.size()},
       {"gesture",gesture},{"path_authoring",pathAuthoring_.diagnostics()},{"controller_enabled",controller_enabled_},{"path_pointer_admitted",path_pointer_admitted_},{"path_transform",pathTransform_},{"resize",pathResize_.diagnostics()},{"resize_source",resizeSource},
+      {"point_defaults",{{"counter",point_counter_},{"capture_position",point_capture_}}},
       {"segments",pathControls_.diagnostics()},{"path_draft",pathDraft_?planarSelectionJson(pathDraft_->value.selection):Json()},{"error",error_},{"draft_vertices",draft_?draft_->points.size():0},{"draft_name",name_},{"draft_fill",fill_},{"draft_stroke",stroke_},{"count",rows_.size()},{"controls",controls_},{"input",input_},{"layers",layers_},{"handles",handles_},{"last_cancel",last_cancel_}};
 }
 
@@ -682,6 +721,10 @@ void PlanarAnnotationPanel::draw(Document &d,const PlanarCanvas &c,ImDrawList *d
   try {state_->draw(d,c,draw,show,editable);}catch(const std::exception &error) {
     state_->cancel("render_refusal");state_->error_=error.what();state_->resource_refused_=true;state_->visuals_.clear();
   }
+}
+void PlanarAnnotationPanel::point_creation_defaults(unsigned counter,bool capture) {
+  if(counter>=100)throw std::invalid_argument("Point counter must be in 0..99");
+  state_->point_counter_=counter;state_->point_capture_=capture;
 }
 void PlanarAnnotationPanel::cancel(const char *reason) {if(state_)state_->cancel(reason);}
 bool PlanarAnnotationPanel::active() const {return state_ && state_->active();}

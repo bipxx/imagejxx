@@ -12283,6 +12283,8 @@ void Window::Impl::canvas(Pane &pane) {
     input.annotation_admitted = blocked.empty() ||
         (blocked == "reserved_modifier" && !io.KeySuper && (io.KeyAlt != io.KeyCtrl));
     input.annotation_gui_scale=guiScale;
+    input.point_counter=unsigned(preferenceState.settings.integer("point_counter"));
+    input.point_capture_position=preferenceState.settings.boolean("point_capture_position");
     input.annotation_max_working_bytes = static_cast<std::size_t>(
         preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
     if(!input.annotation_max_working_bytes)input.annotation_max_working_bytes=256*1048576;

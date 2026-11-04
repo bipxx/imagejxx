@@ -231,6 +231,7 @@ from ._native import (
     rebind_slicer_resize_command as rebind_slicer_resize_command,
     prepare_slicer_resize as prepare_slicer_resize,
     PlanarAnnotation as PlanarAnnotation,
+    planar_point_creation_selection as planar_point_creation_selection,
     TextAnnotationPayload as TextAnnotationPayload,
     ImageAnnotationPayload as ImageAnnotationPayload,
     PlanarDisplayAnnotation as PlanarDisplayAnnotation,

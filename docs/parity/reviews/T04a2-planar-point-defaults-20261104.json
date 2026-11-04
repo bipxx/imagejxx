@@ -1,0 +1,986 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-04",
+  "task": "T04a.2 M2b.2b P1 scientific planar point creation defaults",
+  "state": "verified_scoped",
+  "base_commit": "16922f06d2b55043ee3537629e6f9ec3029085a9",
+  "aspects": {
+    "implemented": "Admitted native plane-aware point initialization, strict Python interface and frozen defaults/cap in the existing scientific annotation editor.",
+    "verified": "664 unique focused Windows product cases ultimately pass and23 observation-tool cases; two native controls and six installed SDK clients per Windows/Linux platform.",
+    "integrated": "Both Windows hosts create bound/unbound/single points on XY/XZ/YZ, cancel defaults/cap/source/navigation/escape drafts, recover and validate native records. Legacy point/multipoint/rectangle paths pass in both hosts on all three planes.",
+    "release_ready": false
+  },
+  "contract": {
+    "api": "planar_point_creation_selection(source,annotation,counter=0,capture_position=True,max_working_bytes=268435456)",
+    "position_policy": "XY binds fixed row Z; XZ/YZ bind floor(vertical cell-boundary coordinate). Explicit row T/C including zero override captured view defaults; wildcards retain their parent meaning while newly bound vertices freeze the captured T/C. Reject a bound Z outside source; explicit capture-off yields an unbound point. Singleton positions remain unbound.",
+    "counter_policy": "Single-point creation always uses counter0; multipoint uses captured counter0..99. Existing tagged candidates refuse implicit replacement; unrelated selection and row attributes are preserved.",
+    "ui": "Existing Preferences keys now feed OrthogonalInputContext and the existing plane editor. Defaults/cap freeze at draft start; changes cancel pending new-point drafts. Existing edits do not recapture creation defaults.",
+    "ownership": "Metadata-only: no source/provider image reads. API holds the GIL over immutable borrowed Python arguments so admission precedes geometry copies; native UI/SDK use the same pure core.",
+    "admission": "65536 vertices; annotation staging plus existing geometric/opaque-metadata admission before owned output copies. UI reserves half for prior draft/staging and bounds new vertices. Not a complete transaction/history/provider/RSS bound.",
+    "preview": "Validate only each newly clicked vertex; preview keeps existing plain geometry. Complete typed metadata is encoded once at finish, not every click/frame.",
+    "recording": "Existing planar Store/Update format and source guards; native replay/session/undo/redo retain positions. No new metadata/command/envelope version or controller.",
+    "non_xy_limits": "This defines native creation only. Geometry editing retains explicit point metadata under existing semantics; broader edit/rebind policy, display visibility and non-XY ImageJ ROI export remain P2/P4/T06/T10. Existing exporter refuses implicit non-XY projection."
+  },
+  "verification": {
+    "passing_unique_product_cases": 664,
+    "passing_unique_tool_cases": 23,
+    "new_api_cases": 116,
+    "new_actual_host_plane_cases": 6,
+    "legacy_actual_host_cases": 18,
+    "attempts": [
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-api001.xml",
+          "bytes": 18336,
+          "sha256": "0f2e99fb9f11c36393353977c4f684449f3dd8be2ead182ca94f4c37499e7b29"
+        },
+        "passed": 116,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-legacy-xy001.xml",
+          "bytes": 1078,
+          "sha256": "d8c903399d608e628bbd1cbe9e8253476f3653032f3c214fc88fac5b5347a14e"
+        },
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-legacy-xz001.xml",
+          "bytes": 1078,
+          "sha256": "ed5637d775f975b58f18b3ed32ba538c92f4346bbb75a75bf7794124454edb2d"
+        },
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-legacy-yz001.xml",
+          "bytes": 1078,
+          "sha256": "c3ee2363a161d5fa46fa2828b89c08fa0fba3c6ec71089fbf1763a47dac7ee5c"
+        },
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-point-xy001.xml",
+          "bytes": 4873,
+          "sha256": "8fdd2442f2e083308ae95e3fd7646fdbdac08246ca2e6a5ba4b3fbf3ae4fb5cf"
+        },
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-point-xy002.xml",
+          "bytes": 506,
+          "sha256": "78b37e2c3e89978255780ce36e4d0c3e52be5ff557497866cb79dac369ddb0a2"
+        },
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-point-xz001.xml",
+          "bytes": 506,
+          "sha256": "765b1912a0856a142a386041e78fd85b8be840f441132995ee6b6f4be9cfe478"
+        },
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-point-yz001.xml",
+          "bytes": 506,
+          "sha256": "f16b6dab041f5daecc7390ef35520848a0010d10c41283285998b0f84e2f6951"
+        },
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-regression001.xml",
+          "bytes": 69133,
+          "sha256": "df03c42ce25572329006f0043da628ee65039e48988aecf0912b17b4f1cb14c9"
+        },
+        "passed": 524,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-tools001.xml",
+          "bytes": 3862,
+          "sha256": "7cb8018be9a9e5066de2f5f424e768d7a15c583450774e820c489fc973f1d1a3"
+        },
+        "passed": 23,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "process_receipts": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-app001.process.json",
+          "bytes": 2098,
+          "sha256": "6eaf7c56a3387aff1389bce87809ff903627f07799fa210c0154f1d19bb9318b"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.1559999999590218,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-app002.process.json",
+          "bytes": 2097,
+          "sha256": "2169edeead02d74beab1bbb3166cb74b93c48316caab8587f5010bb2575867f3"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.1720000000204891,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-app003.process.json",
+          "bytes": 2099,
+          "sha256": "3192dfa3d4ac24ad8fd6bd7244b693aa9c6297e6db421195d97944340a35209d"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.10900000017136335,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-app004.process.json",
+          "bytes": 2098,
+          "sha256": "8c571fc04da4c5c4274e4b42121fab78e88940ea8f6658ac295d2f4054a9e9fd"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.1410000000614673,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-desktop001.process.json",
+          "bytes": 2111,
+          "sha256": "2582ca1d354021f5641686ae4ce14dd0c75f1b268c218188e59efc7e00a3237b"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.14000000013038516,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-desktop002.process.json",
+          "bytes": 2110,
+          "sha256": "a4de62f4e378a1e893af69314cd29ad159e58efbf260a72571a08cb48764c4c5"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.14099999982863665,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-desktop003.process.json",
+          "bytes": 2111,
+          "sha256": "67b2d7c4c62e097feb179f606e4cb5966443a01d2a7ac65b8e680c3b04948927"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.14099999982863665,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-desktop004.process.json",
+          "bytes": 2109,
+          "sha256": "35f112870296d1393a9e842df39631c6220657533aed6f372e21c8f2eb744b48"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.14099999982863665,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-processing001.process.json",
+          "bytes": 2114,
+          "sha256": "be3fcc533420ec330faaa798af52cf19b18172c6340d8f985f29769b2d4453df"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.3440000000409782,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-processing004.process.json",
+          "bytes": 2117,
+          "sha256": "3e3f11b7158e585634a5876ff2d8f8dfdf5c2b69d8662b8ae8827a293b50a087"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.21800000010989606,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/install-sdk001.process.json",
+          "bytes": 2101,
+          "sha256": "6f4d81c0b4c212bff3d7f8462fe7c68a83c2421b0cb41d2ea16de1a40b86f376"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.953999999910593,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/linux-build001.process.json",
+          "bytes": 1581,
+          "sha256": "a35504665e819e6c1a15056c492b669366d80785027f69e6e448e988d8fdd599"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 85.66374457999999,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/linux-build004.process.json",
+          "bytes": 1583,
+          "sha256": "6534cecb07204ef8b82a9c9b50d91e69193d6b68dbb504355e8c5727b508bf6d"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 7.428323791000025,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/linux-install-sdk001.process.json",
+          "bytes": 1604,
+          "sha256": "5fff285190b6690354415512952ed9d542155400404bd5ae46cc16da9413010b"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.9339162939999142,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/linux-native-tests001.process.json",
+          "bytes": 1576,
+          "sha256": "52d7943b7ba3f16a95b6325d8d207fa9fba5f762ca47c1c76d1b1a42eac3d35e"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.08516691899998818,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/linux-sdk-build001.process.json",
+          "bytes": 1553,
+          "sha256": "4fbfc5aee91402e5ebdf6f33afa5d0d6c34f90a0616d77d9a7985d1f9893f622"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 11.984528562999913,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/linux-sdk-configure001.process.json",
+          "bytes": 2086,
+          "sha256": "3067ea6503d911214b11ae9071e29f468b19ed177926f6cfc0c2254bb4af7a9b"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 3.985592935999989,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/linux-sdk-test001.process.json",
+          "bytes": 1581,
+          "sha256": "0ad0757b59321e9decf945c447cbf2a233b1f5449ac622d78925683f7d54f1c6"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.36101867200000015,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-api001.process.json",
+          "bytes": 2333,
+          "sha256": "d47d7480e2141726395bb822e1d95defda7f2e77958921834bd7886943196664"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.8900000001303852,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-legacy-xy001.process.json",
+          "bytes": 2905,
+          "sha256": "07b88b5637578f7cd0bbfa7f672328715454726bebd1338bbeba228c3a624d06"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.0619999999180436,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-legacy-xz001.process.json",
+          "bytes": 2906,
+          "sha256": "88eeff24c8eb892d586818cb808e0347960ab63f7f5cbbf711edbcd54a039449"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.9380000000819564,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-legacy-yz001.process.json",
+          "bytes": 2905,
+          "sha256": "b32ceb5e41f427163da2ff7efd502fe749b2dcc4028a054e07ec106977e7a574"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.0310000001918525,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-point-xy001.process.json",
+          "bytes": 2448,
+          "sha256": "152fe2eb173e05181d2974e285539eb9d0909cf23b8c34c8bce6851b7ee9307d"
+        },
+        "exit_code": 1,
+        "elapsed_seconds": 1.25,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-point-xy002.process.json",
+          "bytes": 2462,
+          "sha256": "1ab13a05804c7fd214f2e2dbfb7e9ae0faa6da3a54de10a4a6333ca9a02ac453"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.172000000020489,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-point-xz001.process.json",
+          "bytes": 2463,
+          "sha256": "b66258a2c91e85d06fa18c6c3cba4c85c1824afa7e3e87cd4117c3fa287312d4"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.1099999998696148,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-point-yz001.process.json",
+          "bytes": 2464,
+          "sha256": "fb024e115feff9aa026e4efde0d781c3a72bde7f281b8146d48b80c39fb473b1"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.1879999998491257,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-regression001.process.json",
+          "bytes": 2640,
+          "sha256": "fc725ab0d69de03add99bc00287b5e09e1975ce69a17bfa6e26bdb4a19578c85"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 2.172000000020489,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/python-tools001.process.json",
+          "bytes": 2300,
+          "sha256": "dbb9f261712aefd210617f62da37154720813a30d5bbe815118885cef9ad66ca"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 3.405999999959022,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/sdk-build001.process.json",
+          "bytes": 2884,
+          "sha256": "2cc0d9f3177a6211a5c2c79f6332bd68bf7e8595e722fc7ae8462e7677e583fe"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 6.906999999890104,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/sdk-configure001.process.json",
+          "bytes": 2564,
+          "sha256": "90ec856ce70cb5b437de72a6759f23e9ff15ce148158e95803696044e88d003a"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 4.968000000109896,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/sdk-test001.process.json",
+          "bytes": 2063,
+          "sha256": "aff6c5a1484013888645c87c93fcd505170a2f0aa67fb988427333c1b685f982"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.5779999999795109,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/windows-build001.process.json",
+          "bytes": 2086,
+          "sha256": "27d8d20e41289dbf60c1c54cf64e8464da191940168934d1afccb3fd971bd36f"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 379.0470000000205,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/windows-build004.process.json",
+          "bytes": 2087,
+          "sha256": "cd63d96ed3fb535fa1d8fd0da1e99643e370f7bcc774b67a2bdb3bc8f404ede2"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 43.313000000081956,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/windows-native-tests001.process.json",
+          "bytes": 2046,
+          "sha256": "6b46990a9a9a8798075a3e14e56d894b216c8e65727ce9379cf98e7bf572968e"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.125,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/windows-ui-build002.process.json",
+          "bytes": 2034,
+          "sha256": "cb7f0df093a2fd0606d6e461a83f704ebf36f20cecd7811b16ae57e2da972108"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 12.390000000130385,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/windows-ui-build003.process.json",
+          "bytes": 2031,
+          "sha256": "368888696383338938c3f47115ece102a3758adda118d8ea1af3b519596e9930"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 13.390000000130385,
+        "terminal": true
+      }
+    ],
+    "native_controls_per_platform": 2,
+    "sdk_clients_per_platform": 6,
+    "evidence_reuse": "Later tooltip-only settings description delta leaves the earlier new-UI point behavior unchanged. Final legacy UI and installed clients use the updated products; unchanged numerical/API checks are reused, not rerun solely for hashes.",
+    "limitations": [
+      "Windows C++/Python UI only; no Linux/macOS UI qualification.",
+      "No full point-tool/measurement family, release or general speed claim.",
+      "P2 marker/label/visibility, P3 automatic actions and P4 wider edit/rebind/record closure remain required.",
+      "Original77 analysis,128 table-profile and86 fit dtype cells unchanged.",
+      "Actual shared-ImGui input is qualified; this is not OS-input automation or a complete desktop release qualification."
+    ]
+  },
+  "retention": {
+    "group_retirements": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/api001-retirement.json",
+          "bytes": 602,
+          "sha256": "562abb4be22648f0f3f71c133f9476f3fb22e2d3db69233548767dafc83dc9e3"
+        },
+        "result": {
+          "state": "retired_empty",
+          "group": "api001",
+          "source_bytes": 0,
+          "owned_directory": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/scratch/api001",
+          "directory_identity": {
+            "device": 15157005065845190331,
+            "inode": 2533274803618211,
+            "mtime_ns": 1793833281648852700,
+            "ctime_ns": 1793833280850006000,
+            "links": 1
+          },
+          "archive_required": false,
+          "diagnostics": "JUnit/log/process receipt retained outside empty scratch.",
+          "process_receipt": ".tmp\\manual-workflow-verification\\t04a2-planar-point-defaults-20261104\\python-api001.process.json"
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/closeout001-retirement.json",
+          "bytes": 475,
+          "sha256": "d820ac35ce0a0a7d0c42ac736a91b47756ea32aca43ba3f4a417e9d5a4e8f32e"
+        },
+        "result": {
+          "state": "retired",
+          "group": "closeout001",
+          "source_bytes": 733276,
+          "source_snapshot_sha256": "672c5e4c5d97339d2302c9186194404a5332824fbe6ce4f95a4a0a4b0c7b3f3a",
+          "archive": {
+            "bytes": 101140,
+            "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/closeout001.zip",
+            "sha256": "44986a566852fe917edc5a0358a18fffcb2afc75de6c9743139259ea083f91b0"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/legacy-xy001-retirement.json",
+          "bytes": 479,
+          "sha256": "956802f2c83915b24f69115222f75399f08dcafc66fe73f72b54b041425f9b80"
+        },
+        "result": {
+          "state": "retired",
+          "group": "legacy-xy001",
+          "source_bytes": 11956150,
+          "source_snapshot_sha256": "13a6ca1921ce6532da2cfdc3297ea76c4d3d69cd424cb039292faacd44906236",
+          "archive": {
+            "bytes": 668708,
+            "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/legacy-xy001.zip",
+            "sha256": "8655784adda52f23a54d223c95e08f63fc64e8afb6cab3920671f470e4d6ba2a"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/legacy-xz001-retirement.json",
+          "bytes": 479,
+          "sha256": "871166b12cfe357cd9e252a189e2ce15b5b170395cc8aac653a99aa8cb27632d"
+        },
+        "result": {
+          "state": "retired",
+          "group": "legacy-xz001",
+          "source_bytes": 11956914,
+          "source_snapshot_sha256": "ed8d82480c4b7db080f26e90bde37ea1ef7b3e18c66cc0dee6d51bf5ec299af1",
+          "archive": {
+            "bytes": 668742,
+            "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/legacy-xz001.zip",
+            "sha256": "7adcfe77e275433d7ae58304a675b3ce4e8f7ae31102cf35636606d9c2073532"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/legacy-yz001-retirement.json",
+          "bytes": 479,
+          "sha256": "d854b36521d6099a7f0847001bd2d22f06584acbe66031745cf50738b7eb4d01"
+        },
+        "result": {
+          "state": "retired",
+          "group": "legacy-yz001",
+          "source_bytes": 11954848,
+          "source_snapshot_sha256": "39f8409128ee70edc6eaf5b2cdebcb3bcec2370a0c2f232ca5ed1ebeb20916a2",
+          "archive": {
+            "bytes": 668734,
+            "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/legacy-yz001.zip",
+            "sha256": "9a0b6a366a1f553bca85c16602b4713a599f3a626d28e200b7d2cf7b26f9ecb1"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/point-xy001-retirement.json",
+          "bytes": 477,
+          "sha256": "d85290880899dc5268e92b812dbb57eb5df9996e7f70206d8c51af8a3502401f"
+        },
+        "result": {
+          "state": "retired",
+          "group": "point-xy001",
+          "source_bytes": 21370396,
+          "source_snapshot_sha256": "d17af9279f74cd28a5a9657b8e3012bc00fea1a513646e813afe47b969e78fcf",
+          "archive": {
+            "bytes": 921506,
+            "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/point-xy001.zip",
+            "sha256": "6cbb4a208163ccea66ea52dddfcfd325c58af729e44af0486a73b523eee214c6"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/point-xy002-retirement.json",
+          "bytes": 477,
+          "sha256": "df4cb7c18136d6a601ec37c113549cfcd4add22e24feb304c424cc0376aa2e9d"
+        },
+        "result": {
+          "state": "retired",
+          "group": "point-xy002",
+          "source_bytes": 22782487,
+          "source_snapshot_sha256": "654fc54b257fc6989c3e1ded93cc201f109385cf6d95b0b9bce092b6d0f9e08a",
+          "archive": {
+            "bytes": 943261,
+            "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/point-xy002.zip",
+            "sha256": "9e2a965e75cfce879807c5e2acaeb32e01518f43099c40c060be505a19c7a629"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/point-xz001-retirement.json",
+          "bytes": 477,
+          "sha256": "3e8eb2ef67b5014824ab090b0adb8df815527155cddb7d860b95d6a149090b76"
+        },
+        "result": {
+          "state": "retired",
+          "group": "point-xz001",
+          "source_bytes": 22783488,
+          "source_snapshot_sha256": "e43ccb857517b235b282bcf6cd2f78066700238ba58cb83d6bd7a5996dd5376c",
+          "archive": {
+            "bytes": 945195,
+            "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/point-xz001.zip",
+            "sha256": "4cef78b33abad1250dbab6c1d4a59bd2d9632e75fe672b8d6dae1edd00ca7ada"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/point-yz001-retirement.json",
+          "bytes": 477,
+          "sha256": "dd68b639a6cf790ad53612c096c7ec2360d4c9a4a6b300f16eee89b00b03da2c"
+        },
+        "result": {
+          "state": "retired",
+          "group": "point-yz001",
+          "source_bytes": 22794139,
+          "source_snapshot_sha256": "7adf1b944973e202565fe39dd84f07b60f6e3b1e48f81f58aa9d0cb9a7f68f9f",
+          "archive": {
+            "bytes": 945232,
+            "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/point-yz001.zip",
+            "sha256": "ac6cfdbba2b784d9ebeb8d1977686199f231b4374686f7b935aa7bdadfb56cff"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/regression001-retirement.json",
+          "bytes": 475,
+          "sha256": "20dc3bbc86551960f84ea777ac5753c6b82a80a3dce59e4b9347f8ce120165c7"
+        },
+        "result": {
+          "state": "retired",
+          "group": "regression001",
+          "source_bytes": 6271,
+          "source_snapshot_sha256": "eb356f7a951aaa7a6ebcb7a99ab787947b9bdea8268e7e1117be53c75c8a9368",
+          "archive": {
+            "bytes": 7153,
+            "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/regression001.zip",
+            "sha256": "84ae188190a10b5f42ccef2cf0a52cc1a1414d9c2495623c3a8105e55df53ff0"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/tools001-retirement.json",
+          "bytes": 608,
+          "sha256": "8b85996b2b985afd2f817ede7a378064ff0e31949974a4c766822779b3add408"
+        },
+        "result": {
+          "state": "retired_empty",
+          "group": "tools001",
+          "source_bytes": 0,
+          "owned_directory": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/scratch/tools001",
+          "directory_identity": {
+            "device": 15157005065845190331,
+            "inode": 2251799826905995,
+            "mtime_ns": 1793832992350554900,
+            "ctime_ns": 1793832989028232300,
+            "links": 1
+          },
+          "archive_required": false,
+          "diagnostics": "JUnit/log/process receipt retained outside empty scratch.",
+          "process_receipt": ".tmp\\manual-workflow-verification\\t04a2-planar-point-defaults-20261104\\python-tools001.process.json"
+        }
+      }
+    ],
+    "sdk_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/sdk-retirement.json",
+      "bytes": 1106,
+      "sha256": "a2f75db6871263257c644295e9fcd127979837cc4b3548d3b17bb29c287f4059"
+    },
+    "sdk_compiler_bytes_retired": 30205863,
+    "group_source_bytes_retired": 126337969,
+    "group_archive_bytes": 5869671,
+    "all_task_scratch_removed": true,
+    "compiler_caches_archived": false,
+    "storage_measurements": [
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-after-20261104.json",
+        "bytes": 66559,
+        "sha256": "0076d8043158fd314e6db9cb04507edf534680f533596878c2de39390ae02520"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-before-20261104.json",
+        "bytes": 66573,
+        "sha256": "a2968ec17728764cb3516a43e11b0981b415c885aa5ea9935f858d5e4e7c0b06"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-legacy-xy-after-20261104.json",
+        "bytes": 66573,
+        "sha256": "3d9a6a8020337abf977b1243b7236f231c2bc99d46d4400aa307c7424a373fe5"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-legacy-xz-after-20261104.json",
+        "bytes": 66573,
+        "sha256": "9a48e76988d894b580063c589e3d16a22bb654d5565b6fff2dfb6c858726073d"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-legacy-yz-after-20261104.json",
+        "bytes": 66573,
+        "sha256": "08eec0643d8f810d2614578b0906f018a5f158310cfcaa772e437a2428460866"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-sdk-before-retirement-20261104.json",
+        "bytes": 66572,
+        "sha256": "d733ddca12a09f97872a06da1125c61792b88de9fb740ea0b2c6f19d1e2f8c93"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-xy-after-20261104.json",
+        "bytes": 66559,
+        "sha256": "eacbadd47bf34b21247ea29a4e960ee5be1f5c4511c1e6c21c2cae224968919d"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-xy-before-20261104.json",
+        "bytes": 66572,
+        "sha256": "173f1e694a2e25718673be90805f7b4f578d00b299bdab2129b866d95998d6a9"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-xy-failed-after-20261104.json",
+        "bytes": 66572,
+        "sha256": "3c458d9a424d93e6e644816aadc839597a9253926571097b21bfcf137caf012d"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-xz-after-20261104.json",
+        "bytes": 66558,
+        "sha256": "ff69ea6328074290cba8bb3a2a0490c83c28daf466de089916db85ded86fb729"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-yz-after-20261104.json",
+        "bytes": 66572,
+        "sha256": "f4df51bcdf2351f722c7367986254207a79f633fabc9adb79f49a4265af826ba"
+      }
+    ],
+    "before_known_bytes": 8437694362,
+    "observed_before_sdk_retirement_known_bytes": 8476491358,
+    "after_known_bytes": 8445899014,
+    "unknown_subtrees": 214,
+    "complete_budget_verified": false,
+    "empty_groups": "API/tools produced empty owned directories only; checked identities/terminal processes and removed without fabricated archives."
+  },
+  "waste_review": [
+    {
+      "finding": "Draft prototype encoded all annotations after every click",
+      "decision": "Fixed: incremental one-vertex validation and one complete metadata encoding at finish. Existing geometry preview path reused; no new creator/controller."
+    },
+    {
+      "finding": "First XY multi-stage fixture clicked clipped image locations after controls grew",
+      "decision": "Keep failures, fit only this fixture and require real control/canvas hover IDs. Retry only affected UI; native/API/SDK scope unchanged."
+    },
+    {
+      "finding": "Public header changes broaden compiler fanout",
+      "decision": "Windows coherent batch94 compile-line observations/379.047s; preview fix1/12.390s; probe fix1/13.390s. Different workloads, not speed comparisons. P2 API owner uses a focused point-presentation header and batches declarations before qualification; no whole-header rewrite now."
+    },
+    {
+      "finding": "Shared settings tooltip still described ordinary tools only",
+      "decision": "Update description to cover plane consumers. Reuse unchanged point logic checks across the description-only delta; final installed clients and legacy UI consume updated products."
+    },
+    {
+      "finding": "Literal/mixed-newline edit anchors caused in-memory orchestration corrections",
+      "decision": "Inspect exact call sites and apply each file mutation in memory only after anchors validate. No new executable runner or source expectation changes. Recurring contract-inspection waste remains open."
+    },
+    {
+      "finding": "Generated capture and compiler accumulation",
+      "decision": "Serial verified retention, including failed XY captures; retire each large group before next and run SDK consumers afterward. SDK compiler identities/LastTest logs retained, no compiler archive."
+    }
+  ],
+  "build_observations": [
+    {
+      "name": "windows-build001",
+      "seconds": 379.0470000000205,
+      "windows_compile_line_observations": 94
+    },
+    {
+      "name": "windows-ui-build002",
+      "seconds": 12.390000000130385,
+      "windows_compile_line_observations": 1
+    },
+    {
+      "name": "windows-ui-build003",
+      "seconds": 13.390000000130385,
+      "windows_compile_line_observations": 1
+    },
+    {
+      "name": "windows-build004",
+      "seconds": 43.313000000081956,
+      "windows_compile_line_observations": 1
+    },
+    {
+      "name": "linux-build001",
+      "seconds": 85.66374457999999,
+      "windows_compile_line_observations": null
+    },
+    {
+      "name": "linux-build004",
+      "seconds": 7.428323791000025,
+      "windows_compile_line_observations": null
+    }
+  ],
+  "remaining": [
+    "P2 marker presentation/type/size/color/labels/show-all behavior and interchange.",
+    "P3 point-tool automatic Measure/next-slice/overlay/manager behavior.",
+    "P4 complete edit/rebind/position policies and executable ordinary creation records; imported non-XY scientific projection remains explicit.",
+    "M2b.3 manager layouts/Z/T,M3/M4,T04a.3 and full T05-T15 horizon; T00 evidence/platform gates."
+  ],
+  "source_identity": [
+    {
+      "path": "include/imagejxx/planar_annotations.hpp",
+      "bytes": 3791,
+      "sha256": "0e5e781dc90db262801f0926ea93ead10e08fcefdf6b267a541c2a4e02872e39"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 59916,
+      "sha256": "001871e730d41f62cad5809e3c73b64872643c36c805b42b5e29ab2622c7f573"
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 70949,
+      "sha256": "8f10e50d00c8afe32e804242c636e34784e5f4fa361d81fcde4799bed70a7a13"
+    },
+    {
+      "path": "src/desktop/orthogonal.hpp",
+      "bytes": 6276,
+      "sha256": "85a0023922f7a350922068f353fb64aa8d05838aa6c701215fccfa8c9f9bbe64"
+    },
+    {
+      "path": "src/desktop/planar_annotation_matrix.cpp",
+      "bytes": 26190,
+      "sha256": "f65c7934295e3ed2a3f782f18eeee3b1d840da2c4e00ccea327be8175fae594a"
+    },
+    {
+      "path": "src/desktop/planar_annotation_panel.cpp",
+      "bytes": 48410,
+      "sha256": "63bc6278c8931c8979178dc08f806cf0d5f75364b899a85251c4f7892bcabc23"
+    },
+    {
+      "path": "src/desktop/planar_annotation_panel.hpp",
+      "bytes": 1786,
+      "sha256": "4a6970d2f65b13e343504230c4143651695c985dd81b1329d28329d92d1397dc"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 883465,
+      "sha256": "7fb9cefddade93016668a4883931635558bbbb46ca207f3da6acb1480af39117"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 82268,
+      "sha256": "d53100c820912870d3df5105b794797e0eac6598c31c57aaefe5adcf6d4bb5b7"
+    },
+    {
+      "path": "src/native/planar_annotations.cpp",
+      "bytes": 15345,
+      "sha256": "f500ea2aee081116dc6572e3e48717cd5b85f39969aa66efc56f551a94576aeb"
+    },
+    {
+      "path": "src/native/planar_annotations_bindings.cpp",
+      "bytes": 4132,
+      "sha256": "5a3875c972f0d1bbadc63a59a12e124d6a52fd0d244d7a31cac9acbbb1673c69"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 25465,
+      "sha256": "9b167fe676bf175f2ebc8a449cb0f7dfef0a9368771c9c1c66208bb0517f6c46"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 14018,
+      "sha256": "2f54cf5e964cfc85341db33e9b57b8e2520c76a536d908c47074e54e6cf47a95"
+    },
+    {
+      "path": "tests/python/test_planar_point_defaults.py",
+      "bytes": 9225,
+      "sha256": "3182d05e0ac3e0f0593104a5044e86f0a56f5660a63e56e85b74a9a5c345e235"
+    }
+  ],
+  "installed_products": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20014592,
+      "sha256": "4eb22da0f1505f303c3dad0b1ad6b0cc40bdfa13f3d90ea9eca0e96c844f9955"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8140800,
+      "sha256": "97101ea2b26953d8e73cf14f948a374b46ef8fa18eaa75c70718e60a863e3a39"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_scientific_io.cp312-win_amd64.pyd",
+      "bytes": 591872,
+      "sha256": "7e11dfe2b9ff4fdb06c627c444f305e286a5bc124b7daf0333fa32cf425915a6"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20103168,
+      "sha256": "f651c6a8028666c25c1e31bf98170e022a3bab01cefa5fb149afc149ff2a2357"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+      "bytes": 59120648,
+      "sha256": "bed794e840690930cde58ef806e470027c66c2d2497cb27057e73fd6073c4515"
+    }
+  ],
+  "linux_installed_products_receipt": {
+    "path": ".tmp/manual-workflow-verification/t04a2-planar-point-defaults-20261104/linux-sdk-products.json",
+    "bytes": 1649,
+    "sha256": "c7fd55a748a8a9bef00531ebceb478cbd68fffd96ffca5ca6897be51a6ffe5cd"
+  },
+  "documentation_checks": {
+    "local_links_and_anchors": 77,
+    "inventory_capabilities": 99,
+    "historical_archive_hashes_unchanged": 3,
+    "ready_tasks": 2,
+    "source_installed_sdk_header_retention_pins_match": true,
+    "task_scratch_absent": true,
+    "diff_hygiene": true,
+    "legacy_plan_checker": "Not claimed; historical row-shape migration remains T02."
+  }
+}

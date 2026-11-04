@@ -1,5 +1,7 @@
 #include <imagejxx/planar_annotations.hpp>
 #include <imagejxx/roi_style.hpp>
+#include <imagejxx/point_annotations.hpp>
+#include "selection_region_rotation.hpp"
 #include <imagejxx/composite_path.hpp>
 #include "selection_codec.hpp"
 #include "session_metadata.hpp"
@@ -93,6 +95,42 @@ void PlanarAnnotation::validate(DatasetShape shape) const {
       "Annotation path control vertex cap");
   selection.validate(geometry.width,geometry.height);
   roi_style(selection);validate_metadata(attributes);
+}
+Selection planar_point_creation_selection(const DocumentSnapshot &source,
+    const PlanarAnnotation &row,unsigned counter,bool capture,std::size_t cap) {
+  const auto count=row.selection.points.size();
+  require((row.selection.kind=="point" || row.selection.kind=="multipoint") && count && count<=max_vertices,
+      "Point creation requires a bounded point candidate");
+  require(counter<100,"Point counter must be in 0..99");
+  const auto annotation_bytes=8192+count*512;
+  require(cap>annotation_bytes,"Point creation working limit exceeded");
+  require(!row.selection.attributes.count(point_annotations_attribute),
+      "Point creation defaults require an unannotated candidate");
+  const auto shape=source.data().dataset.shape();
+  const auto geometry=planar_annotation_geometry(shape,row.plane);
+  SelectionEditLimits limits;limits.max_vertices=max_vertices;
+  limits.max_xy_pixels=std::numeric_limits<std::size_t>::max();
+  limits.max_working_bytes=cap-annotation_bytes;
+  (void)detail::admit_selection_geometry(row.selection,geometry.width,geometry.height,limits,{});
+  row.validate(shape);
+  const auto &view=source.display();
+  PlanePosition position{row.t.value_or(view.t),row.c.value_or(view.c),
+      row.plane==Plane::XY?row.coordinate:view.crosshair[2]};
+  const auto entry=point_creation_annotation(shape,position,
+      row.selection.kind=="point"?0:counter,capture);
+  if(!entry.counter && !entry.position)return row.selection;
+  std::vector<PointAnnotation> entries;entries.reserve(count);
+  for(const auto &point:row.selection.points) {
+    auto value=entry;
+    if(value.position && row.plane!=Plane::XY) {
+      // Local coordinates name cell boundaries; nearest vertical sample is floor(v).
+      const auto z=std::floor(point[1]);
+      require(z>=0 && z<shape.z,"Point Z cell outside source; disable position capture for an unbound point");
+      value.position->z=int(z);
+    }
+    entries.push_back(value);
+  }
+  return with_point_annotations(row.selection,entries,max_vertices);
 }
 bool PlanarAnnotation::operator==(const PlanarAnnotation &v) const {
   return name==v.name && selection==v.selection && plane==v.plane && coordinate==v.coordinate &&

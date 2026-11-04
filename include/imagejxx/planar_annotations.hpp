@@ -22,6 +22,14 @@ struct PlanarAnnotationGeometry {
   int width, height, horizontal_axis, vertical_axis, fixed_axis;
 };
 PlanarAnnotationGeometry planar_annotation_geometry(DatasetShape, Plane);
+// Initialize a new point/multipoint candidate without changing its parent row.
+// XY captures fixed Z; XZ/YZ capture the vertical cell floor(v). Explicit row
+// T/C override captured view defaults. Single-point counter is always zero.
+// Capture-off/singleton positions stay unbound. Existing annotation tags refuse
+// replacement. Metadata-only staging is admitted before owned copies.
+Selection planar_point_creation_selection(const DocumentSnapshot &,
+    const PlanarAnnotation &, unsigned counter=0, bool capture_position=true,
+    std::size_t max_working_bytes=256*1048576);
 std::array<double,3> planar_annotation_voxel(const PlanarAnnotation &,
                                           std::array<double,2> boundary_point);
 std::array<double,3> planar_annotation_world(const SpatialCalibration &,

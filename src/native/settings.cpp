@@ -155,7 +155,7 @@ const std::vector<SettingDefinition> &Settings::schema() {
        "Category for newly clicked multipoints (0..99); existing points are unchanged.",
        SettingKind::Integer, std::int64_t(0), 0, 99},
       {"point_capture_position", "Drawing", "Capture new point positions",
-       "Bind newly clicked ordinary point-tool vertices to the current T/C/Z in multi-plane datasets.",
+       "Bind new points in multi-plane datasets to T/C/Z; XY plane annotations use fixed Z and XZ/YZ use each vertical Z cell.",
        SettingKind::Boolean, true},
       {"text_size", "Drawing", "Text size",
        "Default annotation font size in image pixels.", SettingKind::Integer,
