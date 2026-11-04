@@ -34,8 +34,9 @@ metadata-only target admission, frozen effective values and retained scalar
 statistics/profile results; see [the preparation contract](TARGET_ANALYSIS.md).
 Current area Measure uses the existing Window job/result owner in both hosts.
 T04a.1 bounds/configured profiles and scoped lifecycle are now verified in both
-Windows hosts and installed native clients. Next: T04a.2 measurement geometry/
-ROI-manager consumers; T04a.3 persistence/replay. Use PLAN for concrete exits.
+Windows hosts and installed native clients. T04a.2 now has a qualified native
+straight-line Analyzer primitive; next its captured/UI/ROI-manager consumers
+and remaining geometry/options; T04a.3 persistence/replay. Use PLAN for concrete exits.
 Preserve the capture guard, physical-axis tests, resource
 leases and independent saved plots. Reuse original numeric references. Keep
 Global controls gated until relevant consumers agree. No dummy document edits

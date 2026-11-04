@@ -44,8 +44,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | Captured analysis preparation | T03 implemented and scoped verified: 625 unique Windows Python cases ultimately pass (39 new); four native controls and six installed SDK clients per platform on Windows/Linux. | T04 integrates actual UI/jobs/settings/replay; no full-family or UI completion claim. |
 | Area measurement UI | Published first T04a increment: actual Measure menus in both Windows ImGui hosts use frozen scalar area analysis; settings/CSV, Global/bypass, cancellation and stale Global refusal pass. | Finish T04a geometry, profiles, ROI-manager scope, lifecycle and replay; this is not completed T04a. |
 | T04a.1 bounds/profile increment | Implemented and scoped integrated in both Windows hosts. 318 unique affected Windows Python cases ultimately pass, 23 observation-tool checks pass; two Windows/three Linux native controls and six installed SDK clients per platform pass. | T04a.2 geometry/ROI-manager, then T04a.3 persistence/replay. [Evidence](parity/reviews/T04a1-configured-profile-20261104.json); no full-profile-family or release completion claim. |
+| T04a.2 native line primitive | Implemented/scoped verified: 199 focused Windows Python cases (57 new, including 46 original line rows), native control and six installed SDK clients per Windows/Linux platform pass. | Adopt through captured measurement/UI and complete manager/geometry/options; [evidence](parity/reviews/T04a2-line-primitive-20261104.json). T04a.2 remains open. |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,355,003,388 known bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,356,527,006 known bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Near-term queue
@@ -82,7 +83,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
    close and independent snapshots are checked. See current gap/evidence above;
    wider/outside-image/IEEE/interpolation variants remain explicit T04/T09 scope.
 5. **T04a.2 — Complete measurement geometry and ROI-manager consumers.**
-   Next executable task after T04a.1. Use its bounds/result owner; specify and
+   Native straight-line Analyzer primitive is now qualified separately. Next
+   adopt it through the captured owner, settle manager rows/positions and reuse
+   T04a.1 bounds/result ownership. Specify and
    implement missing length/angle/area and measurement options rather than
    routing unsupported modes through misleading calibrated labels. See below.
 6. **T04a.3 — Complete analysis persistence and replay.** After consumer
@@ -107,7 +110,10 @@ do not authorize spawning agents.
 
 ### T04a.2 — Measurement options, geometry and ROI-manager adoption
 
-- **First step:** inspect actual `Document::measure`, Window/ROI-manager actions,
+- **Current handoff:** native `imagej_calibrated_line_measurement` is qualified;
+  [command/key gaps](TARGET_ANALYSIS.md#measurement-consumer-handoff) identify the
+  existing consumers. Complete captured/UI adoption and manager row semantics
+  before claiming integration. Inspect actual `Document::measure`, Window/ROI-manager actions,
   Analyzer options and inventory residuals. List each required command, option,
   setting key and C++/Python entry point with its current consumer, easiest reuse
   path and missing behavior. Include precision/units, target extents, geometric
@@ -283,34 +289,36 @@ feature or block unrelated ready work.
 
 ## Latest task closeout
 
-2026-11-04 T04a.1: implemented native tight geometric bounds and configured
-thin paths; actual Profile menus in both Windows ImGui hosts consume frozen
-calibration/options through existing jobs and plot leases. Verified scoped:
-318 unique affected Windows Python cases ultimately pass; 23 observation-tool
-contracts pass; two Windows/three Linux native controls and six installed SDK
-clients per platform pass. Original 77 numerical expectations remain unchanged.
-Integrated scope includes calibrated sampling/axes, Global/bypass, configured
-samples/persistence/CSV, queued cancel, READY C/Z/T refusal, pan stability,
-pending Clear, close and independent saved plots. Release-ready/full-family
-scope remains open. [Receipt](parity/reviews/T04a1-configured-profile-20261104.json).
+2026-11-04 T04a.2 first native increment: `line_measurement.hpp` provides original
+thin-line Analyzer statistics after calibrated profile-to-Float32 conversion,
+plus calibrated length, image-axis heading and native affine midpoint. C++ and
+Python APIs are implemented and scoped verified; UI/manager adoption and the
+rest of T04a.2 remain open. New original observer captured 64 line/polyline/angle
+cases; only its 46 straight-line rows qualify this primitive. All 199 focused
+Windows Python cases pass (57 new), with one native control and six installed
+SDK clients per Windows/Linux platform. Existing 77-row/table/fit references
+stay unchanged. [Receipt](parity/reviews/T04a2-line-primitive-20261104.json).
 
-Waste review: **fixed** bounds reraster, per-segment full source validation and
-broad cancellation for Clear/close; reused existing jobs, targeted cancellation,
-plot leases, capture/retention tools and installed clients. Actual interchange
-check exposed the old C++ smoke sequence assuming synchronous Measure; added
-an explicit wait/check and reran only the failed consumer. Failed evidence stays
-retained. **Deferred to T02:** measured shared-header build fanout; do not rewrite
-controllers speculatively. A cleanup caller initially confused pack/verify state
-names and refused before deletion; inspected contract and corrected the caller.
+Waste review: **fixed/avoided** full second profile double buffer by moving
+sample storage into the Float32-tagged statistics input; reused original
+profile/statistics functions, existing native/SDK clients and bounded retention.
+Separate public header and unchanged profile declarations avoided a desktop
+probe rebuild. Windows coherent native batch: five compile entries/69.766s;
+Linux: two core sources plus native client/12.207s. These are build workloads,
+not image-processing speed comparisons. No new compiler/runtime/SDK generation,
+CMake target, flags-list entry or disposable verifier. Keep the established
+shared numerical input validation; no measured bottleneck justifies another
+specialized statistics implementation.
 
-After final review/checks, retired 28,508,812 bytes of SDK consumer compiler
-scratch (identities/logs retained); losslessly archived and verified 12,326,386
-bytes of remaining captures/diagnostics into 1,698,293 bytes, then retired the
-scratch. Existing compiler caches/runtimes/SDK prefixes reused. Known final
-storage is 8,355,003,388 bytes before this small public receipt/doc update; 214
-unknown subtrees still leave the full budget unverified. Next is T04a.2, with
-T04a.3 specified above; T04b follows the shared ownership seam independently of
-unrelated geometry. No original reference/family status was repinned.
+**Deferred with owner:** T04a.2 captured line/manager/UI work and distinct
+polyline/angle semantics; T09 advanced shape/threshold/redirect variants; T02
+shared-header fanout remains scoped to demonstrated cost. Source/manager/key
+handoff is linked above. Retired 28,540,141 bytes of SDK compiler scratch after
+final review/checks, then hash-verified/compressed 1,475,817 capture/
+observer bytes to 205,518 bytes across two verified archives and retired scratch. Known complete-root
+inventory: 8,356,527,006 bytes before small public receipt/doc updates, plus 214
+unknown subtrees; full budget stays unverified. Continue T04a.2 without shrinking
+its geometry/manager scope or promoting a kernel to a full editor feature.
 
 ## Historical link compatibility
 

@@ -2,6 +2,7 @@
 #include <imagejxx/stack_projection.hpp>
 #include <imagejxx/calibrated_analysis.hpp>
 #include "binding_calibrated_analysis.hpp"
+#include <imagejxx/line_measurement.hpp>
 #include <imagejxx/auto_threshold.hpp>
 #include <imagejxx/binary.hpp>
 #include <imagejxx/conversion.hpp>
@@ -489,6 +490,16 @@ PYBIND11_MODULE(_native, m) {
         auto s=[&]{py::gil_scoped_release release;return imagej_calibrated_statistics(image,frozen,calibration,selection.get(),cap);}();
         return bindings::calibrated_statistics_python(s);
     },py::arg("image"),py::arg("spatial"),py::arg("density"),py::arg("mask")=py::none(),py::arg("max_working_bytes")=128ULL*1024*1024);
+    m.def("imagej_calibrated_line_measurement", [](const py::array& a,const SpatialCalibration& spatial,
+        const ImageJIntensityCalibration& density,double x1,double y1,double x2,double y2,bool interpolate,std::size_t cap) {
+        auto image=read_image(a);const auto frozen=spatial;const auto calibration=density;
+        auto measured=[&]{py::gil_scoped_release release;return imagej_calibrated_line_measurement(
+            image,frozen,calibration,x1,y1,x2,y2,interpolate,cap);}();
+        auto out=bindings::calibrated_statistics_python(measured.statistics);
+        out["length"]=measured.length;out["angle_degrees"]=measured.angle_degrees;
+        out["midpoint_world"]=measured.midpoint_world;return out;
+    },py::arg("image"),py::arg("spatial"),py::arg("density"),py::arg("x1"),py::arg("y1"),py::arg("x2"),py::arg("y2"),
+       py::arg("interpolate")=true,py::arg("max_working_bytes")=128ULL*1024*1024);
     m.def("imagej_calibrated_line_profile", [](const py::array& a,const ImageJIntensityCalibration& density,
         double x1,double y1,double x2,double y2,bool interpolate,std::size_t cap) {
         auto image=read_image(a);

@@ -64,6 +64,62 @@ segment's temporary values as well as the concatenated result and plot copy.
 The new layout requires rebuilding installed C++ consumers; source compatibility
 with the old defaults does not establish binary compatibility.
 
+## Straight-line Analyzer primitive (T04a.2 increment)
+
+`line_measurement.hpp` adds `imagej_calibrated_line_measurement`, with the same
+named Python function. This is a pure synchronous image API, not yet a captured
+manager/UI operation. It derives intensity statistics from the original
+thin-line automatic profile, converting calibrated samples to Float32 before
+statistics, as Analyzer does. It does not rasterize the line as an area ROI.
+`statistics.area` is sample count times pixel width/height, not physical stroke
+area. Configured editor `profile_samples` does not change Analyzer sampling.
+
+C++ returns `ImageJLineMeasurement` (statistics, length, angle_degrees,
+midpoint_world); Python returns a detached dictionary with the existing scalar
+statistics keys plus those geometry fields. Length/midpoint use the native
+spatial affine at voxel Z=0; heading uses ImageJ's calibrated image-axis frame.
+Owners measuring another plane must supply that plane's affine origin. ImageJ's
+origin/invert-Y conventions require an explicit adapter; native affine origin/
+direction behavior is an extension qualified analytically, not an original
+ImageJ world-coordinate claim. Unsupported wide/outside/threshold/redirect/
+non-finite calibrated sample modes refuse or remain separate requirements.
+
+Admission charges the retained profile vector, decoded lookup and simultaneous
+Float32 median/histogram/result workspace. The profile vector moves into a
+Float32-tagged image, avoiding a second full double buffer. Input/Python copies
+and RSS are external to this synchronous kernel cap. This API does not by itself
+prove callback-free provider admission or stale adoption; the captured owner is
+still required for that integration.
+
+The new independent observer invokes actual ImageJ Analyzer for 64 line,
+polyline and angle cases across UInt8/UInt16/Float32. Its 46 straight-line rows
+qualify this primitive;
+polyline rows demonstrate distinct irregular sampling and angle rows expose
+programmatic PolygonRoi's cached-angle convention. Preserve those cases while
+adding the corresponding native consumers. [Native line evidence](parity/reviews/T04a2-line-primitive-20261104.json) records
+199 focused installed Windows Python cases passing (57 new, including 46
+original line rows across UInt8/UInt16/Float32), one native control and six installed SDK clients on each
+Windows/Linux platform. This does not qualify manager/UI adoption; existing
+T04a.1 UI evidence is unchanged.
+
+### Measurement consumer handoff
+
+| Existing command/key | Current behavior and remaining path |
+| --- | --- |
+| `measure` | Whole/area finite scalar routes use captured analysis. Adopt the new thin-line primitive through the same frozen target/job/result owner; preserve profile-independent Analyzer sampling. Angle/point/polyline/shape variants remain open. |
+| `measure_rois` | Legacy frontend loops rasterized rows and Z slices, ignoring stored T/C. Replace with native frozen manager rows, explicit optional-axis/wildcard rules, grouping by source plane, bounded aggregate output and atomic adoption. Active selection and source history must remain untouched. |
+| `measurements` | Selects existing output columns. It is not a substitute for missing centroid/Feret/shape, threshold-limited or redirected-intensity calculations. Add required computations/options with their owning consumer and references. |
+| `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
+| `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
+
+Before the next public API batch, settle the complete row/result and geometry
+options together. Preserve existing TargetAnalysis area-plus-profile semantics;
+new selection measurement cannot reinterpret that old option combination.
+Freeze stored row order and T/C/Z/defaults once, validate the original source/
+manager/calibration on adoption, and reject partial publication on any failed
+row. Retained original polyline samples and programmatic angle cases are
+requirements evidence, not implemented support or a generic angle policy.
+
 ## Admission and ownership
 
 The source must use scalar UInt8/UInt16/Float32 finite-policy storage and a

@@ -17,7 +17,9 @@ changes and do not infer live processes/agents from old receipts or role names.
 ## Near-term delivery order
 
 T04a.1 bounds/configured profiles and scoped read-only lifecycle are delivered;
-next T04a.2 measurement geometry/ROI-manager, then T04a.3 persistence/replay.
+T04a.2 native straight-line Analyzer primitive is now qualified separately;
+next captured/UI/manager adoption and remaining geometry/options, then T04a.3
+persistence/replay.
 T04b histogram/threshold consumers can reuse the qualified ownership seam.
 See the current PLAN receipt for exact verification/platform limits.
 T00 remote CI/reference recovery and T02 demonstrated build/verification waste

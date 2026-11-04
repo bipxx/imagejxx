@@ -1750,6 +1750,7 @@ from ._native import (
     resolve_target_analysis as resolve_target_analysis,
     execute_target_analysis as execute_target_analysis,
     imagej_calibrated_statistics as imagej_calibrated_statistics,
+    imagej_calibrated_line_measurement as imagej_calibrated_line_measurement,
     imagej_calibrated_line_profile as imagej_calibrated_line_profile,
     GlobalCalibration as GlobalCalibration,
     EffectiveCalibration as EffectiveCalibration,

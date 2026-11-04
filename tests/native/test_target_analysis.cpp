@@ -1,4 +1,5 @@
 #include <imagejxx/target_analysis.hpp>
+#include <imagejxx/line_measurement.hpp>
 #include <imagejxx/application.hpp>
 #include <cmath>
 #include <iostream>
@@ -72,6 +73,13 @@ int main(){
     const auto area=execute_target_analysis(resolve_target_analysis(resolve_target(temporary.snapshot())));
     check(area.planes[0].bounds && *area.planes[0].bounds==std::array<int,4>{1,0,2,1});
     check(area.planes[0].statistics->mean==1.5);
+    const auto measured=imagej_calibrated_line_measurement(*source->read_plane({0,0,0}),
+        SpatialCalibration{},ImageJIntensityCalibration::uncalibrated(),0,0,2,1);
+    check(measured.statistics.mean==2.5 && measured.statistics.stddev==2.5 && measured.statistics.area==3);
+    check(std::abs(measured.length-std::sqrt(5.))<1e-12);
+    check(measured.midpoint_world==std::array<double,3>{1,.5,0});
+    refuses<std::invalid_argument>([&]{imagej_calibrated_line_measurement(*source->read_plane({0,0,0}),
+        SpatialCalibration{},ImageJIntensityCalibration::uncalibrated(),0,0,2,1,true,1);});
   }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
 }

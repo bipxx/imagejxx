@@ -1,4 +1,5 @@
 #include <imagejxx/calibrated_analysis.hpp>
+#include <imagejxx/line_measurement.hpp>
 #include "imagej_intensity_function_value_internal.hpp"
 #include "calibrated_analysis_internal.hpp"
 #include "kernel_control.hpp"
@@ -205,6 +206,37 @@ ImageJScalarStatistics imagej_calibrated_statistics(const Image& im,const Spatia
 std::vector<double> imagej_calibrated_line_profile(const Image& im,const ImageJIntensityCalibration& density,
     double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum) {
   return profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,nullptr);
+}
+ImageJLineMeasurement imagej_calibrated_line_measurement(const Image& im,
+    const SpatialCalibration& spatial,const ImageJIntensityCalibration& density,
+    double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum) {
+  shape(im);spatial.validate();density.validate_for(im.type,im.channels);
+  const auto count=detail::calibrated_profile_sample_count({x1,y1,x2,y2});
+  const auto bins=density.mode()==ImageJIntensityMode::Lookup?
+      (im.type==PixelType::UInt8?256:65536):0;
+  // The sampled double vector is moved into a Float32-tagged Image; no second
+  // double buffer is allocated. Statistics also needs its Float32 median copy.
+  cap(add(8192,add(mul(count,sizeof(double)+sizeof(float)),mul(bins,sizeof(std::uint32_t)))),maximum);
+  const double dx=(x2-x1)*spatial.spacing[0],dy=(y2-y1)*spatial.spacing[1];
+  const auto& d=spatial.direction;
+  ImageJLineMeasurement out;
+  out.length=std::hypot(d[0]*dx+d[1]*dy,d[3]*dx+d[4]*dy,d[6]*dx+d[7]*dy);
+  out.angle_degrees=(180.0/3.141592653589793)*std::atan2((y1-y2)*spatial.spacing[1],dx);
+  out.midpoint_world=spatial.voxel_to_world({x1+(x2-x1)/2,y1+(y2-y1)/2,0});
+  if(!std::isfinite(out.length) || !std::isfinite(out.angle_degrees) ||
+      !std::all_of(out.midpoint_world.begin(),out.midpoint_world.end(),[](double v){return std::isfinite(v);}))
+    throw std::invalid_argument("Line measurement geometry must be finite");
+  auto values=profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,nullptr);
+  for(auto& value:values) {
+    kernel_checkpoint_periodic();
+    if(!std::isfinite(value) || std::abs(value)>std::numeric_limits<float>::max())
+      throw std::invalid_argument("Line measurement requires finite Float32-representable profile values");
+    value=double(float(value));
+  }
+  Image samples(1,1,1,PixelType::Float32);samples.width=int(values.size());
+  samples.pixels=std::move(values);
+  out.statistics=statistics_impl(samples,spatial,ImageJIntensityCalibration::uncalibrated(),nullptr,maximum,nullptr);
+  return out;
 }
 namespace detail {
 void validate_analysis_source(const Image& image){shape(image);pixels(image);}

@@ -1,0 +1,460 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-04",
+  "task": "T04a.2 native straight-line Analyzer increment",
+  "state": "verified_scoped",
+  "base_commit": "c731314ce842e4a4927b3a01a398ad3bdf8121b5",
+  "aspects": {
+    "implemented": "Pure C++ imagej_calibrated_line_measurement and detached Python dictionary bridge.",
+    "verified": "Specified finite scalar thin-line inputs; native controls/installed SDK clients Windows/Linux, installed Windows Python.",
+    "integrated": "Public native/Python API and installed clients only. Captured owner/UI/manager adoption remains open.",
+    "release_ready": false
+  },
+  "behavior": [
+    "Original automatic thin-line calibrated profile, then canonical Float32 conversion before scalar statistics",
+    "Native affine length and midpoint at voxel Z=0; ImageJ image-axis heading including reversed horizontal +180 convention",
+    "Count/area represent sampled profile population, not a rasterized stroke; editor configured sample setting does not reinterpret Analyzer",
+    "Working admission charges retained values, table, median/histogram/result scratch; borrowed input, Python copies and RSS excluded",
+    "Nonfinite/Float32-overflow calibrated samples and unsupported image/profile domains refuse explicitly"
+  ],
+  "verification": {
+    "windows_python_unique": 199,
+    "new_line_python_cases": 57,
+    "original_analyzer_line_rows": 46,
+    "original_rows_by_type": {
+      "uint8": 18,
+      "uint16": 18,
+      "float32": 10
+    },
+    "attempts": [
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/python-line.xml",
+          "bytes": 23642,
+          "sha256": "059177ad61f9fb5d3f07c211ca6a02a5e8f86f9f2f1f9b4da14778ef7d6a8fee"
+        },
+        "passed": 171
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/python-line-types.xml",
+          "bytes": 7123,
+          "sha256": "d1796e7a93585cbe08773629a17ea4ce26e523c42a84cd5239425998ede1a49a"
+        },
+        "passed": 57
+      }
+    ],
+    "original_observations": [
+      {
+        "fixture": {
+          "path": "tests/fixtures/selection-measurements-imagej154r.jsonl.gz",
+          "bytes": 1148,
+          "sha256": "e6d063ad9034866b092b8ad22aa3f5e04f7967568f9ed4147b3d4bba05b78b93"
+        },
+        "rows": 36,
+        "used_line_rows": 18
+      },
+      {
+        "fixture": {
+          "path": "tests/fixtures/selection-measurements-types-imagej154r.jsonl.gz",
+          "bytes": 1163,
+          "sha256": "9a98a19505c64ca811af81f5a6ca00fca9029d1478018002600c735494a81433"
+        },
+        "rows": 28,
+        "used_line_rows": 28
+      }
+    ],
+    "original_36_rows_replayed_byte_identically": true,
+    "reference_inputs": {
+      "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/reference-inputs.json",
+      "bytes": 1904,
+      "sha256": "a778be386b4c17494956f4fb8b28acd8d0407a5812ce041b73d97bc432226328"
+    },
+    "extended_reference_inputs": {
+      "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/reference-inputs-types.json",
+      "bytes": 2402,
+      "sha256": "63dc66e543b16426ae6ac6612cef9ed13a1a8b2c1da2bdb7d2ec5a39e803dc1f"
+    },
+    "original_observer_preimage": {
+      "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/ObserveSelectionMeasurements-before-types.java",
+      "bytes": 3327,
+      "sha256": "6d63335a6f5eda9a8f11e2d72ce5089c1f440431f07cb2c72396d4490ee004ca"
+    },
+    "reference_source_classes_jdk_identities_preserved": true,
+    "native_controls_each_windows_linux": 1,
+    "installed_sdk_clients_each_windows_linux": 6,
+    "existing_scalar_original_cases_each_sdk": 77,
+    "existing_table_profiles_each_sdk": 128,
+    "existing_fit_dtype_cells_each_sdk": 86,
+    "ui_requalification": "No GUI code changed or built; this does not qualify new GUI adoption. Existing profile/area UI behavior is preserved."
+  },
+  "limitations": [
+    "T04a.2 still open: captured line/ROI-manager/UI adoption, complete geometry/measurement options, angle/point/irregular-polyline and other required modes",
+    "Programmatic PolygonRoi cached angles and irregular sampling captured as requirements evidence; not implemented by this primitive",
+    "Original line parity scope uses axis-aligned ImageJ calibration with origin zero; native affine length/midpoint extensions checked analytically",
+    "ImageJ calibration origin/invert-Y adapters, threshold-limited/redirected/wide/outside/IEEE/nonfinite calibrated profiles remain explicit requirements",
+    "No broad speed or full-family/release completion claim"
+  ],
+  "waste_review": {
+    "fixed_or_avoided": [
+      "No second full double profile buffer: move sampled values into Float32-tagged Image",
+      "Reuse existing profile/statistics implementation rather than duplicating numerical code",
+      "Separate new API header: no existing result/layout/header changes and no desktop probe rebuild",
+      "Reuse maintained native/SDK consumers, dtype-parameterized original observer and bounded retention helper; no extra CMake targets/flags entries/cache/runtime generations",
+      "Additional dtype observations/test-loader coverage required no product/SDK rebuild; rerun only the changed 57-case module, preserve unchanged 142 cases"
+    ],
+    "no_action": [
+      "Keep shared numerical validation contract; no measured bottleneck warrants a specialized statistics path."
+    ],
+    "deferred": [
+      {
+        "owner": "T04a.2",
+        "work": "Freeze manager rows/T/C/Z and adopt line/area/geometry through existing job/result owner; define complete row API without reinterpreting old TargetAnalysis options."
+      },
+      {
+        "owner": "T02",
+        "work": "Measured shared-header fanout audit remains a bounded improvement, not a prerequisite for this isolated new header."
+      }
+    ],
+    "measured_build_workloads": {
+      "windows_seconds": 69.766,
+      "windows_compile_entries": 5,
+      "linux_seconds": 12.207463441,
+      "linux_core_sources": 2,
+      "linux_native_clients": 1,
+      "comparison_claim": false
+    }
+  },
+  "cleanup": {
+    "sdk_consumer_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/sdk-retirement.json",
+      "bytes": 3122,
+      "sha256": "83501ee2fd75c5702fb4f3ace83b2f86a82a61caa098fea463c91715c6ab4c0f"
+    },
+    "sdk_bytes_retired": 28540141,
+    "capture_source_bytes_retired": 1475817,
+    "retained_archives_bytes": 205518,
+    "retention": [
+      {
+        "archive": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/captures.zip",
+          "bytes": 202293,
+          "sha256": "ce96e8f7353ae4b86ab073e77629f7cd288be118729921ec49664d2590eee9a3"
+        },
+        "manifest": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/captures.manifest.json",
+          "bytes": 4014,
+          "sha256": "4ee4930e50ee471c36d1d85f487c05fb53a2e985a3fad60d3f2c61b13d05f0bb"
+        },
+        "pack": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/captures.pack.json",
+          "bytes": 1477,
+          "sha256": "f47b7c907db99ed989251fde458d73f543ae944f7490b42caa5078becb79d48e"
+        },
+        "verify": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/captures.verify.json",
+          "bytes": 1383,
+          "sha256": "95e1726cac31896bc0ba6c449c5dfb1c78cd265629624bd67e61721747db348d"
+        }
+      },
+      {
+        "archive": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/captures-types.zip",
+          "bytes": 3225,
+          "sha256": "2ec5355d11bda648474cf0277741abf1d0384ddcf79823440e9bdee81068f60c"
+        },
+        "manifest": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/captures-types.manifest.json",
+          "bytes": 2306,
+          "sha256": "7af18fbc83f3b7316dd5d608a6af763308a2a791507ac04e6c07c81ea41bf04a"
+        },
+        "pack": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/captures-types.pack.json",
+          "bytes": 1514,
+          "sha256": "b99385996800b4bcce56868d6a63d797139963019da1fbba4248d6b6c4f4da46"
+        },
+        "verify": {
+          "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/captures-types.verify.json",
+          "bytes": 1414,
+          "sha256": "3c9f1abda551e3d98a5c9819e0c4f7bb3622082ad1932a9c15a4f53c63832f2f"
+        }
+      }
+    ],
+    "scratch_paths_absent": true,
+    "no_whole_cache_or_sdk_archived": true
+  },
+  "storage": {
+    "snapshot": {
+      "path": ".tmp/manual-workflow-verification/t04a2-final-20261104.json",
+      "bytes": 66572,
+      "sha256": "7cc0141c834bb74fc227bd8449ef2511b5f0dc5ffce0a758ef3a2279bac97ccf"
+    },
+    "known_bytes": 8356527006,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "scope": "All non-overlapping project/generated/dependency/runtime/Linux roots before small final public receipt/doc growth."
+  },
+  "processes": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/compile-types.process.json",
+        "bytes": 2188,
+        "sha256": "48bef3b30ad4910e179eccf71d09dfd9b49869b1d8cb2921adcfc5cfb3494bd2"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.703999999910593
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/compile.process.json",
+        "bytes": 2185,
+        "sha256": "9dfd6c7b45a9c20f95e459c4ea155edddb5f9c6a4b727bbf4ff15d982866c29e"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.6569999998901039
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/linux-build.process.json",
+        "bytes": 1541,
+        "sha256": "ed57dc5ab665bf5d7d7b5f6266b1212d9f4bfff0bb3f5e1e8358b2cffe08b09d"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 12.207463441000002
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/linux-install.process.json",
+        "bytes": 1596,
+        "sha256": "ceb81cb51aa52884ffda3e982d4b2f321523ec3aab8a7558e5e2b9b36d312471"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.46537163
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/linux-native.process.json",
+        "bytes": 1535,
+        "sha256": "6374455a2465b6a6c3659ab8b16ec1be9d95b95930a39630af5c328c49b718fb"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.11569546400000164
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/linux-sdk-build.process.json",
+        "bytes": 1538,
+        "sha256": "a3d4380986080d46717cbf99b8485bc4c62f59ec0110708135e4212fdc65e6ef"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 16.569915858
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/linux-sdk-configure.process.json",
+        "bytes": 2033,
+        "sha256": "36b53ac74bf7e928ed340a22e1c7e72ef72d099878989bb0edcca55ac5c65d1a"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 5.395794405
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/linux-sdk-tests.process.json",
+        "bytes": 1546,
+        "sha256": "75e382e609d706efc19d105b3eaf35ee7e1da38c6525b4c6cf597a24d61b8064"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.4511660909999975
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/observe-float32.process.json",
+        "bytes": 2143,
+        "sha256": "70110377ce88f3bb61afc99b12d5e720cfb84bc93473d88e64aea3a620ae2579"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.21800000010989606
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/observe-uint16.process.json",
+        "bytes": 2143,
+        "sha256": "c77ed129ba3fae97b3e8525c1fdf00c711b546d2df9db9cd4f9a83e7cc161f54"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.23500000010244548
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/observe-uint8.process.json",
+        "bytes": 2138,
+        "sha256": "79aaa187507f30cf4c263dbb0153d9866917a96f0f5db7e4764ab329a92034e5"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.23500000010244548
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/observe.process.json",
+        "bytes": 2123,
+        "sha256": "c0cade8dd1978732cca63795a7c33a82d01ac07bd3b67c20421a2794fb59691d"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.2029999999795109
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/python-line-types.process.json",
+        "bytes": 2277,
+        "sha256": "b297fd3f47787823ee3500fa906ed00568a94f7023b879177ffea0eb9f1e7f80"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.297000000020489
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/python-line.process.json",
+        "bytes": 2358,
+        "sha256": "3845c51091b6b306724a404b9dcf11bcffd31b140f1fb9fc2bdead179d15bf07"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.8129999998491257
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/windows-build.process.json",
+        "bytes": 2050,
+        "sha256": "ca3cd2af6a4f61dd35e7298c99314a4db12e69270e73837e487b27cffefb4fd9"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 69.76600000006147
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/windows-install-python.process.json",
+        "bytes": 2127,
+        "sha256": "e1b491b2761d97cf04ee1d09d32e5224fa5af543d87c8ab708fc1079d31a44c0"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.10999999986961484
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/windows-install-sdk.process.json",
+        "bytes": 2114,
+        "sha256": "df4e99a44d12b0d37325f40d5cd94bd5f8e9895b62487e357aec7d06318387e7"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.28100000019185245
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/windows-native.process.json",
+        "bytes": 2033,
+        "sha256": "245416b3ca826082d4e442c7ec923b4dfd48b54cc67d8dd8317afe0a57ff0198"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.1559999999590218
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/windows-sdk-build.process.json",
+        "bytes": 2047,
+        "sha256": "082eb2378164a0df60eec84eabe5dd3c0df8c15a14a7684b6803d615dbad0112"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 7.984999999869615
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/windows-sdk-configure.process.json",
+        "bytes": 2560,
+        "sha256": "76923fbd910ea07d5f41a767d166ab9a91e1e63cb0ad3e6222ec9ef9ff67b45d"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 5.156999999890104
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-geometry-20261104/windows-sdk-tests.process.json",
+        "bytes": 2041,
+        "sha256": "ab8acc187881606c91167e79b3341763e12f52edc07b85366ddd4cabd04574de"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.0629999998491257
+    }
+  ],
+  "producer_inputs": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 4529,
+      "sha256": "8b3e9ca5a6f8b2e9a7988df0e886a9b0cd8723be4ba5df1edd114461aec80fe1"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 138504,
+      "sha256": "cda09c8f3e8e71a24ef40719f6b7e7cf8c8ecceb5caf1ded87724cba9e4cd71f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 7373,
+      "sha256": "ef811533a218604ba0694a019d4afe26586d6523a52ecdc1df2e708d8c2aa9e0"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 32616,
+      "sha256": "78c9d8dd5b56344cf66efe9b6f02629353b9e8c40b39a5fb7be67ac4620e131c"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 3965,
+      "sha256": "f374d034626980d97ba863ca3115e63c9152b5fa5a986fb32dd7c0837b56d6b3"
+    },
+    {
+      "path": "docs/TARGET_ANALYSIS.md",
+      "bytes": 13380,
+      "sha256": "dbee0ad3acf076105876f9bad3c7d9481f8d13ef76b6135be9f87bb901919d81"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 4424,
+      "sha256": "d18a4b42236707bafebc81b791c937cc739e1457e7469189ce39e0ee7eea29bd"
+    },
+    {
+      "path": "include/imagejxx/line_measurement.hpp",
+      "bytes": 1427,
+      "sha256": "10200abe567be46db1edfe3e020f79336f3114ae1bf1f12b051c076df6b9fc97"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 81231,
+      "sha256": "eedf5d6c2ab46fdaccd992eb1a9547fd88b52b356008b0809b91e972224a26da"
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 41637,
+      "sha256": "80c0a148f4624a94c8ea30cc766fcf17b7ef9a621ee87b796b9940a2d8fc72e6"
+    },
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 15132,
+      "sha256": "79861e745a25d5d1a991d0987e04205999dab97e1982de62f934895bffc69911"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 6048,
+      "sha256": "25a57a1478611d17f121d9dbbbd31f96990f29dc9d8a8223c7ffef42a16d59b6"
+    },
+    {
+      "path": "tests/python/test_line_measurement.py",
+      "bytes": 4298,
+      "sha256": "f7097ecbd585413319d9a892e2833292cddc914be7c5a85ebc36f5c728706001"
+    },
+    {
+      "path": "tests/reference/ObserveSelectionMeasurements.java",
+      "bytes": 4327,
+      "sha256": "c80efb54b848289bc975f0364ae4b4949507bb597c2b41cbb73a1de29555c099"
+    }
+  ]
+}
