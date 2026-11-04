@@ -313,6 +313,9 @@ const std::vector<SettingDefinition> &Settings::schema() {
        "reservations. Zero removes the reservation limit; document/history, "
        "reader/render and other allocations are separate.",
        SettingKind::Integer, std::int64_t(512), 0, 1048576},
+      {"reflex_angle", "Measurements", "Reflex angles",
+       "Report the reflex complement of the calibrated angle between two segments.",
+       SettingKind::Boolean, false},
       {"measurement_precision", "Measurements", "Decimal places",
        "Minus one preserves full precision; other values format the results "
        "view and CSV. Native results retain full precision.",

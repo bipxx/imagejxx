@@ -70,7 +70,7 @@ def test_manager_grouped_reads_preserve_row_order_and_frozen_axes(dtype, indices
         if index == 1:
             values = np.linspace(float(source[0, 0]), float(source[2, 3]), 5).astype(np.float32).astype(float)
             assert row.length == pytest.approx(math.sqrt(145))
-            assert row.midpoint_world == [4.5, 4, 0] and row.bounds is None
+            assert row.midpoint_world == [4.5, 4, 0] and row.bounds == [0, 0, 4, 3]
         else:
             values = (source[:2, :2] if index == 0 else source[:1, 2:4] if index == 2 else source[:1, :1]).astype(float).ravel()
             assert row.length is None
@@ -146,7 +146,7 @@ def test_cancellation_discards_partial_group_and_unsupported_rows_refuse():
         ij.execute_target_analysis(command, cancellation=token, progress=progress)
     assert reads.counts().plane_reads == n + 1
     edit = owner.begin_edit()
-    edit.set_rois([ij.ROI("unsupported", ij.Selection("angle", [(0, 0), (1, 1), (2, 0)]))])
+    edit.set_rois([ij.ROI("unsupported", ij.Selection("point", [(0, 0)]))])
     owner.commit(edit)
     n = reads.counts().plane_reads
     with pytest.raises(ValueError):

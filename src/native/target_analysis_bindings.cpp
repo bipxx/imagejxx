@@ -13,12 +13,14 @@ void bind_target_analysis(py::module_& m) {
     .def(py::init<>()).def_readwrite("statistics",&TargetAnalysisOptions::statistics)
     .def_readwrite("line",&TargetAnalysisOptions::line).def_readwrite("interpolate",&TargetAnalysisOptions::interpolate)
     .def_readwrite("path",&TargetAnalysisOptions::path).def_readwrite("samples_per_segment",&TargetAnalysisOptions::samples_per_segment)
-    .def_readwrite("measurement",&TargetAnalysisOptions::measurement).def_readwrite("roi_indices",&TargetAnalysisOptions::roi_indices);
+    .def_readwrite("measurement",&TargetAnalysisOptions::measurement).def_readwrite("roi_indices",&TargetAnalysisOptions::roi_indices)
+    .def_readwrite("reflex_angle",&TargetAnalysisOptions::reflex_angle);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
     .def_readwrite("max_working_bytes",&TargetAnalysisLimits::max_working_bytes)
     .def_readwrite("max_record_bytes",&TargetAnalysisLimits::max_record_bytes)
-    .def_readwrite("max_measurement_rows",&TargetAnalysisLimits::max_measurement_rows);
+    .def_readwrite("max_measurement_rows",&TargetAnalysisLimits::max_measurement_rows)
+    .def_readwrite("max_measurement_work",&TargetAnalysisLimits::max_measurement_work);
   py::class_<TargetAnalysisEstimate>(m,"TargetAnalysisEstimate")
     .def_readonly("plane_count",&TargetAnalysisEstimate::plane_count)
     .def_readonly("plane_pixels",&TargetAnalysisEstimate::plane_pixels)

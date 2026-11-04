@@ -21,7 +21,8 @@ bool captured_measurement_available(const DocumentSnapshot& source) {
        dataset.pixel_type()!=PixelType::Float32))return false;
   if(!data.selection)return true;
   const auto& kind=data.selection->kind;
-  if(kind=="line")return captured_profile_available(source);
+  if(kind=="line" || kind=="polyline")return captured_profile_available(source);
+  if(kind=="angle")return data.selection->points.size()==3;
   return kind!="line" && kind!="polyline" && kind!="angle" && kind!="point" && kind!="multipoint";
 }
 bool captured_roi_measurement_available(const DocumentSnapshot& source) {
@@ -81,6 +82,9 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       values["X"]=(*row.midpoint_world)[0];values["Y"]=(*row.midpoint_world)[1];
       values["centroid_x"]=(*row.midpoint_world)[0];values["centroid_y"]=(*row.midpoint_world)[1];
       values["centroid_z"]=(*row.midpoint_world)[2];
+    }else if(row.length || row.angle_degrees) {
+      // Analyzer's angle/irregular-line rows leave these summaries at zero.
+      values["X"]=0;values["Y"]=0;values["centroid_x"]=0;values["centroid_y"]=0;
     }
     rows.push_back(std::move(values));
   }

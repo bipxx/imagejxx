@@ -161,6 +161,61 @@ Json capturedRoiMeasurementUiCase(Window& window,const std::string& context,cons
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& e){release=true;window.cancel();window.wait();report["failure"]=e.what();writeJson((dir/"failure.json").u8string(),report);throw;}
 }
+Json capturedPathMeasurementUiCase(Window& window,const std::string& context,const std::string& fresh_directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
+  require(!fs::exists(dir) && window.documents().empty(),"Fresh path measurement fixture required");fs::create_directories(dir);
+  Image image(7,5,1,PixelType::UInt8);for(int y=0;y<5;++y)for(int x=0;x<7;++x)image.at(x,y)=x+10*y;
+  SpatialCalibration spatial;spatial.spacing={.5,2,1};spatial.unit="um";DatasetReadObserver reads;
+  const Selection path("polyline",{{0,0},{2,0},{2,2}}),angle("angle",{{0,0},{2,1},{4,0}});
+  DocumentData data{Dataset::from_planes({1,1,1,5,7,1},Stack{image},spatial).observe_reads(reads),{},{},{},{},{},{}};
+  data.selection=path;data.metadata.title="Path measurement";
+  data.rois={Roi{"path",path,{},{},{},{}},Roi{"angle",angle,{},{},{},{}},
+      Roi{"area",Selection("rectangle",{{0,0},{2,2}}),{},{},{},{}}};
+  auto source=std::make_shared<imagejxx::Document>(std::move(data));window.addNativeDocument(source);
+  window.updateSettings({{"profile_samples",11},{"measurement_precision",3},
+      {"measurements",{"ROI","mean","count","Area","Length","Angle","Bounds","Unit"}}},false);
+  Json report{{"contract","g066.captured-path-measurement.ui.001"},{"context",context},{"acceptance_claim",false},
+      {"frames",Json::array()},{"controls",Json::array()}};
+  try {
+    HeadlessInputSession session(window);Json last;
+    auto frame=[&](const Json& events=Json::array()) {
+      require(report["frames"].size()<96,"Path measurement frame bound");last=session.frame(events);
+      report["frames"].push_back({{"events",events},{"input_frame",last.at("input_frame")}});
+    };
+    auto clickControl=[&](const Json& observed,const std::string& key) {const auto control=observed;
+      require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"Path measurement control unavailable");
+      report["controls"].push_back({{"name",key},{"control",control}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+      frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
+      frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
+    };
+    auto click=[&](const std::string& key){clickControl(last.at("host_controls").at(key),key);};
+    auto measure=[&]{click("menu.Analyze");click("menu.action.measure");window.wait();frame();};
+    frame();frame();frame();auto before=source->snapshot();const auto undo=source->undo_steps();
+    measure();report["path"]=window.results.at(0);
+    report["path_source_unchanged"]=source->snapshot().shares_data(before) && source->undo_steps()==undo;
+    source->select(angle);before=source->snapshot();frame();measure();report["angle"]=window.results.at(1);
+    report["default_reflex"]=window.settings().boolean("reflex_angle");
+    window.updateSettings({{"reflex_angle",true}},true);measure();report["reflex_angle"]=window.results.at(2);
+    report["preferences"]=window.preferencesJson();
+    report["persisted_reflex"]=readJson((dir.parent_path()/"preferences.json").u8string()).at("values").at("reflex_angle");
+    report["angle_source_unchanged"]=source->snapshot().shares_data(before);
+    auto n=reads.counts().plane_reads;window.action("measure");window.wait();
+    report["angle_reads"]={{"before",n},{"after",reads.counts().plane_reads}};
+    click("menu.Analyze");click("menu.action.measure_rois");window.wait();frame();report["menu_rows"]=window.results;
+    if(last.at("roi_manager").at("controls").contains("tab") &&
+        !last.at("roi_manager").at("controls").at("tab").value("selected",false))
+      clickControl(last.at("roi_manager").at("controls").at("tab"),"manager.tab");
+    clickControl(last.at("roi_manager").at("controls").at("measure_rois"),"manager.measure_rois");
+    window.wait();frame();report["panel_rows"]=window.results;
+    n=reads.counts().plane_reads;window.action("measure_rois");window.wait();
+    report["batch_reads"]={{"before",n},{"after",reads.counts().plane_reads}};
+    window.action("save_results",{{"path",(dir/"paths.csv").u8string()}});
+    report["workflow_count"]=window.workflow.size();
+    report["jobs_reserved_after"]=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
+    report["state"]="observed";session.close();writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& e){window.cancel();window.wait();report["failure"]=e.what();writeJson((dir/"failure.json").u8string(),report);throw;}
+}
 Json capturedProfileUiCase(Window& window,const std::string& context,const std::string& fresh_directory) {
   namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
   require(!fs::exists(dir) && window.documents().empty(),"Fresh profile fixture required");fs::create_directories(dir);

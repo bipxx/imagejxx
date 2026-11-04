@@ -108,7 +108,8 @@ T04a.1 UI evidence is unchanged.
 preserving all original area-plus-independent-profile options and version-1/2
 diagnostic record meaning. Explicit `SELECTION` and `ROI_MANAGER` modes require
 statistics with no `line`, `path` or configured profile sampling options. They
-support current finite-scalar area selections and thin in-image straight lines.
+support current finite-scalar areas, thin in-image straight/irregular paths and
+three-vertex angles. Point/multipoint and remaining area/shape options are open.
 
 For a stored-row batch, prepare its target from the same document snapshot and
 resolve it through the owning Application:
@@ -130,8 +131,28 @@ validates source samples once per acquired plane, while retaining requested row
 order in `result.planes`. `estimate.row_count` counts output rows;
 `estimate.plane_count` and total pixels count distinct acquired planes. Row
 fields include optional zero-based `roi_index`, length, image-axis heading and
-world midpoint. Area `bounds` remain tight mask bounds; non-area line bounds
-are null and remain a required geometry-column gap.
+world midpoint. Area `bounds` remain tight mask bounds; straight/path/angle
+Bounds use the original open-selection drawing rectangle, including endpoints.
+Angle-only groups acquire no image plane; mixed groups acquire a plane once
+only when an intensity/area/path row needs it.
+
+`reflex_angle` defaults to false in both options and the shared Measurements
+settings schema. Angle semantics explicitly refresh geometry using calibrated
+image-axis spacing; reflex returns 360 minus that angle. Old programmatic
+PolygonRoi constructor/cache observations retain their historical meaning and
+are not repinned as this policy. Angle intensity summaries are zero and have no
+length/midpoint. Path summaries use ImageJ's irregular 0.01-step recurrence,
+calibration before interpolation, and Float32 conversion before Analyzer
+statistics. `profile_samples` configures the independent editor Profile tool,
+never these Analyzer samples. Empty profiles preserve original non-finite
+statistics. Thin in-image paths have 2..4096 Float32-normalized vertices.
+
+The same pure core APIs are exported to Python:
+`imagej_calibrated_polyline_measurement`, `imagej_calibrated_irregular_profile`,
+`imagej_calibrated_angle` and `imagej_line_bounds`; see
+[native declarations](../include/imagejxx/line_measurement.hpp). Path execution
+is bounded by `max_measurement_work` (default 33,554,432 recurrence steps),
+summed across every batch row before reading pixels, and the working-byte cap.
 
 The metadata-only request factory and preparation dispatch no callbacks/read no
 planes. Row limits (default 100,000, configurable up to 1,000,000) complement
@@ -139,7 +160,8 @@ working/metadata/pixel caps; those byte caps can admit fewer rows. State/group/
 record growth, serial masks/raster, one lookup, largest kernel workspace, all
 rows and simultaneous frontend copies are included. Preparation reuses shared
 area-mask estimates; line execution borrows the once-decoded table. Version-3
-records describe frozen rows/mode and are diagnostic, not replay instructions.
+records describe frozen rows/mode; path/angle or reflex records use version 4
+with their explicit geometry policy. Both are diagnostic, not replay instructions.
 Public native layouts changed; installed SDK clients were rebuilt on both
 Windows/Linux. This does not establish binary compatibility with old clients.
 
@@ -162,19 +184,20 @@ ROI Manager workflow-parity claim.
 
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
-| `measure` | Whole/area and thin-line finite scalar routes now use explicit captured selection measurements with Analyzer sampling. Angle/point/irregular-polyline, line bounds and remaining area/shape columns stay open. |
-| `measure_rois` | Finite scalar area/thin-line rows now use frozen native T/C/Z/defaults, grouping and atomic adoption through actual menus/panel. Unsupported geometry/dtype and remaining manager options stay explicit requirements; active selection/history remain untouched. |
+| `measure` | Whole/area, thin straight/irregular paths and refreshed/reflex angles use captured selection measurement. Point/multipoint and remaining area/shape/options stay open. |
+| `measure_rois` | Supported area/path/angle rows use frozen native T/C/Z/defaults, grouping and atomic adoption through actual menus/panel. Unsupported geometry/dtype and remaining manager options stay explicit requirements; active selection/history remain untouched. |
 | `measurements` | Selects existing output columns. It is not a substitute for missing centroid/Feret/shape, threshold-limited or redirected-intensity calculations. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
+| `reflex_angle` | Boolean false by default; shared Preferences control/API/persistence, captured once per measurement. True selects 360 minus the refreshed calibrated angle. |
 
 The explicit mode/row API above preserves existing profile meaning. Extend
 remaining geometry/options coherently in the next public batch. Preserve existing TargetAnalysis area-plus-profile semantics;
 selection measurement cannot reinterpret that old option combination.
 Freeze stored row order and T/C/Z/defaults once, validate the original source/
 manager/calibration on adoption, and reject partial publication on any failed
-row. Retained original polyline samples and programmatic angle cases are
-requirements evidence, not implemented support or a generic angle policy.
+row. Original irregular-path/refreshed-angle references qualify only the stated
+policy and finite scalar domain; older cached-angle observations remain distinct.
 
 ## Admission and ownership
 

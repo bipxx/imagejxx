@@ -47,6 +47,7 @@ def test_actual_line_and_manager_measurement_controls(context, tmp_path):
     assert [(row["T"], row["C"], row["Z"]) for row in manager] == [(2, 1, 2), (1, 2, 1), (2, 1, 2), (2, 2, 1)]
     assert [row["mean"] for row in manager] == [235, 81, 235, 270]
     assert report["panel_rows"][-4:] == manager
+    assert len(report["panel_rows"]) == len(report["menu_rows"]) + 4
     assert report["batch_reads"]["after"] - report["batch_reads"]["before"] == 3
     assert report["pending_clear"]["rows"] == 0
     assert report["pending_clear"]["reads_before"] == report["pending_clear"]["reads_after"]

@@ -93,6 +93,17 @@ int main(){
     check(rows.planes[0].statistics->mean==2.5 && rows.planes[1].statistics->mean==.5);
     check(rows.planes[0].length && rows.planes[0].midpoint_world==measured.midpoint_world);
     check(rows.record.at("version")==MetadataValue(std::int64_t(3)));
+    const auto irregular=imagej_calibrated_polyline_measurement(*source->read_plane({0,0,0}),
+        SpatialCalibration{},ImageJIntensityCalibration::uncalibrated(),{{0,0},{2,0},{2,1}});
+    check(irregular.statistics.pixel_count==2 && irregular.statistics.mean==1.5 && irregular.length==3);
+    check(imagej_line_bounds({0,0,2,1})==std::array<int,4>{0,0,3,2});
+    check(std::abs(imagej_calibrated_angle({{{0,0},{1,1},{2,0}}},SpatialCalibration{},true)-270)<1e-12);
+    auto angles=temporary.begin_edit();angles.set_rois({Roi{"angle",Selection("angle",{{0,0},{1,1},{2,0}}),0,0,0,{}}});temporary.commit(angles);
+    batch.roi_indices={};source->reads.clear();
+    const auto geometry=resolve_target_analysis(resolve_target(temporary.snapshot(),roi_measurement_target_request(temporary.snapshot())),batch);
+    check(geometry.estimate().plane_count==0 && geometry.estimate().total_pixels==0);
+    const auto angle_rows=execute_target_analysis(geometry);
+    check(source->reads.empty() && angle_rows.planes[0].angle_degrees && std::abs(*angle_rows.planes[0].angle_degrees-90)<1e-12);
   }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
 }

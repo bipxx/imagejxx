@@ -500,6 +500,24 @@ PYBIND11_MODULE(_native, m) {
         out["midpoint_world"]=measured.midpoint_world;return out;
     },py::arg("image"),py::arg("spatial"),py::arg("density"),py::arg("x1"),py::arg("y1"),py::arg("x2"),py::arg("y2"),
        py::arg("interpolate")=true,py::arg("max_working_bytes")=128ULL*1024*1024);
+    m.def("imagej_calibrated_polyline_measurement", [](const py::array& a,const SpatialCalibration& spatial,
+        const ImageJIntensityCalibration& density,std::vector<std::array<double,2>> points,bool interpolate,std::size_t cap,std::size_t work) {
+        auto image=read_image(a);const auto frozen=spatial;const auto calibration=density;
+        auto result=[&]{py::gil_scoped_release release;return imagej_calibrated_polyline_measurement(image,frozen,calibration,points,interpolate,cap,work);}();
+        auto out=bindings::calibrated_statistics_python(result.statistics);out["length"]=result.length;out["bounds"]=result.bounds;return out;
+    },py::arg("image"),py::arg("spatial"),py::arg("density"),py::arg("points"),py::arg("interpolate")=true,
+       py::arg("max_working_bytes")=128ULL*1024*1024,py::arg("max_work_steps")=32ULL*1024*1024);
+    m.def("imagej_calibrated_irregular_profile", [](const py::array& a,const ImageJIntensityCalibration& density,
+        std::vector<std::array<double,2>> points,bool interpolate,std::size_t cap,std::size_t work) {
+        auto image=read_image(a);const auto calibration=density;
+        auto values=[&]{py::gil_scoped_release release;return imagej_calibrated_irregular_profile(image,calibration,points,interpolate,cap,work);}();
+        return bindings::analysis_array(values);
+    },py::arg("image"),py::arg("density"),py::arg("points"),py::arg("interpolate")=true,
+       py::arg("max_working_bytes")=128ULL*1024*1024,py::arg("max_work_steps")=32ULL*1024*1024);
+    m.def("imagej_line_bounds",&imagej_line_bounds,py::arg("line"));
+    m.def("imagej_calibrated_angle",[](std::array<std::array<double,2>,3> points,SpatialCalibration spatial,bool reflex){
+        py::gil_scoped_release release;return imagej_calibrated_angle(points,spatial,reflex);
+    },py::arg("points"),py::arg("spatial"),py::arg("reflex")=false);
     m.def("imagej_calibrated_line_profile", [](const py::array& a,const ImageJIntensityCalibration& density,
         double x1,double y1,double x2,double y2,bool interpolate,std::size_t cap) {
         auto image=read_image(a);

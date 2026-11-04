@@ -46,8 +46,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.1 bounds/profile increment | Implemented and scoped integrated in both Windows hosts. 318 unique affected Windows Python cases ultimately pass, 23 observation-tool checks pass; two Windows/three Linux native controls and six installed SDK clients per platform pass. | T04a.2 geometry/ROI-manager, then T04a.3 persistence/replay. [Evidence](parity/reviews/T04a1-configured-profile-20261104.json); no full-profile-family or release completion claim. |
 | T04a.2 native line primitive | Implemented/scoped verified: 199 focused Windows Python cases (57 new, including 46 original line rows), native control and six installed SDK clients per Windows/Linux platform pass. | Adopt through captured measurement/UI and complete manager/geometry/options; [evidence](parity/reviews/T04a2-line-primitive-20261104.json). T04a.2 remains open. |
 | T04a.2 captured line/manager increment | Integrated/scoped verified in both Windows hosts: 365 focused product cases, 23 capture-tool checks, two native controls and six installed SDK clients per Windows/Linux platform pass. | Finish non-area/shape/options and line bounds; [evidence](parity/reviews/T04a2-captured-manager-20261104.json). Full T04a.2 remains open. |
+| T04a.2 M1 path/angle/Bounds | Scoped integrated in both Windows hosts; 220 new original observations, 553 unique product cases ultimately pass (one optional skip), 23 tool contracts, two native controls and six installed SDK clients per Windows/Linux platform. | M2 points/manager variants, then M3 options and M4 reconciliation. [Evidence](parity/reviews/T04a2-path-angle-20261104.json). Preserve cached versus refreshed angle meanings; no full T04a.2 claim. |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,364,347,185 known bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,368,737,854 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Near-term queue
@@ -86,8 +87,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 5. **T04a.2 — Complete measurement geometry and ROI-manager consumers.**
    Native thin-line Analyzer now integrates through the captured owner;
    finite scalar area/line manager batches preserve row order and stored T/C/Z
-   in actual menus and panel controls. Next implement angle/point/irregular-
-   polyline semantics, line bounds and remaining area geometry/measurement
+   in actual menus and panel controls. M1 now adds irregular-polyline sampling,
+   calibrated/reflex angles and open Bounds. Next implement point/multipoint,
+   remaining manager variants and area geometry/measurement
    options with independent references. Complete the required owning columns
    and manager variants before closing T04a.2. See the handoff below.
 6. **T04a.3 — Complete analysis persistence and replay.** After consumer
@@ -112,10 +114,22 @@ do not authorize spawning agents.
 
 ### T04a.2 — Measurement options, geometry and ROI-manager adoption
 
+- **Execution checkpoints:** finish these in order; each is a task with its own
+  closeout/waste review. They subdivide T04a.2, not the inventory or its completion
+  requirements. A failed checkpoint remains active rather than generating a
+  replacement build/runtime or another overlapping implementation.
+
+  | Checkpoint | Concrete implementation and easiest reuse path | Acceptance and handoff |
+  | --- | --- | --- |
+  | M1 — Delivered scoped path/angle/Bounds increment | Existing `line_measurement`, `target_analysis`, settings/bindings and shared formatter extended. Configured Profile and Analyzer sampling stay separate; existing observer/jobs/grouping reused. | Original irregular/empty/repeated-vertex samples, calibrated/reflex angles and open Bounds pass. Work/byte admission, zero-read angles, mixed ordering, actual menu/panel append, settings persistence and affected installed clients pass within the linked scope. M2-M4 remain required. |
+  | M2 — Point/multipoint and remaining manager commands | Inspect original point/count/position semantics and existing selection/manager command inventory first. Extend the same result rows and captured owner; reuse stored C/Z/T/default rules. Enumerate actual command IDs and options before editing. | Original/independent point and mixed-geometry references; defined empty/degenerate/count/unit behavior; selected/all/positioned variants required by the inventory; native/Python APIs and actual controls agree. No dropped rows or partial publication on refusal/cancel/staleness. |
+  | M3 — Required area/shape/measurement options | Reconcile Analyzer columns and every owning option/key against inventory and `TARGET_ANALYSIS.md`. Reuse existing masks/statistics and fused bounds; add missing geometry kernels only once. Specify threshold/redirect source capture and admission before implementing those consumers. | Every required column/option has supported behavior, default, validation, units/precision, API and UI consumer, and an independent reference. Cross-source/threshold failure and lifecycle checks pass where applicable. Any numerical work deferred to T09 has explicit requirement IDs and blocks a claim of complete measurement scope. |
+  | M4 — Measurement integration reconciliation | Exercise representative whole/area/line/path/angle/point and manager workflows together using the existing capture reader. Audit formatter/CSV, settings, source/history and result memory; reuse unchanged numerical evidence. | No unowned command/option residual; scoped integration receipt names platforms and missing evidence. Hand stable command/options/state contracts to T04a.3. Do not run a second full reference suite solely to refresh counts. |
+
 - **Current handoff:** captured finite-scalar areas/lines and grouped manager
   rows are scoped integrated in both Windows hosts. [Command/key gaps](TARGET_ANALYSIS.md#measurement-consumer-handoff)
-  identify remaining consumers. Next specify/implement angle and point rows,
-  original irregular-polyline sampling, line bounds and complete required
+  identify remaining consumers. Next specify/implement point/multipoint rows,
+  required manager variants and complete required
   area/shape/threshold/redirect columns with their options. Expand selected-row/
   other manager variants where required; preserve the delivered batch owner. Inspect actual `Document::measure`, Window/ROI-manager actions,
   Analyzer options and inventory residuals. List each required command, option,
@@ -181,6 +195,20 @@ A key is complete only when its default, validation, consumer, UI/API exposure,
 persistence and replay behavior (where applicable) agree. Reference the existing
 inventory; do not maintain a second competing option registry in prose.
 
+Each later task follows the same delivery sequence: enumerate residual command/
+option IDs from the inventory; freeze the smallest usable contract; implement
+core and bindings; connect both actual hosts and owning settings/state; verify
+the affected behavior; close out waste and update the next ready task. Persistence
+and replay belong to the feature's delivery, even when a shared follow-on owns
+their implementation. Do not mark the feature complete while that follow-on is
+open. An excluded non-commercial candidate needs a recorded eligibility decision
+and the supported replacement or remaining workflow gap.
+
+Default order after M1-M4 is T04a.3, T04b, T05, then the selection/edit/view
+foundation below. Move a task forward only for a documented dependency or a
+concrete usable workflow; T00 recovery and T02 measured overhead fixes remain
+bounded side work. Complete one coherent increment before opening the next.
+
 | Delivery stage | Efficient path and handoff required before advancing |
 | --- | --- |
 | Analysis/calibration: T04-T05 | Finish the current shared owner first, then geometry/manager, persistence and histogram/threshold consumers. Audit remaining calibrated time/distance/view consumers before enabling controls globally. |
@@ -189,6 +217,18 @@ inventory; do not maintain a second competing option registry in prose.
 | Advanced analysis/automation: T09/T12 | Reuse measured geometry, retained results and versioned operations. Add particle/stack/table tools and recorder/script/plugin consumers against stable contracts; C++ app remains usable without Python. |
 | Eligible Fiji workflows: T13 | Review each candidate's code, transitive dependencies and assets before incorporation. Deliver workflows individually on existing processing/ROI/view foundations; exclude non-commercial candidates explicitly. Candidate inventory entries are not approved scope or implemented plugins. |
 | Release: T14 + final T15 audit | Run representative end-to-end workflows, matched output/performance comparisons, supported-platform install/recovery and final command/option/settings coverage. Close required inventory residuals or obtain an explicit scope change; missing evidence stays open. |
+
+Use these completion checkpoints to prevent broad horizon rows from becoming
+indefinite rewrites:
+
+| Checkpoint | Required demonstrable result before closing the owning work |
+| --- | --- |
+| Analysis/configuration — T04/T05 | Measure/Profile/histogram/threshold and calibrated consumers agree across core, Python and both hosts; settings/defaults, Save/Open, replay/rebind and detached results work for every declared supported variant. |
+| Editing — T06/T08 with T15 | A user can create/edit/save a selection, apply the required filter/segmentation operation to the declared target extent, preview/cancel/undo it and repeat it from persisted options. Close remaining tools/filters individually against inventory, including required 3D/color cases. |
+| Slicing/views/data — T07/T10/T11 | Open the required layouts, navigate C/Z/T and XY/XZ/YZ, reslice/export/reopen with correct spatial metadata; qualify oblique/curved, multi-source and volume variants individually. Large sources exceed cache without unbounded RAM/GPU/history retention. |
+| Analysis/automation — T09/T12 | Required particle/stack/table workflows produce editable/exportable results and replay with declared source/ROI/options; versioned plugins/scripts have explicit compatibility/error rules; standalone C++ remains usable without Python. |
+| Fiji workflows — T13 | Each eligible workflow has its own dependency/license decision, native implementation, Python interface, real controls/results and independent numerical/workflow evidence. Named candidates are not delivered plugins. |
+| Release — T14/T15 | Final command/option/key reconciliation has no unowned required residuals; supported-platform install, recovery, regression and operational gates pass. Matched-output time/memory/UI measurements support only the performance claims actually made. |
 
 T00 reference recovery is a separate bounded investigation. Do not repeat
 unchanged full-tree/hash searches or let missing references stop independent
@@ -266,6 +306,15 @@ After **every task**, including documentation and fixes:
    entries. Link detailed evidence once. Change dependency/order/validation only
    when the findings justify it; do not append another historical report here.
 
+The task owner performs this review before handing off or starting the next
+task. Record observed cost (bytes, allocations, scans, build entries/time or
+repeated runs) when available; otherwise label the concern unmeasured. A deferred
+item must name an owner/task, a concrete fix boundary and the condition for
+revisiting it. Promote it into the next task when it causes repeated avoidable
+work, threatens admission/storage or is a prerequisite for correctness; otherwise
+leave it bounded in the backlog. Confirm the next task consumes the updated
+contract and does not recreate the same waste. No separate audit runner is needed.
+
 Use one concise closeout record, linked from the current task, with:
 `task/requirement IDs; delivered and remaining scope; check/evidence identities;
 waste finding and fix/defer/no-action reason; deferred owner/exit; storage and
@@ -293,35 +342,34 @@ feature or block unrelated ready work.
 
 ## Latest task closeout
 
-2026-11-04 T04a.2 captured line/manager increment: explicit native selection and
-manager modes preserve the old area-plus-profile API. Shared Measure/Measure
-ROIs menus and the ROI Manager Measure all button consume finite scalar areas
-and thin lines through existing Window jobs/leases and atomic result adoption.
-Frozen stored T/C/Z/defaults, row ordering, one read per distinct plane, original
-line sampling, Global/bypass, units/precision/CSV and scripted return timing
-are scoped verified. All 365 focused Windows product cases and 23 capture-tool
-checks pass; two native controls and six installed SDK clients pass on each
-Windows/Linux platform. [Receipt](parity/reviews/T04a2-captured-manager-20261104.json).
-This is integrated scope, not full T04a.2/family/release completion.
+2026-11-04 T04a.2 M1: irregular Analyzer paths, refreshed calibrated/reflex
+angles and open-selection Bounds are scoped integrated in both Windows hosts.
+553 unique focused product cases ultimately pass, one optional skip; 23 tool
+contracts, two native controls and six installed SDK clients per Windows/Linux
+platform pass. New 220 original observations preserve older fixtures/policies.
+[Receipt](parity/reviews/T04a2-path-angle-20261104.json). Next M2 points/manager,
+M3 area/shape/options and M4 reconciliation; T04a.3 still owns session/replay.
 
-Waste review: **fixed** per-row source validation/table decoding by sharing one
-source validation per plane and one lookup per preparation; grouped four rows
-use three reads in both actual hosts. Shared mask scratch estimation now takes
-a pointer, avoiding the implicit Selection copy through an optional temporary.
-Reuse existing jobs/result formatter/retention helpers and serial masks. No new
-Window header/controller, compiler cache, runtime, SDK generation or disposable runner.
-Final review added actual panel-button observation and cleaned touched native
-warnings before installed-client verification. SDK consumers stayed until all
-required checks and allocation review finished; no reconfiguration retry.
+Waste review: **fixed** unnecessary image acquisition/lookup decoding for
+angle-only groups; shared masks/statistics/jobs/formatter/observer reused.
+Actual UI verification exposed Measure all beyond the panel edge: move it below
+the explanatory text and require appended row counts in both manager probes.
+Earlier repeated-value checks were too weak to prove that click; retain their
+historical receipt without relabeling it. Empty native selection is not a pass:
+use registered test names and `--no-tests=error`. Coherent desktop installation
+resolves the old/new settings mismatch; final probe persistence observation
+uses the existing actual-file reader before transport. Failure diagnostics stay
+retained. Frontend fixes reuse unchanged core/SDK evidence.
 
-**Deferred to T04a.2:** angle/point/irregular-polyline, line Bounds and remaining
-area geometry/columns/options; T04a.3 retains persistence/recorder/replay work.
-T02 retains bounded shared-header fanout work; no broad refactor or processing-
-speed claim from these changes. Retired 28,701,850 bytes of consumer compiler
-scratch; verified 40,481,494 capture/diagnostic bytes in a 3,999,759-byte archive,
-then retired scratch. Known complete-root storage is 8,364,347,185 bytes before
-small public receipt/doc updates, plus 214 inaccessible subtrees; full budget
-remains unverified. Historical references/statuses are unchanged.
+**Deferred:** T14 profiles the bounded original irregular recurrence before
+optimizing its numerical steps; T02 owns existing unrelated warnings/fanout
+when a touched seam or measured repeated cost justifies action. **No action:**
+no new controller/cache/runtime/SDK generation, disposable runner or speculative
+rewrite. Retired 28,651,942 consumer compiler bytes after final review; verified
+2,409,281 capture/diagnostic bytes in a 297,415-byte lossless archive before
+scratch deletion. Known storage 8,368,737,854 bytes before small public/doc changes,
+plus 214 inaccessible subtrees; full budget remains unverified. Historical
+expectations and the full remaining scope are unchanged.
 
 ## Historical link compatibility
 

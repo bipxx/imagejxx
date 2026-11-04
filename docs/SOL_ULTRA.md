@@ -18,8 +18,11 @@ changes and do not infer live processes/agents from old receipts or role names.
 
 T04a.1 bounds/configured profiles and scoped read-only lifecycle are delivered;
 T04a.2 captured scalar area/line and grouped manager measurements now work in
-both Windows hosts. Next remaining geometry/options (including line bounds),
-then T04a.3 persistence/replay.
+both Windows hosts. T04a.2 now runs as M1 path/angle/Bounds qualification,
+M2 points/manager variants, M3 area/shape/options and M4 reconciliation. M1 is
+scoped integrated in both Windows hosts with original/native/installed checks;
+M2 is next. See PLAN for the remaining policies and platform limits.
+Then T04a.3 persistence/replay. Checkpoint details live only in PLAN.
 T04b histogram/threshold consumers can reuse the qualified ownership seam.
 See the current PLAN receipt for exact verification/platform limits.
 T00 remote CI/reference recovery and T02 demonstrated build/verification waste
@@ -35,6 +38,9 @@ controller, codec or verification framework without a demonstrated gap.
 
 Implement and validate the actual outcome, then apply
 [task closeout and waste review](PLAN.md#task-closeout-and-waste-review).
+Before the next task, fix small evidenced waste, or name its owning task,
+validation and revisit trigger; record no-action decisions with a reason.
+Update the queue when repeated cost, storage/admission or correctness warrants it.
 Keep one current compiler cache/runtime/installed SDK per platform, fresh owned
 scratch and bounded necessary evidence under AGENTS.md. A new failed run retains
 its own diagnosis; a passed receipt requires successful required retention too.

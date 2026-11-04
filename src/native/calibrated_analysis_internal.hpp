@@ -11,6 +11,13 @@ ImageJLineMeasurement calibrated_line_measurement_with_table(const Image&,
     const SpatialCalibration&,const ImageJIntensityCalibration&,
     const std::vector<std::uint32_t>&,const std::array<double,4>&,bool,std::size_t,
     bool source_validated = false,double voxel_z = 0);
+struct PolylineEstimate {std::size_t samples=0,work_steps=0,working_bytes=0;double length=0;std::array<int,4> bounds{};};
+PolylineEstimate estimate_polyline_measurement(int,int,PixelType,const SpatialCalibration&,
+    const std::vector<std::array<double,2>>&,std::size_t,std::size_t);
+ImageJPolylineMeasurement calibrated_polyline_measurement_with_table(const Image&,
+    const SpatialCalibration&,const ImageJIntensityCalibration&,const std::vector<std::uint32_t>&,
+    const std::vector<std::array<double,2>>&,bool,std::size_t,std::size_t,bool);
+std::array<int,4> angle_bounds(const std::array<std::array<double,2>,3>&);
 void validate_analysis_source(const Image&);
 std::size_t calibrated_profile_sample_count(const std::array<double,4>&,
     std::size_t requested = 0);

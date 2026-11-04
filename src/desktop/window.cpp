@@ -4183,6 +4183,7 @@ struct Window::Impl {
     const auto request=manager?roi_measurement_target_request(facade->nativeSnapshot(),{},limits.max_measurement_rows):TargetRequest{};
     const auto target=owner.controller_->resolve_target(request,facade->id);
     TargetAnalysisOptions options;options.measurement=manager?TargetMeasurementMode::RoiManager:TargetMeasurementMode::Selection;
+    options.reflex_angle=preferenceState.settings.boolean("reflex_angle");
     const auto command=resolve_target_analysis(target,options,limits);
     const auto rows=captured_measurement_row_bytes(command);
     const auto workspace=RenderMemory::add(command.estimate().working_bytes,rows);
@@ -10995,7 +10996,6 @@ void Window::Impl::rois() {
     });
   observeRoiManagerControl("roi_properties");
   ImGui::TextDisabled("Position: 1-based; 0 = all. Update keeps the saved position.");
-  ImGui::SameLine();
   act("Measure all", "measure_rois");
   observeRoiManagerControl("measure_rois");
   ImGui::BeginDisabled(!actionAllowed("load_rois"));

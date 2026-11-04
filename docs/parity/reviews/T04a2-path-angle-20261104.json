@@ -1,0 +1,590 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-04",
+  "task": "T04a.2 M1 irregular paths, refreshed/reflex angles and open Bounds",
+  "state": "verified_scoped",
+  "base_commit": "a5765740bdb6605167a80c00d849464f6dbdcf63",
+  "aspects": {
+    "implemented": "Pure C++ and Python APIs; captured selection/manager paths, bounded irregular sampling, refreshed/reflex angles, open-selection Bounds and shared setting.",
+    "verified": "553 unique focused Windows Python product cases ultimately pass; one optional skip; 23 capture-tool contracts; two native controls and six installed SDK clients on each Windows/Linux platform.",
+    "integrated": "Actual Measure/Measure ROIs/manager button in both Windows ImGui hosts; shared owner, settings persistence, CSV and retained lifecycle controls.",
+    "release_ready": false
+  },
+  "verification": {
+    "attempts": [
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/python001.xml",
+          "bytes": 32805,
+          "sha256": "f06a15655899053587fae5937bf4f265d932db6e695926ac2910ff2f0353683a"
+        },
+        "passed": 246,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/python-regression001.xml",
+          "bytes": 47399,
+          "sha256": "6d06825ac1a228883e994b71f609e6ed1ea6b16ace4db07d0ace2c594b1d89a2"
+        },
+        "passed": 307,
+        "failed": 2,
+        "skipped": 1
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/python-ui001.xml",
+          "bytes": 14766,
+          "sha256": "96e0a5d4dd18a83eddd81527fecc71ac68bce4d982f1a1412b84c1c1a9620a05"
+        },
+        "passed": 51,
+        "failed": 2,
+        "skipped": 1
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/python-ui002.xml",
+          "bytes": 42422,
+          "sha256": "bbce898b7a88064921ef5350269160943e7cba8aa824e467f571045906ca0974"
+        },
+        "passed": 281,
+        "failed": 1,
+        "skipped": 1
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/python-ui003.xml",
+          "bytes": 548,
+          "sha256": "86a4a45fa269c6d11cddbfc8a09f2bee4120d36b8868d130e2163dca0dd9e740"
+        },
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "unique_product_passed": 553,
+    "unique_tool_passed": 23,
+    "optional_skips": [
+      "tests.python.test_settings::test_settings_in_hidden_opengl_and_recreated_context"
+    ],
+    "original_new_observations": 220,
+    "native_controls_per_platform": 2,
+    "installed_sdk_clients_per_platform": 6,
+    "original_sdk_analysis_rows": 77,
+    "table_profiles": 128,
+    "fit_dtype_cells": 86,
+    "final_case_outcomes_sha256": "c326bd2db4253d06bfde71c73df1330481672bd3549cc9b2bbb41f949d599b6f",
+    "union_policy": "Latest outcome by classname/name across the pinned chronological JUnit attempts, excluding tools from product count; identities recoverable from those receipts."
+  },
+  "contracts": [
+    "Irregular Analyzer profile recurrence is separate from configured Profile sampling; Float32-normalized vertices and samples preserve the stated original semantics.",
+    "Angle policy is explicitly calibrated geometry refresh; older constructor/cached-angle fixtures retain their meaning.",
+    "Angle-only groups acquire zero source planes and decode no intensity lookup; mixed path/angle/area batch acquires one distinct pixel plane.",
+    "Aggregate path work and byte admission precede source reads; manager output order/atomic adoption remains shared.",
+    "Default reflex=false, strict Boolean validation, captured option, generic Preferences consumer and persisted reopen.",
+    "Version4 path/angle diagnostic provenance is not executable replay; old v1/v2/v3 meanings preserved.",
+    "Actual manager button moved below explanatory text to remain inside panel; tests require appended row count, not just repeated values."
+  ],
+  "failures_preserved": [
+    "Native ctest selector selected zero tests; corrected to registered names and --no-tests=error. Empty run is not a pass.",
+    "Two settings checks used old installed desktop schema; rebuilt desktop reinstalled and both checks pass.",
+    "New CSV row-count assertion exposed clipped manager button; product layout repaired and actual append checked in both hosts.",
+    "New persistence assertion guessed transport-relative preferences path; use maintained probe readJson observation of actual persisted file before transport."
+  ],
+  "limitations": [
+    "M2 point/multipoint/remaining manager variants and M3 area/shape/threshold/redirect/options remain open.",
+    "M4 measurement integration reconciliation and T04a.3 session persistence/recorder/replay remain open.",
+    "Finite scalar UInt8/UInt16/Float32, thin in-image paths only; wide/outside/bicubic/RGB/IEEE and full-family/release qualification not established.",
+    "Windows actual UI only; Linux installed core clients do not prove Linux or macOS UI.",
+    "No matched processing-speed superiority claim. Prior panel receipt compared repeated values without proving appended rows; strengthened checks provide current proof, without rewriting historical evidence.",
+    "Storage remains unverified with 214 inaccessible subtrees; retired local captures require lossless archive restoration."
+  ],
+  "waste_review": {
+    "fixed": [
+      "Angle-only groups avoid source acquisitions/table decode.",
+      "Reuse original observer, shared Float32 statistics, grouping/jobs/formatter and existing capture/retention paths.",
+      "Require registered native test names with --no-tests=error; install coherent desktop schema before UI checks.",
+      "Avoid repeat core/SDK builds for frontend fixes; only changed probe was recaptured on final correction."
+    ],
+    "deferred": [
+      {
+        "owner": "T02",
+        "work": "Existing unrelated shadow/uninitialized warnings and dependency fanout; inspect at touched seam or when repeated cost is demonstrated. The reported bounds array loop initializes all four values before use.",
+        "revisit": "Affected correctness or repeated measured build/maintenance cost."
+      },
+      {
+        "owner": "T14",
+        "work": "Measure irregular-sampling work and metadata normalization on matched outputs before changing original recurrence.",
+        "revisit": "Representative workflow profiling shows material cost; retain numerical policy/work caps."
+      }
+    ],
+    "no_action": "No new controller, cache, runtime, SDK generation, one-off runner or speculative broad rewrite."
+  },
+  "retention": {
+    "archive": {
+      "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/captures.zip",
+      "bytes": 297415,
+      "sha256": "9030d866e8df014f252258db23c2bb4c3b841238bb7bdb00019ef4a97401e500"
+    },
+    "manifest": {
+      "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/captures.manifest.json",
+      "bytes": 118548,
+      "sha256": "fa9531a8a77fcf70c4f6cbefab66db382970e03e7ac27377365dad00b0c3e5cc"
+    },
+    "pack": {
+      "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/retention-pack.json",
+      "bytes": 1454,
+      "sha256": "44cf2a7ef55dcebdf3cd18bbd017e29502d81793b358d069695902db69b85ba9"
+    },
+    "verify": {
+      "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/retention-verify.json",
+      "bytes": 1364,
+      "sha256": "a7e505f612ca5e0fb81695cb7e1f474423771e8684b85709bfc1c159d231da93"
+    },
+    "scratch_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/scratch-retirement.json",
+      "bytes": 611,
+      "sha256": "98e05572b6419a51f0c34c9c2ffb47575ed43b97cdb720db43dcad937465e3c1"
+    },
+    "scratch_bytes": 2409281,
+    "consumer_retired_bytes": 28651942,
+    "consumer_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/consumer-retirement-summary.json",
+      "bytes": 1696,
+      "sha256": "f60d600647011ddcc0bf42d200c785f5eec79b420bb210467741d2c920b67a6a"
+    }
+  },
+  "storage": {
+    "snapshot": {
+      "path": ".tmp/manual-workflow-verification/t04a2-path-post-retirement-20261104.json",
+      "bytes": 66572,
+      "sha256": "98ae3a00b9b3473c95433e2e4303203b478c7a505ef284a1b681a301c944b793"
+    },
+    "known_bytes": 8368737854,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "measurement_precedes_small_public_receipt_and_doc_updates": true
+  },
+  "source_inputs": [
+    {
+      "path": "include/imagejxx/line_measurement.hpp",
+      "bytes": 2947,
+      "sha256": "200388a91ac0a013a87773124179230bb857b1f65a85e35dd83d4936b87b5d77"
+    },
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 5379,
+      "sha256": "5c8b3ed1d227ab6b91fe87d2cb842f0a35d1a1d886ce908c5b6d412822d2c14c"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 59455,
+      "sha256": "5eed125fd80c4c6dccae7431c1a756af13e1f27805356102d5c5c75628a2d42f"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 5433,
+      "sha256": "0d65419c048275ba2aa237d0f794c9eacf12ad6a8ba0341fc71d695881bcddba"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 27938,
+      "sha256": "e3d1f7c9927fbbaf3f8bf6838951ee419edba444764346adb246cad1351bb0e6"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 660,
+      "sha256": "86fbecbf32bcf749810e8d90112c151af763300fb5203192367045c60a5e701a"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 63474,
+      "sha256": "ce4253368160adc22dffd3842725f34ce077d8f62a398ad4467513bfc7f8c243"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 61889,
+      "sha256": "3d6170738c516058d96fc422f75d90e554f0e907d09762224fb1c3a5c44a4a9d"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 871947,
+      "sha256": "5fbcea3d7fc9869e7f23bcbb13649ce979d7740140ec5707f3e9b28f32cd38ed"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 81627,
+      "sha256": "49683b1b358d3bad0fe159fab1ee89e14c8db9d513d30155bfe8edb488c84b65"
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 43509,
+      "sha256": "ec28033b5dca59c37352ba16bbff917a0e7ad0173df6635fd9ba0079aa1ef616"
+    },
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 25665,
+      "sha256": "52a80256788c17ff0f042badbe1d5f31b1a937a7687619f5eb11c38d684f01e2"
+    },
+    {
+      "path": "src/native/calibrated_analysis_internal.hpp",
+      "bytes": 1792,
+      "sha256": "5822d2ba4d3a7ea8fb674278ef4ce8d804d641c9854e189cf4611a5a3dbd792e"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 25015,
+      "sha256": "90c315128fe2d324baee1520958059876d9d3a5c9f481c071f49f4e4139aae1c"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 28682,
+      "sha256": "d1eb6c8f8c45766bf1bf9fbdf29007cdf5623c2825b2345497f863fec45b5721"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 6510,
+      "sha256": "94100384aca8659274c420078df73015844a8d92b379eb3a306c6786339ad234"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 8238,
+      "sha256": "2ef04a0f861f164084d82e7b44595e471c2211733ef8f322b41bd2f654fb5847"
+    },
+    {
+      "path": "tests/python/test_captured_roi_measurement_ui.py",
+      "bytes": 4995,
+      "sha256": "d649f75d812cb73e6eb717c425924da34dca43a19a226d7f0c8e6f6926b17472"
+    },
+    {
+      "path": "tests/python/test_target_measurements.py",
+      "bytes": 7838,
+      "sha256": "87a8526ea452594beb417e307de01f553ff3ef2501dcfc96544b587d037cd895"
+    },
+    {
+      "path": "tests/reference/ObserveSelectionMeasurements.java",
+      "bytes": 6864,
+      "sha256": "93cce40b9bf37072d1e76aec8ed2cd2b25cbdc826cf4f7ff67f17ee16e325258"
+    },
+    {
+      "path": "tests/python/test_path_measurements.py",
+      "bytes": 7002,
+      "sha256": "433a8aaaea68bd91e784280d4bbf0dcc0c29606ce2d5cd79b33ce18023a5868e"
+    },
+    {
+      "path": "tests/python/test_captured_path_measurement_ui.py",
+      "bytes": 2795,
+      "sha256": "ad121b6d625cd01244f1191ee2e7acf2d6be1c5a46365426ed449d6349e7f225"
+    },
+    {
+      "path": "tests/fixtures/path-measurements-imagej154r.jsonl.gz",
+      "bytes": 8129,
+      "sha256": "8a8cc1446f3861c3310343a4264128cc1defe7c507483ea83f8008fdb73b32c3"
+    }
+  ],
+  "owned_processes": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/compile.process.json",
+        "bytes": 2178,
+        "sha256": "245b442751109c238789b30f2884d2bbea5e68beb58ef47481f9c07f646b610f"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.5470000000204891
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/install-app001.process.json",
+        "bytes": 2099,
+        "sha256": "07e2e5769751fc5f860a3e14aeaacb1ec9e6b1c1ed5e80cc49d45f522a35cb82"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.17199999978765845
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/install-app002.process.json",
+        "bytes": 2098,
+        "sha256": "b891399f77f5786c9679fad18b66eb3d4c51060373fcb35a211906779b0d735d"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/install-app003.process.json",
+        "bytes": 2095,
+        "sha256": "b9f432627a524697a08d0f59d6b8596b97d6037beadd0642983f15026016a2f1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.5160000000614673
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/install-desktop001.process.json",
+        "bytes": 2109,
+        "sha256": "a41584f4a1f22c02786c8abe5551539c0e42df09fd31ba6fe25685fa805bd170"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.14000000013038516
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/install-desktop002.process.json",
+        "bytes": 2110,
+        "sha256": "47496a685f432f02df309374b824b5349496bc49546832cb526119b25eb9281f"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.1559999999590218
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/install-desktop003.process.json",
+        "bytes": 2109,
+        "sha256": "142c5dc7714d24b45f47bd22c552d7a5dc7d6bd941ba2c59df82298811529eae"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.7029999999795109
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/install-processing001.process.json",
+        "bytes": 2115,
+        "sha256": "bef6e7fa42a2b572048581d90e60bf5743599732b67fd5c55f5a36989eb763b6"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.4380000000819564
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/install-sdk001.process.json",
+        "bytes": 2088,
+        "sha256": "89a315a584266ff2c21bb0f62411e9adca6cea5d56fe5f07fd32b88f04ee9fd6"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.125
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/linux-install-sdk001.process.json",
+        "bytes": 1594,
+        "sha256": "7ee603968837d4ca3d6379cd8f07cf14da1c6aac0c4200c9539d0c7b40fbe813"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 2.914947078
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/linux-native-build.process.json",
+        "bytes": 1581,
+        "sha256": "dc81acd7fb3cdbf09d3d48ede8b90cd279a4745bddd65cfc77334d80f34716a7"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 24.841290436999998
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/linux-native-tests001.process.json",
+        "bytes": 1568,
+        "sha256": "81d81c4748a8bac73a31ffacfc20a7e1dec667c9a0373b7e7172c3b54a5ba99e"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.12863374400000005
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/linux-sdk-build001.process.json",
+        "bytes": 1535,
+        "sha256": "cc6480081568db49657479d59f116c3fccfbfcb6a34a67d91577eb5d808785cf"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 15.719473733999997
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/linux-sdk-configure001.process.json",
+        "bytes": 2023,
+        "sha256": "b27de80160370008da01c7fa7539d756d26b11a200d37d65623482ff37c4d9f4"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 4.79508904
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/linux-sdk-test001.process.json",
+        "bytes": 1559,
+        "sha256": "13d0f34600d2e96cd08016e05c372f6a1ebab7cc18deb6f14b835816329ae387"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.6163286419999991
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/observe-baseline.process.json",
+        "bytes": 2120,
+        "sha256": "1e496e6a68583268d7d672e09479d0fd22997bb58392fcc09c312b82f8192cb4"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.2190000000409782
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/observe-float32.process.json",
+        "bytes": 2150,
+        "sha256": "4e3d683f6b5246f4d42883507b4f30fa2d6ec0c3eff5711b56164d5b0ed81015"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.2970000000204891
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/observe-uint16.process.json",
+        "bytes": 2137,
+        "sha256": "fc6b3f860c7dcbf897fa9aaeaf558d81f4a1b0dfbd602d2b0d9c749d072dc11f"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.375
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/observe-uint8.process.json",
+        "bytes": 2151,
+        "sha256": "c613980e5d4a236896ed7f55ec1cd3fa4723e1733922756a1a177542a3494509"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.18799999984912574
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/path-python001.process.json",
+        "bytes": 2305,
+        "sha256": "658b06fc3b743af5293d9a351dae4b75c8f92a864311aff5decdbc666d8af1fe"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.406999999890104
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/python-regression001.process.json",
+        "bytes": 2495,
+        "sha256": "67bdc2c94e5e97fdd38edec912a09f0b6a4795c0fff7fee5c1f7ca22b48ef112"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 6.921000000089407
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/python-ui001.process.json",
+        "bytes": 2455,
+        "sha256": "f25b77578c1101a381fc6dbcaa5e111399323c580740e4a58108bb47deb38847"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 2.625
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/python-ui002.process.json",
+        "bytes": 2514,
+        "sha256": "8ff4ebd99bd2e2f0c3d8621e8e98ab4fb27e1da7c70ce4374ea553369a761fc4"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 3.6879999998491257
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/python-ui003.process.json",
+        "bytes": 2274,
+        "sha256": "7e265498d42f8853f4ec9b94b10c0d51c8844ab59f96ed969a4cff3080d17bcb"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 2.1410000000614673
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/sdk-build001.process.json",
+        "bytes": 2025,
+        "sha256": "31bf2287361c0642b5f688691fd6f3105f8bd4757165f9b4258cb0fa323a0b60"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 7.609000000171363
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/sdk-configure001.process.json",
+        "bytes": 2509,
+        "sha256": "23aa8be973ce2f72bc74e4ac521cf6a4859b29e0dbf2d122ad0451dc58373172"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 5.827999999979511
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/sdk-test001.process.json",
+        "bytes": 2044,
+        "sha256": "a654817960a2b89ef26a53f5f01ed400bd45c4a55d3f6c2262bfe9fd91cc9a5b"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.6719999997876585
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/windows-desktop-build001.process.json",
+        "bytes": 2034,
+        "sha256": "fc7063157b232481d0b76f0f231cd439f5829210b50c73ee781b98693d8e5586"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 49.32799999997951
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/windows-desktop-build002.process.json",
+        "bytes": 2033,
+        "sha256": "c153ef772196d3c2c9e803a909866aca0478424363dbe63fc46a3156b00c3554"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 36.48399999993853
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/windows-desktop-build003.process.json",
+        "bytes": 2033,
+        "sha256": "6960dd60a49fdcda7d6c56cbec900a6f4885ec434393e38405d929efc1e4bf5d"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 18.218000000109896
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/windows-native-build.process.json",
+        "bytes": 2086,
+        "sha256": "9ed6dacebf2478ee19d7dd39a393c40641c44a0a920b8ef2405ac20ccd769f8b"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 52.09400000004098
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/windows-native-tests001.process.json",
+        "bytes": 2040,
+        "sha256": "c038d887601f6657f86a45901c3e333f3eaad0a73f1a117852f3baeda6e0aa93"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.0940000000409782
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/windows-native-tests002.process.json",
+        "bytes": 2057,
+        "sha256": "ac9cd2218d0b2dc8bf745fbd442648fca801bfe571952067cafc73663751069c"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.1720000000204891
+    }
+  ],
+  "reference_identity": {
+    "path": ".tmp/manual-workflow-verification/t04a2-path-20261104/reference-observation.json",
+    "bytes": 360,
+    "sha256": "0be8f0d71a11f5921eb13ce3c77c42d034be96b51a5fa082b52647f7273489b2"
+  }
+}

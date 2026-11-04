@@ -20,12 +20,14 @@ struct TargetAnalysisOptions {
   TargetMeasurementMode measurement = TargetMeasurementMode::Area;
   // Manager mode: empty means every stored row; otherwise ordered unique IDs.
   std::vector<std::size_t> roi_indices;
+  bool reflex_angle = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
   std::size_t max_working_bytes = 128ULL * 1024 * 1024;
   std::size_t max_record_bytes = 16ULL * 1024 * 1024;
   std::size_t max_measurement_rows = 100000;
+  std::size_t max_measurement_work = 32ULL*1024*1024;
 };
 struct TargetAnalysisEstimate {
   std::size_t plane_count=0, plane_pixels=0, total_pixels=0,
@@ -37,8 +39,9 @@ struct TargetAnalysisPlane {
   PlanePosition position;
   std::optional<ImageJScalarStatistics> statistics;
   std::vector<double> profile_values;
-  // Tight geometric mask membership, independent of density NaN exclusions.
-  // nullopt denotes an empty geometric mask or a profile-only row.
+  // Area: tight mask membership independent of density NaN exclusions.
+  // Lines/polylines/angles: ImageJ open-selection drawing bounds.
+  // nullopt denotes an empty area mask or profile-only row.
   std::optional<std::array<int,4>> bounds;
   std::optional<std::size_t> roi_index;
   std::optional<double> length, angle_degrees;

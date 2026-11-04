@@ -13,6 +13,7 @@ import ij.process.FloatProcessor;
 /** Original ImageJ calls only; never imports or uses imagejxx output. */
 public class ObserveSelectionMeasurements {
   static String inputType="uint8";
+  static boolean geometry=false,interpolate=true,reflex=false;
   static String number(double value) {
     if (Double.isNaN(value)) return "\"nan\"";
     if (Double.isInfinite(value)) return value > 0 ? "\"inf\"" : "\"-inf\"";
@@ -41,26 +42,68 @@ public class ObserveSelectionMeasurements {
       roi=new PolygonRoi(x,y,x.length,kind.equals("angle")?Roi.ANGLE:Roi.POLYLINE);
     }
     image.setRoi(roi);roi.setStrokeWidth(1);
+    ij.gui.PlotWindow.interpolate=interpolate;ij.Prefs.reflexAngle=reflex;
+    if(geometry && kind.equals("angle")) {
+      try {java.lang.reflect.Method refresh=PolygonRoi.class.getDeclaredMethod("getAngleAsString");
+        refresh.setAccessible(true);refresh.invoke(roi);
+      } catch(Exception error) {throw new RuntimeException(error);}
+    }
     ResultsTable table=new ResultsTable();
     Analyzer analyzer=new Analyzer(image,Measurements.AREA|Measurements.MEAN|Measurements.STD_DEV|
-      Measurements.MIN_MAX|Measurements.MEDIAN|Measurements.CENTROID|Measurements.INTEGRATED_DENSITY,table);
-    analyzer.measure();
+      Measurements.MIN_MAX|Measurements.MEDIAN|Measurements.CENTROID|Measurements.INTEGRATED_DENSITY|
+      (geometry?Measurements.RECT:0),table);
+    String failure=null;
+    try {analyzer.measure();}catch(RuntimeException error){if(!geometry)throw error;failure=error.getClass().getName();}
     StringBuilder row=new StringBuilder("{\"kind\":\"").append(kind).append("\",\"spacing\":[")
       .append(sx).append(',').append(sy).append("],\"density\":\"").append(density).append("\",\"points\":[");
     for(int i=0;i<xy.length;i++){if(i>0)row.append(',');row.append(xy[i]);}
     row.append(']');
     if(!inputType.equals("uint8"))row.append(",\"type\":\"").append(inputType).append('"');
+    if(geometry) {
+      java.awt.Rectangle bounds=roi.getBounds();
+      row.append(",\"bounds\":[").append(bounds.x).append(',').append(bounds.y).append(',').append(bounds.width).append(',').append(bounds.height).append(']');
+      row.append(",\"interpolate\":").append(interpolate).append(",\"reflex\":").append(reflex);
+      if(kind.equals("angle"))row.append(",\"angle_policy\":\"calibrated_refresh\"");
+      if(failure!=null)row.append(",\"error\":\"").append(failure).append('"');
+      if(!kind.equals("angle") && failure==null) {
+        double[] profile=new ij.gui.ProfilePlot(image).getProfile();row.append(",\"profile\":[");
+        for(int i=0;i<profile.length;i++){if(i>0)row.append(',');row.append(number(profile[i]));}row.append(']');
+      }
+    }
     row.append(",\"roi_length\":").append(number(roi.getLength())).append(",\"columns\":{");
     boolean first=true;
-    for(String heading:table.getHeadings()) {
+    for(String heading:failure==null?table.getHeadings():new String[0]) {
       if(!first)row.append(',');first=false;
       row.append('"').append(heading).append("\":").append(number(table.getValue(heading,0)));
     }
     System.out.println(row.append("}}"));
   }
+  static void geometryCases() {
+    Analyzer.setRedirectImage(null);
+    double[][] paths={{0,0,2,0,2,2},{.25,.5,3.25,2.5,5.5,1.25},{2,2,2,2},
+      {0,0,0,0},{0,0,2,2,2,2,4,1},{5.5,3.25,1.25,.5,.25,1.5},{2,1,4,1}};
+    for(double[] spacing:new double[][]{{1,1},{.5,2}}) {
+      for(String density:inputType.equals("float32")?new String[]{"raw"}:new String[]{"raw","linear","square"})
+        for(boolean sampling:new boolean[]{false,true}) {
+          interpolate=sampling;reflex=false;
+          for(double[] path:paths)observe("polyline",path,spacing[0],spacing[1],density);
+        }
+      if(inputType.equals("uint8")) {
+        for(boolean option:new boolean[]{false,true}) {reflex=option;
+          for(double[] points:new double[][]{{0,0,2,1,4,0},{0,0,0,0,2,1},{0,0,1,0,2,0},{2,2,2,2,2,2}})
+            observe("angle",points,spacing[0],spacing[1],"raw");
+        }
+        reflex=false;
+        for(double[] points:new double[][]{{0,0,4,2},{.25,.5,5.5,3.25},{2,2,2,2},{4,2,0,0}})
+          observe("line",points,spacing[0],spacing[1],"raw");
+      }
+    }
+  }
   public static void main(String[] args) {
     if(args.length>0)inputType=args[0];
     if(!inputType.equals("uint8") && !inputType.equals("uint16") && !inputType.equals("float32"))throw new IllegalArgumentException("Unknown input type");
+    geometry=args.length>1 && args[1].equals("geometry");
+    if(geometry){geometryCases();return;}
     Analyzer.setRedirectImage(null);
     ij.Prefs.reflexAngle=false;
     for(double[] spacing:new double[][]{{1,1},{.5,2}}) {

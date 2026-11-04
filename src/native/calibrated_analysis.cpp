@@ -199,6 +199,141 @@ static std::vector<double> profile_impl(const Image& im,const ImageJIntensityCal
   }
   return result;
 }
+namespace {
+std::array<int,4> open_bounds(double x0,double y0,double x1,double y1) {
+  const std::array<double,4> edge{std::floor(x0+.5),std::floor(y0+.5),std::floor(x1+1.5),std::floor(y1+1.5)};
+  for(double v:edge)if(!std::isfinite(v) || v<std::numeric_limits<int>::min() || v>std::numeric_limits<int>::max())
+    throw std::invalid_argument("Open selection bounds exceed integer coordinates");
+  if(edge[2]-edge[0]>std::numeric_limits<int>::max() || edge[3]-edge[1]>std::numeric_limits<int>::max())
+    throw std::invalid_argument("Open selection bounds extent exceeds integer coordinates");
+  return {int(edge[0]),int(edge[1]),int(edge[2]-edge[0]),int(edge[3]-edge[1])};
+}
+struct NormalizedPath {
+  std::vector<std::array<float,2>> relative,absolute;
+  std::array<int,4> bounds{};
+};
+NormalizedPath normalize_path(const std::vector<std::array<double,2>>& points) {
+  if(points.size()<2 || points.size()>4096)throw std::invalid_argument("Measurement path requires 2..4096 vertices");
+  std::array<float,2> low{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()},high{-low[0],-low[1]};
+  for(const auto& p:points)for(int a=0;a<2;++a) {
+    kernel_checkpoint_periodic();
+    if(!std::isfinite(p[a]) || std::abs(p[a])>std::numeric_limits<float>::max())
+      throw std::invalid_argument("Measurement vertices require finite Float32 coordinates");
+    low[a]=std::min(low[a],float(p[a]));high[a]=std::max(high[a],float(p[a]));
+  }
+  NormalizedPath out;out.bounds=open_bounds(low[0],low[1],high[0],high[1]);
+  out.relative.reserve(points.size());out.absolute.reserve(points.size());
+  for(const auto& p:points) {
+    std::array<float,2> relative{},absolute{};
+    for(int a=0;a<2;++a){relative[a]=float(p[a])-low[a];absolute[a]=relative[a]+low[a];}
+    out.relative.push_back(relative);out.absolute.push_back(absolute);
+  }
+  return out;
+}
+struct PolylinePlan {NormalizedPath path;detail::PolylineEstimate estimate;};
+PolylinePlan polyline_plan(int width,int height,PixelType type,const SpatialCalibration& spatial,
+    const std::vector<std::array<double,2>>& points,std::size_t maximum,std::size_t work_limit) {
+  spatial.validate();
+  if(width<=0 || height<=0 || !work_limit ||
+      (type!=PixelType::UInt8 && type!=PixelType::UInt16 && type!=PixelType::Float32))
+    throw std::invalid_argument("Invalid scalar polyline measurement layout or work limit");
+  cap(add(8192,mul(points.size(),32)),maximum);
+  PolylinePlan out;out.path=normalize_path(points);auto& e=out.estimate;e.bounds=out.path.bounds;
+  double pixel_length=0;
+  for(const auto& p:out.path.absolute)
+    if(!std::isfinite(p[0]) || !std::isfinite(p[1]) || p[0]<0 || p[1]<0 || p[0]>width-1 || p[1]>height-1)
+      throw std::invalid_argument("Polyline vertices must be inside the source image after Float32 normalization");
+  for(std::size_t n=1;n<points.size();++n) {
+    kernel_checkpoint_periodic();const auto a=out.path.absolute[n-1],b=out.path.absolute[n];
+    const double dx=double(b[0])-double(a[0]),dy=double(b[1])-double(a[1]);
+    const auto length=std::sqrt(dx*dx+dy*dy);pixel_length+=length;
+    const auto steps=std::floor(length/.01)+(points.size()==2?1:0);
+    if(!std::isfinite(steps) || steps>std::numeric_limits<int>::max()-1 || steps>double(work_limit))
+      throw std::invalid_argument("Polyline measurement exceeds its work limit");
+    e.work_steps=add(e.work_steps,std::max<std::size_t>(1,std::size_t(steps)));
+    if(e.work_steps>work_limit)throw std::invalid_argument("Polyline measurement exceeds its work limit");
+    // PolygonRoi length subtracts its relative coordinates as float first.
+    const auto ra=out.path.relative[n-1],rb=out.path.relative[n];
+    const double vx=double(rb[0]-ra[0])*spatial.spacing[0],vy=double(rb[1]-ra[1])*spatial.spacing[1];
+    const auto& d=spatial.direction;
+    e.length+=std::hypot(d[0]*vx+d[1]*vy,d[3]*vx+d[4]*vy,d[6]*vx+d[7]*vy);
+  }
+  if(!std::isfinite(e.length) || !std::isfinite(pixel_length))throw std::invalid_argument("Polyline length must be finite");
+  e.samples=std::min(e.work_steps,add(std::size_t(std::ceil(pixel_length/.995)),points.size()+1));
+  const std::size_t bins=type==PixelType::UInt8?256:type==PixelType::UInt16?65536:0;
+  e.working_bytes=add(8192,add(mul(points.size(),32),add(mul(e.samples,sizeof(double)+sizeof(float)),mul(bins,sizeof(std::uint32_t)))));
+  cap(e.working_bytes,maximum);return out;
+}
+std::vector<double> irregular_values(const Image& im,const ImageJIntensityCalibration& density,
+    const std::vector<std::uint32_t>& lut,const PolylinePlan& plan,bool interpolate) {
+  std::vector<double> result;result.reserve(plan.estimate.samples);
+  auto sample=[&](int x,int y){const auto raw=im.at(x,y);return im.type==PixelType::Float32?raw:value(std::size_t(raw),density,lut);};
+  auto read=[&](double x,double y){
+    x=std::clamp(x,0.0,double(im.width-1));y=std::clamp(y,0.0,double(im.height-1));
+    if(!interpolate)return sample(int(std::floor(x+.5)),int(std::floor(y+.5)));
+    const auto ix=int(x),iy=int(y),jx=std::min(ix+1,im.width-1),jy=std::min(iy+1,im.height-1);
+    const auto lo=sample(ix,iy)+(x-ix)*(sample(jx,iy)-sample(ix,iy));
+    const auto hi=sample(ix,jy)+(x-ix)*(sample(jx,jy)-sample(ix,jy));return lo+(y-iy)*(hi-lo);
+  };
+  double lastx=0,lasty=0;
+  for(std::size_t n=1;n<plan.path.absolute.size();++n) {
+    const auto a=plan.path.absolute[n-1],b=plan.path.absolute[n];
+    double x=a[0],y=a[1];const double dx=double(b[0])-x,dy=double(b[1])-y;
+    const auto length=std::sqrt(dx*dx+dy*dy);
+    const double xinc=length?dx*.01/length:0,yinc=length?dy*.01/length:0;
+    auto remaining=int(length/.01)+(plan.path.absolute.size()==2?1:0);
+    do {
+      kernel_checkpoint_periodic();const auto vx=x-lastx,vy=y-lasty;
+      if(std::sqrt(vx*vx+vy*vy)>=1.0-.01/2) {
+        if(result.size()==plan.estimate.samples)throw std::invalid_argument("Polyline samples exceed admitted bound");
+        result.push_back(read(x,y));lastx=x;lasty=y;
+      }
+      x+=xinc;y+=yinc;
+    }while(--remaining>0);
+  }
+  return result;
+}
+ImageJScalarStatistics profile_statistics(std::vector<double> values,const SpatialCalibration& spatial,std::size_t maximum) {
+  for(auto& v:values){kernel_checkpoint_periodic();
+    if(!std::isfinite(v) || std::abs(v)>std::numeric_limits<float>::max())
+      throw std::invalid_argument("Line measurement requires finite Float32-representable profile values");
+    v=double(float(v));
+  }
+  Image samples(1,1,1,PixelType::Float32);
+  if(values.empty()) {
+    Image mask(1,1,1,PixelType::UInt8);
+    return statistics_impl(samples,spatial,ImageJIntensityCalibration::uncalibrated(),&mask,maximum,nullptr);
+  }
+  samples.width=int(values.size());samples.pixels=std::move(values);
+  return statistics_impl(samples,spatial,ImageJIntensityCalibration::uncalibrated(),nullptr,maximum,nullptr);
+}
+}
+std::array<int,4> imagej_line_bounds(const std::array<double,4>& p) {
+  for(double v:p)if(!std::isfinite(v))throw std::invalid_argument("Line bounds require finite coordinates");
+  return open_bounds(std::min(p[0],p[2]),std::min(p[1],p[3]),std::max(p[0],p[2]),std::max(p[1],p[3]));
+}
+double imagej_calibrated_angle(const std::array<std::array<double,2>,3>& points,const SpatialCalibration& spatial,bool reflex) {
+  spatial.validate();const auto normalized=normalize_path(std::vector<std::array<double,2>>(points.begin(),points.end()));
+  auto heading=[&](std::size_t n){const auto a=normalized.relative[n],b=normalized.relative[n+1];
+    const double dx=(double(b[0])-a[0])*spatial.spacing[0],dy=(double(a[1])-b[1])*spatial.spacing[1];
+    if(!std::isfinite(dx) || !std::isfinite(dy))throw std::invalid_argument("Angle vectors must be finite");
+    return (180.0/3.141592653589793)*std::atan2(dy,dx);
+  };
+  auto angle=std::abs(180-std::abs(heading(0)-heading(1)));if(angle>180)angle=360-angle;
+  return reflex?360-angle:angle;
+}
+std::vector<double> imagej_calibrated_irregular_profile(const Image& im,const ImageJIntensityCalibration& density,
+    const std::vector<std::array<double,2>>& points,bool interpolate,std::size_t maximum,std::size_t work) {
+  shape(im);density.validate_for(im.type,im.channels);const auto plan=polyline_plan(im.width,im.height,im.type,{},points,maximum,work);
+  pixels(im);return irregular_values(im,density,table(density),plan,interpolate);
+}
+ImageJPolylineMeasurement imagej_calibrated_polyline_measurement(const Image& im,const SpatialCalibration& spatial,
+    const ImageJIntensityCalibration& density,const std::vector<std::array<double,2>>& points,bool interpolate,
+    std::size_t maximum,std::size_t work) {
+  shape(im);density.validate_for(im.type,im.channels);const auto plan=polyline_plan(im.width,im.height,im.type,spatial,points,maximum,work);
+  pixels(im);auto values=irregular_values(im,density,table(density),plan,interpolate);
+  return {profile_statistics(std::move(values),spatial,maximum),plan.estimate.length,plan.estimate.bounds};
+}
 ImageJScalarStatistics imagej_calibrated_statistics(const Image& im,const SpatialCalibration& spatial,
     const ImageJIntensityCalibration& density,const Image* mask,std::size_t maximum) {
   return statistics_impl(im,spatial,density,mask,maximum,nullptr);
@@ -228,15 +363,7 @@ static ImageJLineMeasurement line_measurement_impl(const Image& im,
       !std::all_of(out.midpoint_world.begin(),out.midpoint_world.end(),[](double v){return std::isfinite(v);}))
     throw std::invalid_argument("Line measurement geometry must be finite");
   auto values=profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,supplied,0,source_validated);
-  for(auto& value:values) {
-    kernel_checkpoint_periodic();
-    if(!std::isfinite(value) || std::abs(value)>std::numeric_limits<float>::max())
-      throw std::invalid_argument("Line measurement requires finite Float32-representable profile values");
-    value=double(float(value));
-  }
-  Image samples(1,1,1,PixelType::Float32);samples.width=int(values.size());
-  samples.pixels=std::move(values);
-  out.statistics=statistics_impl(samples,spatial,ImageJIntensityCalibration::uncalibrated(),nullptr,maximum,nullptr);
+  out.statistics=profile_statistics(std::move(values),spatial,maximum);
   return out;
 }
 ImageJLineMeasurement imagej_calibrated_line_measurement(const Image& im,
@@ -245,6 +372,20 @@ ImageJLineMeasurement imagej_calibrated_line_measurement(const Image& im,
   return line_measurement_impl(im,spatial,density,x1,y1,x2,y2,interpolate,maximum,nullptr,false);
 }
 namespace detail {
+PolylineEstimate estimate_polyline_measurement(int width,int height,PixelType type,const SpatialCalibration& spatial,
+    const std::vector<std::array<double,2>>& points,std::size_t maximum,std::size_t work) {
+  return polyline_plan(width,height,type,spatial,points,maximum,work).estimate;
+}
+ImageJPolylineMeasurement calibrated_polyline_measurement_with_table(const Image& im,const SpatialCalibration& spatial,
+    const ImageJIntensityCalibration& density,const std::vector<std::uint32_t>& lut,
+    const std::vector<std::array<double,2>>& points,bool interpolate,std::size_t maximum,std::size_t work,bool validated) {
+  shape(im);density.validate_for(im.type,im.channels);const auto plan=polyline_plan(im.width,im.height,im.type,spatial,points,maximum,work);
+  if(!validated)pixels(im);
+  return {profile_statistics(irregular_values(im,density,lut,plan,interpolate),spatial,maximum),plan.estimate.length,plan.estimate.bounds};
+}
+std::array<int,4> angle_bounds(const std::array<std::array<double,2>,3>& points) {
+  return normalize_path(std::vector<std::array<double,2>>(points.begin(),points.end())).bounds;
+}
 void validate_analysis_source(const Image& image){shape(image);pixels(image);}
 std::size_t calibrated_profile_sample_count(const std::array<double,4>& p,std::size_t requested) {
   if(requested && (requested<2 || requested>1000000))
