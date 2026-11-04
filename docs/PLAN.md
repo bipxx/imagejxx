@@ -42,8 +42,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | Canvas/XYZ geometry | Effective spatial input integrated and scoped verified in both hosts. | Finish remaining view/fit/source variants through T07/T11. |
 | Calibrated analysis kernels | Implemented; recorded verification has 77 original numerical cases on both installed SDKs and 83 Windows Python cases. Published as 1d43ea8; changed Windows CI consumer passes. | T00 tracks remote CI/reference availability; T03 provides admission, T04 owns UI integration. |
 | Captured analysis preparation | T03 implemented and scoped verified: 625 unique Windows Python cases ultimately pass (39 new); four native controls and six installed SDK clients per platform on Windows/Linux. | T04 integrates actual UI/jobs/settings/replay; no full-family or UI completion claim. |
+| Area measurement UI | First T04a increment: actual Measure menus in both Windows ImGui hosts use frozen scalar area analysis; settings/CSV, Global/bypass, cancellation and stale Global refusal pass. | Finish T04a geometry, profiles, ROI-manager scope, lifecycle and replay; this is not completed T04a. |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Last T03 inventory: 8,485,109,186 known bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Last T04a inventory: 8,350,208,707 known bytes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Near-term queue
@@ -74,8 +75,15 @@ preservation and stale-result/resource guarantees stay strict where applicable.
    validates the captured target. [Contract](TARGET_ANALYSIS.md) and
    [evidence](parity/reviews/T03-target-analysis-20261104.json). Current numerical
    mode limits remain explicit requirements for their owning follow-on work.
-4. **T04a — Actual measurement/profile UI and ownership.** This is the next
-   executable product task. Inspect `Document::measure`, Window measure/ROI/
+4. **T04a — Actual measurement/profile UI and ownership.** In progress: the
+   first finite-scalar area Measure increment is integrated in both Windows
+   hosts; [evidence](parity/reviews/T04a-area-measurement-ui-20261104.json).
+   Python scripted Measure retains immediate results; actual UI work is
+   asynchronous. Next batch native tight mask bounds, non-area geometry and
+   configured/profile primitives before expanding frontend consumers. Remove
+   the temporary second bounds raster, preserving results and source-read
+   counts. Include ROI-manager, pending-result Clear, and queued/ready/close/CZT cases in that batch's
+   specifications; the remaining T04a outcome is still required. Inspect `Document::measure`, Window measure/ROI/
    profile actions and live/saved plot owners before editing. Reuse T03 and
    existing jobs/resource leases; capture source, options, selection, C/Z/T and
    calibration once. Implement consumed area/length/angle, measurement columns,
@@ -185,31 +193,35 @@ feature or block unrelated ready work.
 | Shared headers/Make flags fanout | T02 plus each source owner: batch coherent edits; consider isolation after measurement. | Recorded full Linux core 538 s vs 9 s successor; desktop 671 s vs 21 s successor are different workloads, not speed benchmarks. |
 | Repeated calibration queries per draw | T07 owner: capture once per draw and derive spacing from that value when correct. | Confirm repeated validation calls; measure frame cost before claiming a speed gain. |
 | Window hub responsibilities | T04/T06-T12 owners: extract cohesive controllers at touched seams. | No whole-file rewrite based only on its roughly 15,500-line size; preserve input/publication ownership. |
+| Area measurement Bounds reraster | T04a next native geometry/profile API batch: return bounds while the first mask is resident, then remove frontend reraster. | Preserve tight bounds, ROI membership, cancellation, one provider read and memory-cap refusal. Current duplicate stays inside admitted serial mask workspace. |
 | Late test/API assumptions and early SDK scratch retirement | Fixed process in AGENTS.md: inspect signatures/read-only bindings/exception types and review allocations before installed-client checks; retire scratch after final review. | T03 diagnostics preserve the avoided assumptions and repeated configuration cost. No new audit framework. |
 | Repeated live planning history | This task: three concise current documents, exact historical ledgers, compatible links. | Future task closeout updates rows in place. |
 
 ## Latest task closeout
 
-2026-11-04 T03: native preparation and Python interfaces implemented and scoped
-verified. 625 unique Python cases ultimately pass, including 39 new cases; four
-native controls and six installed SDK clients pass on each of Windows/Linux.
-Original 77-row analysis, 128 table profiles and 86 fit dtype cells remain
-unchanged. Actual UI/job adoption/settings/replay and macOS remain open.
+2026-11-04 T04a area increment: shared actual Measure menu now adopts frozen
+finite-scalar whole/area results through existing Window jobs, including
+scientific T/C/Z, Global/bypass units and row-memory ownership. Python scripted
+Measure keeps its synchronous return contract. Results columns/precision and
+independent scientific CSV export work; IEEE summaries remain explicit strings.
+196 of 199 focused Python cases ultimately pass, with three optional OS/standalone
+checks skipped; all 11 new cases and 23 observation-tool contracts pass. Native
+processing archive/module stayed unchanged, so installed SDK checks were reused.
 
-Waste review reused admission, bounded metadata matching, execution scopes,
-numeric kernels, a shared Python formatter, existing carriers and active caches/
-runtimes/SDKs. One lookup is decoded per preparation; direct effective-record
-construction removes displaced local-text copying. Existing sampling estimates
-already conservatively charged that copy; no cap violation or speed/RSS claim.
+Waste review: no new scheduler/controller or disposable verifier; cohesive row
+helpers extracted from Window. After a timing-compatibility fix only _desktop
+rebuilt; unchanged C++ app evidence reused. Actual UI caught a scientific CSV
+action gate and old tests caught return-timing drift; fixes preserve consumers.
+The Store Python alias could not prove executable identity, so tool contracts
+used the active physical runtime. Failed diagnoses and source patches retained.
 
-Retired both terminal SDK consumer trees, hash-verified/deduplicated necessary
-scratch captures and retained failed diagnostics/source identities. Initial
-signature/mutability/exception assumptions and premature SDK retirement caused
-avoidable retries; AGENTS.md now puts those checks before installed clients and
-cleanup. A final non-unit effective-area check reran only its two affected cases.
-[The receipt](parity/reviews/T03-target-analysis-20261104.json) owns exact evidence
-and cleanup counts. Next product tasks are T04a/T04b above; T00 recovery is
-independent. No original fingerprints or full-family status counters changed.
+A temporary second ROI raster preserves the tight Bounds column. T04a owns
+removing it in the next native API batch; it is not an unowned cost or a completed
+geometry path. Necessary captures were compressed/hash verified, terminal scratch
+retired, and superseded capture summaries retained before recovering 137,212,965
+bytes. [The receipt](parity/reviews/T04a-area-measurement-ui-20261104.json) owns
+exact identities/limitations. Full T04a/profile/ROI/replay/lifecycle work and T04b
+remain open; no full-family counters or original references changed.
 
 ## Historical link compatibility
 

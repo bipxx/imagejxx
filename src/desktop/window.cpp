@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "analysis_measurement.hpp"
 #include <imagejxx/stack_projection.hpp>
 #include <imagejxx/imagej_projection_command.hpp>
 #include <imagejxx/calibrated_command.hpp>
@@ -1165,6 +1166,10 @@ struct Window::Impl {
     std::optional<CalibrationPlotAnnotation> fit_plot_annotation;
     std::optional<FitPlotBinding> fit_plot_source;
     std::shared_ptr<const void> reservation;
+    std::optional<ResolvedTargetAnalysis> analysis_command;
+    Json analysis_rows;
+    JobResult(ResolvedTargetAnalysis command,Json rows)
+        :analysis_command(std::move(command)),analysis_rows(std::move(rows)){}
     JobResult(PreparedOperation value, MetadataObject capture, bool recordStep)
         : prepared(std::move(value)), record(std::move(capture)), recorded(recordStep) {}
     JobResult(State value, ComponentCounts counts = {})
@@ -1189,6 +1194,8 @@ struct Window::Impl {
   bool headlessSessionReadback = false;
   bool headlessSessionActive = false;
   std::shared_ptr<std::optional<JobResult>> jobResult;
+  RenderMemory::Lease measurementPendingMemory;
+  std::vector<RenderMemory::Lease> measurementRowMemory;
   std::shared_ptr<Document> jobDocument;
   Revisions jobRevisions;
   int jobSlice = 0;
@@ -1770,13 +1777,18 @@ struct Window::Impl {
         "new", "open_sequence", "raw", "show_preferences", "preferences",
         "import_preferences", "export_preferences", "reset_preferences",
         "show_jobs", "wait_jobs", "close_document", "save_workspace",
-        "save_workflow", "load_workflow", "cancel_native_workflow"};
+        "save_workflow", "load_workflow", "save_results", "cancel_native_workflow"};
     if (global.count(action))
       return true;
     if (action == "merge_channels" || action == "images_to_stack")
       for (const auto &source : owner.documents_)
         if (source->scientific())
           return false;
+    if(action=="measure" && !owner.documents_.empty()) {
+      const auto source=owner.documentById(id);
+      if(captured_measurement_available(source->nativeSnapshot()))
+        return !owner.busy() && owner.controller_->active_document_id()==source->id;
+    }
     if (action == "calculate" && owner.documents_.size() > 1 &&
         owner.documents_[(owner.activeIndex() + 1) % owner.documents_.size()]
             ->scientific())
@@ -4152,6 +4164,23 @@ struct Window::Impl {
       jobResult = std::move(result);
     }
     status = "Processing...";
+  }
+  void startMeasurement(const std::shared_ptr<Document>& facade) {
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit to finish");
+    TargetAnalysisLimits limits;limits.max_working_bytes=processingCap();
+    const auto target=owner.controller_->resolve_target({},facade->id);
+    const auto command=resolve_target_analysis(target,{},limits);
+    const auto rows=captured_measurement_row_bytes(command);
+    const auto workspace=RenderMemory::add(command.estimate().working_bytes,rows);
+    if(workspace>processingCap())throw std::invalid_argument("Measurement exceeds current processing memory budget");
+    auto memory=renderMemory->acquire(rows);
+    measurementPendingMemory=memory.retain(rows);
+    try {
+      start([command,cap=limits.max_working_bytes]{
+        auto result=execute_target_analysis(command,{},cap);
+        return JobResult(command,captured_measurement_rows(command,result));
+      },facade,false,"Measurement","Measurement",workspace,{},true);
+    }catch(...){measurementPendingMemory.reset();throw;}
   }
   void requestClose(std::shared_ptr<Document> d) {
     if (legacyBusy())
@@ -6788,6 +6817,13 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+  if(name=="measure" && !documents_.empty()) {
+    const auto facade=document();
+    if(captured_measurement_available(facade->nativeSnapshot())) {
+      if(!p.is_object() || !p.empty())throw std::invalid_argument("Measurement uses the current captured selection and plane");
+      impl->startMeasurement(facade);return;
+    }
+  }
   static constexpr std::pair<const char*,const char*> aliases[]={
     {"show_plot_limits","show_intensity_plot_limits"},{"set_plot_limits","set_intensity_plot_limits"},
     {"zoom_plot_rectangle","zoom_intensity_plot_rectangle"},{"show_plot_style","show_intensity_plot_style"},
@@ -9710,6 +9746,7 @@ Json HistogramAsyncUiProbeAccess::diagnostics(Window &w){w.checkThread();return 
 void MovieExportUiProbeAccess::worker_gate(Window &window,std::function<void()> gate){window.checkThread();window.impl->movieExportPanel.worker_gate(std::move(gate));}
 void Window::poll() {
   checkThread();
+  if(results.is_array() && results.empty())impl->measurementRowMemory.clear();
   impl->pollContrastApply();
   impl->tickContrast();
   impl->movieExportPanel.poll(documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{nativeSnapshot()},impl->rgbCap());
@@ -9737,6 +9774,25 @@ void Window::poll() {
     impl->job.rethrow();
     impl->job.complete([&] {
       auto &completed = impl->jobResult->value();
+      if(completed.analysis_command) {
+        if(impl->cancelled)throw OperationCancelled();
+        const auto& command=*completed.analysis_command;
+        const auto current=nativeSnapshot();const auto& captured=command.target().source();
+        controller_->validate_target(command.target());
+        if(current.id()!=captured.id() || current.display().t!=captured.display().t ||
+            current.display().c!=captured.display().c ||
+            current.display().crosshair[2]!=captured.display().crosshair[2])throw RevisionConflict();
+        if(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command))>impl->processingCap())
+          throw std::invalid_argument("Measurement exceeds current processing memory budget");
+        auto* array=OutputPublication::reserve(results,completed.analysis_rows.size(),"Results");
+        impl->measurementRowMemory.reserve(impl->measurementRowMemory.size()+1);
+        std::string status="Measurement complete";
+        controller_->validate_target(command.target());
+        static_assert(std::is_nothrow_move_constructible_v<Json>);
+        for(auto& row:completed.analysis_rows)array->push_back(std::move(row));
+        impl->measurementRowMemory.push_back(std::move(impl->measurementPendingMemory));
+        impl->status.swap(status);return;
+      }
       if (completed.prepared) {
         if (impl->cancelled) throw OperationCancelled();
         if(completed.calibration_fit) {
@@ -9806,6 +9862,7 @@ void Window::poll() {
     impl->jobResult.reset();
   }
   impl->jobDocument.reset();
+  impl->measurementPendingMemory.reset();
 }
 void Window::wait() {
   checkThread();
@@ -11014,6 +11071,7 @@ void Window::Impl::resultTable() {
   observed("clear");
   if (clear) {
     owner.results = Json::array();
+    measurementRowMemory.clear();
     resultsColumnPage = 0;
   }
   auto current = owner.settings();

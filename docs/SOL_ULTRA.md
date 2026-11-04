@@ -8,8 +8,9 @@ Do not grow this file with packet histories or duplicate the roadmap.
 ## Resume card
 
 Read PLAN for current states. T01 shared ingress and T03 captured analysis
-preparation are delivered with scoped Windows/Linux evidence; UI integration is
-still open. Prior-commit headless Windows/Linux CI passes; full Python reference
+preparation are delivered with scoped Windows/Linux evidence. The first T04a
+area Measure UI increment works in both Windows hosts; remaining geometry,
+profile, ROI-manager, lifecycle and replay work is open. Prior-commit headless Windows/Linux CI passes; full Python reference
 readiness and macOS qualification remain incomplete. Preserve unrelated source
 changes and do not infer live processes/agents from old receipts or role names.
 

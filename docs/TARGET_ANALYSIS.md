@@ -2,8 +2,9 @@
 
 `target_analysis.hpp` and the corresponding Python interfaces prepare calibrated
 scalar statistics and thin straight-line profiles from an immutable
-`ResolvedTarget`. This is the native preparation bridge for T03. Editor controls,
-job adoption, settings, replay and plot persistence remain T04 work.
+`ResolvedTarget`. This is the native preparation bridge for T03. The shared
+editor's current-plane area Measure action now uses it; remaining measurement,
+profile, job lifecycle, replay and plot persistence work remains T04.
 
 ```python
 target = app.resolve_target(imagejxx.TargetRequest(
@@ -70,6 +71,36 @@ and follow the existing owner's atomic publication protocol. Saved independent
 plots may retain values; live plots must invalidate on relevant changes.
 
 ## Verification and waste review
+
+### Current editor measurement increment
+
+The shared C++/Python ImGui Measure menu uses the captured service for finite
+scalar UInt8/UInt16/Float32 whole-plane and active-area measurements, including
+scientific T/C/Z views. Existing task scheduling handles the asynchronous UI
+work; cancellation/stale source/context refusal appends no partial rows. Python
+`action("measure")` waits for the task to preserve its immediate-result contract.
+The source-only legacy `Document.measure` interface remains unchanged.
+
+Rows include captured T/C/Z, spatial/value units, ImageJ sample standard
+deviation and calibrated intensity summaries. `sum` is count times calibrated
+mean; integrated density is area times mean. Non-finite numbers use explicit
+`nan`/`inf`/`-inf` strings in JSON/CSV. Existing selected columns and precision
+settings apply. CSV export operates on the independent result table even when
+a scientific document is active. Frontend row storage is separately reserved
+before pixel reads; managed leases retire when the table is cleared.
+
+[Area UI evidence](parity/reviews/T04a-area-measurement-ui-20261104.json) covers
+actual menu input in both Windows ImGui hosts, Global/bypass values, cancellation,
+stale Global results, columns/precision, non-finite output and row-memory release.
+It does not complete T04a: geometry/non-area/dtype policies, ROI-manager
+measurements, configured profile modes, the remaining queued/ready/close cases,
+recording/replay and persistence still require delivery. Unsupported existing
+routes retain their legacy behavior while those requirements remain explicit.
+
+The current tight `Bounds` column uses one additional bounded selection raster
+after numerical analysis, with no additional provider read. T04a's next native
+API batch owns capturing those bounds while the first mask is resident and
+removing the duplicate raster. No additional controller was introduced.
 
 [T03 evidence](parity/reviews/T03-target-analysis-20261104.json) records installed
 Windows Python checks, both native control groups and both installed C++ SDKs.

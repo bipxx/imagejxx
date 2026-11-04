@@ -55,8 +55,8 @@
 - Select checks by changed behavior/dependencies. Reuse green results for
   unchanged consumed inputs; broaden for shared changes, failures or release
   gates. Documentation-only tasks require document checks, not product builds.
-  Confirm affected API declarations, binding mutability and exception types
-  before writing their assertions. Review changed allocation/ownership paths
+  Confirm affected API declarations, return timing, binding mutability and
+  exception types before writing their assertions. Review changed allocation/ownership paths
   before installed-client verification; keep owned consumer scratch until that
   review and final checks finish, then retire it. Premature retirement causes
   avoidable reconfiguration when review finds a fix.

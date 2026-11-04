@@ -4,4 +4,6 @@ namespace imagejxx::desktop {
 class Window;
 Json effectiveDisplayUiCase(Window&, const std::string& context,
                             const std::string& fresh_directory);
+Json capturedMeasurementUiCase(Window&, const std::string& context,
+                              const std::string& fresh_directory);
 }

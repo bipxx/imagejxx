@@ -1,0 +1,734 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-04",
+  "status": "scoped_verified_increment",
+  "base_commit": "5fdb7abc65cfdf0be2d2d36ef883a084a0e19ab9",
+  "scope": "First T04a integration: current-plane finite UInt8/UInt16/Float32 whole/area Measure in shared Windows C++/Python ImGui hosts. T04a remains open; no full measurement/profile/dtype/ROI-manager/replay/OS qualification claim.",
+  "implementation": [
+    "Existing Window task scheduler, cancellation and retained result guard execute T03 without a dummy document transaction or new controller. Dispatch occurs before legacy State materialization.",
+    "Capture source C/Z/T/area ROI and effective spatial/density values; reject changed source/context/active plane before creator-thread row adoption. Reserve frontend row storage before reads and release managed row leases on table clear.",
+    "Rows use ImageJ sample statistics and captured units; sum is count*calibrated mean and integrated density area*mean. Non-finite outputs use explicit string tokens rather than JSON null. Tight raster Bounds preserved.",
+    "Existing result column/precision settings and independent CSV export work for scientific active documents. Python action(measure) preserves its immediate-result contract while physical menus/shortcuts remain asynchronous. Legacy source-only Document.measure is unchanged."
+  ],
+  "producer_inputs": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\CMakeLists.txt",
+      "bytes": 138504,
+      "sha256": "cda09c8f3e8e71a24ef40719f6b7e7cf8c8ecceb5caf1ded87724cba9e4cd71f"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\desktop\\window.cpp",
+      "bytes": 866342,
+      "sha256": "bdfcdabbefc5f010a1e3b2cff07026cfaa239993c4b12b81ae9ecf72a7c07afb"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\desktop\\analysis_measurement.cpp",
+      "bytes": 3692,
+      "sha256": "418220b2dd2ddc14a701ace3ac235c6ee607cd86eae7fb8ee42a3284fc7c1148"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\desktop\\analysis_measurement.hpp",
+      "bytes": 419,
+      "sha256": "d988b9d2cf4c28a740510b4da4c22d95eb7195fc55626a13a6c823e39d96158b"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\desktop\\effective_display_ui_probe.cpp",
+      "bytes": 9598,
+      "sha256": "c3d78279e5a30bbb5196ce03a02619b4a2afdad29d73c8e891289ce13fe3c5b6"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\desktop\\effective_display_ui_probe.hpp",
+      "bytes": 347,
+      "sha256": "4bcd75ad56d4195e073fbcdcfede52ac855fa42337cf9d79e227b60b6b2150bc"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\desktop\\main.cpp",
+      "bytes": 62044,
+      "sha256": "8add397150fd3ee6e3d192bffb0730c01b66d8660d74a7ca0c9c08398703c38d"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\desktop\\python.cpp",
+      "bytes": 60992,
+      "sha256": "74b03506deb97dba3b7cf87b3c5354ed5c31cf0c08718d22abe84b0c57264434"
+    }
+  ],
+  "products": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "bytes": 19736576,
+      "sha256": "47c31d6a5a6c45b9990cfee90d9518b690d2e628a6223b8b746d20b6d4a34b2b"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "bytes": 19833856,
+      "sha256": "21a21e378227f1a34284cf6f9969bdf5cfe7efe3f73024d7998df5dfdb0e9154"
+    }
+  ],
+  "unchanged_native_core": {
+    "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx_core.lib",
+    "bytes": 58549016,
+    "sha256": "83112abbe6d2c8e2310c4089cbb4422caf7548eac626491e9966572ab5ff3e07"
+  },
+  "unchanged_python_native": {
+    "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+    "bytes": 8005120,
+    "sha256": "e49e68b15e40fd5ddb56292c4d935dbda0b6b65e61e84e08d10445754b7d3aad"
+  },
+  "consumer_inputs": [
+    {
+      "path": "tests/python/test_captured_measurement_ui.py",
+      "bytes": 6167,
+      "sha256": "3acba8826a49994fddce911fc5bd681b46795e5eb3561cff092c40827d4c46cb"
+    },
+    {
+      "path": "tests/python/test_desktop.py",
+      "bytes": 20111,
+      "sha256": "71077eb5d33c086da375a5e96b07d8692dbff36f1cffdeb1d73ee86b26f82d7a"
+    },
+    {
+      "path": "tests/python/test_settings.py",
+      "bytes": 17374,
+      "sha256": "81c0e4180f651878c1eb7752254129c6886258fcbe114c0876f6de4a9879b786"
+    },
+    {
+      "path": "tests/python/test_target_analysis.py",
+      "bytes": 13729,
+      "sha256": "fbb839442a7667537e26246145f9becc81786600efec62ff4a8fc3e8b16d9fc1"
+    },
+    {
+      "path": "tests/python/test_calibrated_analysis.py",
+      "bytes": 7841,
+      "sha256": "ab430c350c5923cd9126f80e750dbc0f7bf7a2be981807460a014db74cfb6959"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 58942,
+      "sha256": "fcacfd25b69a4fb3a01e430229534aecaeb5aed32c3caede4e1329d9c0fb7863"
+    },
+    {
+      "path": "tests/tools/test_ci_observations.py",
+      "bytes": 27333,
+      "sha256": "29aee8d28be9931b000361b0a2646a62edaa9c2b8079c21d0a9951c5791b9c2b"
+    }
+  ],
+  "verification": {
+    "python_unique": 199,
+    "python_ultimately_passed": 196,
+    "new_cases_passed": 11,
+    "python_runs": [
+      {
+        "evidence": {
+          "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/tests.xml",
+          "bytes": 29355,
+          "sha256": "c4b0e561a29fb57428cc7b1f3c3c1466ba829eb9f04d5e6790b8813f79c46280"
+        },
+        "tests": 199,
+        "failures": 2,
+        "skips": 3
+      },
+      {
+        "evidence": {
+          "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/retry-tests.xml",
+          "bytes": 2205,
+          "sha256": "8c4dba0b762f9296603789748658016d5eba251d3c06e8abcfd25ecb04f694ef"
+        },
+        "tests": 13,
+        "failures": 0,
+        "skips": 0
+      }
+    ],
+    "optional_skips": [
+      [
+        "tests.python.test_desktop",
+        "test_imgui_python_launch_and_render"
+      ],
+      [
+        "tests.python.test_desktop",
+        "test_cpp_python_interchange_and_all_commands"
+      ],
+      [
+        "tests.python.test_settings",
+        "test_settings_in_hidden_opengl_and_recreated_context"
+      ]
+    ],
+    "observation_tool_contract_tests_passed": 23,
+    "actual_menu_contexts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "observed_cases": [
+      {
+        "identity": {
+          "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/scratch/cpp-retry/capture/case.json",
+          "bytes": 24658,
+          "sha256": "97a6a09ca442a90a87c13da601ceaaaaa18531fdc186ae727b654c99c135db12"
+        },
+        "context": "imgui_cpp",
+        "rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          }
+        ],
+        "bypassed_rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          },
+          {
+            "Area": 48.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "local",
+            "Value unit": "Gray Value",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 5880.0,
+            "maximum": 125.0,
+            "mean": 122.5,
+            "median": 124.0,
+            "minimum": 120.0,
+            "stddev": 2.3804761428476167,
+            "sum": 490.0
+          }
+        ],
+        "source_unchanged": true,
+        "frames": 21
+      },
+      {
+        "identity": {
+          "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/scratch/maintained-capture/private/captured-measurement/legacy/capture/case.json",
+          "bytes": 24658,
+          "sha256": "97a6a09ca442a90a87c13da601ceaaaaa18531fdc186ae727b654c99c135db12"
+        },
+        "context": "imgui_cpp",
+        "rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          }
+        ],
+        "bypassed_rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          },
+          {
+            "Area": 48.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "local",
+            "Value unit": "Gray Value",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 5880.0,
+            "maximum": 125.0,
+            "mean": 122.5,
+            "median": 124.0,
+            "minimum": 120.0,
+            "stddev": 2.3804761428476167,
+            "sum": 490.0
+          }
+        ],
+        "source_unchanged": true,
+        "frames": 21
+      },
+      {
+        "identity": {
+          "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/scratch/maintained-capture/reports/captured-measurement/legacy/case.json",
+          "bytes": 24658,
+          "sha256": "97a6a09ca442a90a87c13da601ceaaaaa18531fdc186ae727b654c99c135db12"
+        },
+        "context": "imgui_cpp",
+        "rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          }
+        ],
+        "bypassed_rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          },
+          {
+            "Area": 48.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "local",
+            "Value unit": "Gray Value",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 5880.0,
+            "maximum": 125.0,
+            "mean": 122.5,
+            "median": 124.0,
+            "minimum": 120.0,
+            "stddev": 2.3804761428476167,
+            "sum": 490.0
+          }
+        ],
+        "source_unchanged": true,
+        "frames": 21
+      },
+      {
+        "identity": {
+          "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/scratch/pytest/test_captured_measurement_menu1/capture/case.json",
+          "bytes": 24661,
+          "sha256": "78bf7602efbe9ee7576ef94369ba8d99452318164694576438e9a9dc7b4e5aab"
+        },
+        "context": "imgui_python",
+        "rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          }
+        ],
+        "bypassed_rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          },
+          {
+            "Area": 48.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "local",
+            "Value unit": "Gray Value",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 5880.0,
+            "maximum": 125.0,
+            "mean": 122.5,
+            "median": 124.0,
+            "minimum": 120.0,
+            "stddev": 2.3804761428476167,
+            "sum": 490.0
+          }
+        ],
+        "source_unchanged": true,
+        "frames": 21
+      },
+      {
+        "identity": {
+          "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/scratch/pytest-retry/test_captured_measurement_menu1/capture/case.json",
+          "bytes": 24661,
+          "sha256": "78bf7602efbe9ee7576ef94369ba8d99452318164694576438e9a9dc7b4e5aab"
+        },
+        "context": "imgui_python",
+        "rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          }
+        ],
+        "bypassed_rows": [
+          {
+            "Area": 2.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "um",
+            "Value unit": "OD",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 510.0,
+            "maximum": 260.0,
+            "mean": 255.0,
+            "median": 258.0,
+            "minimum": 250.0,
+            "stddev": 4.760952285695233,
+            "sum": 1020.0
+          },
+          {
+            "Area": 48.0,
+            "Bounds": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "C": 2,
+            "Image": "Captured measurement",
+            "ROI": "rectangle",
+            "Slice": 2,
+            "T": 2,
+            "Unit": "local",
+            "Value unit": "Gray Value",
+            "Z": 2,
+            "count": 4,
+            "integrated_density": 5880.0,
+            "maximum": 125.0,
+            "mean": 122.5,
+            "median": 124.0,
+            "minimum": 120.0,
+            "stddev": 2.3804761428476167,
+            "sum": 490.0
+          }
+        ],
+        "source_unchanged": true,
+        "frames": 21
+      }
+    ],
+    "maintained_cpp_capture_route": [
+      "captured-measurement",
+      "legacy"
+    ],
+    "historical_reference_inputs_modified": false,
+    "sdk_rebuilt": false,
+    "reason_no_sdk_rebuild": "Desktop-only consumers and Python action timing; native processing sources/archive/module unchanged. Existing T03 installed SDK evidence is retained with its original scope."
+  },
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/final-build-receipt.json",
+      "bytes": 8650,
+      "sha256": "8f86214630580ca6ebf986e6a7829e8e2a1b7cf143ad179b482f697d152def49"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/build-receipt.json",
+      "bytes": 10972,
+      "sha256": "843d4ac8e5e39eccc37fc812bbc55ce4d2ae01305f40580413aaed76d1136e5b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/build-retry-receipt.json",
+      "bytes": 11133,
+      "sha256": "c208b87a9ea09f5254ff1e0128dd3a94e5a441ad34b7e4ea66be4cf390419a8a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/retention.json",
+      "bytes": 27107,
+      "sha256": "aa742caf709e219a0f20fa22f42f1110ecec55fd30c4843edd80e3e3af18cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/storage-retirement.json",
+      "bytes": 5619,
+      "sha256": "06bd36065622a2f4166cdc5a48976758a3fe1bab5516b093bf89368c37e08d9c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/cpp.process.json",
+      "bytes": 1968,
+      "sha256": "4f72af629854565e3f9ae63c9f297d666e1f88532ce2b5d0a7f4db7151b1272d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/cpp-retry.process.json",
+      "bytes": 1972,
+      "sha256": "efc535c105ac47d4c9e9d095eaf73be3cf96c3620e13525c3e3321856d30daf7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/pytest.process.json",
+      "bytes": 2642,
+      "sha256": "94303fd8502ffd4a551bedd6ce4c242b70d537a3f69a5bf845ee746a6e28dc9a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/pytest-retry.process.json",
+      "bytes": 2586,
+      "sha256": "21d66b97ca5b67042165496f243e684d89f0e4f3c6d524149831e2c63c8b2a6d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/ci-mapping.process.json",
+      "bytes": 1883,
+      "sha256": "2ca94495f9ce2a49f372cebe395a3e0bca609b2a8d1dca4cbd1f9ffd404a63c2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/ci-mapping-alias-failure.json",
+      "bytes": 460,
+      "sha256": "d41d7b93dd4ec3e8f9958c616ae3883ef22e7957f13b8c623a1044cff45fb29f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/ci-case-environment.json",
+      "bytes": 232,
+      "sha256": "0e07a473dbe3c6b7849b587acacfb054e9fd2fb0e63213ac0a62fadca3966e1d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/window-before-export-review.patch",
+      "bytes": 6802,
+      "sha256": "2bda63b3cdb7e74baa3bac8eef4ca43bdbe1c2ef27f87911cf65df96e8398ade"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/python-before-sync-review.patch",
+      "bytes": 943,
+      "sha256": "62839b67819cea574874f242e1af36e018ed390cde7be5dd1916a818a044572b"
+    }
+  ],
+  "waste_review": {
+    "fixed": [
+      "Reused existing Window scheduler, job completion and render memory owners; no public native command variant or SDK rebuild. Extracted cohesive row helpers instead of more measurement logic in Window.cpp.",
+      "Global results export admission corrected after actual UI check; Python synchronous Measure behavior restored after existing consumer regression, without weakening tests.",
+      "Only _desktop rebuilt after Python-boundary timing fix; C++ app identity remained unchanged. Tool contracts retried with the active physical Python runtime instead of changing code for a Store execution-alias failure."
+    ],
+    "deferred": {
+      "owner": "T04a next native geometry/profile API batch",
+      "finding": "Tight Bounds currently rasterizes the area a second time, within admitted mask memory and without an extra provider read.",
+      "required_fix": "Capture tight bounds while the first native mask is resident and remove the frontend reraster. Keep identical bounds/membership, cancellation, one source read and resource refusal tests."
+    },
+    "process_learning": "Check existing consumer return timing before changing a synchronous read-only action to scheduled work. Confirm global/table action eligibility when enabling a scientific consumer. Batch remaining geometry/profile/ROI/lifecycle cases before installed-host verification.",
+    "cleanup": {
+      "scratch_bytes_removed": 223068,
+      "scratch_archive": {
+        "path": ".tmp/manual-workflow-verification/t04a-measurement-20261104/scratch-diagnostics.zip",
+        "bytes": 24762,
+        "sha256": "c7c7203f82b584f3c76a11f60a461df5340935fe9bfd335d189a611cacb6160c"
+      },
+      "duplicate_payload_bytes_avoided": 83962,
+      "superseded_capture_bytes_recovered": 137212965,
+      "failed_diagnostics_retained": true,
+      "compiler_cache_runtime_sdk_archived": false
+    }
+  },
+  "remaining_T04a": [
+    "Non-area geometry/dtype/IEEE policies and ROI-manager measurement scopes",
+    "Configured/wide/polyline/outside-domain profiles and live/saved ownership",
+    "Remaining queued/ready/source-close/CZT stale cases",
+    "Strict recording/replay/rebind and persistence; do not claim complete T04a from this increment",
+    "Pending-result Clear generation and remaining results ownership transitions"
+  ],
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/t04a-before-20261104.json",
+    "after": ".tmp/manual-workflow-verification/t04a-after-20261104.json",
+    "known_bytes": 8350208707,
+    "unknown_subtrees": 214,
+    "full_budget_verified": false,
+    "scope": "Complete normalized project/output/runtime/dependency/Linux root set; unknown paths never counted as zero. Snapshot precedes these small final metadata fields."
+  },
+  "prior_commit_ci": {
+    "commit": "5fdb7abc65cfdf0be2d2d36ef883a084a0e19ab9",
+    "run": 41864145906,
+    "state": "completed/failure",
+    "headless_native_windows_linux": "success",
+    "headless_macos": "cancelled",
+    "scope": "T03 remote state, not this T04a increment. Full original-reference-dependent qualification remains incomplete."
+  }
+}
