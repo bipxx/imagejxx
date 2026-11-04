@@ -25,6 +25,14 @@ void annotation(const PointAnnotation& entry) {
     invalid("Point position must be nonnegative");
 }
 }
+PointAnnotation point_creation_annotation(DatasetShape shape,PlanePosition position,
+    unsigned counter,bool capture_position) {
+  shape.validate();PointAnnotation value{counter,position};annotation(value);
+  if(position.t>=shape.t || position.c>=shape.c || position.z>=shape.z)
+    invalid("Point position outside dataset extent");
+  if(!capture_position || (shape.t==1 && shape.c==1 && shape.z==1))value.position.reset();
+  return value;
+}
 std::vector<PointAnnotation> point_annotations(const Selection& selection,std::size_t maximum) {
   const auto found=selection.attributes.find(point_annotations_attribute);
   if(found==selection.attributes.end())return {};

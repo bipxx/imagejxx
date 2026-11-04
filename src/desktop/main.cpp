@@ -567,8 +567,8 @@ int run(const std::vector<std::string> &arguments) {
   }
   if (!arguments.empty() && arguments[0] == "--settings-drawing-ui-case") {
     if (arguments.size() != 4 || arguments[3].empty() ||
-        (arguments[1] != "drawing-persist" && arguments[1] != "drawing-reopen"))
-      throw std::invalid_argument("--settings-drawing-ui-case drawing-persist|drawing-reopen FRESH_DIRECTORY PREFERENCES_PATH");
+        (arguments[1] != "drawing-persist" && arguments[1] != "drawing-reopen" && arguments[1] != "point-defaults" && arguments[1] != "point-stack-defaults"))
+      throw std::invalid_argument("--settings-drawing-ui-case drawing-persist|drawing-reopen|point-defaults|point-stack-defaults FRESH_DIRECTORY PREFERENCES_PATH");
     const auto preferences = std::filesystem::absolute(std::filesystem::u8path(arguments[3])).lexically_normal();
     imagejxx::desktop::Window editor(preferences.u8string());
     imagejxx::desktop::settingsDrawingUiCase(editor, arguments[1], "imgui_cpp", arguments[2]);

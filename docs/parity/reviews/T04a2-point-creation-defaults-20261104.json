@@ -1,0 +1,688 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-04",
+  "task": "T04a.2 M2b.2b P1 ordinary point creation defaults increment",
+  "state": "verified_scoped",
+  "base_commit": "a409f56bfe473a2060da2f39cdbadb0e82d66659",
+  "aspects": {
+    "implemented": "Native per-click counter/position helper, strict Python interface, two consumed Settings/Preferences keys and aligned ordinary Point/Multipoint creation.",
+    "verified": "507 unique focused Windows product cases ultimately pass,one optional OpenGL skip; two native controls and six installed SDK clients per Windows/Linux platform.",
+    "integrated": "Actual preferences/counter changes between clicks, singleton and classic-Z-stack point/multipoint creation, persisted bytes and reopened Editor settings in both Windows hosts.",
+    "release_ready": false
+  },
+  "contract": {
+    "api": "point_creation_annotation(extent,position,counter=0,capture_position=True)",
+    "keys": {
+      "point_counter": {
+        "default": 0,
+        "range": [
+          0,
+          99
+        ],
+        "consumer": "Each new ordinary Multipoint vertex; single-point uses counter0."
+      },
+      "point_capture_position": {
+        "default": true,
+        "validation": "Strict Boolean",
+        "consumer": "Each new ordinary Point/Multipoint vertex; only multi-plane datasets bind current T/C/Z."
+      }
+    },
+    "capture": "Validate position even when capture off. Freeze counter/position per delivered click, never at final completion. Default changes do not retag earlier vertices. Singleton/capture-off remains unbound.",
+    "state": "Metadata built once at completion; allzero/unbound ordinary defaults stay untagged. Existing selection/Previous/session/ROI/export metadata owners unchanged. No new codec/version/controller.",
+    "admission": "At most100000 vertices and conservative configured working/vertex allowance before multipoint append. Reserve carriers geometrically; copy next JSON point and all throwing reserves before aligned append. Terminal reset releases typed buffer. This is draft staging admission, not whole-process/RSS accounting.",
+    "compatibility": "Numeric raster point_size remains default8,range1..256. Capture-position setting is distinct from ImageJ show-on-all-slices display policy. Existing metadata/property edits stay explicit.",
+    "recording": "Ordinary point-creation executable recording remains T12/P4; retaining selection/session metadata does not close replay."
+  },
+  "verification": {
+    "passing_unique_product_cases": 507,
+    "optional_skips": [
+      {
+        "name": "test_settings_in_hidden_opengl_and_recreated_context",
+        "reason": "Set IMAGEJXX_RENDER_TESTS=1 for hidden OpenGL"
+      }
+    ],
+    "new_api_cases": 33,
+    "new_actual_host_cases": 4,
+    "attempts": [
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-api001.xml",
+          "bytes": 4574,
+          "sha256": "cddd31d983ca5f15e88fc795f334cbdbc54b1b9dee3c91f4e1dd468f96aa860e"
+        },
+        "passed": 33,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-regression001.xml",
+          "bytes": 62084,
+          "sha256": "18938c50e9efec5e42e874f10bc93eba0907e2921f7a6e030805a21300d4ac26"
+        },
+        "passed": 470,
+        "failed": 0,
+        "skipped": 1
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-ui-persist001.xml",
+          "bytes": 498,
+          "sha256": "2eeb6f912fb35a88bc81e8c8d9a0f0379d6bd576f56ebf890414a8a15a8388bb"
+        },
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-ui-retry001.xml",
+          "bytes": 498,
+          "sha256": "d1e5a0027a560c9d0dd666ff43c86844b96a33e96ee5153191725782ba76fb5e"
+        },
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-ui-stack001.xml",
+          "bytes": 777,
+          "sha256": "5716f34bc8edbcd8401f3e96c3877c044112ebf885ef2a848f9d871d33d17d11"
+        },
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "junit": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-ui001.xml",
+          "bytes": 4669,
+          "sha256": "faf0130cca2fd679d639894e587d80ee9b98ecbef6a87c5159b019f3fa157976"
+        },
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0
+      }
+    ],
+    "case_identity_normalization": "Earlier singleton UI IDs without stack parameter normalize to final False- prefixed IDs; do not count renamed/retried cases twice.",
+    "process_receipts": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/cpp-point-defaults001.process.json",
+          "bytes": 2123,
+          "sha256": "0dcf5c6652e6cc59dae7f2b761f7a3258fb8fcfe3ce3218e0322a45f6de13d3c"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.047000000020489,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/cpp-point-defaults002.process.json",
+          "bytes": 2158,
+          "sha256": "944346c15247af053f2ca703b11cd209c4f96dfafe2ae42851d7fe47596f9b05"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.1410000000614673,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/cpp-point-stack-defaults002.process.json",
+          "bytes": 2172,
+          "sha256": "01df7bc92401303238d4fe9f9f188d2d5b2f67618a8c24cba90b8e6e67407c5c"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.077999999979511,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/install-app001.process.json",
+          "bytes": 2099,
+          "sha256": "18eb8189d4810b77c9f84e6ca2ad920b8d613511d2af772ae462da8399f2688b"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.10900000017136335,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/install-app002.process.json",
+          "bytes": 2099,
+          "sha256": "e72ca2047551eb57c61fb87fa4bc91511dae868e7c685383cc5cda162966f2fb"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.28100000019185245,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/install-desktop001.process.json",
+          "bytes": 2097,
+          "sha256": "36c8b16a30b356ab8a0aed3749d65aa17a022f020eaabff7a009fd0a794461cb"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.125,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/install-desktop002.process.json",
+          "bytes": 2112,
+          "sha256": "14bb5c12d8de4bf36a182664f7de1fb3c6d943758094bacecda31d2292650c51"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.21899999980814755,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/install-processing001.process.json",
+          "bytes": 2115,
+          "sha256": "5effd0aa447a6b78f4c00309a3d4c74c964dba0a1a2105e6f06008168d9a04a8"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.10999999986961484,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/install-sdk001.process.json",
+          "bytes": 2102,
+          "sha256": "c9d73cf582340745fb79735fd5267575c269834195df028ad744e9168662da20"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.21899999980814755,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/linux-build001.process.json",
+          "bytes": 1581,
+          "sha256": "b64569bbb260cee1b1c63003d4c8b1e7f50e1834ca448f08b910a8faa5d2f095"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 13.997502867000001,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/linux-install-sdk001.process.json",
+          "bytes": 1603,
+          "sha256": "cd8c443000a4dfe472a1ca6476c79ec4190f7743346ba4017abe256c2959ac33"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1.133506937000007,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/linux-native-tests001.process.json",
+          "bytes": 1576,
+          "sha256": "9d8f7b8a9073bc91ecbe7347427b841f859816df482781d2aaa2abbb1c6f6fc5"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.11168916999999823,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/linux-sdk-build001.process.json",
+          "bytes": 1543,
+          "sha256": "01f02a1dce96189308a3b19370eaabdc4ab6b599f5920a89a9ee794004385d3c"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 11.434258990999993,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/linux-sdk-configure001.process.json",
+          "bytes": 2063,
+          "sha256": "0d851a02f4e22b4529384bf6de9958db03d79052a7e1dcc33b5a2d10d3326646"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 3.5551599429999996,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/linux-sdk-test001.process.json",
+          "bytes": 1569,
+          "sha256": "37ad247d3812832be1a77b23b3a13ac9afec77779e2582a99b5ff2726b40f633"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.37773144999999886,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-api001.process.json",
+          "bytes": 2321,
+          "sha256": "ca5a4f2ffb228b50081e4831ea0146e7dab316e0490c8d8a7a21c1d989ed0cb1"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.9840000001713634,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-regression001.process.json",
+          "bytes": 2457,
+          "sha256": "fba10ea6b32572aba42fd6b6f4ccade25ac52599b30a66c2179b9b751755f6e9"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 2.421000000089407,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-ui-persist001.process.json",
+          "bytes": 2446,
+          "sha256": "f57e711f055cdf126a8bf0869f24b82a2be95862d349047c8f5157024163cc74"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 10.812000000150874,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-ui-retry001.process.json",
+          "bytes": 2441,
+          "sha256": "6ea9faf2652d995d3f0827c2eb62cc862f187165faebe95a0d0b0fbb06f53030"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.8589999999385327,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-ui-stack001.process.json",
+          "bytes": 2654,
+          "sha256": "077b00992858f10e7bd4bebb4d44f1b3457aaa2eb7ea867ad37af900993de0e1"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 2.515000000130385,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/python-ui001.process.json",
+          "bytes": 2428,
+          "sha256": "7cce3931d261a007fcdfd914010c450ba6d8ea32ccc452a68a87c6b582eda12a"
+        },
+        "exit_code": 1,
+        "elapsed_seconds": 1.6869999999180436,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/sdk-build001.process.json",
+          "bytes": 2019,
+          "sha256": "4a72a976713b6561bc66bbc1973d90e43582cd49ff5cd145aeabdad55a7dd74e"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 6.0,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/sdk-configure001.process.json",
+          "bytes": 2543,
+          "sha256": "642fcc790e83a2984758b94d8fb939b709a650b7124f3e99618595513f88c77c"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 4.811999999918044,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/sdk-test001.process.json",
+          "bytes": 2056,
+          "sha256": "7297e8416cc5e3b1a39629897f068622a193a70f02fd276addb06ffe10e0cfbc"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.5620000001508743,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/windows-build001.process.json",
+          "bytes": 2083,
+          "sha256": "c4fb47432ad520181b1e08c460209d3f464a1d0f585b624084fb0fda4add4795"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 107.1710000000894,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/windows-native-tests001.process.json",
+          "bytes": 2059,
+          "sha256": "be673e5fe5203c5776c9d8266d70c5829cd9c2997f89fb11df7ef1179a99382f"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 0.14099999982863665,
+        "terminal": true
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/windows-ui-build002.process.json",
+          "bytes": 2031,
+          "sha256": "9449c83ef4d290d6a9e733984868c1f7ee0a50b8e03b8fee67fdc36a9353e42b"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 39.187000000150874,
+        "terminal": true
+      }
+    ],
+    "sdk_clients_per_platform": 6,
+    "native_controls_per_platform": 2,
+    "limits": [
+      "UI on Windows C++/Python hosts, including singleton RGB and classic Z-stack; not Linux/macOS UI.",
+      "No scientific-plane editor adoption, marker/auto-action/non-XY/full-point-tool or release/speed qualification.",
+      "Original77 analysis,128 table-profile and86 fit dtype cells unchanged.",
+      "Historical drawing reader exact61-setting qualification not claimed for current64-key schema; T02 owns explicit additive-schema/tooling migration, preserving historical expectations."
+    ]
+  },
+  "reference_review": {
+    "kind": "Pinned source review,not a new original runtime observation",
+    "archive": {
+      "path": ".cache/native-verification/references/imagej154r/source.zip",
+      "bytes": 6146010,
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+    },
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "sources": [
+      {
+        "path": ".cache/native-verification/references/imagej154r/source/ij/gui/PointRoi.java",
+        "bytes": 32160,
+        "sha256": "f77398d2822dc2235c06c4340f84ed4a2a7d8d5b7d573fe2870325990a16fd77"
+      },
+      {
+        "path": ".cache/native-verification/references/imagej154r/source/ij/plugin/PointToolOptions.java",
+        "bytes": 7314,
+        "sha256": "0b6a1453fd22d4589cd6271d42c1541dcc852ff76a69d0587710e42c73231241"
+      },
+      {
+        "path": ".cache/native-verification/references/imagej154r/source/ij/Prefs.java",
+        "bytes": 30479,
+        "sha256": "5a35547eb3700613600fec474b78aa4d828e128c901dc5d401bdd6bbf06ece1c"
+      }
+    ]
+  },
+  "retention": {
+    "group_retirements": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/api001-retirement.json",
+          "bytes": 454,
+          "sha256": "994f3fb2b8752e8f004bd3b8ed236003a47685ac5c5abd5a05bdef3ae3ef79d8"
+        },
+        "result": {
+          "state": "retired",
+          "group": "api001",
+          "source_bytes": 2108,
+          "source_snapshot_sha256": "65c6d06e0e2e1e202d8daaa0c1e7e2fea5da2ebb7bc4c622ecf0ae4cba38f0a5",
+          "archive": {
+            "bytes": 1215,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/api001.zip",
+            "sha256": "859492761592d13a57ee5dc5827148b17d84ac788981346cb974522c5415b81c"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/closeout001-retirement.json",
+          "bytes": 468,
+          "sha256": "c2c0e03e075b3ff42753a198283a48d57c140c4caf893dc0471b1e6216c8f596"
+        },
+        "result": {
+          "state": "retired",
+          "group": "closeout001",
+          "source_bytes": 733276,
+          "source_snapshot_sha256": "169364efb934714c91cbfaa3761703b40c86db4abb7dafb46bce54ca7d197406",
+          "archive": {
+            "bytes": 100610,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/closeout001.zip",
+            "sha256": "6d301da84c2ca89b32e27c4c23950905f7901ca1af6c10db878e4a96a57b1751"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/regression001-retirement.json",
+          "bytes": 470,
+          "sha256": "1580babdb7e3be87f21ad202d05df445920fb2786df5cd093579e3e4a088c3db"
+        },
+        "result": {
+          "state": "retired",
+          "group": "regression001",
+          "source_bytes": 28143,
+          "source_snapshot_sha256": "dbccf6660f030afa349933e179a925e4478720d4fa68cf59bf5444b94c42b2af",
+          "archive": {
+            "bytes": 18212,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/regression001.zip",
+            "sha256": "cc794e96d207afa28171a83b4248c528a326917e0bca5e3c21e5c639bed09103"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/ui-stack001-retirement.json",
+          "bytes": 469,
+          "sha256": "4e6de204917f667a31bcdfa86d0f88240945aa3536efd562073e6c997a6bb41e"
+        },
+        "result": {
+          "state": "retired",
+          "group": "ui-stack001",
+          "source_bytes": 3951572,
+          "source_snapshot_sha256": "7434ce4956f3982f02800991ef9e2372aef2386bb64599c6aefbb42b73a0811e",
+          "archive": {
+            "bytes": 262998,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/ui-stack001.zip",
+            "sha256": "cdddf40e4eeca35df74165c8cf7a3630e9b39c2a0111bce27a85b90ff3eda8ec"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/ui001-retirement.json",
+          "bytes": 457,
+          "sha256": "b5b03d6e2e9a4ddddf099e1e63afe817901abf48f13f667f11ce4b5ca79ade85"
+        },
+        "result": {
+          "state": "retired",
+          "group": "ui001",
+          "source_bytes": 1975286,
+          "source_snapshot_sha256": "ba8b9c5b2f0cc709ee598568c28d3d09088face76eeb349ec41e185456928550",
+          "archive": {
+            "bytes": 133052,
+            "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/ui001.zip",
+            "sha256": "7549ac0ac797e0c1fc47b7b7e47ee068c8bb7004806e91b676e488bf819beac5"
+          },
+          "retired_before_next_group": true,
+          "failure_diagnostics_preserved": true
+        }
+      }
+    ],
+    "sdk_retirement": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-20261104/sdk-retirement.json",
+      "bytes": 1064,
+      "sha256": "d36c9e67632d4729bcc8698ef538833da9d6c1da566ff60b89df12cc2b9c7877"
+    },
+    "sdk_compiler_bytes_retired": 29499951,
+    "group_source_bytes_retired": 6690385,
+    "group_archive_bytes": 516087,
+    "all_task_scratch_removed": true,
+    "compiler_caches_archived": false,
+    "after_known_bytes": 8437599352,
+    "observed_before_sdk_retirement_known_bytes": 8467490307,
+    "unknown_subtrees": 214,
+    "complete_budget_verified": false,
+    "storage_measurements": [
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-after-20261104.json",
+        "bytes": 66573,
+        "sha256": "fe502e8ae3d272cd874788164d0b1c27013890b94786c0a07d2b0a01359b42c7"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-before-20261104.json",
+        "bytes": 66572,
+        "sha256": "621f729dc23293b0ff3f5f8b50826391f05ef143fe94f88d6da969303fc8137a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-sdk-before-retirement-20261104.json",
+        "bytes": 66573,
+        "sha256": "9cae4311ee80497253d6f12bc25e87ff7fa04a2a066ce793956d3d2998cae968"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-stack-ui-before-20261104.json",
+        "bytes": 66572,
+        "sha256": "fd9165614da458056adbce5f157e418a7eae3512ab2433cae733300d4c2890c6"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-ui-after-20261104.json",
+        "bytes": 66572,
+        "sha256": "80efa75fccf51a8fb0e842fa4832e069b64bcc438b46193551b9b2b25db4666c"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-defaults-ui-before-20261104.json",
+        "bytes": 66573,
+        "sha256": "f725d389ed1c8ee804f64f7629a0b2e8bce73e78a481b8d1419fb31df0c34e57"
+      }
+    ]
+  },
+  "waste_review": [
+    {
+      "finding": "Potential quadratic reserve-by-one and retained cancelled draft capacity",
+      "decision": "Use geometric growth, aligned admission before mutation and release typed buffer on terminal resets. Encode complete annotations once; no per-frame metadata decode."
+    },
+    {
+      "finding": "Actual reader assumed top-level undo_steps",
+      "decision": "Correct to observed history.undo_steps; retain both failing assertions and reread existing genuine C++/Python captures. No product rerun for this assertion-only fix. Recurrence remains process waste."
+    },
+    {
+      "finding": "Singleton UI was insufficient evidence for stack capture",
+      "decision": "Extend maintained drawing actor with explicit classic-Z fixture/shape and both-host stack assertions; no new runner/binding/format. Reuse green unchanged core/SDK after frontend-only changes."
+    },
+    {
+      "finding": "Duplicate capture transport copies unnecessary for this consumer",
+      "decision": "Read C++ originals in place; retire verified groups serially. No generic transport rewrite; T02 still owns broader duplicated payload review."
+    },
+    {
+      "finding": "Historical drawing comparator requires61 keys, current schema64; it predates an earlier key too",
+      "decision": "Do not repin old expectations or claim historical qualification passes. T02 owns explicit additive schema support and corresponding negative controls; current scoped controls have independent assertions."
+    },
+    {
+      "finding": "Whole compiler caches are unnecessary evidence",
+      "decision": "Retire installed-client compiler trees by identities/LastTest logs after final allocation/API review. Keep active cache/runtime/SDK and retain necessary failure diagnostics."
+    }
+  ],
+  "remaining": [
+    "P1 scientific XY/XZ/YZ plane-editor creation-default adoption and captured-draft guards.",
+    "P2 marker/type/size/color/label/visibility consumers and interchange.",
+    "P3 automatic Measure/next-slice/overlay/manager actions and interactions.",
+    "P4 complete plane/rebind/default/session/recorder/replay reconciliation.",
+    "M2b.3 manager layouts/Z/T,M3/M4,T04a.3 and full T05-T15 horizon; T00 evidence/platform gates."
+  ],
+  "source_identity": [
+    {
+      "path": "include/imagejxx/point_annotations.hpp",
+      "bytes": 1742,
+      "sha256": "ffbcd2d3f3967ab867d1fb431e651782cedce95e8c4007e157af25f0bb9e18cc"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 65096,
+      "sha256": "dd5611a938aa342ca12a1a1f06292aab719f0c9eaff6f9d5cafa849f8b5f367b"
+    },
+    {
+      "path": "src/desktop/settings_drawing_ui_probe.cpp",
+      "bytes": 37794,
+      "sha256": "e1ef6ddb95178371a1a7af021d505687d550ff0311ca8d41dda8bf24ced27f39"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 883285,
+      "sha256": "d249a34f2986bbb1b1df02e930776aecbdec5a720e24f5922e1db49a339f8f7e"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 82195,
+      "sha256": "fdc52822979772e71be051ba8b83f548d15786868eb20a37c243501da6df0d88"
+    },
+    {
+      "path": "src/native/imagej_roi_bindings.cpp",
+      "bytes": 35804,
+      "sha256": "b0460cf7f1d103f642667477d9182268ba2858905e32a6a7121b4f6126eda13d"
+    },
+    {
+      "path": "src/native/point_annotations.cpp",
+      "bytes": 6334,
+      "sha256": "1dfa2ad9fd325e96e08089a8d522aa78f0fd5de84b213105a9d093edb6e9960d"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 25440,
+      "sha256": "a4a6976bb76c0d6050702d18865cb5bb514d87806ecb1a32d0c188bafb1a2903"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 13417,
+      "sha256": "36242ac5d50ee66e458e686162a2e944debe4608d46bf2a5f5a5ad7f0acf97e6"
+    },
+    {
+      "path": "tests/python/test_point_creation_defaults.py",
+      "bytes": 5521,
+      "sha256": "fbc36cdce9e150b04c81a08ce15261c93bc42e6e365e70418a5264b089be6312"
+    }
+  ],
+  "installed_products": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20002304,
+      "sha256": "7253c182028174af289079627d1eaca5ed8cb5ce6f51f041ad0312e260d9d394"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8135680,
+      "sha256": "d69c2282d3be46c0d2a44b3a897de63239ff380c04e6456fe76e9e4b8aca8d09"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_scientific_io.cp312-win_amd64.pyd",
+      "bytes": 591872,
+      "sha256": "7e11dfe2b9ff4fdb06c627c444f305e286a5bc124b7daf0333fa32cf425915a6"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20091392,
+      "sha256": "eed62d7c5c3e8239ab4e202a2fa8cbeaa76f2609b31497de1c19275fb8b9576e"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+      "bytes": 59114146,
+      "sha256": "08549f32ed20c32bd7b01c1c200ee1a4986bd1b0f419e05a3019d9edcd772d02"
+    }
+  ],
+  "documentation_checks": {
+    "local_links_and_anchors": 74,
+    "inventory_capabilities": 99,
+    "historical_archive_hashes_unchanged": 3,
+    "ready_tasks": 2,
+    "source_installed_reference_retention_pins_match": true,
+    "task_scratch_absent": true,
+    "diff_hygiene": true,
+    "legacy_plan_checker": "Not claimed; historical row-shape migration remains T02."
+  }
+}

@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include <imagejxx/point_annotations.hpp>
 #include "analysis_measurement.hpp"
 #include <imagejxx/stack_projection.hpp>
 #include <imagejxx/imagej_projection_command.hpp>
@@ -980,6 +981,7 @@ struct Window::Impl {
     float zoom = 1;
     ImVec2 pan{0, 0}, origin{0, 0}, extent{0, 0};
     Json points = Json::array();
+    std::vector<PointAnnotation> pointAnnotations;
     bool dragging = false;
     float aspectY = 1;
     OrthogonalViews orthogonal;
@@ -1302,7 +1304,7 @@ struct Window::Impl {
         (!newRenderer || savedRoiEdit.pointer_active()))
       cancelSavedRoiGeometry("owner_changed");
     cancelCreation(pane, "owner_changed");
-    pane.points = Json::array();
+    pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
     pane.dragging = false;
     pane.selectionGesture.reset();
     if (creationRebindOwner == pane.doc->id) {
@@ -5158,14 +5160,21 @@ struct Window::Impl {
     if (pane.points.empty())
       return;
     auto points = std::move(pane.points);
-    pane.points = Json::array();
+    auto annotations=std::move(pane.pointAnnotations);
+    pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
     pane.dragging = false;
     guard([&] {
-      pane.doc->select(
-          selection(tool, points,
+      auto value=selection(tool, points,
                     tool == "point" || tool == "multipoint"
                         ? preferenceState.settings.number("point_size")
-                        : preferenceState.settings.number("line_width")));
+                        : preferenceState.settings.number("line_width"));
+      if(tool=="multipoint") {
+        if(annotations.size()!=points.size())throw std::logic_error("Point draft annotation alignment");
+        const bool tagged=std::any_of(annotations.begin(),annotations.end(),
+            [](const PointAnnotation &v){return v.counter!=0 || v.position.has_value();});
+        if(tagged)value=selectionJson(with_point_annotations(selectionFromJson(value),annotations));
+      }
+      pane.doc->select(value);
     });
   }
   bool refreshTexture(Pane &pane) {
@@ -8493,7 +8502,7 @@ void Window::action(const std::string &name, const Json &p) {
     if (!documents_.empty() && document()->view().orthogonal)
       document()->setView({{"orthogonal", false}});
     for (auto &pane : impl->panes) {
-      pane.points = Json::array();
+      pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
       pane.dragging = false;
       pane.selectionGesture.reset();
     }
@@ -10686,7 +10695,7 @@ void Window::Impl::tools() {
       if (!owner.documents_.empty() && doc()->view().orthogonal)
         doc()->setView({{"orthogonal", false}});
       for (auto &pane : panes) {
-        pane.points = Json::array();
+        pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
         pane.dragging = false;
         pane.selectionGesture.reset();
       }
@@ -12191,7 +12200,7 @@ void Window::Impl::canvas(Pane &pane) {
   const std::string tool = (roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || (readOnly && !nativePathTool && !(creationEnabled && creationTool(this->tool)) && this->tool != "zoom") ? "hand" : this->tool;
   if (readOnly && !nativePathTool && !(creationEnabled && creationTool(tool))) {
     cancelCreation(pane, "scientific_read_only");
-    pane.points = Json::array();
+    pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
     pane.dragging = false;
     pane.selectionGesture.reset();
   }
@@ -12955,12 +12964,32 @@ void Window::Impl::canvas(Pane &pane) {
       } else if (tool != "hand") {
         if (tool == "polygon" || tool == "polyline" || tool == "multipoint" ||
             tool == "angle") {
-          pane.points.push_back(point);
+          if(tool=="multipoint") {
+            const auto cap=selectionCreationLimits().max_working_bytes;
+            const auto maximum=std::min(std::size_t(100000),cap>8192?(cap-8192)/512:0);
+            if(pane.points.size()>=maximum)throw std::invalid_argument("Point draft exceeds working/vertex limit");
+            const auto source=d->nativeSnapshot();
+            const auto entry=point_creation_annotation(source.data().dataset.shape(),d->position(),
+                unsigned(preferenceState.settings.integer("point_counter")),
+                preferenceState.settings.boolean("point_capture_position"));
+            auto nextPoint=point;
+            // Geometric growth and all throwing work precede either logical append.
+            auto &vertices=pane.points.get_ref<Json::array_t&>();
+            if(vertices.capacity()<=vertices.size())vertices.reserve(std::min(maximum,std::max(std::size_t(16),vertices.capacity()*2)));
+            if(pane.pointAnnotations.capacity()<=pane.pointAnnotations.size())
+              pane.pointAnnotations.reserve(std::min(maximum,std::max(std::size_t(16),pane.pointAnnotations.capacity()*2)));
+            pane.pointAnnotations.push_back(entry);
+            pane.points.push_back(std::move(nextPoint));
+          } else pane.points.push_back(point);
           if (tool == "angle" && pane.points.size() == 3)
             finish(pane);
         } else if (tool == "point") {
-          d->select(selection(tool, Json::array({point}),
-                              preferenceState.settings.number("point_size")));
+          const auto source=d->nativeSnapshot();
+          const auto entry=point_creation_annotation(source.data().dataset.shape(),d->position(),0,
+              preferenceState.settings.boolean("point_capture_position"));
+          auto value=selection(tool,Json::array({point}),preferenceState.settings.number("point_size"));
+          if(entry.position)value=selectionJson(with_point_annotations(selectionFromJson(value),{entry}));
+          d->select(value);
         } else {
           pane.points = Json::array({point});
           if (tool == "rounded_rectangle" || tool == "rectangle" || tool == "ellipse" || tool == "line")
@@ -13032,7 +13061,7 @@ void Window::Impl::canvas(Pane &pane) {
     if (ImGui::IsMouseReleased(ImGuiMouseButton_Left)) {
       if (tool == "brush" || tool == "eraser") {
         auto points = pane.points;
-        pane.points = Json::array();
+        pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
         pane.dragging = false;
         guard([&] {
           owner.applyOperation("paint_stroke",

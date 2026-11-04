@@ -13,7 +13,7 @@ import numpy as np
 from . import _native
 from ._native import Dataset as Dataset, SpatialCalibration as SpatialCalibration
 from ._native import (
-    PointAnnotation, point_annotations, with_point_annotations, without_point_annotations,
+    PointAnnotation, point_creation_annotation, point_annotations, with_point_annotations, without_point_annotations,
     with_imagej_point_counters, imagej_point_counters,
     DatasetReadCounts as DatasetReadCounts,
     DatasetReadObserver as DatasetReadObserver,

@@ -477,6 +477,13 @@ void bind_imagej_roi(py::module_ &m) {
       .def_property("counter",[](const PointAnnotation& value){return value.counter;},[](PointAnnotation& value,py::handle counter){
         const auto n=size(counter);if(n>=100)throw py::value_error("Point counter must be in 0..99");value.counter=unsigned(n);
       }).def_readwrite("position",&PointAnnotation::position);
+  m.def("point_creation_annotation",[](py::handle extent,PlanePosition position,py::handle counter,py::handle capture) {
+    const auto shape=mapping_shape(extent);const auto value=size(counter);
+    if(value>=100)throw py::value_error("Point counter must be in 0..99");
+    if(!PyBool_Check(capture.ptr()))throw py::type_error("Point position capture must be Boolean");
+    const auto enabled=py::cast<bool>(capture);py::gil_scoped_release release;
+    return point_creation_annotation(shape,position,unsigned(value),enabled);
+  },py::arg("extent"),py::arg("position"),py::arg("counter")=0,py::arg("capture_position")=true);
   m.def("point_annotations",[](Selection selection,std::size_t maximum){
     py::gil_scoped_release release;return point_annotations(selection,maximum);
   },py::arg("selection"),py::arg("max_points")=100000);

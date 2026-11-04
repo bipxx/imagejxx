@@ -236,6 +236,49 @@ actual hosts; two native controls and six installed SDK clients pass on each of
 Windows/Linux. UI qualification here is Windows only. Full point-tool
 configuration and analysis recorder/replay remain separate.
 
+### Point creation defaults (ordinary tool increment)
+
+`point_creation_annotation(extent, position, counter=0, capture_position=True)`
+is a pure C++/Python per-vertex helper. It validates the complete native T/C/Z
+position even when capture is disabled, accepts counter0..99, and binds the
+position only for a multi-plane dataset with capture enabled. Singleton datasets
+stay unbound. It reads no source/provider and does not mutate a selection.
+Existing `with_point_annotations` attaches the resulting entries; no metadata
+version or wire format changes. Python rejects Boolean/noninteger counters and
+non-Boolean capture flags.
+
+| Setting / accessor | Default and validation | Current consumer and state owner |
+| --- | --- | --- |
+| `point_counter`: `Settings.integer` / Python `settings["point_counter"]` | Integer0..99, default0. | Ordinary Multipoint clicks capture their own counter. Existing vertices and single-point clicks are unchanged; single-point creation uses counter0. |
+| `point_capture_position`: `Settings.boolean` / Python indexed accessor | Strict Boolean, defaulttrue. | Ordinary Point/Multipoint clicks capture current T/C/Z for a multi-plane source; false leaves each new point unbound. Singleton points stay unbound. |
+
+**Preferences > Drawing** uses the existing generated controls and atomic
+Apply/reset/save/load behavior. The ordinary Multipoint draft keeps aligned
+per-click entries: changing defaults before completion cannot retag earlier
+vertices. Native metadata is encoded once at completion, with geometric buffer
+growth and a working/vertex admission allowance before append. Paired draft
+buffers clear together; terminal reset releases the typed buffer. Tagged points
+retain the existing selection/session/ROI/export contracts and later explicit
+property edits. Untagged counter0/unbound ordinary defaults stay untagged.
+
+Capture-position defaults are not the Show on all slices display option: the
+latter must not silently erase stored positions when its P2 consumer is added.
+[Scoped evidence](parity/reviews/T04a2-point-creation-defaults-20261104.json)
+qualifies507 unique focused Windows product cases ultimately passing (one
+optional hidden-OpenGL skip), two native controls and six SDK clients per
+Windows/Linux platform. Actual singleton RGB/classic-Z tool controls and
+persistence are qualified in both Windows hosts, not arbitrary scientific plane
+creation or Linux UI. Earlier singleton UI IDs normalize to the final False-stack
+parameter so retries/renames do not inflate unique counts.
+
+This increment does not change raster `point_size` (default8,1..256). Marker
+style/size codes, labels/visibility, automatic actions, scientific plane-editor
+creation defaults, non-XY/rebind policy and complete point-creation recording
+remain required P1-P4/T12 work in PLAN. A retained selection/session is not proof
+of executable creation replay. Original PointToolOptions/PointRoi/Prefs source
+review informs the counter/stack rules; no new original Java runtime observation
+or full ImageJ point-tool parity is claimed here.
+
 ### Explicit XY point ROI interchange
 
 `annotated_imagej_point_mapping(mapped, limits=...)` promotes raw packed point

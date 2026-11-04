@@ -7,6 +7,11 @@ struct PointAnnotation {
   // Native zero-based scientific T/C/Z; null uses the captured parent view.
   std::optional<PlanePosition> position;
 };
+// Capture one newly created point. Position is stored only for a multi-plane
+// dataset when requested; singleton datasets stay unbound. Every input position
+// is validated even when capture is disabled. No image/provider reads.
+PointAnnotation point_creation_annotation(DatasetShape,PlanePosition,
+    unsigned counter=0,bool capture_position=true);
 // Pure metadata operations; nonempty point/multipoint, exact one entry per
 // vertex, counters 0..99, nonnegative positions. Version1 rejects unknown
 // fields/versions. Other attributes stay intact; no image/provider access.

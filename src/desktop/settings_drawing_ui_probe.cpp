@@ -147,10 +147,10 @@ Json selectionObservation(const std::optional<Selection> &selection) {
   return {{"mask_shape", {height, width}}, {"mask_u8_hex", std::move(bytes)},
       {"rounded_path", selection->is_rounded_box() ? Json(selection->rounded_path()) : Json()}};
 }
-Json ownerState(Window &window, std::uint64_t id) {
+Json ownerState(Window &window, std::uint64_t id,int expectedZ=1) {
   const auto source = window.nativeSnapshot(id); const auto &data = source.data();
   const auto shape = data.dataset.shape();
-  require(shape.t == 1 && shape.c == 1 && shape.z == 1 && shape.y == height &&
+  require(shape.t == 1 && shape.c == 1 && shape.z == expectedZ && shape.y == height &&
       shape.x == width && shape.s == 3 && data.dataset.pixel_type() == PixelType::UInt8 &&
       data.dataset.sample_policy() == FloatingSamplePolicy::FiniteOnly, "C3 owner differs from its RGB fixture");
   const auto image = data.dataset.plane({0, 0, 0}); std::string declared, storage;
@@ -212,6 +212,7 @@ class Driver {
   std::uint64_t owner_ = 0;
   HeadlessInputSession *session_ = nullptr;
   Clock::time_point started_, deadline_;
+  bool pointCase() const {return caseId_=="point-defaults" || caseId_=="point-stack-defaults";}
   std::size_t ordinal() const { require(!report_["frames"].empty(), "No C3 frame"); return report_["frames"].size() - 1; }
   void seed();
   void frame(const std::string &, const Json &events = Json::array());
@@ -254,7 +255,9 @@ void Driver::seed() {
   for (int y = 0; y < height; ++y) for (int x = 0; x < width; ++x) {
     image.at(x, y, 0) = 10 + x; image.at(x, y, 1) = 20 + y; image.at(x, y, 2) = 30 + x + y;
   }
-  DocumentData data{Dataset::from_planes({1, 1, 1, height, width, 3}, Stack{std::move(image)})};
+  const bool stack=caseId_=="point-stack-defaults";
+  const int planes=stack?2:1;report_["fixture"]["shape"]={1,1,planes,height,width,3};
+  DocumentData data{Dataset::from_planes({1, 1, planes, height, width, 3}, Stack(std::size_t(planes),image))};
   data.metadata.title = "C3 drawing";
   data.metadata.properties["c3"] = metadataFromJson({{"label", "retain properties"}, {"value", 17}});
   data.metadata.extensions["c3"] = "retain extension"; data.metadata.record_layout["c3"] = "retain layout";
@@ -263,13 +266,13 @@ void Driver::seed() {
   data.overlays.push_back(metadataObjectFromJson({{"kind", "point"}, {"points", {{39., 31.}}},
       {"width", 1}, {"c3", "retain overlay"}}));
   auto owner = std::make_shared<imagejxx::Document>(std::move(data)); auto display = owner->snapshot().display();
-  display.crosshair = {20, 16, 0}; display.zoom = 8;
+  display.crosshair = {20, 16, stack?1:0}; display.zoom = 8;
   display.properties["display_range"] = metadata_array({0., 255.}); owner->set_display(std::move(display));
   window_.addNativeDocument(owner); owner_ = owner->snapshot().id(); window_.recording = false;
   report_["setup_events"].push_back({{"kind", "fixture.source"},
       {"methods", {"DocumentData construction", "Document.set_display", "Window.addNativeDocument", "recording=false"}},
       {"purpose", "Source/camera preparation only; no settings or gesture action credit"}, {"settings_mutation", false},
-      {"owner", ownerState(window_, owner_)}});
+      {"owner", ownerState(window_, owner_,caseId_=="point-stack-defaults"?2:1)}});
 }
 void Driver::frame(const std::string &label, const Json &events) {
   require(session_ && report_["frames"].size() < frameLimit && Clock::now() < deadline_,
@@ -282,6 +285,9 @@ void Driver::frame(const std::string &label, const Json &events) {
   panel["fields"] = Json::object();
   for (const auto *key : drawingKeys) if (last_.at("preferences_panel").at("fields").contains(key))
     panel["fields"][key] = last_.at("preferences_panel").at("fields").at(key);
+  if(pointCase())for(const auto *key:{"point_counter","point_capture_position"})
+    if(last_.at("preferences_panel").at("fields").contains(key))
+      panel["fields"][key]=last_.at("preferences_panel").at("fields").at(key);
   rendered["preferences_panel"] = std::move(panel);
   Json host = Json::object();
   for (auto it = last_.at("host_controls").begin(); it != last_.at("host_controls").end(); ++it)
@@ -312,7 +318,8 @@ Json Driver::control(const std::string &name) const {
     require(preferences && preferences->Active && !preferences->Hidden, "C3 Preferences owner unavailable");
     if (name.rfind("field.", 0) == 0) {
       const auto &field = panel.at("fields").at(name.substr(6));
-      item = field.at("kind") == "color" ? field.at("editor") : field;
+      item = field.at("kind") == "color" ? field.at("editor") :
+          field.at("kind") == "boolean" ? field.at("control") : field;
       for (auto *candidate : ImGui::GetCurrentContext()->Windows)
         if (candidate->ParentWindow == preferences && candidate->ChildId == preferences->GetID("settings") &&
             candidate->Active && !candidate->Hidden) { owner = candidate; break; }
@@ -497,7 +504,7 @@ Json Driver::fileState() const {
 }
 Json Driver::state() const {
   Json owners = Json::array(), tools = Json::object();
-  for (const auto &document : window_.documents()) owners.push_back(ownerState(window_, document->id));
+  for (const auto &document : window_.documents()) owners.push_back(ownerState(window_, document->id,caseId_=="point-stack-defaults"?2:1));
   for (auto it = last_.at("host_controls").begin(); it != last_.at("host_controls").end(); ++it)
     if (it.key().rfind("tools.", 0) == 0) tools[it.key()] = it.value();
   return {{"frame", ordinal()}, {"active_id", window_.nativeSnapshot().id()}, {"settings", settingsJson(window_.settings())},
@@ -531,7 +538,19 @@ Json Driver::run() {
       {"method", "Window constructor loaded explicit preferences; no API mutation"},
       {"preferences_file", fileState()}, {"settings", settingsJson(window_.settings())}, {"preferences", window_.preferencesJson()}});
     remember("initial"); preferences(); remember("preferences_shown");
-    if (caseId_ == "drawing-persist") {
+    if(pointCase()) {
+      text("field.point_counter","7");click("field.point_capture_position");
+      remember("point_draft");click("preferences.apply");frame("point.applied");remember("point_applied");
+      closePreferences();gesture("multipoint",{4,4});
+      // Change defaults between delivered clicks: completion must not retag the first.
+      preferences();text("field.point_counter","2");click("field.point_capture_position");
+      click("preferences.apply");frame("point.second.defaults");closePreferences();
+      pointer({6,6},"multipoint.second");
+      for(bool down:{true,false})frame("multipoint.second.button",Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+      for(bool down:{true,false})frame("multipoint.finish",Json::array({{{"type","key"},{"name","Enter"},{"down",down}}}));
+      settle("multipoint.finished");remember("multipoint_created");
+      gesture("point",{8,8});remember("single_created");remember("final");
+    } else if (caseId_ == "drawing-persist") {
       text("field.foreground", "#e01f40"); text("field.background", "#1020e0");
       text("field.brush_width", "1"); text("field.rounded_corner_diameter", "5");
       text("field.line_width", "1"); text("field.point_size", "1"); text("field.text_size", "23");
@@ -541,9 +560,11 @@ Json Driver::run() {
       remember("final_draft"); click("preferences.apply"); frame("preferences.final.applied"); remember("final_applied");
       closePreferences(); remember("final_closed");
     } else { closePreferences(); remember("reopened_closed"); }
-    consume(false); remember("final");
-    require(report_["states"].size() == (caseId_ == "drawing-persist" ? 67u : 47u),
-        "C3 fixed recipe omitted a required checkpoint");
+    if(!pointCase()) {
+      consume(false); remember("final");
+      require(report_["states"].size() == (caseId_ == "drawing-persist" ? 67u : 47u),
+          "C3 fixed recipe omitted a required checkpoint");
+    }
     session.close(); session_ = nullptr;
     report_["setup_events"].push_back({{"kind", "session.closed"}, {"lifecycle", session.lifecycle()}});
     report_["runtime_after"] = runtimeIdentity();
@@ -563,7 +584,7 @@ Json Driver::run() {
 } // namespace
 Json settingsDrawingUiCase(Window &window, const std::string &id, const std::string &context, const std::string &fresh) {
   window.checkThread(); require(context == "imgui_cpp" || context == "imgui_python", "Unknown C3 launch context");
-  require(id == "drawing-persist" || id == "drawing-reopen", "Unknown C3 recipe");
+  require(id == "drawing-persist" || id == "drawing-reopen" || (id == "point-defaults" || id == "point-stack-defaults"), "Unknown C3 recipe");
   require(!ImGui::GetCurrentContext() && !window.busy() && window.documents().empty() &&
       window.results.empty() && window.workflow.empty(), "C3 needs a fresh idle empty Window");
   const auto directory = fs::absolute(fs::u8path(fresh)).lexically_normal();

@@ -60,13 +60,15 @@ owned scratch, assign any deferred improvement and update PLAN in place.
 Role success is not full-feature or full-platform completion. A feature may be
 implemented/verified while another integration or release aspect remains open.
 
-The imported XY annotation handoff and point-specific ZIP increment is now
-scoped verified:787 focused product cases,23 tools; native/installed clients on
-Windows/Linux and actual UI in both Windows hosts. Owned scratch is retired with
-verified hashes. Next: point-tool configuration/non-XY policy, then manager
-variants. Follow PLAN for exact scope, remaining recorder gaps and per-task waste
-feedback. Keep capture groups serial; overall storage remains unverified where
-paths are inaccessible. Reuse unchanged checks and existing receipts/helpers.
+Ordinary point creation defaults are now scoped integrated:507 focused product
+cases ultimately pass, one optional OpenGL skip; native/installed clients on
+Windows/Linux and actual singleton/classic-Z creation/preferences in both Windows
+hosts. Next P1 scientific plane-editor defaults, then marker/label/visibility,
+automatic actions and explicit non-XY/replay policies before manager variants.
+Read PLAN's P1-P4 exits; this is not full point-tool completion. All task scratch
+is retired with verified hashes; overall storage stays unverified where paths
+are inaccessible. Reuse unchanged checks, current caches and existing helpers;
+after each task update the queue and its concise waste decision/cleanup record.
 
 ## Historical link compatibility
 

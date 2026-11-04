@@ -121,6 +121,11 @@ int main(){
     check(point_rows.planes[0].point_index==0 && point_rows.planes[2].point_index==2);
     check(point_rows.planes[0].point_world==std::array<double,3>{.5,.5,0});
     check(point_rows.planes[0].statistics->mean==4 && point_rows.planes[0].statistics->area==0 && point_rows.planes[0].statistics->integrated_density==4);
+    const auto created=point_creation_annotation(source->shape(),{1,1,2},99,true);
+    check(created.counter==99 && created.position->z==2);
+    check(!point_creation_annotation(source->shape(),{1,1,2},99,false).position);
+    check(!point_creation_annotation({1,1,1,2,2,1},{0,0,0}).position);
+    refuses<std::invalid_argument>([&]{point_creation_annotation(source->shape(),{2,0,0},0,false);});
     const std::vector<std::uint32_t> words{256,3074,258};
     const auto annotated=with_imagej_point_counters(Selection("multipoint",{{0,0},{.5,.5},{0,0}}),words,source->shape());
     check(imagej_point_counters(annotated,source->shape())==words);
