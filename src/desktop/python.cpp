@@ -49,6 +49,7 @@
 #include "startup_ui_probe.hpp"
 #include "window.hpp"
 #include "rendering.hpp"
+#include "point_raster_font.hpp"
 #include "z_subset_ui_probe.hpp"
 #include "imagej_projection_ui_probe.hpp"
 #include "calibrated_command_ui_probe.hpp"
@@ -165,6 +166,8 @@ public:
 } // namespace imagejxx::desktop
 PYBIND11_MODULE(_desktop, m) {
   m.doc() = "Optional Dear ImGui desktop over the imagejxx C++ core";
+  m.def("load_point_raster_font",&loadPointRasterFont,py::arg("path")="",
+        py::arg("font_size")=12,py::arg("max_working_bytes")=8*1048576);
   m.def("render_dataset_plane", [](imagejxx::Dataset source, py::dict metadata) {
     const auto shape=source.shape();
     if(shape.t!=1 || shape.c!=1 || shape.z!=1) throw py::value_error("Detached display requires one source plane");

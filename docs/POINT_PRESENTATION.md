@@ -133,8 +133,10 @@ RGB image, preserves input/selection/history and performs no provider or font IO
 It consumes the same PointPresentation geometry/order, counters, positions and
 show-all rules. The caller still resolves base ROI color and parent-row/plane
 eligibility. An absent point-style tag uses defaults only for this explicit API;
-legacy `render_roi_style`, processing masks and `point_size` meanings are unchanged
-until the owning flatten consumer is deliberately adopted in P2c.2.
+legacy `render_roi_style`, processing masks and `point_size` meanings are unchanged.
+The desktop point consumer now dispatches explicitly; the general native ROI
+flatten entry point still needs its explicit point/font route contract under
+P2c.2 completion.
 
 Geometric coverage integrates sixteen sample centers per pixel (a 4x4 regular
 grid). Rectangles are half-open, crosses have square caps, and circle strokes
@@ -182,6 +184,63 @@ coverage tests baseline, alpha and clipping without incorporating a font asset.
 This does not establish exact Java font/antialiasing pixel parity. Actual flatten
 controls, font loading, export/reopen, bare-wire promotion and loss review are
 still P2c.2/P2c.3 requirements, not delivered by this API alone.
+
+## Desktop font and flatten consumers (P2c.2 increment)
+
+Explicitly styled point overlays now use the native raster in the shared desktop
+`renderDisplayOverlays` path. Flatten, display export, PDF and printing receive
+the active native T/C/Z pose; the first two have focused pixel/reopen checks.
+The existing resolved ROI stroke/fallback supplies the base color. In particular,
+null non-area stroke retains its established fallback meaning. Native counter
+colors, labels and per-point positions retain the layout contract. The existing
+parent overlay restrictions are checked before per-point show-all. Global
+`point_show_all` is a render-local value for these commands and never retags the
+stored style or point bindings. Export visibility arrives as a typed private
+argument, never as a document metadata key; opaque user fields remain opaque.
+Untagged legacy masks and text retain their paths. Empty/no-label overlay rendering
+keeps the point font owner lazy and performs no added font-state heap allocation.
+
+`PointRasterFontCache` lazily reads one active font file and retains at most seven
+decimal sizes during one overlay render. It uses the existing font resolution:
+explicit overlay `font_path`, then `IMAGEJXX_FONT`, then Segoe UI on Windows,
+Arial on macOS or DejaVu Sans on Linux. Switching files releases prior coverage
+and file bytes; there is no persistent font/cache generation. The file, retained
+coverage, bounded path/control copies and actual stb temporary allocations share
+an 8 MiB allowance for these point consumers, with a 64 KiB fixed owner allowance.
+The private optional-host `load_point_raster_font(path, font_size,
+max_working_bytes)` produces the same native decimal coverage (default 8 MiB;
+explicit 64 KiB..64 MiB). This supports caller-owned raster use without font IO in
+the core. Decimal pixel sizes are positive and at most 512; empty/missing fonts,
+unsupported glyph extents and resource refusal produce explicit errors.
+
+stb's allocation userdata applies the point budget to outline/raster staging;
+legacy text uses its existing null-userdata allocation behavior. Resource tests
+include an internal staging refusal followed by successful loading with a normal
+budget. The existing reviewed stb MIT component and notices are reused; no new
+font asset or dependency is incorporated. Font files remain configured/platform
+runtime resources, not a general untrusted-font upload interface. No Java font/
+antialiasing equality is inferred from native analytic geometry or matching
+native-consumer pixels.
+
+Desktop point raster currently reserves the font allowance beside the native
+input/output/layout budget. Its prepared layout is moved into native admission,
+so styling/point annotations are decoded once per point overlay. The source
+image and metadata remain unchanged; failed font acquisition publishes no new
+flattened document. Actual input in both Windows hosts turns labels on using
+Properties and then uses Image > Overlays > Flatten. Existing measurement,
+properties and draw-role observations are preserved and read from those same
+captures. PNG and native flattened-session reopen are checked separately.
+
+**P2c.2 remains open:** the legacy action currently obtains its source plane
+before point/font admission and uses a fixed raster allowance. Move preparation
+before provider reads, carry the configured processing budget across all retained
+source/display/font/layout/codec/output allocations, and consume that captured
+preparation without repeating IO/decoding. Finish cancellation/stale/source-close
+publication and explicit font acquisition/recovery policy on the existing command/
+job owners. PDF/print routes share the code but do not gain end-to-end output or
+platform certification from PNG checks. Non-XY/scientific projection policies
+remain P4/T10; no implicit reinterpretation was added. P2c.3 appearance/loss
+review, P3 draft preview/actions and P4 replay/edit/rebind remain required.
 
 ## Evidence and remaining integration
 

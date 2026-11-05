@@ -1,6 +1,10 @@
 #include "rendering.hpp"
 #include "path_visual.hpp"
 #include "point_visual.hpp"
+#include "point_raster_font.hpp"
+#include "point_raster_export.hpp"
+#include "render_memory.hpp"
+#include "../native/point_raster_internal.hpp"
 #include "../native/kernel_control.hpp"
 #include "../native/manual_threshold_display_internal.hpp"
 #include "channel_display_sources.hpp"
@@ -13,6 +17,8 @@
 #include <imagejxx/manual_threshold.hpp>
 #include <imgui.h>
 #include <limits>
+#define STBTT_malloc(n,u) imagejxx::desktop::point_font_detail::allocate(n,u)
+#define STBTT_free(p,u) imagejxx::desktop::point_font_detail::release(p,u)
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
@@ -692,21 +698,7 @@ void blend(Image &image, int x, int y, const std::array<unsigned char, 4> &rgba,
 }
 void text(Image &image, const Json &o,
           const std::array<unsigned char, 4> &rgba) {
-  std::string font = string(get(o, "font_path"));
-  if (font.empty()) {
-    if (const char *configured = std::getenv("IMAGEJXX_FONT"))
-      font = configured;
-  }
-  if (font.empty()) {
-#ifdef _WIN32
-    const char *windows = std::getenv("WINDIR");
-    font = std::string(windows ? windows : "C:/Windows") + "/Fonts/segoeui.ttf";
-#elif defined(__APPLE__)
-    font = "/System/Library/Fonts/Supplemental/Arial.ttf";
-#else
-    font = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
-#endif
-  }
+  const auto font = annotationFontPath(string(get(o, "font_path")));
   auto data = readBytes(font, 64ULL * 1024 * 1024);
   stbtt_fontinfo face{};
   if (!stbtt_InitFont(&face, data.data(),
@@ -773,7 +765,9 @@ bool visibleOverlay(const Json &overlay, const Json &metadata,
   return matches("slice_index", position->z) && matches("t", position->t) &&
          matches("c", position->c) && matches("z", position->z);
 }
-void paintOverlay(Image &result, const Json &o) {
+void paintOverlay(Image &result, const Json &o,
+                  std::optional<PlanePosition> position=std::nullopt,
+                  PointRasterFontCache* fonts=nullptr,bool show_all=false) {
   auto rgba = color(string(get(o, "color"), "#ffcc00"));
   auto kind = string(get(o, "kind"));
   if (kind.empty())
@@ -785,6 +779,31 @@ void paintOverlay(Image &result, const Json &o) {
   auto selection = kind == "roi" ? get(o, "selection") : o;
   selection["width"] = number(get(selection, "width"), 1);
   kind = string(get(selection, "kind"));
+  if (selection.contains(point_style_attribute)) {
+    if(result.channels!=3)throw std::invalid_argument("Point flatten needs RGB display pixels");
+    const auto typed=selectionFromJson(selection);
+    const auto resolved=resolve_roi_style(typed,rgba);
+    if(!resolved.stroke_color)return;
+    PointPresentationOptions view;view.color=*resolved.stroke_color;
+    view.position=position;view.show_all=show_all;
+    PointRasterLimits limits;
+    // Reserve font file/coverage/stb scratch alongside native layout/buffers.
+    constexpr std::size_t font_allowance=8*1048576;
+    limits.max_working_bytes-=font_allowance;
+    const auto dense=RenderMemory::mul(RenderMemory::mul(std::size_t(result.width),std::size_t(result.height)),6*sizeof(double));
+    if(dense>limits.max_working_bytes)throw std::length_error("Point flatten display buffer limit");
+    limits.presentation.max_working_bytes=limits.max_working_bytes-dense;
+    auto layout=point_presentation(typed,view,limits.presentation);
+    const PointRasterFont* font=nullptr;
+    std::unique_ptr<PointRasterFontCache> local;
+    for(const auto& primitive:layout.primitives)if(primitive.kind==PointPrimitiveKind::Text) {
+      if(!fonts){local=std::make_unique<PointRasterFontCache>(font_allowance);fonts=local.get();}
+      font=&fonts->get(string(get(o,"font_path")),primitive.font_size);break;
+    }
+    const auto prepared=detail::prepare_point_raster(result.width,result.height,typed,view,font,limits,&layout);
+    result=detail::raster_point_style(result,prepared,font);
+    return;
+  }
   if (selection.contains(roi_style_attribute)) {
     result = render_roi_style(result, selectionFromJson(selection), rgba);
     return;
@@ -922,13 +941,28 @@ Image renderImage(const Image &image, const Json &meta, bool includeOverlays,
     renderDisplayOverlays(result, meta, position);
   return result;
 }
+namespace {
+void paintDisplayOverlays(Image& image,const Json& metadata,
+    std::optional<PlanePosition> position,bool show_all) {
+  // One lazy resource owner per render, reused across decimal labels/overlays.
+  PointRasterFontCache fonts;
+  if(!position && get(metadata,"slice_index").is_number_integer())
+    position=PlanePosition{0,0,integer(get(metadata,"slice_index"))};
+  for (const auto &overlay : get(metadata, "overlays"))
+    if (visibleOverlay(overlay, metadata, position))
+      paintOverlay(image, overlay,position,&fonts,show_all);
+}
+}
 void renderDisplayOverlays(Image &image, const Json &metadata) {
   renderDisplayOverlays(image, metadata, std::nullopt);
 }
 void renderDisplayOverlays(Image &image, const Json &metadata,
                            std::optional<PlanePosition> position) {
-  for (const auto &overlay : get(metadata, "overlays"))
-    if (visibleOverlay(overlay, metadata, position))
-      paintOverlay(image, overlay);
+  paintDisplayOverlays(image,metadata,position,false);
+}
+Image renderExportImage(const Image& image,const Json& metadata,
+    FloatingSamplePolicy policy,PlanePosition position,bool show_all) {
+  auto result=displayImage(image,metadata,policy);
+  paintDisplayOverlays(result,metadata,position,show_all);return result;
 }
 } // namespace imagejxx::desktop

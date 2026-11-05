@@ -11,6 +11,7 @@
 #include <type_traits>
 #include "path_visual.hpp"
 #include "point_visual.hpp"
+#include "point_raster_export.hpp"
 #include "calibration_plot_view.hpp"
 #include "calibration_plot_annotation.hpp"
 #include "calibration_plot_payload.hpp"
@@ -8960,12 +8961,12 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (name == "export_display") {
-    writeImages(string(get(p, "path")), {renderImage(frame, meta, true, d->samplePolicy())});
+    writeImages(string(get(p, "path")), {renderExportImage(frame, meta, d->samplePolicy(),d->position(),impl->preferenceState.settings.boolean("point_show_all"))});
     return;
   }
   if (name == "export_pdf") {
     writePdf(
-        string(get(p, "path")), renderImage(frame, meta, true, d->samplePolicy()),
+        string(get(p, "path")), renderExportImage(frame, meta, d->samplePolicy(),d->position(),impl->preferenceState.settings.boolean("point_show_all")),
         number(get(p, "dpi"),
                impl->preferenceState.settings.number("print_dpi")),
         boolean(get(p, "landscape"),
@@ -8973,7 +8974,7 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (name == "print") {
-    printImage(renderImage(frame, meta, true, d->samplePolicy()));
+    printImage(renderExportImage(frame, meta, d->samplePolicy(),d->position(),impl->preferenceState.settings.boolean("point_show_all")));
     return;
   }
   if (name == "select_all") {
@@ -9306,7 +9307,7 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (name == "flatten") {
-    addDocument(std::make_shared<Document>(Stack{renderImage(frame, meta, true, d->samplePolicy())},
+    addDocument(std::make_shared<Document>(Stack{renderExportImage(frame, meta, d->samplePolicy(),d->position(),impl->preferenceState.settings.boolean("point_show_all"))},
                                            d->title() + " rendered"));
     return;
   }
@@ -10511,7 +10512,10 @@ void Window::Impl::menu() {
       observeControl("menu.action.animation", canAnimate || animating);
       ImGui::EndMenu();
     }
-    if (ImGui::BeginMenu("Overlays")) {
+    auto *overlaysItemWindow=ImGui::GetCurrentWindow();
+    const bool overlaysMenuOpen=ImGui::BeginMenu("Overlays");
+    observeControl("menu.Image.Overlays",true,nullptr,nullptr,overlaysItemWindow);
+    if (overlaysMenuOpen) {
       item("Add selection", "add_overlay");
       form("Add text...", "text",
            {{"x", 10},

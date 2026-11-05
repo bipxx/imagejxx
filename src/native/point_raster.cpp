@@ -118,7 +118,8 @@ double coverage(const Draw& draw,int x,int y,const PointPresentationOptions& vie
 }
 namespace detail {
 PreparedPointRaster prepare_point_raster(int width,int height,const Selection& selection,
-    const PointPresentationOptions& options,const PointRasterFont* font,const PointRasterLimits& limits) {
+    const PointPresentationOptions& options,const PointRasterFont* font,const PointRasterLimits& limits,
+    PointPresentation* captured_layout) {
   kernel_checkpoint();
   if(width<=0 || height<=0 || width>std::numeric_limits<int>::max()-8194 ||
       height>std::numeric_limits<int>::max()-8194)invalid("Invalid point raster dimensions");
@@ -155,7 +156,8 @@ PreparedPointRaster prepare_point_raster(int width,int height,const Selection& s
     for(double n:*options.clip)if(!std::isfinite(n))invalid("Invalid point raster clip");
     if((*options.clip)[0]>(*options.clip)[2] || (*options.clip)[1]>(*options.clip)[3])invalid("Invalid point raster clip");
   }
-  out.layout=point_presentation(selection,layout_options,layout_limits);
+  // Private desktop capture was admitted with these same presentation limits.
+  out.layout=captured_layout?std::move(*captured_layout):point_presentation(selection,layout_options,layout_limits);
   charge(bytes,out.layout.working_bytes,1,limits.max_working_bytes);
   out.working_bytes=bytes;
   // Work budget includes source validation/copy, the layout's two vertex walks,

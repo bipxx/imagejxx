@@ -350,6 +350,23 @@ Json pointAnnotationEditingUiCase(Window& window,const std::string& context,cons
     report["fixture_actions"].push_back("Independent classic-Z draw-role fixture with explicit position rebind; supported ordinary overlay action");
     report["point_style_render"]=last.at("ordinary_canvas");frame();
     report["point_style_repeat"]=last.at("ordinary_canvas");
+    // Use the real label control, then replace only the independent draw fixture's
+    // overlay. Earlier measurement/properties/draw-role observations stay intact.
+    window.action("show_selection_properties");frame();
+    if(!last.at("selection_properties").at("controls").contains("Point labels"))button("Point marker presentation");
+    button("Point labels");button("Apply");
+    window.action("clear_overlays");window.action("add_overlay",{{"all_slices",true}});frame();
+    const auto role_owner=window.document();const auto role_before=role_owner->nativeSnapshot();
+    const auto documents_before=window.documents().size();
+    menu("menu.Image");menu("menu.Image.Overlays");menu("menu.action.flatten");frame();
+    require(window.documents().size()==documents_before+1,"Point flatten did not publish a detached document");
+    require(role_owner->nativeSnapshot().shares_data(role_before),"Point flatten changed source data");
+    report["point_flatten"]={{"pixels",window.document()->frame().pixels},{"shape",{window.document()->frame().height,window.document()->frame().width,window.document()->frame().channels}},
+        {"source_pixels",role_owner->frame().pixels},{"source_shape",{role_owner->frame().height,role_owner->frame().width,role_owner->frame().channels}},{"source_unchanged",true},
+        {"pose",{role_owner->position().t,role_owner->position().c,role_owner->position().z}},
+        {"selection",selectionJson(*role_before.data().selection)},
+        {"documents_added",window.documents().size()-documents_before}};
+
     report["workflow_count"]=window.workflow.size();report["state"]="observed";session.close();
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){window.cancel();window.wait();report["failure"]=error.what();writeJson((dir/"failure.json").u8string(),report);throw;}

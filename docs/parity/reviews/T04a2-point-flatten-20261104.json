@@ -1,0 +1,2066 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 M2b.2b P2c.2 desktop point font/flatten consumer increment",
+  "date": "2026-11-04",
+  "state": {
+    "implemented": "Shared styled-point overlay CPU raster consumption for legacy XY flatten/display export/PDF/print, active pose and live show-all without retagging, bounded decimal font resource from existing stb.",
+    "verified": "690 distinct focused Windows product cases ultimately pass (41 new flatten/font cases); two Windows native controls and one Linux native point control pass.",
+    "integrated": "Both Windows ImGui hosts perform actual Properties label-toggle and Image > Overlays > Flatten input, matching native pixels. PNG and native flattened-session reopen pass through API consumers.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#desktop-font-and-flatten-consumers-p2c2-increment",
+  "verification": {
+    "distinct_current_cases": 690,
+    "counts_by_suite": {
+      "tests.python.test_imgui_roi_style": 24,
+      "tests.python.test_point_annotation_editing": 22,
+      "tests.python.test_point_flatten": 41,
+      "tests.python.test_point_presentation": 264,
+      "tests.python.test_point_presentation_ui": 38,
+      "tests.python.test_point_raster": 147,
+      "tests.python.test_roi_style": 154
+    },
+    "reconciliation_alias": {
+      "test_explicit_none_stroke_and_missing_font_are_atomic": "test_missing_font_is_atomic_and_null_stroke_retains_fallback"
+    },
+    "alias_reason": "Existing non-area null-stroke contract uses fallback. Correct the new test expectation, retaining its failed XML/log; current descriptive name is mapped explicitly, not counted as extra delivery.",
+    "native_controls": {
+      "windows": [
+        "native_point_presentation",
+        "desktop_path_visual"
+      ],
+      "linux": [
+        "native_point_presentation"
+      ]
+    },
+    "installed_sdk": "Existing active Windows/Linux SDKs refreshed. No new installed client campaign or SDK consumer scratch: public API unchanged, private native admission seam only; prior client qualification remains separately scoped.",
+    "actual_host_observations": 6,
+    "distinct_host_routes": 2,
+    "final_host_observations": 2,
+    "frames_per_final_observation": 157,
+    "distinct_reader_checks": 6,
+    "reader_checks_including_final_repeat": 18,
+    "repeat_reason": "Final resource accounting and then typed visibility/lazy font-state review changed consumed policies. Repeat both final host routes; point_flatten outputs match earlier captures. Reuse unchanged core/layout evidence.",
+    "new_scope": {
+      "marker_size_api_cases": 28,
+      "nested_or_direct_png_and_native_session_reopen_cases": 4,
+      "global_show_all_parent_eligibility": true,
+      "null_nonarea_stroke_fallback_preserved": true,
+      "missing_font_no_publication": true,
+      "font_internal_stb_allocator_refusal_then_recovery": true,
+      "opaque_metadata_regressions": 3
+    },
+    "limitations": [
+      "No Java font/AA pixel equality; native-consumer equality and analytic core pixels only.",
+      "No Linux/macOS UI or end-to-end PDF/printing qualification.",
+      "P2c.2 remains open for pre-provider-read preparation, configured aggregate processing budget, complete output metadata/role contract and lifecycle/replay/publication.",
+      "P2c.3 interchange/loss review, P3 preview/actions, P4 edit/rebind/projection/replay and the full horizon remain required.",
+      "General render_roi_style still retains legacy masks; an explicit styled-point/font context contract remains required under P2c.2 completion."
+    ]
+  },
+  "font_resource": {
+    "runtime_input": {
+      "path": "C:\\WINDOWS\\Fonts\\segoeui.ttf",
+      "bytes": 960076,
+      "sha256": "704eada12961a27fd271f7d3b09e2066520e758390c1776744eff430fee30f6e"
+    },
+    "incorporated_or_distributed_font_asset": false,
+    "loader": "Same explicit font_path / IMAGEJXX_FONT / configured platform-default resource policy as legacy text.",
+    "point_budget_bytes": 8388608,
+    "fixed_owner_allowance_bytes": 65536,
+    "allocation_scope": "File bytes, decimal coverage, bounded path/control copies and actual stb outline/raster allocations through userdata; one active file and at most seven sizes per overlay render.",
+    "existing_component_pins": [
+      {
+        "path": "licenses/desktop-dependencies.json",
+        "bytes": 5773,
+        "sha256": "c8397607cea39402772b4cb8d242b0798045a3fa211d45d472d492ccb9e0a274"
+      },
+      {
+        "path": "licenses/stb.txt",
+        "bytes": 2510,
+        "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/stb_truetype.h",
+        "bytes": 199192,
+        "sha256": "ecd30b05e0dd4fea3a13c26810dd9e1992dc379049482c393d5a19e6b5090aab"
+      }
+    ],
+    "review": "Existing reviewed selected stb MIT component reused; no new dependency/asset incorporation. Runtime fonts are local resources, not a general untrusted-font upload parser."
+  },
+  "failures_and_recovery": [
+    {
+      "route": "windows-build001",
+      "failure": "Probe called imageArray, a Window-local helper unavailable in its translation unit.",
+      "recovery": "Use existing owned Image pixels plus explicit shape in the bounded observation; preserve compile log. No new serializer/harness. Final probe/control readers pass."
+    },
+    {
+      "route": "api001",
+      "failure": "New test assumed null non-area stroke means invisible, contradicting existing resolve_roi_style fallback.",
+      "recovery": "Inspect maintained contract/implementation; keep product behavior and test explicit fallback pixels with supplied font. api002/current api003 pass; original failure retained."
+    },
+    {
+      "route": "guarded source preparation",
+      "failure": "Initial CMake whitespace anchor did not match; two new font files had been written, CMake/core/renderer modifications had not.",
+      "recovery": "Inspect actual target_sources line, validate dependent anchors as a batch, then apply. No product build or retry environment started from the incomplete preparation."
+    }
+  ],
+  "waste_review": [
+    {
+      "finding": "Risk of per-label font IO, repeated point metadata/layout decoding and duplicated core raster.",
+      "disposition": "fix now",
+      "change": "One lazy font owner per overlay-render call, one active file/seven sizes; move the admitted point layout into the existing private native preparation. Reuse raster, masks and font component owners; no new controller/job/serializer or build generation."
+    },
+    {
+      "finding": "Font file/coverage alone omit actual rasterizer allocations and long path/control copies.",
+      "disposition": "fix now",
+      "change": "Budget actual stb allocations via existing userdata and include bounded path/control charges. Fixed-size owner allowance, explicit refusal and normal-budget recovery check. No measured speed claim."
+    },
+    {
+      "finding": "Legacy command reads source before admission; fixed raster allowance ignores configured aggregate processing budget.",
+      "disposition": "defer required feature completion",
+      "owner": "P2c.2 completion, next ready checkpoint",
+      "validation": "Prepare against frozen source metadata/pose and configured cap before any provider read; consume one captured layout/font; test low-cap/no-read, cancellation/stale/close and output metadata/role policy before P2c.3."
+    },
+    {
+      "finding": "Late helper/schema/semantic assumptions caused avoidable attempts.",
+      "disposition": "defer",
+      "owner": "T02 and next P2c.2 validation owner",
+      "validation": "Read actual declaration visibility and null-stroke semantics; validate all edit anchors before writes, inspect real controls and record schemas. Existing product/reference contracts and capture bounds stay unchanged."
+    },
+    {
+      "finding": "Repeated final UI groups",
+      "disposition": "no further action",
+      "reason": "Final resource policy changed consumed allocation inputs; two bounded repeats on final binaries were justified. Each terminal group was retained/retired before the next. No SDK consumer rebuild or whole reference suite for frontend changes."
+    },
+    {
+      "finding": "Metadata-carried visibility could reinterpret opaque fields; an unused font cache allocated state eagerly.",
+      "disposition": "fix now",
+      "change": "Typed private export argument and lazy State allocation. Three metadata regressions pass. Perform final source/API/allocation review before broad captures; repeated final routes retained/retired serially."
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 138965,
+      "sha256": "a06fd024669764d5ec09a51c4dc4e691d27049ff3ccd6ad603ea7f9b3732c5ad"
+    },
+    {
+      "path": "src/native/point_raster.cpp",
+      "bytes": 10336,
+      "sha256": "d6987875d069e530bf2e19511fc731e9fbc098595e99951625ddf96c67d79ee9"
+    },
+    {
+      "path": "src/native/point_raster_internal.hpp",
+      "bytes": 624,
+      "sha256": "03021873d973b71f39f6603470af2798051878ee6955c7fc53e408680c7552a8"
+    },
+    {
+      "path": "src/desktop/point_raster_font.hpp",
+      "bytes": 1051,
+      "sha256": "d07a839810412f212407b62231ab9aa18766bf88ca439ba06d9f1e5d5923c590"
+    },
+    {
+      "path": "src/desktop/point_raster_font.cpp",
+      "bytes": 6383,
+      "sha256": "66a7a447e7f246d8f8576c941fa81605454c363da93fce8b311a7ff5e972091e"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "bytes": 43439,
+      "sha256": "ef56698595489640ff96198f9129ebe31cd454dbcffe9505e4bf6a182e83617b"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 886220,
+      "sha256": "a048f7b9fe4121c549d72cee8e02f0481c0117d06cbfb3f27a516aceae0acdf9"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 63075,
+      "sha256": "372b34e12cff8cbf16a75d3e5dfb547d2537d3c6341f9cb60e28acd4eeed8c5d"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 40587,
+      "sha256": "70f8b3562659e627cbb8b844b0b56120e8011c55d15604b96543846c07175240"
+    },
+    {
+      "path": "tests/python/test_point_flatten.py",
+      "bytes": 9900,
+      "sha256": "2b3a2c02eccf863a0ee6a6fcc2c44fb758876df70de086b77c8d161297635e95"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 18094,
+      "sha256": "333cb86c34200793ececef42a46ee72dfb6223d37ac02725d9c459ec51850e1f"
+    },
+    {
+      "path": "src/desktop/point_raster_export.hpp",
+      "bytes": 275,
+      "sha256": "e6ca39788f33ae9cc4af0727c7c7c5ded5ed9b3e19cae4472bcc6ffc644face1"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8274432,
+      "sha256": "503b5e7a6c616c03c7ec973eed222440d4d946b5fecaaa1003b30db4b70a15c1"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20127232,
+      "sha256": "06c8cc2532a3c5d93ed9d56aeeb1bff608a1c2623bd000228b0d8347f47e8013"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20212224,
+      "sha256": "dcf2f880fb9c40c89a929e3fe59fcce2c7e0a188eb0f9452d8da2c2f02d5ede9"
+    }
+  ],
+  "owned_processes": [
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.40600000019185245
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.25
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001.process.json",
+      "exit_code": 1,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 5.9060000001918525
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.25
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.18799999984912574
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.672000000020489
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.25
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.15699999989010394
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.3119999999180436
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.2660000000614673
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.2029999999795109
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 3.422000000020489
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.421000000089407
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.046000000089407
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.9529999999795109
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.43799999984912574
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.2029999999795109
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.4839999999385327
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1869999999180436
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.4059999999590218
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.15699999989010394
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.125
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.4059999999590218
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/font-limit001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.031999999890104
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/font-limit002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.9529999999795109
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.39099999982863665
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.20399999991059303
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app004.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1869999999180436
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-native001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.11000000010244548
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.17100000008940697
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.15699999989010394
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.26500000013038516
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui004.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.21899999980814755
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-sdk001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.2660000000614673
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-build001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 11.058231667
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-install-sdk001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.981303754999999
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-native001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.09325040499999915
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-outer001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 11.328000000212342
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-sdk-outer001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 3.375
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/native001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/native002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1410000000614673
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.202999999979511
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.0159999998286366
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.0
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.20300000021234155
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.14099999982863665
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.6720000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1869999999180436
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.35900000017136335
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.75
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.3440000000409782
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1410000000614673
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.5470000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.21899999980814755
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.9839999999385327
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-build001.process.json",
+      "exit_code": 1,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 63.90599999995902
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-build002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 61.09400000004098
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-font005.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 13.719000000040978
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-lazy007.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 25.218000000109896
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-observation003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 40.98399999993853
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-probe004.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 16.936999999918044
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-typed006.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 45.875
+    }
+  ],
+  "retention": {
+    "groups": [
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/api001",
+        "source_bytes": 15471,
+        "source_files": 15,
+        "source_snapshot_sha256": "99dc96df403d3e61968b6fc4b342afb459f1c061b6766e72d657494cdbebefb9",
+        "archive_bytes": 32771,
+        "archive_sha256": "e7c9483ecbe25e5c25d3951c0e741be6406c9ab8dd450e7d9c23bbfd8d37a3b4",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/api002",
+        "source_bytes": 4437,
+        "source_files": 5,
+        "source_snapshot_sha256": "60519836a621e284d69d43e357a2955c62b750db1f70a0c0e2e3d0040467151e",
+        "archive_bytes": 10719,
+        "archive_sha256": "96f87a55f310ab97052ddf1ce013471eeef7450bb46ea6c1c3d7aaf8a1f55b32",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/api003",
+        "source_bytes": 12209,
+        "source_files": 9,
+        "source_snapshot_sha256": "9360df2b4a8b21679f54af0f3ca010b5134925d659396150164b14c9ac9d3433",
+        "archive_bytes": 19025,
+        "archive_sha256": "f3e633d24fcd09f7ae358061bc32d1b10c7991ce4afad90bd86a2622ce2f47d5",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/api004",
+        "source_bytes": 18790,
+        "source_files": 15,
+        "source_snapshot_sha256": "2626275f1c844e997a8cae2cc3556a72edc94cf0f4a327cfd699789d42111f12",
+        "archive_bytes": 29961,
+        "archive_sha256": "e0807c2bcc73249613a630cd6c874fa7027f2d0a62a66fa2cedb385bb9c32843",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/cpp001",
+        "source_bytes": 225381,
+        "source_files": 3,
+        "source_snapshot_sha256": "6441b6cbf8868033ed9e828f96c6eead541df147366085769c87af4e3ea0f4f5",
+        "archive_bytes": 10934,
+        "archive_sha256": "f3d8be71de1df3b09d1f5c133eab56115ce73df3110623c2b5f1f06bbc8b4f06",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/cpp002",
+        "source_bytes": 225377,
+        "source_files": 3,
+        "source_snapshot_sha256": "a2aee419d6ab87f07d55f761e748ae6d5f84ccd5df87831c129e0bc2ee5d48f8",
+        "archive_bytes": 10942,
+        "archive_sha256": "4487c80deeac44698031a24820cf374820be7072c4a0ad3f56a478d99edc71cf",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/cpp003",
+        "source_bytes": 225373,
+        "source_files": 3,
+        "source_snapshot_sha256": "7c497e8f1ff48dbfabd6667206b22e67694f7cb2e87993766ba93a822386c1b7",
+        "archive_bytes": 10936,
+        "archive_sha256": "94930380ed0f30244f908fc395c96aa45a0f35a72d4109d9817bce7fd47698ba",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/python001",
+        "source_bytes": 225380,
+        "source_files": 3,
+        "source_snapshot_sha256": "21fb6fa1ed7cc5ac05f7aa99d5c561c0186d11653a035b43fb634001d448135e",
+        "archive_bytes": 10944,
+        "archive_sha256": "913cf275d0941b249e4742d54c9b2d14f36847faa399f96c06a581c6522baa0b",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/python002",
+        "source_bytes": 225384,
+        "source_files": 3,
+        "source_snapshot_sha256": "aa50473dff0b83ffde0f51da2c0b035ea961d29f6cee00a7d671ff2b48930e81",
+        "archive_bytes": 10937,
+        "archive_sha256": "570661f8dc1e73a0860cc11e3d7b8aa6e802e917add02a1a55a15a60b73c08e9",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/python003",
+        "source_bytes": 225384,
+        "source_files": 3,
+        "source_snapshot_sha256": "4a1ce391cfd9269db51aec28898fe47c2eea66378948c97a167d12a73183a6be",
+        "archive_bytes": 10936,
+        "archive_sha256": "9c7fd1b273f65c3e79b0036f1a0f450b84e7c0d7a4c3a8eb4bf4e44553c96133",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch/session001",
+        "source_bytes": 12206,
+        "source_files": 8,
+        "source_snapshot_sha256": "c8ba7ebbbeea10c0ae6ec96379e0bb0096dc8ec4e0e2f111faa4c7e0d901d2a3",
+        "archive_bytes": 14192,
+        "archive_sha256": "ab9ee3433e3e7102bdf2346ef36d8013c9a85f39b7e8239476e1a589a642afbd",
+        "source_removed": true
+      }
+    ],
+    "raw_source_bytes": 1415392,
+    "archive_bytes": 172297,
+    "empty_directories": {
+      "state": "removed_verified_empty_owned_directories",
+      "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch",
+      "directory_count": 4,
+      "files": 0,
+      "bytes": 0,
+      "archive_created": false,
+      "includes": [
+        "font-limit001",
+        "font-limit002",
+        "MSBuildTemp"
+      ],
+      "source_removed": true
+    },
+    "active_scratch_exists": false,
+    "compiler_caches_archived": false,
+    "sdk_consumer_builds_created": 0,
+    "final_empty_directories": {
+      "state": "removed_verified_empty_owned_directories_after_final_review",
+      "source": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/scratch",
+      "directory_count": 2,
+      "files": 0,
+      "bytes": 0,
+      "archive_created": false,
+      "source_removed": true,
+      "note": "Earlier root retirement remains a historical observation. Fresh owned groups were created for final typed visibility/lazy-allocation review fixes, then retired serially."
+    }
+  },
+  "storage_snapshots": [
+    {
+      "path": ".tmp/manual-workflow-verification/point-flatten-entry001.json",
+      "bytes": 66572,
+      "sha256": "144b827640a730e61d3c3a7404f271a22d2bca5fcdbe8d1f2d2158b532c1f00d",
+      "known_bytes": 8492761265,
+      "unknown_subtree_count": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/point-flatten-before-retire001.json",
+      "bytes": 66572,
+      "sha256": "5962158c867e5634639cd6d5e499a62c64c5caa88dcb472159b7f9ab5aef18e7",
+      "known_bytes": 8494382684,
+      "unknown_subtree_count": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/point-flatten-after-retire001.json",
+      "bytes": 66572,
+      "sha256": "cbe326be6cfeb3304761f95ab6f8f7b5c532ae9af6e79e00c0d611577660982c",
+      "known_bytes": 8494449927,
+      "unknown_subtree_count": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/point-flatten-final-review-storage001.json",
+      "bytes": 66571,
+      "sha256": "0e0347fe5c1f5b8cb35f2bee1bf0f05fc58f7abf628e16788c45311cd3356630",
+      "known_bytes": 8494815788,
+      "unknown_subtree_count": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    }
+  ],
+  "local_evidence_pins": [
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-artifacts.json",
+      "bytes": 4017,
+      "sha256": "5086d928e06cb7c88b2f5278b9f5809c00842a188feee98dd129454014bdac8b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-manifest.json",
+      "bytes": 45410,
+      "sha256": "6813054521d2b51e1a4bb5696edbf3930a91bdbe085f965bc5f09a368c6294b8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-pack.json",
+      "bytes": 1506,
+      "sha256": "c417b2c8b6295d2bd43ee1a725a4114e11f637f3d5430358c5bc05be3a732875"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-pack.json.started.json",
+      "bytes": 891,
+      "sha256": "afcb537df14d031be72dc1056b0f32a1c0da5c29a905b098234701b61e7e622d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-pack.log",
+      "bytes": 142,
+      "sha256": "d42bd366c34199f9bd01c67cfc8836f588b6a85c1695eca90d633da975fd389e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-pack.process.json",
+      "bytes": 2402,
+      "sha256": "b8d303f96b8af6768901f9e9eaec5ef43393306083f979fdd9e9267a9bb835be"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-retirement.json",
+      "bytes": 425,
+      "sha256": "ec4d1cf85c2586f0f35ac07c56323d10e2eea92dd902dfbde91f203d1efa0365"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-verify.json",
+      "bytes": 1409,
+      "sha256": "16d0b6322d12b84821333b86c3e307fad6e15b3b86e73884d0fa7720b516dbf3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-verify.json.started.json",
+      "bytes": 791,
+      "sha256": "34930efe16bfed24b6cc9846b50c93da728ef57b199d40c43c7861ffae58761e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-verify.log",
+      "bytes": 145,
+      "sha256": "411923c02c7cde44069945cd116d51a8a96a59297fb95312a9734c0d80c39d35"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001-verify.process.json",
+      "bytes": 2271,
+      "sha256": "8dcfc2b168496e33afd799f0d0519750b95a5fee95db0636e8129a71f39936ae"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001.log",
+      "bytes": 3659,
+      "sha256": "6a65921519fd0d905bf80b83c7d3b6140e6426c3b456a70f6ea05cc74ecce1e6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001.process.json",
+      "bytes": 2575,
+      "sha256": "6ca3b1c2083e6f9a7f7146ad1a71a9c89c6ee6520d97cf87509c77ef2afec8e3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001.xml",
+      "bytes": 100190,
+      "sha256": "3537d1b519f16a87019cf71ee56721b991b19bf537a44ac22c85a397bb2045df"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api001.zip",
+      "bytes": 32771,
+      "sha256": "e7c9483ecbe25e5c25d3951c0e741be6406c9ab8dd450e7d9c23bbfd8d37a3b4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-artifacts.json",
+      "bytes": 1383,
+      "sha256": "3cc92f2cf56a1eb867745617577f84a41da571a80d4bea659656ee0517bc340e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-manifest.json",
+      "bytes": 15033,
+      "sha256": "d85aad1f6717de9787c1c15632b293836acb99ee45389a0b34a08e9c93e1dadf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-pack.json",
+      "bytes": 1505,
+      "sha256": "8cecae76cf1268e51593c9eb34958d0ff9a9747820b1b57fc70c22ccc583117c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-pack.json.started.json",
+      "bytes": 891,
+      "sha256": "c590fd11841454777bd386b1affefa63b3cab42995ebd53d7b28be2741924226"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-pack.log",
+      "bytes": 142,
+      "sha256": "3fbefa06bda8222b7397e5f1fc5de744b3b54c2bdeeaa08043b05df90a17fd83"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-pack.process.json",
+      "bytes": 2388,
+      "sha256": "a652bb35c1e557c5e70b73adc6d73d6aebe4b959a936d0ca2007311b64d98d56"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-retirement.json",
+      "bytes": 423,
+      "sha256": "26d724b5a9bf3d61c6e01ef3d76681b94b791fff1cf52d8f3143e9e24d1a5c45"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-verify.json",
+      "bytes": 1407,
+      "sha256": "3d33adb05872fc469683bb4e4e19eba224bb28bbe96041d22fcd505039740a3c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-verify.json.started.json",
+      "bytes": 791,
+      "sha256": "5d699f402ded35e278c425e5d7a33cfdac759cb10da3f90d926f4de8d2bdc3e4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-verify.log",
+      "bytes": 145,
+      "sha256": "00a26b3088f8fab3d31dc68f3ec3f6ab9aeedd560d2c8217d7a5f86542ddd732"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002-verify.process.json",
+      "bytes": 2287,
+      "sha256": "7a816d8d1079952799c45195f69715881742487ffd2da7c620936d1c4758a752"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002.log",
+      "bytes": 871,
+      "sha256": "978f8a89df10a388a1a9f959979ce12ffdfd4178b431f2ac3e7fd68ea296666a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002.process.json",
+      "bytes": 2305,
+      "sha256": "1b50ab797a1a74959b438d38b1c09422142e6b48eb6ed6dfbed260fc68e3c27d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002.xml",
+      "bytes": 5131,
+      "sha256": "46e38bb361ab38ae4aea5266e060a8114a4347966e795f6e70e8b464d47676c7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api002.zip",
+      "bytes": 10719,
+      "sha256": "96f87a55f310ab97052ddf1ce013471eeef7450bb46ea6c1c3d7aaf8a1f55b32"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-artifacts.json",
+      "bytes": 2435,
+      "sha256": "4c234b790a7bb4f1545ddfca26a9bb0c45249f97789024cb02a5f22313df3c46"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-manifest.json",
+      "bytes": 17127,
+      "sha256": "1da9a98e0456145daf5f84ab31d240849ace830822d1243b58d4790a5dbf8c19"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-pack.json",
+      "bytes": 1506,
+      "sha256": "f875ff1c4b517a33d6a4e0581c1d0274753209c27df9760e448b1213161ddf87"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-pack.json.started.json",
+      "bytes": 891,
+      "sha256": "4b578382b783dfdbbfd3d3b1a8781b15e4904597324d90449bbd75d4a6c233df"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-pack.log",
+      "bytes": 142,
+      "sha256": "db649bbeeb964d63a82065dba1ab6900ad731db8030e0506a33906d6a6e4ea66"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-pack.process.json",
+      "bytes": 2387,
+      "sha256": "ebf21f0d6da3af50177c5664eba5b8c357e276cc189a1adb75532b52e1308a74"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-retirement.json",
+      "bytes": 424,
+      "sha256": "8684cc13dd6e76e3da9fa126dbf2ce188d4e2a403acb8c2e776616a63b875014"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-verify.json",
+      "bytes": 1408,
+      "sha256": "25834e5a3261f13a32a2f0be5c2f37ad62dbfd9f671c2c93dace11ed7a15c58e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-verify.json.started.json",
+      "bytes": 791,
+      "sha256": "26e2237333ace247792406fb488c98485ad000dcaae52d3949f102f2e2fd5317"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-verify.log",
+      "bytes": 145,
+      "sha256": "f7b4785a3caef6d1cc2efdb37131cae228a55f2378b5395265fbcab3cccba5ed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003-verify.process.json",
+      "bytes": 2288,
+      "sha256": "e722860e97583fe4a2bb18813ccab13748d6f72a6672ef07ae328f3cdf5dff3c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003.log",
+      "bytes": 871,
+      "sha256": "b15f9aaec0e7a8fdec352c83b4a6792b88bfbc1425ebd60c84ba29258416cda1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003.process.json",
+      "bytes": 2306,
+      "sha256": "789fe10220b3f5afd668010a9352fee532692048e768fb434b8e5bfdb191a963"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003.xml",
+      "bytes": 5419,
+      "sha256": "4f5c35c5f23177321413838cd9e79644cf8193a22a0c10fd3b934c073bcceaf3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api003.zip",
+      "bytes": 19025,
+      "sha256": "f3e633d24fcd09f7ae358061bc32d1b10c7991ce4afad90bd86a2622ce2f47d5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-artifacts.json",
+      "bytes": 4020,
+      "sha256": "9707440322a789edad8af2b288b81edfcff1fdf473567b397e450d54656436d0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-manifest.json",
+      "bytes": 29960,
+      "sha256": "78777927f287bbf6ad9d7985f72b6706daba4afc4bd8303a999e29e33f3a2f1f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-pack.json",
+      "bytes": 1507,
+      "sha256": "b35ca3b109af6a6106696bffa15d730fea128be82b8437181e15577e2f55e72e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-pack.json.started.json",
+      "bytes": 891,
+      "sha256": "7f21b3728f4935faf0c2f56a60ab8a61ccafb02816aae9280729030e0e611cab"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-pack.log",
+      "bytes": 142,
+      "sha256": "a941985d3d73a680cfde537116da0e3b96db13ff39676b6231c77a3ea84ddeba"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-pack.process.json",
+      "bytes": 2398,
+      "sha256": "1b346d9858383a3bdc971c98256456a41dfe756e77cdf0ab1338eb5dc9157e9d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-retirement.json",
+      "bytes": 425,
+      "sha256": "961a6edc07a0e1b8360c5b79c0697e9bf50ed94933c76217a4ca4df3005278cd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-verify.json",
+      "bytes": 1409,
+      "sha256": "fe8f77c4bd6da5665c6881061a7e64dc147dc88e6585d954cc1cd199f7254744"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-verify.json.started.json",
+      "bytes": 791,
+      "sha256": "1f42156b1faec8afa135a3bd870bf21567453fb386983dd80268d02b739fe1e6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-verify.log",
+      "bytes": 145,
+      "sha256": "19176d01fcd386d2a5584bdb2bb2fee132d00a62b1541db719d0cdf338cfa33d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004-verify.process.json",
+      "bytes": 2287,
+      "sha256": "9f2e1a59ff8e9294a148142a35cd5ef3283424e9ea6697a274b36e2c1f38d7b9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004.log",
+      "bytes": 1114,
+      "sha256": "2c45f64d1e1d33b9ce5898f3dcb569b9be71036569299e5cb44a9112538031ee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004.process.json",
+      "bytes": 2388,
+      "sha256": "38afbd0579b76098bc4bae373c7594ed319914d8978f4df41a3483875ba368ac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004.xml",
+      "bytes": 30902,
+      "sha256": "85dcc059522c61721898ce105d9f446bfb82d127d0e720c85c082eae08aa7db5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/api004.zip",
+      "bytes": 29961,
+      "sha256": "e0807c2bcc73249613a630cd6c874fa7027f2d0a62a66fa2cedb385bb9c32843"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/capture-admission.json",
+      "bytes": 508,
+      "sha256": "8c8f1d453dc3ab1a598a7584c64b5c6d14def06841f5ca75bf9719f141cfe1c7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/case-reconciliation.json",
+      "bytes": 139989,
+      "sha256": "5492ad1b4ae63bc738c2a611eaa7b331b26c15ade39f3e5c3a879345d3c3045c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader001.log",
+      "bytes": 878,
+      "sha256": "bcafeb4cb34bdc43861f722a6ad0ab3babb2a0dafbb8e1b82615a61e7b9bff00"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader001.process.json",
+      "bytes": 2547,
+      "sha256": "d284d5435273f3b86c536772216d28e17dec07b99f31faaba8f3aa553504c4fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader001.xml",
+      "bytes": 651,
+      "sha256": "7bb06a886cbfcbe8add62f769c401b89d76c90a87340978ba9960765878f21f2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader002.log",
+      "bytes": 878,
+      "sha256": "079d145220346b00ec0f4481db99e233ec153e57758097f20fd3bcea7eab4654"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader002.process.json",
+      "bytes": 2547,
+      "sha256": "8339be8125db440c88b3ae3bdaf3bdb11fc10fec29b3fa88d1819ce5908186f0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader002.xml",
+      "bytes": 651,
+      "sha256": "6ad17911947971521c2671d70be555a6b0ed0027f84cf0ea4bc052dffcfce21d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader003.log",
+      "bytes": 878,
+      "sha256": "8399c23d8363825580e30f5f795d63ddba02d2a84af56491343c8b98b9997afb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader003.process.json",
+      "bytes": 2550,
+      "sha256": "7260bf312a4b59105b1c9a355013e5ae525e997f17db1ed78015e8dcbc35ec39"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-reader003.xml",
+      "bytes": 651,
+      "sha256": "c7f2b54d468abfdfa22b5137a69a8eb8c55b7eafedecf8c76f81318e0c3f48bd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-repeat-equivalence.json",
+      "bytes": 284,
+      "sha256": "35f4d22f22b982dd82968191481abd09cb3b16990f124020d917fa613794eb0a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp-typed-equivalence.json",
+      "bytes": 307,
+      "sha256": "2a0d734c081986197b11b03dc4b0b41da6323b25132da71e312d821e2f7e13c0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-artifacts.json",
+      "bytes": 768,
+      "sha256": "aa428949f7fefe18b1ca0f5f9b445f8a73c34ce9bdca8c26901fc96711da4de1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-manifest.json",
+      "bytes": 3703,
+      "sha256": "0f3138ad5811fb8efe0551af6d2d3df926f347c825840b70cfdacf090bd78cfe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-pack.json",
+      "bytes": 1506,
+      "sha256": "f36dd0037266052ef315cc552da0b381b9d96b2bff8f209bbc86ded09a46902c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-pack.json.started.json",
+      "bytes": 891,
+      "sha256": "668381f8fa225e06269d65fc41a0068af839811e0046dda3a6fdd86a2a36f6b8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-pack.log",
+      "bytes": 142,
+      "sha256": "d10a70d9e68c2494c64c3df5a00560fb001fda2eedced09a15d5cfe2a00f0ed5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-pack.process.json",
+      "bytes": 2403,
+      "sha256": "cb52d0d64491303ee8d165ffce42702a6d70ba4e4c1ce52e920d62b186deb6a2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-retirement.json",
+      "bytes": 425,
+      "sha256": "edb7fec29e745e0343bb92f5b02d6fb15506829574f876850506fd30ac7df5e1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-verify.json",
+      "bytes": 1408,
+      "sha256": "ebccd4bf46aad91c980f6572ffd0d91fb4ea03cf686efb1e5e42b1e0bdef3ac7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-verify.json.started.json",
+      "bytes": 791,
+      "sha256": "9c3aac925463a052c1f2f81a1adb03307f9e2e6311a972a78bfe5a8037dacf19"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-verify.log",
+      "bytes": 145,
+      "sha256": "f2bd096e87457419c5db29679bd862a08aad4e674cfa7732ff131960527c3282"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001-verify.process.json",
+      "bytes": 2288,
+      "sha256": "33ebe1457c39f6a929394563a6f1204f2be34f761f4bb5b3204619f26999bdf4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001.process.json",
+      "bytes": 1946,
+      "sha256": "75e8c9caecb918fb78466526870606bb4f7a1c8a429b97b50ac2250c9ccb53d9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp001.zip",
+      "bytes": 10934,
+      "sha256": "f3d8be71de1df3b09d1f5c133eab56115ce73df3110623c2b5f1f06bbc8b4f06"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-artifacts.json",
+      "bytes": 768,
+      "sha256": "253ec4e27c86bdbe216216cc2f48066bca4639b3fb4948a34dd4795654fb8b86"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-manifest.json",
+      "bytes": 3703,
+      "sha256": "723ff57e6774ff6244a58ab86110100b170e2e8b1281d6806d99075940fa317a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-pack.json",
+      "bytes": 1506,
+      "sha256": "56bb175d266fb6f1c48f1fdbcc0972ba53a2782f2b925d6e9afe3217b0205ec2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-pack.json.started.json",
+      "bytes": 891,
+      "sha256": "9ca9d75477eb5de114fb12b5da7c78de2c4e5357c37347604ff0483930176ce4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-pack.log",
+      "bytes": 142,
+      "sha256": "67f47c107f0537c82917f82d98ee983efd0625c4f1a0ee8411d4821bf19ce37a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-pack.process.json",
+      "bytes": 2398,
+      "sha256": "382b0a9dbb0f66abb67d5f550d961f7e69b3edeff1a0b2eb8344eaca2ae41184"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-retirement.json",
+      "bytes": 425,
+      "sha256": "5509f418956b7894f368b3e4c2d225ff8e96d1ee3efb8f9b3db481df86097c64"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-verify.json",
+      "bytes": 1408,
+      "sha256": "d5558a9d646aa11633f9d4cc326147f611b729965e7b628c7581e8d48a851234"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-verify.json.started.json",
+      "bytes": 791,
+      "sha256": "84c4b6260000a89f776d78031e674887b671f07bb152a498279a09a63aeeb8f3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-verify.log",
+      "bytes": 145,
+      "sha256": "9a21d36a6371bf7db7bbaa21522c4a6390b5ec4222669303f2428bf86cc2b1ac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002-verify.process.json",
+      "bytes": 2286,
+      "sha256": "e5190df62b9f3e6b6892a397cc31b454ad456707e18747c0034d3177cefd5749"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002.process.json",
+      "bytes": 1948,
+      "sha256": "99373433a2b5c7e5834741b881394038baa40f7b34395bfe25bcab93705fb6c5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp002.zip",
+      "bytes": 10942,
+      "sha256": "4487c80deeac44698031a24820cf374820be7072c4a0ad3f56a478d99edc71cf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-artifacts.json",
+      "bytes": 768,
+      "sha256": "b5d7920da576aaeaf14ace05d4cf04fb8cca7b844aee1fbad850701c60769f97"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-manifest.json",
+      "bytes": 3703,
+      "sha256": "b77862f5fa5ed83ad72240d297e65abc9140e3a6c55fdc6da4cced4b51ba2935"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-pack.json",
+      "bytes": 1506,
+      "sha256": "087f1babd3b36b31b2c8dcb53d7dcf7a5271321c88799673c06484e850c3dea4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-pack.json.started.json",
+      "bytes": 891,
+      "sha256": "557fe63cc01e5ef096e0e0397ffd0acc2c8b8e7737976a3b348c2bbf1da76e5b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-pack.log",
+      "bytes": 142,
+      "sha256": "f00bb69fb8358892f22ac42650d1efcbd495e5fa283b449a37737c9b8cf9c005"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-pack.process.json",
+      "bytes": 2400,
+      "sha256": "5a15200a6a7009a9edb200ec9d12e0cf42190f4c9926bad4a8c535297e15239d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-retirement.json",
+      "bytes": 425,
+      "sha256": "350c32d2e3fec911026b8c2776ca6d932602cdd93e210bd852d73f14504580f6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-verify.json",
+      "bytes": 1408,
+      "sha256": "c5331ce4d07578c80e302566f59eca538396ef3712b5b1046c26f017c7cfb8ce"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-verify.json.started.json",
+      "bytes": 791,
+      "sha256": "bc9506c8e3d64ab018b99392d53e3453be2a92b33e0e912fa19726fd3f02c410"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-verify.log",
+      "bytes": 145,
+      "sha256": "e285a6cf3fde34b79b63d9192cc779d302b74725c9b7100236c4bf58f128c18e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003-verify.process.json",
+      "bytes": 2275,
+      "sha256": "8f4597b1572517facca3e99f9c34a6af889bb8e1af7a872d96c7e56bfb8ac53d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003.process.json",
+      "bytes": 1950,
+      "sha256": "5c7d38ad9985e882f5dd2a5952ca253c0f9f69dfaa24054a831059b8fcc3b8ea"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/cpp003.zip",
+      "bytes": 10936,
+      "sha256": "94930380ed0f30244f908fc395c96aa45a0f35a72d4109d9817bce7fd47698ba"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/empty-scratch-retirement.json",
+      "bytes": 331,
+      "sha256": "c1207be2c55ba146703e33e8ca0f7b3ec164d5a79540562cbfdb4feb5c77da36"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/final-empty-retirement.json",
+      "bytes": 452,
+      "sha256": "34d0d630c0cbdefc422df6bb38a7f609d461a6a7fe36431f1a40cb0ff71c119a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/font-limit001.log",
+      "bytes": 878,
+      "sha256": "47c5b70634fef0abf0b043666ebb0a984a992e8d4c941ccf8f626d121a4a0eb7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/font-limit001.process.json",
+      "bytes": 2349,
+      "sha256": "9db38720467468e83c78802e2990ea47c6bf6b90326abcb6c329b1af5d6154ce"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/font-limit001.xml",
+      "bytes": 380,
+      "sha256": "88b4aad04f5e26fae3e6e59d3adafa694ce12d14a2466121b6294d48ded688be"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/font-limit002.log",
+      "bytes": 878,
+      "sha256": "e06e03fddf0f9bc08514e82d7e7e2ae8953edfda62f5b96295e5a177120ee096"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/font-limit002.process.json",
+      "bytes": 2351,
+      "sha256": "fc4cb75d6a5f772d9cd173ed503d64ad9976bbb899c6412ff8dc23a3df81f029"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/font-limit002.xml",
+      "bytes": 380,
+      "sha256": "f995162bd17cc6b02c440749421d3480f59db7a387e6d12ddb3150a597cd59fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app001.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app001.process.json",
+      "bytes": 2098,
+      "sha256": "92c186fc808931473615f05d38bdcda62cc760d6ef20b83502c8f8f6e0b84075"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app002.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app002.process.json",
+      "bytes": 2098,
+      "sha256": "2ad00a49c013928f5ae1976573fa4d4fa44d34042e8df59ad38a66782234248c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app003.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app003.process.json",
+      "bytes": 2098,
+      "sha256": "31b966d9b7aa8415f072407fb279b7c8d6c0240fe78212fd85451f54421650fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app004.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-app004.process.json",
+      "bytes": 2098,
+      "sha256": "cf1056b01da541b58098ae4e40eb70eb6ae470825a934c953de9cfeee9ba8f18"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-native001.log",
+      "bytes": 5124,
+      "sha256": "a59ab006071461459ecf33a94a9765244d80e189f98ad28a3345c0bc706aabfc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-native001.process.json",
+      "bytes": 2117,
+      "sha256": "e60092df64705999123267d8bac24ff85070351ab7f9d941456794e5e933dfdb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui001.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui001.process.json",
+      "bytes": 2111,
+      "sha256": "3ca1d196f346861afa2125724df19b9c0bcd29d77f1f07f5d167ed6c247aa790"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui002.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui002.process.json",
+      "bytes": 2112,
+      "sha256": "929dead77b2e482946e9d6d58b60d6cc15c8455c636951e9fa2cb59e0e6e728e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui003.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui003.process.json",
+      "bytes": 2112,
+      "sha256": "600087f8527d65b1abc99816af2ab86068581f3a1e7a9e0f2435089410bfbd29"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui004.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-python-ui004.process.json",
+      "bytes": 2111,
+      "sha256": "103b5f35868c4d9a91a9a7dd19bc685bf1d4d199e5d2357dcc243a523d957ae6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-sdk001.log",
+      "bytes": 18847,
+      "sha256": "02c9c97b8bf527935701eafbc45db1f6f504c31e7767f474da0c2b24ba050389"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/install-sdk001.process.json",
+      "bytes": 2101,
+      "sha256": "2bb5e2dee55d582bdb1af5eb94889b0f40f5d67859803e729f171280102d8ad6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-build001.log",
+      "bytes": 954,
+      "sha256": "e25f87451ab26499821394ee430fc82e952f22513dd290b133c8f018358e3cb8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-build001.process.json",
+      "bytes": 1542,
+      "sha256": "a2b45fe4edcebc70f9467d8947a58d26c88b132e19936167b843e1a3760dbd2f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-install-sdk001.log",
+      "bytes": 19029,
+      "sha256": "08e845963b2e41533cca33afa05fc6ec83a6977686bf90cc3769654a4bd6294f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-install-sdk001.process.json",
+      "bytes": 1605,
+      "sha256": "461165f24d87d6f620f7d5dd5c76c381491e1dddaaf5fa0aa7ba429d9c6ebcf4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-native001.log",
+      "bytes": 378,
+      "sha256": "9aa1fc383c3b378b0e9cf01c3cb12db1f40e7baeaefa821328fc99347dc06308"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-native001.process.json",
+      "bytes": 1538,
+      "sha256": "1320b648a0fff27a78f6f20ee9e3a9e93f60b94040f9260b5d0cc7a9ba18fa3e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-outer001.log",
+      "bytes": 45,
+      "sha256": "56cd5b3053d4018501a2a5e36c1dd5b428707d274bc8eb354f3183e0a3f812bb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-outer001.process.json",
+      "bytes": 3517,
+      "sha256": "6d9d213397eb6909cefb336031e7027dac62f2fd7ac724f606c7398c2e97ffa5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-sdk-outer001.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/linux-sdk-outer001.process.json",
+      "bytes": 3323,
+      "sha256": "7f49527551f59ffe93fda58ce5d054036116e78d5c733c56a7b8724be519bbb6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/native001.log",
+      "bytes": 484,
+      "sha256": "607ed0c407348f8febeb6f590651dae5410212527d2f18d5869ec2e5b155b823"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/native001.process.json",
+      "bytes": 2058,
+      "sha256": "5e655a05c00c46d56248dfc57acd2461f11d1dfa6a77e7e131b713ae4aab54b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/native002.log",
+      "bytes": 484,
+      "sha256": "d8a3cd7b52bce6ebe23867d307b7b89ea676f0333e7bdfdb1ad59e29146715fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/native002.process.json",
+      "bytes": 2044,
+      "sha256": "11e76dbbec3afc54c28820e2670c32003ff3bf7a39615e2c0c865a7fbd18d88e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader001.log",
+      "bytes": 881,
+      "sha256": "71d0dce5a00188f6069f96f8e0ab6816d4559f613d0d3b9059ffdc6a7e47118b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader001.process.json",
+      "bytes": 2563,
+      "sha256": "7380a600314bac8afc6ebd5312cd29cb4cf07fb28306d5d9c62f65284776e196"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader001.xml",
+      "bytes": 660,
+      "sha256": "7d4ecd5ace00f8ae192e027d3e22d4002dff366f5574d3ec7472279d2e117855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader002.log",
+      "bytes": 881,
+      "sha256": "96fb2e8d4e349960f4add3788f2d5f1cea6dd145543c3189ce731fa60983ccae"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader002.process.json",
+      "bytes": 2562,
+      "sha256": "49382f56d774295be88418fa7283a654510616dc6aec6e10f2f22732ad435628"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader002.xml",
+      "bytes": 660,
+      "sha256": "5796e606b010cdc1b8f5bc023518820ad3a41c7335ca3458d07455fa76f4ea17"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader003.log",
+      "bytes": 881,
+      "sha256": "99b9c423abb582a0280e200506ff89d55e0fe619d44b3ce8bf535a8fbbd39718"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader003.process.json",
+      "bytes": 2549,
+      "sha256": "2f70e812ea6f5a6c8ff6336a0991b7abd1abc2c216f848c866d2139b7eddbc86"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-reader003.xml",
+      "bytes": 660,
+      "sha256": "848eef910a1e10e561fea366dede3370da3520791052dc4e61b9f3a69e34a63f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-repeat-equivalence.json",
+      "bytes": 282,
+      "sha256": "e7a1fe344b413edb2a9730791e493cf25aef042cdf0e527ec43f48e439259815"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python-typed-equivalence.json",
+      "bytes": 307,
+      "sha256": "2a0d734c081986197b11b03dc4b0b41da6323b25132da71e312d821e2f7e13c0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-artifacts.json",
+      "bytes": 777,
+      "sha256": "affd8425509a2142c31a29461f35a1518802878b392512725b1817fcec7fb009"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-manifest.json",
+      "bytes": 3733,
+      "sha256": "f3d6b2d1d1d72de0b304f31a5ee326b28a98cc879f3d7a067b572d18efb8ec7d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-pack.json",
+      "bytes": 1527,
+      "sha256": "6914e90430cf89d3ae025fb468bf055f5bccd2c8739a73cba5d23b097c41dd8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-pack.json.started.json",
+      "bytes": 906,
+      "sha256": "6fb264cfb590023adca2425d094112576909e927f1a189324e0ab15b714330a0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-pack.log",
+      "bytes": 145,
+      "sha256": "cd2328fd1501df3ce985170d905d8eb19df29f144b625d0dbc222f8dd6f89ae9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-pack.process.json",
+      "bytes": 2417,
+      "sha256": "021824adb33d5ec2dee57e25dcd7d43fe0dfa6043bd9dc07f8c21e381e18f2d6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-retirement.json",
+      "bytes": 428,
+      "sha256": "91a7c2966aaf5aa354f438623fec7b640b1203bf637f40e820aba1aefdce1c2c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-verify.json",
+      "bytes": 1426,
+      "sha256": "8fcba2ff5bba345b07961717f97e1208b35f6be9f7e41fe76c5b4fbbc0124f03"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-verify.json.started.json",
+      "bytes": 803,
+      "sha256": "e3bb0ac9c15bb03eae731fca498e82ed921bfe1370d17fa2ce68b214019c1a43"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-verify.log",
+      "bytes": 148,
+      "sha256": "06309dd3398dec4912425e189e5579fc057f0a6abe9ab77a507e5cd2dc611fe0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001-verify.process.json",
+      "bytes": 2299,
+      "sha256": "4204b775a75d3dabbffe070731183e3b54af4fb60434a56e05ea2a3da6e24940"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001.log",
+      "bytes": 60,
+      "sha256": "bdf28611b215ef4b0d9063a3e0de14c002926f0b23634810cc1ee633fbfd4257"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001.process.json",
+      "bytes": 2375,
+      "sha256": "e541fa3a72d3ef113c37decfab7db63185a604ee7f2a9c3f19faf9c13c3deb0d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python001.zip",
+      "bytes": 10944,
+      "sha256": "913cf275d0941b249e4742d54c9b2d14f36847faa399f96c06a581c6522baa0b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-artifacts.json",
+      "bytes": 777,
+      "sha256": "062af8795a8b4ef62b8c03a96dfedef9b3ce8dff53783f73c5826b131d3b0b5b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-manifest.json",
+      "bytes": 3733,
+      "sha256": "6ff6676f0e8b2f190770653ca7b242ddebd4a88960f112e492324c4b486d7a6e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-pack.json",
+      "bytes": 1527,
+      "sha256": "6058a3d6930c4f9fa9507ec43a41def5a4bd1f89fcc63fcf42f03658c7d83d92"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-pack.json.started.json",
+      "bytes": 906,
+      "sha256": "59c22fbb61771e0155a8278df02a8a9a8b5b2da11ea96a8896876ad776960375"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-pack.log",
+      "bytes": 145,
+      "sha256": "7dc21e575d343ed1314a6501e2f641ce4519ff3b127079b163818e97b6eecdab"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-pack.process.json",
+      "bytes": 2417,
+      "sha256": "af379e5247568c5736de7505d6b367f5767f03bf91784aaa203eb05d49302ff2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-retirement.json",
+      "bytes": 428,
+      "sha256": "45a988d9629181c3950709a531ebc029c85a49b5d7402b7170bbf0da2b95a54e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-verify.json",
+      "bytes": 1426,
+      "sha256": "08928e47f7c3cfdcf8e6d2b461b8a2c667dc845e11660f0bfcb4af17f55cf353"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-verify.json.started.json",
+      "bytes": 803,
+      "sha256": "45d9e999bf0687c1b88c6c78dee2801d9e652f04ff1bf9daf22079a11ce39f20"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-verify.log",
+      "bytes": 148,
+      "sha256": "b83245ba668afe993d3ef1ab5978a5c959a5778084b47dd078b56e4a20ef9be2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002-verify.process.json",
+      "bytes": 2301,
+      "sha256": "a259461fb3e89de3d585308f8dc65f4600fde5a7d97a40e55db667361a4b5f9d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002.log",
+      "bytes": 60,
+      "sha256": "bdf28611b215ef4b0d9063a3e0de14c002926f0b23634810cc1ee633fbfd4257"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002.process.json",
+      "bytes": 2358,
+      "sha256": "0cb8296fe6d1962def954b76b02ba1260cba67ebf40689e055a87878f8b4a2b5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python002.zip",
+      "bytes": 10937,
+      "sha256": "570661f8dc1e73a0860cc11e3d7b8aa6e802e917add02a1a55a15a60b73c08e9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-artifacts.json",
+      "bytes": 777,
+      "sha256": "f0498e1023890d85b27b6861704594381ce5c7f027517055f235e1bfa02cd6e1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-manifest.json",
+      "bytes": 3733,
+      "sha256": "39048c2dd7bee52a3cd9e4aaac0ddcaa654a21f6929529d2a3b654264e4102c5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-pack.json",
+      "bytes": 1527,
+      "sha256": "98f66755f83e2ce2bb83ee534f8e5a94291c6bc3f5997f64f162c0b0fdf11134"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-pack.json.started.json",
+      "bytes": 906,
+      "sha256": "855c680f438a46675390df28b1a1b97131a48adf261e2200942970a2b30dedd1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-pack.log",
+      "bytes": 145,
+      "sha256": "eb2ddc16c0dfc368eeaaf9a39206e63bb33ded1bb3a629f2e9e3eecedb200663"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-pack.process.json",
+      "bytes": 2411,
+      "sha256": "2246bb50c464815a61417aa196e779e3592355f7d0dac1f3fa93ff279b3a7315"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-retirement.json",
+      "bytes": 428,
+      "sha256": "fcb645dde4a94e9eebb265cb17ccd6c16533aeb42aad933cd2dd86ef7c2d2598"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-verify.json",
+      "bytes": 1426,
+      "sha256": "1e320977b5e430358c637291a91d53d332db317538d3fd02244f847d1438ce28"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-verify.json.started.json",
+      "bytes": 803,
+      "sha256": "219ce27f505719005b719ee6047c67c2086a9c54023d39d6e8b4c98a8917ef5c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-verify.log",
+      "bytes": 148,
+      "sha256": "d8d3c02b7fb2ff43ec0163f4d3a74b6baafadb9cd3baddea5ff5017b815096af"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003-verify.process.json",
+      "bytes": 2297,
+      "sha256": "21120dcac9af4103267f018767e99e1527af22ea5b5006296ea4afa4d7986e85"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003.log",
+      "bytes": 60,
+      "sha256": "bdf28611b215ef4b0d9063a3e0de14c002926f0b23634810cc1ee633fbfd4257"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003.process.json",
+      "bytes": 2375,
+      "sha256": "a4f03773c4fcd1feda6bd86ec893e6ff4354293e5edd5e2170b70c9b0de4d85b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/python003.zip",
+      "bytes": 10936,
+      "sha256": "9c7fd1b273f65c3e79b0036f1a0f450b84e7c0d7a4c3a8eb4bf4e44553c96133"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-artifacts.json",
+      "bytes": 2209,
+      "sha256": "caaf34a3debe5361b73f8f2adebdffa9a705f12eee84e7bc9110eeec69ccc4fd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-manifest.json",
+      "bytes": 6885,
+      "sha256": "1a43c7241e681441e2c8752bdac8c7c0983a4a78a5314814ad8632ec94ab2b96"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-pack.json",
+      "bytes": 1533,
+      "sha256": "28e5248efd9f4d019433c104563586b4131351a4c3670eb2c7fb467592e8ae1d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-pack.json.started.json",
+      "bytes": 911,
+      "sha256": "06a00df1788f7d255be95c8f7e67e80cee4a2e162356049bfee16e3281d5dbbb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-pack.log",
+      "bytes": 146,
+      "sha256": "aba968aadd97f815722665b88d0642311afe47be68a441d9cba8313a5dbff6d9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-pack.process.json",
+      "bytes": 2422,
+      "sha256": "69ac42fcc76218b24d48f0df27992e483ae9e4c08be484ee9b2fa14565f68dce"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-retirement.json",
+      "bytes": 428,
+      "sha256": "0d53d59d005aee899c0b7c1f12996deb9d2efa3847cd82b645a6a82f47d82349"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-verify.json",
+      "bytes": 1431,
+      "sha256": "24ba17de0b383932268a79dd6eb3b975d13ca5c98eb67a205c1d2c856a1cc0ac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-verify.json.started.json",
+      "bytes": 807,
+      "sha256": "a575c5910d79a38e67e758ecc50696907a5ad37db57e1b049d90bc152f0cca0e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-verify.log",
+      "bytes": 149,
+      "sha256": "b0883e900549d2c392598210e2cce4de7691570d6d2be9ade4c53665095efd77"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001-verify.process.json",
+      "bytes": 2300,
+      "sha256": "c972f70893a5223a8c1208abd8746a7edb4be341e7178b19b7cf687d7b4debf5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001.log",
+      "bytes": 875,
+      "sha256": "32221e14411f45cc550a6e20398c05df3932a346e3fc97690e0d9a0302705d26"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001.process.json",
+      "bytes": 2438,
+      "sha256": "89fae06b3b042e56e010272b91976911d402df187cfa02fb8eec0336bf1a8c4d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001.xml",
+      "bytes": 906,
+      "sha256": "c7ec72c859fcb756bfd038d7e506844bb5f9cb6106dc0c9de263537eb43335aa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/session001.zip",
+      "bytes": 14192,
+      "sha256": "ab9ee3433e3e7102bdf2346ef36d8013c9a85f39b7e8239476e1a589a642afbd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-build001.log",
+      "bytes": 2460,
+      "sha256": "b9f198300f2c176697b862fe99d630d80104ab6b5077f5e10ca4d88832e10fd6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-build001.process.json",
+      "bytes": 2971,
+      "sha256": "0ec1b71dd7f210d6f695b0ee902a60d5cf7fe5c831574a4f7a13cc6bff99e407"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-build002.log",
+      "bytes": 8194,
+      "sha256": "46f34f9b7b7bc580da055183db9a0c4e92c3dbd821a8fdfc2c4c8f84d189b054"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-build002.process.json",
+      "bytes": 2970,
+      "sha256": "e0c3f1a825a4963dddd76b5387a36e8696a0fe06054c83ffab7132de81d1c579"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-font005.log",
+      "bytes": 1602,
+      "sha256": "f248e9e3fbf59c486f78dd1324b524e025194c67d28b70993e2e77382fd6bf0b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-font005.process.json",
+      "bytes": 2032,
+      "sha256": "288acaba0a128011c7fa3a7ec332eac0687568c91535413dcc6a18446d9271be"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-lazy007.log",
+      "bytes": 2342,
+      "sha256": "2f47abaddab67811db3f360e7aaa5a84b0000185b04387bddb2f5f96c86c58ab"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-lazy007.process.json",
+      "bytes": 2061,
+      "sha256": "14cf0f500fc499cf1481f3c5674a570b599f7a423c557424d8f371310a375e06"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-observation003.log",
+      "bytes": 7430,
+      "sha256": "f3b910e573124d92e6a8b8621b6b1124ddaa5554d83130092c61b99a41a2025c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-observation003.process.json",
+      "bytes": 2910,
+      "sha256": "09182dbcdde263462db890e31fd0c54643bc6aba09f6ac11533955fba5d16f6b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-probe004.log",
+      "bytes": 1611,
+      "sha256": "37b260b08de68f71e56dc6e1c4bd260907053abb9dccabd0033859f08b2f06e5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-probe004.process.json",
+      "bytes": 2879,
+      "sha256": "71440c076d72dffe527952febf44609503fbcf65f6b43913e77fbe5b91817a7e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-typed006.log",
+      "bytes": 7447,
+      "sha256": "ce5def01f8171c9da8daeb5a518bd63a387bfbb021dcd07024c49e23d7365f77"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-20261104/windows-typed006.process.json",
+      "bytes": 2055,
+      "sha256": "2018944e2074dbdbf02aa8cbf63b99c1ae5abaa59a6e3ad53cb2c7b101421d4e"
+    }
+  ],
+  "next_task": "Finish P2c.2 pre-read configured aggregate admission, captured output/metadata/role and lifecycle behavior on existing source/job/result owners, then P2c.3 interchange/loss review.",
+  "document_checks": {
+    "links_and_anchors": 77,
+    "inventory_ids": 99,
+    "historical_hashes": 3,
+    "source_product_font_local_evidence_pins": 262,
+    "ready_specs": 2,
+    "owned_scratch_absent": true,
+    "legacy_plan_checker": "Not claimed; historical prose-shape mismatch remains T02. Scoped document checks used."
+  }
+}
