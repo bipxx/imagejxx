@@ -163,6 +163,23 @@ struct DocumentData {
   void validate() const;
 };
 Change document_changes(const DocumentData &before, const DocumentData &after);
+// Allocation-free preflight for a subsequent snapshot copy. The charge covers
+// copied display metadata and snapshot structure, not shared immutable image or
+// recursive metadata storage, allocator overhead or process RSS. Acquire the
+// caller's resource ownership outside document/controller locks before capture.
+class SnapshotCapturePlan {
+public:
+  std::size_t bytes() const noexcept { return bytes_; }
+  std::uint64_t document_id() const noexcept { return owner_->id; }
+private:
+  friend class Document;
+  SnapshotCapturePlan() = default;
+  std::shared_ptr<const DocumentIdentity> owner_;
+  Revisions revisions_;
+  std::uint64_t dataIdentity_ = 0;
+  bool dirty_ = false;
+  std::size_t bytes_ = 0;
+};
 class DocumentTransaction;
 class DocumentSnapshot {
 public:
@@ -293,6 +310,10 @@ public:
       std::make_shared<const DocumentIdentity>();
   const std::uint64_t id = identity->id;
   DocumentSnapshot snapshot() const;
+  // Reject over-budget metadata before any snapshot payload is copied. Capture
+  // rejects a foreign/stale plan before copying; callers may retry preparation.
+  SnapshotCapturePlan prepare_snapshot_capture(std::size_t max_bytes) const;
+  DocumentSnapshot capture_snapshot(const SnapshotCapturePlan &plan) const;
   DocumentTransaction begin_edit(Change dependencies = Change::Data) const;
   void commit(DocumentTransaction &transaction,
               std::optional<DisplayState> display = std::nullopt,

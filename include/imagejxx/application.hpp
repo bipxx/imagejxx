@@ -212,6 +212,11 @@ public:
   bool contains(std::uint64_t id) const;
   void close(std::uint64_t id = 0, bool discard = false);
   DocumentSnapshot snapshot(std::uint64_t id = 0) const;
+  SnapshotCapturePlan prepare_snapshot_capture(std::size_t max_bytes,
+                                                std::uint64_t id = 0) const;
+  // Resolves the plan's explicit owner; closing it invalidates capture even if
+  // a frontend still retains the Document. No user callback runs under locks.
+  DocumentSnapshot capture_snapshot(const SnapshotCapturePlan &plan) const;
   // Global/effective calibration is separate from local snapshots/history.
   // These captures are explicit foundations; existing processing APIs keep
   // their local-snapshot contract until their effective context is integrated.

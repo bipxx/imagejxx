@@ -20,6 +20,26 @@ template <class E = std::exception, class F> void rejects(F function) {
   check(rejected, "Invalid application action was accepted");
 }
 Dataset fixture() { return Dataset::from_stack({Image(5, 4), Image(5, 4)}); }
+void bounded_snapshot_membership() {
+  Application application;
+  auto owner = std::make_shared<Document>(fixture());
+  const auto id = application.adopt(owner);
+  rejects<std::invalid_argument>([&] { application.prepare_snapshot_capture(0, id); });
+  const auto plan = application.prepare_snapshot_capture(1024 * 1024, id);
+  const auto other = application.create(fixture());
+  check(application.capture_snapshot(plan).id() == id && application.active_document_id() == other,
+        "Capture resolves accepted owner independently of current activation");
+  const auto explicitPlan = application.prepare_snapshot_capture(plan.bytes(), id);
+  auto display = owner->snapshot().display();
+  display.zoom = 2;
+  owner->set_display(display);
+  rejects<RevisionConflict>([&] { application.capture_snapshot(explicitPlan); });
+  const auto current = application.prepare_snapshot_capture(1024 * 1024, id);
+  application.close(id);
+  rejects<DocumentUnavailable>([&] { application.capture_snapshot(current); });
+  check(owner->capture_snapshot(current).id() == id,
+        "Controller membership rejection does not destroy an externally retained native owner");
+}
 void guarded_display_membership() {
   Application application;
   auto owner = std::make_shared<Document>(fixture());
@@ -126,6 +146,7 @@ void testPublicationConstraints() {
 
 int main() {
   try {
+    bounded_snapshot_membership();
     guarded_display_membership();
     testPublicationConstraints();
     static_assert(std::variant_size_v<MetadataValue> == 8);

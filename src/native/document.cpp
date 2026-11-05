@@ -912,6 +912,50 @@ DocumentSnapshot Document::snapshot() const {
   std::lock_guard<std::mutex> lock(mutex_);
   return snapshot_locked();
 }
+SnapshotCapturePlan Document::prepare_snapshot_capture(std::size_t max_bytes) const {
+  std::lock_guard<std::mutex> lock(mutex_);
+  std::size_t bytes = 0;
+  const auto charge = [&](std::size_t count) {
+    if (count > max_bytes - bytes)
+      throw std::invalid_argument("Snapshot capture exceeds memory limit");
+    bytes += count;
+  };
+  const auto string = [&](const std::string &value) {
+    charge(value.size());
+    charge(1); // Include the terminator, also conservatively charging SSO.
+  };
+  charge(sizeof(DocumentSnapshot));
+  for (const auto &entry : display_.properties) {
+    // Key/value plus an allowance for tree links and balancing. Shared recursive
+    // nodes are retained by reference; their payload is not copied here.
+    charge(sizeof(MetadataObject::value_type) + 4 * sizeof(void *));
+    string(entry.first);
+    if (const auto *value = std::get_if<std::string>(&entry.second))
+      string(*value);
+    else if (const auto *values = std::get_if<std::vector<std::string>>(&entry.second)) {
+      for (const auto &value : *values) {
+        charge(sizeof(std::string));
+        string(value);
+      }
+    }
+  }
+  SnapshotCapturePlan plan;
+  plan.owner_ = identity;
+  plan.revisions_ = revisions_;
+  plan.dataIdentity_ = identity_;
+  plan.dirty_ = identity_ != savedIdentity_;
+  plan.bytes_ = bytes;
+  return plan;
+}
+DocumentSnapshot Document::capture_snapshot(const SnapshotCapturePlan &plan) const {
+  std::lock_guard<std::mutex> lock(mutex_);
+  if (plan.owner_ != identity)
+    throw std::invalid_argument("Snapshot capture belongs to another document");
+  if (!revisions_.matches(plan.revisions_, Change::All) ||
+      identity_ != plan.dataIdentity_ || (identity_ != savedIdentity_) != plan.dirty_)
+    throw RevisionConflict();
+  return snapshot_locked();
+}
 DocumentTransaction Document::begin_edit(Change dependencies) const {
   return snapshot().begin_edit(dependencies);
 }

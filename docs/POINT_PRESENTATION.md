@@ -476,6 +476,39 @@ poll/wait lifecycle; read-only source close cancels the export and cannot publis
 an abandoned stage. Persistence/replay and remaining output/platform variants
 remain B2b, and full P2c.2/editor completion is still open.
 
+## Snapshot copy admission (P2c.2 B2a native foundation)
+
+`Document::prepare_snapshot_capture(max_bytes)` sizes the complete accepted
+snapshot without copying display properties or reading image planes. Its opaque
+`SnapshotCapturePlan` exposes `bytes()` and the explicit document ID. The charge
+includes the snapshot structure, property map entries with a tree-link allowance,
+keys, direct string values and every string-list element/terminator. Small-string
+storage is conservatively charged. Recursive metadata nodes, image data and other
+immutable document records are retained by reference; their existing payload is
+not copied. This is logical copy-storage admission, not allocator/RSS accounting.
+
+Acquire the caller's resource lease for `plan.bytes()` **outside** Document and
+Application locks, then call `capture_snapshot(plan)`. The native owner checks
+identity, all revisions, data identity and dirty state before the first payload
+copy. A changed source raises `RevisionConflict`; a foreign owner rejects.
+Preparation/capture do not edit history, display or data. Preparation can reject
+as soon as the remaining byte allowance is insufficient, including a zero or
+sub-structure cap. A successful capture preserves all display properties and
+shares the original immutable data and recursive metadata nodes.
+
+Application exposes the same preparation/capture operations under its existing
+membership lock. Capture resolves the plan's explicit document, independent of
+current activation, and rejects a closed owner even if a frontend still retains
+the native Document. Neither operation invokes admission callbacks or user code
+under either lock. Existing `snapshot()` retains its original behavior.
+
+This foundation does not yet wire creator-owned queued leases into Window,
+remove its earlier capability/revision snapshot copies, expose the new controls
+through Python, or qualify installed SDK packaging. Those consumers remain the
+next B2a task. Preserve request-time freeze and retain capture ownership until
+payload retirement; do not move creator-only RenderMemory leases to workers or
+add independently configured budget totals as if they were disjoint memory.
+
 ## Admitted export preparation (P2c.2 B2a)
 
 Private PreparedExportImage accepts an absolute working-byte admission callback.

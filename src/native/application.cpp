@@ -460,6 +460,15 @@ DocumentSnapshot Application::snapshot(std::uint64_t id) const {
   std::lock_guard<std::mutex> lock(mutex_);
   return lookup_locked(id)->snapshot();
 }
+SnapshotCapturePlan Application::prepare_snapshot_capture(std::size_t max_bytes,
+                                                          std::uint64_t id) const {
+  std::lock_guard<std::mutex> lock(mutex_);
+  return lookup_locked(id)->prepare_snapshot_capture(max_bytes);
+}
+DocumentSnapshot Application::capture_snapshot(const SnapshotCapturePlan &plan) const {
+  std::lock_guard<std::mutex> lock(mutex_);
+  return lookup_locked(plan.document_id())->capture_snapshot(plan);
+}
 DocumentTransaction Application::begin_edit(std::uint64_t id,
                                             Change dependencies) const {
   return snapshot(id).begin_edit(dependencies);

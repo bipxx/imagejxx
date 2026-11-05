@@ -1,0 +1,243 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 P2c.2 B2a native snapshot copy admission foundation",
+  "date": "2026-11-05",
+  "base_commit": "eb4b96a5d19f0726905c6f9cbc4b91e8fbb661e1",
+  "state": {
+    "implemented": "Allocation-free successful native preflight and same-state guarded complete snapshot copying on Document/Application.",
+    "verified": "Document and Application native suites pass on Windows and Linux, including bounded-copy and membership checks.",
+    "integrated": "Native owners only; Window queue and Python exposure remain open.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#snapshot-copy-admission-p2c2-b2a-native-foundation",
+  "predecessor": "docs/parity/reviews/T04a2-async-display-export-20261105.json",
+  "sources": [
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 18723,
+      "sha256": "49f9831cd3b0990ab7d337be487223004ac9e36b32a62c5405228afb8010110f"
+    },
+    {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 16934,
+      "sha256": "9c6e87fc4ba6928aeb55f42cf4c8a9800b9bba2660fb10efdc5cbf3efed3a2f7"
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 60674,
+      "sha256": "6b6f7966464568bf6962487f8966c5a99c45e74b660cb11f69e9b292add2af05"
+    },
+    {
+      "path": "src/native/application.cpp",
+      "bytes": 28555,
+      "sha256": "e1429455f6d49fd70c47517c068c3d6c31133bd16ca65b0966646a8eb350b488"
+    },
+    {
+      "path": "tests/native/test_document.cpp",
+      "bytes": 18510,
+      "sha256": "874674030c91dc850363746f47904d16d50e0dcd8f407236f0519ce5a42fb4da"
+    },
+    {
+      "path": "tests/native/test_application.cpp",
+      "bytes": 18655,
+      "sha256": "28a4095bd99b3eb277f00b69b80dfc7bf0ae09dadbc956c19950a9446f60b692"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 40798,
+      "sha256": "a1b15709bb167ad80bd39b13e33c1acf23d9d3838dce480e9b8b446deaf95f21"
+    }
+  ],
+  "products": [
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_core.lib",
+      "bytes": 59552926,
+      "sha256": "2078e9030ea89a6f524de3695c0c32b80191b974d19a262a255952717ecc5ae6"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_document_tests.exe",
+      "bytes": 434176,
+      "sha256": "2f3725be4843638bc5a7c894a6e00e7a3acb51521f8286bc5dd907938e233517"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_application_tests.exe",
+      "bytes": 563712,
+      "sha256": "e2e55a70f18be2bee1942b8cc2713e246eee51fbb239c7bd664c0edf92e1846f"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/libimagejxx_core.a",
+      "bytes": 20635852,
+      "sha256": "088aa2062713705880a70bd8fd81e140dcb910210dccc41deee41f4bee7d8d51"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/imagejxx_document_tests",
+      "bytes": 2783312,
+      "sha256": "eaa850a92354ed209ba6e06725cf8fbdf95aa313f2d5616e298a867ee5b17f18"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/imagejxx_application_tests",
+      "bytes": 4947952,
+      "sha256": "c1a0d1af524ac231bbac4e6e3c95ed8eb3b87275f0b9848330bbe669587ea136"
+    }
+  ],
+  "processes": [
+    {
+      "name": "linux-application001.process",
+      "seconds": 0.06082331400000385,
+      "descendant_cleanup_required": false,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/linux-application001.process.json",
+        "bytes": 1462,
+        "sha256": "0ecc5648498a62129a5a541b821f8e6cca2d9e0599a0f3af9862908c109aacdc"
+      }
+    },
+    {
+      "name": "linux-core001.process",
+      "seconds": 217.518803921,
+      "descendant_cleanup_required": false,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/linux-core001.process.json",
+        "bytes": 1564,
+        "sha256": "614ca73e888a864054db92ccdf8bf40d059a7736a56aad7f992c5c53d045142e"
+      }
+    },
+    {
+      "name": "linux-document001.process",
+      "seconds": 0.06761248600000158,
+      "descendant_cleanup_required": false,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/linux-document001.process.json",
+        "bytes": 1456,
+        "sha256": "50426c7c0816f741442f51e6141f862b6d7a2df29c28ca5ff4fb495b588cf0be"
+      }
+    },
+    {
+      "name": "linux-identities-outer002.process",
+      "seconds": 4.202999999979511,
+      "descendant_cleanup_required": false,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/linux-identities-outer002.process.json",
+        "bytes": 2854,
+        "sha256": "58a11f8d146128ef3df0573c2e38a7c69bf547249eb254cf9529136934724558"
+      }
+    },
+    {
+      "name": "linux-identities001.process",
+      "seconds": 1.6879999998491257,
+      "descendant_cleanup_required": true,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/linux-identities001.process.json",
+        "bytes": 2480,
+        "sha256": "91c7d76217d7f392ebe3ea2a9e795456d84b9734041e83fd2afaade725e8f123"
+      }
+    },
+    {
+      "name": "linux-identities002.process",
+      "seconds": 0.1259633739999999,
+      "descendant_cleanup_required": false,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/linux-identities002.process.json",
+        "bytes": 1757,
+        "sha256": "b48728dd5f2a74dc8445a99a4ca4b90ce492e915cc970322a55d3e0c141e067a"
+      }
+    },
+    {
+      "name": "linux-outer001.process",
+      "seconds": 224.1720000000205,
+      "descendant_cleanup_required": false,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/linux-outer001.process.json",
+        "bytes": 2882,
+        "sha256": "6cc0e87093c1455cc246255e1190b2e8e2d00c803450b7a4cbc034b640127e7a"
+      }
+    },
+    {
+      "name": "windows-application001.process",
+      "seconds": 0.06299999984912574,
+      "descendant_cleanup_required": false,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/windows-application001.process.json",
+        "bytes": 1804,
+        "sha256": "2f23072c8b59f505be4da398efe7cce6cc79315a609a3fefa8d71a18f8e1b9e1"
+      }
+    },
+    {
+      "name": "windows-core001.process",
+      "seconds": 203.64100000006147,
+      "descendant_cleanup_required": false,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/windows-core001.process.json",
+        "bytes": 2064,
+        "sha256": "7c918b6d3ffd022132fe681ac3f5297573a4d08de00430786bdee07b6485c11a"
+      }
+    },
+    {
+      "name": "windows-document001.process",
+      "seconds": 0.0470000000204891,
+      "descendant_cleanup_required": false,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/windows-document001.process.json",
+        "bytes": 1797,
+        "sha256": "97b890cb254f6f6345df96b3015703f7d2ddc29fde8aa3f8b0f1047be0a299c7"
+      }
+    }
+  ],
+  "coverage": [
+    "zero/substructure/exact/one-byte-short caps",
+    "large direct strings/string lists and immutable-tree sharing",
+    "complete metadata/source/data identity equivalence",
+    "foreign owner and stale display/metadata/selection",
+    "saved-state changes without revision changes",
+    "accepted explicit owner independent of activation",
+    "closed membership despite retained native owner",
+    "no plane reads during sizing/refusal/capture"
+  ],
+  "local_evidence": {
+    "path": ".tmp/manual-workflow-verification/t04a2-snapshot-capture-20261105/closeout-manifest.json",
+    "bytes": 7573,
+    "sha256": "62f651ca71a3bf12703a4983cac3c07cd95445aeffef2fffee6edd048755dc4f"
+  },
+  "storage": {
+    "entry": {
+      "path": ".tmp/manual-workflow-verification/snapshot-capture-entry-20261105.json",
+      "bytes": 66571,
+      "sha256": "4544bb1c34d0ecb8fc1dce0bffa06b65e975f7be63626c88fdb82f3ffd54beb2"
+    },
+    "final_before_receipt_docs": {
+      "path": ".tmp/manual-workflow-verification/snapshot-capture-final-20261105.json",
+      "bytes": 66572,
+      "sha256": "9346de037f9e19177ab3ac025a737aef97c73416977ac043c90edbbb8adb622d"
+    },
+    "entry_known_bytes": 8562048382,
+    "final_known_bytes": 8570335403,
+    "inaccessible_subtrees": 214,
+    "budget_verified": false,
+    "scratch_groups_retired": 10,
+    "new_cache_or_runtime_generations": 0
+  },
+  "waste_review": {
+    "fixed": "No projected metadata adapter, COW rewrite, callback under locks, second scheduler or copied immutable payload. Reused active caches; no captures/SDK trees generated.",
+    "required_cost": "Shared header rebuilt the affected native targets on both platforms; process receipts pin durations.",
+    "retry": "Initial Linux hash collection needed descendant cleanup. Nested ownership retry002 succeeds with identical product hashes; tests/builds not rerun.",
+    "next_prevention": "Reuse this native API; batch desktop/Python consumers and audit scientific capability/typed-job revision/slice copies before full host build. Use nested WSL ownership even for identity collection.",
+    "cleanup": "Ten empty terminal scratch groups verified/removed; concise logs and receipts retained, no archives.",
+    "eol_only_after_build": "Normalized compiler-input/final-source equality retained; no behavior rebuild for newline restoration."
+  },
+  "remaining": [
+    "creator/queued capture lease before initial Window payload copy",
+    "earlier capability and redundant typed-job snapshot copies",
+    "capture/running/retained reservation reconciliation",
+    "Python exposure and changed installed SDK consumers",
+    "B2b state/replay/output/print/platform qualification",
+    "all remaining T00-T15 commercially eligible editor scope"
+  ],
+  "claims_excluded": [
+    "complete B2a",
+    "desktop capture integration",
+    "Python API qualification",
+    "installed SDK packaging qualification",
+    "RSS guarantee",
+    "general speed superiority",
+    "full editor/release completion"
+  ]
+}

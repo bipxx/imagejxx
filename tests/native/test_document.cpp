@@ -36,6 +36,50 @@ Dataset fixture() {
     planes.push_back(fill(Image(5, 4), i));
   return Dataset::from_planes({2, 2, 3, 4, 5, 1}, std::move(planes));
 }
+void bounded_snapshot_capture() {
+  auto provider = std::make_shared<LazySource>();
+  Document document{Dataset(provider)};
+  const auto baseline = document.prepare_snapshot_capture(std::numeric_limits<std::size_t>::max());
+  check(baseline.bytes() == sizeof(DocumentSnapshot) && baseline.document_id() == document.id,
+        "Empty capture charges its structure without source reads");
+  rejects<std::invalid_argument>([&] { document.prepare_snapshot_capture(0); });
+  rejects<std::invalid_argument>([&] { document.prepare_snapshot_capture(baseline.bytes() - 1); });
+  auto view = document.capture_snapshot(baseline).display();
+  view.properties["large"] = std::string(8192, 'x');
+  view.properties["list"] = std::vector<std::string>{"", std::string(4096, 'y')};
+  view.properties["shared"] = metadata_array({std::string(65536, 'z')});
+  document.set_display(view);
+  rejects<RevisionConflict>([&] { document.capture_snapshot(baseline); });
+  const auto plan = document.prepare_snapshot_capture(std::numeric_limits<std::size_t>::max());
+  check(plan.bytes() > 8192 + 4096 && plan.bytes() < 65536,
+        "Capture counts copied strings/lists but only references immutable trees");
+  rejects<std::invalid_argument>([&] { document.prepare_snapshot_capture(plan.bytes() - 1); });
+  const auto exact = document.prepare_snapshot_capture(plan.bytes());
+  const auto captured = document.capture_snapshot(exact);
+  const auto ordinary = document.snapshot();
+  check(metadata_equal(captured.display().properties, ordinary.display().properties) &&
+            captured.shares_data(ordinary) && captured.same_document(ordinary) &&
+            captured.revisions().matches(ordinary.revisions(), Change::All) &&
+            captured.data_identity() == ordinary.data_identity() && captured.dirty() == ordinary.dirty(),
+        "Admitted capture preserves complete metadata, owner, revisions and storage identity");
+  check(std::get<std::shared_ptr<const MetadataTree>>(captured.display().properties.at("shared")) ==
+            std::get<std::shared_ptr<const MetadataTree>>(view.properties.at("shared")),
+        "Recursive metadata payload retains the original immutable node");
+  Document other(fixture());
+  rejects<std::invalid_argument>([&] { other.capture_snapshot(plan); });
+  auto edit = document.begin_edit();
+  edit.set_title("Changed");
+  document.commit(edit);
+  rejects<RevisionConflict>([&] { document.capture_snapshot(plan); });
+  const auto dirty = document.prepare_snapshot_capture(std::numeric_limits<std::size_t>::max());
+  document.mark_saved();
+  rejects<RevisionConflict>([&] { document.capture_snapshot(dirty); });
+  const auto beforeSelection = document.prepare_snapshot_capture(std::numeric_limits<std::size_t>::max());
+  document.select(Selection("point", {{1, 1}}));
+  rejects<RevisionConflict>([&] { document.capture_snapshot(beforeSelection); });
+  check(provider->reads == 0 && captured.display().properties.size() == 3,
+        "Sizing, refusal and capture never read planes or change accepted metadata");
+}
 void guarded_display_publication() {
   Document document(fixture());
   auto edit = document.begin_edit();
@@ -125,6 +169,7 @@ void guarded_display_publication() {
 } // namespace
 int main() {
   try {
+    bounded_snapshot_capture();
     guarded_display_publication();
     Document doc(fixture(), "Original");
     auto source = doc.snapshot();
