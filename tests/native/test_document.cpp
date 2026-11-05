@@ -57,6 +57,7 @@ void bounded_snapshot_capture() {
   const auto exact = document.prepare_snapshot_capture(plan.bytes());
   const auto captured = document.capture_snapshot(exact);
   const auto ordinary = document.snapshot();
+  check(document.data_snapshot().get() == &ordinary.data(), "Metadata-only data access retains original immutable storage");
   check(metadata_equal(captured.display().properties, ordinary.display().properties) &&
             captured.shares_data(ordinary) && captured.same_document(ordinary) &&
             captured.revisions().matches(ordinary.revisions(), Change::All) &&

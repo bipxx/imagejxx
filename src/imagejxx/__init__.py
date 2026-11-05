@@ -519,6 +519,7 @@ from ._native import (
     Change as Change,
     Document as Document,
     DocumentSnapshot as DocumentSnapshot,
+    SnapshotCapturePlan as SnapshotCapturePlan,
     DocumentTransaction as DocumentTransaction,
     Selection as Selection,
     ROI as ROI,

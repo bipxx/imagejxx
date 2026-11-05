@@ -528,6 +528,9 @@ void bind_document(py::module_ &m) {
         }
         return result;
       });
+  py::class_<SnapshotCapturePlan>(m, "SnapshotCapturePlan")
+      .def_property_readonly("bytes", &SnapshotCapturePlan::bytes)
+      .def_property_readonly("document_id", &SnapshotCapturePlan::document_id);
   py::class_<DocumentSnapshot>(m, "DocumentSnapshot")
       .def_property_readonly("id", &DocumentSnapshot::id)
       .def_property_readonly("revisions", &DocumentSnapshot::revisions)
@@ -641,6 +644,10 @@ void bind_document(py::module_ &m) {
       .def(py::init<const DocumentSnapshot &>(), py::arg("source"))
       .def_readonly("id", &Document::id)
       .def("snapshot", &Document::snapshot,
+           py::call_guard<py::gil_scoped_release>())
+      .def("prepare_snapshot_capture", &Document::prepare_snapshot_capture,
+           py::arg("max_bytes"), py::call_guard<py::gil_scoped_release>())
+      .def("capture_snapshot", &Document::capture_snapshot, py::arg("plan"),
            py::call_guard<py::gil_scoped_release>())
       .def("begin_edit", &Document::begin_edit,
            py::arg("dependencies") = Change::Data,

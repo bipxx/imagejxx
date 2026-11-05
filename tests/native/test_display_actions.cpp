@@ -141,7 +141,9 @@ void exportJobs(const std::filesystem::path& root) {
     const auto id=w.jobInfo()->id;
     if(mode==1) {
       check(w.jobInfo()->state==JobState::Queued && reads.counts().plane_reads==count,"Queued export performs no reads");
-      check(w.cancelJob(id),"Queued export cancellation refused");gate->release();blocker.wait();blocker.complete([]{});w.wait();
+      check(w.renderMemoryInfo().at("working_bytes").get<std::size_t>()>=source->prepare_snapshot_capture(1048576).bytes(),"Queued export retains capture memory before worker admission");
+      bool canceled=false;std::thread canceler([&]{canceled=scheduler->cancel(id);});canceler.join();
+      check(canceled,"Queued export cancellation refused");gate->release();blocker.wait();blocker.complete([]{});w.wait();
     } else if(mode==2 || mode==3) {
       gate->await();
       if(mode==2)check(w.cancelJob(id),"Running export cancellation refused");
@@ -168,6 +170,7 @@ void exportJobs(const std::filesystem::path& root) {
       } else w.wait();
     }
     check(!w.busy() && scheduler->usage().reserved_bytes==0 && !exportTemporary(dir),"Terminal export must retire payload/stage/lease");
+    check(w.renderMemoryInfo().at("working_bytes")==0,"Terminal export must retire captured snapshot storage");
     if(mode!=0)check(w.documents().size()==source_documents-(mode==3?1:0),"Canceled/stale export published a document");
     if(mode==0) {
       check(w.error().empty(),"Accepted export reported failure");

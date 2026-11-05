@@ -151,6 +151,10 @@ void bind_application(py::module_ &m) {
            py::call_guard<py::gil_scoped_release>())
       .def("snapshot", &Application::snapshot, py::arg("document_id") = 0,
            py::call_guard<py::gil_scoped_release>())
+      .def("prepare_snapshot_capture", &Application::prepare_snapshot_capture,
+           py::arg("max_bytes"), py::arg("document_id") = 0, py::call_guard<py::gil_scoped_release>())
+      .def("capture_snapshot", &Application::capture_snapshot, py::arg("plan"),
+           py::call_guard<py::gil_scoped_release>())
       .def("begin_edit", &Application::begin_edit, py::arg("document_id") = 0,
            py::arg("dependencies") = Change::Data,
            py::call_guard<py::gil_scoped_release>())

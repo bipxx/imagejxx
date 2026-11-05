@@ -912,6 +912,10 @@ DocumentSnapshot Document::snapshot() const {
   std::lock_guard<std::mutex> lock(mutex_);
   return snapshot_locked();
 }
+std::shared_ptr<const DocumentData> Document::data_snapshot() const {
+  std::lock_guard<std::mutex> lock(mutex_);
+  return data_;
+}
 SnapshotCapturePlan Document::prepare_snapshot_capture(std::size_t max_bytes) const {
   std::lock_guard<std::mutex> lock(mutex_);
   std::size_t bytes = 0;

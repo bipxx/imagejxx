@@ -1,10 +1,11 @@
 # ImageJ and Fiji delivery plan
 
 Updated 2026-11-05: remaining-work and per-task waste-management review.
-Native snapshot copy admission is scoped verified on Windows/Linux.
-Next: wire creator/queued capture ownership and Python consumers, then export state/replay
-and remaining output/platform qualification. Windows Flatten/display/PDF jobs are
-scoped integrated in both hosts; full B2a resource/capture closure remains open. Appearance interchange, typed draft preview and the full T00-T15
+Native snapshot capture and queued ownership are scoped integrated in both
+Windows hosts; Python controls and changed installed clients on Windows/Linux pass.
+Next: B2b executable export state/replay, recovery and remaining output/printing/
+platform qualification. This is not whole-process/RSS or full editor closure.
+Appearance interchange, typed draft preview and the full T00-T15
 delivery horizon remain required. Every task includes waste review, verified
 cleanup and a queue update before its successor starts.
 This is the
@@ -70,9 +71,10 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 P2c.2 output-role/spatial-property increment | Actual both-host Flatten includes overlays, visible manager rows and active point roles in order; non-point suppression, detached local plane calibration/properties/density provenance and session reopen pass. 250 distinct focused Windows product cases ultimately pass (15 new), plus one native control. | Generic ROI/font and text follow-ons are delivered below; B2 scheduling/publication/state/replay remains. No Linux/macOS UI, format metadata, PDF/print or full P2c.2 claim. [Evidence](parity/reviews/T04a2-point-flatten-roles-20261104.json). |
 | T04a.2 P2c.2 A2 explicit generic ROI/font API | Additive C++ overload/Python point_options keyword resolves ROI color and reuses shared admitted point raster/coverage. 519 focused Windows Python cases pass (128 new); two native controls and one changed installed point client per Windows/Linux platform pass. | B1 text capture is delivered below; complete B2 whole-job/publication/state/replay. Point-only limits do not qualify legacy masks. Unchanged actual-host evidence reused; full P2c.2 remains open. [Evidence](parity/reviews/T04a2-roi-point-context-20261104.json). |
 | T04a.2 P2c.2 B1 captured legacy text | Text glyphs/metrics now join immutable point coverage before source access; shared path/size/codepoint and digit aliases replace fixed64MiB reservation with charged actual font staging. 418 focused Windows product cases pass (21 new), including both actual mixed text/point Flatten hosts; native100-check control passes. | B2a scheduling/source guards/file promotion, then B2b state/replay/PDF/print/format qualification. No full scheduler/RSS, Java font/AA or Linux/macOS UI claim. [Evidence](parity/reviews/T04a2-text-export-capture-20261105.json). |
-| T04a.2 B2a Windows async display jobs | Staged encoding, incremental reservations/preparation and typed Window worker/creator publication are scoped integrated.713 focused Windows Python cases ultimately pass,30 native lifecycle cases plus existing controls; both173-frame hosts/four readers each and one installed job client per Windows/Linux platform pass. | Next initial snapshot/queued-capture bounds, then B2b state/replay/output/printing/platform qualification. No whole-process/RSS, complete B2a or editor/release claim. [Evidence](parity/reviews/T04a2-async-display-export-20261105.json). |
+| T04a.2 B2a Windows async display jobs | Staged encoding, incremental reservations/preparation and typed Window worker/creator publication are scoped integrated.713 focused Windows Python cases ultimately pass,30 native lifecycle cases plus existing controls; both173-frame hosts/four readers each and one installed job client per Windows/Linux platform pass. | Initial snapshot/queued-capture consumer scope is delivered below; next B2b state/replay/output/printing/platform qualification. No whole-process/RSS, complete B2a or editor/release claim. [Evidence](parity/reviews/T04a2-async-display-export-20261105.json). |
+| T04a.2 B2a captured snapshot/queued ownership | Both Windows hosts now preflight full snapshot copies, retain cross-thread-safe shared capture leases and bound creator validation copies. Capability checks share immutable data; typed jobs skip legacy copies; Python controls and installed snapshot clients pass.794 distinct Python cases (19 new),30 lifecycle cases, native concurrency/regressions and both173-frame hosts/four readers each pass. | B2b state/replay/recovery and remaining output/print/platform qualification. No whole-process/RSS or Linux/macOS UI claim. [Evidence](parity/reviews/T04a2-capture-consumers-20261105.json). |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,570,335,403 known bytes before final snapshot closeout docs; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,350,055,100 known bytes before final consumer receipt/docs;214 inaccessible subtrees keep the full budget unverified. Physical C: exhaustion interrupted Windows verification; recovered in the same cache, preserving the incomplete original receipt and diagnostics. | Check physical free space separately before long builds and at checkpoints, alongside the complete normalized project/root inventory. Keep AGENTS.md cleanup rules. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Active work and immediate sequence
@@ -93,7 +95,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | B2a staged-encoder/publication foundation. | Existing raster/PDF codecs emit once into the existing stream; final validation precedes replacement.161 distinct focused Windows Python cases, native213-check control and Windows/Linux PNM pass. [Receipt](parity/reviews/T04a2-staged-display-export-20261105.json). Async integration remains open. |
 | Delivered scoped | Windows B2a Flatten/display/PDF job integration. | Both hosts, native lifecycle/cleanup controls and synchronous Python completion/errors pass. The underlying stage/admission increments remain linked by the current receipt. |
 | Delivered scoped | B2a native snapshot-copy admission foundation. | Allocation-free preflight and guarded complete copying on Document/Application; document/application suites pass on Windows/Linux. [Receipt](parity/reviews/T04a2-snapshot-capture-20261105.json). No Window/Python/SDK qualification yet. |
-| Now | B2a creator/queued capture ownership and consumers. | Reuse prepare_snapshot_capture/capture_snapshot; acquire ownership outside locks before copying, eliminate earlier capability/typed-job copies and reconcile worker retention. Expose Python and verify changed installed SDK consumers. Then B2b state/replay/output/platform qualification. |
+| Delivered scoped | Windows B2a captured snapshot/queued ownership and consumers. | 794 distinct affected Python cases ultimately pass (19 new);30 native lifecycle cases, shared-pool concurrency, both173-frame hosts/four readers each and installed snapshot client per Windows/Linux platform pass. [Receipt](parity/reviews/T04a2-capture-consumers-20261105.json). |
+| Now | B2b executable export state/replay, recovery and output/platform qualification. | Audit each consumed key below; reuse existing session/recorder/rebind and encoder owners. Capture diagnostic provenance is not executable replay. Keep remaining print/platform/format obligations explicit. |
 | Next | P3 automatic point actions and P4 edit/rebind/replay reconciliation, then M2b.3 manager layouts/Z/T, M3 options and M4. | Complete each on existing owners; hand stable contracts to T04a.3. |
 | Following | T04a.3, T04b, T05, then the delivery stages and T06-T15 roadmap below. | Each stage closes its concrete inventory residuals, including UI/configuration/state, before claiming completion. |
 
@@ -355,62 +358,70 @@ Inspect DocumentSnapshot display-property copy costs at this same boundary;
 its immutable dataset sharing does not alone prove arbitrary display metadata
 is allocation-free. Keep that unmeasured concern owned by B2a/T11, not a new audit. Reuse the active caches and runtime.
 
-### Immediate executable handoff: B2a accepted snapshot and queued-capture bounds
+### Completed scoped handoff: B2a captured snapshot and queued ownership
 
-**Consume the [native snapshot admission closeout](parity/reviews/T04a2-snapshot-capture-20261105.json) and preceding [async integration](parity/reviews/T04a2-async-display-export-20261105.json).** Native preflight/copy guards and worker rendering/staging, native cleanup, creator guards and
-both Windows hosts now work on the existing owners. Reuse that implementation;
-no additional scheduler/encoder/preparation framework. Initial caller capture is
-still outside the worker's incremental admission and prevents full B2a closure.
+Consume the [consumer closeout](parity/reviews/T04a2-capture-consumers-20261105.json)
+and its [native foundation](parity/reviews/T04a2-snapshot-capture-20261105.json).
+Document/Application preflight full display-copy storage without payload allocation;
+Window acquires ownership outside locks and guards same-state capture. Immutable
+metadata/data stay shared, with no projection/COW subsystem. Python exposes the
+same capture controls. Scientific capability checks use data_snapshot, typed jobs
+skip legacy revision/slice copies and unrelated panel polling waits while an
+exclusive display export owns publication.
 
-- **Observed source:** Document::snapshot_locked copies display_ by value into
-  DocumentSnapshot before processing admission. Application::snapshot holds its
-  own mutex while delegating to Document::snapshot. The desktop facade calls that
-  path; source pixel/data sharing does not bound arbitrary DisplayState strings.
-  Also inspect startControlled's legacy revision/slice capture for avoidable
-  snapshot copies now that typed results own their guards. Read actual signatures
-  and consumers before freezing the smallest compatible contract here.
-- **Ownership/files:** native Document/Application capture and the desktop
-  facade/request boundary; Job/JobResult/staged owner remain established. Prefer
-  the delivered complete-metadata capture API on those owners over a projection
-  adapter or whole-core snapshot rewrite. Preserve source identity/data/revisions, accepted T/C/Z and
-  consumed range/LUT/point/manager state; source metadata itself stays immutable.
-- **Delivered native contract:** Document/Application prepare_snapshot_capture(max_bytes)
-  returns an opaque plan with bytes()/explicit owner. Successful preflight copies
-  no display payload; capture_snapshot(plan) checks all revisions, data identity
-  and dirty state before copying. Application also checks current membership.
-  Complete properties are retained; immutable recursive nodes/data stay shared.
-  Windows/Linux native document/application suites pass; Python and installed SDK
-  consumers remain next. Reuse this contract without another snapshot subsystem.
-- **Consumer decision before editing:** define byte/work accounting and a capture
-  lease covering creator/queued ownership before copies, then transfer/reconcile
-  with existing running/retained reservations. Keep creator-only leases on the
-  creator thread through payload retirement; if budgets overlap conservatively,
-  document that overlap rather than reporting their sum as disjoint storage.
-  Audit action capability gates and startControlled revision/slice reads before
-  selecting a lease field so no earlier unbounded copy bypasses admission.
-  Freeze exact private signatures and lifetimes. Do not invoke user/admission callbacks
-  while holding Document/Application locks. If estimate/admission/copy are
-  separate, validate the same revision/registration and use bounded retry or
-  rejection; do not recapture a later mutable pose in the worker.
-- **Acceptance:** large opaque versus consumed display strings, refusal before
-  copying/provider reads, metadata changes between estimate and capture, queued
-  cancel/close and source retention, lower-cap refusal/recovery and concurrent
-  native edits. Preserve all required output properties and unsupported-domain
-  behavior. Reuse unchanged raster/font/menu evidence; exercise the affected
-  capture/ownership route and changed installed SDK clients only.
-- **Exit:** capture and phase-boundary guarantees are proved for declared inputs,
-  or a precisely owned required residual remains. No whole-process/RSS assertion
-  from logical ticket bytes. Finish waste/cleanup and update B2b before starting
-  it. Batch any necessary public-header/SDK/host change once; use prior fanout
-  durations for the full build, selected-file compilation for early feedback,
-  and search all C++/Python callers before changing timing/contracts.
+Queued cancel can finalize before its canceling thread finishes request
+destruction. RenderMemory therefore now locks shared counters; a shared lease
+travels with the actual payload, declared before it so payloads retire first.
+Processing reservation includes one accepted and one bounded validation copy;
+RenderMemory/scheduler charges overlap conservatively rather than representing
+disjoint physical storage. Output paths are checked by reference before cloning.
+Native/core checks, final Windows hosts and changed installed clients on both
+platforms pass. This does not qualify arbitrary independent UI/JSON parsing/RSS,
+Linux/macOS UI or the remaining output/print/platform requirements.
 
-### Next executable handoff: B2b state, replay and output qualification
+Closeout/waste:56 task scratch groups retired (42 empty;5,187,380 necessary raw B
+in777,030 verified archive B;7,644,085 B consumer/carrier/superseded-success trees
+hashed/removed without archives). Two older raw UI captures retained losslessly:
+113,358,210 B ->3,815,878 B. Retired one regenerable125,034,781 B LTCG intermediate;
+linked native module preserved. Windows physical disk exhaustion left the original
+receipt incomplete: preserve it with its recovery record, never mark it green.
+Same-cache resume651.110s and final private boundary build33.140s pass. Native
+RenderMemory fixture corrections keep original byte/IO expectations and wait for
+existing async views; Python fixtures preserve unsupported desktop properties.
+Source newline restoration is normalized-equal to compiled/tested inputs.
+
+Before the next shared-header batch, audit source capability queries, request
+pre-copy checks, publication copy lifetimes and actual fixture timing together.
+Use explicit UTF-8 for receipt/docs readers and rg --files before named-path
+reads. Measure physical free space separately from project logical storage:
+the complete budget remains unverified with214 unknown subtrees. No new cache,
+runtime, SDK archive, scheduler, encoder or generic audit framework was added.
+
+### Immediate executable handoff: B2b state, replay and output qualification
 
 Use existing session/recorder/rebind and output owners. At entry enumerate each
 consumed action/setting key, version/default, source reference, font acquisition
 policy and destination/overwrite rule from current code and inventory. Freeze
-that concrete list after B2a stabilizes; do not invent a second option registry.
+that concrete list using the now-delivered capture contract; do not invent a
+second option registry. Start with these actual consumers; classify semantic
+output state separately from execution/admission policy before serializing:
+
+| Existing action/key or captured input | Easiest next implementation path |
+| --- | --- |
+| flatten / export_display / export_pdf; path and suffix | Existing Window dispatcher and workflow recorder; version one typed accepted-action record and explicit destination/rebind policy. Reuse staged encoding/promotion. |
+| point_show_all / show_rois; captured source/ROI/manager roles | Existing PreparedExportImage and source identity/revisions/pose; record accepted semantic options without recapturing mutable worker state. |
+| Source T/C/Z, detached spatial/provenance data | Existing native document/session and guarded source binding; real Save/Open and replay/rebind checks. Preserve legacy/scientific domain refusals. |
+| dpi / landscape; print_dpi / print_landscape defaults | Existing PDF options/preferences; distinguish accepted values from later default changes. Qualify PDF and physical print separately. |
+| Default/explicit relative font paths and accepted directory | Existing font policy/resolver; define reopen/replay resource acquisition, changed/missing resource recovery and portability without embedding unreviewed assets. |
+| asynchronous and current processing/render limits | Preserve native/Python timing defaults and current admission/cancel guarantees. Do not restore an old higher memory allowance merely to make replay pass. |
+
+B2b.1 freezes/implements accepted state, real recorder/replay/rebind and missing
+source/font/destination recovery. Verify both actual Windows hosts and affected
+native/Python contracts; review waste, retain/retire serially and update this queue.
+B2b.2 then audits declared format metadata and PDF/print/platform behavior on the
+same encoders, with explicit support evidence. Do not reopen delivered kernels or
+repeat unchanged SDK/UI campaigns without a changed consumer. Both tasks retain
+all owning inventory residuals; P2c.3 and P3/P4 follow, then the full roadmap.
 
 - Persist supported options and detached results; preserve old records. Real
   record/replay must reproduce accepted source/pose/options, not merely save
@@ -836,7 +847,7 @@ feature or block unrelated ready work.
 | Shared-header/API integration fanout | P2 core/API owner: keep new point-presentation declarations focused, freeze keys/callers and batch public changes before verification. T02 isolates dependencies only where repeated measured cost justifies it. | Current coherent Windows batch94 compile-line observations/379.047s; private preview/probe fixes each1/12.390s and1/13.390s. Different workloads, not processing-speed comparisons. No speculative whole-header rewrite. |
 | Historical drawing reader exact setting count | T02, next drawing qualification-tool change: support the additive current schema explicitly, retaining old source/expectation identities and negative controls. | Reader currently requires61 keys; installed schema64 includes the two new point keys plus an earlier addition. Do not repin old references or claim that historical campaign passes; current point controls have independent scoped checks. |
 | Ordinary multipoint draft rebuild and incomplete preview | P3 creation owner, before automatic actions: cache typed inputs on actual vertex/default changes and reuse the native glyph builder; no per-click full-tag encoding or new creator. | P2b code-observed residual; unmeasured frame cost. Exit: static-frame build count, mixed counters/poses, no provider reads, cap/cancel/source-close disposal and unchanged final publication. Blocks full P2 closure. |
-| Remaining whole-job/output ownership | B2a owns scheduler reservation, codec/file/global-context source guards and publication; B2b owns state/replay and declared format/PDF/print qualification. Point and text capture, generic ROI context and output roles/calibration are scoped delivered. | Reuse actual font peak accounting and existing Job/StagedAtomicFile. Exit: lease-before-work/resource guarantees, no stale/partial publication, required actual state/output consumers; no RSS or broad speed claim. |
+| Remaining whole-job/output ownership | Windows B2a snapshot/queued capture consumer scope is delivered; B2b owns executable state/replay and declared format/PDF/print/platform qualification. T11 retains independent UI/JSON input ownership. | Reuse existing jobs/staged stream/font preparation and captured leases. Preserve scoped source/admission guarantees; finish required state/output consumers. No RSS or broad speed claim. |
 | Edit-anchor and empty-scratch assumptions | T02/next owner checks every edit anchor before batch writes and inventories terminal scratch before retention. | A CRLF-dependent anchor guard stopped one edit before its write; an empty archive snapshot correctly refused before deletion. Empty dirs were safely retired without an archive or rerunning producer checks. Recurrence remains open; use existing helpers, not a new runner. |
 | Repeated live planning history | This task: three concise current documents, exact historical ledgers, compatible links. | Future task closeout updates rows in place. |
 
@@ -884,7 +895,7 @@ results, not full editor, remote CI, Linux/macOS UI, GPU/performance or RSS clai
 | Internal C++ callers still assumed synchronous action timing. | Audit smoke and two native callers; pass asynchronous=false explicitly. Source-domain admission also stays before submission. Narrow product/caller follow-up46.109s; next behavior change audits all callers before freezing the first batch. |
 | NaN fixture treated completed history as active work; six new source tests expected the wrong existing refusal wording. | Preserve original failures. Update lifecycle assertions to terminal history plus zero running/queued/reserved resources and no renderer; IEEE constants/numerics stay unchanged. Test-only retry4.265s plus six Python cases; no product changes for assertion corrections. |
 | Duplicate evidence/compiler trees. | Retire each actual-host group serially. Reuse an exactly matching previously verified carrier archive; hash/retire superseded native success payloads and consumer build trees without archiving them. Preserve failures and final necessary captures. |
-| Initial snapshot/display-property copies and queued capture remain unqualified. | B2a/T11 owns the next bounded capture task above. Do not claim the worker's ticket admission covers earlier arbitrary copies or whole-process memory. |
+| Initial snapshot/display-property copies and queued capture were unqualified at the async checkpoint. | The current capture-consumer receipt delivers the scoped Windows route. T11 still owns independent drawing/JSON input boundaries; do not generalize logical ticket bytes to process RSS. |
 
 All42 owned scratch groups retired:30 empty groups; seven necessary payload groups
 retain6,581,718 raw B in1,068,052 verified archive B; two consumer trees totaling
@@ -936,7 +947,7 @@ come from PLAN and the current sections above.
 [Historical section: traceability-for-all-99-audited-capability-areas](PLAN_HISTORY.md#traceability-for-all-99-audited-capability-areas)
 
 
-2026-11-05 native snapshot-copy admission closeout: Document/Application now
+Historical 2026-11-05 native-foundation checkpoint: Document/Application now
 provide allocation-free successful sizing and same-state guarded copying of all
 display properties. Direct strings/list elements are charged; immutable trees and
 data are shared. Exact/short caps, foreign/stale/saved-state/closed-owner guards

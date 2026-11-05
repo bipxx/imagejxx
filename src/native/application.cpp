@@ -460,6 +460,10 @@ DocumentSnapshot Application::snapshot(std::uint64_t id) const {
   std::lock_guard<std::mutex> lock(mutex_);
   return lookup_locked(id)->snapshot();
 }
+std::shared_ptr<const DocumentData> Application::data_snapshot(std::uint64_t id) const {
+  std::lock_guard<std::mutex> lock(mutex_);
+  return lookup_locked(id)->data_snapshot();
+}
 SnapshotCapturePlan Application::prepare_snapshot_capture(std::size_t max_bytes,
                                                           std::uint64_t id) const {
   std::lock_guard<std::mutex> lock(mutex_);

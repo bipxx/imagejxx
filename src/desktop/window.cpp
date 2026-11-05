@@ -1173,11 +1173,13 @@ struct Window::Impl {
     bool same_document(const DocumentSnapshot& source) const noexcept{return document_id==source.id();}
   };
   struct DisplayExportResult {
+    // Payloads below are destroyed before their shared cross-thread lease.
+    std::shared_ptr<RenderMemory::Lease> capture_memory;
     std::shared_ptr<PreparedExportImage> prepared;
     std::optional<Image> pixels;
     std::unique_ptr<imagejxx::detail::StagedAtomicStream> stage;
     std::uint64_t source_id=0;
-    std::size_t cap=0,request_bytes=0;
+    std::size_t cap=0,request_bytes=0,capture_bytes=0;
     bool show_rois=false;
   };
   struct JobResult {
@@ -4191,8 +4193,10 @@ struct Window::Impl {
     animating = false;
     cancelled = false;
     jobDocument = std::move(target);
-    jobRevisions = jobDocument ? jobDocument->revisions() : Revisions{};
-    jobSlice = jobDocument ? jobDocument->slice() : 0;
+    // Typed publications carry their own source guards and never use State's
+    // legacy revision/slice fallback. Avoid two complete display metadata copies.
+    jobRevisions = jobDocument && !preparedTask ? jobDocument->revisions() : Revisions{};
+    jobSlice = jobDocument && !preparedTask ? jobDocument->slice() : 0;
     jobNew = newDocument;
     jobPreview = false;
     jobSkip = false;
@@ -6179,8 +6183,8 @@ void Window::addNativeDocument(std::shared_ptr<imagejxx::Document> document) {
   addDocument(std::make_shared<Document>(std::move(document)));
 }
 Json Window::renderMemoryInfo() const {
-  checkThread();const auto &m=*impl->renderMemory;
-  return {{"limit_bytes",m.limit()},{"retained_bytes",m.retained()},{"working_bytes",m.working()},{"peak_reserved_bytes",m.peak()},{"denied_requests",m.denied()}};
+  checkThread();const auto m=impl->renderMemory->info();
+  return {{"limit_bytes",m.limit},{"retained_bytes",m.retained},{"working_bytes",m.working},{"peak_reserved_bytes",m.peak},{"denied_requests",m.denied}};
 }
 void Window::clearResults() {
   checkThread();
@@ -8892,17 +8896,31 @@ void Window::action(const std::string &name, const Json &p) {
   auto d = document();
   if(name=="flatten" || name=="export_display" || name=="export_pdf" || name=="print") {
     if(busy())throw std::invalid_argument("Wait for the current edit or export");
-    auto source=d->nativeSnapshot();
+    const auto cap=impl->processingCap();
+    const auto capture_plan=controller_->prepare_snapshot_capture(cap,d->id);
+    const auto capture_bytes=capture_plan.bytes();
+    // One accepted snapshot plus one bounded current-state validation copy.
+    const auto capture_allowance=RenderMemory::mul(capture_bytes,2);
+    if(capture_allowance>=cap || cap-capture_allowance<131072)
+      throw std::length_error("Snapshot capture exceeds processing memory budget");
+    auto capture_memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(capture_bytes));
+    auto source=controller_->capture_snapshot(capture_plan);
     const auto shape=source.data().dataset.shape();
+    if(!source.data().dataset.has_eager_planes() || shape.t>1 || shape.c>1 ||
+        std::any_of(source.data().rois.begin(),source.data().rois.end(),[](const Roi& roi){return roi.t || roi.c;}))
+      throw std::invalid_argument("This command is not supported for scientific desktop documents");
     if((shape.s!=1 && shape.s!=3 && shape.s!=4) || shape.t!=1 || shape.c!=1)
       throw std::invalid_argument("Legacy display export requires one T/C source");
-    const auto cap=impl->processingCap();const bool all=settings().boolean("point_show_all");
+    const bool all=settings().boolean("point_show_all");
     std::string path;double dpi=150;bool landscape=false;
     const auto directory=std::filesystem::current_path();
     if(name=="export_display" || name=="export_pdf") {
-      path=string(get(p,"path"));
-      if(path.empty() || path.size()>131064 || path.find('\0')!=std::string::npos)
+      const auto& value=get(p,"path");
+      if(!value.is_string())throw std::invalid_argument("Export needs a bounded output path");
+      const auto& requested=value.get_ref<const std::string&>();
+      if(requested.empty() || requested.size()>131064 || requested.find('\0')!=std::string::npos)
         throw std::invalid_argument("Export needs a bounded output path");
+      path=requested;
       auto resolved=std::filesystem::u8path(path);if(resolved.is_relative())resolved=directory/resolved;
       path=resolved.lexically_normal().u8string();
       if(path.size()>131064)throw std::invalid_argument("Resolved export path exceeds limit");
@@ -8920,9 +8938,12 @@ void Window::action(const std::string &name, const Json &p) {
     }
     const bool show_rois=impl->showRois;
     if(name=="print") {
-      PreparedExportImage prepared(std::move(source),all,cap,show_rois,DisplayExportOutput::Pixels);
+      PreparedExportImage prepared(std::move(source),all,cap-capture_allowance,show_rois,DisplayExportOutput::Pixels);
       auto image=prepared.render();
-      prepared.validate(d->nativeSnapshot(),settings().boolean("point_show_all"),impl->processingCap());
+      if(impl->processingCap()!=cap)throw RevisionConflict();
+      const auto current_plan=controller_->prepare_snapshot_capture(capture_bytes,d->id);
+      auto validation_memory=impl->renderMemory->acquire(current_plan.bytes());
+      prepared.validate(controller_->capture_snapshot(current_plan),settings().boolean("point_show_all"),cap-capture_allowance);
       printImage(image);return;
     }
     if(!p.is_object())throw std::invalid_argument("Export parameters must be an object");
@@ -8932,16 +8953,21 @@ void Window::action(const std::string &name, const Json &p) {
     if(!flatten)validateDisplayExportFormat(path,shape.x,shape.y,options);
     DisplayExportFontPolicy font_policy{annotationFontPath(),directory};
     // Bounded UTF8/UTF16 request, normalized directory and owned stage-path
-    // copies/temporary conversions; not arbitrary source DisplayState storage.
-    std::size_t request_bytes=4096;
+    // copies/temporary conversions, plus accepted/validation snapshot storage.
+    std::size_t request_bytes=RenderMemory::add(4096,capture_allowance);
     for(const auto& value:{path,font_policy.default_path,directory.u8string()})
       request_bytes=RenderMemory::add(request_bytes,RenderMemory::mul(value.size(),16));
     if(request_bytes>=cap || cap-request_bytes<131072)throw std::length_error("Export request exceeds processing memory budget");
     const auto source_id=source.id();
-    impl->startControlled([snapshot=std::move(source),all,cap,show_rois,flatten,path=std::move(path),options,
-        request_bytes,source_id,font_policy=std::move(font_policy)](const JobContext& context) mutable {
+    struct CapturedSource {
+      std::shared_ptr<RenderMemory::Lease> memory;
+      DocumentSnapshot snapshot;
+    };
+    auto capture=std::make_shared<CapturedSource>(CapturedSource{capture_memory,std::move(source)});
+    impl->startControlled([capture=std::move(capture),all,cap,show_rois,flatten,path=std::move(path),options,
+        request_bytes,source_id,capture_bytes,capture_memory,font_policy=std::move(font_policy)](const JobContext& context) mutable {
       context.stage_progress("Prepare display export",0,1);
-      auto prepared=std::make_shared<PreparedExportImage>(std::move(snapshot),all,cap-request_bytes,show_rois,
+      auto prepared=std::make_shared<PreparedExportImage>(std::move(capture->snapshot),all,cap-request_bytes,show_rois,
           flatten?DisplayExportOutput::Document:DisplayExportOutput::Pixels,
           [&](std::size_t bytes){context.reserve_resources(RenderMemory::add(request_bytes,bytes));},std::move(font_policy));
       context.stage_progress("Prepare display export",1,1);
@@ -8951,6 +8977,7 @@ void Window::action(const std::string &name, const Json &p) {
       Impl::DisplayExportResult result;
       result.prepared=std::move(prepared);result.source_id=source_id;result.cap=cap;
       result.request_bytes=request_bytes;result.show_rois=show_rois;
+      result.capture_memory=capture_memory;result.capture_bytes=capture_bytes;
       if(flatten)result.pixels.emplace(std::move(image));
       else result.stage=stageDisplayExport(path,std::move(image),options,context.execution_control());
       return Impl::JobResult(std::move(result));
@@ -9981,6 +10008,10 @@ void MovieExportUiProbeAccess::worker_gate(Window &window,std::function<void()> 
 void Window::poll() {
   checkThread();
   if(results.is_array() && results.empty())impl->measurementRowMemory.clear();
+  // This lane is exclusive for publication. Defer unrelated preview/panel
+  // polling so idle consumers do not clone live display metadata outside the
+  // export capture allowance. Existing jobs keep their own native resources.
+  if(impl->analysisTask!=Impl::ReadOnlyTask::DisplayExport) {
   impl->pollContrastApply();
   impl->tickContrast();
   impl->movieExportPanel.poll(documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{nativeSnapshot()},impl->rgbCap());
@@ -9999,6 +10030,7 @@ void Window::poll() {
   impl->pollHistogram();
   impl->pollThreshold();
   impl->pollGaussian();
+  }
   if (!impl->legacyBusy() || !impl->job.ready())
     return;
   const auto replayLineage = impl->workflowReplayLineage &&
@@ -10015,7 +10047,9 @@ void Window::poll() {
           if(documents_.empty() || document()->id!=exported.source_id ||
               documentById(exported.source_id)!=impl->jobDocument ||
               impl->processingCap()!=exported.cap || impl->showRois!=exported.show_rois)throw RevisionConflict();
-          exported.prepared->validate(impl->jobDocument->nativeSnapshot(),settings().boolean("point_show_all"),
+          const auto current_plan=controller_->prepare_snapshot_capture(exported.capture_bytes,exported.source_id);
+          auto validation_memory=impl->renderMemory->acquire(current_plan.bytes());
+          exported.prepared->validate(controller_->capture_snapshot(current_plan),settings().boolean("point_show_all"),
               exported.cap-exported.request_bytes);
         };
         if(exported.pixels) {

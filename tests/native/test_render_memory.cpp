@@ -5,6 +5,8 @@
 #include <functional>
 #include <iostream>
 #include <cstdlib>
+#include <atomic>
+#include <thread>
 using namespace imagejxx;
 using imagejxx::desktop::RenderMemory;
 using imagejxx::desktop::Window;
@@ -25,6 +27,27 @@ struct Source:PlaneSource {
   }
 };
 int main(int argc,char **argv){try{
+  // Distinct leases may retire on cancellation/worker threads while the creator
+  // admits or changes the limit. Read one coherent counter snapshot each time.
+  RenderMemory shared(256);std::atomic<int> running{4};std::atomic<bool> invalid{false};
+  std::vector<std::thread> workers;
+  for(int i=0;i<4;++i)workers.emplace_back([&]{
+    for(int j=0;j<1000;++j) {
+      auto work=shared.acquire(32);auto kept=work.retain(16);
+      const auto info=shared.info();
+      if(info.retained+info.working>info.limit || info.peak>info.limit)invalid=true;
+    }
+    --running;
+  });
+  while(running.load()) {
+    const auto info=shared.info();
+    if(info.retained+info.working>info.limit || info.peak>info.limit)invalid=true;
+    shared.setLimit(256);
+  }
+  for(auto& worker:workers)worker.join();
+  check(!invalid && shared.used()==0 && shared.denied()==0,"Concurrent admission/split/retirement remains bounded");
+  auto last=std::make_unique<RenderMemory>(64);auto terminal=last->acquire(64);last.reset();
+  std::thread finalOwner([lease=std::move(terminal)]() mutable {lease.reset();});finalOwner.join();
   RenderMemory pool(100);auto a=pool.acquire(60);auto retained=a.retain(40);
   check(pool.working()==20 && pool.retained()==40 && pool.peak()==60,"Split reservation");
   refuses([&]{pool.acquire(41);});check(pool.denied()==1 && pool.used()==60,"Aggregate admission");
@@ -41,13 +64,19 @@ int main(int argc,char **argv){try{
     denied.updateSettings({{"render_memory_mb",1}},false);denied.addVirtualDocument(std::make_shared<Document>(Dataset(source)));
     if(xyz)denied.document()->setView({{"orthogonal",true}});
     {imagejxx::desktop::HeadlessInputSession session(denied);session.frame();session.frame();}
-    auto info=denied.renderMemoryInfo();check(source->reads==0 && source->regions==0 && info.at("retained_bytes")==0 && info.at("working_bytes")==0 && info.at("denied_requests").get<int>()>0,"Render rejection precedes provider IO");
+    auto info=denied.renderMemoryInfo();std::cerr<<"Denied fixture xyz="<<xyz<<" reads="<<source->reads<<" regions="<<source->regions<<" memory="<<info.dump()<<" error="<<denied.error()<<"\n";check(source->reads==0 && source->regions==0 && info.at("retained_bytes")==0 && info.at("working_bytes")==0 && (xyz ? info.at("denied_requests")==0 && denied.error()=="Viewport surface exceeds render memory limit" : info.at("denied_requests").get<int>()>0 && denied.error()=="Render buffers exceed shared memory limit"),"Render rejection precedes provider IO at its owning admission boundary");
     Window admitted((root/(xyz?"admitted-xyz.json":"admitted-xy.json")).u8string());
     admitted.updateSettings({{"render_memory_mb",32}},false);admitted.addVirtualDocument(std::make_shared<Document>(Dataset(source)));
     if(xyz)admitted.document()->setView({{"orthogonal",true}});
     {
       imagejxx::desktop::HeadlessInputSession session(admitted);session.frame();session.frame();
-      auto live=admitted.renderMemoryInfo();const auto expected=xyz?8486912:8388608;
+      const auto expected=xyz?8486912:8388608;
+      const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+      auto live=admitted.renderMemoryInfo();
+      while((live.at("retained_bytes")!=expected || live.at("working_bytes")!=0) && std::chrono::steady_clock::now()<deadline) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));session.frame();live=admitted.renderMemoryInfo();
+      }
+      std::cerr<<"Admitted fixture xyz="<<xyz<<" memory="<<live.dump()<<" error="<<admitted.error()<<"\n";
       check(live.at("retained_bytes")==expected && live.at("working_bytes")==0,"Actual retained XY/XYZ capacity accounting");
       check(live.at("peak_reserved_bytes").get<std::size_t>()<=32*1048576,"Aggregate peak bound");
       refuses([&]{admitted.updateSettings({{"render_memory_mb",1}},false);});

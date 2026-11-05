@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 P2c.2 B2a captured snapshot/queued ownership and consumers",
+  "date": "2026-11-05",
+  "base_commit": "3cccb03a326c402716f38a273c8ec4241b9becdc",
+  "state": {
+    "implemented": "Native shared data queries, Python capture API, thread-safe shared RenderMemory capture leases, bounded accepted/current snapshot copies and pre-copy path validation.",
+    "verified": "794 distinct focused Windows Python cases ultimately pass (19 new); native export/memory/core regressions, both final Windows hosts and one changed installed snapshot client per Windows/Linux platform pass.",
+    "integrated": "Windows standalone C++ and Python ImGui export hosts use pre-copy capture admission and retain actual payload ownership through queued/running/READY cancellation and publication.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#captured-export-ownership",
+  "predecessors": [
+    "docs/parity/reviews/T04a2-snapshot-capture-20261105.json",
+    "docs/parity/reviews/T04a2-async-display-export-20261105.json"
+  ],
+  "results": {
+    "distinct_current_python_passed": 794,
+    "new_snapshot_cases": 19,
+    "final_python_failed": 0,
+    "final_python_skipped": 0,
+    "native_export_actions": 3,
+    "native_lifecycle_modes_per_action": 10,
+    "native_concurrent_pool_workers": 4,
+    "native_pool_cycles_per_worker": 1000,
+    "both_final_host_frames_each": 173,
+    "actual_readers_each": 4,
+    "final_text_pixels_sha256": "ce5f933f6e60bbb68c0e2c77be14eb92b4be59df6157c3f154f9ee9a77e9b957",
+    "changed_installed_clients_per_platform": 1,
+    "accepted_python_cases": {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/accepted-python-cases-final.json",
+      "bytes": 87635,
+      "sha256": "5085db03ba31ea7e5b2a335ee5d848b04eedd9673f2a7bf12ef04ad377df4544"
+    }
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 17015,
+      "sha256": "ff80efb699e995b7ede28c48add73a425ed1c9a22bae1d9b44e152a59f6b9b24"
+    },
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 18868,
+      "sha256": "493f5edc576c3713c071e38be33e8e1ce8bc434caef47155bb54b6d3ee15c4d5"
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "bytes": 79610,
+      "sha256": "bf877f055b7a9f646d080bbbc386ac89744e9a8967f9c21d0692f8a17c7a7fcf"
+    },
+    {
+      "path": "src/desktop/render_memory.hpp",
+      "bytes": 5239,
+      "sha256": "b663a260c2e3432da840896e8d8d403125e683a624c60db8df1f338985f2371b"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 894861,
+      "sha256": "da87107c68a22284ab34cd132d02489a6903652f1a082232b13c225eb7c8a849"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 82697,
+      "sha256": "60997df57cbe024e763d7003e552c73007f4c6d40cc22647405b49aaac6ca5c8"
+    },
+    {
+      "path": "src/native/application.cpp",
+      "bytes": 28739,
+      "sha256": "dac1e396988be086b0040212a8510879f5d7b469ac1de700248a2a3c90c1588b"
+    },
+    {
+      "path": "src/native/application_bindings.cpp",
+      "bytes": 22723,
+      "sha256": "da0be73f291b0ca799e8a1f628ed7f3daf8fd70ac090cb631c1183cff199bca6"
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 60810,
+      "sha256": "65443cd7e87f8c642259d6102161feca804f52891f292fcfba1b234900c25f96"
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 41807,
+      "sha256": "7d7b1057bf124ee71f486fe9fa332ec93ca48e32805d16ac4f523adca724fa5a"
+    },
+    {
+      "path": "tests/installed_core/CMakeLists.txt",
+      "bytes": 3319,
+      "sha256": "712f8872c9a96234b50230b7e87f0b5a16dc378ef798e6819f4e40fe98f38a0d"
+    },
+    {
+      "path": "tests/native/test_application.cpp",
+      "bytes": 18806,
+      "sha256": "c6ef98a756b57e370ce96bd76e741e24342362987d609a039914eccb4c19166b"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 16436,
+      "sha256": "20bba0c588f2917138a65929d983f6d57c233516860b4379febc73ff6c029a7e"
+    },
+    {
+      "path": "tests/native/test_document.cpp",
+      "bytes": 18635,
+      "sha256": "27aed926bb278bd5a4aeca96adb5f41cf5148b4c8c347953b362f3d8abb94767"
+    },
+    {
+      "path": "tests/native/test_render_memory.cpp",
+      "bytes": 7164,
+      "sha256": "6c00ffb4e97574c33a8f29e16d78cb426db7760114dbbb3884943702ffbfd2ec"
+    },
+    {
+      "path": "tests/python/test_snapshot_capture.py",
+      "bytes": 6010,
+      "sha256": "ae0d08cd202c8d54e70d8d06c027066ce7b0460afa008fde0942599777657f69"
+    },
+    {
+      "path": "tests/installed_core/snapshot_capture.cpp",
+      "bytes": 1437,
+      "sha256": "7cda1d1508bbff2e6a8203c632874777354f7d37883e2fa81375c7866ff91a9b"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 43601,
+      "sha256": "03c815f34d588cd2bbdb8c95ab607b410c02daa37034eb4727b4910635eaa086"
+    }
+  ],
+  "products": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8294912,
+      "sha256": "832f11a408eae31b08a82ea8312b02cc2c86721aa234264cafe11591e12bfcc1"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20213248,
+      "sha256": "cfbc1df77991864a6c6ace81ee0de193b4e7a93365988f4777b5b8ef3980096a"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20297216,
+      "sha256": "09b8b1c579faeed1f6ba1fbab24991f5394c6ad70a219e95bf67bb910c252447"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_display_actions_tests.exe",
+      "bytes": 9962496,
+      "sha256": "e44a49079be4e58431dbb95f8de4cfb63b40988dd1c49b6874c61b6b944a6237"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_render_memory_tests.exe",
+      "bytes": 10078720,
+      "sha256": "2676182069ab5960dbfd3121fdb421176860e8a179023df5a8d811e21c743ec3"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_core.lib",
+      "bytes": 59556666,
+      "sha256": "1d934eba74b1322cbd7a1a625d21e8d595b412c4373b8c49968ebda606a7b0e2"
+    }
+  ],
+  "sdk_products_and_imports": [
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/linux-products.json",
+      "bytes": 1406,
+      "sha256": "9f2f5efa90a074f71bea5dc491c261fb49b43c8cb9747a54933a4759a76a917f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/windows-sdk-products.json",
+      "bytes": 1039,
+      "sha256": "ed8c4a07248cec02230eb721dfc1ac3cba25cc2dad978db8eba1989162cf0a18"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/linux-import.txt",
+      "bytes": 201,
+      "sha256": "1dc3d9155658a4437bca6660026ed8b497096d07738c3f74299ee5e1394a9d90"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/windows-import.txt",
+      "bytes": 200,
+      "sha256": "1891069ab62f559670f76cb0860b4cfbdb1c07133f27bc4f883d7cac48153894"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/sdk-linux001-tree-hashes.json",
+      "bytes": 38641,
+      "sha256": "8088db9d88ec08bb78b477479af7f61cd856f943525b70bb942b04443789e7c5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/sdk-windows001-tree-hashes.json",
+      "bytes": 55955,
+      "sha256": "054635765628bdafa0b495329e3a2f46a98859c9592c82e2cb1f7574e90ff565"
+    }
+  ],
+  "ownership": {
+    "before_copy": "Native preflight; shared capture lease acquired outside native locks; guarded full snapshot copy.",
+    "retirement": "Shared counter locking allows the lease to follow actual request/result payload destruction even when queued cancel finalizes first. Owning aggregate declares its lease before payload.",
+    "accounting": "One accepted copy plus one validation-copy allowance in processing reservation. RenderMemory and scheduler capture charges overlap conservatively, not disjoint physical memory.",
+    "avoided_copies": "Scientific capability query retains immutable DocumentData; typed jobs skip legacy revision/slice snapshots; unrelated panel polling deferred during exclusive export.",
+    "path": "Check borrowed JSON string type/length/NUL before request copy; external JSON parsing is outside this boundary.",
+    "limits": "Logical copy/working storage, not process RSS or arbitrary independent UI draw allocation."
+  },
+  "verification_attempts": {
+    "process_receipts": 77,
+    "terminal_with_owned_cleanup": 76,
+    "retained_failed_test_attempts": [
+      "api001.process.json",
+      "native-memory001.process.json",
+      "native-memory002.process.json",
+      "native-memory003.process.json"
+    ],
+    "incomplete_original_disk_full_receipt": [
+      "windows-build001.process.json"
+    ],
+    "recovery": {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/windows-build001-recovery.json",
+      "bytes": 1047,
+      "sha256": "4c3736550d76ca075529c991957e4e572da7310e92d765a292bc8f4dfd69bb2c"
+    },
+    "qualified_windows_resume": {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/windows-build002.process.json",
+      "bytes": 2332,
+      "sha256": "eb2c8260e82b91f7242725a7cc6f1023850796fef8e30a049c414ceb135ef40d"
+    },
+    "final_boundary_build": {
+      "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/windows-boundary-build003.process.json",
+      "bytes": 2072,
+      "sha256": "8384f4802bd7fe1733d8ae6fae8d3cc2b5d7f8b4a0fe52d532cacece0cca729c"
+    },
+    "native_memory_retry": "Existing XYZ preflight denial precedes pool acquisition; wait for existing asynchronous viewport completion while retaining original byte expectations. Viewport source preflight existed at base commit.",
+    "python_retry": "Desktop frontend rejects unknown opaque display properties. Core API checks opaque metadata; UI tests preserve unknown-property refusal and exercise oversized supported LUT strings. No validation relaxed."
+  },
+  "local_evidence": {
+    "path": ".tmp/manual-workflow-verification/t04a2-capture-consumers-20261105/closeout-manifest.json",
+    "bytes": 76165,
+    "sha256": "e4fabcf78b37ebe9f6de042dcc85bb0a023c03931825953fc8ac76e1b6fac1a6"
+  },
+  "storage": {
+    "entry": {
+      "path": ".tmp/manual-workflow-verification/capture-consumers-entry-20261105.json",
+      "bytes": 66571,
+      "sha256": "2f80eac1ad9d705a5eb3dd9848c8d7c87870e9f5ff3fc38e5092079d68d03338"
+    },
+    "mid": {
+      "path": ".tmp/manual-workflow-verification/capture-consumers-mid-20261105.json",
+      "bytes": 66571,
+      "sha256": "3240773b95c7aa7cb2f9817289e9899af97354295cd7e689ce1e12500c00e93a"
+    },
+    "final_before_closeout_docs": {
+      "path": ".tmp/manual-workflow-verification/capture-consumers-final-20261105.json",
+      "bytes": 66572,
+      "sha256": "a7fe65ec73fd9f277dd97ec6eaf54c6ba41e734b6220c78b514b1e0b6f0b61b1"
+    },
+    "entry_known_bytes": 8570429460,
+    "final_known_bytes": 8350055100,
+    "inaccessible_subtrees": 214,
+    "budget_verified": false,
+    "owned_scratch_groups_retired": 56,
+    "verified_empty_groups": 42,
+    "retained_source_bytes": 5187380,
+    "retained_archive_bytes": 777030,
+    "consumer_carrier_superseded_success_removed_bytes": 7644085,
+    "legacy_raw_capture_bytes": 113358210,
+    "legacy_verified_archive_bytes": 3815878,
+    "regenerable_intermediate_retired_bytes": 125034781,
+    "physical_disk_free_at_failure": 0,
+    "physical_disk_free_observed_at_closeout": 2442465280,
+    "new_cache_or_runtime_generations": 0,
+    "unrelated_global_cleanup": false
+  },
+  "waste_review": {
+    "fixed": "Removed avoidable display-property clones and pre-validation path copying. No COW/projection adapter, second scheduler, new encoder or duplicate carrier archive. Retired consumer trees without archives and retained necessary captures serially.",
+    "observed_cost": "Public-header Windows batch hit physical disk exhaustion; retained diagnostics and same-cache resume651.110s. Final narrow boundary build33.140s. Native-only test corrections rebuilt only the test target.",
+    "next_prevention": "Check physical free space separately from logical project budget before long builds and at progress checkpoints; freeze input type/size checks, source capability queries and final validation lifetime before the shared-header batch. Inspect actual panel timing/capability constraints before constructing fixtures and collect complete diagnostics on first failure. Use rg --files before named-path reads.",
+    "deferred": "General JSON input parsing and independent draw ownership stay T11 scope; B2b owns executable state/replay and remaining format/PDF/print/platform qualification. No general speed or RSS claim."
+  },
+  "remaining": [
+    "B2b executable export state/replay and recovery",
+    "remaining format/PDF/print/platform qualification",
+    "P2c.3 appearance/loss review and P3 typed draft/automatic actions",
+    "P4, remaining manager/geometry/options and T04a.3 analysis persistence",
+    "all remaining T00-T15 commercially eligible editor scope"
+  ],
+  "claims_excluded": [
+    "full ImageJ/Fiji editor completion",
+    "whole-process or RSS admission",
+    "Linux/macOS UI qualification",
+    "full print/platform release qualification",
+    "remote CI matrix completion",
+    "general speed superiority"
+  ]
+}

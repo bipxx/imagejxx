@@ -573,7 +573,7 @@ PlanePosition Document::position() const {
   return {display.t, display.c, display.crosshair[2]};
 }
 bool Document::scientific() const {
-  return scientificData(nativeSnapshot().data());
+  return scientificData(*(controller_ ? controller_->data_snapshot(id) : native_->data_snapshot()));
 }
 void Document::requireLegacyEditable() const {
   if (scientific())

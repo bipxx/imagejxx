@@ -27,6 +27,7 @@ void bounded_snapshot_membership() {
   rejects<std::invalid_argument>([&] { application.prepare_snapshot_capture(0, id); });
   const auto plan = application.prepare_snapshot_capture(1024 * 1024, id);
   const auto other = application.create(fixture());
+  check(application.data_snapshot(id).get() == owner->data_snapshot().get(), "Controller metadata query retains registered data without a view copy");
   check(application.capture_snapshot(plan).id() == id && application.active_document_id() == other,
         "Capture resolves accepted owner independently of current activation");
   const auto explicitPlan = application.prepare_snapshot_capture(plan.bytes(), id);

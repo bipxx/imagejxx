@@ -502,12 +502,55 @@ current activation, and rejects a closed owner even if a frontend still retains
 the native Document. Neither operation invokes admission callbacks or user code
 under either lock. Existing `snapshot()` retains its original behavior.
 
-This foundation does not yet wire creator-owned queued leases into Window,
-remove its earlier capability/revision snapshot copies, expose the new controls
-through Python, or qualify installed SDK packaging. Those consumers remain the
-next B2a task. Preserve request-time freeze and retain capture ownership until
-payload retirement; do not move creator-only RenderMemory leases to workers or
-add independently configured budget totals as if they were disjoint memory.
+The foundation receipt predates Window/Python/SDK adoption. The following
+consumer increment preserves that historical scope and uses the same API.
+
+### Captured export ownership
+
+Flatten, display-image/PDF export and the synchronous print preparation now
+preflight the accepted snapshot under the processing cap, acquire shared capture
+storage outside owner locks, then perform the same-state guarded copy. Python
+Document/Application expose prepare_snapshot_capture(max_bytes[, document_id])
+and capture_snapshot(plan); SnapshotCapturePlan has read-only bytes/document_id.
+These methods do not themselves acquire a frontend resource lease.
+
+Document/Application data_snapshot retains only immutable DocumentData for
+capability queries. Desktop scientific checks consume that shared data instead
+of copying arbitrary display properties. Typed Window tasks also skip legacy
+revision/slice snapshots; their existing typed publication guards stay authoritative.
+During an exclusive display-export task, Window defers unrelated preview/panel
+polling until terminal publication, avoiding incidental live-state snapshot copies
+in that polling path. Other native jobs retain their own existing reservations.
+This does not bound arbitrary unrelated UI drawing or process memory.
+
+The accepted copy is carried with a shared RenderMemory lease in the queued
+request and retained result. That owner declares its lease before its payload so
+snapshot/prepared/staged payloads retire first. Queued cancellation can finalize
+before its canceling thread has finished destroying the request; therefore the
+lease travels with the actual payload rather than being released by creator
+polling. RenderMemory now locks shared counters for acquire/split/retire/limit
+changes and offers one coherent diagnostic snapshot. Distinct leases may move
+across threads; concurrent mutation of a single lease is not supported. Last
+state ownership is released after unlocking, including when the facade has gone.
+
+Output paths are checked by reference for string type, length and NUL before
+copying into the owned request. This bounds the request-side path clone; parsing
+an externally supplied JSON action remains a separate input boundary.
+
+Processing admission explicitly reserves two times the accepted snapshot charge:
+one accepted copy and one temporary current-state copy for creator validation.
+Validation preflights against that same per-copy bound and acquires its own
+short-lived shared lease before copying. Enlarged live metadata can refuse before
+copying, even if the extra properties are not consumed by the renderer. Request
+paths/control storage and incremental preparation remain separate charges in
+the same existing job reservation. RenderMemory and scheduler limits overlap
+conservatively on capture bytes; their totals are not disjoint physical storage
+and must not be summed into an RSS claim. No whole-cap reservation, second job
+scheduler, COW/projection adapter or new encoder is introduced.
+
+Source/pose/consumed-setting validation, one provider read, atomic publication
+and synchronous Python error behavior retain their prior contracts. B2b still
+owns executable state/replay and remaining format/PDF/print/platform qualification.
 
 ## Admitted export preparation (P2c.2 B2a)
 

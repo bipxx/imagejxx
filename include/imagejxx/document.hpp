@@ -310,6 +310,8 @@ public:
       std::make_shared<const DocumentIdentity>();
   const std::uint64_t id = identity->id;
   DocumentSnapshot snapshot() const;
+  // Retain immutable data for metadata-only capability queries; no display copy.
+  std::shared_ptr<const DocumentData> data_snapshot() const;
   // Reject over-budget metadata before any snapshot payload is copied. Capture
   // rejects a foreign/stale plan before copying; callers may retry preparation.
   SnapshotCapturePlan prepare_snapshot_capture(std::size_t max_bytes) const;

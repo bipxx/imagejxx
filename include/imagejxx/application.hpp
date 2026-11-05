@@ -212,6 +212,7 @@ public:
   bool contains(std::uint64_t id) const;
   void close(std::uint64_t id = 0, bool discard = false);
   DocumentSnapshot snapshot(std::uint64_t id = 0) const;
+  std::shared_ptr<const DocumentData> data_snapshot(std::uint64_t id = 0) const;
   SnapshotCapturePlan prepare_snapshot_capture(std::size_t max_bytes,
                                                 std::uint64_t id = 0) const;
   // Resolves the plan's explicit owner; closing it invalidates capture even if
