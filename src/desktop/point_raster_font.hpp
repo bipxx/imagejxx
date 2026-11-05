@@ -24,6 +24,9 @@ public:
   ~PointRasterFontCache();
   // One active file, at most seven sizes, owned for one overlay render call.
   const PointRasterFont& get(const std::string& path,double size);
+  // Transfer admitted coverage without another bitmap copy. Charges remain
+  // held for this resource lifetime, including transferred sizes.
+  PointRasterFont take(const std::string& path,double size);
 };
 PointRasterFont loadPointRasterFont(const std::string& path,double size,
                                    std::size_t max_bytes=8*1048576);

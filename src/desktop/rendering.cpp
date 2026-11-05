@@ -960,9 +960,192 @@ void renderDisplayOverlays(Image &image, const Json &metadata,
                            std::optional<PlanePosition> position) {
   paintDisplayOverlays(image,metadata,position,false);
 }
-Image renderExportImage(const Image& image,const Json& metadata,
-    FloatingSamplePolicy policy,PlanePosition position,bool show_all) {
-  auto result=displayImage(image,metadata,policy);
-  paintDisplayOverlays(result,metadata,position,show_all);return result;
+namespace {
+void exportCharge(std::size_t& used,std::size_t count,std::size_t width,std::size_t limit,
+                  const char* error="Display export exceeds configured processing memory budget") {
+  if(used>limit || (count && width>(limit-used)/count))
+    throw std::length_error(error);
+  used+=count*width;
+}
+constexpr std::size_t export_work_limit=512*1048576;
+void exportWork(std::size_t& used,std::size_t count,std::size_t width=1) {
+  exportCharge(used,count,width,export_work_limit,"Display export exceeds bounded work limit");
+}
+void exportMetadataCharge(const MetadataValue& value,std::size_t& used,std::size_t cap,std::size_t& work) {
+  kernel_checkpoint_periodic();
+  exportWork(work,1);
+  // JSON staging, native selection decoding and retained render records. The
+  // source's immutable metadata is borrowed, never cloned before admission.
+  exportCharge(used,1,512,cap);
+  if(const auto* text=std::get_if<std::string>(&value))exportCharge(used,text->size(),4,cap);
+  else if(const auto* texts=std::get_if<std::vector<std::string>>(&value))
+    for(const auto& text:*texts){exportCharge(used,1,512,cap);exportCharge(used,text.size(),4,cap);}
+  else if(const auto* tree=std::get_if<std::shared_ptr<const MetadataTree>>(&value)) {
+    if(!*tree)throw std::invalid_argument("Invalid display export metadata");
+    if(const auto* array=std::get_if<MetadataArray>(&(*tree)->value))
+      for(const auto& child:*array)exportMetadataCharge(child,used,cap,work);
+    else for(const auto& child:std::get<MetadataObject>((*tree)->value)) {
+      exportCharge(used,child.first.size(),4,cap);exportMetadataCharge(child.second,used,cap,work);
+    }
+  }
+}
+bool exportVisible(const MetadataObject& row,PlanePosition position) {
+  const auto kind=row.find("kind");
+  if(kind==row.end() || std::holds_alternative<std::monostate>(kind->second) ||
+      (std::holds_alternative<std::string>(kind->second) && std::get<std::string>(kind->second).empty()))return false;
+  for(const auto& field:std::array<std::pair<const char*,int>,4>{{
+      {"slice_index",position.z},{"t",position.t},{"c",position.c},{"z",position.z}}}) {
+    const auto found=row.find(field.first);if(found==row.end() || std::holds_alternative<std::monostate>(found->second))continue;
+    if(const auto* n=std::get_if<std::int64_t>(&found->second)){if(*n!=field.second)return false;}
+    else if(const auto* n=std::get_if<std::uint64_t>(&found->second)){if(*n!=std::uint64_t(field.second))return false;}
+    else return false;
+  }
+  return true;
+}
+std::size_t exportFontBytes(const PointRasterFont& font) {
+  std::size_t bytes=sizeof(PointRasterFont)+256;
+  for(const auto& glyph:font.digits)bytes=RenderMemory::add(bytes,glyph.coverage.size());
+  return bytes;
+}
+}
+struct PreparedExportImage::State {
+  struct Row {
+    Json wire;
+    std::optional<Selection> selection;
+    PointPresentation layout;
+    std::optional<imagejxx::detail::PreparedPointRaster> raster;
+    std::shared_ptr<const PointRasterFont> font;
+    std::string font_path;
+    double font_size=0;
+    bool skip=false;
+  };
+  DocumentSnapshot source;
+  PlanePosition position;
+  bool show_all;
+  std::size_t limit,used=0,peak=0,work=0;
+  Json metadata=Json::object();
+  std::vector<Row> rows;
+  State(const DocumentSnapshot& snapshot,bool all,std::size_t cap)
+      :source(snapshot),position{snapshot.display().t,snapshot.display().c,snapshot.display().crosshair[2]},show_all(all),limit(cap) {
+    kernel_checkpoint();const auto shape=source.data().dataset.shape();
+    if((shape.s!=1 && shape.s!=3 && shape.s!=4) || shape.t!=1 || shape.c!=1)throw std::invalid_argument("Legacy display export requires one T/C source");
+    const auto pixels=RenderMemory::mul(std::size_t(shape.x),std::size_t(shape.y));
+    // Source-plane lease, display conversion/IEEE projection, RGB result,
+    // sequential legacy masks, publication and codec/packing copies. Existing
+    // document/history and arbitrary reader caches remain outside this budget.
+    exportCharge(used,1,131072,limit);
+    exportCharge(used,pixels,RenderMemory::add(64*std::size_t(shape.s),272),limit);
+    constexpr auto work_limit=export_work_limit;
+    exportWork(work,pixels,8*std::size_t(shape.s)+3);
+    const auto labels=source.data().metadata.extensions.find("labels");
+    if(labels!=source.data().metadata.extensions.end()) {
+      exportMetadataCharge(labels->second,used,limit,work);metadata["labels"]=metadataJson(labels->second);
+    }
+    for(const auto* key:{"display_range","lut","custom_lut"}) {
+      const auto found=source.display().properties.find(key);if(found==source.display().properties.end())continue;
+      exportMetadataCharge(found->second,used,limit,work);metadata[key]=metadataJson(found->second);
+    }
+    metadata["slice_index"]=position.z;
+    // Validate mapping metadata with a bounded carrier before any source reads.
+    Image carrier(1,1,shape.s,source.data().dataset.pixel_type());
+    (void)displayImage(carrier,metadata,source.data().dataset.sample_policy());
+    std::size_t visible_count=0;
+    for(const auto& row:source.data().overlays) {
+      kernel_checkpoint_periodic();exportWork(work,1);
+      if(!exportVisible(row,position))continue;
+      ++visible_count;exportCharge(used,1,sizeof(Row)+256,limit);
+      for(const auto& field:row){exportCharge(used,field.first.size(),4,limit);exportMetadataCharge(field.second,used,limit,work);}
+    }
+    rows.reserve(visible_count);
+    using Fonts=std::map<double,std::shared_ptr<const PointRasterFont>>;
+    std::map<std::string,Fonts> fonts;
+    bool legacy_text=false;
+    std::optional<std::string> default_font;
+    for(const auto& raw:source.data().overlays) {
+      kernel_checkpoint_periodic();if(!exportVisible(raw,position))continue;
+      Row row;row.wire=metadataJson(raw);
+      const auto kind=string(get(row.wire,"kind"));
+      if(kind=="text") {
+        // Legacy text retains its original raster owner. Include its bounded
+        // file/glyph scratch; its complete font capture remains a follow-on.
+        if(!legacy_text){exportCharge(used,1,64*1048576,limit);legacy_text=true;}
+        const int size=integer(get(row.wire,"font_size"),16);
+        if(size<=0 || size>512)throw std::invalid_argument("Font size must be1..512");
+        exportWork(work,string(get(row.wire,"text")).size(),std::size_t(size)*size);
+      } else {
+        const auto& wire=kind=="roi"?get(row.wire,"selection"):row.wire;
+        if(wire.contains(point_style_attribute)) {
+          row.selection=selectionFromJson(wire);
+          const auto style=resolve_roi_style(*row.selection,color(string(get(row.wire,"color"),"#ffcc00")));
+          PointPresentationOptions options;options.position=position;options.show_all=show_all;
+          options.color=style.stroke_color.value_or(RoiColor{0,0,0,0});
+          PointPresentationLimits bounds;bounds.max_working_bytes=std::min(bounds.max_working_bytes,limit-used);
+          row.layout=point_presentation(*row.selection,options,bounds);
+          exportCharge(used,row.layout.working_bytes,1,limit);
+          for(const auto& primitive:row.layout.primitives)if(primitive.kind==PointPrimitiveKind::Text) {
+            const auto configured=string(get(row.wire,"font_path"));
+            if(configured.empty()){if(!default_font)default_font=annotationFontPath();row.font_path=*default_font;}
+            else row.font_path=annotationFontPath(configured);
+            row.font_size=primitive.font_size;
+            exportCharge(used,row.font_path.size(),3,limit);
+            fonts[row.font_path].emplace(row.font_size,nullptr);break;
+          }
+        }
+      }
+      rows.push_back(std::move(row));
+    }
+    peak=used;
+    for(auto& file:fonts) {
+      const auto allowance=std::min<std::size_t>(8*1048576,limit-used);
+      if(allowance<65536)throw std::length_error("Point font exceeds configured processing memory budget");
+      peak=std::max(peak,RenderMemory::add(used,allowance));
+      // Admit aggregate file/decoding work as well as per-file resident bytes.
+      exportWork(work,allowance);
+      PointRasterFontCache owner(allowance);
+      for(auto& entry:file.second) {
+        auto font=owner.take(file.first,entry.first);
+        exportCharge(used,exportFontBytes(font),1,limit);
+        entry.second=std::make_shared<const PointRasterFont>(std::move(font));
+      }
+    }
+    for(auto& row:rows)if(row.selection) {
+      if(row.layout.primitives.empty()){row.skip=true;row.selection.reset();continue;}
+      if(row.font_size)row.font=fonts.at(row.font_path).at(row.font_size);
+      PointPresentationOptions options;options.position=position;options.show_all=show_all;
+      // Layout already owns the exact resolved colors/options. Raster uses only
+      // coordinates, relative mode, clip and emitted font size from that capture.
+      PointRasterLimits bounds;bounds.max_working_bytes=limit-(used-row.layout.working_bytes);
+      bounds.max_pixel_samples=std::min(bounds.max_pixel_samples,work_limit-work);
+      row.raster=imagejxx::detail::prepare_point_raster(shape.x,shape.y,*row.selection,options,row.font.get(),bounds,&row.layout,true);
+      exportWork(work,row.raster->pixel_samples);
+      peak=std::max(peak,RenderMemory::add(used-row.raster->layout.working_bytes,row.raster->working_bytes));
+      row.selection.reset();
+    }
+    kernel_checkpoint();
+  }
+};
+PreparedExportImage::PreparedExportImage(const DocumentSnapshot& source,bool all,std::size_t cap)
+    :state_(std::make_unique<State>(source,all,cap)){}
+PreparedExportImage::~PreparedExportImage()=default;
+std::size_t PreparedExportImage::working_bytes() const{return state_->peak;}
+void PreparedExportImage::validate(const DocumentSnapshot& now,bool all,std::size_t cap) const {
+  if(!state_->source.same_document(now) || !state_->source.shares_data(now) ||
+      !now.revisions().matches(state_->source.revisions(),Change::All) ||
+      all!=state_->show_all || cap!=state_->limit)throw RevisionConflict();
+}
+Image PreparedExportImage::render(const ExecutionControl& control) const {
+  ExecutionScope scope(control);kernel_checkpoint();
+  const auto input=state_->source.data().dataset.plane(state_->position);
+  auto output=displayImage(*input,state_->metadata,state_->source.data().dataset.sample_policy());
+  if(std::any_of(state_->rows.begin(),state_->rows.end(),[](const auto& row){return bool(row.raster);}))
+    for(double value:output.pixels){kernel_checkpoint_periodic();if(!std::isfinite(value) || value<0 || value>255)throw std::invalid_argument("Invalid owned display RGB component");}
+  PointRasterFontCache legacy_fonts;
+  for(const auto& row:state_->rows) {
+    kernel_checkpoint();
+    if(row.skip)continue;
+    if(row.raster)imagejxx::detail::paint_owned_point_style(output,*row.raster,row.font.get());
+    else paintOverlay(output,row.wire,state_->position,&legacy_fonts,state_->show_all);
+  }
+  kernel_checkpoint();imagejxx::detail::without_execution_callbacks([]{kernel_checkpoint();});return output;
 }
 } // namespace imagejxx::desktop

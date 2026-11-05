@@ -1,0 +1,1305 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 M2b.2b P2c.2 native-snapshot export admission increment",
+  "date": "2026-11-04",
+  "state": {
+    "implemented": "Configured-cap source/display/point/font preparation before state/frame/provider reads; immutable layouts/coverage, one source-plane read and owned RGB point composition.",
+    "verified": "646 distinct focused Windows product checks pass; two Windows native controls and one Linux core control pass.",
+    "integrated": "Both Windows hosts perform real labels/Flatten inputs on final binaries with point_flatten values unchanged from prior accepted observations.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#prepared-point-display-exports-p2c2-admission-increment",
+  "results": {
+    "distinct_product_cases": 646,
+    "passed": 646,
+    "suite_counts": {
+      "tests.python.test_point_export_admission": 12,
+      "tests.python.test_point_flatten": 41,
+      "tests.python.test_point_raster": 147,
+      "tests.python.test_point_presentation": 264,
+      "tests.python.test_roi_style": 154,
+      "tests.python.test_imgui_roi_style": 24,
+      "tests.python.test_point_annotation_editing": 2,
+      "tests.python.test_point_presentation_ui": 2
+    },
+    "retained_groups": 7,
+    "archived_groups": 6,
+    "source_bytes": 939907,
+    "archive_bytes": 108153,
+    "scratch_absent": true
+  },
+  "native_controls": {
+    "windows": [
+      "native_point_presentation",
+      "desktop_path_visual"
+    ],
+    "linux": [
+      "native_point_presentation"
+    ]
+  },
+  "installed_sdk": "Active installed Windows/Linux SDKs refreshed. No new installed consumer campaign: public API/layout unchanged; changed internal raster implementation covered by native controls and147 independent analytic pixel cases. Prior client evidence retains its original scope.",
+  "actual_inputs": {
+    "observations": 4,
+    "final_observations": 2,
+    "distinct_host_routes": 2,
+    "frames_per_final_observation": 157,
+    "distinct_reader_checks": 6,
+    "including_final_work_policy_repeat": 12,
+    "reason_for_repeat": "Final source review charged aggregate font-file/decode work and separated work-limit from byte-limit diagnostics. Repeated only affected host routes; accepted pixels/pose/source equal prior packet and initial observations."
+  },
+  "behavior_evidence": [
+    "Low configured cap refuses flatten/PNG/PDF before DatasetReadObserver plane count increases and without output/history changes.",
+    "Invalid point-style versions/palette, missing point font, PDF DPI and raster format refuse before source reads.",
+    "Small unlabelled export fits1MiB and reads once; zero preserves unlimited setting semantics.",
+    "Parent-ineligible point labels do not load an unused font, including under global show-all.",
+    "Seven sizes/two font-path spellings retain immutable transferred coverage and original alpha draw order.",
+    "Native pre-read cancellation, changed-source validation, and frozen font coverage after replacing process-local IMAGEJXX_FONT pass.",
+    "Opaque visibility metadata tests now exercise both wire-root extensions and nested properties; previous property-only coverage was incomplete.",
+    "Public native raster remains detached/validated; shared owned painter matches its reference outputs."
+  ],
+  "resource_model": {
+    "configured_key": "processing_memory_mb",
+    "zero": "SIZE_MAX reservation allowance; independent bounded-work/internal limits remain.",
+    "base": "131072 + width*height*(64*samples+272), then visible metadata/layout/fonts; conservative logical source/display/legacy-mask/codec/publication allowance.",
+    "metadata": "Charge native nodes/strings before JSON/selection staging; only consumed view fields and visible geometric overlay records, no full plane-table/manager/selection projection.",
+    "font": "Up to8MiB per active file from remaining configured allowance; one load per captured path for needed sizes, moved immutable coverage, file released before pixel reads.",
+    "work_limit_units": 536870912,
+    "work": "Metadata nodes, display components, aggregate font-file/decode allowances and candidate raster samples; owned mode omits unused per-overlay RGB validation/copy work.",
+    "exclusions": "Allocator/RSS, arbitrary reader caches, inactive eager/history storage, OS/driver and codec implementation internals are not measured by this model. Scheduler-wide reservation and complete legacy text/codec closure remain open."
+  },
+  "waste_review": [
+    {
+      "finding": "Legacy dispatch copied full State/plane table and read a frame before point admission.",
+      "disposition": "fix now",
+      "change": "Capture immutable native snapshot and only consumed display metadata/visible overlays before source access; remove old unreachable export branches/unadmitted helper."
+    },
+    {
+      "finding": "Standalone detached raster per overlay repeated full RGB validation/copy.",
+      "disposition": "fix now",
+      "change": "Validate mapped RGB once, use one private shared owned painter and skip empty invisible point layouts; public API retains its original validation/copy. Stack publication uses move/push_back instead of initializer-list Image copy."
+    },
+    {
+      "finding": "Per-layer font IO/coverage copies or dangling references after file-owner destruction.",
+      "disposition": "fix now",
+      "change": "Group captured paths/sizes, transfer coverage into immutable shared fonts, retain source snapshot and guard source/settings before reads/after render. No new controller/job/serializer or font asset."
+    },
+    {
+      "finding": "Initial native test edit assumed one newline pattern; empty scratch archive attempt hit the maintained guard.",
+      "disposition": "fix orchestration now",
+      "change": "Native edit anchor corrected before its write/build. Inspect declaration/byte anchors and prepare all edits before writes. Empty guard preserved files; verified plain empty directories removed without fake archive or producer retry. Reusable in-memory orchestration handles empty trees; checked-in retention helper unchanged."
+    },
+    {
+      "finding": "Legacy text not fully captured; output roles/calibration/provenance and general ROI/font entry remain incomplete.",
+      "disposition": "defer required completion",
+      "owner": "P2c.2 next output-contract checkpoint, then remaining lifecycle/publication checkpoint",
+      "validation": "Pinned ImagePlus.flatten includes active PointRoi/manager show-all and copies scale/properties. Specify and verify native output roles/calibration/provenance and explicit general ROI/font route, then full legacy-text/scheduler/codec/state/replay/cancel/stale/close behavior. Parent remains open."
+    }
+  ],
+  "remaining": [
+    "ImageJ active-point/manager roles, scale/properties versus RGB intensity metadata policy and general render_roi_style point/font contract.",
+    "Complete legacy text font/geometry preparation, scheduler-wide reservations, queued/asynchronous and stale-during-file-publication, recovery/state/replay.",
+    "P2c.3 appearance/loss review; P3 typed preview/actions; P4 edit/rebind/projection/replay and full T00-T15 scope.",
+    "No Java font/AA pixel, PDF/print output/platform, Linux/macOS UI, release or broad speed claim."
+  ],
+  "source_pins": [
+    {
+      "path": "src/desktop/point_raster_export.hpp",
+      "bytes": 656,
+      "sha256": "67b7095de9cedbad05ffe6a266f55b0bd26ead6695f300c5a2d15ae0ee72e73b"
+    },
+    {
+      "path": "src/desktop/point_raster_font.hpp",
+      "bytes": 1255,
+      "sha256": "85deefe2dbc8bc6e934e50a36aa3c920439ea459a3c294cbd67a85518478dfc0"
+    },
+    {
+      "path": "src/desktop/point_raster_font.cpp",
+      "bytes": 6564,
+      "sha256": "845a8f8f5bdb1a5a42de03d2f5873fc2bdb1de65053b5ebfc0fb0a67574b25f3"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "bytes": 54318,
+      "sha256": "f95654ae45c2d5904745d308520117d1fc9f3cfe461c91a98e0719b18f5add10"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 887195,
+      "sha256": "9190dffb0ffe8ef8a8f77bd34ee7babbfb4cad6fc0955139f1c3446e93bfb18b"
+    },
+    {
+      "path": "src/native/point_raster.cpp",
+      "bytes": 10788,
+      "sha256": "cc0af685385f0887e731a9208a94fa7e21db38bb2adcf4f87356f3ac816678ae"
+    },
+    {
+      "path": "src/native/point_raster_internal.hpp",
+      "bytes": 891,
+      "sha256": "e38ec3f1f76d37b4ce915e664dacd2a4cb3dff24179fbdbace80743e19713623"
+    },
+    {
+      "path": "tests/native/test_path_visual.cpp",
+      "bytes": 10343,
+      "sha256": "0f1f8c82f23824354b7faca7b687fba2104584d55eddcc410c7d9ff4cb395ff4"
+    },
+    {
+      "path": "tests/python/test_point_flatten.py",
+      "bytes": 9947,
+      "sha256": "5f9c323bda7a932ee4acd7be3086469b3845abe21d71abc26c726d8883ae4022"
+    },
+    {
+      "path": "tests/python/test_point_export_admission.py",
+      "bytes": 6928,
+      "sha256": "4f60a71dc404cabc63e4990b6341923de9878daf4e69e0a74cc33b7d128736e5"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 21513,
+      "sha256": "ad44d7d4b82f3e600b0fddd00b9f0687dd577aa873d182a29b2b51ae374131d1"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8274432,
+      "sha256": "6bc1eea325bb5d5d50ff8614c305be21157ae84a0cff71b2722cc02105724f13"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20147712,
+      "sha256": "7a61329bbe8231fb280c1eaf014a7fa2d1ca323ff9afbb928ed54741524ef279"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20233216,
+      "sha256": "3eaa86c2c9be25543a536367bbad2cdf8dd9d7a3644dd1d35ff36be0267668db"
+    }
+  ],
+  "reference_pins": [
+    {
+      "path": ".cache/native-verification/references/imagej154r/source/ij/ImagePlus.java",
+      "bytes": 108208,
+      "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9"
+    },
+    {
+      "path": "tests/fixtures/point-presentation-imagej154r.jsonl.gz",
+      "bytes": 2632,
+      "sha256": "cf802f66454eaca2e18674c846d9389e56de06cfe2199813bde5e16c386a2293"
+    }
+  ],
+  "owned_processes": [
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.32800000021234155
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.21899999980814755
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 4.765000000130385
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.9060000001918525
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.45399999991059303
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1869999999180436
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 2.8899999998975545
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-reader001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.9060000001918525
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-reader002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.875
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1559999999590218
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.13999999989755452
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.3899999998975545
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.18700000015087426
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1410000000614673
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.40699999989010394
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-app001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.14099999982863665
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-app002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-native001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-python-ui001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.18700000015087426
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-python-ui002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.17199999978765845
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-sdk001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.9069999998901039
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-build001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 4.239267824000001
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-install-sdk001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.714140381
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-native001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.10727674600000014
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-outer001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 5.5
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-sdk-outer001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 5.280999999959022
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native-build002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 4.047000000020489
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.125
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.14000000013038516
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-reader001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.9840000001713634
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-reader002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.9219999997876585
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.31299999984912574
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.14000000013038516
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.5779999999795109
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.17199999978765845
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.5470000000204891
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/windows-build001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 77.57799999997951
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/windows-work002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 15.765000000130385
+    }
+  ],
+  "retention": {
+    "groups": [
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/scratch/api001",
+        "source_bytes": 19591,
+        "source_files": 16,
+        "source_snapshot_sha256": "1337e93218c81b2bf009d3f24137944b28a1f2997abc0ed76fa8083139b182d2",
+        "archive_bytes": 32592,
+        "archive_sha256": "a0a08474ed0429521ad335a35d1aced81bf381d74f20f2bfa93036f9e0479b82",
+        "source_removed": true
+      },
+      {
+        "state": "removed_verified_empty_owned_scratch",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/scratch/api002",
+        "source_bytes": 0,
+        "source_files": 0,
+        "archive_bytes": 0,
+        "archive_created": false,
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/scratch/api003",
+        "source_bytes": 18790,
+        "source_files": 15,
+        "source_snapshot_sha256": "84a5965e7c61d1f9cd7c555077ab72569bd8a310570307db25563d10f6b02ab3",
+        "archive_bytes": 31809,
+        "archive_sha256": "5670373f0209456b4d278399c793035a14e54056b3c0d60a33adf5d9fa21ad76",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/scratch/cpp001",
+        "source_bytes": 225381,
+        "source_files": 3,
+        "source_snapshot_sha256": "2d55591a273dcbc11fd2cb227397cd81e992494dc4fa7f29e1e902d5cdd5bd48",
+        "archive_bytes": 10937,
+        "archive_sha256": "1a0055f943b9ba2e8155abbe084f0871a1afe3ebaf13ed7aebde12aff7eae087",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/scratch/cpp002",
+        "source_bytes": 225381,
+        "source_files": 3,
+        "source_snapshot_sha256": "84b52142125c13fd8ce013697f2976bfaea9a65955facdb7304337242ec55279",
+        "archive_bytes": 10936,
+        "archive_sha256": "c3efad55d7b055f847d1885cf74f59196cdfb81113223386d64945f7c1bdfd81",
+        "source_removed": true
+      },
+      {
+        "state": "removed_verified_empty_owned_scratch_root",
+        "directory_count": 2,
+        "files": 0,
+        "bytes": 0,
+        "source_removed": true,
+        "archive_created": false
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/scratch/python001",
+        "source_bytes": 225380,
+        "source_files": 3,
+        "source_snapshot_sha256": "87107f30eec8922000fe526f8e4c3dfd084d10a5cc2d7549553585f018def57c",
+        "archive_bytes": 10941,
+        "archive_sha256": "70f8ab912d1149b6e3dbacbc2f435cb2ce363c7c799947712a3e1b543acc468c",
+        "source_removed": true
+      },
+      {
+        "state": "verified_retention_then_removed",
+        "source": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/scratch/python002",
+        "source_bytes": 225384,
+        "source_files": 3,
+        "source_snapshot_sha256": "e958d17935cb33bae9ff442eb931f03267209e7a2974081f0969387a1aef8596",
+        "archive_bytes": 10938,
+        "archive_sha256": "e970199d3663be89ad5f380eba54932412ae3b2e840b443d027e87494dd85d79",
+        "source_removed": true
+      }
+    ],
+    "source_bytes": 939907,
+    "archive_bytes": 108153,
+    "compiler_trees_archived": false,
+    "new_sdk_consumer_builds": 0,
+    "scratch_absent": true
+  },
+  "local_evidence_pins": [
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-artifacts.json",
+      "bytes": 4430,
+      "sha256": "691969d85bfc9fff6199b8a5ed449df7e4c7ff543f9a6bd134db0889bfb84d27"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-manifest.json",
+      "bytes": 34896,
+      "sha256": "b0ced20a1cd76457c0df116cf7671c94b1a6ab726ef13eccdf8ef9e7a2dc6702"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-pack.json",
+      "bytes": 1570,
+      "sha256": "ea72f536d4aa23a97d5fb98741ffaf38aaf780a9ae880fc83748384b92b11ba2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-pack.json.started.json",
+      "bytes": 936,
+      "sha256": "9a9fc4d5df3f2fcd8ea3084742989c99ea80e87fe5898778120c79dc5cb2bb1f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-pack.log",
+      "bytes": 151,
+      "sha256": "cdd2af3bb8d245e0bdc6e47498e76f1ab77cf865bcf8efe93cb060cffb669d08"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-pack.process.json",
+      "bytes": 2445,
+      "sha256": "38064d7a337571151b758014302a7369e122a88f91698594d7a4a31268737e2c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-retirement.json",
+      "bytes": 434,
+      "sha256": "37d8f8cb225b7571d49e4d563e6e7840675b1c4a4d971755a0bb4d59eaca16c3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-verify.json",
+      "bytes": 1463,
+      "sha256": "26f8a720763fdb1dc9e28fbb04ebc97aa468cda37870d2066bfc5dd8dab591b6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-verify.json.started.json",
+      "bytes": 827,
+      "sha256": "cfd67ac9146c54951778c8199dad0706d8d52cfe6faaf3c75ebd451e71c0d873"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-verify.log",
+      "bytes": 154,
+      "sha256": "51330c375d20a915c4e6eec92dc70275375c06e8f6a7f659d4719c729bf3e75b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001-verify.process.json",
+      "bytes": 2324,
+      "sha256": "f7db8cf191367b116564a1260ab2285241a745973a8e4fbb622772fd7ad02141"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001.log",
+      "bytes": 1528,
+      "sha256": "90030e7d042e5703a07830ca0e60eda6b375ce80652ad3dd7aa2f3a69de59a07"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001.process.json",
+      "bytes": 2541,
+      "sha256": "838b7707ea512ca6aaed370dcc4d9982a176fd52dfbc87d9e66c4b3d38b78a05"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001.xml",
+      "bytes": 92108,
+      "sha256": "b7cfc7abef20af44ad10d4efd4596ccff205b991bb5a045673e7ce242923e67c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api001.zip",
+      "bytes": 32592,
+      "sha256": "a0a08474ed0429521ad335a35d1aced81bf381d74f20f2bfa93036f9e0479b82"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api002-empty-retirement.json",
+      "bytes": 274,
+      "sha256": "4369887a9bbfc3e6114e14f8833e4ec7519fc375a648ce28744954b3d0f4668a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api002.log",
+      "bytes": 880,
+      "sha256": "422a5ee666e0544460fbd418fa846643711b084479135ec46ad8c66a1019bf0f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api002.process.json",
+      "bytes": 2299,
+      "sha256": "5cd6a9e4e07988d86864217e9d972d524e11cb43426c6be0711d84bb11f3e7a1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api002.xml",
+      "bytes": 2028,
+      "sha256": "0ed08db4ae4d191d52790b61fc57f5749acf587b80dd14e59987afcb9290face"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-artifacts.json",
+      "bytes": 4155,
+      "sha256": "dc6f904fe5f4a4c95b1f099ca055b57acb96348245d41205d2b28163a5c77ea8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-manifest.json",
+      "bytes": 34751,
+      "sha256": "898f1be42b1b6c5c7c5258a9c417ad8a0bc8b634b3d29aa972a5ee76583c975c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-pack.json",
+      "bytes": 1570,
+      "sha256": "ec1d07d0a4dd9c3a5eb47bc5f0f8cb69f1b1522e11b5eee1c9ceeb16080db4fd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-pack.json.started.json",
+      "bytes": 936,
+      "sha256": "82ef4fe8cbb13eeb9f12a7ae5dff3690e7fec1fde2098e1b3418937be6f04193"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-pack.log",
+      "bytes": 151,
+      "sha256": "75f618825da89ddbd8d46d259692a8610be5bae044c27a80b66cb25880a1d424"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-pack.process.json",
+      "bytes": 2448,
+      "sha256": "8a8d61b7fdd2c696b36a8318dfbdfcb5f15fde92008bb50223d05ef02102cba7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-retirement.json",
+      "bytes": 434,
+      "sha256": "8b7ca29da20cd0121fe1069017b0835c6e622b452303a9d9325d725243381634"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-verify.json",
+      "bytes": 1463,
+      "sha256": "a295ac55df510a4a7edd7b415e89b4f9330dbb97dad20ce75b779bf55eda72b3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-verify.json.started.json",
+      "bytes": 827,
+      "sha256": "5b950a749582e6b0abd55188b2007080e918e5d043b6af4b087fd651bd3e31d4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-verify.log",
+      "bytes": 154,
+      "sha256": "62465a2cebf08343fc71a076d71592fbd161573c154522d0db533143028e4ddf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003-verify.process.json",
+      "bytes": 2321,
+      "sha256": "8d999987d07d4a60b7ee916d3a358b23f30b708d866dc6cd710bdda4350c873c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003.log",
+      "bytes": 1123,
+      "sha256": "9f86d61f40af5eb24ea81a9cb40bdcb07189d2d108f842370d9c731c87e3e646"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003.process.json",
+      "bytes": 2456,
+      "sha256": "1cdf366b35fa39d4a8e669a1b5fa5acc0ed200e9ab4d2c3e46a86c00c2ad331b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003.xml",
+      "bytes": 32688,
+      "sha256": "7272e270fe13b896f7966e22c51dcec7238b4c7a9da44d9b22969690c1c7d82c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/api003.zip",
+      "bytes": 31809,
+      "sha256": "5670373f0209456b4d278399c793035a14e54056b3c0d60a33adf5d9fa21ad76"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/capture-admission-cpp.json",
+      "bytes": 285,
+      "sha256": "4fa2a39c892c81beca55c3f46342e50455905257f2a314a130e9908cace5373f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/capture-admission-python.json",
+      "bytes": 285,
+      "sha256": "4fa2a39c892c81beca55c3f46342e50455905257f2a314a130e9908cace5373f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-final-equivalence.json",
+      "bytes": 159,
+      "sha256": "2ce850096468a58bf1f3382990e4f4af6eb995a7117550b19a09d4607dd5b807"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-prior-equivalence.json",
+      "bytes": 341,
+      "sha256": "d5ba58093d467bec73e951245877ca441963ff23659573e202028a93ead9b5bf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-reader001.log",
+      "bytes": 887,
+      "sha256": "5038baaa68051ac8808405f5fa11562c6e59bf4bbf04b93b7e95ba40146dc62a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-reader001.process.json",
+      "bytes": 2566,
+      "sha256": "91bce943d374cc434416487b18e847066151e5883998a94da1b41ad810c905ed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-reader001.xml",
+      "bytes": 651,
+      "sha256": "09f835f29a6f0928125e032ec69438b20087961866207f06a0b34f3dc975b3a4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-reader002.log",
+      "bytes": 887,
+      "sha256": "06f61443544ea581463369c81b4f630fcfa0c29afe45801267d62510f519f5a9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-reader002.process.json",
+      "bytes": 2555,
+      "sha256": "e4cbc9beecd2a029f4ea03b58cf5a100c09c332fa4ef813d13fcebe390b41e30"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp-reader002.xml",
+      "bytes": 651,
+      "sha256": "ac9fd2c10d1be262c73e26a3c026ee64906cc45328008863310b08ac6ebed593"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-artifacts.json",
+      "bytes": 795,
+      "sha256": "2ddd3282df85b7ae97dbec799fa5603cf61fe851ffda6ea718d0181d8a5ca937"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-manifest.json",
+      "bytes": 3788,
+      "sha256": "39017d397443ee9b4f49c727dce5143eb4ee7cbf6d99c4f7a4247d4d131993fd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-pack.json",
+      "bytes": 1569,
+      "sha256": "d7d7ae10b0e96f3445103e522bdd83707265e77417346966113f17d2e18f9936"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-pack.json.started.json",
+      "bytes": 936,
+      "sha256": "7ed30202678075321b14df4ca95321998f66a55f816bc70a63d097a7e260592d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-pack.log",
+      "bytes": 151,
+      "sha256": "b99a809aa418f0af8862d1d4b895e282d2174f890cf07c8a09975bdcc5bae7dc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-pack.process.json",
+      "bytes": 2444,
+      "sha256": "2a8ac42e742875d13dae3f69880ced7816547462305a83ed522fdfb43b0a41b7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-retirement.json",
+      "bytes": 434,
+      "sha256": "fbfa1b0f787d864e5b1aeb29e385f4d7f03bef118c6beef8ca8a63edc41e374c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-verify.json",
+      "bytes": 1462,
+      "sha256": "6b8447f6528b99ba5bb07374d223168b96f4acf485a2d7528cff7e090b160def"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-verify.json.started.json",
+      "bytes": 827,
+      "sha256": "a95882ba670eaa77ebf3a8fbb94509ae0f568031cd5c7e537f14ab61dee3bff9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-verify.log",
+      "bytes": 154,
+      "sha256": "742dac5c33183bb8489ab4b58c1a56a59795c0a2d2a9e5a405d02d54d562d6c2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001-verify.process.json",
+      "bytes": 2325,
+      "sha256": "1b7dc9eb3a8a6b46c51a180689c00a863eb3d352a0305f3ba0be72376a68d892"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001.process.json",
+      "bytes": 1957,
+      "sha256": "d77087114f139170fb471f466115b2292e9bd1a60a1a945bbd67ad3ad3fbafb9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp001.zip",
+      "bytes": 10937,
+      "sha256": "1a0055f943b9ba2e8155abbe084f0871a1afe3ebaf13ed7aebde12aff7eae087"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-artifacts.json",
+      "bytes": 795,
+      "sha256": "6892650006b406e281933629cf5dbf59f81e6c325820d21c89859ed7d64c07c5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-manifest.json",
+      "bytes": 3788,
+      "sha256": "09e5cfed27844c6214aa753c8304c1d75b8fad188463b364c15e41ca68f4b497"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-pack.json",
+      "bytes": 1569,
+      "sha256": "8a6fe786255e3b86f3e7d1c66f1f270b92fd17f458f8bcde09bc97c115f0de6e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-pack.json.started.json",
+      "bytes": 936,
+      "sha256": "5eb2b82d1311cfa5d68c4d31f59fc2129dbdfb8a789eab448531a90f585357f9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-pack.log",
+      "bytes": 151,
+      "sha256": "e9599bb289678b4a139946f719fd8eaa5c61bc7dc2353ed0cccf28725b49fd80"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-pack.process.json",
+      "bytes": 2445,
+      "sha256": "44d546ed007766a97c67859adb032954e96a033c91e52a04db160c4372df5a73"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-retirement.json",
+      "bytes": 434,
+      "sha256": "b0c4aa208e90c50845ccac32c7124c76d3e205cc734b99eee36549b2ebb90b8a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-verify.json",
+      "bytes": 1462,
+      "sha256": "a38b5c4d0f722791f83725f7a7449d8c1953487484b04abc150ff29b4aa010e8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-verify.json.started.json",
+      "bytes": 827,
+      "sha256": "769b528d0310c559dfac44ebc04da6daa56089c49a8b5ef18f328107192e50ae"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-verify.log",
+      "bytes": 154,
+      "sha256": "d0ac22a0da7884b7acb5bccd8c5d707371eeaa63ea0b239e49a90fde41f3c7aa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002-verify.process.json",
+      "bytes": 2323,
+      "sha256": "bccf24dd017e188592ebb0e56a172c690ed748621e6c1524cb6d12306aeae77f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002.process.json",
+      "bytes": 1960,
+      "sha256": "e4221dfe6b717830e555c2147cb4d32de4fd3aa4a9a58deb20e7a9c5883666b4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/cpp002.zip",
+      "bytes": 10936,
+      "sha256": "c3efad55d7b055f847d1885cf74f59196cdfb81113223386d64945f7c1bdfd81"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/empty-root-retirement.json",
+      "bytes": 165,
+      "sha256": "e55914d01544027688650caa10a5beee52fa679d020a4c7913f5c2b4dedc8ff8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-app001.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-app001.process.json",
+      "bytes": 2098,
+      "sha256": "22a1b2d6ac0b6bc118a5af297ed9acfa1590c1172b47fe162d575c098a4fed00"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-app002.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-app002.process.json",
+      "bytes": 2096,
+      "sha256": "fdfb27c74b16142e623c3f83ab5286912c95ab69251008abce6b61361d85c59a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-native001.log",
+      "bytes": 5124,
+      "sha256": "a59ab006071461459ecf33a94a9765244d80e189f98ad28a3345c0bc706aabfc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-native001.process.json",
+      "bytes": 2117,
+      "sha256": "a9bebcd52dc21acad4781d276f05e8385facfeb625933336e82592264fa59eac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-python-ui001.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-python-ui001.process.json",
+      "bytes": 2112,
+      "sha256": "ed3e2c543e272fb2f7ae411f5cb499bb8e4ebaf4adaedcb2ea42367f720e2e5e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-python-ui002.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-python-ui002.process.json",
+      "bytes": 2112,
+      "sha256": "60061631f5bc6a005863ead066607049b7389b88b122e523f852315e7a8b7863"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-sdk001.log",
+      "bytes": 18847,
+      "sha256": "02c9c97b8bf527935701eafbc45db1f6f504c31e7767f474da0c2b24ba050389"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/install-sdk001.process.json",
+      "bytes": 2102,
+      "sha256": "460af3b24c548594337c62bd582edfb80087daef731eedb64e8517a71bff0f84"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-build001.log",
+      "bytes": 291,
+      "sha256": "06644eb656df45dd2da9eb23638b4966a6eb2e0dd55b6c05c8e89a4f6712abd5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-build001.process.json",
+      "bytes": 1545,
+      "sha256": "218af9494b653ff6486aa6c934caf44c92c0f79e7b0aed8d33d4035f81600892"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-install-sdk001.log",
+      "bytes": 19029,
+      "sha256": "08e845963b2e41533cca33afa05fc6ec83a6977686bf90cc3769654a4bd6294f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-install-sdk001.process.json",
+      "bytes": 1594,
+      "sha256": "4f77218713e2d147725bcbba6dff26c952f0426196a8f7405cf3d71058a40e78"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-native001.log",
+      "bytes": 378,
+      "sha256": "9aa1fc383c3b378b0e9cf01c3cb12db1f40e7baeaefa821328fc99347dc06308"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-native001.process.json",
+      "bytes": 1537,
+      "sha256": "6c1ce934e2471cdcd3ed868a0cdaee2ee6499062a0b3d5675e76ceb10de30c6f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-outer001.log",
+      "bytes": 45,
+      "sha256": "56cd5b3053d4018501a2a5e36c1dd5b428707d274bc8eb354f3183e0a3f812bb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-outer001.process.json",
+      "bytes": 2734,
+      "sha256": "875f77db41adf25b73b327f390073229dc2565830f417c877ebed9bd710b73f9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-sdk-outer001.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/linux-sdk-outer001.process.json",
+      "bytes": 2565,
+      "sha256": "a1da23dd401f8342c031655af6311bb20d51027542a6839bfe80bdbd8e8593fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native-build002.log",
+      "bytes": 711,
+      "sha256": "f1f795369088e12e3c299dd1e89b7f5ff341be982966b44d600af9ca07ecd226"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native-build002.process.json",
+      "bytes": 2031,
+      "sha256": "863076162681a289d08a830ff80ce481d8ec85ed064de1a0059e221a3e3b4f60"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native001.log",
+      "bytes": 484,
+      "sha256": "6e147a848d55135d9ed28a562c48673bc8ee59ceedd5191eb6cc0f581548ad49"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native001.process.json",
+      "bytes": 2054,
+      "sha256": "89c3fd4e635b9c1b7d8ef502656847b5dabfcefb6a019975f4bdc32aea5ee6aa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native002.log",
+      "bytes": 484,
+      "sha256": "d8a3cd7b52bce6ebe23867d307b7b89ea676f0333e7bdfdb1ad59e29146715fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native002.process.json",
+      "bytes": 2043,
+      "sha256": "c588e9b82c227d3c1030e0cbb7bd1a7cd871e3a529e35668393be5b578450c8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native003.log",
+      "bytes": 484,
+      "sha256": "28203be75ea950d0d39726a3ec5a94f27d5aef3bb5ccf91aa4c7951b06eafcf9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/native003.process.json",
+      "bytes": 2047,
+      "sha256": "fee13ebb6ce6654e1dd90c73bbf996ffabf88fc91a6f55f08126f6ff6f7a1df4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-final-equivalence.json",
+      "bytes": 159,
+      "sha256": "2ce850096468a58bf1f3382990e4f4af6eb995a7117550b19a09d4607dd5b807"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-prior-equivalence.json",
+      "bytes": 344,
+      "sha256": "19f2d6ab0d598331d3ef39b071badb396001e2af6db33efab85ad83872352dde"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-reader001.log",
+      "bytes": 890,
+      "sha256": "69e1cebbcb57ee3407115387d2a8290e7c5c24b25efa926a4673ab054f3a1e5b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-reader001.process.json",
+      "bytes": 2583,
+      "sha256": "b9226e0ece4374c80211d11ccc4cb3d878014ad3462ac6e6d18fb15dd6702cd5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-reader001.xml",
+      "bytes": 660,
+      "sha256": "917d5f022a04be3f1569dce7e68fc022e88c0408dcc22279fab383697da137c1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-reader002.log",
+      "bytes": 890,
+      "sha256": "212f4080a0a655e29389b4f4ffbcb7c33b446b84e435406cbee1c54762cafcbd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-reader002.process.json",
+      "bytes": 2583,
+      "sha256": "b08b659596bef0f9f6f7ab5c56eb56d2941a2f5b3abae1bdba26932290370c0d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python-reader002.xml",
+      "bytes": 660,
+      "sha256": "2bec86b95c83b4d5b2cf97c50a680dd2b862f354dd3c19559c4d4e9cea473810"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-artifacts.json",
+      "bytes": 804,
+      "sha256": "7ee1b2032152098a63f79e8e161617e0279e879b534ca9b82da14d3dd9065f9f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-manifest.json",
+      "bytes": 3821,
+      "sha256": "fb0e37571aab7a9d8a23ab12efe3b059736d8d0fe7d4e4454b51dc6c82fc6b6b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-pack.json",
+      "bytes": 1590,
+      "sha256": "584c5a1bb3d238932edaf1eadb50b2446e1bcc5ed010cd04d0299b710c0f929b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-pack.json.started.json",
+      "bytes": 951,
+      "sha256": "3bac9ef484094bb643a74e3246f94f6e09010d5c8a2abb41e2ac7e520ce7ccbb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-pack.log",
+      "bytes": 154,
+      "sha256": "ccc150e7f9dd4ff37eb22c068f02ba9beba39f31e2a47f66ab14f5085f49c9fe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-pack.process.json",
+      "bytes": 2461,
+      "sha256": "7a3cb0e26234617f242bd2843bfa50a418e2f01de73beb5a3ccf25ce3e30ef21"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-retirement.json",
+      "bytes": 437,
+      "sha256": "0f1bf76c79fcaa38059712811e1190ab44c1d752e81f5419368096fc6216c9f4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-verify.json",
+      "bytes": 1480,
+      "sha256": "4ffe8bbe1828b0c6f1a4c4f70c95f22b405cde5c207b77e6b72462eedc63c979"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-verify.json.started.json",
+      "bytes": 839,
+      "sha256": "1ec854327afe547342df51b7ae0e75dff6248adfe7a6b47d984937d4477d8e5f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-verify.log",
+      "bytes": 157,
+      "sha256": "b3baf5b850444aceb229f83c77b9680404e0b89ef6f05ed35d544a13826eae36"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001-verify.process.json",
+      "bytes": 2337,
+      "sha256": "aaf4e466e304368f18e9ec86a3eadba626935961486ddc121283be7a938620f8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001.log",
+      "bytes": 60,
+      "sha256": "bdf28611b215ef4b0d9063a3e0de14c002926f0b23634810cc1ee633fbfd4257"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001.process.json",
+      "bytes": 2384,
+      "sha256": "4b3d53107de1e97a07cd85f0bd8e9630a0c5b287f5add8d491c377df0538ca4a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python001.zip",
+      "bytes": 10941,
+      "sha256": "70f8ab912d1149b6e3dbacbc2f435cb2ce363c7c799947712a3e1b543acc468c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-artifacts.json",
+      "bytes": 804,
+      "sha256": "b1b25612cf2841be33eda6c9510f3c89d96bacbeca983eb4ba159582db9ff029"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-manifest.json",
+      "bytes": 3821,
+      "sha256": "ff1bc0f713c46388a8463557fc4b0fbc91d213c7aee21a18b565af646e47b33f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-pack.json",
+      "bytes": 1590,
+      "sha256": "ec5093894d8507872351a5e0ed3c035574b72716ab02706a8fba5a68299e9090"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-pack.json.started.json",
+      "bytes": 951,
+      "sha256": "ae37850e489de57c62eb2687faea1102e71046073b06427953807f64b96f75af"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-pack.log",
+      "bytes": 154,
+      "sha256": "9d5d732c0c69b8644e1d8df696c140e9e757ddb9c19dcb33a1c88f1ff5e3f10c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-pack.process.json",
+      "bytes": 2462,
+      "sha256": "1ae61da1ea6255987ad6302901b79b729a7c9c502bf4b44619aa02f0ee0be5e9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-retirement.json",
+      "bytes": 437,
+      "sha256": "c59368dc88d99955d4f483cd4114be82e5ee28c33c3e00ecd73530ed361aeaa1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-verify.json",
+      "bytes": 1480,
+      "sha256": "71758763cab469631453eab72e79e965250f6c28484003f3ddfb917945578a14"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-verify.json.started.json",
+      "bytes": 839,
+      "sha256": "1d89aa2c1a735c098805fffacc5c50f5148feb42aa2f112a52d7788a67b57e1d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-verify.log",
+      "bytes": 157,
+      "sha256": "d899b1ae2515e1b8dd72f366d06b6ad9088e72ef55978039bf856cb05ad1ea4e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002-verify.process.json",
+      "bytes": 2336,
+      "sha256": "ce9b819565141dfe6b6aab21b7fb4660e42b674d048bde5a7469447b8973f32b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002.log",
+      "bytes": 60,
+      "sha256": "bdf28611b215ef4b0d9063a3e0de14c002926f0b23634810cc1ee633fbfd4257"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002.process.json",
+      "bytes": 2381,
+      "sha256": "2981116b6ae7fa77f13038b699a56e4717cec89920e2582baddd3f58cb8d9168"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/python002.zip",
+      "bytes": 10938,
+      "sha256": "e970199d3663be89ad5f380eba54932412ae3b2e840b443d027e87494dd85d79"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/result-summary.json",
+      "bytes": 579,
+      "sha256": "77f350e4b39f6c6969333f4bd020cd45e663b4fb02a0d6f10e0cc3fbbe6781f5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/windows-build001.log",
+      "bytes": 9152,
+      "sha256": "e420df7bd3febca4be4ce81d9a393b6407450ae9d7e07ea52420c3e0215a95b3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/windows-build001.process.json",
+      "bytes": 3384,
+      "sha256": "de58dd49e857241e4f55ff2ced681a268e99339b1acda0d9be9e08778ad6fb97"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/windows-LastTest.log",
+      "bytes": 1720,
+      "sha256": "fa6ae17faa9a35cc31213fc5f7df7643e165e305e069edf41d76021769f825f3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/windows-work002.log",
+      "bytes": 2956,
+      "sha256": "696dea9dac195b22bcba0b0e826cb1be8bc626bd7abc0641ae666e41d495e6ac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-export-admission-20261104/windows-work002.process.json",
+      "bytes": 2067,
+      "sha256": "2d52ef454991f8c84e69874bc33eeff0e7961f9c620672029ecda452231ee91b"
+    }
+  ],
+  "storage_snapshots": [
+    {
+      "path": ".tmp/manual-workflow-verification/point-export-admission-entry001.json",
+      "bytes": 66571,
+      "sha256": "dd92ce321bbfd304945bbc0caf5c3cc11fe26a8b7023226505f132ddcfad729a",
+      "known_bytes": 8494904607,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/point-export-admission-final001.json",
+      "bytes": 66572,
+      "sha256": "45ba641bf893055047abe9240aa2d4d74fc8c91114d21d399392d99db325f83f",
+      "known_bytes": 8496416716,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    }
+  ]
+}

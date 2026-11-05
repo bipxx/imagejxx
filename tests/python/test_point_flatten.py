@@ -149,6 +149,7 @@ def test_visibility_setting_does_not_interpret_opaque_document_metadata(opaque, 
     pixels = np.zeros((16, 16, 3), np.uint8)
     owner = ij.Document(ij.Dataset(pixels, axes="YXS"));tx = owner.begin_edit()
     tx.set_property("point_show_all", opaque)
+    tx.set_extension("point_show_all", opaque)
     tx.set_overlays([{"kind": "rectangle", "points": [[2, 2], [10, 10]], "width": 1}])
     owner.commit(tx);before = owner.snapshot()
     editor = _desktop.Editor(str(tmp_path/"prefs.json"));editor.add_native_document(owner)

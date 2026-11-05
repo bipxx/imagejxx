@@ -8864,6 +8864,41 @@ void Window::action(const std::string &name, const Json &p) {
     if(batch)impl->nativeWorkflowPanel.seed_batch(p.value("paths",Json::array()),p.value("output_directory",std::string{}));return;
   }
   auto d = document();
+  if(name=="flatten" || name=="export_display" || name=="export_pdf" || name=="print") {
+    const auto source=d->nativeSnapshot();
+    const auto cap=impl->processingCap();const bool all=settings().boolean("point_show_all");
+    std::string path;double dpi=150;bool landscape=false;
+    if(name=="export_display" || name=="export_pdf") {
+      path=string(get(p,"path"));
+      if(path.empty() || path.size()>131064 || path.find('\0')!=std::string::npos)
+        throw std::invalid_argument("Export needs a bounded output path");
+    }
+    if(name=="export_display") {
+      static const std::set<std::string> formats{".png",".jpg",".jpeg",".bmp",".tga",".pgm",".ppm",".pnm",".npy",".tif",".tiff"};
+      const auto suffix=extension(path);
+      if(!formats.count(suffix))throw std::invalid_argument("Choose a supported display export format");
+      if((suffix==".tif" || suffix==".tiff") && !tiffAvailable())throw std::runtime_error("Scientific TIFF requires optional libtiff");
+    }
+    if(name=="export_pdf") {
+      dpi=number(get(p,"dpi"),impl->preferenceState.settings.number("print_dpi"));
+      if(!std::isfinite(dpi) || dpi<1 || dpi>2400)throw std::invalid_argument("DPI must be1..2400");
+      landscape=boolean(get(p,"landscape"),impl->preferenceState.settings.boolean("print_landscape"));
+    }
+    PreparedExportImage prepared(source,all,cap);
+    auto validate=[&] {
+      if(document()->id!=source.id() || documentById(source.id())!=d)throw RevisionConflict();
+      prepared.validate(d->nativeSnapshot(),settings().boolean("point_show_all"),impl->processingCap());
+    };
+    validate();auto image=prepared.render();validate();
+    if(name=="flatten") {
+      Stack frames;frames.push_back(std::move(image));
+      addDocument(std::make_shared<Document>(std::move(frames),source.data().metadata.title+" rendered"));
+    } else if(name=="export_display") {
+      Stack frames;frames.push_back(std::move(image));writeImages(path,frames);
+    } else if(name=="export_pdf")writePdf(path,image,dpi,landscape);
+    else printImage(image);
+    return;
+  }
   State edited = d->state();
   auto &meta = edited.metadata;
   auto publishDisplay = [&] {
@@ -8958,23 +8993,6 @@ void Window::action(const std::string &name, const Json &p) {
   }
   if (name == "save_pixels") {
     writeImages(string(get(p, "path")), d->state().frames.materialize());
-    return;
-  }
-  if (name == "export_display") {
-    writeImages(string(get(p, "path")), {renderExportImage(frame, meta, d->samplePolicy(),d->position(),impl->preferenceState.settings.boolean("point_show_all"))});
-    return;
-  }
-  if (name == "export_pdf") {
-    writePdf(
-        string(get(p, "path")), renderExportImage(frame, meta, d->samplePolicy(),d->position(),impl->preferenceState.settings.boolean("point_show_all")),
-        number(get(p, "dpi"),
-               impl->preferenceState.settings.number("print_dpi")),
-        boolean(get(p, "landscape"),
-                impl->preferenceState.settings.boolean("print_landscape")));
-    return;
-  }
-  if (name == "print") {
-    printImage(renderExportImage(frame, meta, d->samplePolicy(),d->position(),impl->preferenceState.settings.boolean("point_show_all")));
     return;
   }
   if (name == "select_all") {
@@ -9304,11 +9322,6 @@ void Window::action(const std::string &name, const Json &p) {
   if (name == "clear_overlays") {
     meta["overlays"] = Json::array();
     d->commit(std::move(edited));
-    return;
-  }
-  if (name == "flatten") {
-    addDocument(std::make_shared<Document>(Stack{renderExportImage(frame, meta, d->samplePolicy(),d->position(),impl->preferenceState.settings.boolean("point_show_all"))},
-                                           d->title() + " rendered"));
     return;
   }
   if (name == "split_channels") {

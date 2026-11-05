@@ -120,6 +120,10 @@ const PointRasterFont& PointRasterFontCache::get(const std::string& configured,d
   if(state_->fonts.size()==7)throw std::length_error("Point font cache size limit");
   return state_->fonts.emplace(size,state_->make(size)).first->second;
 }
+PointRasterFont PointRasterFontCache::take(const std::string& path,double size) {
+  (void)get(path,size);
+  auto node=state_->fonts.extract(size);return std::move(node.mapped());
+}
 PointRasterFont loadPointRasterFont(const std::string& path,double size,std::size_t max_bytes) {
   if(!std::isfinite(size) || size<=0 || size>512)throw std::invalid_argument("Point font size must be positive and at most512");
   PointRasterFontCache::State resource(max_bytes);resource.open(annotationFontPath(path));

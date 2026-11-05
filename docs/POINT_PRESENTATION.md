@@ -231,16 +231,65 @@ Properties and then uses Image > Overlays > Flatten. Existing measurement,
 properties and draw-role observations are preserved and read from those same
 captures. PNG and native flattened-session reopen are checked separately.
 
-**P2c.2 remains open:** the legacy action currently obtains its source plane
-before point/font admission and uses a fixed raster allowance. Move preparation
-before provider reads, carry the configured processing budget across all retained
-source/display/font/layout/codec/output allocations, and consume that captured
-preparation without repeating IO/decoding. Finish cancellation/stale/source-close
-publication and explicit font acquisition/recovery policy on the existing command/
-job owners. PDF/print routes share the code but do not gain end-to-end output or
+**P2c.2 remains open:** pre-read point preparation/configured-cap adoption is now
+scoped delivered below. Complete the output calibration/provenance/role and
+general native ROI/font-route contracts, full legacy-text preparation, scheduler/
+publication/cancel/stale/source-close handling and explicit font recovery/state/
+replay policy on the existing owners. PDF/print routes share the code but do not gain end-to-end output or
 platform certification from PNG checks. Non-XY/scientific projection policies
 remain P4/T10; no implicit reinterpretation was added. P2c.3 appearance/loss
 review, P3 draft preview/actions and P4 replay/edit/rebind remain required.
+
+## Prepared point display exports (P2c.2 admission increment)
+
+`PreparedExportImage` is a private value owner used by the existing Flatten,
+display export, PDF and print actions. The commands enter it before `d->state()`
+or `d->frame()`. It borrows the immutable native snapshot, captures pose/show-all,
+and translates only the consumed display fields and parent-visible overlays;
+it avoids copying the full source plane table, selections and ROI-manager state.
+Opaque overlays with no geometry kind and parent-ineligible records remain
+untouched and are not decoded. Native metadata is charged before JSON/selection
+staging, and the initial display/source/codec allowance is charged before either.
+Path/format and PDF options are validated before source access.
+
+The configured `processing_memory_mb` value now bounds this synchronous export
+preparation/execution estimate; zero keeps its unlimited-reservation meaning.
+The model is conservative logical working storage: a 128 KiB owner allowance plus
+`pixels*(64*samples+272)` for the active source plane, display/IEEE conversion,
+RGB output, sequential legacy masks, publication/packing/codec copies, then
+retained metadata/layout/font values. Font staging is admitted from the remaining
+allowance, up to 8 MiB per active file. A separate 512 Mi logical work limit counts
+metadata nodes, display components, font-file/decode allowances and candidate
+raster samples, with a distinct work-limit error. These are not RSS, allocator,
+reader-cache, inactive source/history, OS/driver or file-codec implementation
+measurements. Scheduler-wide reservations and exact codec/publication closure
+remain required; passing a per-export estimate does not prove those gates.
+
+Point geometry/style/annotations are decoded once. Coverage is loaded once per
+captured font path across the needed sizes and transferred into immutable shared
+decimal fonts; the file owner is released before source-plane access. Font data
+is not copied into evidence or records. Multiple font paths do not leave dangling
+references when resource owners are destroyed. A changed `IMAGEJXX_FONT` after
+preparation does not change the captured glyphs. Rendering acquires exactly one
+source plane, maps it once and paints prepared points into one owned RGB buffer.
+That buffer is validated once; invisible empty point layouts skip painting.
+The public native raster still validates its borrowed input and returns a detached
+copy. Geometry, duplicate alpha order and numeric expectations are unchanged.
+
+The current Window route validates the same active owner, data/display revisions,
+processing cap and show-all value after preparation and after rendering, before
+starting publication. The private renderer honors inherited/native cancellation,
+including refusal before provider reads. These checks do not yet provide the full
+queued/asynchronous lifecycle or stale-during-file-publication contract. Legacy
+non-point rendering retains its existing owner; legacy text has a conservative
+shared 64 MiB workspace allowance, not frozen Unicode/font coverage. Complete those
+mixed workflows under P2c.2 instead of inferring them from point-only checks.
+
+Pinned `ImagePlus.flatten()` also includes an active PointRoi with an overlay,
+can include the manager show-all list, and copies scale/properties. Those output
+role/calibration/provenance differences and the general `render_roi_style` point/
+font route remain explicit next work; this admission increment preserves current
+output roles and pixels rather than silently changing that contract.
 
 ## Evidence and remaining integration
 

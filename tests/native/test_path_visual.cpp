@@ -2,6 +2,11 @@
 #include "planar_annotation_visual.hpp"
 #include "roi_import_preview.hpp"
 #include "point_visual.hpp"
+#include "point_raster_export.hpp"
+#include "point_raster_font.hpp"
+#include <cstdlib>
+#include <fstream>
+#include <imagejxx/point_raster.hpp>
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -22,6 +27,27 @@ template <class F> void refuses(F f) {
   check(caught);
 }
 } // namespace
+namespace {
+struct FontEnvironment {
+  const char* initial=std::getenv("IMAGEJXX_FONT");
+  bool present=initial!=nullptr;
+  std::string previous=initial?initial:"";
+  void replace(const char* value) {
+#ifdef _WIN32
+    if(_putenv_s("IMAGEJXX_FONT",value))throw std::runtime_error("Cannot stage font environment");
+#else
+    if(setenv("IMAGEJXX_FONT",value,1))throw std::runtime_error("Cannot stage font environment");
+#endif
+  }
+  ~FontEnvironment() {
+#ifdef _WIN32
+    _putenv_s("IMAGEJXX_FONT",present?previous.c_str():"");
+#else
+    if(present)setenv("IMAGEJXX_FONT",previous.c_str(),1);else unsetenv("IMAGEJXX_FONT");
+#endif
+  }
+};
+}
 int main() {
   try {
     auto path = Selection::from_path(std::vector<double>{
@@ -114,6 +140,46 @@ int main() {
       points.attributes[point_style_attribute]=metadata_object({{"version",std::int64_t(2)}});
       auto unknown=roiVisual(selectionJson(points),100000,100000,{255,255,0,255},1048576);
       check(!unknown.pointVisual->error.empty() && unknown.pointVisual->layout.glyphs.empty());
+    }
+    {
+      Selection points("multipoint",{{4,4},{9,9}});PointStyle style;
+      style.marker=PointMarker::Cross;style.size=0;style.labels=false;
+      points=with_point_style(points,style);
+      DatasetReadObserver reads;
+      auto dataset=Dataset::from_stack(Stack{Image(16,16,1,PixelType::UInt8)}).observe_reads(reads);
+      DocumentData data{dataset};data.overlays={metadataObjectFromJson(selectionJson(points))};
+      imagejxx::Document owner(std::move(data));const auto before=owner.snapshot();
+      const auto count=reads.counts().plane_reads;
+      PreparedExportImage prepared(before,false,1048576);
+      check(prepared.working_bytes()<=1048576 && reads.counts().plane_reads==count);
+      ExecutionControl cancelled;cancelled.cancellation=std::make_shared<CancellationToken>();cancelled.cancellation->cancel();
+      bool stopped=false;try{(void)prepared.render(cancelled);}catch(const OperationCancelled&){stopped=true;}
+      check(stopped && reads.counts().plane_reads==count);
+      prepared.validate(owner.snapshot(),false,1048576);
+      auto output=prepared.render();check(reads.counts().plane_reads==count+1);
+      PointPresentationOptions view;view.color={255,204,0,255};
+      check(output.pixels==render_point_style(Image(16,16,3,PixelType::UInt8),points,view).pixels);
+      auto display=owner.snapshot().display();display.pan={2,3};owner.set_display(display);
+      bool stale=false;try{prepared.validate(owner.snapshot(),false,1048576);}catch(const RevisionConflict&){stale=true;}
+      check(stale);
+      bool denied=false;try{PreparedExportImage low(before,false,1);}catch(const std::length_error&){denied=true;}
+      check(denied && reads.counts().plane_reads==count+1);
+    }
+    {
+      const auto path=annotationFontPath();std::ifstream available(std::filesystem::u8path(path),std::ios::binary);
+      if(available) {
+        available.close();Selection points("multipoint",{{4,4},{9,9}});PointStyle style;
+        style.marker=PointMarker::Cross;style.size=0;points=with_point_style(points,style);
+        DatasetReadObserver reads;DocumentData data{Dataset::from_stack(Stack{Image(16,16,1,PixelType::UInt8)}).observe_reads(reads)};
+        data.overlays={metadataObjectFromJson(selectionJson(points))};imagejxx::Document owner(std::move(data));
+        const auto n=reads.counts().plane_reads;PreparedExportImage prepared(owner.snapshot(),false,16*1048576);
+        check(reads.counts().plane_reads==n);
+        auto font=loadPointRasterFont(path,8);PointPresentationOptions options;options.color={255,204,0,255};
+        auto expected=render_point_style(Image(16,16,3,PixelType::UInt8),points,options,&font);
+        check(!std::filesystem::exists("imagejxx-missing-font-capture-proof.ttf"));
+        FontEnvironment environment;environment.replace("imagejxx-missing-font-capture-proof.ttf");
+        auto actual=prepared.render();check(actual.pixels==expected.pixels && reads.counts().plane_reads==n+1);
+      } else std::cout<<"Unavailable platform font capture input: "<<path<<"\n";
     }
     std::cout << "PASS " << checks << " path/point visual checks\n";
   } catch (const std::exception &e) {

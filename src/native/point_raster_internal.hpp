@@ -10,6 +10,9 @@ struct PreparedPointRaster {
 };
 PreparedPointRaster prepare_point_raster(int width,int height,const Selection&,
     const PointPresentationOptions&,const PointRasterFont*,const PointRasterLimits&,
-    PointPresentation* captured_layout=nullptr);
+    PointPresentation* captured_layout=nullptr,bool owned_rgb=false);
+// Internal caller owns an admitted, complete normalized RGB buffer. No source
+// pixel validation/copy; partial output on exception must never be published.
+void paint_owned_point_style(Image&,const PreparedPointRaster&,const PointRasterFont*);
 Image raster_point_style(const Image&,const PreparedPointRaster&,const PointRasterFont*);
 }

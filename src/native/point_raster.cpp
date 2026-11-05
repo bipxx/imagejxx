@@ -119,16 +119,16 @@ double coverage(const Draw& draw,int x,int y,const PointPresentationOptions& vie
 namespace detail {
 PreparedPointRaster prepare_point_raster(int width,int height,const Selection& selection,
     const PointPresentationOptions& options,const PointRasterFont* font,const PointRasterLimits& limits,
-    PointPresentation* captured_layout) {
+    PointPresentation* captured_layout,bool owned_rgb) {
   kernel_checkpoint();
   if(width<=0 || height<=0 || width>std::numeric_limits<int>::max()-8194 ||
       height>std::numeric_limits<int>::max()-8194)invalid("Invalid point raster dimensions");
   std::size_t pixels=0;charge(pixels,std::size_t(width),std::size_t(height),std::numeric_limits<std::size_t>::max()/3);
   const std::size_t components=pixels*3;
   std::size_t work=0;
-  charge(work,components,2,limits.max_pixel_samples);
+  if(!owned_rgb)charge(work,components,2,limits.max_pixel_samples);
   charge(work,selection.points.size(),2,limits.max_pixel_samples);
-  std::size_t bytes=0;charge(bytes,components,2*sizeof(double),limits.max_working_bytes);
+  std::size_t bytes=0;charge(bytes,components,(owned_rgb?1:2)*sizeof(double),limits.max_working_bytes);
   charge(bytes,1,sizeof(PreparedPointRaster),limits.max_working_bytes);
   if(font) {
     if(!std::isfinite(font->font_size) || font->font_size<=0 || font->font_size>4096)
@@ -180,6 +180,11 @@ Image raster_point_style(const Image& rgb,const PreparedPointRaster& prepared,co
     if(!std::isfinite(v) || v<0 || v>255)invalid("Invalid point raster display component");
   }
   kernel_checkpoint();auto result=rgb;
+  paint_owned_point_style(result,prepared,font);return result;
+}
+void paint_owned_point_style(Image& result,const PreparedPointRaster& prepared,const PointRasterFont* font) {
+  if(result.type!=PixelType::UInt8 || result.channels!=3 || result.width!=prepared.width || result.height!=prepared.height ||
+      result.pixels.size()!=std::size_t(prepared.width)*prepared.height*3)invalid("Incomplete owned point display buffer");
   visit(prepared,font,[&](const Draw& draw) {
     const auto box=bounds(draw,prepared);
     for(int y=box.top;y<box.bottom;++y)for(int x=box.left;x<box.right;++x) {
@@ -196,7 +201,7 @@ Image raster_point_style(const Image& rgb,const PreparedPointRaster& prepared,co
   // A final checkpoint callback can itself cancel. Recheck inherited tokens
   // without dispatching another callback before publishing the detached result.
   detail::without_execution_callbacks([] { kernel_checkpoint(); });
-  return result;
+
 }
 }
 Image render_point_style(const Image& rgb,const Selection& selection,const PointPresentationOptions& options,
