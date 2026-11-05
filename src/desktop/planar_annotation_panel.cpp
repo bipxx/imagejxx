@@ -2,6 +2,7 @@
 #include "geometry_number.hpp"
 #include "planar_annotation_visual.hpp"
 #include "path_visual.hpp"
+#include "point_visual.hpp"
 #include "path_segment_controls.hpp"
 #include "path_authoring_controls.hpp"
 #include <imagejxx/planar_annotations.hpp>
@@ -48,11 +49,20 @@ struct PlanarAnnotationPanel::State {
     bool invalid = false;
     unsigned point_counter=0;
     bool point_capture=true;
+    PointStyle point_style;
+    RoiColor point_color{255,255,0,255};
     std::size_t point_cap=256*1048576;
   };
   Mode mode_=Mode::Navigate;
   unsigned point_counter_=0;
   bool point_capture_=true;
+  PointStyle point_style_;
+  RoiColor point_color_{255,255,0,255};
+  bool point_show_all_=false;
+  PointStyle row_point_style_;
+  bool row_point_enabled_=false,row_point_changed_=false,row_point_cleared_=false;
+  int row_color_counter_=0;
+  std::string row_point_error_;
   std::uint64_t owner_=0,metadata_revision_=~std::uint64_t(0);
   std::vector<PlanarAnnotation> rows_;
   std::optional<std::size_t> selected_;
@@ -157,6 +167,12 @@ void PlanarAnnotationPanel::State::select(std::size_t row) {
   scope_t_=selected_value_->t.value_or(0)+1;scope_c_=selected_value_->c.value_or(0)+1;
   vertex_index_=1;
   const auto &selection=selected_value_->selection;
+  row_point_style_=PointStyle{};row_point_enabled_=selection.attributes.count(point_style_attribute)!=0;
+  row_point_changed_=row_point_cleared_=false;row_color_counter_=0;row_point_error_.clear();
+  if(selection.kind=="point" || selection.kind=="multipoint") {
+    try {row_point_style_=point_style(selection).value_or(PointStyle{});}
+    catch(const std::invalid_argument& error){row_point_error_=error.what();}
+  }
   vertex_points_=planarControlPoints(selection);
   if(!vertex_points_.empty())
     for(int i=0;i<2;++i)vertex_numbers_[i]=geometry_number_text(vertex_points_[0][i]);
@@ -171,14 +187,14 @@ void PlanarAnnotationPanel::State::select(std::size_t row) {
 Selection PlanarAnnotationPanel::State::capture_points(const Draft &state,Selection selection) const {
   auto row=state.original;row.selection=std::move(selection);
   // Leave half for the prior draft, point carrier and existing UI staging.
-  return planar_point_creation_selection(state.source,row,state.point_counter,state.point_capture,state.point_cap/2);
+  return pointCreationPresentation(planar_point_creation_selection(state.source,row,state.point_counter,state.point_capture,state.point_cap/2),state.point_style,state.point_color);
 }
 void PlanarAnnotationPanel::State::update_vertices() {
   auto &state=*draft_;
   if(state.points.size()>65536)throw std::invalid_argument("Planar annotation vertex cap exceeded");
   if(state.points.size()>=(mode_==Mode::Polygon?3u:1u)) {
     auto selection=Selection(mode_==Mode::Polygon?"polygon":"multipoint",state.points);
-    state.candidate=std::move(selection);
+    state.candidate=mode_==Mode::Multipoint?pointCreationPresentation(std::move(selection),state.point_style,state.point_color):std::move(selection);
   } else state.candidate.reset();
 }
 void PlanarAnnotationPanel::State::commit(Document &d,const DocumentSnapshot &source,
@@ -437,12 +453,27 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
       ImGui::SameLine();ImGui::SetNextItemWidth(110);ImGui::InputDouble("Stroke width",&width_,0,0,"%.3g");observe("width",enabled,110);
       ImGui::SetNextItemWidth(130);ImGui::InputText("Stroke (#AARRGGBB/none)",&stroke_);observe("stroke",enabled,130);
       ImGui::SameLine();ImGui::SetNextItemWidth(130);ImGui::InputText("Fill (#AARRGGBB/none)",&fill_);observe("fill",enabled,130);
+      if(row.selection.kind=="point" || row.selection.kind=="multipoint") {
+        ImGui::SetNextItemWidth(100);const auto color_id=ImGui::GetID("Counter color category");
+        ImGui::InputInt("Counter color category",&row_color_counter_);row_color_counter_=std::clamp(row_color_counter_,0,99);
+        observe("point_color_counter",enabled,100,color_id);
+        const auto edited=drawPointStyleControls(row_point_style_,row_point_enabled_,row_point_error_,unsigned(row_color_counter_),
+            [&](const char* name,bool disabled){observe(std::string("point_style.")+name,enabled && !disabled);});
+        if(edited.clear){row_point_cleared_=true;row_point_changed_=false;}
+        else if(edited.changed)row_point_changed_=row_point_enabled_;
+      }
       if(ImGui::Button("Apply name / style")) action([&] {
         auto value=row;value.name=name_;value.selection=with_roi_style(value.selection,
             {{"stroke_color",stroke_},{"fill_color",fill_},{"stroke_width",width_}});
+        if(row_point_cleared_)value.selection=without_point_style(value.selection);
+        if(row_point_changed_)value.selection=with_point_style(value.selection,row_point_style_);
         commit(d,d.nativeSnapshot(),selected_,value,publish);
       });
       observe("properties",enabled);
+      if(row.selection.kind=="point" || row.selection.kind=="multipoint") {
+        ImGui::SameLine();if(ImGui::Button("Revert annotation properties"))select(*selected_);
+        observe("properties_revert",enabled);
+      }
       ImGui::SetNextItemWidth(90);ImGui::InputDouble("Move U",&move_x_,0,0,"%.3g");observe("move_u",enabled,90);
       ImGui::SameLine();ImGui::SetNextItemWidth(90);ImGui::InputDouble("Move V",&move_y_,0,0,"%.3g");observe("move_v",enabled,90);
       ImGui::SameLine();ImGui::SetNextItemWidth(90);ImGui::InputDouble("Rotate degrees",&rotation_,0,0,"%.3g");observe("rotation",enabled,90);
@@ -494,6 +525,11 @@ bool PlanarAnnotationPanel::State::pointer(Document &d,const PlanarCanvas &canva
       if(draft_->point_counter!=point_counter_ || draft_->point_capture!=point_capture_) {
         cancel("point_defaults_changed");return consumed;
       }
+      const auto& a=draft_->point_style;const auto& b=point_style_;
+      if(a.marker!=b.marker || a.size!=b.size || a.labels!=b.labels || a.show_all!=b.show_all) {
+        cancel("point_style_defaults_changed");return consumed;
+      }
+      if(draft_->point_color!=point_color_){cancel("point_style_defaults_changed");return consumed;}
       if(draft_->point_cap!=cap_) {cancel("point_limit_changed");return consumed;}
     }
     const auto current=d.nativeSnapshot();
@@ -602,11 +638,14 @@ bool PlanarAnnotationPanel::State::pointer(Document &d,const PlanarCanvas &canva
         source.display().t,source.display().c,{}};
     draft_.emplace(Draft{source,canvas,row,{},point,{},{},{},{point}});
     draft_->point_counter=point_counter_;draft_->point_capture=point_capture_;draft_->point_cap=cap_;
+    draft_->point_style=point_style_;
+    draft_->point_color=point_color_;
     if(mode_==Mode::Rectangle || mode_==Mode::Ellipse)
       draft_->box=begin_selection_creation_box(mode_==Mode::Rectangle?SelectionCreationBoxKind::Rectangle:SelectionCreationBoxKind::Ellipse,canvas.width,canvas.height,snap(point,canvas));
     else if(mode_==Mode::Point) {
       draft_->candidate=Selection("point",{point});
       (void)capture_points(*draft_,*draft_->candidate);
+      draft_->candidate=pointCreationPresentation(std::move(*draft_->candidate),draft_->point_style,draft_->point_color);
     }
     else if(multi()) {
       const auto p=snap(point,canvas);draft_->points={{double(p[0]),double(p[1])}};
@@ -637,16 +676,22 @@ void PlanarAnnotationPanel::State::draw(Document &d,const PlanarCanvas &canvas,I
       }
       auto geometry=selection.is_path()
           ? pathVisual(selection,canvas.width,canvas.height,canvas.scale,cap_-other)
-          : roiVisual(selectionJson(selection),canvas.width,canvas.height,{64,210,240,255});
+          : roiVisual(selectionJson(selection),canvas.width,canvas.height,{64,210,240,255},cap_-other);
       found=visuals_.insert_or_assign(key,Visual{selection,std::move(geometry),canvas.width,canvas.height,canvas.scale}).first;
       ++visual_builds_;
     }
     const auto vertex_begin=draw->VtxBuffer.Size,index_begin=draw->IdxBuffer.Size;
-    drawRoiVisual(found->second.visual,draw,canvas.origin,canvas.scale);
+    if(found->second.visual.pointVisual) {
+      found->second.visual.pointVisual->show_all_override=point_show_all_;
+      found->second.visual.pointVisual->gui_scale=canvas.gui_scale;
+    }
+    drawRoiVisual(found->second.visual,draw,canvas.origin,canvas.scale,
+        PlanePosition{source.display().t,source.display().c,source.display().crosshair[2]},canvas.plane);
     layers_.push_back({{"plane",planeName(canvas.plane)},{"coordinate",canvas.coordinate},
       {"row",row?Json(*row):Json()},{"preview",preview},{"canvas_id",canvas.id},{"geometry",planarSelectionJson(selection)}});
-    if(selection.is_path()) {
-      layers_.back()["path_visual"]=roiVisualJson(found->second.visual);
+    if(selection.is_path() || found->second.visual.pointVisual) {
+      if(selection.is_path())layers_.back()["path_visual"]=roiVisualJson(found->second.visual);
+      else layers_.back()["point_visual"]=roiVisualJson(found->second.visual).at("point_visual");
       layers_.back()["emitted_vertices"]=draw->VtxBuffer.Size-vertex_begin;
       layers_.back()["emitted_indices"]=draw->IdxBuffer.Size-index_begin;
     }
@@ -722,10 +767,13 @@ void PlanarAnnotationPanel::draw(Document &d,const PlanarCanvas &c,ImDrawList *d
     state_->cancel("render_refusal");state_->error_=error.what();state_->resource_refused_=true;state_->visuals_.clear();
   }
 }
-void PlanarAnnotationPanel::point_creation_defaults(unsigned counter,bool capture) {
+void PlanarAnnotationPanel::point_creation_defaults(unsigned counter,bool capture,const PointStyle& style,RoiColor color) {
   if(counter>=100)throw std::invalid_argument("Point counter must be in 0..99");
   state_->point_counter_=counter;state_->point_capture_=capture;
+  state_->point_style_=style;
+  state_->point_color_=color;
 }
+void PlanarAnnotationPanel::point_display_policy(bool show_all) {state_->point_show_all_=show_all;}
 void PlanarAnnotationPanel::cancel(const char *reason) {if(state_)state_->cancel(reason);}
 bool PlanarAnnotationPanel::active() const {return state_ && state_->active();}
 Json PlanarAnnotationPanel::diagnostics() const {return state_?state_->diagnostics():Json::object();}

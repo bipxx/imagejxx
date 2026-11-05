@@ -1,6 +1,7 @@
 #include "path_visual.hpp"
 #include "planar_annotation_visual.hpp"
 #include "roi_import_preview.hpp"
+#include "point_visual.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -101,7 +102,20 @@ int main() {
     auto imported=resolve_imagej_roi_import(owner.snapshot(),{{"curve.roi",bytes,{},{}}});
     RoiImportPreview preview(imported,8*1048576);
     check(preview.matches(owner.snapshot(),8*1048576));
-    std::cout << "PASS " << checks << " path visual checks\n";
+    {
+      Selection points("multipoint",{{5,5},{12,12}});
+      points=with_point_style(points,PointStyle{});
+      PlanarAnnotation row{"points",points,Plane::XY,0,{},{},{}};
+      // Point-only metadata on a large plane must not admit a full raster mask.
+      check(planar_annotation_visual_estimate({1,1,1,100000,100000,1},{row},1048576)<1048576);
+      auto v=roiVisual(selectionJson(points),100000,100000,{255,255,0,255},1048576);
+      check(v.pointVisual && v.points.empty() && v.fill.empty() && v.pointVisual->layout.glyphs.size()==2);
+      check(pathVisualBytes(v)>=v.pointVisual->layout.working_bytes);
+      points.attributes[point_style_attribute]=metadata_object({{"version",std::int64_t(2)}});
+      auto unknown=roiVisual(selectionJson(points),100000,100000,{255,255,0,255},1048576);
+      check(!unknown.pointVisual->error.empty() && unknown.pointVisual->layout.glyphs.empty());
+    }
+    std::cout << "PASS " << checks << " path/point visual checks\n";
   } catch (const std::exception &e) {
     std::cerr << e.what() << '\n';
     return 1;

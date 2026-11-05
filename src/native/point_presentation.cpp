@@ -91,10 +91,14 @@ Commands glyph(const PointStyle& style,const PointPresentationOptions& view,
   if(marker==PointMarker::Circle)shape(PointPrimitiveKind::StrokeEllipse,(size+1)/2,size+1,ink,size>7?2:1);
   return out;
 }
-bool visible(const Commands& g,const PointPresentationOptions& view) {
+bool visible(const Commands& g,const PointPresentationOptions& view,std::array<double,2> center) {
   bool hit=!view.clip;
   for(std::size_t i=0;i<g.count;++i) {
-    const auto& p=g.values[i];const auto& xy=p.coordinates;
+    const auto& p=g.values[i];auto xy=p.coordinates;
+    if(view.relative_primitives) {
+      xy[0]+=center[0];xy[1]+=center[1];
+      if(p.kind!=PointPrimitiveKind::Text){xy[2]+=center[0];xy[3]+=center[1];}
+    }
     for(double v:xy)if(!std::isfinite(v))invalid("Point device coordinates exceed finite range");
     if(!std::isfinite(p.stroke_width) || !std::isfinite(p.font_size))invalid("Point device scale exceeds finite range");
     if(!view.clip)continue;
@@ -170,6 +174,12 @@ PointStyle imagej_point_style(const ImageJRoi& wire) {
   out.marker=PointMarker(wire.point_type);out.size=wire.point_size;out.labels=(wire.options&1024)!=0;
   validate(out);return out;
 }
+bool PointGlyph::visible(std::optional<PlanePosition> current,Plane plane,bool show_all) const {
+  if(unsigned(plane)>2 || (current && (current->t<0 || current->c<0 || current->z<0)))
+    invalid("Invalid point visibility view");
+  return show_all || !position || !current || (position->t==current->t && position->c==current->c &&
+      (plane!=Plane::XY || position->z==current->z));
+}
 ImageJRoi with_imagej_point_style(ImageJRoi wire,const PointStyle& style) {
   point_selection(wire.roi.selection);validate(style);
   wire.point_type=static_cast<unsigned char>(style.marker);wire.point_size=static_cast<unsigned char>(style.size);
@@ -200,21 +210,20 @@ PointPresentation point_presentation(const Selection& selection,const PointPrese
   auto commands=[&](std::size_t i,std::array<double,2>& center)->Commands {
     const auto p=selection.points[i];
     if(!std::isfinite(p[0]) || !std::isfinite(p[1]))invalid("Invalid point coordinates");
-    if(!entries.empty() && entries[i].position && view.position && !style.show_all && !view.show_all) {
-      auto a=*entries[i].position,b=*view.position;
-      if(a.t!=b.t || a.c!=b.c || (view.plane==Plane::XY && a.z!=b.z))return {};
-    }
+    PointGlyph candidate;candidate.position=entries.empty()?std::nullopt:entries[i].position;
+    if(!candidate.visible(view.position,view.plane,style.show_all || view.show_all))return {};
     for(unsigned d=0;d<2;++d) {
       center[d]=std::fma(p[d],view.scale[d],view.origin[d]);
       if(!std::isfinite(center[d]))invalid("Point device coordinates exceed finite range");
       if(view.round_centers)center[d]=std::floor(center[d]+.5);
     }
-    return glyph(style,view,center,i,entries.empty()?0:entries[i].counter,categories,labels);
+    return glyph(style,view,view.relative_primitives?std::array<double,2>{0,0}:center,
+        i,entries.empty()?0:entries[i].counter,categories,labels);
   };
   std::size_t glyph_count=0,primitive_count=0,label_chars=0;
   for(std::size_t i=0;i<selection.points.size();++i) {
     std::array<double,2> center{};const auto g=commands(i,center);
-    if(!g.count || !visible(g,view))continue;
+    if(!g.count || !visible(g,view,center))continue;
     if(g.count>limits.max_primitives-std::min(primitive_count,limits.max_primitives))throw std::length_error("Point primitive limit");
     primitive_count+=g.count;++glyph_count;
     for(std::size_t j=0;j<g.count;++j) {
@@ -229,8 +238,9 @@ PointPresentation point_presentation(const Selection& selection,const PointPrese
   PointPresentation out;out.working_bytes=used;out.glyphs.reserve(glyph_count);out.primitives.reserve(primitive_count);
   for(std::size_t i=0;i<selection.points.size();++i) {
     std::array<double,2> center{};auto g=commands(i,center);
-    if(!g.count || !visible(g,view))continue;
-    out.glyphs.push_back({i,out.primitives.size(),g.count,entries.empty()?0:entries[i].counter,center});
+    if(!g.count || !visible(g,view,center))continue;
+    out.glyphs.push_back({i,out.primitives.size(),g.count,entries.empty()?0:entries[i].counter,center,
+        entries.empty()?std::nullopt:entries[i].position});
     for(std::size_t j=0;j<g.count;++j)out.primitives.push_back(std::move(g.values[j]));
   }
   return out;

@@ -56,7 +56,9 @@ PreparedOperation prepare(const std::string &name, const ResolvedTarget &target,
 struct Rect {
   int x, y, width, height;
 };
+struct PointVisual;
 struct RoiVisual {
+  std::shared_ptr<PointVisual> pointVisual;
   ResolvedRoiStyle style;
   std::vector<Rect> fill;
   std::vector<std::array<double, 4>> edges;
@@ -72,9 +74,10 @@ struct RoiVisual {
   mutable double screenWidth = 0;
 };
 RoiVisual roiVisual(const Json &selection, int width, int height,
-                    RoiColor fallback);
+                    RoiColor fallback,std::size_t max_working_bytes=128ULL*1024*1024);
 void drawRoiVisual(const RoiVisual &visual, ImDrawList *draw,
-                   std::array<float, 2> origin, std::array<float, 2> scale);
+                   std::array<float, 2> origin, std::array<float, 2> scale,
+                   std::optional<PlanePosition> current={},Plane plane=Plane::XY);
 Json roiVisualJson(const RoiVisual &visual);
 struct OverlayVisual {
   struct Span {
@@ -92,7 +95,8 @@ bool hasStyledOverlays(const Json &metadata);
 std::vector<OverlayVisual> overlayVisuals(const Json &metadata, int width,
                                           int height);
 void drawOverlayVisual(const OverlayVisual &visual, ImDrawList *draw,
-                       std::array<float, 2> origin, std::array<float, 2> scale);
+                       std::array<float, 2> origin, std::array<float, 2> scale,
+                       std::optional<PlanePosition> current={},Plane plane=Plane::XY);
 Json overlayVisualJson(const OverlayVisual &visual);
 Image selectionMask(const Json &selection, int width, int height);
 Selection selectionFromJson(const Json &value);

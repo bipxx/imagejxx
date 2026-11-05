@@ -194,6 +194,8 @@ def test_actual_point_properties_controls_and_measure_export(context, tmp_path):
     from imagejxx import _desktop
     if context == "imgui_cpp":
         path = Path(os.environ["IMAGEJXX_POINT_ANNOTATIONS_CPP_REPORT"]);report = json.loads(path.read_bytes())
+    elif os.environ.get("IMAGEJXX_POINT_ANNOTATIONS_PYTHON_REPORT"):
+        path = Path(os.environ["IMAGEJXX_POINT_ANNOTATIONS_PYTHON_REPORT"]);report = json.loads(path.read_bytes())
     else:
         editor = _desktop.Editor(str(tmp_path / "prefs.json"));path = tmp_path / "capture/case.json"
         report = json.loads(editor._point_annotations_ui_case(str(path.parent)))

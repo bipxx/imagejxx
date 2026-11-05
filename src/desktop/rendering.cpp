@@ -1,5 +1,6 @@
 #include "rendering.hpp"
 #include "path_visual.hpp"
+#include "point_visual.hpp"
 #include "../native/kernel_control.hpp"
 #include "../native/manual_threshold_display_internal.hpp"
 #include "channel_display_sources.hpp"
@@ -134,7 +135,7 @@ void renderThresholdOverlay(Image &rgb, const Image &original,
         source.data().dataset.sample_policy());
 }
 RoiVisual roiVisual(const Json &json, int width, int height,
-                    RoiColor fallback) {
+                    RoiColor fallback,std::size_t max_working_bytes) {
   const auto selection = selectionFromJson(json);
   selection.validate(width, height);
   if(selection.is_path())return pathVisual(selection,width,height,{1,1},128ULL*1024*1024,fallback);
@@ -143,6 +144,10 @@ RoiVisual roiVisual(const Json &json, int width, int height,
   result.area = selection_is_area(selection);
   result.markers = selection.kind == "point" || selection.kind == "multipoint";
   result.markerWidth = selection.width;
+  if(result.markers && selection.attributes.count(point_style_attribute)) {
+    result.pointVisual=pointVisual(selection,result.style.stroke_color.value_or(fallback),max_working_bytes);
+    return result;
+  }
   result.points = selection.points;
   if (result.area) {
     const auto mask = selection.mask(width, height);
@@ -190,7 +195,12 @@ RoiVisual roiVisual(const Json &json, int width, int height,
   return result;
 }
 void drawRoiVisual(const RoiVisual &visual, ImDrawList *draw,
-                   std::array<float, 2> origin, std::array<float, 2> scale) {
+                   std::array<float, 2> origin, std::array<float, 2> scale,
+                   std::optional<PlanePosition> position,Plane plane) {
+  if(visual.pointVisual) {
+    if(visual.style.stroke_color)drawPointVisual(*visual.pointVisual,draw,origin,scale,position,plane);
+    return;
+  }
   const auto low = draw->GetClipRectMin(), high = draw->GetClipRectMax();
   for (float value :
        {origin[0], origin[1], scale[0], scale[1], low.x, low.y, high.x, high.y})
@@ -379,7 +389,8 @@ Json roiVisualJson(const RoiVisual &visual) {
       bounds[3] = std::max(bounds[3].get<int>(), span.y + span.height);
     }
   }
-  return {{"stroke_color", rgba(visual.style.stroke_color)},
+  return {{"point_visual",visual.pointVisual?pointVisualJson(*visual.pointVisual):Json()},
+          {"stroke_color", rgba(visual.style.stroke_color)},
           {"fill_color", rgba(visual.style.fill_color)},
           {"stroke_width", visual.style.stroke_width},
           {"cosmetic", visual.style.cosmetic},
@@ -802,7 +813,7 @@ bool hasStyledOverlays(const Json &metadata,
     const auto &selection = string(get(overlay, "kind")) == "roi"
                                 ? get(overlay, "selection")
                                 : overlay;
-    if (selection.contains(roi_style_attribute))
+    if (selection.contains(roi_style_attribute) || selection.contains(point_style_attribute))
       return true;
   }
   return false;
@@ -825,7 +836,7 @@ overlayVisuals(const Json &metadata, int width, int height,
     layer.kind = string(get(overlay, "kind"));
     const auto &selection =
         layer.kind == "roi" ? get(overlay, "selection") : overlay;
-    if (layer.kind != "text" && selection.contains(roi_style_attribute)) {
+    if (layer.kind != "text" && (selection.contains(roi_style_attribute) || selection.contains(point_style_attribute))) {
       layer.styled = roiVisual(selection, width, height,
                                color(string(get(overlay, "color"), "#ffcc00")));
     } else {
@@ -858,9 +869,9 @@ overlayVisuals(const Json &metadata, int width, int height,
 }
 void drawOverlayVisual(const OverlayVisual &visual, ImDrawList *draw,
                        std::array<float, 2> origin,
-                       std::array<float, 2> scale) {
+                       std::array<float, 2> scale,std::optional<PlanePosition> current,Plane plane) {
   if (visual.styled) {
-    drawRoiVisual(*visual.styled, draw, origin, scale);
+    drawRoiVisual(*visual.styled, draw, origin, scale,current,plane);
     return;
   }
   const auto low = draw->GetClipRectMin(), high = draw->GetClipRectMax();

@@ -185,3 +185,33 @@ def test_annotation_decode_admission_and_large_output_refusal():
 def test_nonfinite_input_or_device_overflow_refuses(points):
     selected = ij.Selection("point", points);options = ij.PointPresentationOptions();options.scale = [2, 1]
     with pytest.raises(ValueError):ij.point_presentation(selected, options)
+
+
+@pytest.mark.parametrize("row", ROWS, ids=lambda r: f'{r["marker"]}-{r["size"]}-{r["labels"]}-{r["counters"]}')
+def test_relative_templates_reconstruct_original_commands(row):
+    selected = selection();style = ij.PointStyle();style.marker = MARKERS[row["marker"]]
+    style.size = row["size"];style.labels = row["labels"]
+    if row["counters"]:selected = ij.with_point_annotations(selected, [ij.PointAnnotation(), ij.PointAnnotation(2)])
+    options = ij.PointPresentationOptions();options.relative_primitives = True;options.color = [120, 40, 80, 200]
+    result = ij.point_presentation(ij.with_point_style(selected, style), options)
+    actual = []
+    for g in result.glyphs:
+        for p in result.primitives[g.first_primitive:g.first_primitive+g.primitive_count]:
+            xy = p.coordinates;xy[0] += g.center[0];xy[1] += g.center[1]
+            if p.kind != ij.PointPrimitiveKind.TEXT:xy[2] += g.center[0];xy[3] += g.center[1]
+            actual.append(dict(kind=int(p.kind), coordinates=xy, color=p.color,
+                stroke_width=p.stroke_width, font_size=p.font_size, text=p.text))
+    assert actual == row["commands"]
+
+
+def test_relative_clip_and_retained_position_filter():
+    selected = ij.with_point_annotations(selection(), [ij.PointAnnotation(2, ij.PlanePosition(1, 1, 1)), ij.PointAnnotation()])
+    options = ij.PointPresentationOptions();options.relative_primitives = True;options.round_centers = False
+    options.clip = [60, 60, 70, 70]
+    layout = ij.point_presentation(selected, options)
+    assert [g.index for g in layout.glyphs] == [1]
+    options.clip = None
+    g = ij.point_presentation(selected, options).glyphs[0]
+    assert (g.position.t, g.position.c, g.position.z) == (1, 1, 1)
+    assert g.visible(ij.PlanePosition(1, 1, 1)) and not g.visible(ij.PlanePosition(1, 1, 0))
+    assert g.visible(ij.PlanePosition(1, 1, 0), "xz") and g.visible(ij.PlanePosition(0, 0, 0), show_all=True)

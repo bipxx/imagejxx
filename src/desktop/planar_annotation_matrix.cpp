@@ -8,6 +8,7 @@
 #include <condition_variable>
 #include <imagejxx/planar_annotations.hpp>
 #include <imagejxx/selection_edit.hpp>
+#include <imagejxx/point_annotations.hpp>
 #include <algorithm>
 namespace imagejxx::desktop {
 namespace {
@@ -16,7 +17,7 @@ std::vector<std::string> cases() {
   std::vector<std::string> result;
   for(const auto *plane:{"XY","XZ","YZ"})
     for(const auto *op:{"rectangle","ellipse","line","point","freehand","polygon","multipoint",
-        "escape","focus","context","source","wheel","zoom","preferences","resize","vertex","rotate","mask_move","mask_hole","point_defaults"})
+        "escape","focus","context","source","wheel","zoom","preferences","resize","vertex","rotate","mask_move","mask_hole","point_defaults","point_style"})
       result.push_back(std::string(plane)+"."+op);
   for(const auto *plane:{"XY","XZ","YZ"}) {
     for(const auto *op:{"busy","scientific_busy","modal","time","channel","owner","style","mask_rotate"})result.push_back(std::string(plane)+"."+op);
@@ -69,7 +70,8 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
   const bool mask=op=="mask_move" || op=="mask_hole" || op=="mask_rotate";
   const bool crossing=op.rfind("cross_",0)==0,collapse=op.rfind("collapse_",0)==0,invalid=op.rfind("invalid_",0)==0;
   const bool resize_variant=op.rfind("resize_",0)==0 || crossing || collapse;
-  const bool edit=mask || resize_variant || invalid || op=="style" || op=="resize" || op=="vertex" || op=="rotate";
+  const bool point_style=op=="point_style";
+  const bool edit=mask || resize_variant || invalid || point_style || op=="style" || op=="resize" || op=="vertex" || op=="rotate";
   if(edit) {
     Selection selection("rectangle",{{2,2},{6,4}});
     if(op=="resize")selection=Selection("rectangle",{{1,1},{5,5}});
@@ -87,11 +89,13 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
       raster.at(4,4)=0;raster.at(9,2)=255;selection=Selection::from_mask(raster);
     }
     selection.attributes={{"opaque",std::string("retained")}};
+    if(point_style)selection=with_point_annotations(Selection("multipoint",{{1,1},{5,3}}),
+        {{0,PlanePosition{1,1,2}},{2,{}}});
     data.metadata.extensions[planar_annotations_extension]=encode_planar_annotations(shape,
         {{"Seed",selection,plane,view==0?2:view==1?3:4,1,1,{{"tag",std::string("row")}}}});
   }
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));auto display=owner->snapshot().display();
-  display.orthogonal=true;display.zoom=op=="point_defaults"?1:op=="rotate"?2:4;display.crosshair={4,3,2};display.t=shape.t-1;display.c=shape.c-1;owner->set_display(display);
+  display.orthogonal=true;display.zoom=(op=="point_defaults" || point_style)?1:op=="rotate"?2:4;display.crosshair={4,3,2};display.t=shape.t-1;display.c=shape.c-1;owner->set_display(display);
   window.addNativeDocument(owner);window.recording=true;
   if(op=="owner") {
     auto other=std::make_shared<imagejxx::Document>(owner->snapshot().data());
@@ -119,7 +123,7 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
   auto click=[&](const Json &control,const std::string &name) {
     report["controls"].push_back({{"name",name},{"control",control}});
     frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
-    if(op=="point_defaults")require(ImGui::GetCurrentContext()->HoveredId==control.at("id").get<ImGuiID>(),
+    if(op=="point_defaults" || point_style)require(ImGui::GetCurrentContext()->HoveredId==control.at("id").get<ImGuiID>(),
         "Point defaults control is not exposed to actual input");
     frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
     frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
@@ -144,7 +148,7 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
   const bool multi=op=="polygon" || op=="multipoint" || op=="point_defaults";
   const bool creation=op=="rectangle" || op=="ellipse" || op=="line" || op=="point" || op=="freehand" || multi;
   click(panel().at("controls").at(op=="point_defaults"?"multipoint":edit?"edit":creation?op:"rectangle"),"tool");
-  if(op=="rotate" || op=="style" || op=="mask_rotate" || invalid) {
+  if(op=="rotate" || op=="style" || op=="mask_rotate" || point_style || invalid) {
     click(panel().at("controls").at("rows"),"rows");click(panel().at("controls").at("row.0"),"row.0");
   }
   auto edit_text=[&](const char *name,const char *value) {
@@ -155,7 +159,30 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
   // Arm shortcut ownership on this canvas before beginning the interrupted
   // gesture. A zero-distance rectangle click has no candidate/publication.
   if(op=="modal")vertex(1,1);
-  if(op=="point_defaults") {
+  if(point_style) {
+    auto remember=[&](const char* name){report["states"][name]=state(window);report["point_panels"][name]=panel();};
+    auto press=[&](const std::string& name) {
+      for(int attempt=0;attempt<12;++attempt) {
+        const auto c=panel().at("controls").at(name);const auto p=c.at("point").get<std::array<float,2>>();
+        const auto clip=c.at("clip_rect").get<std::array<float,4>>();
+        if(c.at("visible").get<bool>() && p[0]>=clip[0] && p[0]<clip[2] && p[1]>=clip[1] && p[1]<clip[3]){click(c,name);return;}
+        frame(Json::array({{{"type","position"},{"space","screen"},{"point",{clip[2]-8,(clip[1]+clip[3])/2}}}}));
+        frame(Json::array({{{"type","wheel"},{"x",0},{"y",p[1]<clip[1]?3:-3}}}));frame();
+      }
+      throw std::runtime_error("Point style control reveal bound");
+    };
+    press("properties_section");press("point_style.Point marker presentation");
+    auto configure=[&]() {
+      press("point_style.Styled markers");
+      press("point_style.Marker");press("point_style.Marker.Circle");
+      press("point_style.Marker size");press("point_style.Marker size.Large");
+      press("point_style.Point labels");press("point_style.Show points on all slices");
+    };
+    configure();remember("staged");press("properties_revert");remember("reverted");
+    configure();press("properties");frame();remember("applied");
+    window.action("undo");frame();remember("undone");window.action("redo");frame();remember("redone");
+    report["api_fixture_actions"].push_back("Existing undo/redo actions after actual planar marker controls");
+  } else if(op=="point_defaults") {
     auto remember=[&](const char *name){report["states"][name]=state(window);report["point_panels"][name]=panel();};
     auto defaults=[&](unsigned counter,bool capture) {
       report["api_fixture_actions"].push_back("Existing settings API: point counter/capture change");
@@ -348,6 +375,10 @@ Json planarAnnotationMatrixUiCase(Window &window,const std::string &id,const std
     report["recovered"]=state(window);report["recovery_panel"]=panel();
   }
   session->close();report["states"]["closed"]=state(window);
+  if(point_style) {
+    const auto path=(directory/"point-style.ijx").u8string();window.action("save_document",{{"path",path}});
+    Window reopened((directory/"reopened.json").u8string());reopened.openFile(path);report["reopened"]=state(reopened);
+  }
   report["state"]="observed";report["error"]=window.error();require(report.dump().size()<16*1024*1024,"Matrix byte bound");
   writeJson((directory/"case.json").u8string(),report);return report;
 }

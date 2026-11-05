@@ -1,6 +1,7 @@
 #pragma once
 #include <imagejxx/planar_annotations.hpp>
 #include <imagejxx/roi_style.hpp>
+#include <imagejxx/point_presentation.hpp>
 namespace imagejxx::desktop {
 // Conservative logical cache estimate, not a whole-process memory quota.
 inline std::size_t planar_annotation_visual_estimate(DatasetShape shape,const std::vector<PlanarAnnotation> &rows,std::size_t cap) {
@@ -11,9 +12,13 @@ inline std::size_t planar_annotation_visual_estimate(DatasetShape shape,const st
   };
   for(const auto &row:rows) {
     const auto geometry=planar_annotation_geometry(shape,row.plane);
-    if(!row.selection.is_path() || resolve_roi_style(row.selection).fill_color)
+    const bool points=row.selection.kind=="point" || row.selection.kind=="multipoint";
+    if(!points && (!row.selection.is_path() || resolve_roi_style(row.selection).fill_color))
       charge(std::size_t(geometry.width)*geometry.height,96);
     charge(row.selection.points.size(),64);charge(row.selection.packed_mask().size(),2);
+    if(points && row.selection.attributes.count(point_style_attribute)) {
+      charge(row.selection.points.size(),2048);charge(1,16384);
+    }
     charge(row.selection.path_commands().size(),64);charge(1,1024);
   }
   return bytes;

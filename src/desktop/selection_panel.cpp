@@ -1,5 +1,6 @@
 #include "selection_panel.hpp"
 #include "path_visual.hpp"
+#include "point_visual.hpp"
 #include <imagejxx/composite_path.hpp>
 #include "geometry_number.hpp"
 #include "../native/selection_region_rotation.hpp"
@@ -11,6 +12,7 @@
 #include <cstdio>
 #include <locale>
 #include <sstream>
+#include <initializer_list>
 #include <imgui_stdlib.h>
 
 namespace imagejxx::desktop {
@@ -93,6 +95,9 @@ void SelectionPanel::initialize(
   next.preview_ = selection;
   next.points_ = planarControlPoints(*next.preview_);
   if(next.pointMode_) {
+    next.pointStyleEnabled_=selection.attributes.count(point_style_attribute)!=0;
+    try {next.pointStyle_=point_style(selection).value_or(PointStyle{});}
+    catch(const std::invalid_argument& error){next.pointStyleError_=error.what();}
     try {
       next.pointAnnotations_=point_annotations(selection,next.geometryLimits_.max_vertices);
       validate_point_annotations(next.pointAnnotations_,shape);
@@ -191,6 +196,8 @@ void SelectionPanel::rebuild(const ExecutionControl &control) {
   }
   if (cornerChanged_) result.attributes["corner_diameter"] = std::int64_t(cornerDiameter_);
   if(pointMode_) {
+    if(pointStyleCleared_)result=without_point_style(result);
+    if(pointStyleChanged_)result=with_point_style(result,pointStyle_);
     if(pointAnnotationsCleared_)result=without_point_annotations(result);
     else if(pointAnnotationsChanged_) {
       admit_point_annotations(result.points.size(),control);
@@ -312,6 +319,17 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
         throw std::invalid_argument("Box position uses center coordinates");
       next.translation_ = pair(value, geometryOnly_ || editor_->selection().is_path());
       next.geometryChanged_ = true;
+    } else if (name == "point_style") {
+      if(!pointMode_ || geometryOnly_)throw std::invalid_argument("Point style requires point properties");
+      if(value.is_null())next.pointStyleCleared_=true;
+      next.pointStyleChanged_=!value.is_null();
+      next.pointStyleEnabled_=!value.is_null();
+      if(!value.is_null()) {
+        auto candidate=next.editor_->selection();candidate.attributes[point_style_attribute]=metadataFromJson(value);
+        next.pointStyle_=*point_style(candidate);
+        if(!next.pointStyleError_.empty())throw std::invalid_argument("Clear unknown point style before replacing it");
+      }
+      next.pointStyleError_.clear();
     } else if (name == "point_annotations") {
       if(!pointMode_)throw std::invalid_argument("Point annotations require a point selection");
       // Decode after geometry fields, so a combined patch is order-independent.
@@ -445,6 +463,7 @@ void SelectionPanel::cancel() {
   pathControls_.reset(); resizeControls_.reset(); pathTransform_ = false; pathEdited_ = false;
   std::vector<std::array<double, 2>>().swap(points_);
   std::vector<PointAnnotation>().swap(pointAnnotations_);pointAnnotationError_.clear();
+  pointStyle_=PointStyle{};pointStyleError_.clear();
 }
 void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
                           bool busy, const Apply &publish,
@@ -585,6 +604,14 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
   if (changed)
     geometryChanged_ = true;
   changed |= pointChanged;
+  if(pointMode_) {
+    const auto edited=drawPointStyleControls(pointStyle_,pointStyleEnabled_,pointStyleError_,
+        pointAnnotations_.empty()?0:pointAnnotations_[std::size_t(vertex_)].counter,
+        [&](const char* name,bool disabled){control(name,disabled);});
+    if(edited.clear){pointStyleCleared_=true;pointStyleChanged_=false;}
+    else if(edited.changed)pointStyleChanged_=pointStyleEnabled_;
+    changed|=edited.changed;
+  }
   if (rounded_) {
     const bool edited = ImGui::InputText("Corner diameter", &cornerText_);
     control("Corner diameter");
@@ -707,6 +734,7 @@ Json SelectionPanel::diagnostics() const {
           {"saved_row_index", savedRow_ ? Json(*savedRow_) : Json()},
           {"path_edited",pathEdited_},
           {"point_mode",pointMode_},{"point_annotation_error",pointAnnotationError_},
+          {"point_style_enabled",pointStyleEnabled_},{"point_style_error",pointStyleError_},
           {"segments",pathControls_.diagnostics()},
           {"transform",pathTransform_},{"resize",resizeControls_.diagnostics()},
           {"numeric_text", rawNumbers_},

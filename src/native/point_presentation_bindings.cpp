@@ -48,6 +48,7 @@ void bind_point_presentation(py::module_& m) {
     .def_property("labels",[](const PointPresentationOptions& o){return o.labels;},[](PointPresentationOptions& o,py::handle v){o.labels=flag(v);})
     .def_property("show_all",[](const PointPresentationOptions& o){return o.show_all;},[](PointPresentationOptions& o,py::handle v){o.show_all=flag(v);})
     .def_property("round_centers",[](const PointPresentationOptions& o){return o.round_centers;},[](PointPresentationOptions& o,py::handle v){o.round_centers=flag(v);})
+    .def_property("relative_primitives",[](const PointPresentationOptions& o){return o.relative_primitives;},[](PointPresentationOptions& o,py::handle v){o.relative_primitives=flag(v);})
     .def_readwrite("clip",&PointPresentationOptions::clip);
   py::class_<PointPresentationLimits>(m,"PointPresentationLimits").def(py::init<>())
     .def_property("max_points",[](const PointPresentationLimits& o){return o.max_points;},[](PointPresentationLimits& o,py::handle v){o.max_points=integer(v);})
@@ -65,7 +66,9 @@ void bind_point_presentation(py::module_& m) {
   py::class_<PointGlyph>(m,"PointGlyph")
     .def_readonly("index",&PointGlyph::index).def_readonly("first_primitive",&PointGlyph::first_primitive)
     .def_readonly("primitive_count",&PointGlyph::primitive_count).def_readonly("counter",&PointGlyph::counter)
-    .def_readonly("center",&PointGlyph::center);
+    .def_readonly("center",&PointGlyph::center).def_readonly("position",&PointGlyph::position)
+    .def("visible",[](const PointGlyph& g,std::optional<PlanePosition> current,const std::string& plane,bool show_all){return g.visible(current,parse_plane(plane),show_all);},
+        py::arg("current"),py::arg("plane")="xy",py::arg("show_all")=false);
   py::class_<PointPresentation>(m,"PointPresentation")
     .def_readonly("glyphs",&PointPresentation::glyphs).def_readonly("primitives",&PointPresentation::primitives)
     .def_readonly("working_bytes",&PointPresentation::working_bytes);

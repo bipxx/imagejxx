@@ -1,0 +1,2990 @@
+{
+  "schema": "imagejxx.scoped-task-closeout.001",
+  "date": "2026-11-04",
+  "task": "T04a.2 M2b.2b P2b shared point presentation UI",
+  "base_commit": "990cf8a06704ffb45a9916f6153a17222bf7a5c9",
+  "requirements": [
+    "G013",
+    "G014",
+    "G017",
+    "G020",
+    "G021",
+    "G022",
+    "T15"
+  ],
+  "state": {
+    "implemented": "Relative native glyph templates retain positions; one shared point widget and existing owners provide creation defaults, properties, visibility, base/cross/counter colors, GUI-scale rendering and unknown-style recovery.",
+    "verified": "582 unique scoped product cases pass; one optional OpenGL skip.40 tool cases pass; one host-link privilege skip. Four Windows/three Linux native controls, seven installed SDK clients per platform.",
+    "integrated": "Both Windows C++/Python ImGui hosts qualify required scoped active/saved/overlay/scientific roles; stage/cancel/revert/apply, frozen creation styles, counter/position preservation, undo/redo/session reopen.",
+    "release_ready": false
+  },
+  "scope_limits": [
+    "P2c native raster flatten/font/AA pixel and bare-wire appearance promotion/export loss-review remain required.",
+    "P3 automatic actions, P4 wider edit/rebind/preference-application and ordinary replay remain required.",
+    "Untagged legacy rendering stays compatible until explicitly styled; no implicit non-XY ImageJ projection.",
+    "Parent ROI/overlay/plane eligibility remains in force under point show-all.",
+    "No Linux/macOS UI, OS-autoDPI/GPU-font-pixel, full point-tool/ImageJ/Fiji/release or general speed qualification.",
+    "Global visibility is display-only; new marker/size/color/label defaults do not retag existing points.",
+    "Required P2b residual: ordinary multipoint draft preview still materializes styled JSON/geometry each frame and omits captured per-vertex annotations until completion; P3 creation owner must close it before full P2 closure."
+  ],
+  "contract": "docs/POINT_PRESENTATION.md",
+  "source_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 138903,
+      "sha256": "93e8f1c8ea6a1c8eaf6237e0e010e9c0335d3f1a05eebbfbd671e1f61621a22e"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 74088,
+      "sha256": "6f71bbe8859f79da9e9859491e39aedb9ae1388bea94956bf55a378473cdb0a9"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 10010,
+      "sha256": "3109197e945e3d443575479f6760e25432c01a50a167e1027a41e13614b9c1b7"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 5881,
+      "sha256": "e039bad0255f0fc2545666406adf082e7aa25995c0f010ef40c6adbd22eb76ac"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 6146,
+      "sha256": "0826849393a48fa43e72f0bc316c0a19e6b3142392d4d69bc7931894f732fcfd"
+    },
+    {
+      "path": "include/imagejxx/point_presentation.hpp",
+      "bytes": 3375,
+      "sha256": "770951bcda6799afee965265c9ed75edeca2beab33e007ceb92aea20ef2e4bf8"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 59953,
+      "sha256": "3ee5d9cbf7f179ce80bef4cf9a477c46d55c087e4dab3a0a2bfed93664f67af1"
+    },
+    {
+      "path": "src/desktop/desktop.hpp",
+      "bytes": 14315,
+      "sha256": "73ff342449e19b9dfd547d8df2800fdb220b5a276d2d2f260b01cbc3309227b8"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 39022,
+      "sha256": "7f5924bf3fa1457c581dd3a031dad9a75e1788b8dfe1f78513b69be8d90edcf7"
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 71056,
+      "sha256": "0ca1d28d3127897666bc3d26a152ed2a6897728b8c421b776205a3745b4a9912"
+    },
+    {
+      "path": "src/desktop/orthogonal.hpp",
+      "bytes": 6388,
+      "sha256": "00cd61e7eebe0add26e39135bf3080afc5195763b42ece988343707bcbfc6ee3"
+    },
+    {
+      "path": "src/desktop/path_visual.cpp",
+      "bytes": 7337,
+      "sha256": "d603490e517d89dc30654b12d7388a99d941137c29e807cfd1cc84564007c256"
+    },
+    {
+      "path": "src/desktop/planar_annotation_matrix.cpp",
+      "bytes": 28360,
+      "sha256": "f1f914daa04ecc7332fdf569081d7c5a4c2f5f10c5fd8f108350c77ab948d600"
+    },
+    {
+      "path": "src/desktop/planar_annotation_panel.cpp",
+      "bytes": 51785,
+      "sha256": "2fe326b50a000556da9efdd0a8deb015e81b98e5d7fb8aab97e75b98b0fa9442"
+    },
+    {
+      "path": "src/desktop/planar_annotation_panel.hpp",
+      "bytes": 1933,
+      "sha256": "1f609376f0c036dc6fe103fbbb9f29888c02697e365d033193fce66f2958fec8"
+    },
+    {
+      "path": "src/desktop/planar_annotation_visual.hpp",
+      "bytes": 1537,
+      "sha256": "c868ff22ddf77c6644426bdf16f0de1bb5b0dca5d5cce3a1d7e991a95a7fb8ec"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "bytes": 41112,
+      "sha256": "0b580b742154238ecda87ab31042b980f3f3368f21a6a440ba51d74eb7399731"
+    },
+    {
+      "path": "src/desktop/roi_import_preview.cpp",
+      "bytes": 10657,
+      "sha256": "d63fecabd40a08cb07c26adbee287483b2131aba4728dfc843adc01864590b64"
+    },
+    {
+      "path": "src/desktop/selection_panel.cpp",
+      "bytes": 38333,
+      "sha256": "f55c256d38697af21d2a39f9f4909ea91eee3f4d967f3ddb02266e690f4032c8"
+    },
+    {
+      "path": "src/desktop/selection_panel.hpp",
+      "bytes": 3787,
+      "sha256": "de71a093f21b2eca671a3117373e733a8b7cc40275f5b6d4b265d885b9592391"
+    },
+    {
+      "path": "src/desktop/settings_drawing_ui_probe.cpp",
+      "bytes": 39005,
+      "sha256": "4ce4b351ac49c38811e5d24ac3c5013959b1390f73c1d741ec1e6b365fef6d05"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 885708,
+      "sha256": "bc37f05669f33800dc80f6681b448d5e2d710cb1497de4721ce5de9f2ca2d0d7"
+    },
+    {
+      "path": "src/native/point_presentation.cpp",
+      "bytes": 14121,
+      "sha256": "c9a1e652a1a38b8fb311524a2fea8ec0ce037344c2b6e39498bec457bc24f204"
+    },
+    {
+      "path": "src/native/point_presentation_bindings.cpp",
+      "bytes": 6957,
+      "sha256": "755c6f0fc8dfd272f91c9076e667bb25a1fb45961f6c9e57395eb8119a9aef33"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 26619,
+      "sha256": "923c982fb4eed070a77f05d0f74e533cab4dc9073cfa57472418ea0242a5828c"
+    },
+    {
+      "path": "tests/native/test_path_visual.cpp",
+      "bytes": 6462,
+      "sha256": "d518d309086e13586d30e2f19bfdff9abc727133e9b7bcd8365179c1c8994b07"
+    },
+    {
+      "path": "tests/native/test_point_presentation.cpp",
+      "bytes": 3659,
+      "sha256": "9e0a732d00add716b1453ad2cb8413244c21698ce70666fa88e6fbfc04d5888f"
+    },
+    {
+      "path": "tests/python/test_point_annotation_editing.py",
+      "bytes": 12072,
+      "sha256": "0acd8c039b7b2f11a1dbd9d72ed3c29e3fe73d3a68af1326e320eef8e7d4d71a"
+    },
+    {
+      "path": "tests/python/test_point_presentation.py",
+      "bytes": 13401,
+      "sha256": "16c7c543589b7b8a22646e262f58ca6a402343f1334062cfb723639a55739722"
+    },
+    {
+      "path": "src/desktop/point_visual.hpp",
+      "bytes": 1183,
+      "sha256": "65912e862ecec721e314694cd657bcbb4af8c1c3726b4576bc37a0cf72219a2c"
+    },
+    {
+      "path": "src/desktop/point_visual.cpp",
+      "bytes": 10180,
+      "sha256": "10279fbce615aa0fd499b26df82addfaf281a782fc5362b89711b166fddadc0a"
+    },
+    {
+      "path": "tests/python/test_point_presentation_ui.py",
+      "bytes": 12742,
+      "sha256": "83f0ee9a4d2dafa0fea413da52b57eb16c57023b750c65dc8e68fb6edb37ebf8"
+    }
+  ],
+  "windows_product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8232960,
+      "sha256": "919f3bdf00fc831ef39a6183850bf05bc99c48346326e386ada898b0acc5fad4"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20098560,
+      "sha256": "a5bcebb9d37b996ff71c5c8d53282b945e2fe95e4e9c09590180e2f02758ecce"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20187136,
+      "sha256": "1d19cc299c3d3a1fda64e4c5e30e4b43fa3039babf40d8d95830ceb4bb14697a"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+      "bytes": 59408596,
+      "sha256": "28835226bc1f738f4a1bc90c37f188d06e688f8c5a358822d92c787c4be6d72c"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/include/imagejxx/point_presentation.hpp",
+      "bytes": 3375,
+      "sha256": "770951bcda6799afee965265c9ed75edeca2beab33e007ceb92aea20ef2e4bf8"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/include/imagejxx/settings.hpp",
+      "bytes": 2137,
+      "sha256": "13d186df5c2ea0d00975461215b68144e65ebf36d35dc8158a1292280e4a518e"
+    }
+  ],
+  "linux_installed_sdk_pins": [
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+      "bytes": 20578952,
+      "sha256": "e39a3f205e83cec8f764a41099973e07b04c7fb4e1ef81d49ff9f28e169cdeb4"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/include/imagejxx/point_presentation.hpp",
+      "bytes": 3375,
+      "sha256": "770951bcda6799afee965265c9ed75edeca2beab33e007ceb92aea20ef2e4bf8"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/include/imagejxx/settings.hpp",
+      "bytes": 2137,
+      "sha256": "13d186df5c2ea0d00975461215b68144e65ebf36d35dc8158a1292280e4a518e"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/cmake/imagejxx/imagejxxConfig.cmake",
+      "bytes": 2494,
+      "sha256": "f1a7341964d1d3c96df4858bf21cfc2f3bc185ad1f45d996d72fc888794b1c15"
+    }
+  ],
+  "verification": {
+    "unique_product_pass": 582,
+    "unique_tool_pass": 40,
+    "product_cases_by_module": {
+      "tests.python.test_point_presentation": 264,
+      "tests.python.test_point_presentation_ui": 48,
+      "tests.python.test_point_annotation_editing": 22,
+      "tests.python.test_settings": 34,
+      "tests.python.test_imgui_roi_style": 32,
+      "tests.python.test_roi_style": 154,
+      "tests.python.test_point_creation_defaults": 4,
+      "tests.python.test_planar_point_defaults": 6,
+      "tests.python.test_planar_annotation_matrix_ui": 18
+    },
+    "distinct_input_observations_both_windows_hosts": 36,
+    "reader_cases_on_those_observations": 42,
+    "headless_marker_type_size_draw_cases": 28,
+    "gui_scales": [
+      0.5,
+      1,
+      2,
+      3
+    ],
+    "native_controls": {
+      "windows": 4,
+      "linux": 3
+    },
+    "installed_clients": {
+      "windows": 7,
+      "linux": 7
+    },
+    "junit_pins": [
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api001.xml",
+        "bytes": 40875,
+        "sha256": "1f025f3598907c3396ef2e41b56216c3fe986e29c25130fba4631acc198b5856"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api002.xml",
+        "bytes": 81430,
+        "sha256": "cf5769c0813a133e331ebd8a2ab2e868e62733506bc2f35cd29baf32eff8abed"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api003.xml",
+        "bytes": 9750,
+        "sha256": "b416cd1aa834b6a6a9b471feadb5083c3e16a0f76ab55419add3b7d2c0d55aa4"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002.xml",
+        "bytes": 855,
+        "sha256": "c18d6b337931d80205ecdecb32ebf481708eb75fb8bb66c43eb228677f12a6a5"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002.xml",
+        "bytes": 813,
+        "sha256": "ccd91e11783173576e08348d3de421afb162c4a4f5cdd8d896691aafa8dccdc8"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001.xml",
+        "bytes": 809,
+        "sha256": "9a074d8184f51f6aeb8c44fe3d4d27e67ab10fa19ead43e1d2de0dc3aa44500a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001.xml",
+        "bytes": 534,
+        "sha256": "ec912534b378e67d2a6bb0c90aef94cd8657fa200d73005202b183346ba84fac"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001.xml",
+        "bytes": 534,
+        "sha256": "315dd33b4db203c9e229a780fbe1dd21d4d98285dd0601a3315aa446b41c3ace"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001.xml",
+        "bytes": 534,
+        "sha256": "469fe4b5e2762c09bb8c946464de7f913589a1924ca195cff73ea4fe209c4573"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001.xml",
+        "bytes": 506,
+        "sha256": "634fa6452ad488dc54b3489a41d7874c357467621eb170c5ab4fcef93eb8bf81"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001.xml",
+        "bytes": 506,
+        "sha256": "6274078d94a810381358676a97bc41c1839954bc32c84904ef32afdcd9b0cbc0"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001.xml",
+        "bytes": 506,
+        "sha256": "1a669b3d39bd1b77f88154c0feb5e0c1b3e5957d31a222fd7b4d14fb291a6836"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001.xml",
+        "bytes": 1078,
+        "sha256": "82a30e2fac224e7b05ccfe8017bac5444bfe390e69e78ce48bd5f1ef1f839ec1"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001.xml",
+        "bytes": 1078,
+        "sha256": "5297668016a6b508dea97b1e822593eb13beafb704cdbac33424c80881c2386f"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001.xml",
+        "bytes": 1078,
+        "sha256": "1fba056fa520021a2d5ef2c1d1229a48b050cc1836b26c7e6729cf3370b1c098"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/tools001.xml",
+        "bytes": 7845,
+        "sha256": "89aca1624bdc868915f6e58814900b27c699d5828e6fe56b1465122cb4bdc105"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/dpi001.xml",
+        "bytes": 1009,
+        "sha256": "ccf9c2c99b4c466b8cfcd522e2d9b832054866324a05405fac16892710a8b3b3"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/final-api001.xml",
+        "bytes": 5617,
+        "sha256": "0f52d2aef8be8fddf73dd4e45abdd4b9eda1f955b8057bbc6db553a65a09e0c0"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002.xml",
+        "bytes": 534,
+        "sha256": "4de443a16c08552e80c924f6ebd4862ebed00edc1bf3a192dacdeec24ab0302d"
+      }
+    ],
+    "skips": [
+      {
+        "class": "tests.python.test_settings",
+        "name": "test_settings_in_hidden_opengl_and_recreated_context",
+        "reason": "Set IMAGEJXX_RENDER_TESTS=1 for hidden OpenGL"
+      },
+      {
+        "class": "tests.tools.test_ci_current_observations.CaptureTransport",
+        "name": "test_real_linked_ancestor_refuses_before_touching_external_members",
+        "reason": "Host cannot create bounded test symlink: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.tmp\\\\manual-workflow-verification\\\\t04a2-point-presentation-ui-20261104\\\\scratch\\\\tools001\\\\imagejxx-current-metadata-_eivaskh\\\\external' -> 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.tmp\\\\manual-workflow-verification\\\\t04a2-point-presentation-ui-20261104\\\\scratch\\\\tools001\\\\imagejxx-current-metadata-_eivaskh\\\\linked'"
+      }
+    ],
+    "reused_scope": "Final DPI fix changes non-default GUI scaling. Default-scale actual-input behavior is unchanged; final both-host XY style route and focused scale/cache tests run on final products. Earlier passing unchanged numerical/legacy checks are reused by dependency. Windows legacy selection native control remains unchanged; affected visual/point/analysis controls and installed clients use current consumers.",
+    "original_references": "Existing 112 original PointRoi Graphics2D command observations unchanged;113 added relative-template/position checks supplement them. No font or antialiasing bitmap equality inferred.",
+    "retained_failures": [
+      {
+        "route": "api002",
+        "kind": "product layout",
+        "reason": "New marker controls displaced legacy width fields below clip; collapsible section fixes both unchanged interactions.",
+        "resolved_by": "api003"
+      },
+      {
+        "route": "properties001 C++ observation",
+        "kind": "fixture eligibility",
+        "reason": "Legacy overlay action is intentionally gated on scientific source. Keep gate; independent classic-Z role fixture uses explicitly rebound positions.",
+        "resolved_by": "properties002"
+      },
+      {
+        "route": "defaults001 C++ observation",
+        "kind": "popup readiness",
+        "reason": "Choice popup was not yet exposed; one actual stabilization frame plus complete compact fields.",
+        "resolved_by": "defaults002 and stack-defaults001"
+      }
+    ],
+    "tool_limits": "Transport unit checks are mocked contract tests, not UI evidence. Actual captures use fresh native processes and independent reader assertions."
+  },
+  "process_receipts": [
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api001.process.json",
+      "bytes": 2368,
+      "sha256": "6534c6c251e894fc0628351a6531193a2d336efdebe6e67c8769d9087d9a5069",
+      "exit_code": 0,
+      "elapsed_seconds": 1.172000000020489
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api002.process.json",
+      "bytes": 2552,
+      "sha256": "4b392d40523e995b82991bbc8c530c542885d1b0d816024a849fe2219ce4520c",
+      "exit_code": 1,
+      "elapsed_seconds": 4.530999999959022
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api003.process.json",
+      "bytes": 2412,
+      "sha256": "14ae1c7ae364656887e76f137fe425a3db471b8553b01106bc1f05913fa53852",
+      "exit_code": 0,
+      "elapsed_seconds": 3.3589999999385327
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-cpp.process.json",
+      "bytes": 2413,
+      "sha256": "52e7c941bf75332bf90a588a6785ccd2e627c287c6f7e4e30e7ca208f64a87fe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.8279999999795109
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-pack.process.json",
+      "bytes": 2466,
+      "sha256": "c491a5814788a44375dd1a1b982352653dcc07193d6783170b5500c2dff6602f",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-verify.process.json",
+      "bytes": 2352,
+      "sha256": "5d1c213565179717cb7696fbeb5a0aa2d69fd4fd1d3bd419454fdd57f7a7d637",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2190000000409782
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001.process.json",
+      "bytes": 2458,
+      "sha256": "5f90bd151364409310b683c0d329e5fa64d3b10c4eb188de814b3da02dde75e7",
+      "exit_code": 0,
+      "elapsed_seconds": 1.343000000109896
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-cpp.process.json",
+      "bytes": 2413,
+      "sha256": "5f86ddac301ba72dde265064611919bedd6fb50397a36aecb37f0b77da268cce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.8120000001508743
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-pack.process.json",
+      "bytes": 2480,
+      "sha256": "057a413ada70928a307259e96673a398462bd0b3f6c9f475aa630c2f1aaf9abd",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5469999997876585
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-verify.process.json",
+      "bytes": 2337,
+      "sha256": "53c65e9613b35a31272317cb2363b643e1fef51b8807adcef9fa15df44073048",
+      "exit_code": 0,
+      "elapsed_seconds": 0.375
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001.process.json",
+      "bytes": 2463,
+      "sha256": "b5a4f9d52f73225928389876097f49db57ed95f3604316482bfc8133344eb730",
+      "exit_code": 0,
+      "elapsed_seconds": 1.1870000001508743
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-cpp.process.json",
+      "bytes": 2412,
+      "sha256": "b5aed5877e23af820506c44ebec2863f4d9f08fdd8e231098b691aa66409e370",
+      "exit_code": 0,
+      "elapsed_seconds": 0.7649999998975545
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-pack.process.json",
+      "bytes": 2467,
+      "sha256": "bbd68bf8ed2b912ae67ecfcc859698c438da8daa9c1cf0b043ae8327bc6ba53d",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-verify.process.json",
+      "bytes": 2352,
+      "sha256": "39c856834fa19274b43745b73acc55d0bc0f93d88c2304a19268143931d3647f",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5470000000204891
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001.process.json",
+      "bytes": 2448,
+      "sha256": "7661da0869215b6d600435b631cfdac3e1c0644ef37379689e95b9e06b517e30",
+      "exit_code": 0,
+      "elapsed_seconds": 1.25
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-cpp.process.json",
+      "bytes": 2149,
+      "sha256": "134f34e6ac4bda7d671b64138c1b6926977641b9a0058b713fe692e8c776899c",
+      "exit_code": 1,
+      "elapsed_seconds": 0.9369999999180436
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-pack.process.json",
+      "bytes": 2466,
+      "sha256": "f4dd43abcadbb473dca3d745c7eb0889c37da01c0bedce6e2c1380b701e12754",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2029999999795109
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-verify.process.json",
+      "bytes": 2339,
+      "sha256": "9b812ea3b474e3fdfa5f3d62a2761d223351d176c3d95c0ceba62195acf7a9fc",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3440000000409782
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-cpp.process.json",
+      "bytes": 2146,
+      "sha256": "df67cdff19ddd63641a28376610f7d363f0fb18ef3108429a8b287f7b9a5dfda",
+      "exit_code": 0,
+      "elapsed_seconds": 1.4379999998491257
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-pack.process.json",
+      "bytes": 2467,
+      "sha256": "c165a79057af211e005f5ec9745e5587d75c4d4e419282de42ca8970c129bd24",
+      "exit_code": 0,
+      "elapsed_seconds": 0.45300000021234155
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-python.process.json",
+      "bytes": 2300,
+      "sha256": "85a80aa6dcf05d6f152e9e34132cc8e9b6f6aeeb976b6e74d1cfa90268aae2f5",
+      "exit_code": 0,
+      "elapsed_seconds": 1.5160000000614673
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-verify.process.json",
+      "bytes": 2340,
+      "sha256": "358a7c28d095cd578478d186f6da9dec72a5baf8ee5d20ecff378136a2d0f632",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18799999984912574
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002.process.json",
+      "bytes": 2695,
+      "sha256": "9b9f3d9fc5e894493642092c2165ec8176091092b2d140c9e69e2022b20c7930",
+      "exit_code": 0,
+      "elapsed_seconds": 1.421000000089407
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/dpi001.process.json",
+      "bytes": 2479,
+      "sha256": "426622640e5a60d8e9f4669c53c51cee62aee64156d65e329b6cbec141cacd21",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9529999999795109
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/final-api001.process.json",
+      "bytes": 2380,
+      "sha256": "a597f4adbf3bec5dd3b697df78f34664be7097c30b912fe0c897914a0f34ad55",
+      "exit_code": 0,
+      "elapsed_seconds": 1.3120000001508743
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app001.process.json",
+      "bytes": 2097,
+      "sha256": "6eb31328d605c796e89a1087fdccb2abc6e2cda5c843925462d6ee1c8ea8aa18",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2190000000409782
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app002.process.json",
+      "bytes": 2098,
+      "sha256": "affe499e4191eff498a6e97190d55eaa02d13e1cbdcb73a9abf84335c6be4be2",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1559999999590218
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app003.process.json",
+      "bytes": 2095,
+      "sha256": "267d9a2aa653d5dd4529caae96e7f92bcbe7e529bf90df0364748fda86018e7e",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14000000013038516
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app004.process.json",
+      "bytes": 2099,
+      "sha256": "1f4866ee39405959563ec9bd67113f09d24d58124897202c78b4d87f2b49edda",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18799999984912574
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app005.process.json",
+      "bytes": 2084,
+      "sha256": "8ffae04fa061f517939d0593656f98617e447dd3c4af221e5e4ff40ee60c6fe4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.125
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop001.process.json",
+      "bytes": 2111,
+      "sha256": "bb4f6d0aa07e315ed6d16c2a6e711bda3e21ce422e63ae259e32af15bc431914",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1410000000614673
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop002.process.json",
+      "bytes": 2112,
+      "sha256": "fc8a475d79844bd25946811182b834f162806f960774b4003a83cd3ab52774a5",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14099999982863665
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop003.process.json",
+      "bytes": 2110,
+      "sha256": "e2350aee6a421aa74025bf79e79ce0d7a8590f9c7afabe772d41f24b5a4c7696",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14099999982863665
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop004.process.json",
+      "bytes": 2111,
+      "sha256": "bc40dee21579110bfddfa17a540037f46a10ab0bf12aa8d6e397f42993cabb57",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1410000000614673
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop005.process.json",
+      "bytes": 2111,
+      "sha256": "5a037c963624032f1cbc6a9a001d81dda00979593757c3996e2642a0caf6f602",
+      "exit_code": 0,
+      "elapsed_seconds": 0.15699999989010394
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop006.process.json",
+      "bytes": 2108,
+      "sha256": "cd0da953cd0e45c032c9b0f18bacd63e06e3f2a3e183fb0c3280ff99e3424fb0",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1410000000614673
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-processing001.process.json",
+      "bytes": 2112,
+      "sha256": "6823be5a082ae303847516d66e75e31fbf85ea8cf0adcccc9eea42747ad859d6",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2970000000204891
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-processing002.process.json",
+      "bytes": 2112,
+      "sha256": "b1469b138ae532ef383826d43c97e04c30e69aa413d5a552b890592364bf30c0",
+      "exit_code": 0,
+      "elapsed_seconds": 0.09300000010989606
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-sdk001.process.json",
+      "bytes": 2102,
+      "sha256": "12bb56b13aee20bab6be11893b4bd7a90e71f0ad168ce9a8a1b14ac0740a3873",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9380000000819564
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-cpp.process.json",
+      "bytes": 2424,
+      "sha256": "1e225f8807881101177a39f9f525d05dcbc72f24709500b4af4d4ec18d2f8d1c",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9690000000409782
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-pack.process.json",
+      "bytes": 2471,
+      "sha256": "4670423d50c72a528ddd5751b15ceddd3eecf8b38f1d35094c3d2061ff2636b1",
+      "exit_code": 0,
+      "elapsed_seconds": 0.4059999999590218
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-verify.process.json",
+      "bytes": 2343,
+      "sha256": "40c13a8a450ba732a237c9b4c5a9dd996c0693b5d4a895f3190334ebde8eec78",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2190000000409782
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001.process.json",
+      "bytes": 2898,
+      "sha256": "ec4fcd28ec873a86d8733110402523531ff29c8fc05b5346a81c0e924ccb68d5",
+      "exit_code": 0,
+      "elapsed_seconds": 1.1559999999590218
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-cpp.process.json",
+      "bytes": 2427,
+      "sha256": "a353975d5d7e7ae08961974dffe663896a25c50604fc251f14015ebf7393bc0e",
+      "exit_code": 0,
+      "elapsed_seconds": 0.7339999999385327
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-pack.process.json",
+      "bytes": 2471,
+      "sha256": "f0e92d7135ea64806ff0d20ce62aa0afefd666c9ccd2fa689000940368ce5b21",
+      "exit_code": 0,
+      "elapsed_seconds": 0.40699999989010394
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-verify.process.json",
+      "bytes": 2344,
+      "sha256": "de7a1ec468e9e3caedefc71e89e89042a8827b0f7d9033708cebf8b5ae72e721",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2029999999795109
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001.process.json",
+      "bytes": 2884,
+      "sha256": "4281f90aa834e7fbfff22ba8a51abc1ebdd75cb2e82ee665955d059f84dee038",
+      "exit_code": 0,
+      "elapsed_seconds": 1.0
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-cpp.process.json",
+      "bytes": 2427,
+      "sha256": "8c00c527c26228a0a9ff7906a42a46e15bb83ded02322b1c7b33b3c63e773a0d",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9059999999590218
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-pack.process.json",
+      "bytes": 2471,
+      "sha256": "94df4b279bd544b09211446b22dc2a69b278b6afa91821cc37041233013c3cd0",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3910000000614673
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-verify.process.json",
+      "bytes": 2330,
+      "sha256": "3f27855809ab9a80686383da7cce667a384b51af3e19a1c50b674e4d6c94ec8f",
+      "exit_code": 0,
+      "elapsed_seconds": 0.375
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001.process.json",
+      "bytes": 2885,
+      "sha256": "3262e39e1def895cd3665f7411b1995b68609d1aaac56b2b7af9250991899cc6",
+      "exit_code": 0,
+      "elapsed_seconds": 1.125
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-build001.process.json",
+      "bytes": 1615,
+      "sha256": "4d83a6f6366257bbadd96a0854d1689b21cd6b198275203a3c23baa6424a7fb0",
+      "exit_code": 0,
+      "elapsed_seconds": 28.785598043
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-build002.process.json",
+      "bytes": 1613,
+      "sha256": "7f3bfc81e1fc21a4164cfc0bb8a9496bbc88acae07866b5c2fe464606fe7f004",
+      "exit_code": 0,
+      "elapsed_seconds": 9.455878247
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-install-sdk001.process.json",
+      "bytes": 1604,
+      "sha256": "df5845d0a9493da196a98e54f4cfc3949e5cca82d6d3c1ece498a8fa8aea3ba4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9866639229999947
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-native001.process.json",
+      "bytes": 1594,
+      "sha256": "cda5b6895c4a96e08efefc04f507bcabe7c0fe8e4f94a89e0288dc50bb0d649d",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08365689900000106
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-build001.process.json",
+      "bytes": 1551,
+      "sha256": "0492b74103bdb98f73c951bd377d0730896ade1aa0a6d792b6443040678ea523",
+      "exit_code": 0,
+      "elapsed_seconds": 11.176710991000007
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-configure001.process.json",
+      "bytes": 2084,
+      "sha256": "2b0826909ea7c5f1bf736e05b63e2ad6cc1fb932b340626abf5a97fee0db491f",
+      "exit_code": 0,
+      "elapsed_seconds": 3.5114255229999927
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-test001.process.json",
+      "bytes": 1579,
+      "sha256": "52458a37f8644664e3082b12e0e8b005288b9a92f92f5c8a1a8c497510c90d42",
+      "exit_code": 0,
+      "elapsed_seconds": 0.44520808899999054
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties-cpp002.process.json",
+      "bytes": 2387,
+      "sha256": "63d0a1b525c79141b22dbd8b7293eb3151321b43576037a32f57dfdc8d443ae0",
+      "exit_code": 0,
+      "elapsed_seconds": 0.7029999999795109
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties-python002.process.json",
+      "bytes": 2263,
+      "sha256": "88bf5a5ae8fa6a72bb4684d8b09b7f4d4f05d615c2cc95bc7e93d6716b36e2d8",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5319999998901039
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-pack.process.json",
+      "bytes": 2475,
+      "sha256": "e0a99ce607c43b35de51f12a8e9f17d4c983fca0f8c5f514a3cac752f3a92ca1",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18700000015087426
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-verify.process.json",
+      "bytes": 2347,
+      "sha256": "dc8c9f6f5f4290761105cf2341da8aa98e2e9078c0931b75b823d5f995abba01",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14099999982863665
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-pack.process.json",
+      "bytes": 2463,
+      "sha256": "42770c0df656f83857257188c415c38e7fc4bfdcff8b899a8bfbb46791ff349c",
+      "exit_code": 0,
+      "elapsed_seconds": 0.25
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-verify.process.json",
+      "bytes": 2348,
+      "sha256": "7ac5454c9f8aaba48b27cb5804e9d8d6ba2d5585e1b1bacded3a3e571f965865",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002.process.json",
+      "bytes": 2475,
+      "sha256": "7b07f2b2e046ee6c0b507d4827a1ffea314b9c5b0b4396ef257fc73180107b41",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9529999999795109
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-pack.process.json",
+      "bytes": 2438,
+      "sha256": "1a32371a9d7b9d65d0878ad25c9d718c3872e771c3637db9dec5140b3665a671",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5470000000204891
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-verify.process.json",
+      "bytes": 2315,
+      "sha256": "f2b53bb1119daaeab9e6ad2a2e5fc1ec95ba0501d43547d67cdc774ea099dcaa",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2970000000204891
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-build001.process.json",
+      "bytes": 2039,
+      "sha256": "cf301a4435a1e90244c23caac8187ce4b86c9b00035e70f514f79ed963b710e8",
+      "exit_code": 0,
+      "elapsed_seconds": 7.172000000020489
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-configure001.process.json",
+      "bytes": 2567,
+      "sha256": "f7207b866c78cb1c1cf303b2a19c0af4ca173aa5ee44818d1a20d3bbb64d24ab",
+      "exit_code": 0,
+      "elapsed_seconds": 5.1399999998975545
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-test001.process.json",
+      "bytes": 2063,
+      "sha256": "b67deca6898e767a85e6e4a9d9b2e0b3afc73430c5e2f92e3cc01739b20bad5a",
+      "exit_code": 0,
+      "elapsed_seconds": 0.6089999999385327
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-cpp.process.json",
+      "bytes": 2168,
+      "sha256": "82fee4ae1495422551b1009f3beacb39edf4ef5eb54a0cd5f0cacf8a6c9e5ceb",
+      "exit_code": 0,
+      "elapsed_seconds": 1.1870000001508743
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-pack.process.json",
+      "bytes": 2493,
+      "sha256": "f1960c3bdf0065f55bcc1758649a774ff52280edb7c23c80bf6b0019f9fa27c4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2660000000614673
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-python.process.json",
+      "bytes": 2312,
+      "sha256": "2a631f955c94ce3eef4940c43f9662ff11e007ada0defb132e6069217df57308",
+      "exit_code": 0,
+      "elapsed_seconds": 1.6099999998696148
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-verify.process.json",
+      "bytes": 2359,
+      "sha256": "e4cff43f48923f49d58967df9eecac45c8fb645bca689f0f966e8ad045e84343",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2029999999795109
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001.process.json",
+      "bytes": 2703,
+      "sha256": "43543dbc1bf754584f13470485823f34c25f4f6fd5dc33309b772a40aaf31665",
+      "exit_code": 0,
+      "elapsed_seconds": 1.1869999999180436
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-cpp.process.json",
+      "bytes": 2407,
+      "sha256": "ffd7118fb17f3eaa49e8e8f4226f0f4cc9bdacbd8d3e362194dd977d4fffd497",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9370000001508743
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-pack.process.json",
+      "bytes": 2450,
+      "sha256": "d182759c672d8ea0ecacf800ef0a11364684faa25469216484953f71444ae79c",
+      "exit_code": 0,
+      "elapsed_seconds": 0.625
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-verify.process.json",
+      "bytes": 2339,
+      "sha256": "77c3610a97464c41a8fe6c770a26df39e79239bd849c50068c814367933a83be",
+      "exit_code": 0,
+      "elapsed_seconds": 0.29600000008940697
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001.process.json",
+      "bytes": 2485,
+      "sha256": "ff274aa30aee54e1765a7707043e0c99642328650e578dc95b06eb013d890b2a",
+      "exit_code": 0,
+      "elapsed_seconds": 1.6090000001713634
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-cpp.process.json",
+      "bytes": 2405,
+      "sha256": "68b94a71c7def5360be80f0de4915e823c5ab9285ffa7d9a9470c359bf87a052",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9220000000204891
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-pack.process.json",
+      "bytes": 2466,
+      "sha256": "2846607e3565fb202b9c6281f0dac9c4b02f9f2d515438ef881511dba7990eea",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5940000000409782
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-verify.process.json",
+      "bytes": 2326,
+      "sha256": "1281c148813c9ea80e02638fc22bf91b2ad1f182bfe8502dff325c2b34fe4a1a",
+      "exit_code": 0,
+      "elapsed_seconds": 0.25
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002.process.json",
+      "bytes": 2482,
+      "sha256": "f8d975546a5403c5ee6acc23a55606534912e64cbbf12c872314905088a37432",
+      "exit_code": 0,
+      "elapsed_seconds": 1.5780000002123415
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-cpp.process.json",
+      "bytes": 2406,
+      "sha256": "c139dce815f5e98838542e1acd00acc9939e1b194effe5f7d3413ad60a3cda0d",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9370000001508743
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-pack.process.json",
+      "bytes": 2454,
+      "sha256": "2774deafa76d53e87052c5e83c14300fad486e52b0eb228d6099d0da6d274d17",
+      "exit_code": 0,
+      "elapsed_seconds": 0.625
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-verify.process.json",
+      "bytes": 2340,
+      "sha256": "f19cbed2c84292fab7eda3d6592c7cb42d9a14fc7a03d21c7fa0340393583b1b",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2660000000614673
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001.process.json",
+      "bytes": 2482,
+      "sha256": "f512b65c179c292dc0f213b0ee03b8abdd930d942c1cb5c8f42c080dbdd16add",
+      "exit_code": 0,
+      "elapsed_seconds": 1.8440000000409782
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-cpp.process.json",
+      "bytes": 2406,
+      "sha256": "6cc5fbfd8a85f131416d1174cd633c30024165317a5b81373e5c8949610233ce",
+      "exit_code": 0,
+      "elapsed_seconds": 1.0619999999180436
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-pack.process.json",
+      "bytes": 2460,
+      "sha256": "bf6b42e9bcf8711eadca4181ef6d1be2a85ca8f404ba51ed88f86beea869a721",
+      "exit_code": 0,
+      "elapsed_seconds": 0.6399999998975545
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-verify.process.json",
+      "bytes": 2338,
+      "sha256": "93f1d5249bf096a02a3923c7f227b8c1aa04009ad30bc6e1395f9f05f5149897",
+      "exit_code": 0,
+      "elapsed_seconds": 0.28100000019185245
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001.process.json",
+      "bytes": 2481,
+      "sha256": "e3b72fb23d22b257452b0397e9a6883e5c395219bfc9c9ec7fda85a3ea7d2596",
+      "exit_code": 0,
+      "elapsed_seconds": 1.422000000020489
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/tools001.process.json",
+      "bytes": 2344,
+      "sha256": "4fac9b5ba121e42ee1569fa2aee01bf4f827c1cc02fe18c23391e0572b40906b",
+      "exit_code": 0,
+      "elapsed_seconds": 8.108999999938533
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build001.process.json",
+      "bytes": 2998,
+      "sha256": "9f2d4222eb6998119973bbea01cf641c21831950f3f5951abd580bf4e922eea3",
+      "exit_code": 0,
+      "elapsed_seconds": 765.375
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build002.process.json",
+      "bytes": 2160,
+      "sha256": "bf2b6b565928756bd4d827e824bf02cc6d60b34e8b708cea7eff807de5ad08f7",
+      "exit_code": 0,
+      "elapsed_seconds": 127.71899999980815
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build003.process.json",
+      "bytes": 2067,
+      "sha256": "e1e3b1fa01e7f510610120a8d36b38a685de160481a4a0aa065786caa25d7934",
+      "exit_code": 0,
+      "elapsed_seconds": 26.17200000002049
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build004.process.json",
+      "bytes": 2031,
+      "sha256": "cbc6387831a5aeb2eaba2cb4a3a4139455f2196849fa43cdbc7a923b6b101a21",
+      "exit_code": 0,
+      "elapsed_seconds": 14.312999999849126
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build005.process.json",
+      "bytes": 2865,
+      "sha256": "26bf5ffea6a86fdbc1ffb4ec8b43bf1869d8fe4d705858e550c053b3a41b4880",
+      "exit_code": 0,
+      "elapsed_seconds": 17.25
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build006.process.json",
+      "bytes": 2068,
+      "sha256": "b7d1092a3eb51dd0405025234069c44cec8e801f7c2ca9026beb18908c4d31a8",
+      "exit_code": 0,
+      "elapsed_seconds": 49.593000000109896
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-native001.process.json",
+      "bytes": 2115,
+      "sha256": "f3d97345a466f4a63602acd066ff83a2c104e7ff0b660361fe2b8b77acaedf0f",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2339999999385327
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-visual-final001.process.json",
+      "bytes": 2042,
+      "sha256": "01521b6bb2084d4adf1d98504ef13b169692479e6910577bb25d64396e3b263c",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1410000000614673
+    }
+  ],
+  "waste_review": {
+    "fixed": [
+      "Immutable relative templates and retained positions avoid per-frame metadata/geometry reconstruction; no per-glyph heap vector or per-point image reads.",
+      "One shared widget helper; existing cache/draft/transaction/recorder/session owners remain.",
+      "Pure point annotation admission no longer charges a full-plane raster.",
+      "Correct preference RGBA versus ROI ARGB parser and actual host/canvas scale versus font-size ratio.",
+      "One produced report is shared by multiple readers; producer logs keep summaries rather than another report dump.",
+      "Each large terminal group is retained/verified/retired serially; installed consumers retained through final allocation/API review."
+    ],
+    "measured_build_seconds": {
+      "shared_windows_ui": 765.375,
+      "private_integration": 127.719,
+      "probe_layout": 26.172,
+      "fixture_eligibility": 14.313,
+      "popup_probe": 17.25,
+      "dpi": 49.593
+    },
+    "measurement_limit": "Different build workloads, not processing/rendering speed comparisons.",
+    "deferred": [
+      {
+        "owner": "T02 plus next P2c consumer/validation owner",
+        "finding": "Fixture/command/schema/readiness and mechanical anchor/path assumptions recur.",
+        "next_entry": "Read actual command capability, parser and popup/control contracts; require observed hit ownership before a broad campaign; validate complete in-memory edits before writes.",
+        "exit": "Changed route succeeds without another contract-assumption retry. Policy alone is not evidence of prevention."
+      },
+      {
+        "owner": "P2c/T15/T14",
+        "finding": "Font/raster, export-loss decisions and supported-platform/OS-DPI release coverage remain.",
+        "exit": "Explicit owning consumers and independent scoped evidence, not descriptor/test-count substitution."
+      },
+      {
+        "owner": "P3 creation owner; required P2b consumer residual",
+        "finding": "Ordinary multipoint draft preview still serializes/copies styled geometry each frame and uses plain vertex presentation until completion. Code-observed, frame cost unmeasured.",
+        "reuse_path": "Cache by actual vertex/default changes and feed typed captured data into existing glyph builder if needed; no full annotation tag encoding every click and no new controller.",
+        "exit": "Mixed counters/poses render correctly in drafts; static frame build counts, no provider reads, cap/cancel/close cleanup and final publication pass. Blocks full P2 closure."
+      }
+    ],
+    "next_task": "P2c native raster flatten and point-style interchange, then P3 and P4; full horizon remains open."
+  },
+  "storage": {
+    "entry_known_bytes": 8468858723,
+    "pre_retirement_known_bytes": 8519531141,
+    "post_cleanup_known_bytes": 8487028393,
+    "not_absolute_peak": true,
+    "snapshot_limit": "Final snapshot predates small receipts/docs updates.",
+    "unknown_subtrees": 214,
+    "complete_budget_verified": false,
+    "scratch_source_bytes": 245331004,
+    "compressed_bytes": 12782270,
+    "compiler_bytes_retired": 34015278,
+    "retained_group_count": 16,
+    "all_task_scratch_absent": true,
+    "compiler_trees_not_archived": true,
+    "one_active_cache_runtime_sdk_per_platform": true,
+    "inventory_pins": [
+      {
+        "path": ".tmp/manual-workflow-verification/point-presentation-ui-entry-20261104.json",
+        "bytes": 66572,
+        "sha256": "5b48a68c8d6c227666951d75fe35eca475bff46fdbbdfaf1e262e4a5d3a62b0f"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/point-presentation-ui-before-captures-20261104.json",
+        "bytes": 66558,
+        "sha256": "15600a888b6afb0145f5dc907c27cf636a64110620f9f896161675e616a5eef9"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/point-presentation-ui-before-sdk-20261104.json",
+        "bytes": 66573,
+        "sha256": "66fb77fde4bbbc2e65fbe43dbf1e0c23c833cca23bb0fad691acb26aeca37fc5"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/point-presentation-ui-before-retirement-20261104.json",
+        "bytes": 66571,
+        "sha256": "3147040ab32d46654d95f10b91f5d6adb1ea7d9f5530cb5893834a4e91679f0b"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/point-presentation-ui-final-20261104.json",
+        "bytes": 66572,
+        "sha256": "4077887192a599f618fb6a908bfcc74864273e9968f7b01231a1c54ad8f1f999"
+      }
+    ]
+  },
+  "retained_local_artifact_pins": [
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api001.log",
+      "bytes": 1122,
+      "sha256": "148679a17e60c5786b82224283b834e9a9079546ac5018287b4059efb0b81747"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api001.process.json",
+      "bytes": 2368,
+      "sha256": "6534c6c251e894fc0628351a6531193a2d336efdebe6e67c8769d9087d9a5069"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api001.xml",
+      "bytes": 40875,
+      "sha256": "1f025f3598907c3396ef2e41b56216c3fe986e29c25130fba4631acc198b5856"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api002.log",
+      "bytes": 4476,
+      "sha256": "d31f2818eae0f84e7ca3e7aae1c71deea4827f1eead8da0cee4ba4073228c315"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api002.process.json",
+      "bytes": 2552,
+      "sha256": "4b392d40523e995b82991bbc8c530c542885d1b0d816024a849fe2219ce4520c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api002.xml",
+      "bytes": 81430,
+      "sha256": "cf5769c0813a133e331ebd8a2ab2e868e62733506bc2f35cd29baf32eff8abed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api003.log",
+      "bytes": 879,
+      "sha256": "a4a9a72746c1af392f69fb0f158acbd92deec76420f75db0f249be4694dab8d7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api003.process.json",
+      "bytes": 2412,
+      "sha256": "14ae1c7ae364656887e76f137fe425a3db471b8553b01106bc1f05913fa53852"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/api003.xml",
+      "bytes": 9750,
+      "sha256": "b416cd1aa834b6a6a9b471feadb5083c3e16a0f76ab55419add3b7d2c0d55aa4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/carriers.json",
+      "bytes": 1121,
+      "sha256": "f90100e099bb4b88d08fca15306e43ac42d29a361305fe5bf3aa2a76fe51a66d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-artifacts.json",
+      "bytes": 1948,
+      "sha256": "05fc5cd5cf2b2d5c241a131025c286c33dfd10830c3e3a172a84bb9dbe448b47"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-cpp.log",
+      "bytes": 50,
+      "sha256": "c3470d00237720c298e783103a402abd3ad6b6d4a99104acafd372413c2c5b0e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-cpp.process.json",
+      "bytes": 2413,
+      "sha256": "52e7c941bf75332bf90a588a6785ccd2e627c287c6f7e4e30e7ca208f64a87fe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-manifest.json",
+      "bytes": 8383,
+      "sha256": "eb0d34af751ae2cdc4fb44f06887605af37cf6aa28784b536b7b91d95894e710"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-pack.json",
+      "bytes": 1622,
+      "sha256": "24f5abc1e29acd0512e46f566271c9ce599fae17cad4e61c64e3b6abadf163b6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-pack.json.started.json",
+      "bytes": 971,
+      "sha256": "3d048079305a4f209242a95fe6c9dadb7c0b109505d753a85e1c93c88dfeb521"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-pack.log",
+      "bytes": 158,
+      "sha256": "466c24a6fc9ff9fe9a36825d9168d1eb74f78ebb00a81ed6a6def528fba2700e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-pack.process.json",
+      "bytes": 2466,
+      "sha256": "c491a5814788a44375dd1a1b982352653dcc07193d6783170b5500c2dff6602f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-retirement.json",
+      "bytes": 473,
+      "sha256": "e5d99711443badc23bfb9070d395c3a2c277f6cc125cafdd4d94638ab004671f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-verify.json",
+      "bytes": 1508,
+      "sha256": "6f3d4aa23a7feed20532c8f733f4b7d11807fdb426f246018cb896d5f283446e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-verify.json.started.json",
+      "bytes": 855,
+      "sha256": "71fc9b5fb7ba8d584086df2a46200796515a351419f5607ed8704c41ebd49bc6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-verify.log",
+      "bytes": 161,
+      "sha256": "2b4781965fd43536c9606842e34694aacbd03ceaf75642b34ba160950017d67a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001-verify.process.json",
+      "bytes": 2352,
+      "sha256": "5d1c213565179717cb7696fbeb5a0aa2d69fd4fd1d3bd419454fdd57f7a7d637"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001.log",
+      "bytes": 887,
+      "sha256": "a7e970e505233349494f26f79ff7826430647e777082e55023adce5c80b3af4a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001.process.json",
+      "bytes": 2458,
+      "sha256": "5f90bd151364409310b683c0d329e5fa64d3b10c4eb188de814b3da02dde75e7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001.xml",
+      "bytes": 506,
+      "sha256": "634fa6452ad488dc54b3489a41d7874c357467621eb170c5ab4fcef93eb8bf81"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xy001.zip",
+      "bytes": 1042838,
+      "sha256": "1dfc8b4bdf7257a90586edda0bd92b829b6713c3e6e77e6c39f23fb6db1a0ee0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-artifacts.json",
+      "bytes": 1948,
+      "sha256": "4d68e0b26e4a39b8ea3dac12abc544bf90ee87480b4c37b4cf92e7d95edac238"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-cpp.log",
+      "bytes": 50,
+      "sha256": "872e348ae6266287d01fac2da1d8fbde66db83530fd5f60d0b1d28ed449ef215"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-cpp.process.json",
+      "bytes": 2413,
+      "sha256": "5f86ddac301ba72dde265064611919bedd6fb50397a36aecb37f0b77da268cce"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-manifest.json",
+      "bytes": 8386,
+      "sha256": "3b084874613dd0a2f70f7d123102a2d0cfae7d0e590630a72af2f684217fc23a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-pack.json",
+      "bytes": 1622,
+      "sha256": "d25d23bd61fc54fa165350e9011cb7dd99f22621c4d0ec6d6df0a4fec5de381f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-pack.json.started.json",
+      "bytes": 971,
+      "sha256": "af180023b8055ae909b7da55269ff799f548b9c04b3126f13aa9184f76afb5d8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-pack.log",
+      "bytes": 158,
+      "sha256": "55d462f20422846adb4b6d4b808bb9ebde2bf29a2833e28d1061658980416d9c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-pack.process.json",
+      "bytes": 2480,
+      "sha256": "057a413ada70928a307259e96673a398462bd0b3f6c9f475aa630c2f1aaf9abd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-retirement.json",
+      "bytes": 473,
+      "sha256": "a8dab342bc90e1b3891f06a539395a1de9626a44e8c47b607ec9076b2b664d7f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-verify.json",
+      "bytes": 1507,
+      "sha256": "194083f897c1c2cdca53f8a363c3150a7dbcfd2ec26a1433bb2aa7d85a769587"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-verify.json.started.json",
+      "bytes": 855,
+      "sha256": "0fdc02788c9a570ea705a38d2aea609341107900f999ea0c377488735c44a839"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-verify.log",
+      "bytes": 161,
+      "sha256": "0d113d7d1cdcd4c1cceac07a8183c270c94206a6fb7777fc915bd4efb79d10a0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001-verify.process.json",
+      "bytes": 2337,
+      "sha256": "53c65e9613b35a31272317cb2363b643e1fef51b8807adcef9fa15df44073048"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001.log",
+      "bytes": 887,
+      "sha256": "1dbfa85455f4ef6cfbd2d5a52d2754268641dcbbe32f91ae64925e47d8a5d8f4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001.process.json",
+      "bytes": 2463,
+      "sha256": "b5a4f9d52f73225928389876097f49db57ed95f3604316482bfc8133344eb730"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001.xml",
+      "bytes": 506,
+      "sha256": "6274078d94a810381358676a97bc41c1839954bc32c84904ef32afdcd9b0cbc0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-xz001.zip",
+      "bytes": 1043349,
+      "sha256": "e363652e515d5a2a6c7c9312f187fe9e66fca9fb4d0c4fc24358e1ac367b1698"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-artifacts.json",
+      "bytes": 1948,
+      "sha256": "177fbec1731e04075d52485493145358263f1291e53ab49714ccc477fd80e966"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-cpp.log",
+      "bytes": 50,
+      "sha256": "5d7e26b420fabd22d8c60eeeac82ff63825c1e5f9ca75aeadae723b80be81575"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-cpp.process.json",
+      "bytes": 2412,
+      "sha256": "b5aed5877e23af820506c44ebec2863f4d9f08fdd8e231098b691aa66409e370"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-manifest.json",
+      "bytes": 8383,
+      "sha256": "4630c9bc5e4345c5d15a4baa69189f5544e71b29c42b62ee14d0d923ac7469c3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-pack.json",
+      "bytes": 1621,
+      "sha256": "bb463b8b00789e50a2621a39bd6f648832b50c36cd8188340a1689e091ae2435"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-pack.json.started.json",
+      "bytes": 971,
+      "sha256": "89492007193c3459759e85c8f1b643b7df5335004f34377fa9e633f4a009294f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-pack.log",
+      "bytes": 158,
+      "sha256": "ac344570ba29734c3d8e41a3bf34ea177f12e680ee206b9fb17d352e36cfcee7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-pack.process.json",
+      "bytes": 2467,
+      "sha256": "bbd68bf8ed2b912ae67ecfcc859698c438da8daa9c1cf0b043ae8327bc6ba53d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-retirement.json",
+      "bytes": 473,
+      "sha256": "e0aab326cb29d2c4e428b24ae94e2e3d8090b162b11f30283ef9a72e9c3c19ee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-verify.json",
+      "bytes": 1508,
+      "sha256": "da712d29213e7ab60a57333b08ba4dc1d877c0ca8e6288c1e9464c4c7e8d3a10"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-verify.json.started.json",
+      "bytes": 855,
+      "sha256": "43900ceb22017d83c97fb818d2589a892a111f8801cc90877dc0bbf0a47f83ae"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-verify.log",
+      "bytes": 161,
+      "sha256": "0371faf561fa4812d196f150013b5b2344ea00a6ba46db561591934ee9695f39"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001-verify.process.json",
+      "bytes": 2352,
+      "sha256": "39c856834fa19274b43745b73acc55d0bc0f93d88c2304a19268143931d3647f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001.log",
+      "bytes": 887,
+      "sha256": "ad1a16bf6217404f8c554f558d61a7f02f66dbdd118499fa9e472a654b7b8035"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001.process.json",
+      "bytes": 2448,
+      "sha256": "7661da0869215b6d600435b631cfdac3e1c0644ef37379689e95b9e06b517e30"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001.xml",
+      "bytes": 506,
+      "sha256": "1a669b3d39bd1b77f88154c0feb5e0c1b3e5957d31a222fd7b4d14fb291a6836"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/creation-yz001.zip",
+      "bytes": 1046402,
+      "sha256": "99aa75242e39c7b5fc34586a9ed4b70a9416c8cd3ec1797139ee1dc1bead4ee3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-artifacts.json",
+      "bytes": 810,
+      "sha256": "4d90d0986d597f9a8729e06885d4c3c331e6a6770b68a6b4e31d732be4965dee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-cpp.log",
+      "bytes": 29,
+      "sha256": "99540f19e1919d187ed58b8c58ca6d9856571df6134bd1855f9892d525ce37ac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-cpp.process.json",
+      "bytes": 2149,
+      "sha256": "134f34e6ac4bda7d671b64138c1b6926977641b9a0058b713fe692e8c776899c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-manifest.json",
+      "bytes": 3170,
+      "sha256": "2de08a3d27d55617476f894a2601813d0f02fd64e3a358d144add969c2154b13"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-pack.json",
+      "bytes": 1597,
+      "sha256": "7a50d903f3db0408b74c1abb50200b133676990ba1e5f4043ec5d25db0c343ee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-pack.json.started.json",
+      "bytes": 956,
+      "sha256": "e4031f7731bb27ff6ff1831df2dcadea8ae1e64b8623c67de59d575a4a29628e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-pack.log",
+      "bytes": 155,
+      "sha256": "daa17e4379741e0342a41e9cf068274dccf20ef5dea6e3976da7a052e7e51fb8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-pack.process.json",
+      "bytes": 2466,
+      "sha256": "f4dd43abcadbb473dca3d745c7eb0889c37da01c0bedce6e2c1380b701e12754"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-retirement.json",
+      "bytes": 466,
+      "sha256": "279ffd25fbeecfb6951ec586161f1ab8fb1c6e2f7449f7a8b735cb1899d7a885"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-verify.json",
+      "bytes": 1486,
+      "sha256": "1f298e729b4406f6074c562e49e2644004d40300b2eca3e558629a3c2a376aaf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-verify.json.started.json",
+      "bytes": 843,
+      "sha256": "837ff567d1fc58ba1b1c91d302890f09ba05ce46456e93a68717a808b0450090"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-verify.log",
+      "bytes": 158,
+      "sha256": "cd36edf613bcf7e89c0061668aa4f3e4cb31ff6125a4e56dbfa1b6178125cca9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001-verify.process.json",
+      "bytes": 2339,
+      "sha256": "9b812ea3b474e3fdfa5f3d62a2761d223351d176c3d95c0ceba62195acf7a9fc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults001.zip",
+      "bytes": 41040,
+      "sha256": "be6babfeedd60c874759a340d46d2cddedbc2ee0a27af014867ee74e7081e990"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-artifacts.json",
+      "bytes": 1807,
+      "sha256": "1fb8519568b3832c2db4fd8bba34b3999a863e881be4a40ed5a6fb83dd91e752"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-cpp.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-cpp.process.json",
+      "bytes": 2146,
+      "sha256": "df67cdff19ddd63641a28376610f7d363f0fb18ef3108429a8b287f7b9a5dfda"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-manifest.json",
+      "bytes": 6987,
+      "sha256": "e8e7a5ca66736653110a98921ceca88c48c3dee62edd4706e3daaee3299692d7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-pack.json",
+      "bytes": 1599,
+      "sha256": "2dc6a1e935e902444441a7512abb79557589d5227a4a074ef0d91196fe5eeaf1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-pack.json.started.json",
+      "bytes": 956,
+      "sha256": "0c38cf2be86f86e967e34c3a676837c46953c4aff8c5bc999e9bd66c022690d2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-pack.log",
+      "bytes": 155,
+      "sha256": "ccf6961c9147d8adbc12eee3a8ffe67f5c64aa634d6148a74c34ba15c9432c65"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-pack.process.json",
+      "bytes": 2467,
+      "sha256": "c165a79057af211e005f5ec9745e5587d75c4d4e419282de42ca8970c129bd24"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-python.log",
+      "bytes": 38,
+      "sha256": "2b24cd7686d6bfb7a36d81bdb5013e87e3d4657548aa89fc3ad088640abfcb06"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-python.process.json",
+      "bytes": 2300,
+      "sha256": "85a80aa6dcf05d6f152e9e34132cc8e9b6f6aeeb976b6e74d1cfa90268aae2f5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-retirement.json",
+      "bytes": 468,
+      "sha256": "59e474539689afd185ef6ccefaea7c2013e492eca0b61eb92ed23812cb65eb18"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-verify.json",
+      "bytes": 1488,
+      "sha256": "03fba82dd64e79a5a3275dc3ae7c5ae782bd8d4af2d5246e953ddda5fc8cdcc7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-verify.json.started.json",
+      "bytes": 843,
+      "sha256": "cbc29a97681292f22a8c0c573ea3e0d37317fbc559c636a5948712be24974822"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-verify.log",
+      "bytes": 158,
+      "sha256": "36f49d5849f0b0f03638bc638330325912c2a4a166aabb05f4e3582d9cabff6f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002-verify.process.json",
+      "bytes": 2340,
+      "sha256": "358a7c28d095cd578478d186f6da9dec72a5baf8ee5d20ecff378136a2d0f632"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002.log",
+      "bytes": 884,
+      "sha256": "7b8358c2171ae69ddf92abed226e381ba35fcb040ec337c039d43d804df4564e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002.process.json",
+      "bytes": 2695,
+      "sha256": "9b9f3d9fc5e894493642092c2165ec8176091092b2d140c9e69e2022b20c7930"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002.xml",
+      "bytes": 813,
+      "sha256": "ccd91e11783173576e08348d3de421afb162c4a4f5cdd8d896691aafa8dccdc8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/defaults002.zip",
+      "bytes": 200500,
+      "sha256": "10c90b3e6ee985a13283a2135c6afa52f45d55f8c0ac022f73f2bd56abc8616d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/dpi001.log",
+      "bytes": 879,
+      "sha256": "4ff19a0a5f145e56264a4f7bf1822fc1e54df0057583a0aa7a88d8cbd56c5257"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/dpi001.process.json",
+      "bytes": 2479,
+      "sha256": "426622640e5a60d8e9f4669c53c51cee62aee64156d65e329b6cbec141cacd21"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/dpi001.xml",
+      "bytes": 1009,
+      "sha256": "ccf9c2c99b4c466b8cfcd522e2d9b832054866324a05405fac16892710a8b3b3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/final-api001.log",
+      "bytes": 885,
+      "sha256": "878233d4844e872ee8021fb5a439b80b33f33caaeeb7934883b452e6f72bfefa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/final-api001.process.json",
+      "bytes": 2380,
+      "sha256": "a597f4adbf3bec5dd3b697df78f34664be7097c30b912fe0c897914a0f34ad55"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/final-api001.xml",
+      "bytes": 5617,
+      "sha256": "0f52d2aef8be8fddf73dd4e45abdd4b9eda1f955b8057bbc6db553a65a09e0c0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app001.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app001.process.json",
+      "bytes": 2097,
+      "sha256": "6eb31328d605c796e89a1087fdccb2abc6e2cda5c843925462d6ee1c8ea8aa18"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app002.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app002.process.json",
+      "bytes": 2098,
+      "sha256": "affe499e4191eff498a6e97190d55eaa02d13e1cbdcb73a9abf84335c6be4be2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app003.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app003.process.json",
+      "bytes": 2095,
+      "sha256": "267d9a2aa653d5dd4529caae96e7f92bcbe7e529bf90df0364748fda86018e7e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app004.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app004.process.json",
+      "bytes": 2099,
+      "sha256": "1f4866ee39405959563ec9bd67113f09d24d58124897202c78b4d87f2b49edda"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app005.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-app005.process.json",
+      "bytes": 2084,
+      "sha256": "8ffae04fa061f517939d0593656f98617e447dd3c4af221e5e4ff40ee60c6fe4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop001.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop001.process.json",
+      "bytes": 2111,
+      "sha256": "bb4f6d0aa07e315ed6d16c2a6e711bda3e21ce422e63ae259e32af15bc431914"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop002.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop002.process.json",
+      "bytes": 2112,
+      "sha256": "fc8a475d79844bd25946811182b834f162806f960774b4003a83cd3ab52774a5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop003.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop003.process.json",
+      "bytes": 2110,
+      "sha256": "e2350aee6a421aa74025bf79e79ce0d7a8590f9c7afabe772d41f24b5a4c7696"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop004.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop004.process.json",
+      "bytes": 2111,
+      "sha256": "bc40dee21579110bfddfa17a540037f46a10ab0bf12aa8d6e397f42993cabb57"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop005.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop005.process.json",
+      "bytes": 2111,
+      "sha256": "5a037c963624032f1cbc6a9a001d81dda00979593757c3996e2642a0caf6f602"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop006.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-desktop006.process.json",
+      "bytes": 2108,
+      "sha256": "cd0da953cd0e45c032c9b0f18bacd63e06e3f2a3e183fb0c3280ff99e3424fb0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-processing001.log",
+      "bytes": 5124,
+      "sha256": "a59ab006071461459ecf33a94a9765244d80e189f98ad28a3345c0bc706aabfc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-processing001.process.json",
+      "bytes": 2112,
+      "sha256": "6823be5a082ae303847516d66e75e31fbf85ea8cf0adcccc9eea42747ad859d6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-processing002.log",
+      "bytes": 5124,
+      "sha256": "a59ab006071461459ecf33a94a9765244d80e189f98ad28a3345c0bc706aabfc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-processing002.process.json",
+      "bytes": 2112,
+      "sha256": "b1469b138ae532ef383826d43c97e04c30e69aa413d5a552b890592364bf30c0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-sdk001.log",
+      "bytes": 18722,
+      "sha256": "eab3c6843cb99bac3f2d827045486b33f7a5172f1c64eb2a8ae936eb44a32656"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/install-sdk001.process.json",
+      "bytes": 2102,
+      "sha256": "12bb56b13aee20bab6be11893b4bd7a90e71f0ad168ce9a8a1b14ac0740a3873"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-artifacts.json",
+      "bytes": 4158,
+      "sha256": "741cb0fe521467f95a4874c11ddf33452001ece6cab79da2484400ea85097640"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-cpp.log",
+      "bytes": 132,
+      "sha256": "6675ee1a20c21a0780d9cb3e05b8e2bfc1396164cf21a5178810abd9223b30e0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-cpp.process.json",
+      "bytes": 2424,
+      "sha256": "1e225f8807881101177a39f9f525d05dcbc72f24709500b4af4d4ec18d2f8d1c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-manifest.json",
+      "bytes": 16058,
+      "sha256": "d5e6a95ea6c8fa3a4bbc75c5124409a4fe6362b8dda946b10e4f0bc0036c159e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-pack.json",
+      "bytes": 1609,
+      "sha256": "8f72fe212d7493785011a38c3881eda1effb879594d60356217ceab95e00244b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-pack.json.started.json",
+      "bytes": 961,
+      "sha256": "474285952722a0df6d9c11a06c6d6e6a19210e58814cdd226e1808ba7eb82c39"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-pack.log",
+      "bytes": 156,
+      "sha256": "6396cc715cf8c2d16c2d26b5a7bb33c18a10ed02725309665124be64a9354ab0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-pack.process.json",
+      "bytes": 2471,
+      "sha256": "4670423d50c72a528ddd5751b15ceddd3eecf8b38f1d35094c3d2061ff2636b1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-retirement.json",
+      "bytes": 471,
+      "sha256": "cd7eba846e48950e1866e5eeaee48578ba19654377568a464d1517ad51e54e84"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-verify.json",
+      "bytes": 1497,
+      "sha256": "53b6180190ba48a5c33bfe354a75ce679a1f549e337e527afb9de6c98e871f8f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-verify.json.started.json",
+      "bytes": 847,
+      "sha256": "cb79bfc9dadee8d2732ae1bd0d3f9a2f67ae169f8c0ba2cfca058f33b0b0bff3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-verify.log",
+      "bytes": 159,
+      "sha256": "f665063cadf905bed7e217f93852857c52a2ef3f4a40e874bfa37eaa3a4e10fd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001-verify.process.json",
+      "bytes": 2343,
+      "sha256": "40c13a8a450ba732a237c9b4c5a9dd996c0693b5d4a895f3190334ebde8eec78"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001.log",
+      "bytes": 885,
+      "sha256": "aad12bd3bef4caa5dfcb279659c7db89f49c48ce5324a9e9de560a762cc07be5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001.process.json",
+      "bytes": 2898,
+      "sha256": "ec4fcd28ec873a86d8733110402523531ff29c8fc05b5346a81c0e924ccb68d5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001.xml",
+      "bytes": 1078,
+      "sha256": "82a30e2fac224e7b05ccfe8017bac5444bfe390e69e78ce48bd5f1ef1f839ec1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xy001.zip",
+      "bytes": 690399,
+      "sha256": "921bb9c2d8bf91aa2e331b4b209445170536404f8dc9dd0e9487950c12d37e60"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-artifacts.json",
+      "bytes": 4158,
+      "sha256": "e9e6dd71257591125270c5bd499530a83f47348446f473ae38a1e5ea2c6d4625"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-cpp.log",
+      "bytes": 132,
+      "sha256": "814016ff1c00c7bbc03d7f5a5d5eccdcf8210957efc247b6fde68788bbba5a5b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-cpp.process.json",
+      "bytes": 2427,
+      "sha256": "a353975d5d7e7ae08961974dffe663896a25c50604fc251f14015ebf7393bc0e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-manifest.json",
+      "bytes": 16067,
+      "sha256": "5a7d7260b4c7dad7afad2fe0759dea3a988414a41c1befb625db9c236f967490"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-pack.json",
+      "bytes": 1609,
+      "sha256": "125d25f0424b4524ab267b5de8794338174450d2f15d6040906b57e316ab8cf7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-pack.json.started.json",
+      "bytes": 961,
+      "sha256": "0e3bd3af2537987144f51a307568bd3b8c33da2e94ea5e96e41123e55ec34b11"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-pack.log",
+      "bytes": 156,
+      "sha256": "faf187ee3e0aad9c977544aa8cd2201e6db359d252e108fee64ef5874b0874a8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-pack.process.json",
+      "bytes": 2471,
+      "sha256": "f0e92d7135ea64806ff0d20ce62aa0afefd666c9ccd2fa689000940368ce5b21"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-retirement.json",
+      "bytes": 471,
+      "sha256": "dc9e619063551d6d9bca24bf18a62a6451c1705ea839fcfce992e062f007e81c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-verify.json",
+      "bytes": 1497,
+      "sha256": "9455304937905eb63e952a18be4db00612e81f903f0a84329166979a17da9105"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-verify.json.started.json",
+      "bytes": 847,
+      "sha256": "63d8d1c3e3bb96d3c45560e030c87e95906fcc0dc0ae679129c895e0fdc6bbc9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-verify.log",
+      "bytes": 159,
+      "sha256": "dc4dd79f5d628a5d62ce3325b367e8b24dee8ddc25f1cb14ef70a93a2dc1475e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001-verify.process.json",
+      "bytes": 2344,
+      "sha256": "de7a1ec468e9e3caedefc71e89e89042a8827b0f7d9033708cebf8b5ae72e721"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001.log",
+      "bytes": 885,
+      "sha256": "18e5c6c02389f41b099fc5c8a5de12b712b545413d6244d34cd8777e9fd5c173"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001.process.json",
+      "bytes": 2884,
+      "sha256": "4281f90aa834e7fbfff22ba8a51abc1ebdd75cb2e82ee665955d059f84dee038"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001.xml",
+      "bytes": 1078,
+      "sha256": "5297668016a6b508dea97b1e822593eb13beafb704cdbac33424c80881c2386f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-xz001.zip",
+      "bytes": 690769,
+      "sha256": "c66d8f6aa1af9734800d834399f59a22c9bd3e533a213367650f85e31a493219"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-artifacts.json",
+      "bytes": 4158,
+      "sha256": "71bbdd59499a250ba83601197d6528890c3842323bc43bd647c0ab96384dc565"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-cpp.log",
+      "bytes": 132,
+      "sha256": "b2c4a401e1d969d2ece460969ac76e98d55477b91ff1bb7902591b258c14b3ee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-cpp.process.json",
+      "bytes": 2427,
+      "sha256": "8c00c527c26228a0a9ff7906a42a46e15bb83ded02322b1c7b33b3c63e773a0d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-manifest.json",
+      "bytes": 16089,
+      "sha256": "01c08bad7a455ad236d63df5fff065df9f054e2d271fa7b97171e18549e7d370"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-pack.json",
+      "bytes": 1609,
+      "sha256": "76f5bf731e67f0fc79c43e66f61bd9a76598008c9b4412e555de1418eaa76aa1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-pack.json.started.json",
+      "bytes": 961,
+      "sha256": "43935593f8d8cbfe65fdb7710d586ff7425120d06463abec0b3b661831454d63"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-pack.log",
+      "bytes": 156,
+      "sha256": "969946d48b97979606de9080272c1c5fe8a12855c1c4d9fe774f73c8756ba6d7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-pack.process.json",
+      "bytes": 2471,
+      "sha256": "94df4b279bd544b09211446b22dc2a69b278b6afa91821cc37041233013c3cd0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-retirement.json",
+      "bytes": 471,
+      "sha256": "d4dfa0e398cd6fc5e9e76d74bfdad592a1f9f4597de92b90314ca0ea71c173b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-verify.json",
+      "bytes": 1497,
+      "sha256": "78e02d9cacdc68ba94096edc038756a44c262b35a7d39f5de87528f276ac4ad6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-verify.json.started.json",
+      "bytes": 847,
+      "sha256": "ea3d158fb80940c5d40f8e3abd107d6f49c6a6039480a050e480ad9aaa204a1d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-verify.log",
+      "bytes": 159,
+      "sha256": "d174a57675c4b27fae7101dd9ae84cb62cf20f49364c9562cef65448a233192a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001-verify.process.json",
+      "bytes": 2330,
+      "sha256": "3f27855809ab9a80686383da7cce667a384b51af3e19a1c50b674e4d6c94ec8f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001.log",
+      "bytes": 885,
+      "sha256": "8591d0e6a510104a4071cbd5918a2789870077b91dfa779c0b60e14b0b2299b1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001.process.json",
+      "bytes": 2885,
+      "sha256": "3262e39e1def895cd3665f7411b1995b68609d1aaac56b2b7af9250991899cc6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001.xml",
+      "bytes": 1078,
+      "sha256": "1fba056fa520021a2d5ef2c1d1229a48b050cc1836b26c7e6729cf3370b1c098"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/legacy-yz001.zip",
+      "bytes": 690281,
+      "sha256": "7c5965d951df0d7130040fd5484fdba8a8e7dc083ead08139681535b616b1caf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-build001.log",
+      "bytes": 11876,
+      "sha256": "9f2dada6fbb2c8144ff5ce0296805195fcc7f737a370f531f60a802cb85964a5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-build001.process.json",
+      "bytes": 1615,
+      "sha256": "4d83a6f6366257bbadd96a0854d1689b21cd6b198275203a3c23baa6424a7fb0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-build002.log",
+      "bytes": 11329,
+      "sha256": "2f2471ff265ccef4d7dc50221fbf0ef294ccc105820b68153275fdb6af7c8c58"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-build002.process.json",
+      "bytes": 1613,
+      "sha256": "7f3bfc81e1fc21a4164cfc0bb8a9496bbc88acae07866b5c2fe464606fe7f004"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-install-sdk001.log",
+      "bytes": 18903,
+      "sha256": "2696468e15948b0f89cc70a3e9051122e791fa2d12afda49e138b875504f45bb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-install-sdk001.process.json",
+      "bytes": 1604,
+      "sha256": "df5845d0a9493da196a98e54f4cfc3949e5cca82d6d3c1ece498a8fa8aea3ba4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-native001.log",
+      "bytes": 595,
+      "sha256": "4fe61504598c89b4bcd6862057068912db3b05fde98ad72eebb84047cd1df697"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-native001.process.json",
+      "bytes": 1594,
+      "sha256": "cda5b6895c4a96e08efefc04f507bcabe7c0fe8e4f94a89e0288dc50bb0d649d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-build001.log",
+      "bytes": 1315,
+      "sha256": "ac242287d7146c97bab099cf33d60012f3ad6b66b9788a7eccc2060d7b8ad63d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-build001.process.json",
+      "bytes": 1551,
+      "sha256": "0492b74103bdb98f73c951bd377d0730896ade1aa0a6d792b6443040678ea523"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-configure001.log",
+      "bytes": 597,
+      "sha256": "1643e24dbd1862674be41749bcbaa2141db36f0b37ce6d8888c9fcab1f4657c3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-configure001.process.json",
+      "bytes": 2084,
+      "sha256": "2b0826909ea7c5f1bf736e05b63e2ad6cc1fb932b340626abf5a97fee0db491f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-products.json",
+      "bytes": 944,
+      "sha256": "01b0fa230ee305f85965cc9625fe53028122cf9377d45aa71683e8de0072613c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-test001.log",
+      "bytes": 1178,
+      "sha256": "d7578d75cc8977ba643c03abe8c33aa11fdcf70721b040dd3b69cd27da4ef66e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/linux-sdk-test001.process.json",
+      "bytes": 1579,
+      "sha256": "52458a37f8644664e3082b12e0e8b005288b9a92f92f5c8a1a8c497510c90d42"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties-cpp002.log",
+      "bytes": 43,
+      "sha256": "3955c91ff28d36ea9e2f022f043b7ab7936e749d822a9999b4f626b82249feb8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties-cpp002.process.json",
+      "bytes": 2387,
+      "sha256": "63d0a1b525c79141b22dbd8b7293eb3151321b43576037a32f57dfdc8d443ae0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties-python002.log",
+      "bytes": 38,
+      "sha256": "d4ba196c0157c9251dbdb2678244e83ecd7a5a2f509a97b8ee30a94156be09ec"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties-python002.process.json",
+      "bytes": 2263,
+      "sha256": "88bf5a5ae8fa6a72bb4684d8b09b7f4d4f05d615c2cc95bc7e93d6716b36e2d8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-artifacts.json",
+      "bytes": 1118,
+      "sha256": "05e4e1ac391bb80157b09518e8ea3cd7a99efe96b529a27353067cad9955e6c3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-manifest.json",
+      "bytes": 4705,
+      "sha256": "3c1c4b27bfb5824904b2b5ce0759027747d92375abe460690e33036a085b1368"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-pack.json",
+      "bytes": 1610,
+      "sha256": "ed8ee9cf00b79095c13d3ec08452c47c38591c6be3a1a767969c3fa0f4b531c3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-pack.json.started.json",
+      "bytes": 966,
+      "sha256": "f0c21a91631affccb1df3c3a3c53bbe19ea1ab7b9b6112c7c1d02b955884a348"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-pack.log",
+      "bytes": 157,
+      "sha256": "a9e7c3e7151ad3990087f7a951592e10a04dd66e7809ece7020c898ad6d708a8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-pack.process.json",
+      "bytes": 2475,
+      "sha256": "e0a99ce607c43b35de51f12a8e9f17d4c983fca0f8c5f514a3cac752f3a92ca1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-retirement.json",
+      "bytes": 467,
+      "sha256": "d35241e4028b35fe470608ac955200baf9147b4e05a87a60b5ef5e288a25b421"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-verify.json",
+      "bytes": 1497,
+      "sha256": "21b28dc3894d704b9e30ac7795317a43c4b7702d7b18393746078965834e11fb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-verify.json.started.json",
+      "bytes": 851,
+      "sha256": "e2bc3af202d3a5ca662246e71e2e1c89044880c26440272f5dde3173a511a284"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-verify.log",
+      "bytes": 160,
+      "sha256": "9a4f6cd872e05b1d68df7de5d5218b78f1412c3936017aa563758a8687af96f3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001-verify.process.json",
+      "bytes": 2347,
+      "sha256": "dc8c9f6f5f4290761105cf2341da8aa98e2e9078c0931b75b823d5f995abba01"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties001.zip",
+      "bytes": 9293,
+      "sha256": "45fd1962776ed461964c5b7d47ac2ce7831aaef76f1cc95eb0dec5d6d64a65d0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-artifacts.json",
+      "bytes": 3504,
+      "sha256": "34507f9c53ffac1eb985eec480ca159bedcdf4458635825f187215b26f904240"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-manifest.json",
+      "bytes": 11753,
+      "sha256": "15f56aa54a08dde91090f88ff6e2bba71e967efa490b12027afa2ccef5a76bc6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-pack.json",
+      "bytes": 1612,
+      "sha256": "6f1343184de545e1f20fd6b27bbaa8d6f619b5620c0948f6288c88864af45c72"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-pack.json.started.json",
+      "bytes": 966,
+      "sha256": "e834b8134fbbc24707ae5d1a0684fc5f060130702fa46ab3c9c9a9fd591142a5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-pack.log",
+      "bytes": 157,
+      "sha256": "620147980d2addbaa979619ad00473ad241c09279b2ff92c7ade98e23b030d98"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-pack.process.json",
+      "bytes": 2463,
+      "sha256": "42770c0df656f83857257188c415c38e7fc4bfdcff8b899a8bfbb46791ff349c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-retirement.json",
+      "bytes": 469,
+      "sha256": "287c7e9722054b26ef6de4f7b25beb1036608299ed372f8f902ed9e599ac097f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-verify.json",
+      "bytes": 1500,
+      "sha256": "c3eb2cd05f8fe4667eec0ec39db911e7fbeee2dd05892cc89721f69dbb5dd2c7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-verify.json.started.json",
+      "bytes": 851,
+      "sha256": "9ab8ec7c03cd5d8ba277c3a9ea7532e0cd8c7774d14fa87ead127209ffeef0a6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-verify.log",
+      "bytes": 160,
+      "sha256": "fe58ed6a32f56845fe67fdcfc16ce512064faa0438e4840d42f350320bea8410"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002-verify.process.json",
+      "bytes": 2348,
+      "sha256": "7ac5454c9f8aaba48b27cb5804e9d8d6ba2d5585e1b1bacded3a3e571f965865"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002.log",
+      "bytes": 886,
+      "sha256": "60888085de1adda27090710e12963c4ea58f676ad978a137f047a413d29a4d3f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002.process.json",
+      "bytes": 2475,
+      "sha256": "7b07f2b2e046ee6c0b507d4827a1ffea314b9c5b0b4396ef257fc73180107b41"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002.xml",
+      "bytes": 855,
+      "sha256": "c18d6b337931d80205ecdecb32ebf481708eb75fb8bb66c43eb228677f12a6a5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/properties002.zip",
+      "bytes": 37171,
+      "sha256": "ebd25ec32b0fc1c06a1206cf40a546976b48920f22e1ab47d82553ecd8091524"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-artifacts.json",
+      "bytes": 11392,
+      "sha256": "c7cfd8c3226707e9d30448377551472e6ceb9fedec3d6cc1b4caaa7dec124a64"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-manifest.json",
+      "bytes": 95019,
+      "sha256": "5a4806f65345f9c02240a6db6cf640d63648d8144e99acc89bf354a1f8d0660f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-pack.json",
+      "bytes": 1564,
+      "sha256": "59b03958e3c3028228985709a3d2b52266740a1d9807277138c9d6ecab0bb8d4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-pack.json.started.json",
+      "bytes": 928,
+      "sha256": "98eba460977c4f54f82bb53c9c26f6a47864be20a672d92ee31f565a3307d476"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-pack.log",
+      "bytes": 151,
+      "sha256": "363d320b81b64b16d2d6ea6bcd72cfaf88d796822411c21a00170a7b3b065d59"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-pack.process.json",
+      "bytes": 2438,
+      "sha256": "1a32371a9d7b9d65d0878ad25c9d718c3872e771c3637db9dec5140b3665a671"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-retirement.json",
+      "bytes": 456,
+      "sha256": "95029b6e25c9190061f989be39d050d1efb0c8f4e925cca19b8c1dbdc8e65b96"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-verify.json",
+      "bytes": 1457,
+      "sha256": "da4f4a5a89f2eead286a5396161098cf268ce93af6504f5f8862abdc7e70e618"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-verify.json.started.json",
+      "bytes": 819,
+      "sha256": "297586f5c27412ed28599abc24346b10d400da1068fc1548daa31b47c8559c1a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-verify.log",
+      "bytes": 154,
+      "sha256": "bc009708fefa0ef78d9144865b4a70b55865fc6087181a340e0c529c25abba92"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch-verify.process.json",
+      "bytes": 2315,
+      "sha256": "f2b53bb1119daaeab9e6ad2a2e5fc1ec95ba0501d43547d67cdc774ea099dcaa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/scratch.zip",
+      "bytes": 171666,
+      "sha256": "e5a1ecbf38614184d360356a5e73853154e134a223b2e5a9c83f62f111491572"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-build001.log",
+      "bytes": 2353,
+      "sha256": "22be81f386c26c0b2d2fc8bd0812b217345afa57b00010ac900c5cacd7dc6d03"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-build001.process.json",
+      "bytes": 2039,
+      "sha256": "cf301a4435a1e90244c23caac8187ce4b86c9b00035e70f514f79ed963b710e8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-configure001.log",
+      "bytes": 958,
+      "sha256": "eb98bd4583e3b04fe00e17ea5fca9e8c459dd6ad63d9c98f10be2d8e4119bb25"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-configure001.process.json",
+      "bytes": 2567,
+      "sha256": "f7207b866c78cb1c1cf303b2a19c0af4ca173aa5ee44818d1a20d3bbb64d24ab"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-linux001-identities.json",
+      "bytes": 50332,
+      "sha256": "77c49207d5462ad2fa19000466909985be6b41d546c9f54d19131b5450eac595"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-linux001-LastTest.log",
+      "bytes": 6644,
+      "sha256": "ddec05c74dbc4f0a44c7cb022bbf8d38e06a6faabd5710a98b24f527670cc19e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-retirement.json",
+      "bytes": 1220,
+      "sha256": "46d9f8eb5f763bcb280bdf6cab2497d88d6de833e8a0a07daf8aedebe7ae7d24"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-test001.log",
+      "bytes": 1174,
+      "sha256": "3b29f014189f13cfe87642533d8ae0217d8a0c89de725077b96243d6833e293b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-test001.process.json",
+      "bytes": 2063,
+      "sha256": "b67deca6898e767a85e6e4a9d9b2e0b3afc73430c5e2f92e3cc01739b20bad5a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-windows001-identities.json",
+      "bytes": 120966,
+      "sha256": "04bf552a4d38d95ceee45de57ed5d34780725c81383a03bdd3931ca1e53a6df4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/sdk-windows001-LastTest.log",
+      "bytes": 7105,
+      "sha256": "81dd19e448249ff929a286754518e89b53c67d7367e70614dbfc0412f0484e00"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-artifacts.json",
+      "bytes": 1849,
+      "sha256": "bd8824764d7ef187003afeb318b560ebf7d1884e7ca8b49f82ead583a8c05b74"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-cpp.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-cpp.process.json",
+      "bytes": 2168,
+      "sha256": "82fee4ae1495422551b1009f3beacb39edf4ef5eb54a0cd5f0cacf8a6c9e5ceb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-manifest.json",
+      "bytes": 7101,
+      "sha256": "1e3bfaf812a6c3425234ce2c46df57f8fe797daf136ee01de5473bb25d8ef799"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-pack.json",
+      "bytes": 1641,
+      "sha256": "9df44a734b30b66871b89eadbfea3dc5b17027664761ad49746519924b577a82"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-pack.json.started.json",
+      "bytes": 986,
+      "sha256": "4ce91470869efae2acd37dc9a8a983bee9f7e6fed54241e720cfe301a8a3419d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-pack.log",
+      "bytes": 161,
+      "sha256": "2c98273fecd09db7844ebd46e2924c8da33ff960369a97e99fc1e94c17fc9e31"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-pack.process.json",
+      "bytes": 2493,
+      "sha256": "f1960c3bdf0065f55bcc1758649a774ff52280edb7c23c80bf6b0019f9fa27c4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-python.log",
+      "bytes": 38,
+      "sha256": "2b24cd7686d6bfb7a36d81bdb5013e87e3d4657548aa89fc3ad088640abfcb06"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-python.process.json",
+      "bytes": 2312,
+      "sha256": "2a631f955c94ce3eef4940c43f9662ff11e007ada0defb132e6069217df57308"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-retirement.json",
+      "bytes": 474,
+      "sha256": "e7e2af0c7c2b3f329fdcc4af78092bb07d3aecaf286116e4032984e73f7757a6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-verify.json",
+      "bytes": 1524,
+      "sha256": "b41710384274f5e5f5da7e49d97d039d64639e8c4683d6114b14d797a6da7daf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-verify.json.started.json",
+      "bytes": 867,
+      "sha256": "d269ca2c4fb54e4834257ae4c043664eecacb6ea28da4e4547a1f397963d505d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-verify.log",
+      "bytes": 164,
+      "sha256": "fbdf0953956585e722d58b46d386f6ef5fd622b51186d95b7e55851160eb0e7b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001-verify.process.json",
+      "bytes": 2359,
+      "sha256": "e4cff43f48923f49d58967df9eecac45c8fb645bca689f0f966e8ad045e84343"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001.log",
+      "bytes": 890,
+      "sha256": "7fd89637fc0331d82a05f745c803b94db0e2302d3d858b9c3fa30f415739b9fe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001.process.json",
+      "bytes": 2703,
+      "sha256": "43543dbc1bf754584f13470485823f34c25f4f6fd5dc33309b772a40aaf31665"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001.xml",
+      "bytes": 809,
+      "sha256": "9a074d8184f51f6aeb8c44fe3d4d27e67ab10fa19ead43e1d2de0dc3aa44500a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/stack-defaults001.zip",
+      "bytes": 197746,
+      "sha256": "3b30db39c438c55d162fc5cd4d8424b7d7a3d39050a3fa3794d465449f62ae05"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-artifacts.json",
+      "bytes": 2781,
+      "sha256": "adb36c20259a7dd22435af00f5eaa7bd6295b804f150a08782606eda36e5c965"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-cpp.log",
+      "bytes": 47,
+      "sha256": "f5315352dc4c6e011c5583fdf31793cc24b173f761eb890f3b6fbc597205de27"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-cpp.process.json",
+      "bytes": 2407,
+      "sha256": "ffd7118fb17f3eaa49e8e8f4226f0f4cc9bdacbd8d3e362194dd977d4fffd497"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-manifest.json",
+      "bytes": 9712,
+      "sha256": "80d9ece6cd68cc917996ab09864a95d021f6a799c639e65aa7de97be95fe4487"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-pack.json",
+      "bytes": 1602,
+      "sha256": "b4ad0e5907dbd1cab0d6ee37e3f108a4b156ec2daf96534261d3b8388b1175a3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-pack.json.started.json",
+      "bytes": 956,
+      "sha256": "cc96cc20140afe1b22fb189005ad97b3d9239d922a21c63304630b3ad888c913"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-pack.log",
+      "bytes": 155,
+      "sha256": "cfb69278a03193a8843ad654a6b916d8ef5229d2f44123189799454208d17316"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-pack.process.json",
+      "bytes": 2450,
+      "sha256": "d182759c672d8ea0ecacf800ef0a11364684faa25469216484953f71444ae79c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-retirement.json",
+      "bytes": 471,
+      "sha256": "8d5553b93355828262f288eecbd9dc13c13285491d4ee588e9d3097131aa7fc4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-verify.json",
+      "bytes": 1491,
+      "sha256": "7f7355b5c3d5f6f48942fac3d0bdeff5e348fd8202b85728825ea10a6a915b73"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-verify.json.started.json",
+      "bytes": 843,
+      "sha256": "70f33bf13b18c9babc308888d9a28aca3b5954179610fc5e654ee3536e47107e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-verify.log",
+      "bytes": 158,
+      "sha256": "80eb78c68e399be558837495b88f882c42a05004bf1dec71a0e0dd2078606bfd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001-verify.process.json",
+      "bytes": 2339,
+      "sha256": "77c3610a97464c41a8fe6c770a26df39e79239bd849c50068c814367933a83be"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001.log",
+      "bytes": 884,
+      "sha256": "617f932965ab5de0b5fcf6f348263a0db7e862902d762763fcc560688fa9d5ee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001.process.json",
+      "bytes": 2485,
+      "sha256": "ff274aa30aee54e1765a7707043e0c99642328650e578dc95b06eb013d890b2a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001.xml",
+      "bytes": 534,
+      "sha256": "ec912534b378e67d2a6bb0c90aef94cd8657fa200d73005202b183346ba84fac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy001.zip",
+      "bytes": 1730290,
+      "sha256": "0c6988d5ad527343b8ff87bd13a62d3351fce26c4ebd880f02b7474b0ba45fe9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-artifacts.json",
+      "bytes": 2781,
+      "sha256": "152da6f5cea89c951c76e3d99c4fac65db55ca1b7616c67f461bd8c695f4f134"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-cpp.log",
+      "bytes": 47,
+      "sha256": "f5315352dc4c6e011c5583fdf31793cc24b173f761eb890f3b6fbc597205de27"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-cpp.process.json",
+      "bytes": 2405,
+      "sha256": "68b94a71c7def5360be80f0de4915e823c5ab9285ffa7d9a9470c359bf87a052"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-manifest.json",
+      "bytes": 9704,
+      "sha256": "ae4aca2b7303daf0ec21b05d0becb1d9ab6bbed36a1fac430782feb0e551e8d6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-pack.json",
+      "bytes": 1602,
+      "sha256": "69a70bc760c2eb324c92a079a541f467cbb511e877525dcf71c40cb8d3feaefd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-pack.json.started.json",
+      "bytes": 956,
+      "sha256": "ae6723753132f25d000eebd3994bd3f45aa8671e58d503b15c569856c4ae191f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-pack.log",
+      "bytes": 155,
+      "sha256": "dcbc9b70a21811d1d3f71ac4cf8deaddaaf5d37b01a5ea98a888c5bd49032d75"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-pack.process.json",
+      "bytes": 2466,
+      "sha256": "2846607e3565fb202b9c6281f0dac9c4b02f9f2d515438ef881511dba7990eea"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-retirement.json",
+      "bytes": 471,
+      "sha256": "db3707fdc050236fb93816ca774ac9ad7ffc0ee3deb11c39fa6a60b71dd4031d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-verify.json",
+      "bytes": 1491,
+      "sha256": "d76d9cc0b20007e921124f255b1ec9dadd52916bffd0105a7de8222d09e06e57"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-verify.json.started.json",
+      "bytes": 843,
+      "sha256": "328508080ce4318496512eaaacee255049b0e8c2260573ffc333ccf57696f58b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-verify.log",
+      "bytes": 158,
+      "sha256": "27609bbabb39dc507d9dbebb2bbd998f12b5ba2e96f6f67de69a5c3b688ff6a5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002-verify.process.json",
+      "bytes": 2326,
+      "sha256": "1281c148813c9ea80e02638fc22bf91b2ad1f182bfe8502dff325c2b34fe4a1a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002.log",
+      "bytes": 884,
+      "sha256": "0362fead9c533bb86507db3bc1ffee5d7031e0e82dc1388cc370b8ae036e280c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002.process.json",
+      "bytes": 2482,
+      "sha256": "f8d975546a5403c5ee6acc23a55606534912e64cbbf12c872314905088a37432"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002.xml",
+      "bytes": 534,
+      "sha256": "4de443a16c08552e80c924f6ebd4862ebed00edc1bf3a192dacdeec24ab0302d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xy002.zip",
+      "bytes": 1730245,
+      "sha256": "52fd8e3a5207e1cb8c54c2d1f64c2e8a1f4717ff9d0872eb3cbcd5f5cd1383bf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-artifacts.json",
+      "bytes": 2781,
+      "sha256": "73d6ecd71d553206ce85d1a96faa0bb9d90734abb1c4361661dc156679097496"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-cpp.log",
+      "bytes": 47,
+      "sha256": "fe11014f2ae72711261efecd3d1c2b36e996185a78dbb78028f5bf69b6485ba7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-cpp.process.json",
+      "bytes": 2406,
+      "sha256": "c139dce815f5e98838542e1acd00acc9939e1b194effe5f7d3413ad60a3cda0d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-manifest.json",
+      "bytes": 9713,
+      "sha256": "050f175d01355a99699e3af1b493b3f9ca62c91b748ab636395812972a5ababa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-pack.json",
+      "bytes": 1600,
+      "sha256": "0fde03ad2eee4c7365fcbe864da1bc2b7bea44d506b858bdd8f4cc737e65ef18"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-pack.json.started.json",
+      "bytes": 956,
+      "sha256": "1ff29eaeb2db9f7d9b55664b8ae05ca2247c12fd297fafe4d66e4be4f19aeede"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-pack.log",
+      "bytes": 155,
+      "sha256": "ae4d187b0c7d76feac14df2df0f7d04e4d95384cc9832fc26c7b8988b221484b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-pack.process.json",
+      "bytes": 2454,
+      "sha256": "2774deafa76d53e87052c5e83c14300fad486e52b0eb228d6099d0da6d274d17"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-retirement.json",
+      "bytes": 471,
+      "sha256": "b52e213f1aaee1a8d9c262a25e889ddb816ac0d9feb6ac341b60a0de6d2c76ea"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-verify.json",
+      "bytes": 1491,
+      "sha256": "01280724ba55e6ccaf5463298ff21f8e967ff49b9939bf55b28399aa34d9fae2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-verify.json.started.json",
+      "bytes": 843,
+      "sha256": "23617fa009a4483c0b2420a6df3179d85276cfeb46232b149cdd8dc9c150b358"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-verify.log",
+      "bytes": 158,
+      "sha256": "f80d7c5d2a54020701108ca56c459d0c1f31a49de2de30cc7a94d9e1b6640aea"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001-verify.process.json",
+      "bytes": 2340,
+      "sha256": "f19cbed2c84292fab7eda3d6592c7cb42d9a14fc7a03d21c7fa0340393583b1b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001.log",
+      "bytes": 884,
+      "sha256": "2dec933a4347a3ae323166cc170074b03a74050bcab18917e38863df15bfc197"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001.process.json",
+      "bytes": 2482,
+      "sha256": "f512b65c179c292dc0f213b0ee03b8abdd930d942c1cb5c8f42c080dbdd16add"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001.xml",
+      "bytes": 534,
+      "sha256": "315dd33b4db203c9e229a780fbe1dd21d4d98285dd0601a3315aa446b41c3ace"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-xz001.zip",
+      "bytes": 1731547,
+      "sha256": "bdb43e841ad853661d653bade2e4854c8d61fa1193de924e58748ba7b9ef1fb6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-artifacts.json",
+      "bytes": 2781,
+      "sha256": "fd0c43b22ea9c8350063364cf4c9be5255b278eefcd39c722dfde04a7e249ca7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-cpp.log",
+      "bytes": 47,
+      "sha256": "1330f4cc70e90295b317feff6673e3a2fc3c1a8f46c65f6b5d7e5b574cc8cd43"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-cpp.process.json",
+      "bytes": 2406,
+      "sha256": "6cc5fbfd8a85f131416d1174cd633c30024165317a5b81373e5c8949610233ce"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-manifest.json",
+      "bytes": 9713,
+      "sha256": "524376b2250f1b694490e2e620982ee7216f7e34bad8764d68900bc6c703e115"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-pack.json",
+      "bytes": 1602,
+      "sha256": "4007be6ff73ab805360303f9dc115b76b5de95142fc98873c645b63c46679a56"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-pack.json.started.json",
+      "bytes": 956,
+      "sha256": "c623ee683f47d13b76d146b440ebef2791f37e4120283ca2dbed85e6c00a37a2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-pack.log",
+      "bytes": 155,
+      "sha256": "d5d6b4de7bd7bea5d73ce1cbf450a78754e794795221d5c969fbdcf78e9eb6db"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-pack.process.json",
+      "bytes": 2460,
+      "sha256": "bf6b42e9bcf8711eadca4181ef6d1be2a85ca8f404ba51ed88f86beea869a721"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-retirement.json",
+      "bytes": 471,
+      "sha256": "25ff1b2a9296c6f107d12b987f19710afd4ef364fccca4a6df2faaa85673b11a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-verify.json",
+      "bytes": 1490,
+      "sha256": "aa5522792144851374ee56e6390bc76e130ad3fc4de90f61910c9bf320519394"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-verify.json.started.json",
+      "bytes": 843,
+      "sha256": "a3a42af9c26c807804af8d2b587d0ed79aace52b28d52d74107015ff054b1f89"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-verify.log",
+      "bytes": 158,
+      "sha256": "24dfae0a8db7c99df8aabc8d04e0bbfc6cb22e27253f3aab9e03ba9c3e886d68"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001-verify.process.json",
+      "bytes": 2338,
+      "sha256": "93f1d5249bf096a02a3923c7f227b8c1aa04009ad30bc6e1395f9f05f5149897"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001.log",
+      "bytes": 884,
+      "sha256": "d1c53328455558f41e6b40164b111f80ba8a825320fc7f52c5338ca8591c974b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001.process.json",
+      "bytes": 2481,
+      "sha256": "e3b72fb23d22b257452b0397e9a6883e5c395219bfc9c9ec7fda85a3ea7d2596"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001.xml",
+      "bytes": 534,
+      "sha256": "469fe4b5e2762c09bb8c946464de7f913589a1924ca195cff73ea4fe209c4573"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/style-yz001.zip",
+      "bytes": 1728734,
+      "sha256": "102e1201aa228ff9572beb38724026ca30fe749e1c11bf31377aecd16ad15350"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/tools001.log",
+      "bytes": 881,
+      "sha256": "4557a6ab1c03357f367551c0e651da13d6b8d08d3da9048c98449344b3112ff4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/tools001.process.json",
+      "bytes": 2344,
+      "sha256": "4fac9b5ba121e42ee1569fa2aee01bf4f827c1cc02fe18c23391e0572b40906b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/tools001.xml",
+      "bytes": 7845,
+      "sha256": "89aca1624bdc868915f6e58814900b27c699d5828e6fe56b1465122cb4bdc105"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build001.log",
+      "bytes": 32376,
+      "sha256": "c3c57f329e9be4e64d3546fe508174c9cf54fd1865537f407a9a2564f5e993c2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build001.process.json",
+      "bytes": 2998,
+      "sha256": "9f2d4222eb6998119973bbea01cf641c21831950f3f5951abd580bf4e922eea3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build002.log",
+      "bytes": 15136,
+      "sha256": "ad6bfa6ac613a36e1b5ad73bd801e9c0f25f8c1271a27cb5163a31ddd37731e8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build002.process.json",
+      "bytes": 2160,
+      "sha256": "bf2b6b565928756bd4d827e824bf02cc6d60b34e8b708cea7eff807de5ad08f7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build003.log",
+      "bytes": 2403,
+      "sha256": "1aeea70c13f27fda8c0a6241177692f37204f31213f7aa8b39e630769f0b4e98"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build003.process.json",
+      "bytes": 2067,
+      "sha256": "e1e3b1fa01e7f510610120a8d36b38a685de160481a4a0aa065786caa25d7934"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build004.log",
+      "bytes": 1611,
+      "sha256": "37b260b08de68f71e56dc6e1c4bd260907053abb9dccabd0033859f08b2f06e5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build004.process.json",
+      "bytes": 2031,
+      "sha256": "cbc6387831a5aeb2eaba2cb4a3a4139455f2196849fa43cdbc7a923b6b101a21"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build005.log",
+      "bytes": 1610,
+      "sha256": "c440076976a5f338d17c238b20ff9cddbf199c89e2cbc858bf8dcfad25f089e0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build005.process.json",
+      "bytes": 2865,
+      "sha256": "26bf5ffea6a86fdbc1ffb4ec8b43bf1869d8fe4d705858e550c053b3a41b4880"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build006.log",
+      "bytes": 7612,
+      "sha256": "2b4522808d9044d991fb238ae3bc923cf086a954c6e76b09da126f54cac8d177"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-build006.process.json",
+      "bytes": 2068,
+      "sha256": "b7d1092a3eb51dd0405025234069c44cec8e801f7c2ca9026beb18908c4d31a8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-native001.log",
+      "bytes": 701,
+      "sha256": "d4f54fa78479cd56e3e8c3fae0e2814a91caa0121ba8d19e4831b39da260cc4c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-native001.process.json",
+      "bytes": 2115,
+      "sha256": "f3d97345a466f4a63602acd066ff83a2c104e7ff0b660361fe2b8b77acaedf0f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-visual-final001.log",
+      "bytes": 372,
+      "sha256": "125cca7914b3587f73f94453f24284c40bb55a864945177537534dc130992b08"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-ui-20261104/windows-visual-final001.process.json",
+      "bytes": 2042,
+      "sha256": "01521b6bb2084d4adf1d98504ef13b169692479e6910577bb25d64396e3b263c"
+    }
+  ],
+  "historical_references_or_expectations_modified": false,
+  "original_reference_pins": [
+    {
+      "path": "tests/fixtures/point-presentation-imagej154r.jsonl.gz",
+      "bytes": 2632,
+      "sha256": "cf802f66454eaca2e18674c846d9389e56de06cfe2199813bde5e16c386a2293"
+    },
+    {
+      "path": "tests/reference/ObservePointPresentation.java",
+      "bytes": 8908,
+      "sha256": "87bfaa6e9e9cb5299b4b90ef12ad6160b3bd075b2e3ffb418578a347f1de5e77"
+    },
+    {
+      "path": "docs/parity/reviews/T04a2-point-presentation-20261104.json",
+      "bytes": 59927,
+      "sha256": "b8390a770f11aabb150090942ae9ce6bb4023e6ad73367eb14637e122b8852ee"
+    },
+    {
+      "path": "docs/parity/references.json",
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    }
+  ]
+}

@@ -31,6 +31,9 @@ struct PointPresentationOptions {
   std::optional<PlanePosition> position;
   Plane plane = Plane::XY;
   bool labels = true, show_all = false, round_centers = true;
+  // Emit each primitive relative to its glyph center. Useful for immutable
+  // UI templates: anchors can pan/zoom while marker geometry stays in device units.
+  bool relative_primitives = false;
   // Optional device-space left,top,right,bottom. Parent-row eligibility remains
   // the caller's responsibility. XZ/YZ per-point visibility compares T/C only.
   std::optional<std::array<double,4>> clip;
@@ -52,6 +55,9 @@ struct PointGlyph {
   std::size_t index=0, first_primitive=0, primitive_count=0;
   unsigned counter=0;
   std::array<double,2> center{};
+  std::optional<PlanePosition> position;
+  bool visible(std::optional<PlanePosition> current,Plane plane=Plane::XY,
+               bool show_all=false) const;
 };
 struct PointPresentation {
   std::vector<PointGlyph> glyphs;

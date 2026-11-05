@@ -1,9 +1,9 @@
 # Native point presentation
 
-This is the P2 native/API contract, not a completed point-tool UI or raster
-flatten implementation. [PLAN](PLAN.md#ready-task-1-m2b2b-p2--point-marker-presentation-and-interchange)
-owns remaining consumers. Both hosts must use this shared contract through
-their existing visual caches; no new job or renderer controller is needed.
+This is the P2 native/API and scoped Windows UI contract. Both Dear ImGui
+hosts use the same glyph templates, properties and creation defaults.
+[PLAN](PLAN.md#ready-task-1-m2b2b-p2c--raster-flatten-and-point-style-interchange)
+owns remaining raster flatten/interchange work and the wider point-tool gaps.
 
 ## Style and interchange
 
@@ -56,7 +56,10 @@ C++ includes `imagejxx/point_presentation.hpp`; Python exposes `PointStyle`,
 arrays. Glyphs reference contiguous primitive spans, retaining original index,
 counter and device center. Primitives are lines, filled rectangles/ellipses,
 stroked ellipses or text baselines, with RGBA, stroke width and text/font size.
-There is no per-glyph heap vector or image/provider access. Python array getters
+There is no per-glyph heap vector or image/provider access. Glyphs also retain
+optional native positions; `glyph.visible(current, plane, show_all)` shares the
+view filter with consumers. `relative_primitives=True` emits primitive offsets
+from each glyph center for reusable templates. Python array getters
 materialize independent values; consumers should fetch once and cache them.
 
 Anchor coordinates use `origin + point * scale` with positive finite axis scales;
@@ -78,6 +81,49 @@ estimate excludes allocator overhead, Python getter copies and process RSS.
 No borrowed geometry clone precedes admission; Python holds the GIL over the
 metadata-only call. Public native mutators return independent values.
 
+## Shared UI consumers and configuration
+
+New ordinary points/multipoints and scientific XY/XZ/YZ annotations receive
+native style metadata. Ordinary multipoints freeze marker/color defaults at
+first click; their counters/positions still capture per click. Scientific drafts
+freeze defaults and cancel on relevant changes. Existing point rows retain
+explicit metadata during geometry edits; P4 owns wider transformation policies.
+
+| Key | Default / consumer |
+| --- | --- |
+| `point_marker` | Hybrid; Choice Hybrid/Cross/Dot/Circle, consumed by both creation lanes. |
+| `point_marker_size` | Small; the seven named choices, consumed as size indices. |
+| `point_color` | `#ffff00`; new points' base ROI stroke color. Preference text uses `#RRGGBBAA`, whereas ROI style text uses `#AARRGGBB`; canonical RGBA avoids interchange ambiguity. |
+| `point_labels` | True; captured on new point styles, effective for multipoints. |
+| `point_show_all` | False; live display override for styled active/saved/overlay/scientific point roles, without rewriting bindings or stored style. Explicit per-row `show_all` remains independently persistent. |
+| Existing `point_size` | Raster diameter 8 for ordinary processing selections; never a marker-size code. Scientific annotations retain their native width/annotation controls. |
+
+Preferences use existing Apply/Revert/reset/save/reopen. Selection properties
+and scientific annotation properties share marker/size/label/visibility,
+Hybrid cross color and sparse counter-color widgets in a collapsible section.
+Base color remains with existing ROI stroke controls. Selection preview stages
+until Apply/Cancel; scientific row properties stage until Apply/Revert and reuse
+the existing native update/undo/redo/session/record owner. Reset restores native
+marker defaults; explicit clear restores legacy rendering. Unknown styles remain
+intact, display an unavailable notice and can be explicitly cleared in properties.
+
+Tagged active selections, saved ROIs, overlays, plane annotations and import
+previews use the existing RoiVisual cache. Untagged legacy rendering stays
+compatible until explicit styling; raw wire appearance promotion remains P2c.
+Immutable relative templates decode geometry/style/counters once per owning
+cache rebuild. Drawing filters retained positions and maps anchors without
+re-decoding metadata. Templates retain no source/provider. Per-frame expansion
+is conservatively admitted before painting; ellipses use bounded 32-segment
+geometry and diagnostic index lists stop at 32 entries. Existing owners admit
+aggregate cache storage; this is not a whole-process/RSS or backend-memory quota.
+
+Active XY points compare T/C/Z; XZ/YZ geometry spans Z and compares T/C.
+Parent saved-ROI/overlay scope and scientific plane/fixed-axis eligibility still
+apply before per-point visibility, including under global show-all. No implicit
+non-XY projection or position erasure occurs. Pan/zoom changes anchors; the
+host/canvas GUI scale changes marker/stroke/font dimensions. Font atlases are
+rebuilt at that scale, so current/base font-size ratios alone cannot recover DPI.
+
 ## Evidence and remaining integration
 
 The original `ObservePointPresentation.java` records actual Graphics2D drawing
@@ -88,7 +134,20 @@ layout. Java's compound integer font-size assignment matters: sizes use fonts
 8/9/11/12/14/18/20. These descriptors do not prove font rasterizer or antialiasing
 pixel parity; qualify UI drawing and raster flatten separately.
 
-P2 still requires actual controls/defaults, cached drawing for active selections,
-saved ROIs, overlays and scientific planes, flatten/export consumers, settings
-reset/cancel/persistence and role/pose checks in both hosts. P3 automatic actions
-and P4 edit/rebind/replay remain separate required work.
+The [P2b receipt](parity/reviews/T04a2-point-presentation-ui-20261104.json)
+records scoped actual-input checks in both Windows hosts, static draw/cache and
+GUI-scale checks, and native/installed clients on Windows/Linux. This is not a
+Linux/macOS UI, GPU/font-pixel or full point-tool qualification. The scientific
+measurement fixture keeps legacy overlay gates; independent classic-Z fixtures
+with explicit bindings qualify ordinary overlay drawing.
+
+The ordinary multipoint draft preview still materializes styled JSON/geometry
+per frame and uses plain vertex presentation until completion; captured counter/
+position presentation is complete on the published selection. The creation owner
+must replace that preview path with cached typed inputs, without restoring full
+annotation encoding on every click. This is a required P2b consumer residual,
+implemented with P3's creation work; it blocks full point-presentation closure.
+
+P2c remains required: raster flatten, bare-wire appearance promotion and complete
+export/loss-review consumers. P3 automatic actions and P4 wider edit/rebind,
+preference/application policy and ordinary creation replay remain separate work.

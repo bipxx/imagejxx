@@ -313,6 +313,14 @@ Json pointAnnotationEditingUiCase(Window& window,const std::string& context,cons
     menu("menu.Edit");menu("menu.Edit.Selection");menu("menu.action.show_selection_properties");
     text("Counter","2");button("Positioned point");
     text("Frame (1-based)","2");text("Channel (1-based)","2");text("Slice (1-based)","2");
+    button("Point marker presentation");button("Styled markers");
+    auto markerChoice=[&](const std::string& name,const std::string& value) {
+      button(name);const auto key=name+"."+value;
+      const auto& p=last.at("selection_properties");const auto& c=p.at("control_states").at(key);
+      click(Json{{"enabled",!c.at("disabled").get<bool>()},{"id",c.at("id")},{"rect",c.at("rect")},{"point",p.at("controls").at(key)}},key);
+    };
+    markerChoice("Marker","Circle");markerChoice("Marker size","Large");
+    button("Point labels");button("Show points on all slices");
     report["draft"]=last.at("selection_properties").at("preview");
     report["unpublished"]=source->snapshot().shares_data(before) && source->undo_steps()==undo;
     button("Apply");report["applied"]=selectionJson(*source->snapshot().data().selection);
@@ -327,6 +335,21 @@ Json pointAnnotationEditingUiCase(Window& window,const std::string& context,cons
     window.action("show_selection_properties");frame();button("Clear point annotations");button("Apply");
     report["cleared"]=selectionJson(*source->snapshot().data().selection);
     report["stored_after_clear"]=selectionJson(source->snapshot().data().rois[0].selection);
+    // The scalar TCZYX fixture above owns measurement/editing. Legacy overlay
+    // actions intentionally remain unavailable there. Use an independent
+    // classic-Z view fixture with explicitly rebound positions for draw roles.
+    const DatasetShape role_shape{1,1,2,24,32,1};
+    auto role_selection=*applied.data().selection;
+    role_selection=with_point_annotations(role_selection,
+        {point_creation_annotation(role_shape,{0,0,1},2),PointAnnotation{},PointAnnotation{}});
+    Stack role_pixels{Image(32,24,1,PixelType::UInt8),Image(32,24,1,PixelType::UInt8)};
+    DocumentData role_data{Dataset::from_planes(role_shape,std::move(role_pixels))};
+    role_data.selection=role_selection;role_data.rois={Roi{"styled roles",role_selection,{},{},{},{}}};
+    window.addNativeDocument(std::make_shared<imagejxx::Document>(std::move(role_data)));
+    window.action("add_overlay",{{"all_slices",true}});frame();frame();frame();
+    report["fixture_actions"].push_back("Independent classic-Z draw-role fixture with explicit position rebind; supported ordinary overlay action");
+    report["point_style_render"]=last.at("ordinary_canvas");frame();
+    report["point_style_repeat"]=last.at("ordinary_canvas");
     report["workflow_count"]=window.workflow.size();report["state"]="observed";session.close();
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){window.cancel();window.wait();report["failure"]=error.what();writeJson((dir/"failure.json").u8string(),report);throw;}

@@ -1,5 +1,6 @@
 #include "window.hpp"
 #include <imagejxx/point_annotations.hpp>
+#include <imagejxx/point_presentation.hpp>
 #include "analysis_measurement.hpp"
 #include <imagejxx/stack_projection.hpp>
 #include <imagejxx/imagej_projection_command.hpp>
@@ -9,6 +10,7 @@
 #include <imagejxx/imagej_intensity_plot.hpp>
 #include <type_traits>
 #include "path_visual.hpp"
+#include "point_visual.hpp"
 #include "calibration_plot_view.hpp"
 #include "calibration_plot_annotation.hpp"
 #include "calibration_plot_payload.hpp"
@@ -982,6 +984,8 @@ struct Window::Impl {
     ImVec2 pan{0, 0}, origin{0, 0}, extent{0, 0};
     Json points = Json::array();
     std::vector<PointAnnotation> pointAnnotations;
+    std::optional<PointStyle> pointStyle;
+    std::optional<RoiColor> pointColor;
     bool dragging = false;
     float aspectY = 1;
     OrthogonalViews orthogonal;
@@ -1304,7 +1308,7 @@ struct Window::Impl {
         (!newRenderer || savedRoiEdit.pointer_active()))
       cancelSavedRoiGeometry("owner_changed");
     cancelCreation(pane, "owner_changed");
-    pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
+    pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);pane.pointStyle.reset();pane.pointColor.reset();
     pane.dragging = false;
     pane.selectionGesture.reset();
     if (creationRebindOwner == pane.doc->id) {
@@ -5161,7 +5165,9 @@ struct Window::Impl {
       return;
     auto points = std::move(pane.points);
     auto annotations=std::move(pane.pointAnnotations);
-    pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
+    auto markerStyle=std::move(pane.pointStyle);
+    auto markerColor=std::move(pane.pointColor);
+    pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);pane.pointStyle.reset();pane.pointColor.reset();
     pane.dragging = false;
     guard([&] {
       auto value=selection(tool, points,
@@ -5174,6 +5180,7 @@ struct Window::Impl {
             [](const PointAnnotation &v){return v.counter!=0 || v.position.has_value();});
         if(tagged)value=selectionJson(with_point_annotations(selectionFromJson(value),annotations));
       }
+      if(tool=="multipoint")value=selectionJson(pointCreationPresentation(selectionFromJson(value),markerStyle.value_or(pointCreationStyle(preferenceState.settings)),markerColor.value_or(pointCreationColor(preferenceState.settings))));
       pane.doc->select(value);
     });
   }
@@ -8502,7 +8509,7 @@ void Window::action(const std::string &name, const Json &p) {
     if (!documents_.empty() && document()->view().orthogonal)
       document()->setView({{"orthogonal", false}});
     for (auto &pane : impl->panes) {
-      pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
+      pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);pane.pointStyle.reset();pane.pointColor.reset();
       pane.dragging = false;
       pane.selectionGesture.reset();
     }
@@ -10695,7 +10702,7 @@ void Window::Impl::tools() {
       if (!owner.documents_.empty() && doc()->view().orthogonal)
         doc()->setView({{"orthogonal", false}});
       for (auto &pane : panes) {
-        pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
+        pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);pane.pointStyle.reset();pane.pointColor.reset();
         pane.dragging = false;
         pane.selectionGesture.reset();
       }
@@ -12024,22 +12031,22 @@ void Window::Impl::geometry(const Json &o, Pane &pane, ImU32 tint, bool cache,
                             const char *role) {
   auto draw = ImGui::GetWindowDrawList();
   const bool nativePath=get(o,"kind")=="path";
-  if (o.contains(roi_style_attribute) || nativePath) {
+  const bool nativePoint=o.contains(point_style_attribute);
+  if (o.contains(roi_style_attribute) || o.contains(point_style_attribute) || nativePath) {
     const auto rgba = ImGui::ColorConvertU32ToFloat4(tint);
     const RoiColor fallback{static_cast<unsigned char>(rgba.x * 255 + .5f),
                             static_cast<unsigned char>(rgba.y * 255 + .5f),
                             static_cast<unsigned char>(rgba.z * 255 + .5f),
                             static_cast<unsigned char>(rgba.w * 255 + .5f)};
-    if(nativePath && pane.roiVisualCap!=rgbCap()){pane.roiVisuals.clear();pane.transientVisual.reset();pane.roiVisualCap=rgbCap();}
+    if((nativePath || nativePoint) && pane.roiVisualCap!=rgbCap()){pane.roiVisuals.clear();pane.transientVisual.reset();pane.roiVisualCap=rgbCap();}
     auto found = pane.roiVisuals.find(&o);
     const std::array<float,2> pathScale{pane.zoom,pane.zoom*pane.aspectY};
     auto buildVisual=[&](int width,int height,const RoiVisual *replaced=nullptr) {
-      if(!nativePath)return roiVisual(o,width,height,fallback);
       const auto cap=rgbCap();std::size_t retained=0;
       auto charge=[&](const RoiVisual &v){if(&v==replaced)return;const auto n=pathVisualBytes(v);if(n>cap-retained)throw std::invalid_argument("Root path visuals exceed processing memory");retained+=n;};
       for(const auto &[key,v]:pane.roiVisuals)charge(v);
       if(pane.transientVisual)charge(*pane.transientVisual);
-      return pathVisual(selectionFromJson(o),width,height,pathScale,cap-retained,fallback);
+      return nativePath?pathVisual(selectionFromJson(o),width,height,pathScale,cap-retained,fallback):roiVisual(o,width,height,fallback,cap-retained);
     };
     if (!cache) {
       const std::array<int, 2> shape{pane.doc->shape().x,
@@ -12064,8 +12071,9 @@ void Window::Impl::geometry(const Json &o, Pane &pane, ImU32 tint, bool cache,
       ++maskOutlineBuilds;
     }
     const auto &visual = cache ? found->second : *pane.transientVisual;
+    if(visual.pointVisual){visual.pointVisual->show_all_override=preferenceState.settings.boolean("point_show_all");visual.pointVisual->gui_scale=guiScale;}
     drawRoiVisual(visual, draw, {pane.origin.x, pane.origin.y},
-                  {pane.zoom, pane.zoom * pane.aspectY});
+                  {pane.zoom, pane.zoom * pane.aspectY},pane.doc->position());
     auto summary = roiVisualJson(visual);
     summary["role"] = role;
     pane.styledLayers.push_back(std::move(summary));
@@ -12200,7 +12208,7 @@ void Window::Impl::canvas(Pane &pane) {
   const std::string tool = (roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || (readOnly && !nativePathTool && !(creationEnabled && creationTool(this->tool)) && this->tool != "zoom") ? "hand" : this->tool;
   if (readOnly && !nativePathTool && !(creationEnabled && creationTool(tool))) {
     cancelCreation(pane, "scientific_read_only");
-    pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
+    pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);pane.pointStyle.reset();pane.pointColor.reset();
     pane.dragging = false;
     pane.selectionGesture.reset();
   }
@@ -12285,6 +12293,9 @@ void Window::Impl::canvas(Pane &pane) {
     input.annotation_gui_scale=guiScale;
     input.point_counter=unsigned(preferenceState.settings.integer("point_counter"));
     input.point_capture_position=preferenceState.settings.boolean("point_capture_position");
+    input.point_style_defaults=pointCreationStyle(preferenceState.settings);
+    input.point_color_defaults=pointCreationColor(preferenceState.settings);
+    input.point_show_all=preferenceState.settings.boolean("point_show_all");
     input.annotation_max_working_bytes = static_cast<std::size_t>(
         preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
     if(!input.annotation_max_working_bytes)input.annotation_max_working_bytes=256*1048576;
@@ -12522,8 +12533,9 @@ void Window::Impl::canvas(Pane &pane) {
     const auto preview=roiPreview(source,cap);
     pane.ordinaryImportActive=bool(preview);pane.ordinaryImportReplace=preview && preview->replaces();
     const PlanarCanvas canvas{Plane::XY,currentPosition.z,f.width,f.height,pane.ordinaryCanvasId,
-        {pane.origin.x,pane.origin.y},{pane.zoom,pane.zoom*pane.aspectY},{pane.extent.x,pane.extent.y}};
+        {pane.origin.x,pane.origin.y},{pane.zoom,pane.zoom*pane.aspectY},{pane.extent.x,pane.extent.y},{},{},guiScale};
     try {
+      pane.nativePlanar.point_display_policy(preferenceState.settings.boolean("point_show_all"));
       pane.nativePlanar.begin_draw(*d,cap);
       pane.nativePlanar.draw(*d,canvas,draw,showRois && !pane.ordinaryImportReplace,false);
       if(preview)pane.ordinaryImportLayers=preview->draw(source,canvas,draw,headlessDiagnostics);
@@ -12547,8 +12559,9 @@ void Window::Impl::canvas(Pane &pane) {
                       pane.origin.y + f.height * pane.zoom * pane.aspectY},
                      true);
   for (const auto &overlay : pane.overlays) {
+    if(overlay.styled && overlay.styled->pointVisual){overlay.styled->pointVisual->show_all_override=preferenceState.settings.boolean("point_show_all");overlay.styled->pointVisual->gui_scale=guiScale;}
     drawOverlayVisual(overlay, draw, {pane.origin.x, pane.origin.y},
-                      {pane.zoom, pane.zoom * pane.aspectY});
+                      {pane.zoom, pane.zoom * pane.aspectY},pane.doc->position());
     auto summary = overlayVisualJson(overlay);
     pane.overlayLayers.push_back(summary);
     if (overlay.styled)
@@ -12648,7 +12661,11 @@ void Window::Impl::canvas(Pane &pane) {
     }
   }
   if (!pane.points.empty())
-    geometry(selection(tool, pane.points), pane, IM_COL32(255, 255, 255, 255));
+    {
+      auto draft=selection(tool,pane.points);
+      if(tool=="multipoint" && pane.pointStyle)draft=selectionJson(pointCreationPresentation(selectionFromJson(draft),*pane.pointStyle,pane.pointColor.value_or(pointCreationColor(preferenceState.settings))));
+      geometry(draft,pane,IM_COL32(255,255,255,255),false,"point_draft");
+    }
   if (pane.creation) {
     const auto &draft = *pane.creation;
     if (draft.candidate)
@@ -12974,6 +12991,7 @@ void Window::Impl::canvas(Pane &pane) {
             const auto entry=point_creation_annotation(source.data().dataset.shape(),d->position(),
                 unsigned(preferenceState.settings.integer("point_counter")),
                 preferenceState.settings.boolean("point_capture_position"));
+            if(pane.points.empty()){pane.pointStyle=pointCreationStyle(preferenceState.settings);pane.pointColor=pointCreationColor(preferenceState.settings);}
             auto nextPoint=point;
             // Geometric growth and all throwing work precede either logical append.
             auto &vertices=pane.points.get_ref<Json::array_t&>();
@@ -12991,6 +13009,7 @@ void Window::Impl::canvas(Pane &pane) {
               preferenceState.settings.boolean("point_capture_position"));
           auto value=selection(tool,Json::array({point}),preferenceState.settings.number("point_size"));
           if(entry.position)value=selectionJson(with_point_annotations(selectionFromJson(value),{entry}));
+          value=selectionJson(pointCreationPresentation(selectionFromJson(value),pointCreationStyle(preferenceState.settings),pointCreationColor(preferenceState.settings)));
           d->select(value);
         } else {
           pane.points = Json::array({point});
@@ -13063,7 +13082,7 @@ void Window::Impl::canvas(Pane &pane) {
     if (ImGui::IsMouseReleased(ImGuiMouseButton_Left)) {
       if (tool == "brush" || tool == "eraser") {
         auto points = pane.points;
-        pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);
+        pane.points = Json::array();std::vector<PointAnnotation>().swap(pane.pointAnnotations);pane.pointStyle.reset();pane.pointColor.reset();
         pane.dragging = false;
         guard([&] {
           owner.applyOperation("paint_stroke",

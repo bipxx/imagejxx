@@ -1,4 +1,5 @@
 #include "path_visual.hpp"
+#include "point_visual.hpp"
 #include <imagejxx/composite_path.hpp>
 #include <algorithm>
 #include <cmath>
@@ -17,7 +18,7 @@ std::size_t arity(int op) { return op == 4 ? 0 : op == 3 ? 6 : op == 2 ? 4 : 2; 
 std::size_t pathVisualBytes(const RoiVisual &v) {
   return sizeof(RoiVisual) + v.fill.size() * sizeof(Rect) +
          v.edges.size() * sizeof(std::array<double, 4>) +
-         v.points.size() * sizeof(Point);
+         v.points.size() * sizeof(Point) + pointVisualBytes(v);
 }
 Json planarSelectionJson(const Selection &selection) {
   if (!selection.is_path())

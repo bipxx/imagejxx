@@ -5,6 +5,7 @@
 #include <imagejxx/selection_edit.hpp>
 #include <imagejxx/saved_roi_geometry.hpp>
 #include <imagejxx/point_annotations.hpp>
+#include <imagejxx/point_presentation.hpp>
 #include <imgui.h>
 #include <map>
 #include <algorithm>
@@ -63,6 +64,9 @@ private:
   std::vector<PointAnnotation> pointAnnotations_;
   bool pointMode_=false, pointAnnotationsChanged_=false, pointAnnotationsCleared_=false;
   std::string pointAnnotationError_;
+  PointStyle pointStyle_;
+  bool pointStyleChanged_=false, pointStyleCleared_=false, pointStyleEnabled_=false;
+  std::string pointStyleError_;
   double angle_ = 0, rotation_ = 0, width_ = 1, strokeWidth_ = 1;
   std::string label_, color_ = "#ffd54bff", strokeColor_, fillColor_ = "none",
                       error_;

@@ -1,7 +1,8 @@
 # ImageJ and Fiji delivery plan
 
-Updated 2026-11-04 after the native point-presentation/API increment and
-per-task waste closeout. The ordered remaining-work sequence stays required.
+Updated 2026-11-04 after scoped point-presentation UI integration and per-task
+waste closeout. Raster flatten/interchange and the full delivery horizon remain
+required.
 This is the
 authoritative current queue and completion policy.
 [Inventory](parity/inventory.json) owns the 99 capability families and their
@@ -58,8 +59,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 M2b.2b P1 ordinary creation defaults | Native per-click helper and consumed counter/capture settings; actual singleton/classic-Z creation and preference persistence pass in both Windows hosts. 507 focused product cases ultimately pass, one optional OpenGL skip; two native controls and six SDK clients per Windows/Linux platform. | Scientific defaults are delivered in the following increment; next P2-P4. No full point-tool claim. [Evidence](parity/reviews/T04a2-point-creation-defaults-20261104.json). |
 | T04a.2 M2b.2b P1 scientific creation defaults | Native plane-aware helper and frozen defaults/cap work on XY/XZ/YZ in both Windows hosts. 664 unique focused product cases ultimately pass and 23 tool checks; two native controls and six installed SDK clients per Windows/Linux platform. | P1 creation counters/positions are scoped delivered. Next P2 presentation, P3 automatic actions and P4 wider edit/rebind/interchange/replay. [Evidence](parity/reviews/T04a2-planar-point-defaults-20261104.json). |
 | T04a.2 P2a native presentation/API | Scoped implemented/verified: four markers/seven sizes, bounded flat commands, strict metadata and explicit wire styles; 112 original draw traces, 431 focused Windows product cases, three native controls and seven installed SDK clients per Windows/Linux platform pass. | P2 remains active: actual UI/settings/cached rendering and raster flatten/export consumers next. [Contract](POINT_PRESENTATION.md), [evidence](parity/reviews/T04a2-point-presentation-20261104.json). |
+| T04a.2 P2b shared UI presentation | Scoped integrated in both Windows hosts: creation/defaults, properties and cached active/saved/overlay/scientific drawing. 582 unique product checks pass (one optional OpenGL skip), 40 tool checks (one platform-link skip); four Windows/three Linux native controls and seven installed SDK clients/platform. | P2c raster flatten/bare-wire appearance and export/loss review next; typed draft-preview residual is owned by P3. P3/P4 remain. [Contract](POINT_PRESENTATION.md), [evidence](parity/reviews/T04a2-point-presentation-ui-20261104.json). |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,468,731,525 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,487,028,393 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Active work and immediate sequence
@@ -77,7 +79,7 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Order | Task boundary | Exit / next handoff |
 | --- | --- | --- |
 | Delivered scoped | Imported XY handoff and point-specific ZIP increment. | 787 focused product cases,23 tools; native/installed clients on Windows/Linux; all owned scratch retired with failures/hashes retained. |
-| Now | P2b UI/settings/cached point presentation, then P2c raster flatten/export reconciliation. | P2a native style/layout and explicit interchange APIs are scoped verified; reuse the focused module and preserve raster-width semantics. P2 stays open until its actual consumers pass. |
+| Now | P2c raster flatten and point-style interchange. | P2a/b native/API/shared UI increments are scoped verified; reuse their glyph templates, metadata and properties. Full P2 stays open until raster and interchange consumers pass. |
 | Next | P3 automatic point actions and P4 edit/rebind/replay reconciliation, then M2b.3 manager layouts/Z/T, M3 options and M4. | Complete each on existing owners; hand stable contracts to T04a.3. |
 | Following | T04a.3, T04b, T05, then the delivery stages and T06-T15 roadmap below. | Each stage closes its concrete inventory residuals, including UI/configuration/state, before claiming completion. |
 
@@ -210,73 +212,69 @@ independent. Copy-back uses the existing planar update record; forward manager
 copies retain the recorder gap owned by T04a.3/T12. No new codec/serializer/job
 owner was introduced. Do not redo this integration to qualify point-tool defaults.
 
-### Ready task 1: M2b.2b P2 — Point marker presentation and interchange
+<a id="ready-task-1-m2b2b-p2--point-marker-presentation-and-interchange"></a>
+### Ready task 1: M2b.2b P2c — Raster flatten and point-style interchange
 
 | Point-tool checkpoint | Current scope / required exit |
 | --- | --- |
-| P1 — Creation counters/positions | Scoped delivered for ordinary tools and scientific XY/XZ/YZ. Existing-row edits retain explicit metadata; creation defaults do not retag old points. [Scientific contract](TARGET_ANALYSIS.md#scientific-plane-point-creation-defaults). |
-| P2 — Marker presentation | P2a native metadata/layout/wire adapters scoped verified. P2b actual controls/settings/cached drawing and P2c raster flatten/export remain: Hybrid/Cross/Dot/Circle, seven sizes, colors, labels and show-all across active/ROI/overlay/plane roles. Raster width remains distinct. |
-| P3 — Creation side effects | Required next: single-point Auto-measure/Auto-next slice/Add to overlay/Add to ROI Manager and remaining multipoint creation behaviors. |
-| P4 — Plane/rebind and reconciliation | Required: remaining edit/position/rebind/projection policies, all key consumers/defaults/state and executable ordinary creation replay. P1 native creation does not close non-XY ImageJ ROI export. |
+| P1 — Creation counters/positions | Scoped delivered for ordinary tools and scientific XY/XZ/YZ. Existing edits retain bindings; creation defaults do not retag prior points. |
+| P2a/b — Native and UI presentation | Scoped verified/integrated: shared glyph API, point style/default controls, ordinary and scientific row properties, active/saved/overlay/plane drawing in both Windows hosts. [Contract](POINT_PRESENTATION.md), [receipt](parity/reviews/T04a2-point-presentation-ui-20261104.json). |
+| P2c — Raster and interchange | Active next: native glyph flattening/labels, source appearance promotion and complete export/loss-review consumers; do not substitute raster point masks for display markers. |
+| P3 — Creation side effects | Auto-measure/next-slice/overlay/manager actions remain required. |
+| P4 — Reconciliation | Wider edit/rebind/extent/position policies, preference versus active-tool application and executable ordinary creation replay remain required. No implicit non-XY ImageJ projection. |
 
-- **P2a accepted native increment:** use [point presentation](POINT_PRESENTATION.md)
-  and its [receipt](parity/reviews/T04a2-point-presentation-20261104.json).
-  Do not rebuild the four-type/seven-size layout or add a parallel style parser.
-  No UI/default-setting key or raster flatten consumer was delivered by P2a.
-- **P2b next implementation:** resolve base ROI color once; cache native style/
-  annotation interpretation and flat commands on the existing immutable visual
-  revision/view/settings owners. Connect active, saved-ROI, overlay and scientific
-  plane roles in both hosts. Freeze role/parent versus per-point visibility and
-  default/application policy before editing. Add consumed marker/size/labels/
-  show-all controls through existing settings/properties; keep raster diameter
-  separate. Verify actual effects, reset/cancel/persist/reopen and stale/cap paths.
-- **P2c required before P2 closure:** adopt shared glyph semantics in the existing
-  raster flatten/export owner, specifying fonts/AA tolerances separately from
-  command geometry. Qualify ROI/session/export roundtrips and native-only style
-  loss/recovery; no non-XY projection claim. Do not start P3 as a substitute for
-  these unfinished consumers. P2b/P2c are increments of the same owning task.
-- **Contract before editing:** inspect the pinned PointRoi draw/type/size/label/
-  visibility/counter-color rules and PointToolOptions/codec consumers. Reconcile
-  required keys with G013/G014/G017/G020-G022 and T15 in the existing consumer
-  contract. Record default, valid values, API/control, role, Apply/Cancel/reset,
-  persistence and recorder ownership. Add keys only with actual consumers.
-- **Size/type meanings:** pinned types are Hybrid=0/Cross=1/Dot=2/Circle=3; size
-  choices Tiny/Small/Medium/Large/Extra Large/XXL/XXXL correspond to 1/3/5/7/11/17/25
-  display sizes. Verify codec index versus pixel/screen units before projection.
-  Existing numeric `point_size` remains a raster diameter (default 8, 1..256), not
-  a size code. Explicitly label and reconcile its intended creation/processing
-  consumers; marker changes must not change measured samples or geometry.
-- **Easiest native/API path:** use a focused point-presentation header/module
-  alongside existing typed annotations, ROI style and glyph/visual ownership.
-  Keep ImGui out of the core contract; both hosts consume the same descriptors.
-  Batch public declarations before qualification. The last coherent shared-header
-  batch observed 94 Windows compile lines/379.047s; do not add unrelated point
-  presentation fields to the widely consumed planar annotation header.
-- **Rendering/visibility:** extend existing visual caches/draw/flatten owners,
-  keyed by immutable geometry/style, view and applicable settings. Define
-  active-selection, stored-ROI, overlay and scientific-plane roles individually,
-  including parent wildcards versus per-point T/C/Z. Show-all is display policy;
-  it must not erase bindings. Specify counter palette, label numbering/placement,
-  zoom/DPI, clipping, unknown metadata and bounded glyph/label output. Preserve
-  opaque future tags; do not silently reinterpret them or decode full metadata
-  every frame. No second renderer/controller or per-point source reads.
-- **Editing/interchange:** reuse properties/defaults and existing native envelopes/
-  source archives. Derive standard point type/size/label fields from current
-  native style on explicit projection; preserve old raw codec/default mapping
-  meanings and source bytes. Explicit semantic promotion refuses unsupported
-  wire codes without destroying raw data. Do not claim non-XY projection from
-  native styling; P4/T10 owns representability/recovery.
-- **Acceptance/exit:** independent original/analytic marker geometry and output
-  checks for all four types/seven sizes, labels/colors/visibility and role/pose
-  variants; actual controls in both hosts; defaults/reset/cancel/persist/reopen,
-  ROI/session/export roundtrips, stale/cap refusal and unchanged measurement/
-  history where applicable. Qualify raster flatten and UI rendering separately;
-  declare font/pixel tolerances explicitly. Reuse unchanged numeric evidence.
-  Finish allocation review, installed clients only for changed public surfaces,
-  sequential capture retention and the short waste/queue update before P3.
+- **Contract before editing:** trace `render_roi_style` in native ROI style,
+  desktop `paintOverlay`/`renderDisplayOverlays` and the existing text/font owner.
+  List actual flatten/save/export entry points and role/pose options. Freeze
+  output pixel type, anchor and marker scale, clipping, alpha/primitive order,
+  label font resource/tolerances, source/history and byte/work admission. Reuse
+  PointPresentation descriptors and source identity; no ImGui in the core.
+- **Easiest raster path:** extend existing native display-raster ownership for
+  tagged points while retaining legacy untagged processing/rendering meanings.
+  Keep marker size codes distinct from `point_size` raster diameter. Reuse the
+  existing font/raster facilities after checking their headless/native boundary;
+  introduce only the shared native font surface actually needed. Review font
+  code/assets/dependencies for commercial eligibility before incorporation.
+  Admit source/output/font/glyph staging and work before reads or large copies;
+  decode once, draw primitives in order and publish one detached result. Preserve
+  duplicate points, counter colors, labels and per-point versus parent visibility.
+- **Easiest interchange path:** consume existing `imagej_point_style`,
+  `with_point_style` and `imagej_roi_annotation_projection` at explicit import/
+  handoff/export review seams. Bare wire appearance is not automatically promoted
+  today. Source archives remain independent; unknown wire codes/semantic versions
+  retain raw data and offer explicit refusal/clear/replacement. Standard output
+  represents marker/size/SHOW_LABELS; native show-all/cross/palette fields need
+  the existing envelope or an explicit loss decision. Do not tighten historical
+  opaque envelope validation or add a competing serializer/version/controller.
+- **UI/state:** both hosts use the same flatten/save/export paths, options and
+  loss review. Native and Python callers get equivalent outputs and explicit
+  errors. Define runtime font acquisition, supported source/dtype/pose, cancel/
+  stale/cap behavior and session/replay ownership. Keep full non-XY projection/
+  extent/rebind policies under P4/T10; required gaps remain visible there.
+- **Acceptance/exit:** retain the 112 original command references and relative
+  template reconstruction checks. Add independent original/analytic raster
+  cases for four markers/seven sizes, alpha/overlap/clipping, palette/label and
+  positioned/show-all variants. State font/AA tolerances and exclusions precisely;
+  descriptor parity alone does not prove pixel parity. Exercise actual flatten/
+  export/reopen/loss controls in both hosts, raw/native ROI and ZIP roundtrips,
+  unknown-code recovery, source/history preservation and bounded failures. Verify
+  changed public APIs with installed clients after allocation review; reuse
+  unchanged measurement evidence. Finish serial retention, waste review and the
+  queue update before P3. Full P2 closes only when required raster/interchange
+  consumers and the P3-owned typed preview residual are delivered; full point-tool
+  scope also requires the remaining P3/P4 work.
 
 ### Ready task 2: M2b.2b P3 — Point-tool automatic actions
 
+- **First creation checkpoint — required P2b preview residual:** ordinary
+  multipoint previews still materialize styled JSON/geometry each frame and do
+  not display captured per-vertex counters/positions until completion. Cache the
+  draft visual by real vertex/default changes; feed typed captured data to the
+  existing glyph builder where needed. Do not encode the full annotation tag
+  every click or create another creator/controller. Check mixed counters/poses,
+  static-frame build counts, no provider reads, cap/cancel/source-close disposal
+  and unchanged final publication. This residual stays required for full P2;
+  combine its owner/API edits with creation actions to avoid revisiting the seam.
 - **Dependency/contract:** consume P1 capture and stable P2 style. Review pinned
   PointToolOptions plus actual event/Analyzer/overlay/manager consumers before
   choosing order. Required flags are Auto-measure, Auto-next slice, Add to overlay
@@ -390,7 +388,7 @@ active; the successor may have a specification, but no competing owner changes.
 
 | Order / owning task | Smallest useful delivery and easiest reuse | Required handoff before closing |
 | --- | --- | --- |
-| 1 / P2 | Shared native point style/glyph contract and explicit wire adapters, then existing visual/flatten owners, properties and defaults in both hosts. | Four markers/seven sizes, colors/labels/visibility, all required roles, persistence/export and bounded rendering. Native API-only delivery is an increment; P2 stays active until consumers pass. |
+| 1 / P2 | Native/API and shared UI increments are scoped delivered; finish native raster flatten, bare-wire appearance promotion and export/loss review on existing owners. | Four markers/seven sizes, colors/labels/visibility, all required roles, persistence/export and bounded rendering. Native API-only delivery is an increment; P2 stays active until consumers pass. |
 | 2 / P3 | Compose accepted point creation with existing Measure, overlay, manager and navigation owners. | Required automatic-action combinations, original event order, last-slice policy, cancellation/failure and recording/state behavior. |
 | 3 / P4 | Reconcile existing point editing and transfer owners before extending them. | Edit/rebind/extent/non-XY projection policy, metadata-loss recovery and executable creation replay; no unowned point-tool key. |
 | 4 / M2b.3 | Extend current manager request/results for required MultiMeasure and Z/T layouts. | Actual selection/range/layout/append/label consumers, ordered bounded output and stable persistence schema. |
@@ -636,28 +634,34 @@ feature or block unrelated ready work.
 
 ## Latest task closeout
 
-2026-11-04 P2a native point presentation: strict version-1 styles, flat bounded
-layout, Python/public installed API and explicit wire-style projection are
-implemented/scoped verified. 112 original Graphics2D traces match commands;
-431 unique focused Windows product cases pass on final installed products.
-Three native controls and seven installed SDK clients pass per Windows/Linux
-platform. [Receipt](parity/reviews/T04a2-point-presentation-20261104.json).
-No actual point-presentation UI/settings, raster flatten/font pixel, whole-P2,
-platform release or speed completion is claimed. Next P2b then P2c; P3 follows.
+2026-11-04 P2b point-presentation consumers: shared relative templates now feed
+creation, properties, active/saved/overlay and scientific plane drawing. Defaults,
+RGBA colors, global visibility without retagging, Apply/Cancel/Revert, undo/redo
+and session reopening are scoped integrated in both Windows hosts. 582 unique
+focused product checks pass, one optional OpenGL skip; 40 tool checks pass, one
+platform-link skip. Thirty-six actual input observations support 42 reader
+checks, alongside 28 type/size draw checks. Four Windows/three Linux native
+controls and seven installed SDK clients per platform pass.
+[Receipt](parity/reviews/T04a2-point-presentation-ui-20261104.json).
+P2c is next; full P2/point-tool, GPU/font-pixel, Linux/macOS UI and release/speed
+completion are not claimed. P3/P4 and the full T00-T15 horizon remain required.
 
 | Waste finding | Disposition / next start |
 | --- | --- |
-| Potential per-glyph heap vectors and offscreen worst-case output. | Fix now: flat primitive spans, fixed small stack buffer and exact visible-output admission before one reservation. Two scans intentionally trade work for bounded output; no measured rendering speed claim. |
-| Wire style adapter would copy an already owned projection. | Fix now during allocation review before installed clients: accept owned wire value and move it through projection. Existing metadata/visual/job owners remain. |
-| Fixture/native test/reference setup assumptions and new Linux target ordering recurred. | Preserve failures. Correct required Dataset axes, aggregate constructor/declaration include and attached reference image; regenerate the active Linux CMake cache before requesting a new target. Next consumer owner inspects exact declarations, real control/output routes and probe schemas before broad verification. T02 recurrence remains open. |
-| Shared-header and evidence/build overhead. | Focused header/module, no UI keys without consumers, no new runner/controller/environment. Final header review preceded seven installed clients/platform. Reuse unrelated numerical/UI evidence; do not infer actual marker UI coverage from core checks. |
-| Storage/cleanup. | Retire 34,008,269 disposable SDK compiler bytes by identities/LastTest logs; verify 752,350 remaining scratch bytes in 118,156 archive bytes, then remove all owned scratch. Failures/receipts remain. Known post-retirement storage 8,468,731,525 B before small receipt/doc changes; 214 inaccessible subtrees keep the full budget unverified. |
+| Potential per-frame metadata/geometry rebuilds and duplicated controls. | Fix now: immutable relative native templates, bounded draw expansion and one shared widget helper on existing draft/cache owners. No new controller/job/parser. Pure point annotations no longer admit an unnecessary full-plane raster. |
+| Marker controls displaced legacy raster-width fields. | Fix product layout with a collapsible section; both failed legacy interactions pass unchanged. Preserve the failed result. |
+| Fixture attempted a gated scientific legacy overlay action; popup readiness was assumed. | Preserve failures; keep the gate, use an independent explicitly bound ordinary draw fixture and wait one real popup frame. Next owner checks command eligibility, popup/control schemas and observed hit ownership before broad captures. Extend compact observations for all consumed keys. T02 recurrence stays open. |
+| Font atlas rebuild made font-size ratios lose DPI. | Fix against the host/canvas GUI scale; 0.5/1/2/3 checks pass, raster diameter unchanged. Repeat a representative both-host input route on final products; reuse default-scale observations for unchanged behavior. Font/AA raster parity remains P2c. |
+| Build/verification fanout. | Shared UI batch765.375s; private integration127.719s; probe fixes26.172/14.313/17.250s; final DPI49.593s. These are different build workloads, not processing speed. Keep new fields in the focused private module; batch public/owner seams before qualification. |
+| Ordinary draft preview still serializes/copies geometry per frame and omits captured point annotations until completion. | Defer to the P3 creation owner as a required P2b consumer: cache typed draft inputs/visuals and verify mixed counters/poses, static frames and lifecycle. This is code-observed work, not a measured frame-time cost; it remains open and blocks full P2. |
+| Capture/build storage. | Share produced reports across readers; do not dump another report into logs. Verify245,331,004 scratch bytes in12,782,270 archive bytes; retire34,015,278 SDK compiler bytes by identities/logs after final review. All task scratch is gone. |
 
-Document checks cover local links/anchors, all 99 capability IDs, preserved
-historical archive hashes and diff hygiene. compilexx retains the concise
-waste/next-entry lesson. Every subsequent task updates its scope, remaining
-requirements, cleanup and next handoff before advancing. Full T00-T15 scope is
-still required.
+Known entry storage8,468,858,723 B; pre-SDK-retirement8,519,531,141 B;
+post-cleanup8,487,028,393 B before small receipt/docs updates. These are observed
+snapshots, not an absolute peak;214 inaccessible subtrees keep the full budget
+unverified. Existing caches/runtime/SDKs reused; no compiler generations archived.
+Document checks cover links/anchors,99 capability IDs, preserved history hashes
+and diff hygiene. compilexx receives the concise costs/next-entry lesson.
 
 ## Historical link compatibility
 

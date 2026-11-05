@@ -23,6 +23,13 @@ int main() {
   options.plane=Plane::XZ;check(point_presentation(styled,options).glyphs.size()==2);
   options.plane=Plane::XY;options.show_all=true;layout=point_presentation(styled,options);
   check(layout.glyphs.size()==2 && layout.glyphs[0].center==std::array<double,2>{3,4});
+  auto relative=options;relative.relative_primitives=true;relative.round_centers=false;
+  const auto templ=point_presentation(styled,relative);
+  check(templ.glyphs[0].center==std::array<double,2>{2.5,3.5});
+  check(templ.primitives[0].coordinates==std::array<double,4>{7,26,0,0});
+  check(!templ.glyphs[0].visible(PlanePosition{0,0,0}) &&
+      templ.glyphs[0].visible(PlanePosition{0,0,0},Plane::XZ) &&
+      templ.glyphs[0].visible(PlanePosition{1,1,0},Plane::XY,true));
   PointPresentationLimits cap;cap.max_working_bytes=layout.working_bytes-1;
   refuses<std::length_error>([&]{point_presentation(styled,options,cap);});
   cap.max_working_bytes=layout.working_bytes;check(point_presentation(styled,options,cap).glyphs.size()==2);

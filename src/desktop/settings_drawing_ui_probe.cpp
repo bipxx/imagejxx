@@ -285,7 +285,7 @@ void Driver::frame(const std::string &label, const Json &events) {
   panel["fields"] = Json::object();
   for (const auto *key : drawingKeys) if (last_.at("preferences_panel").at("fields").contains(key))
     panel["fields"][key] = last_.at("preferences_panel").at("fields").at(key);
-  if(pointCase())for(const auto *key:{"point_counter","point_capture_position"})
+  if(pointCase())for(const auto *key:{"point_counter","point_capture_position","point_marker","point_marker_size","point_color","point_labels","point_show_all"})
     if(last_.at("preferences_panel").at("fields").contains(key))
       panel["fields"][key]=last_.at("preferences_panel").at("fields").at(key);
   rendered["preferences_panel"] = std::move(panel);
@@ -319,11 +319,18 @@ Json Driver::control(const std::string &name) const {
     if (name.rfind("field.", 0) == 0) {
       const auto &field = panel.at("fields").at(name.substr(6));
       item = field.at("kind") == "color" ? field.at("editor") :
-          field.at("kind") == "boolean" ? field.at("control") : field;
+          field.at("kind") == "boolean" ? field.at("control") :
+          field.at("kind") == "choice" ? field.at("combo") : field;
       for (auto *candidate : ImGui::GetCurrentContext()->Windows)
         if (candidate->ParentWindow == preferences && candidate->ChildId == preferences->GetID("settings") &&
             candidate->Active && !candidate->Hidden) { owner = candidate; break; }
       require(owner, "C3 Preferences settings child unavailable");
+    } else if (name.rfind("choice.",0)==0) {
+      const auto split=name.find('.',7);require(split!=std::string::npos,"C3 choice name");
+      item=panel.at("fields").at(name.substr(7,split-7)).at("choices").at(name.substr(split+1));
+      const auto& popups=ImGui::GetCurrentContext()->OpenPopupStack;
+      for(int i=popups.Size-1;i>=0;--i)if(popups[i].Window && popups[i].Window->Active && !popups[i].Window->Hidden){owner=popups[i].Window;break;}
+      require(owner,"C3 choice popup unavailable");
     } else if (name.rfind("group.", 0) == 0) {
       item = panel.at("widget_controls").at("group_choices").at(name.substr(6));
       const auto &popups = ImGui::GetCurrentContext()->OpenPopupStack;
@@ -345,6 +352,7 @@ Json Driver::control(const std::string &name) const {
   return item;
 }
 void Driver::click(const std::string &name) {
+  if(name.rfind("choice.",0)==0)frame(name+".popup.ready");
   const auto before = ordinal(); Json item;
   for (int attempt = 0; attempt < 30; ++attempt) {
     item = control(name);
@@ -513,7 +521,8 @@ Json Driver::state() const {
     {"usage", usageState(scheduler_->usage())}, {"error", window_.error()},
     {"observations", {{"preferences_panel", last_.at("preferences_panel")}, {"dialog", last_.at("dialog")},
       {"selection_properties", last_.at("selection_properties")}, {"tools", std::move(tools)},
-      {"ordinary_pixels", viewportState(last_.at("ordinary_pixels"))}}}};
+      {"ordinary_pixels", viewportState(last_.at("ordinary_pixels"))},
+      {"ordinary_canvas",last_.at("ordinary_canvas")}}}};
 }
 void Driver::remember(const std::string &name) {
   require(!report_["states"].contains(name), "Duplicate C3 checkpoint: " + name); report_["states"][name] = state();
@@ -540,10 +549,17 @@ Json Driver::run() {
     remember("initial"); preferences(); remember("preferences_shown");
     if(pointCase()) {
       text("field.point_counter","7");click("field.point_capture_position");
+      click("field.point_marker");click("choice.point_marker.Circle");
+      click("field.point_marker_size");click("choice.point_marker_size.XXL");
+      text("field.point_color","#e01f40");
+      click("field.point_labels");click("field.point_show_all");
       remember("point_draft");click("preferences.apply");frame("point.applied");remember("point_applied");
       closePreferences();gesture("multipoint",{4,4});
       // Change defaults between delivered clicks: completion must not retag the first.
       preferences();text("field.point_counter","2");click("field.point_capture_position");
+      click("field.point_marker");click("choice.point_marker.Cross");
+      click("field.point_marker_size");click("choice.point_marker_size.Tiny");
+      text("field.point_color","#1020e080");
       click("preferences.apply");frame("point.second.defaults");closePreferences();
       pointer({6,6},"multipoint.second");
       for(bool down:{true,false})frame("multipoint.second.button",Json::array({{{"type","button"},{"name","left"},{"down",down}}}));

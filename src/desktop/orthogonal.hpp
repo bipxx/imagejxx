@@ -30,6 +30,9 @@ struct OrthogonalInputContext {
   float annotation_gui_scale = 1;
   unsigned point_counter=0;
   bool point_capture_position=true;
+  PointStyle point_style_defaults;
+  RoiColor point_color_defaults{255,255,0,255};
+  bool point_show_all=false;
   PlanarAnnotationPublisher planar_publish;
   std::function<Json(const PlanarCanvas &,ImDrawList *)> display_annotations;
   std::shared_ptr<const RoiImportPreview> import_preview;

@@ -3,6 +3,7 @@
 #include "display_annotation_renderer.hpp"
 #include "planar_annotation_visual.hpp"
 #include "path_visual.hpp"
+#include "point_visual.hpp"
 #include <imgui.h>
 #include <set>
 namespace imagejxx::desktop {
@@ -17,7 +18,7 @@ template<class Layers> RoiVisual previewVisual(const Selection &selection,int wi
     retained+=bytes;
   }
   auto result=selection.is_path()?pathVisual(selection,width,height,scale,cap-retained,fallback):
-      roiVisual(selectionJson(selection),width,height,fallback);
+      roiVisual(selectionJson(selection),width,height,fallback,cap-retained);
   if(pathVisualBytes(result)>cap-retained)throw std::invalid_argument("ROI preview exceeds the processing memory cap");
   result.screenKey[2]=scale[0];result.screenKey[3]=scale[1];
   return result;
@@ -187,7 +188,9 @@ Json RoiImportPreview::draw(const DocumentSnapshot &current,
       layer.visual=previewVisual(row.selection,canvas.width,canvas.height,
           layer.visual.style.stroke_color.value_or(RoiColor{64,210,240,255}),cap_,layers_,canvas.scale,&layer.visual);
     const auto draw_begin = draw->IdxBuffer.Size;
-    drawRoiVisual(layer.visual, draw, canvas.origin, canvas.scale);
+    if(layer.visual.pointVisual)layer.visual.pointVisual->gui_scale=canvas.gui_scale;
+    drawRoiVisual(layer.visual, draw, canvas.origin, canvas.scale,
+        PlanePosition{current.display().t,current.display().c,current.display().crosshair[2]},canvas.plane);
     visible = true;
     if (diagnostics)
       result.push_back(
