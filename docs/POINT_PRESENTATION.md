@@ -124,6 +124,65 @@ non-XY projection or position erasure occurs. Pan/zoom changes anchors; the
 host/canvas GUI scale changes marker/stroke/font dimensions. Font atlases are
 rebuilt at that scale, so current/base font-size ratios alone cannot recover DPI.
 
+## Native raster contract (P2c.1)
+
+`render_point_style(rgb, selection, options, font, limits[, control])` is the
+explicit native display-raster API in `point_raster.hpp`; Python accepts a uint8
+`(H,W,3)` NumPy array and an optional `cancellation` token. It returns a detached
+RGB image, preserves input/selection/history and performs no provider or font IO.
+It consumes the same PointPresentation geometry/order, counters, positions and
+show-all rules. The caller still resolves base ROI color and parent-row/plane
+eligibility. An absent point-style tag uses defaults only for this explicit API;
+legacy `render_roi_style`, processing masks and `point_size` meanings are unchanged
+until the owning flatten consumer is deliberately adopted in P2c.2.
+
+Geometric coverage integrates sixteen sample centers per pixel (a 4x4 regular
+grid). Rectangles are half-open, crosses have square caps, and circle strokes
+include the outer boundary and exclude the inner disk. Each primitive is blended
+in original order, including duplicate points and overlapping cross segments;
+there is no union mask. Every component uses
+`floor(background*(1-alpha)+foreground*alpha+.5)`. The requested device clip is
+half-open and applies to individual samples. Pan/anchor scales and marker scale
+retain their separate layout meanings; relative primitives are supported.
+
+The minimum font input is `PointRasterFont(font_size, digits)` with exactly ten
+`PointRasterGlyph(width,height,offset_x,offset_y,advance,coverage)` values, one
+per decimal digit. Coverage is row-major alpha bytes at the exact device font
+size emitted by the layout, not an automatically scaled atlas. Offsets refer to
+the baseline; each digit origin is `floor(cursor)` / `floor(baseline)`, followed
+by its integer bearing. Advances may be fractional. Explicit coverage is clipped
+by pixel-cell intersection area and multiplied by the primitive alpha. Python
+font/glyph values are immutable; digit/coverage getters materialize copies.
+
+Visible emitted text requires a matching font; missing/mismatched coverage
+refuses before source pixel conversion/copy, even when its eventual pixel bounds
+are offscreen. A provided font is always validated: dimensions 0..4096, signed
+bearings within 4096, positive finite advance/font size at most 4096, and exact
+coverage cardinality. Empty glyphs retain their advance. The core bundles no
+font asset; P2c.2 must prepare and admit this decimal coverage from the existing
+desktop font resource, including its eligibility and acquisition/error policy.
+This is a decimal-label surface, not a general text/font framework.
+
+`PointRasterLimits` combines the existing presentation limits with a 256 MiB
+working-byte bound and 128 Mi work-unit bound (`max_pixel_samples`). Admission
+counts native source and detached output double buffers, borrowed font bytes,
+layout/staging and each candidate shape sample or glyph pixel, plus source
+scan/copy and two vertex walks. Layout clipping does not use guessed font bounds:
+actual supplied glyph bearings determine raster bounds. Bounds are clamped before
+integer conversion, so huge offscreen coordinates cannot create a huge scan.
+There are no full-image per-primitive masks. Logical byte bounds exclude allocator
+overhead, Python transport arrays and RSS. Bindings inspect array shape/dtype and
+prepare layout/font/output/work before reading NumPy values, then release the GIL
+only after borrowed mutable selection/options have been captured in the prepared
+layout. Native ExecutionControl and Python cancellation leave source unchanged.
+
+The pixel contract is deterministic analytic coverage. Pinned Java command traces
+supply independent geometry/order inputs for the pixel oracle; synthetic decimal
+coverage tests baseline, alpha and clipping without incorporating a font asset.
+This does not establish exact Java font/antialiasing pixel parity. Actual flatten
+controls, font loading, export/reopen, bare-wire promotion and loss review are
+still P2c.2/P2c.3 requirements, not delivered by this API alone.
+
 ## Evidence and remaining integration
 
 The original `ObservePointPresentation.java` records actual Graphics2D drawing

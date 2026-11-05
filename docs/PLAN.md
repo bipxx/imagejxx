@@ -1,9 +1,8 @@
 # ImageJ and Fiji delivery plan
 
-Updated 2026-11-04 for completion of the remaining work, with explicit
-raster/interchange checkpoints and waste feedback after every task. P2b is scoped
-integrated; raster/interchange, typed draft preview and the full delivery horizon
-remain required.
+Updated 2026-11-04 after P2c.1 native point raster/API verification and waste
+closeout. P2c.2 desktop flatten/font adoption is next; appearance interchange,
+typed draft preview and the full delivery horizon remain required.
 This is the
 authoritative current queue and completion policy.
 [Inventory](parity/inventory.json) owns the 99 capability families and their
@@ -60,9 +59,10 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 M2b.2b P1 ordinary creation defaults | Native per-click helper and consumed counter/capture settings; actual singleton/classic-Z creation and preference persistence pass in both Windows hosts. 507 focused product cases ultimately pass, one optional OpenGL skip; two native controls and six SDK clients per Windows/Linux platform. | Scientific defaults are delivered in the following increment; next P2-P4. No full point-tool claim. [Evidence](parity/reviews/T04a2-point-creation-defaults-20261104.json). |
 | T04a.2 M2b.2b P1 scientific creation defaults | Native plane-aware helper and frozen defaults/cap work on XY/XZ/YZ in both Windows hosts. 664 unique focused product cases ultimately pass and 23 tool checks; two native controls and six installed SDK clients per Windows/Linux platform. | P1 creation counters/positions are scoped delivered. Next P2 presentation, P3 automatic actions and P4 wider edit/rebind/interchange/replay. [Evidence](parity/reviews/T04a2-planar-point-defaults-20261104.json). |
 | T04a.2 P2a native presentation/API | Scoped implemented/verified: four markers/seven sizes, bounded flat commands, strict metadata and explicit wire styles; 112 original draw traces, 431 focused Windows product cases, three native controls and seven installed SDK clients per Windows/Linux platform pass. | P2 remains active: actual UI/settings/cached rendering and raster flatten/export consumers next. [Contract](POINT_PRESENTATION.md), [evidence](parity/reviews/T04a2-point-presentation-20261104.json). |
-| T04a.2 P2b shared UI presentation | Scoped integrated in both Windows hosts: creation/defaults, properties and cached active/saved/overlay/scientific drawing. 582 unique product checks pass (one optional OpenGL skip), 40 tool checks (one platform-link skip); four Windows/three Linux native controls and seven installed SDK clients/platform. | P2c raster flatten/bare-wire appearance and export/loss review next; typed draft-preview residual is owned by P3. P3/P4 remain. [Contract](POINT_PRESENTATION.md), [evidence](parity/reviews/T04a2-point-presentation-ui-20261104.json). |
+| T04a.2 P2b shared UI presentation | Scoped integrated in both Windows hosts: creation/defaults, properties and cached active/saved/overlay/scientific drawing. 582 unique product checks pass (one optional OpenGL skip), 40 tool checks (one platform-link skip); four Windows/three Linux native controls and seven installed SDK clients/platform. | P2c.1 native raster is scoped delivered; P2c.2 flatten adoption and P2c.3 appearance/loss review remain. Typed draft-preview residual is owned by P3. P3/P4 remain. [Contract](POINT_PRESENTATION.md), [evidence](parity/reviews/T04a2-point-presentation-ui-20261104.json). |
+| T04a.2 P2c.1 native display raster | Scoped implemented/verified: explicit C++/Python raster, ordered analytic geometry and decimal coverage font input. 565 focused installed Windows Python cases pass (147 new); native control and seven installed SDK clients per Windows/Linux platform pass. | P2c.2 must acquire/admit font coverage and adopt actual flatten/export controls; P2c.3 appearance/loss review follows. Legacy masks/render_roi_style unchanged. [Evidence](parity/reviews/T04a2-point-raster-20261104.json); no Java font/AA pixel or UI completion claim. |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,487,028,393 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,492,660,833 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Active work and immediate sequence
@@ -80,7 +80,7 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Order | Task boundary | Exit / next handoff |
 | --- | --- | --- |
 | Delivered scoped | Imported XY handoff and point-specific ZIP increment. | 787 focused product cases,23 tools; native/installed clients on Windows/Linux; all owned scratch retired with failures/hashes retained. |
-| Now | P2c raster flatten and point-style interchange. | P2a/b native/API/shared UI increments are scoped verified; reuse their glyph templates, metadata and properties. Full P2 stays open until raster and interchange consumers pass. |
+| Now | P2c.2 desktop flatten/font adoption, then P2c.3 point-style interchange. | P2c.1 native raster is scoped verified alongside P2a/b; reuse its ordered raster and decimal coverage seam on existing owners. Full P2 stays open until actual flatten/interchange consumers and typed draft preview pass. |
 | Next | P3 automatic point actions and P4 edit/rebind/replay reconciliation, then M2b.3 manager layouts/Z/T, M3 options and M4. | Complete each on existing owners; hand stable contracts to T04a.3. |
 | Following | T04a.3, T04b, T05, then the delivery stages and T06-T15 roadmap below. | Each stage closes its concrete inventory residuals, including UI/configuration/state, before claiming completion. |
 
@@ -220,7 +220,7 @@ owner was introduced. Do not redo this integration to qualify point-tool default
 | --- | --- |
 | P1 — Creation counters/positions | Scoped delivered for ordinary tools and scientific XY/XZ/YZ. Existing edits retain bindings; creation defaults do not retag prior points. |
 | P2a/b — Native and UI presentation | Scoped verified/integrated: shared glyph API, point style/default controls, ordinary and scientific row properties, active/saved/overlay/plane drawing in both Windows hosts. [Contract](POINT_PRESENTATION.md), [receipt](parity/reviews/T04a2-point-presentation-ui-20261104.json). |
-| P2c — Raster and interchange | Active next: native glyph flattening/labels, source appearance promotion and complete export/loss-review consumers; do not substitute raster point masks for display markers. |
+| P2c — Raster and interchange | P2c.1 explicit native glyph/decimal-label raster is scoped verified. Active next: desktop font/flatten adoption, source appearance promotion and complete export/loss-review consumers; do not substitute processing point masks for display markers. |
 | P3 — Creation side effects | Auto-measure/next-slice/overlay/manager actions remain required. |
 | P4 — Reconciliation | Wider edit/rebind/extent/position policies, preference versus active-tool application and executable ordinary creation replay remain required. No implicit non-XY ImageJ projection. |
 
@@ -267,18 +267,38 @@ owner was introduced. Do not redo this integration to qualify point-tool default
 
 #### P2c implementation checkpoints
 
-Run these on the same owners/cache, accepting one coherent result at a time.
+P2c.1 is scoped delivered under the [raster receipt](parity/reviews/T04a2-point-raster-20261104.json).
+Run P2c.2 next on the same owners/cache, accepting one coherent result at a time.
 Each acceptance includes the closeout below; these are not new feature families
 or permission to create additional runners, environments or serializers.
 
 | Checkpoint | Concrete implementation / reuse | Evidence and successor |
 | --- | --- | --- |
-| P2c.1 — Native raster and font seam | Inspect `src/native/roi_style.cpp::render_roi_style` and `src/desktop/rendering.cpp::paintOverlay` / `renderDisplayOverlays`; the latter currently owns `STB_TRUETYPE_IMPLEMENTATION`. Freeze the minimum core-safe font input and primitive raster contract before changing either owner. Implement ordered glyph rasterization, clipping/alpha and labels with pre-admitted output/staging, preserving untagged behavior and processing masks. | Independent raster/label cases, duplicate draw order, empty/offscreen/positioned input, refusal-before-read and immutable source. Review allocation and public signatures before installed clients. If UI adoption is pending, record native-only delivery and keep P2c open. |
+| P2c.1 — Scoped API delivered; preserve contract | Explicit C++/Python `render_point_style` consumes PointPresentation and ten decimal coverage inputs with analytic4x4 geometry, primitive-order alpha, clipping and pre-read admission. It adds no font dependency/asset and leaves legacy ROI masks/rendering unchanged. |565 focused Windows Python checks, native control and seven installed clients per Windows/Linux platform pass. Independent analytic pixels are not Java font/AA parity. Reuse the contract; P2c.2 must deliver actual desktop font/flatten consumers. |
 | P2c.2 — Flatten consumer | Route existing flatten/display-export owners through the accepted raster seam; expose the actual supported pose, font and visibility options through both hosts. Use existing result/history, cancel and source guards. | Actual flatten/export/reopen produces the declared pixels and metadata in both hosts; stale/cancel/cap leaves source/history unchanged. Test one real route before expanding captures. Retain and retire its terminal groups before interchange captures. |
 | P2c.3 — Point appearance interchange | Promote supported bare-wire appearance explicitly at existing import/handoff boundaries; export representable fields through existing adapters, retaining native-only fields with the established envelope or explicit loss review. Preserve independent raw archives and unknown semantics. | Actual ROI/ZIP import, handoff, loss decision, export and reopen in both hosts; raw/native round trips and unsupported-code recovery. Reconcile every P2c requirement with the contract, carry P4 projection/extent residuals and hand off to P3's preview checkpoint. |
 
-A font asset or raster-policy change discovered in P2c.1 updates the later
-checkpoint checks before they run. Do not build a speculative general font
+**P2c.2 entry / reuse:** `render_point_style` now owns CPU geometry/alpha/order;
+`PointRasterFont` owns ten decimal coverage/metric values at the exact device
+font size. Prepare those values from the existing desktop stb resource once per
+owning font/style rebuild, not per point or per frame. Inspect actual font/code
+notices and configured/platform font acquisition before changing it. Admit the
+font bytes and coverage before IO/allocation, and retain one font owner; no new
+font framework or alternate glyph raster. Existing text semantics remain owned
+by their current path until explicitly adopted. Route pose, resolved ROI stroke,
+parent eligibility and per-point visibility through the existing flatten owners.
+Check one actual flatten/control/export route, then extend affected both-host
+observations. Reuse the147 analytic raster and264 layout checks for unchanged
+inputs; qualify font acquisition, source/history/cancel/stale and actual pixels
+where the new consumer differs. Exact Java font/AA parity is still unproven.
+
+Before owned launch/retention, resolve the executable to its actual absolute path,
+use explicit UTF-8 source edits and inspect the maintained nested receipt schema.
+Those setup assumptions recurred in P2c.1; T02 stays open. Keep snapshot/full-file
+pins once and reuse already successful pack/verify receipts on a cleanup retry.
+
+A font asset or raster-policy change updates the later checkpoint checks before
+they run. Do not build a speculative general font
 framework. Raster tolerance must come from the independent reference contract,
 not from relaxing an assertion after observing the implementation's pixels.
 
@@ -674,32 +694,37 @@ feature or block unrelated ready work.
 | Shared-header/API integration fanout | P2 core/API owner: keep new point-presentation declarations focused, freeze keys/callers and batch public changes before verification. T02 isolates dependencies only where repeated measured cost justifies it. | Current coherent Windows batch94 compile-line observations/379.047s; private preview/probe fixes each1/12.390s and1/13.390s. Different workloads, not processing-speed comparisons. No speculative whole-header rewrite. |
 | Historical drawing reader exact setting count | T02, next drawing qualification-tool change: support the additive current schema explicitly, retaining old source/expectation identities and negative controls. | Reader currently requires61 keys; installed schema64 includes the two new point keys plus an earlier addition. Do not repin old references or claim that historical campaign passes; current point controls have independent scoped checks. |
 | Ordinary multipoint draft rebuild and incomplete preview | P3 creation owner, before automatic actions: cache typed inputs on actual vertex/default changes and reuse the native glyph builder; no per-click full-tag encoding or new creator. | P2b code-observed residual; unmeasured frame cost. Exit: static-frame build count, mixed counters/poses, no provider reads, cap/cancel/source-close disposal and unchanged final publication. Blocks full P2 closure. |
-| Raster/text ownership split risks duplicate implementations | P2c.1 core/raster owner: inspect existing native ROI raster and desktop font owner before freezing the smallest shared seam. | Current native `render_roi_style` is called by desktop `paintOverlay`; stb text implementation is desktop-owned. Potential duplication, not measured waste. Exit: one accepted native glyph raster contract consumed by flatten/export; font eligibility and bounded staging established. |
+| Raster/text ownership split risks duplicate implementations | P2c.1 native seam is delivered: descriptor-driven raster with ten decimal coverage inputs, no full-plane per-primitive masks or new font dependency. P2c.2 must reuse it in desktop flatten/export. | Native raster/coverage analytic cases pass; desktop font/resource eligibility, bounded acquisition and actual consumers remain open. Potential duplication avoided; no measured time improvement claimed. |
 | Repeated live planning history | This task: three concise current documents, exact historical ledgers, compatible links. | Future task closeout updates rows in place. |
 
 ## Latest task closeout
 
-2026-11-04 completion-plan update (documentation only). The previous P2b
-implementation remains scoped delivered under its
-[582-case product/UI receipt](parity/reviews/T04a2-point-presentation-ui-20261104.json);
-its verification scope and retained failure diagnostics are unchanged. The next
-implementation is P2c.1, followed by P2c.2/P2c.3 and P3's required preview fix.
-All remaining T00-T15 requirements stay open under their existing owners.
+2026-11-04 P2c.1 native point display raster is scoped implemented and verified.
+The explicit C++/Python API consumes the accepted layout and supplied decimal
+coverage, with ordered alpha/clipping and pre-read output/font/layout/work
+admission. 565 focused installed Windows Python cases pass (147 new raster,
+264 presentation,154 ROI style), plus one native control and seven installed SDK
+clients per Windows/Linux platform. [Receipt](parity/reviews/T04a2-point-raster-20261104.json).
+No desktop flatten integration, exact Java font/AA pixels, full P2 or release/
+speed completion is claimed. P2c.2 is next, P2c.3 follows, then P3/P4.
 
 | Waste finding | Decision / effect on the next task |
 | --- | --- |
-| P2c combined raster/font, flatten and interchange into one broad handoff. | Fix now in the plan: three dependent checkpoints on existing owners; inspect the actual font/raster boundary first and reuse each accepted seam. No extra framework or duplicated source queue. |
-| Required draft-preview residual was easy to overlook in the high-level sequence. | Fix the sequence and active waste row: P3 must deliver typed cached preview before automatic actions. Full P2 stays open until this and P2c consumers pass. |
-| Repeated roadmap expansion and blanket certification can delay useful workflows. | Keep only the next two detailed specifications; preserve the full scope ledger. Select checks by changed contracts, keep unavailable reference/platform claims open and advance independent work after coherent closeout. |
-| Historical storage is partly inaccessible. | No new build/capture/scratch generated for this prose task; no deletion required. Preserve the prior known8,487,028,393 B snapshot and214 unknown subtrees as historical, not a new measurement or verified budget. |
+| Risk of duplicate raster/font engines and per-primitive full-plane masks. | Fix now: one bounded descriptor raster, decimal coverage input and existing core cancellation. P2c.2 supplies coverage from the current font owner and consumes this API. No new dependency/asset, controller, serializer, runner or environment. |
+| Glyph constructor made an intermediate full coverage string copy. | Fix now: borrow bytes for one vector copy. Font/glyph values are immutable to Python; no font clone during rendering. Time improvement unmeasured. |
+| Final callback could cancel after the last token check. | Fix product publication: quiet inherited-token recheck before return. Preserve native001/002 failures; native003, Linux and installed clients pass. |
+| Launch/encoding/retention-schema assumptions recurred. | T02/next validation owner: use observed absolute tool paths, explicit UTF-8 and actual nested receipt schema before extension. Successful pack/verify reused after lookup correction; no producer rerun. Do not declare recurrence solved by another policy statement. |
+| Compiler and test scratch retention. | After final allocation/API review and installed clients, retire34,159,706 compiler bytes by identity/LastTest logs. Verify742,940 scratch bytes in111,162 archive bytes, recheck live source hashes and remove all owned scratch. No compiler tree archived. |
 
-Checks for this task: local document links/anchors, all99 capability IDs in the
-horizon mapping, three unchanged historical-document hashes and diff hygiene.
-No product build or new runtime is justified. The sibling compilexx notebook
-receives the concise lesson. At every subsequent acceptance, replace this short
-closeout with that task's findings, update the queue and next-ready specifications,
-and assign every material deferred waste item a task, validation and revisit
-trigger before proceeding.
+Known entry8,487,230,540 B; before retirement8,527,176,445 B; after8,492,660,833 B
+before the small final receipt/docs. These are observations, not peak usage;
+214 inaccessible subtrees leave the full budget unverified. One active cache/
+runtime/SDK per platform was reused. Necessary failure diagnostics, result XML,
+product/source pins and lossless retained scratch remain linked in the receipt.
+Only changed native/binding/installed consumers were rebuilt; prior UI evidence
+is reused for unchanged code, not claimed as new flatten coverage. The existing
+compilexx notebook receives the waste/next-start lesson. Document checks cover
+links/anchors,99 IDs, preserved history and diff hygiene before publication.
 
 ## Historical link compatibility
 

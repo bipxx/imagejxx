@@ -1,4 +1,6 @@
 #include <imagejxx/point_presentation.hpp>
+#include <imagejxx/point_raster.hpp>
+#include <limits>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/imagej_roi_mapping.hpp>
 #include <imagejxx/imagej_roi_projection.hpp>
@@ -7,7 +9,7 @@
 using namespace imagejxx;
 void check(bool value) { if(!value)throw std::runtime_error("point presentation check failed"); }
 template<class E,class F> void refuses(F f) { try { f(); } catch(const E&) { return; } throw std::runtime_error("missing expected refusal"); }
-int main() {
+int main() try {
   Selection selection("multipoint");selection.points={{2.5,3.5},{7,9}};selection.width=17;
   selection.attributes["opaque"]=std::string("preserve");
   auto tagged=with_point_annotations(selection,{{0,PlanePosition{0,0,1}},{2,{}}});
@@ -48,5 +50,36 @@ int main() {
   styled.attributes[point_style_attribute]=metadata_object({{"version",std::int64_t(2)}});
   refuses<std::invalid_argument>([&]{with_point_style(styled,style);});
   check(without_point_style(styled)==tagged);
+  Selection dot("point");dot.points={{4,4}};PointStyle raster_style;
+  raster_style.marker=PointMarker::Cross;raster_style.size=0;raster_style.labels=false;
+  dot=with_point_style(dot,raster_style);
+  Image rgb(10,10,3,PixelType::UInt8);PointPresentationOptions raster_options;
+  raster_options.color={200,80,40,128};
+  const auto flattened=render_point_style(rgb,dot,raster_options);
+  check(flattened.at(4,4,0)>0 && rgb.at(4,4,0)==0 && flattened.pixels!=rgb.pixels);
+  PointRasterLimits raster_limits;raster_limits.max_working_bytes=1;
+  auto bad_rgb=rgb;bad_rgb.pixels[0]=std::numeric_limits<double>::quiet_NaN();
+  refuses<std::length_error>([&]{render_point_style(bad_rgb,dot,raster_options,nullptr,raster_limits);});
+  raster_limits=PointRasterLimits{};raster_limits.max_pixel_samples=1;
+  refuses<std::length_error>([&]{render_point_style(bad_rgb,dot,raster_options,nullptr,raster_limits);});
+  refuses<std::invalid_argument>([&]{render_point_style(bad_rgb,dot,raster_options);});
+  bad_rgb=rgb;bad_rgb.pixels.pop_back();
+  refuses<std::invalid_argument>([&]{render_point_style(bad_rgb,dot,raster_options);});
+  ExecutionControl control;control.cancellation=std::make_shared<CancellationToken>();control.cancellation->cancel();
+  refuses<OperationCancelled>([&]{render_point_style(rgb,dot,raster_options,nullptr,{},control);});
+  control.cancellation=std::make_shared<CancellationToken>();int checks=0;
+  control.checkpoint=[&]{if(++checks==4)control.cancellation->cancel();};
+  refuses<OperationCancelled>([&]{render_point_style(rgb,dot,raster_options,nullptr,{},control);});
+  check(rgb.at(4,4,0)==0);
+  PointRasterFont font;font.font_size=9;
+  for(auto& digit:font.digits){digit.width=1;digit.height=1;digit.offset_y=-1;digit.advance=2;digit.coverage={128};}
+  auto labeled=with_point_style(selection,PointStyle{});
+  const auto text_raster=render_point_style(Image(96,96,3,PixelType::UInt8),labeled,{},&font);
+  check(text_raster.at(5,14,0)>0);
+  refuses<std::invalid_argument>([&]{render_point_style(rgb,labeled);});
+  font.digits[0].coverage.clear();
+  refuses<std::invalid_argument>([&]{render_point_style(rgb,labeled,{},&font);});
   std::cout<<"Point presentation: bounded flat layout, semantic adapters and metadata preservation passed\n";
+} catch(const std::exception& error) {
+  std::cerr << error.what() << "\n";return 1;
 }

@@ -1,4 +1,9 @@
 #include <imagejxx/point_presentation.hpp>
+#include "point_raster_internal.hpp"
+#include "binding_arrays.hpp"
+#include "kernel_control.hpp"
+#include <climits>
+#include <cmath>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 namespace py=pybind11;
@@ -78,6 +83,54 @@ void bind_point_presentation(py::module_& m) {
   m.def("point_counter_color",[](py::handle v){auto n=integer(v);if(n>99)throw py::value_error("Point counter must be in 0..99");return point_counter_color(unsigned(n));});
   m.def("imagej_point_style",&imagej_point_style);
   m.def("with_imagej_point_style",&with_imagej_point_style);
+  py::class_<PointRasterGlyph>(m,"PointRasterGlyph")
+    .def(py::init([](int width,int height,int offset_x,int offset_y,double advance,py::bytes coverage) {
+      if(width<0 || height<0 || width>4096 || height>4096 || offset_x < -4096 || offset_x>4096 ||
+          offset_y < -4096 || offset_y>4096 || !std::isfinite(advance) || advance<=0 || advance>4096)
+        throw py::value_error("Invalid decimal glyph metrics");
+      const auto size=std::size_t(width)*height;
+      if(std::size_t(py::len(coverage))!=size)throw py::value_error("Invalid decimal glyph coverage length");
+      // Borrow bytes for one admitted copy; avoid a second full string buffer.
+      const auto* data=reinterpret_cast<const unsigned char*>(PyBytes_AsString(coverage.ptr()));
+      if(!data)throw py::error_already_set();
+      return PointRasterGlyph{width,height,offset_x,offset_y,advance,{data,data+size}};
+    }),py::arg("width"),py::arg("height"),py::arg("offset_x"),py::arg("offset_y"),
+        py::arg("advance"),py::arg("coverage"))
+    .def_readonly("width",&PointRasterGlyph::width).def_readonly("height",&PointRasterGlyph::height)
+    .def_readonly("offset_x",&PointRasterGlyph::offset_x).def_readonly("offset_y",&PointRasterGlyph::offset_y)
+    .def_readonly("advance",&PointRasterGlyph::advance)
+    .def_property_readonly("coverage",[](const PointRasterGlyph& g){return py::bytes(reinterpret_cast<const char*>(g.coverage.data()),g.coverage.size());});
+  py::class_<PointRasterFont>(m,"PointRasterFont")
+    .def(py::init([](double size,std::array<PointRasterGlyph,10> digits) {
+      if(!std::isfinite(size) || size<=0 || size>4096)throw py::value_error("Invalid point raster font size");
+      return PointRasterFont{size,std::move(digits)};
+    }),py::arg("font_size"),py::arg("digits"))
+    .def_readonly("font_size",&PointRasterFont::font_size)
+    .def_readonly("digits",&PointRasterFont::digits);
+  py::class_<PointRasterLimits>(m,"PointRasterLimits").def(py::init<>())
+    .def_readwrite("presentation",&PointRasterLimits::presentation)
+    .def_property("max_working_bytes",[](const PointRasterLimits& v){return v.max_working_bytes;},
+        [](PointRasterLimits& v,py::handle n){v.max_working_bytes=integer(n);})
+    .def_property("max_pixel_samples",[](const PointRasterLimits& v){return v.max_pixel_samples;},
+        [](PointRasterLimits& v,py::handle n){v.max_pixel_samples=integer(n);});
+  m.def("render_point_style",[](const py::array& rgb,const Selection& selection,
+      const PointPresentationOptions& options,const PointRasterFont* font,const PointRasterLimits& limits,
+      std::shared_ptr<CancellationToken> cancellation) {
+    ExecutionControl control;control.cancellation=std::move(cancellation);ExecutionScope scope(control);
+    if(rgb.ndim()!=3 || rgb.shape(2)!=3 || rgb.shape(0)<=0 || rgb.shape(1)<=0 ||
+        rgb.shape(0)>INT_MAX || rgb.shape(1)>INT_MAX || !rgb.dtype().is(py::dtype::of<unsigned char>()))
+      throw py::value_error("Point raster requires uint8 RGB display pixels");
+    // Metadata/font/output/work admission precedes NumPy conversion. Keep GIL:
+    // borrowing selection/options/font must not introduce pre-admission clones.
+    const auto prepared=detail::prepare_point_raster(int(rgb.shape(1)),int(rgb.shape(0)),selection,options,font,limits);
+    const auto input=bindings::read_numpy_image(rgb);
+    auto output=[&] {
+      py::gil_scoped_release release;
+      return detail::raster_point_style(input,prepared,font);
+    }();
+    return bindings::numpy_image(output);
+  },py::arg("rgb"),py::arg("selection"),py::arg("options")=PointPresentationOptions{},
+      py::arg("font")=nullptr,py::arg("limits")=PointRasterLimits{},py::arg("cancellation")=nullptr);
   // Keep the GIL over borrowed immutable arguments: copying geometry before
   // native admission would defeat max_working_bytes. No callbacks/provider reads.
   m.def("point_presentation",&point_presentation,py::arg("selection"),

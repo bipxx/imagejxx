@@ -1,0 +1,784 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 M2b.2b P2c.1 native point display raster",
+  "date": "2026-11-04",
+  "state": {
+    "implemented": "Explicit native C++ and Python raster API with decimal font coverage, ordered geometry, bounded staging/work and cancellation.",
+    "verified": "565 focused Windows installed Python cases (147 new raster,264 presentation,154 ROI style), one native presentation control per Windows/Linux platform, seven installed core SDK clients per platform.",
+    "integrated": "Explicit native/Python API; legacy render_roi_style and desktop flatten/export remain unchanged pending P2c.2.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#native-raster-contract-p2c1",
+  "scope": [
+    "Four markers and seven sizes from the accepted native descriptor API.",
+    "16-center analytic geometric coverage; supplied decimal bitmap coverage and exact baseline metrics, no bundled font asset or new dependency.",
+    "RGBA primitive order, duplicate overlap, fractional clip, marker scale, relative templates, position/show-all.",
+    "Font/layout/native input/output/work admission before NumPy reads or detached source copying; no full-image per-primitive masks.",
+    "Source/selection preserve, native and Python cancellation, quiet final callback-triggered cancellation recheck."
+  ],
+  "verification": {
+    "python_counts": {
+      "tests.python.test_point_raster": 147,
+      "tests.python.test_point_presentation": 264,
+      "tests.python.test_roi_style": 154
+    },
+    "python_passed": 565,
+    "python_failed": 0,
+    "python_skipped": 0,
+    "original_command_fixture": {
+      "path": "tests/fixtures/point-presentation-imagej154r.jsonl.gz",
+      "bytes": 2632,
+      "sha256": "cf802f66454eaca2e18674c846d9389e56de06cfe2199813bde5e16c386a2293"
+    },
+    "original_command_cases": 112,
+    "pixel_reference": "Independent full-plane Python analytic oracle driven by pinned original commands; synthetic decimal font inputs. This is not Java pixel/font/AA parity.",
+    "native_controls": {
+      "windows": 1,
+      "linux": 1
+    },
+    "installed_sdk_clients": {
+      "windows": 7,
+      "linux": 7
+    },
+    "public_font_eligibility": "No font/code/asset/dependency incorporated. Owning desktop resource eligibility/loading remains P2c.2.",
+    "line_ending_equivalence": "Retained existing mixed line endings on unchanged lines after compilation; normalized C++ input and line counts identical, recorded locally. No semantic edits after final API/allocation review.",
+    "marker_scales": [
+      0.5,
+      1,
+      2,
+      3
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 138931,
+      "sha256": "6486555ae485188648a17ff3ae570a330a1ac99a422e7843f0d268225ee167b2"
+    },
+    {
+      "path": "include/imagejxx/point_raster.hpp",
+      "bytes": 1552,
+      "sha256": "58998b50c4b56753fed58941d175b6dc640f2adcab37bb3112a4209d90d64b22"
+    },
+    {
+      "path": "src/native/point_raster_internal.hpp",
+      "bytes": 576,
+      "sha256": "42cc221bdab04ea9863fe490e716ac06cb7f007ce836528e50299a37aa96ce5d"
+    },
+    {
+      "path": "src/native/point_raster.cpp",
+      "bytes": 10173,
+      "sha256": "3bb37ea1d9f62f3d4bfeccebd7e6d5b89560211926838f2b66cfad347cdd46b4"
+    },
+    {
+      "path": "src/native/point_presentation_bindings.cpp",
+      "bytes": 10855,
+      "sha256": "38011e02ac50afffda38fccce5b732cd4eefd3e20d3f447c6d2dbae209f88b1e"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 82648,
+      "sha256": "6ba86d262b870eb3a0d58a0910e8ba222ea83f201bb3472beed0a2b7414c4fb2"
+    },
+    {
+      "path": "tests/native/test_point_presentation.cpp",
+      "bytes": 5983,
+      "sha256": "2ee9657113e69225125b68d443f36e4ad6cdd0f55a1215458ab9c740a77465c2"
+    },
+    {
+      "path": "tests/python/test_point_raster.py",
+      "bytes": 11967,
+      "sha256": "c13dae68e801e7abd6a489e1e1cf42f015c83d94923f189f7e28b7328720d51e"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 14039,
+      "sha256": "0bc89759d766f195a718818c14af25a8fea91b89c2b4085659654b187275f290"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8274432,
+      "sha256": "04dbc6c1479d9ec3246bb3ffc6857d5fff57263ea7df1e988eb358d2b37fef4a"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+      "bytes": 59484970,
+      "sha256": "3cc5e7ab229e85ca36eae6df589a762ac769ba4b87df17747ff6a8294cf346b8"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+      "bytes": 20612894,
+      "sha256": "272dabe7439280f6e9f2ed5a2ac671f2842fc5590c9592cf2cff278fed549c57"
+    }
+  ],
+  "failures_and_recovery": [
+    {
+      "route": "native001/native002",
+      "finding": "Final checkpoint callback cancellation was checked before callback only; first unhandled test lacked an error message.",
+      "recovery": "Retain both failures, add native exception diagnostic, quiet inherited-token recheck before result publication; native003 and Linux/installed consumers pass."
+    },
+    {
+      "route": "linux-outer001",
+      "finding": "Owned process launch requires actual executable path; bare wsl.exe did not resolve.",
+      "recovery": "Use observed C:/Windows/System32/wsl.exe; linux-outer002 succeeds, no live build restarted."
+    },
+    {
+      "route": "source edit preparation",
+      "finding": "Default Windows text decoding rejected UTF-8 test content after the independent binding edit; no test-file write occurred.",
+      "recovery": "Explicit UTF-8 byte handling, all checks pass."
+    },
+    {
+      "route": "scratch retirement",
+      "finding": "Lookup assumed top-level live_source_checked, while maintained receipt nests it under result. Pack and verify had already succeeded.",
+      "recovery": "Read actual result schema; verify unchanged source snapshot and retire without repacking, rerunning producers or deleting before verification."
+    }
+  ],
+  "waste_review": [
+    {
+      "finding": "Potential second raster/font engine and per-primitive full-plane masks",
+      "disposition": "fix now",
+      "change": "One native descriptor-driven bounded raster and ten-digit coverage input; desktop adoption is next on existing owners. No new controller, serializer, runner or environment."
+    },
+    {
+      "finding": "Extra full coverage string copy at Python glyph construction",
+      "disposition": "fix now",
+      "change": "Borrow PyBytes for one vector copy; native font values immutable to Python, no font staging clone during raster call. Unmeasured time effect."
+    },
+    {
+      "finding": "Repeated launch/encoding/receipt-schema assumptions",
+      "disposition": "defer",
+      "owner": "T02 and P2c.2 validation owner",
+      "validation": "Use actual resolved tools, explicit UTF-8 and observed nested receipt/control schemas before the next owned run or cleanup. Existing checked-in helpers only; recurrence is not declared fixed."
+    },
+    {
+      "finding": "Ordinary draft preview rebuild/incomplete annotation preview",
+      "disposition": "defer",
+      "owner": "P3 before automatic actions",
+      "validation": "Typed cached inputs, static build counts, mixed counters/poses, cap/cancel/close; still blocks full P2."
+    }
+  ],
+  "retention": {
+    "sdk": {
+      "state": "retired_after_final_api_allocation_review_and_installed_checks",
+      "bytes": 34159706,
+      "sources": [
+        {
+          "source": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch/sdk-windows001",
+          "bytes": 8605745,
+          "files": 175,
+          "identities": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-windows001-identities.json",
+          "identities_sha256": "ea2de187ced33a42c7574b8bbc8f75b91874e187f3868c3eaab0dde93de1f574",
+          "last_test_sha256": "6bb3a92c30d25169991b5bc43b40078c12c4c80bfc85b2efab484b6b0cc590b4",
+          "archived_compiler_tree": false,
+          "source_removed": true
+        },
+        {
+          "source": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch/sdk-linux001",
+          "bytes": 25553961,
+          "files": 32,
+          "identities": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-linux001-identities.json",
+          "identities_sha256": "ae7150682fae2f4924634be50596e5cec5ac4520a3edb167e966974de1573d15",
+          "last_test_sha256": "38928f66f6b390608e28cc27c11460de5566c73b32015264de54eb3a48ed3683",
+          "archived_compiler_tree": false,
+          "source_removed": true
+        }
+      ]
+    },
+    "scratch": {
+      "state": "verified_retention_then_removed",
+      "source": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch",
+      "source_bytes": 742940,
+      "source_files": 14,
+      "source_snapshot_sha256": "6e64eed20d87652c477a7cd83db830901c92dd2000bb4b5a8b274e65aa2dd9c0",
+      "archive_bytes": 111162,
+      "archive_sha256": "79b2506517e0f0b9688093d297480ba1cc0594b9139cd06aba228e6589426ce8",
+      "source_removed": true,
+      "recovery": "Pack/verify already succeeded; resumed only verified cleanup after correcting result.live_source_checked lookup. No producer or verification rerun."
+    },
+    "active_scratch_exists": false,
+    "compiler_caches_archived": false
+  },
+  "storage_snapshots": [
+    {
+      "path": ".tmp/manual-workflow-verification/point-raster-entry001.json",
+      "bytes": 66560,
+      "sha256": "c43359f89a95f8e53c245925d63ebe7f2b2dd3327277e2840d1f8c8ca71f556f",
+      "known_bytes": 8487230540,
+      "unknown_subtree_count": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/point-raster-before-retire001.json",
+      "bytes": 66572,
+      "sha256": "660a7a7bae25aa610f1bc1c1c5bea89163744d436b4076ef7993572eac2fa3f5",
+      "known_bytes": 8527176445,
+      "unknown_subtree_count": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/point-raster-after-retire001.json",
+      "bytes": 66572,
+      "sha256": "1ec1024eaaabc53c5a9ab6d2d8cc042c00318e65279e1a8f33730fa2ce9761d8",
+      "known_bytes": 8492660833,
+      "unknown_subtree_count": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    }
+  ],
+  "owned_processes": [
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/build-control002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 2.202999999979511
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/install-python001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.3279999999795109
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/install-python002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.10900000017136335
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/install-sdk001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.5779999999795109
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-build001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 10.396682169
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-install-sdk001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.054114367
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-native001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.09354324999999974
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-outer001.process.json",
+      "exit_code": null,
+      "target_completed": false,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.0
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-outer002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 14.516000000061467
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-build001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 11.921787700000001
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-configure001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 3.1502169390000008
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-outer001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 21.093999999808148
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-test001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.4168958860000025
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/native001.process.json",
+      "exit_code": 8,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.25
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/native002.process.json",
+      "exit_code": 8,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.125
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/native003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.14099999982863665
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/python001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 2.5780000002123415
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/python002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 2.530999999959022
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-pack.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.2660000000614673
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-verify.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.17100000008940697
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-build001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 7.468000000109896
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-configure001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 5.062999999849126
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-test001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.6569999998901039
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/windows-binding003.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 39.95299999997951
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/windows-build001.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 49.0
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/windows-build002.process.json",
+      "exit_code": 0,
+      "target_completed": true,
+      "cleanup_complete": true,
+      "elapsed_seconds": 38.218000000109896
+    }
+  ],
+  "local_evidence_pins": [
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/build-control002.log",
+      "bytes": 368,
+      "sha256": "de4c9c38b482d5acfdd1f2f39dfc8f1092e1d0b3c53fcf5d4c50bafd70992df5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/build-control002.process.json",
+      "bytes": 2037,
+      "sha256": "88bac8934eb3b79cf5f08b57ff8ae1b1096bd4cdc08f15821b70d82ae8177849"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/calibrated_analysis_sdk_cases.json",
+      "bytes": 851,
+      "sha256": "e5da4023609cddb07fcf52b8e55b81b64bf216519aede5c12590dae082f2cebd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/calibration_sdk_profiles.json",
+      "bytes": 174,
+      "sha256": "6e2b66ed04b2fea26e4f5f785aa7fa791fbd77441e96980a7d0460b0f18df36a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/install-python001.log",
+      "bytes": 5124,
+      "sha256": "ebb458c9da3ece11ebb78b1429166068cf1451e99b802163c04f1783c4d19338"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/install-python001.process.json",
+      "bytes": 2117,
+      "sha256": "ea0412c38b59ca908d3ea97d15728419f1becb3583d92a31281356a991a50073"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/install-python002.log",
+      "bytes": 5124,
+      "sha256": "a59ab006071461459ecf33a94a9765244d80e189f98ad28a3345c0bc706aabfc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/install-python002.process.json",
+      "bytes": 2118,
+      "sha256": "657f414d83f670ec2da28fbb064e3d2227138fe1862d41047e5cd4c86a268507"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/install-sdk001.log",
+      "bytes": 18847,
+      "sha256": "24cfc5c0dc3a69f5952d01776a6994c2ead0e69d04f260e39e8d588c65aaaff4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/install-sdk001.process.json",
+      "bytes": 2102,
+      "sha256": "1e08eb0416179f08c94d4c2acb681e35ea1cdf315b95d70697205b4e0a7d9767"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/line-ending-equivalence.json",
+      "bytes": 955,
+      "sha256": "1e03b103b043f7a8cabd8d00d7927e459fa570ea35632178a2e7c3f82107596e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-build001.log",
+      "bytes": 954,
+      "sha256": "39fe7586755ca4989d16cb78c1e74cd0889d12419f0175df02f53ab8ee717de2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-build001.process.json",
+      "bytes": 1540,
+      "sha256": "18d04134cfa29f75e4e0476077184e0fdc6db964242025a392b3da123898c11d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-install-sdk001.log",
+      "bytes": 19029,
+      "sha256": "815eaed7df494a04591656fc07bcfc054d627ec12ac33565434e79fe3a21b665"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-install-sdk001.process.json",
+      "bytes": 1592,
+      "sha256": "3895a0a14208b5f8b2bd9bac545a25c8cf5a87c66815702b314b0b3b9f2bb993"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-native001.log",
+      "bytes": 378,
+      "sha256": "9aa1fc383c3b378b0e9cf01c3cb12db1f40e7baeaefa821328fc99347dc06308"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-native001.process.json",
+      "bytes": 1540,
+      "sha256": "7d1c29868fefb05931eac0ee47cebb5898ec26df88943effc37a37714d56661d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-outer001.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-outer001.process.json",
+      "bytes": 2619,
+      "sha256": "d296dba81e3b4eca99b0d156fdede57ffdf53f49397e51715e8f75e8c5cf4e62"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-outer002.log",
+      "bytes": 45,
+      "sha256": "56cd5b3053d4018501a2a5e36c1dd5b428707d274bc8eb354f3183e0a3f812bb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-outer002.process.json",
+      "bytes": 3185,
+      "sha256": "d45a338c5fb6cfd45ca15c3aa6715026241c5f96bc1379ec12be9c2a38eb45c8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-build001.log",
+      "bytes": 1315,
+      "sha256": "ac242287d7146c97bab099cf33d60012f3ad6b66b9788a7eccc2060d7b8ad63d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-build001.process.json",
+      "bytes": 1540,
+      "sha256": "94cf25582e894885df0b2c286f3aef332beaa54ba602b2370300edd89686020b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-configure001.log",
+      "bytes": 588,
+      "sha256": "ff0a2ff03340f8d29fc369005a6d5d3d684e81cc3a871b7c82f06b3aa83a531f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-configure001.process.json",
+      "bytes": 2056,
+      "sha256": "0d2ed6c3f3f04af37813afd9d76cf4f8925de0e2986cbdc42f9e6cd695080eb3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-outer001.log",
+      "bytes": 109,
+      "sha256": "32cc29ae3a0a99a9388908a6aaf915d35a547169dab4afe017acff9d24165615"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-outer001.process.json",
+      "bytes": 2684,
+      "sha256": "cd093215e1bff8f354b8513aa7ec1f6fddbd34717cb59edff89dca8f1d31868c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-test001.log",
+      "bytes": 1160,
+      "sha256": "878a3758d506651b89bdbcc9fadb6e7eec36112b9285e339b21e9a1ebb8ffa96"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/linux-sdk-test001.process.json",
+      "bytes": 1569,
+      "sha256": "6f385e0adebf35f6677870addeb0d6d1638696bc39df396c0ea5a73eb1101cbd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/native001.log",
+      "bytes": 514,
+      "sha256": "19ac1deeded1bd7bb3b5a50dfbbc87ac789525cf3a501974c9104ae3841709af"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/native001.process.json",
+      "bytes": 2021,
+      "sha256": "863046ca4dc2a97ac22870287d6c1093caffa3ede966486e6ab7f2771c35e3c7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/native002.log",
+      "bytes": 500,
+      "sha256": "d265fea15b52cc52c988ea41ad393b85e016c0d0923505a0df764acd4e2c8f9d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/native002.process.json",
+      "bytes": 2021,
+      "sha256": "853f9501f87cf2e31aa08439b51381bebd8c6cfbd3e2f2bcde06c4112fde4041"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/native003.log",
+      "bytes": 378,
+      "sha256": "ea2b45a223af5d49d270731829197a75f2cc4d4589cb4fc15a5b4adfbc6e1911"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/native003.process.json",
+      "bytes": 2035,
+      "sha256": "0f201ff5fb48bd66da85128182235bf3e25d68fbf9ea1bfc4376319107fd9fed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/python001.log",
+      "bytes": 1440,
+      "sha256": "0f266864485a4e08ebceeb3986307b7fc0dfc5c687e77da6b19e1b665a8b5466"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/python001.process.json",
+      "bytes": 2359,
+      "sha256": "64d6621d6beb1bbadf36a58335c5bbe529c64c1a68ccf824cb0d443bc8842527"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/python001.xml",
+      "bytes": 81174,
+      "sha256": "63daddea65b2da4b0d2377031d7fd7e94b25831fc99e20c25777bc3aa45a0192"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/python002.log",
+      "bytes": 1440,
+      "sha256": "120c4885bce712922cc7dac948e8e62f51ad363037f96b5d869b7f97431bc0c7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/python002.process.json",
+      "bytes": 2361,
+      "sha256": "af8a4bf8a8ad45edc9d91be552c4e50e3cc25ae454098f345816234e8930d2a1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/python002.xml",
+      "bytes": 81426,
+      "sha256": "c5225de9c24c08cc161321fbf9a20647a199ee282fb8ba51246574597cde4ef5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-artifacts.json",
+      "bytes": 3707,
+      "sha256": "55f29f40ef8073f8c7e7a78fc16e275efe14d8a8a6e567539e1740c6beb54a75"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-manifest.json",
+      "bytes": 12315,
+      "sha256": "298ab10fb34da67a84914285f5a8273ec93413dab274e96df4f1a5f1c5925363"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-pack.json",
+      "bytes": 1500,
+      "sha256": "30926c382d517458e5a53f543f34bc8e2f7fef292bbae6d504fd120046c773f5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-pack.json.started.json",
+      "bytes": 883,
+      "sha256": "3113ff6aa367ce3fb7102aeb89ae846c7bc90e78cc62036592bf122b20422233"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-pack.log",
+      "bytes": 142,
+      "sha256": "c49a2ff3b74c4a19a90f979af7471a77f0e3a4274f9c6698fc76850355c1b64d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-pack.process.json",
+      "bytes": 2394,
+      "sha256": "6d9b1f988be7c41860c139b46f2e50532b97c63c28a41688561c27e517938f62"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-retirement.json",
+      "bytes": 584,
+      "sha256": "ab09dae038e72b0c62274f6ef150eb763e413c705b91595338d191f94f730e63"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-verify.json",
+      "bytes": 1403,
+      "sha256": "a87147aa94e528b7234c7e0eecd692aa32137defbef55adaca72ce1ac52029f7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-verify.json.started.json",
+      "bytes": 783,
+      "sha256": "0d57198dbc40fcec4e1b8353cb08e9915b5d371afb6a93f2563d2ca73ca7c56a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-verify.log",
+      "bytes": 145,
+      "sha256": "bdf711dde4f79104fe991f55a60798c5ab3456e193dd4e58ff1ab3cb2921db3c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch-verify.process.json",
+      "bytes": 2281,
+      "sha256": "98e7172f7e63ade0629e2634d9a85a306e783261e313f0a213262eda918c7a68"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/scratch.zip",
+      "bytes": 111162,
+      "sha256": "79b2506517e0f0b9688093d297480ba1cc0594b9139cd06aba228e6589426ce8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-build001.log",
+      "bytes": 6070,
+      "sha256": "9efff5bbad65fae78bd535b3e2d0f83f0e26269ce6487c4237ff7b1811962575"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-build001.process.json",
+      "bytes": 2880,
+      "sha256": "160c518a2feacafeae705b390210c2305d57bff03bb9a3bc525ebd7791a7b579"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-configure001.log",
+      "bytes": 949,
+      "sha256": "b8696b793f21602fea72f82395125be97ec38f1c5f44945cc98f3a754919fc21"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-configure001.process.json",
+      "bytes": 2537,
+      "sha256": "5c89ad024ae889cb61e7f3d0b6dbe55f126bc8c6028856ffedd1973385e98afe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-linux001-identities.json",
+      "bytes": 49462,
+      "sha256": "ae7150682fae2f4924634be50596e5cec5ac4520a3edb167e966974de1573d15"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-linux001-LastTest.log",
+      "bytes": 6500,
+      "sha256": "38928f66f6b390608e28cc27c11460de5566c73b32015264de54eb3a48ed3683"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-retirement.json",
+      "bytes": 1184,
+      "sha256": "1a486239bd64c9a3868b6e561e7ecd46a3c23452b069585b011126c3cabcfce6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-test001.log",
+      "bytes": 1156,
+      "sha256": "c4186c2bf8cfa33d8edda3e46bccee9660a7389681366139d16b1097de57c045"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-test001.process.json",
+      "bytes": 2055,
+      "sha256": "72f31a8d1daaa4db63d6d61e4fc900bf4762cbea3e42248463b46bd9b644a176"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-windows001-identities.json",
+      "bytes": 119056,
+      "sha256": "ea2de187ced33a42c7574b8bbc8f75b91874e187f3868c3eaab0dde93de1f574"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/sdk-windows001-LastTest.log",
+      "bytes": 6961,
+      "sha256": "6bb3a92c30d25169991b5bc43b40078c12c4c80bfc85b2efab484b6b0cc590b4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/windows-binding003.log",
+      "bytes": 589,
+      "sha256": "29e4d06c2eb28b3032d3555d2c9dc60ea13068bd7295cc6b065e4601b9ec85c6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/windows-binding003.process.json",
+      "bytes": 2012,
+      "sha256": "8653d65c43a0fb62dbd63f2d04910aa52b484e66a80fdbf373ce8bfa005a64e3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/windows-build001.log",
+      "bytes": 1865,
+      "sha256": "408de6232b1fa9c7ec243fde8ba94d84e7c796ec238c0c64a86417b224c62552"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/windows-build001.process.json",
+      "bytes": 2572,
+      "sha256": "152c616c7f2f90cad4154ed9c5bf234a93233222232b7248c07dfce6bc395dee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/windows-build002.log",
+      "bytes": 911,
+      "sha256": "d8933655f95175443703e326118cadd60b6d7a72222798268feec0e52dd8178d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-raster-20261104/windows-build002.process.json",
+      "bytes": 2053,
+      "sha256": "450de8596a3da960423f19538f216a4c1df0c8e82317f63d25d68c2bef115fdb"
+    }
+  ],
+  "remaining": [
+    "P2c.2 actual desktop font acquisition/coverage preparation, flatten/display export and actual controls/reopen in both hosts.",
+    "P2c.3 bare-wire appearance promotion, native-field envelope/loss review and actual ROI/ZIP round trips.",
+    "P3 typed draft preview and automatic actions; P4 non-XY projection/extent/rebind/edit/replay reconciliation.",
+    "Full T00-T15 scope; no Linux/macOS UI, exact Java font/AA, release or performance-superiority claim."
+  ],
+  "document_checks": {
+    "local_links_and_anchors": 75,
+    "inventory_ids_covered": 99,
+    "unchanged_historical_document_hashes": 3,
+    "source_product_local_evidence_pins_checked": 84,
+    "ready_task_specs": 2,
+    "owned_scratch_absent": true,
+    "diff_hygiene": "passed",
+    "legacy_plan_checker": "Not claimed; historical per-G prose shape mismatch remains T02. Scoped document checks used."
+  }
+}

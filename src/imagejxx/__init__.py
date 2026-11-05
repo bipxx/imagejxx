@@ -15,6 +15,7 @@ from ._native import Dataset as Dataset, SpatialCalibration as SpatialCalibratio
 from ._native import (
     PointStyle, PointMarker, PointPresentationOptions, PointPresentationLimits,
     PointPrimitiveKind, PointPrimitive, PointGlyph, PointPresentation,
+    PointRasterGlyph, PointRasterFont, PointRasterLimits, render_point_style,
     point_style, with_point_style, without_point_style, point_counter_color,
     imagej_point_style, with_imagej_point_style, point_presentation,
     PointAnnotation, point_creation_annotation, point_annotations, with_point_annotations, without_point_annotations,
