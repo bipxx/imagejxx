@@ -8884,15 +8884,17 @@ void Window::action(const std::string &name, const Json &p) {
       if(!std::isfinite(dpi) || dpi<1 || dpi>2400)throw std::invalid_argument("DPI must be1..2400");
       landscape=boolean(get(p,"landscape"),impl->preferenceState.settings.boolean("print_landscape"));
     }
-    PreparedExportImage prepared(source,all,cap);
+    const bool show_rois=impl->showRois;
+    PreparedExportImage prepared(source,all,cap,show_rois,
+        name=="flatten"?DisplayExportOutput::Document:DisplayExportOutput::Pixels);
     auto validate=[&] {
       if(document()->id!=source.id() || documentById(source.id())!=d)throw RevisionConflict();
+      if(impl->showRois!=show_rois)throw RevisionConflict();
       prepared.validate(d->nativeSnapshot(),settings().boolean("point_show_all"),impl->processingCap());
     };
     validate();auto image=prepared.render();validate();
     if(name=="flatten") {
-      Stack frames;frames.push_back(std::move(image));
-      addDocument(std::make_shared<Document>(std::move(frames),source.data().metadata.title+" rendered"));
+      addDocument(std::make_shared<Document>(prepared.document(std::move(image))));
     } else if(name=="export_display") {
       Stack frames;frames.push_back(std::move(image));writeImages(path,frames);
     } else if(name=="export_pdf")writePdf(path,image,dpi,landscape);

@@ -1,8 +1,8 @@
 # ImageJ and Fiji delivery plan
 
-Updated 2026-11-04 after the P2c.2 native-snapshot export admission increment.
-Next: output roles/calibration/provenance, then remaining export lifecycle and
-state/replay. Appearance interchange, typed draft preview and the full T00-T15
+Updated 2026-11-04 after the P2c.2 output-role/spatial-property increment.
+Next: explicit general native ROI/font route, then remaining export lifecycle
+and state/replay. Appearance interchange, typed draft preview and the full T00-T15
 delivery horizon remain required. Every task includes waste review, verified
 cleanup and a queue update before its successor starts.
 This is the
@@ -65,8 +65,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 P2c.1 native display raster | Scoped implemented/verified: explicit C++/Python raster, ordered analytic geometry and decimal coverage font input. 565 focused installed Windows Python cases pass (147 new); native control and seven installed SDK clients per Windows/Linux platform pass. | P2c.2 must acquire/admit font coverage and adopt actual flatten/export controls; P2c.3 appearance/loss review follows. Legacy masks/render_roi_style unchanged. [Evidence](parity/reviews/T04a2-point-raster-20261104.json); no Java font/AA pixel or UI completion claim. |
 | T04a.2 P2c.2 desktop font/flatten increment | Actual label-toggle/Flatten menus, native glyph pixels, font errors/refusal, PNG and flattened-session reopen are scoped integrated. Prior 690-case checkpoint remains valid for its recorded inputs. | Preserve [consumer evidence](parity/reviews/T04a2-point-flatten-20261104.json); admission increment below supersedes its open pre-read finding, not its historical results. |
 | T04a.2 P2c.2 native-snapshot admission increment | Configured-cap point/layout/font preparation before source reads, transferred immutable coverage and one-read owned RGB composition. 646 distinct focused Windows product cases, two Windows/one Linux native controls pass; both Windows actual label/Flatten routes pass. | Next output roles/calibration/provenance and general native ROI/font contract, then remaining legacy-text/scheduler/publication/state/replay. Full P2c.2 remains open. SDKs refreshed; no new installed-client campaign. [Evidence](parity/reviews/T04a2-point-export-admission-20261104.json). |
+| T04a.2 P2c.2 output-role/spatial-property increment | Actual both-host Flatten includes overlays, visible manager rows and active point roles in order; non-point suppression, detached local plane calibration/properties/density provenance and session reopen pass. 250 distinct focused Windows product cases ultimately pass (15 new), plus one native control. | Next explicit general native ROI/font contract, then legacy-text/scheduler/publication/state/replay. No Linux/macOS UI, format metadata, PDF/print or full P2c.2 claim. [Evidence](parity/reviews/T04a2-point-flatten-roles-20261104.json). |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,496,416,716 known bytes before final admission receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,497,660,884 known bytes before final output receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Active work and immediate sequence
@@ -84,7 +85,7 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Order | Task boundary | Exit / next handoff |
 | --- | --- | --- |
 | Delivered scoped | Imported XY handoff and point-specific ZIP increment. | 787 focused product cases,23 tools; native/installed clients on Windows/Linux; all owned scratch retired with failures/hashes retained. |
-| Now | P2c.2 output roles/calibration/provenance and explicit native ROI/font contract. | Reuse delivered native-snapshot admission/coverage; reconcile pinned ImageJ flatten roles and spatial metadata without redoing point kernels. Next finish remaining legacy-text/scheduler/publication/state/replay, then P2c.3 interchange. Full P2 and typed preview residual remain open. |
+| Now | P2c.2 explicit general native ROI/font contract. | Desktop output-role/spatial-property increment is scoped delivered; reuse its prepared rows/coverage and native point raster. Add the explicit native C++/Python display context without changing legacy untagged masks; then remaining lifecycle/state, P2c.3 interchange and typed preview. Full P2 remains open. |
 | Next | P3 automatic point actions and P4 edit/rebind/replay reconciliation, then M2b.3 manager layouts/Z/T, M3 options and M4. | Complete each on existing owners; hand stable contracts to T04a.3. |
 | Following | T04a.3, T04b, T05, then the delivery stages and T06-T15 roadmap below. | Each stage closes its concrete inventory residuals, including UI/configuration/state, before claiming completion. |
 
@@ -274,14 +275,15 @@ owner was introduced. Do not redo this integration to qualify point-tool default
 P2c.1 is scoped delivered under the [raster receipt](parity/reviews/T04a2-point-raster-20261104.json).
 P2c.2 consumers are scoped delivered under the [flatten receipt](parity/reviews/T04a2-point-flatten-20261104.json),
 and pre-read configured point admission under the [admission receipt](parity/reviews/T04a2-point-export-admission-20261104.json).
-Finish output roles/calibration/provenance, then remaining lifecycle/state on the same owners/cache.
+Output roles/calibration/provenance are scoped delivered under the [output receipt](parity/reviews/T04a2-point-flatten-roles-20261104.json).
+Finish explicit general native ROI/font context, then remaining lifecycle/state on the same owners/cache.
 Each acceptance includes the closeout below; these are not new feature families
 or permission to create additional runners, environments or serializers.
 
 | Checkpoint | Concrete implementation / reuse | Evidence and successor |
 | --- | --- | --- |
 | P2c.1 — Scoped API delivered; preserve contract | Explicit C++/Python `render_point_style` consumes PointPresentation and ten decimal coverage inputs with analytic4x4 geometry, primitive-order alpha, clipping and pre-read admission. It adds no font dependency/asset and leaves legacy ROI masks/rendering unchanged. |565 focused Windows Python checks, native control and seven installed clients per Windows/Linux platform pass. Independent analytic pixels are not Java font/AA parity. Reuse the contract; P2c.2 must deliver actual desktop font/flatten consumers. |
-| P2c.2 — Consumers/admission scoped delivered; completion active | `PreparedExportImage` captures consumed native metadata, pose/options/layout and moved immutable font coverage under the configured cap before one source-plane read; point painting reuses one owned RGB buffer. Actual both-host labels/Flatten and prior PNG/session reopen pass in their recorded scopes. | Required next: explicit output roles/calibration/provenance and general native ROI/font contract; then complete legacy-text preparation, scheduler reservations, cancel/stale/close/file publication, required state/replay and PDF/print output/platform evidence. Logical admission is not an RSS or scheduler-wide guarantee. |
+| P2c.2 — Consumers/admission scoped delivered; completion active | `PreparedExportImage` captures consumed native metadata, pose/options/layout and moved immutable font coverage under the configured cap before one source-plane read; point painting reuses one owned RGB buffer. Actual both-host labels/Flatten and prior PNG/session reopen pass in their recorded scopes. | Output-role/spatial-property increment is scoped delivered; required next: explicit general native ROI/font contract; then complete legacy-text preparation, scheduler reservations, cancel/stale/close/file publication, required state/replay and PDF/print output/platform evidence. Logical admission is not an RSS or scheduler-wide guarantee. |
 | P2c.3 — Point appearance interchange | Promote supported bare-wire appearance explicitly at existing import/handoff boundaries; export representable fields through existing adapters, retaining native-only fields with the established envelope or explicit loss review. Preserve independent raw archives and unknown semantics. | Actual ROI/ZIP import, handoff, loss decision, export and reopen in both hosts; raw/native round trips and unsupported-code recovery. Reconcile every P2c requirement with the contract, carry P4 projection/extent residuals and hand off to P3's preview checkpoint. |
 
 **P2c.2 completion entry / ownership:** the existing `render_point_style` owns
@@ -297,7 +299,8 @@ acceptance, waste review and plan update before the next starts:
 
 | Increment / owner boundary | Easiest implementation path and concrete exit |
 | --- | --- |
-| **A — Output roles, calibration and provenance; next** | Desktop export owner (`point_raster_export.hpp`, `rendering.cpp`, `window.cpp`) with native metadata/ROI owners only where a shared contract requires it. Read pinned `ImagePlus.java::flatten()` before editing: active PointRoi, overlay and canvas manager show-all inclusion, point scale, `copyScale`, Info and properties are concrete reference obligations. Specify supported active/saved/overlay combinations and pose; saved rows are not automatically all visible. Reuse immutable snapshot and prepared point layouts/coverage; add no alternate renderer/serializer. Publish detached RGB with the correct extent/spatial calibration/affine, source identity/provenance and explicit density-calibration policy for display values. Preserve source/history/raw annotations. Resolve general `render_roi_style` styled-point/font context explicitly while keeping legacy untagged masks stable. No implicit scientific/non-XY projection. Exit: independent role/metadata examples, native/Python parity for changed contracts, both-host real Flatten and export/reopen with active point + overlay + manager combinations, source/history unchanged. Required unsupported cases remain owned by P4/T07/T10. |
+| **A — Output roles, calibration and provenance; scoped delivered** | Shared desktop prepared export owner includes ordered overlay/visible-manager/active roles, reference non-point suppression, detached RGB plane spatial calibration, Info/properties and source density provenance.250 scoped Windows checks ultimately pass including both real hosts and native-session reopen; source/history unchanged. No new public API. Source-local affine plane origin is an explicit native extension of ImageJ XY copyScale semantics. Required generic point/font context is A2; format metadata, global context/publication and replay remain B/T10. Scientific/non-XY policy remains P4/T07/T10. |
+| **A2 — Explicit general native ROI/font route; next** | Core/API owner: inspect existing `roi_style.hpp`, `point_raster.hpp`, their implementations/bindings and every `render_roi_style` caller before edits. Provide an explicit typed point presentation/font/limit/execution context on the existing generic display seam; delegate tagged-point rendering to `render_point_style`, resolve ROI color once, and keep old positional/default untagged mask behavior stable. No font IO, ImGui dependency or second geometry kernel in core. Freeze the actual additive C++ signature/Python keyword contract here before implementation. Reuse147 analytic raster cases and legacy ROI cases; verify point/font routing, missing/irrelevant fonts, malformed style, caps/cancellation and detached source. Qualify changed public installed C++/Python consumers after allocation review; desktop consumers reuse the same semantic seam where appropriate without restoring per-overlay RGB copies. This is a required API increment, not a reason to repeat already accepted output-role captures unchanged. |
 | **B — Remaining preparation, lifecycle and state; follows A** | Reuse the prepared command plus existing jobs/results, codec/file promotion and recorder/session owners. Finish legacy-text geometry/font capture (current shared64MiB estimate is not a complete text contract), scheduler-wide resource reservation and source/pose/settings guards through publication. Stage exports privately and promote only a still-current, uncancelled result; avoid duplicate render/encode passes. Exercise cancellation during work, stale metadata/settings/pose/source, source close, font acquisition/recovery, codec failure/partial-file cleanup, detached result state and executable replay/rebind. Qualify declared PDF/print output/platform paths rather than inferring them from shared code. Exit: no unexpected provider read on early refusal, no partial publication/history mutation on failure, successful state/reopen/replay in both hosts, affected installed clients only if public contracts change. |
 
 **Preserve delivered admission:** source/display/point metadata, layout and font
@@ -311,12 +314,12 @@ full-image copy/validation for each overlay. Strengthened opaque metadata cases
 cover both native extension root and properties; historical property-only results
 retain their original scope.
 
-**Before starting A:** inspect the actual role/metadata consumers and all edit
+**Before starting A2:** consume the scoped role/metadata results and inspect all edit
 anchors before any write; record exact unresolved command/option IDs and public
 signatures in this specification when selected. Keep unaffected numerical and
 SDK evidence; source/API/allocation review precedes broad actual captures.
 Use the same active caches/runtime/SDKs and fresh owned scratch. A low-risk
-contract correction stays in A; remaining lifecycle work stays visible in B.
+API correction stays in A2; remaining lifecycle work stays visible in B.
 P2c.3 starts after the required P2c.2 exits, followed by P3's typed preview
 checkpoint. Neither the logical resource model nor passing small-image pixels
 closes these remaining obligations.
@@ -460,7 +463,7 @@ active; the successor may have a specification, but no competing owner changes.
 
 | Order / owning task | Smallest useful delivery and easiest reuse | Required handoff before closing |
 | --- | --- | --- |
-| 1 / P2 | Native/API, shared UI, desktop font/flatten and pre-read configured point admission are scoped delivered; finish P2c.2 output roles/calibration/provenance, then remaining lifecycle/state, then bare-wire appearance promotion/export/loss review on existing owners. | Four markers/seven sizes, colors/labels/visibility, all required roles, persistence/export and bounded rendering. Native API-only delivery is an increment; P2 stays active until consumers pass. |
+| 1 / P2 | Native/API, shared UI, desktop font/flatten and pre-read configured point admission are scoped delivered; finish P2c.2 explicit native ROI/font context and remaining lifecycle/state, then bare-wire appearance promotion/export/loss review on existing owners. | Four markers/seven sizes, colors/labels/visibility, all required roles, persistence/export and bounded rendering. Native API-only delivery is an increment; P2 stays active until consumers pass. |
 | 2 / P3 | First close the required typed draft-preview residual on the existing creation owner, then compose accepted point creation with existing Measure, overlay, manager and navigation owners. | Static frames do not rebuild typed metadata/geometry; mixed counter/pose previews and lifecycle pass before automatic-action combinations, original event order, last-slice policy and recording/state checks. |
 | 3 / P4 | Reconcile existing point editing and transfer owners before extending them. | Edit/rebind/extent/non-XY projection policy, metadata-loss recovery and executable creation replay; no unowned point-tool key. |
 | 4 / M2b.3 | Extend current manager request/results for required MultiMeasure and Z/T layouts. | Actual selection/range/layout/append/label consumers, ordered bounded output and stable persistence schema. |
@@ -718,44 +721,40 @@ feature or block unrelated ready work.
 | Shared-header/API integration fanout | P2 core/API owner: keep new point-presentation declarations focused, freeze keys/callers and batch public changes before verification. T02 isolates dependencies only where repeated measured cost justifies it. | Current coherent Windows batch94 compile-line observations/379.047s; private preview/probe fixes each1/12.390s and1/13.390s. Different workloads, not processing-speed comparisons. No speculative whole-header rewrite. |
 | Historical drawing reader exact setting count | T02, next drawing qualification-tool change: support the additive current schema explicitly, retaining old source/expectation identities and negative controls. | Reader currently requires61 keys; installed schema64 includes the two new point keys plus an earlier addition. Do not repin old references or claim that historical campaign passes; current point controls have independent scoped checks. |
 | Ordinary multipoint draft rebuild and incomplete preview | P3 creation owner, before automatic actions: cache typed inputs on actual vertex/default changes and reuse the native glyph builder; no per-click full-tag encoding or new creator. | P2b code-observed residual; unmeasured frame cost. Exit: static-frame build count, mixed counters/poses, no provider reads, cap/cancel/source-close disposal and unchanged final publication. Blocks full P2 closure. |
-| Remaining text/whole-job ownership and output policy | P2c.2 A owns output roles/calibration/provenance/general ROI-font contract; B owns legacy-text capture, scheduler reservation, codec/publication and state/replay. Reuse delivered point admission/immutable coverage and one owned RGB painter. | Point no-read refusal/one-read/frozen-font checks pass; current model excludes exact codec/reader/allocator costs. Exit: role/metadata references, remaining whole-job resource and cancel/stale/close guarantees, real outputs/state in both hosts. No measured speed claim. |
+| Remaining general ROI/text/whole-job ownership | P2c.2 A2 owns explicit generic ROI/font routing; B owns legacy-text capture, scheduler reservation, codec/publication/global-context and state/replay. Reuse delivered point admission/immutable coverage, output-role/spatial-property policy and owned RGB painter. | Point and role/property checks pass; exact codec/reader/allocator costs and format metadata are not qualified. Exit: explicit native/Python context, remaining resource and publication guarantees, real outputs/state. No measured speed claim. |
 | Edit-anchor and empty-scratch assumptions | T02/next owner checks every edit anchor before batch writes and inventories terminal scratch before retention. | A CRLF-dependent anchor guard stopped one edit before its write; an empty archive snapshot correctly refused before deletion. Empty dirs were safely retired without an archive or rerunning producer checks. Recurrence remains open; use existing helpers, not a new runner. |
 | Repeated live planning history | This task: three concise current documents, exact historical ledgers, compatible links. | Future task closeout updates rows in place. |
 
 ## Latest task closeout
 
-2026-11-04 P2c.2 native-snapshot export admission increment: immutable consumed
-metadata/pose/options/layout/font coverage are admitted under the configured cap
-before source access. One source-plane read feeds one owned RGB point painter.
-646 distinct focused Windows product cases pass; two Windows/one Linux native
-controls pass. Both final Windows hosts exercise real labels/Flatten,157 frames
-each; six distinct readers pass (12 including the justified final work-policy
-repeat). Accepted pixels match prior scoped observations.
-[Receipt](parity/reviews/T04a2-point-export-admission-20261104.json).
-Active SDKs refreshed, no new installed-client campaign or public API change.
-Full P2c.2, exact Java font/AA, PDF/printing, Linux/macOS UI, release and broad
-speed remain unqualified.
+2026-11-04 P2c.2 output-role/spatial-property increment: overlays, visible manager
+rows and active point/eligible non-point selection now paint in reference order.
+Flatten publishes detached RGB with source-local spatial plane calibration,
+properties/Info and bounded descriptive provenance; scalar density is removed
+from display values and retained as source provenance. Native-session reopen
+preserves these fields. [Receipt](parity/reviews/T04a2-point-flatten-roles-20261104.json).
+250 distinct focused Windows product cases ultimately pass (15 new), one native
+control, two final actual157-frame host observations/six reader checks. Initial
+12 setup/expectation failures are retained, corrected in focused tests; final
+244-case affected suite passes. No public API change, new SDK consumer campaign,
+Linux/macOS UI, Java font/AA, format metadata, PDF/print or broad speed claim.
 
-| Waste finding | Decision / next start |
+| Waste finding | Disposition / next start |
 | --- | --- |
-| Full State/plane-table copies and source reads before admission. | Fixed scoped: borrow immutable native snapshot, charge only consumed metadata/visible overlays before staging, validate settings/options before one source-plane read; remove unreachable legacy branches/helper. |
-| Per-overlay whole-image RGB validation/copies and font bitmap copies. | Fixed: validate normalized RGB once and paint owned pixels in order; move immutable coverage out of per-file owner and share by path/size. Preserve default public detached/validated API and147 analytic pixel cases. |
-| Admission alone could hide missing editor behavior. | Defer with owner: P2c.2 A next reconciles active-point/overlay/manager roles and `copyScale`/properties against pinned ImageJ; B finishes remaining text/scheduler/publication/state. No speculative renderer/font framework. |
-| CRLF anchor assumption and empty-tree retention attempt. | Guards refused safely; inspect all byte anchors before writes and classify scratch before archiving next time. Empty dirs removed only after owned-tree checks, no fake archive or product retry. T02 recurrence stays open. |
-| Late aggregate font work charge required final host repeats. | Final routes repeat only affected work policy; pixels unchanged. Next source/allocation review includes aggregate byte AND work accounting before broad captures. Reuse unchanged SDK/geometry checks. |
+| Pixel-only exports initially prepared unused document properties. | Fixed now: typed private Pixels/Document output policy; only Flatten admits/copies properties and spatial strings. A large unused Info field no longer blocks a small1MiB PNG export. Final host routes repeated after this policy change; no duplicate renderer/codec/font owner. |
+| API/test and shell search assumptions recurred. | Preserve failures: actual transaction `select`, dtype strings, view crosshair schema and explicit point color context differ from assumptions. Old stored-ROI expectation omitted newly included manager blending. T02/next A2 owner resolves existing files with `rg --files`, batches declaration/schema reads and uses one working installed-runtime bootstrap before tests. Do not declare recurrence fixed by restating policy. |
+| Preparation charged point rows but previously lacked output-property ownership. | Fixed scoped: charge title/properties/calibration strings before copies; include output annotation roles in the existing aggregate estimate. Preserve no-read failure, source/history and immutable coverage guarantees. No RSS/codec/global scheduler claim. |
+| Mixed source line endings were normalized by whole-text edits. | Restore unchanged original bytes with identical normalized compiler input recorded; no behavior rebuild. T02/A2 next edit preserves unchanged line endings before compilation. Recurrence remains open. |
+| More machinery would repeat accepted work. | No action: no new public API, runner/cache/environment or font dependency for this private increment. A2 owns the actual missing public generic context; B owns remaining text/publication/state. Reuse unaffected SDK/numerical evidence. |
 
-Six nonempty terminal groups retain939,907 raw B in108,153 verified archive B;
-seventh empty group retired without an archive. All owned scratch and checked-empty
-MSBuildTemp removed. No compiler caches/SDK trees archived, SDK consumer campaign
-or build/environment generation added. Known entry8,494,904,607 B; final recorded
-8,496,416,716 B before final receipt/docs deltas, with214 inaccessible subtrees:
-whole budget unverified, measurements not an absolute peak. Existing storage
-scope includes complete normalized project/dependency/runtime/Linux roots.
-Coherent Windows build77.578s and final affected build15.765s are distinct build
-workloads, not application performance. Next task consumes A/B above; concise
-lessons go to the existing compilexx notebook. Plan-only closeout changes require
-links/anchors, all99 inventory IDs, unchanged history hashes, evidence pins and
-diff hygiene, with no additional product build.
+Final capture groups were retained/retired serially after each reader. All owned
+scratch removed, with failed XML/logs and necessary outputs preserved losslessly;
+no compiler cache/SDK trees archived. Retention byte totals and source/archive
+hashes are in the receipt. Known entry8,496,541,882 B; final8,497,660,884 B before
+final receipt/docs deltas;214 inaccessible subtrees keep the whole budget
+unverified. Build40.093s/35.562s are different coherent workloads, not application
+speed. Next start is A2 above, followed by B; all T00-T15 scope remains required.
+This closeout updates the queue in place and appends concise compilexx lessons.
 
 ## Historical link compatibility
 

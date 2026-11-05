@@ -415,9 +415,11 @@ def test_individual_stored_roi_fill_alpha_and_holes_are_consumed_by_flatten(desk
     editor.add_native_document(rgb_owner)
     editor.action("flatten")
     expected = ij.render_roi_style(ij.render_roi_style(pixels, first), second)
+    # Shown manager rows follow overlays; identical roles blend independently.
+    expected = ij.render_roi_style(ij.render_roi_style(expected, first), second)
     np.testing.assert_array_equal(editor.document.data, expected)
     np.testing.assert_array_equal(editor.document.data[4, 4], pixels[4, 4])
-    np.testing.assert_array_equal(editor.document.data[10, 10], [55, 115, 120])
+    np.testing.assert_array_equal(editor.document.data[10, 10], [32, 158, 75])
     np.testing.assert_array_equal(rgb_owner.snapshot().dataset.numpy("YXS"), pixels)
     assert rgb_owner.snapshot().rois[0].selection.attributes == first.attributes
 

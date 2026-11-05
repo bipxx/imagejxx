@@ -285,11 +285,62 @@ non-point rendering retains its existing owner; legacy text has a conservative
 shared 64 MiB workspace allowance, not frozen Unicode/font coverage. Complete those
 mixed workflows under P2c.2 instead of inferring them from point-only checks.
 
-Pinned `ImagePlus.flatten()` also includes an active PointRoi with an overlay,
-can include the manager show-all list, and copies scale/properties. Those output
-role/calibration/provenance differences and the general `render_roi_style` point/
-font route remain explicit next work; this admission increment preserves current
-output roles and pixels rather than silently changing that contract.
+The subsequent output-role increment below adopts those roles and spatial/
+property policy. The admission receipt retains its earlier overlay-only scope;
+it is not retroactively evidence for the new output contract.
+
+## Flatten output roles and metadata (P2c.2 output increment)
+
+The shared desktop action now paints parent-visible overlays, then visible saved
+ROI-manager rows when the actual Show ROIs control is enabled, then the active
+selection. This follows pinned `ImageCanvas.paint` ordering. Pinned
+`ImagePlus.flatten` suppresses an active non-point ROI when an overlay is present;
+active point/multipoint selections remain included. Native overlay-vector
+nonemptiness defines overlay presence, including opaque/nonvisible rows. Manager
+T/C/Z filtering remains independent of per-point show-all. Duplicate roles blend
+independently in order; saving the same selection in the manager and overlay does
+not deduplicate it. Stored fallback RGBA is64/210/240/180, active255/213/75/255,
+and overlay255/204/0/255, matching current host consumers; explicit styles resolve
+before these fallbacks. This is not Java default-color/font pixel equivalence.
+
+The existing preparation owner admits these geometry/metadata values before
+serializing or acquiring a source plane, then reuses the native point layouts,
+immutable decimal coverage and owned RGB painter. Untagged geometry retains the
+existing legacy display owner. All four display actions use these role rules;
+scientific/non-XY restrictions remain explicit rather than projecting implicitly.
+
+Flatten creates a new native single-plane UInt8 RGB document named `Flat_` plus
+the source title, with no live selection, saved ROIs or overlays. It copies source
+local spatial calibration, direction, spacing, units and time fields. In the
+native affine model output z=0 refers to the captured source plane, so its origin
+is `source.voxel_to_world(0,0,z)` and its time origin is the captured source time.
+ImageJ `copyScale` motivates spatial preservation; the full affine plane origin
+is an explicit native extension of that XY scale contract. This does not bake a
+mutable global calibration into local source metadata. Global/context lifecycle
+remains part of the remaining publication contract.
+
+Source document properties, including Info and arbitrary nested values, survive.
+The canonical `imagejxx.intensity_calibration` property is removed from the RGB
+result: rendered display components cannot retain a source scalar density
+transform. The original record is preserved only as provenance. Source extensions,
+codec-presence layouts, annotation ownership and caches are not blindly copied.
+New extension `imagejxx.display_export` version1 records source title/document ID,
+available data identity, four revisions, T/C/Z position, display-value policy,
+manager visibility and included role counts, plus the original density record
+when present. It is descriptive provenance, not a replay command or a promise
+that an external source is still available. Repeated flattening does not copy an
+unbounded chain of old export extensions. Source data/history are unchanged.
+
+Only document output prepares/copies these properties and spatial strings under
+the configured allowance. The typed private `DisplayExportOutput::Pixels` mode
+used by raster/PDF/print actions avoids unused document metadata copies; it does
+not claim format metadata preservation. Pixel format metadata/codec promotion
+and PDF/print output checks remain owned by P2c.2/T10. Flattened native-session
+save/open preserves the spatial fields, properties and provenance. General native
+`render_roi_style` still owns legacy masks; a shared explicit styled-point/font
+context route is the next API increment, reusing `render_point_style` rather than
+creating another renderer. Complete that seam and remaining text/scheduler/
+publication/state/replay before closing P2c.2.
 
 ## Evidence and remaining integration
 

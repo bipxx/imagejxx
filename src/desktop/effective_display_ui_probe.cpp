@@ -365,6 +365,8 @@ Json pointAnnotationEditingUiCase(Window& window,const std::string& context,cons
         {"source_pixels",role_owner->frame().pixels},{"source_shape",{role_owner->frame().height,role_owner->frame().width,role_owner->frame().channels}},{"source_unchanged",true},
         {"pose",{role_owner->position().t,role_owner->position().c,role_owner->position().z}},
         {"selection",selectionJson(*role_before.data().selection)},
+        {"manager_selection",selectionJson(role_before.data().rois[0].selection)},
+        {"output_metadata",metadataJson(window.document()->nativeSnapshot().data().metadata.extensions)},
         {"documents_added",window.documents().size()-documents_before}};
 
     report["workflow_count"]=window.workflow.size();report["state"]="observed";session.close();

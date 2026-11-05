@@ -110,7 +110,20 @@ def test_actual_flatten_menu(host):
     if source.shape[2] == 1:source = np.repeat(source, 3, axis=2)
     style = ij.point_style(selection)
     assert style.labels
-    expected = ij.render_point_style(source, selection, options, _desktop.load_point_raster_font(font_size=FONTS[style.size]))
+    font = _desktop.load_point_raster_font(font_size=FONTS[style.size])
+    expected = ij.render_point_style(source, selection, options, font)
+    # ImageCanvas order: overlay, shown manager list, then active point selection.
+    manager = state["manager_selection"]
+    manager = ij.Selection(manager["kind"], manager["points"], manager.get("width", 1),
+        attributes={k:v for k,v in manager.items() if k not in {"kind", "points", "width"}})
+    manager_options = ij.PointPresentationOptions();manager_options.position = options.position
+    manager_options.color = [64, 210, 240, 180]
+    expected = ij.render_point_style(expected, manager, manager_options,
+        _desktop.load_point_raster_font(font_size=FONTS[ij.point_style(manager).size]))
+    options.color = [255, 213, 75, 255]
+    expected = ij.render_point_style(expected, selection, options, font)
+    provenance = state["output_metadata"]["imagejxx.display_export"]
+    assert [provenance[k] for k in ("overlay_rows", "manager_rows", "active_rows")] == [1, 1, 1]
     np.testing.assert_array_equal(np.asarray(state["pixels"], dtype=np.uint8).reshape(state["shape"]), expected)
     assert state["source_unchanged"] and state["documents_added"] == 1
     assert "menu.action.flatten" in [c["name"] for c in report["controls"]]

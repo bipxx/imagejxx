@@ -1022,10 +1022,12 @@ struct PreparedExportImage::State {
   DocumentSnapshot source;
   PlanePosition position;
   bool show_all;
+  std::optional<DocumentMetadata> output_metadata;
+  SpatialCalibration output_calibration;
   std::size_t limit,used=0,peak=0,work=0;
   Json metadata=Json::object();
   std::vector<Row> rows;
-  State(const DocumentSnapshot& snapshot,bool all,std::size_t cap)
+  State(const DocumentSnapshot& snapshot,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output)
       :source(snapshot),position{snapshot.display().t,snapshot.display().c,snapshot.display().crosshair[2]},show_all(all),limit(cap) {
     kernel_checkpoint();const auto shape=source.data().dataset.shape();
     if((shape.s!=1 && shape.s!=3 && shape.s!=4) || shape.t!=1 || shape.c!=1)throw std::invalid_argument("Legacy display export requires one T/C source");
@@ -1049,21 +1051,81 @@ struct PreparedExportImage::State {
     // Validate mapping metadata with a bounded carrier before any source reads.
     Image carrier(1,1,shape.s,source.data().dataset.pixel_type());
     (void)displayImage(carrier,metadata,source.data().dataset.sample_policy());
-    std::size_t visible_count=0;
+    MetadataObject provenance;
+    if(output==DisplayExportOutput::Document) {
+      output_metadata.emplace();
+      // Admit source properties before copying any owned strings. Structural
+      // extensions/codec layouts describe the source, not the detached RGB result.
+      exportCharge(used,source.data().metadata.title.size(),4,limit);
+      for(const auto& field:source.data().metadata.properties) {
+        exportCharge(used,field.first.size(),4,limit);exportMetadataCharge(field.second,used,limit,work);
+      }
+      provenance={{"version",std::int64_t(1)},
+          {"source_document_id",source.id()}, {"source_title",source.data().metadata.title},
+          {"source_position",metadata_array({std::int64_t(position.t),std::int64_t(position.c),std::int64_t(position.z)})},
+          {"display_values",true}, {"manager_visible",show_rois}};
+      if(source.data_identity())provenance["source_data_identity"]=*source.data_identity();
+      const auto revisions=source.revisions();
+      provenance["source_revisions"]=metadata_array({revisions.pixels,revisions.metadata,revisions.selection,revisions.display});
+      output_metadata->title="Flat_"+source.data().metadata.title;
+      output_metadata->properties=source.data().metadata.properties;
+      const auto intensity=output_metadata->properties.find("imagejxx.intensity_calibration");
+      if(intensity!=output_metadata->properties.end()) {
+        provenance["source_intensity_calibration"]=intensity->second;
+        output_metadata->properties.erase(intensity);
+      }
+      const auto& source_calibration=source.data().dataset.calibration();
+      exportCharge(used,source_calibration.unit.size(),4,limit);
+      exportCharge(used,source_calibration.time_unit.size(),4,limit);
+      output_calibration=source_calibration;
+      // Output z=0 denotes the rendered source plane in the native affine model.
+      output_calibration.origin=output_calibration.voxel_to_world({0,0,double(position.z)});
+      output_calibration.time_origin=output_calibration.time(position.t);
+    }
+    struct Input {const MetadataObject* overlay;const Selection* selection;const char* color;};
+    std::vector<Input> inputs;
+    auto admitSelection=[&](const Selection& selection,const char* color) {
+      exportCharge(used,1,sizeof(Input)+sizeof(Row)+1024,limit);
+      exportCharge(used,selection.points.size(),256,limit);exportWork(work,selection.points.size());
+      if(selection.is_path()){exportCharge(used,selection.path_commands().size(),64,limit);exportWork(work,selection.path_commands().size());}
+      if(selection.is_mask())exportCharge(used,selection.packed_mask().size(),16,limit);
+      for(const auto& field:selection.attributes){exportCharge(used,field.first.size(),4,limit);exportMetadataCharge(field.second,used,limit,work);}
+      inputs.push_back({nullptr,&selection,color});
+    };
+    // ImageCanvas paints overlays, the visible manager list, then the active ROI.
     for(const auto& row:source.data().overlays) {
       kernel_checkpoint_periodic();exportWork(work,1);
       if(!exportVisible(row,position))continue;
-      ++visible_count;exportCharge(used,1,sizeof(Row)+256,limit);
+      exportCharge(used,1,sizeof(Input)+sizeof(Row)+256,limit);
       for(const auto& field:row){exportCharge(used,field.first.size(),4,limit);exportMetadataCharge(field.second,used,limit,work);}
+      inputs.push_back({&row,nullptr,nullptr});
     }
-    rows.reserve(visible_count);
+    const auto overlay_count=inputs.size();
+    if(show_rois)for(const auto& roi:source.data().rois) {
+      kernel_checkpoint_periodic();exportWork(work,1);
+      if((!roi.t || *roi.t==position.t) && (!roi.c || *roi.c==position.c) && (!roi.z || *roi.z==position.z))
+        admitSelection(roi.selection,"#40d2f0b4");
+    }
+    const auto manager_count=inputs.size()-overlay_count;
+    const auto& active=source.data().selection;
+    if(active && (source.data().overlays.empty() || active->kind=="point" || active->kind=="multipoint"))
+      admitSelection(*active,"#ffd54bff");
+    if(output_metadata) {
+      provenance["overlay_rows"]=std::uint64_t(overlay_count);
+      provenance["manager_rows"]=std::uint64_t(manager_count);
+      provenance["active_rows"]=std::uint64_t(inputs.size()-overlay_count-manager_count);
+      output_metadata->extensions["imagejxx.display_export"]=metadata_object(std::move(provenance));
+    }
+    rows.reserve(inputs.size());
     using Fonts=std::map<double,std::shared_ptr<const PointRasterFont>>;
     std::map<std::string,Fonts> fonts;
     bool legacy_text=false;
     std::optional<std::string> default_font;
-    for(const auto& raw:source.data().overlays) {
-      kernel_checkpoint_periodic();if(!exportVisible(raw,position))continue;
-      Row row;row.wire=metadataJson(raw);
+    for(const auto& input:inputs) {
+      kernel_checkpoint_periodic();
+      Row row;
+      if(input.overlay)row.wire=metadataJson(*input.overlay);
+      else row.wire={{"kind","roi"},{"selection",selectionJson(*input.selection)},{"color",input.color}};
       const auto kind=string(get(row.wire,"kind"));
       if(kind=="text") {
         // Legacy text retains its original raster owner. Include its bounded
@@ -1124,14 +1186,23 @@ struct PreparedExportImage::State {
     kernel_checkpoint();
   }
 };
-PreparedExportImage::PreparedExportImage(const DocumentSnapshot& source,bool all,std::size_t cap)
-    :state_(std::make_unique<State>(source,all,cap)){}
+PreparedExportImage::PreparedExportImage(const DocumentSnapshot& source,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output)
+    :state_(std::make_unique<State>(source,all,cap,show_rois,output)){}
 PreparedExportImage::~PreparedExportImage()=default;
 std::size_t PreparedExportImage::working_bytes() const{return state_->peak;}
 void PreparedExportImage::validate(const DocumentSnapshot& now,bool all,std::size_t cap) const {
   if(!state_->source.same_document(now) || !state_->source.shares_data(now) ||
       !now.revisions().matches(state_->source.revisions(),Change::All) ||
       all!=state_->show_all || cap!=state_->limit)throw RevisionConflict();
+}
+std::shared_ptr<imagejxx::Document> PreparedExportImage::document(Image image) const {
+  if(!state_->output_metadata)throw std::logic_error("Pixel-only export has no document metadata");
+  const auto shape=state_->source.data().dataset.shape();
+  if(image.width!=shape.x || image.height!=shape.y || image.channels!=3 || image.type!=PixelType::UInt8)
+    throw std::invalid_argument("Flatten result must be the captured RGB plane");
+  Stack frames;frames.push_back(std::move(image));
+  DocumentData data{Dataset::from_stack(std::move(frames),state_->output_calibration),*state_->output_metadata};
+  return std::make_shared<imagejxx::Document>(std::move(data));
 }
 Image PreparedExportImage::render(const ExecutionControl& control) const {
   ExecutionScope scope(control);kernel_checkpoint();

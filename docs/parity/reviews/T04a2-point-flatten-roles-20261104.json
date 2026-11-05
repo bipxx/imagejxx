@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 M2b.2b P2c.2 output-role/spatial-property increment",
+  "date": "2026-11-04",
+  "state": {
+    "implemented": "Ordered overlay/visible-manager/active roles and detached RGB plane spatial/properties/provenance; typed pixel/document metadata preparation.",
+    "verified": "250 distinct focused Windows product cases ultimately pass (15 new), final244-case suite plus6 actual-host readers; one native desktop_path_visual control.",
+    "integrated": "Both final Windows C++ and Python hosts exercise real labels/Flatten,157 frames each.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#flatten-output-roles-and-metadata-p2c2-output-increment",
+  "behavior": [
+    "Reference overlay/manager/active order; active non-point suppressed with overlay presence; parent T/C/Z manager visibility and actual Show ROIs respected.",
+    "Same selection in multiple roles blends independently in order; source/history untouched.",
+    "Detached UInt8 RGB with no retained annotations, Flat_ title and source-local spatial calibration; native affine origin shifted to captured Z plane, explicit extension of ImageJ XY copyScale.",
+    "Info/nested properties and spatial metadata survive native-session reopen; canonical scalar density removed from RGB properties and original record retained as source provenance.",
+    "Version1 descriptive imagejxx.display_export provenance is bounded to source identity/revisions/position/role counts and optional density record; no recursive export-extension chain.",
+    "Pre-read admission covers new rows/properties/spatial strings; oversized document properties refuse before provider reads.",
+    "Pixel-only export does not copy unused document properties; large Info still allows small1MiB PNG, exactly one source read."
+  ],
+  "results": {
+    "distinct_product_cases": 250,
+    "new_cases": 15,
+    "final_focused_suite_cases": 244,
+    "native_controls": [
+      "desktop_path_visual"
+    ],
+    "attempts": [
+      {
+        "name": "api001",
+        "cases": 243,
+        "failures": 12
+      },
+      {
+        "name": "api002",
+        "cases": 15,
+        "failures": 0
+      },
+      {
+        "name": "api003",
+        "cases": 244,
+        "failures": 0
+      },
+      {
+        "name": "cpp-reader001",
+        "cases": 3,
+        "failures": 0
+      },
+      {
+        "name": "python-reader001",
+        "cases": 3,
+        "failures": 0
+      },
+      {
+        "name": "cpp-reader002",
+        "cases": 3,
+        "failures": 0
+      },
+      {
+        "name": "python-reader002",
+        "cases": 3,
+        "failures": 0
+      }
+    ],
+    "actual_observations": 4,
+    "final_observations": 2,
+    "frames_per_observation": 157,
+    "distinct_reader_checks": 6,
+    "including_repeat": 12,
+    "host_pixels_equal": true,
+    "repeat_reason": "Waste review changed document-versus-pixel property preparation; final affected host routes rerun on final binaries."
+  },
+  "scope_limits": [
+    "No public API change; no installed SDK campaign or Linux rebuild for unchanged core. Existing public-client evidence retains original scope.",
+    "General native render_roi_style explicit point/font context is next A2; legacy untagged masks remain unchanged.",
+    "Legacy text capture, scheduler-wide admission, global context/cancel/stale/close/file publication, recovery/state/replay are B.",
+    "No format metadata preservation, PDF/print output/platform, exact Java font/AA, Linux/macOS UI, release or broad speed claim. Full P2c.2 and T00-T15 remain open."
+  ],
+  "waste_review": [
+    {
+      "finding": "Pixel exports prepared unused document metadata.",
+      "decision": "Fixed typed Pixels/Document policy, bounded property/string capture only for Flatten; final affected routes repeated."
+    },
+    {
+      "finding": "Setup/API/search and old overlay-only expectations recurred.",
+      "decision": "Preserve12 initial expectation/setup failures; inspect actual select/dtype/view/callback schemas and point color context before next tests; resolve existing files with rg --files and reuse working installed bootstrap. T02 recurrence stays open."
+    },
+    {
+      "finding": "Mixed source line endings normalized by whole-text edits.",
+      "decision": "Restore unchanged original bytes with retained normalized compiler-input equivalence, no behavioral rebuild; preserve before compiling next time."
+    },
+    {
+      "finding": "Unchanged core/SDK and new abstraction fanout.",
+      "decision": "No new renderer/font/codec/runner/cache/runtime or public-consumer campaign; A2 owns the missing public contract, B owns remaining lifecycle."
+    }
+  ],
+  "retention": {
+    "nonempty_archived_groups": 7,
+    "verified_empty_groups": 12,
+    "source_bytes": 1225007,
+    "archive_bytes": 156100,
+    "all_owned_scratch_absent": true,
+    "policy": "Verified hashes/live snapshots before deletion; failed XML/logs retained, no compiler cache/SDK archived; captures retired serially."
+  },
+  "source_pins": [
+    {
+      "path": "src/desktop/point_raster_export.hpp",
+      "bytes": 1018,
+      "sha256": "202f53c1589fb85a03784274a6b4d0e11cd34bbd07e676791145c829543d42e4"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "bytes": 59215,
+      "sha256": "cf2d25eb8bb51d7af2657279d7318604bb5961e94880c59e27c6f8956df15c6c"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 887314,
+      "sha256": "71877cedbe22d9f0a4629fd18b0f2bc0ea73ad835785a584de5139c7131da829"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 40778,
+      "sha256": "e2f2a448969b8f1a65bee7d20e05efa45b219d95127e610b98ca37181c9b2e9e"
+    },
+    {
+      "path": "tests/python/test_point_flatten_roles.py",
+      "bytes": 6397,
+      "sha256": "585e66244463987ba589898fcd5599739665fecd4287a2d09f2dc0224a07d72a"
+    },
+    {
+      "path": "tests/python/test_point_flatten.py",
+      "bytes": 10852,
+      "sha256": "1cbc1545b7efa66107ce2e32b6de2b4641ef7b92889123d553f2e5316a0bab45"
+    },
+    {
+      "path": "tests/python/test_imgui_roi_style.py",
+      "bytes": 29215,
+      "sha256": "823ed5fc2369c4cd84940bd3987f220e9bc4b9b6484bd540db635237799ca0fc"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 25008,
+      "sha256": "6f608d122f026cb2415f0a9a5ae62bc11bd0a7d3184fff9693eb94929f80e2fe"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20155392,
+      "sha256": "e57257fa07e87eb14fdce355a0171e51ac75f9cfe14dee7ff3af1b911391e1b0"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20239872,
+      "sha256": "61c8bc5355c4ba85269607b17239f933fb8a5930ccfbd64781ee34d623d7adb4"
+    }
+  ],
+  "reference_pins": [
+    {
+      "path": ".cache/native-verification/references/imagej154r/source/ij/ImagePlus.java",
+      "bytes": 108208,
+      "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9"
+    },
+    {
+      "path": ".cache/native-verification/references/imagej154r/source/ij/gui/ImageCanvas.java",
+      "bytes": 55868,
+      "sha256": "ab27a57aa060ca8e297d59b09e478406ebd7a3bbd5d6a741bc1ab56c7cc553ab"
+    }
+  ],
+  "local_evidence_manifest": {
+    "path": ".tmp/manual-workflow-verification/t04a2-point-flatten-roles-20261104/evidence-manifest.json",
+    "bytes": 32055,
+    "sha256": "2ad7a0b68f61071d44cce7311336bca65d836c2e618a0de0a01808b77653f0d1"
+  },
+  "storage_snapshots": [
+    {
+      "path": ".tmp/manual-workflow-verification/point-export-roles-entry001.json",
+      "bytes": 66572,
+      "sha256": "1481fc208c060c21703f05bd4365dae4931628dc98cc3d97e1f7db75dd047506",
+      "known_bytes": 8496541882,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/point-export-roles-final001.json",
+      "bytes": 66557,
+      "sha256": "2cb0b89b49be979881331edb8f35a180ad5280bf24372c8d1358867950268d0f",
+      "known_bytes": 8497660884,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    }
+  ]
+}
