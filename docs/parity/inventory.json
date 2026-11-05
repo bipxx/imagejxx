@@ -901,7 +901,8 @@
           "docs/parity/reviews/p12t-planar-region001.json",
           "docs/parity/reviews/p12u-display-remap001.json",
           "docs/SELECTION_TRANSFORMS.md",
-          "docs/parity/reviews/selection-convex-hull-20261105.json"
+          "docs/parity/reviews/selection-convex-hull-20261105.json",
+          "docs/parity/reviews/selection-bounding-rectangle-20261105.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
@@ -942,7 +943,10 @@
           "tests/python/test_selection_convex_hull.py",
           "tests/native/test_selection_transform.cpp",
           "tests/reference/ObserveConvexHull.java",
-          "tests/fixtures/convex-hull-imagej154r.json"
+          "tests/fixtures/convex-hull-imagej154r.json",
+          "tests/python/test_selection_bounding_rectangle.py",
+          "tests/reference/ObserveBoundingRectangle.java",
+          "tests/fixtures/bounding-rectangle-imagej154r.json"
         ]
       },
       "id": "G018",

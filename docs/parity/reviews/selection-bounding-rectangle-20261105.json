@@ -1,0 +1,601 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T06/G018 Bounding Rectangle conversion",
+  "base_commit": "1a1bda0",
+  "command_candidate": "R-ad89d69885a6250b98a5845d",
+  "state": {
+    "implemented": "Public native/Python Bounding Rectangle geometry with existing admitted bounds, limits and controls; shared conversion menu/loss/history/record path. No image rasterization/provider read.",
+    "verified": "45 pinned ImageJ constructor/getBounds observations;619 distinct affected Windows Python cases pass. Final two physical-host Python checks and native C++ host checks include stale-review error acknowledgement/cancel/recovery. Windows/Linux native core and installed Windows public C++ client pass.",
+    "integrated": "Points/area/line/native geometry -> editable rectangle; explicit point metadata loss review/cancel, stale revision refusal without publication, Undo/Redo/workspace reopen, strict replay refusal and explicit V4 rebind.",
+    "release_ready": false
+  },
+  "contract": {
+    "api": [
+      "estimate_bounding_rectangle_selection(selection,width,height,limits)",
+      "bounding_rectangle_selection(selection,width,height,discard_point_metadata,limits,control)"
+    ],
+    "profile": "ImageJ axis-aligned box origin truncation/extent ceil; Float32 vertex ROI integer enclosing area bounds or pixel-inclusive rounded open bounds; straight Line binary64. Minimum output extent1; signed32 coordinate/extent overflow refuses rather than saturates.",
+    "legacy_negative_behavior": "Pinned FloatPolygon upper bound starts at Float.MIN_VALUE; wholly nonpositive vertex upper bounds extend originward. Float32 extent subtraction before binary64 promotion is preserved and tested. Not canvas clipping.",
+    "native_geometry": "Existing SelectionEditor analytic path/rotated-frame and occupied packed mask/region bounds; empty mask/region refuses. Rounded rotated kinds use outer native frame. These profiles do not qualify every ImageJ ShapeRoi/spline/source constructor.",
+    "metadata": "Keep width and generic/opaque attributes. Typed point counters/positions/style require explicit discard. Selection-only history restores all original point data.",
+    "reuse": "Same V4 selection-creation Replace history/recorder/rebind; shared two-operation binding and native UI driver, no new controller/cache/scheduler/schema. Existing reference fixtures/fingerprints unchanged.",
+    "commercial": "Owned implementation using existing primitives; new original Java observer is development-only. No third-party dependency/runtime/asset added."
+  },
+  "reference": {
+    "archive": ".cache/native-verification/references/imagej154r/source.zip",
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "source": "Pinned ImageJ1.54r commit62db90a269cccc1ac79f658e4602043214ed055b; ij/plugin/Selection.java toBoundingBox, Roi.getBounds/setIntBounds/constructors, PolygonRoi/PointRoi/Line, FloatPolygon.getFloatBounds",
+    "fixture_cases": 45,
+    "scope": "Detached source-constructor/getBounds geometry; image attachment/interchange/style and full native-kind ImageJ extraction are not blanket qualified."
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/selection_transform.hpp",
+      "bytes": 1826,
+      "sha256": "bd582237eb37bad9ddac47ab90ac8880a9b584af58de58f1e44a9aac61eb6da4"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 8311,
+      "sha256": "955e37cba609f081891ad3a83962c9a657910e4ecd9c538476262e6b91568d7c"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 20695,
+      "sha256": "4a21520f423fadeaba0b37603b8fe592714ae62102689193db4fac4df75cc0ca"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 82862,
+      "sha256": "81e5983dc5100d2e33574abed311caa078d8737583e6843634ead358c727004f"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 907739,
+      "sha256": "b2bb6c3c5f98b88ba42f87ad1c1b1a31c37182cffd4bfca4f640b01fede323d9"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 52921,
+      "sha256": "9a978713d91b33f9e0e7462c6d32175272565aa9b680a205341e885919fc95d3"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 977,
+      "sha256": "99950f227f248b67bce1a6cb8f6c2b7e2a4c2beb567c07b21aea6c339a97ce77"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 63786,
+      "sha256": "ddb13b8b79d6fa0573f408aecf7a2806d1159f36413f44e43f0c52950bf10458"
+    },
+    {
+      "path": "tests/native/test_selection_transform.cpp",
+      "bytes": 3844,
+      "sha256": "44e0fe003d63ef36a7868d7280d4efb69cbd6f75a9a46e5574bc8e3e1440e107"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 27490,
+      "sha256": "94eb19f72b7bd942babd943b4b9e186ef4b2099d61972044da434b336813dbdd"
+    },
+    {
+      "path": "tests/python/test_selection_bounding_rectangle.py",
+      "bytes": 7463,
+      "sha256": "1ff0963c64d80b7734f029856d4737d5decbd5525ade266d0d48791305b99388"
+    },
+    {
+      "path": "tests/reference/ObserveBoundingRectangle.java",
+      "bytes": 3025,
+      "sha256": "6184454fc7373e5d674c4ba9272fff97da2eab409671cc6c3f0c2a2533f4d602"
+    },
+    {
+      "path": "tests/fixtures/bounding-rectangle-imagej154r.json",
+      "bytes": 4947,
+      "sha256": "4b9150bea6fd7e9ea65ee6c054e865833be07049c4b27ee1748838197ae3869b"
+    }
+  ],
+  "processes": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-_desktop001.process.json",
+      "sha256": "ede1f10d63c2d190d909a3b6033a03597618a8e50de914a36d62b54d06b17140",
+      "exit_code": 0,
+      "elapsed_seconds": 12.141564999939874
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-_desktop002.process.json",
+      "sha256": "cac83c54e5cfcb18fa8b7f366df6fac7efe8bb7701e27cfe06ff2f3783113408",
+      "exit_code": 0,
+      "elapsed_seconds": 6.807817799970508
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-_desktop003.process.json",
+      "sha256": "5ce2975568782ece442c31ab68a0c614e55b82be31bdb113619c2d6be3b656e3",
+      "exit_code": 0,
+      "elapsed_seconds": 6.237759500043467
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-_desktop004.process.json",
+      "sha256": "f834c48c948af9ca1cb86f8a1affdbb6f33e2592d858c6af0ceb9be2d613122c",
+      "exit_code": 0,
+      "elapsed_seconds": 6.479509699856862
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-_desktop005.process.json",
+      "sha256": "cbacf220241762d920e5ee878c5baabd8b50b2d275b36eb3bb02cbeb132cfff0",
+      "exit_code": 0,
+      "elapsed_seconds": 6.482006300007924
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-_native001.process.json",
+      "sha256": "ec1539ae5dcef334a44d4cb6ad835b4e645b7f22ba47e57a5c70d68115f55ff7",
+      "exit_code": 0,
+      "elapsed_seconds": 39.264434500131756
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_app001.process.json",
+      "sha256": "dd4453e024b95e0f9aef7db19bfa9f846e5dc142374d8dd7b95fff058f7cf62f",
+      "exit_code": 0,
+      "elapsed_seconds": 7.71500249998644
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_app002.process.json",
+      "sha256": "7399b7732fc6f8d5e0fbd14f6d671480d0ba63d2e24c4abdc00a7e031dd922b5",
+      "exit_code": 0,
+      "elapsed_seconds": 3.4816447999328375
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_app003.process.json",
+      "sha256": "cc1813b450155bbeb141947f0ee33a1bac533b8b203aa9c4af6a5c75e6be0bbc",
+      "exit_code": 0,
+      "elapsed_seconds": 2.639491000212729
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_app004.process.json",
+      "sha256": "846712e001ad8e1db59781c524dfe048a86b9bdde41aac1c289151e94077ba7a",
+      "exit_code": 0,
+      "elapsed_seconds": 2.6019490999169648
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_app005.process.json",
+      "sha256": "924c09f9f7683690b04274c95b8ac304ba5dd007b70ef0473eeb01a64dc839e8",
+      "exit_code": 0,
+      "elapsed_seconds": 2.817555599845946
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_core001.process.json",
+      "sha256": "b5e92a7fee5932be429030d159d8770bc25fe4d654c82bc74928644a4126a76e",
+      "exit_code": 0,
+      "elapsed_seconds": 2.4098634000401944
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_desktop001.process.json",
+      "sha256": "633e2860738a0ca371b23901aadd23b669327aedee7a468469060cd0abafdad8",
+      "exit_code": 0,
+      "elapsed_seconds": 29.071443900000304
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_desktop002.process.json",
+      "sha256": "55e4f3594e9da23e44c4b4748db052d33e8faf402b95dc61396b1ad0fc873dfa",
+      "exit_code": 0,
+      "elapsed_seconds": 8.436936300015077
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_desktop003.process.json",
+      "sha256": "a12694fd00f8e773907d7a92fa1297f61818ad3169288530f887b479e99a1908",
+      "exit_code": 0,
+      "elapsed_seconds": 8.64860020019114
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_desktop004.process.json",
+      "sha256": "6a7b4f257c8462992f8c6556f0bbd5d94edb45c1484968ec3666c9490565124f",
+      "exit_code": 0,
+      "elapsed_seconds": 7.772120899986476
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_desktop005.process.json",
+      "sha256": "db5fbe2e316fbcca7639023924ad44a13ae937a930f90a6423932bce9f6facd1",
+      "exit_code": 0,
+      "elapsed_seconds": 7.867363299941644
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_display_actions_tests001.process.json",
+      "sha256": "e2e8883b62550b2a04877c67534fb3a4392673165d400e4a3efc81377828fdb1",
+      "exit_code": 0,
+      "elapsed_seconds": 5.930204499978572
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_display_actions_tests002.process.json",
+      "sha256": "8f1becd5fcc585e090814bb4ed9f2450d7384aeee4083fbce1010f21da8da2af",
+      "exit_code": 0,
+      "elapsed_seconds": 1.761145800119266
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_display_actions_tests003.process.json",
+      "sha256": "f4ce8369948fdb451a811994ae78aeff29bf2be7dd017eaf4441c51f0b1e7edf",
+      "exit_code": 0,
+      "elapsed_seconds": 1.9011170999146998
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_display_actions_tests004.process.json",
+      "sha256": "447edcafe59665138ff4202c1196d19377bf1328339844778a13554716e0c86a",
+      "exit_code": 0,
+      "elapsed_seconds": 1.8817473999224603
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_display_actions_tests005.process.json",
+      "sha256": "d4fe79ec56b1a7deacfa1d0a48b5d4c4eaa68eb1d6e416913db40ed434e8ed3e",
+      "exit_code": 0,
+      "elapsed_seconds": 1.8020351000595838
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/build-imagejxx_selection_transform_tests001.process.json",
+      "sha256": "81ff72c53e34ec4c3f7c72f34950fbcbdeea6b8a064548cccf3c1e3fe0583398",
+      "exit_code": 0,
+      "elapsed_seconds": 1.8678566000889987
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-app001.process.json",
+      "sha256": "62b44851fb5728e77a4658bbf0c9abea6d738a34d0a120a07f3f7d398e4cc2d4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.139875499997288
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-app002.process.json",
+      "sha256": "62b6dd6c3240a491bd1f51fd512aa1cb1a514bfc5698d1c03839d05039f4a0d3",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14083910011686385
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-app003.process.json",
+      "sha256": "3056f432536ff5f9decb6ac5a3fcb055957bd5eb507a7aa84350cd9ead623ad6",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14266789983958006
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-app004.process.json",
+      "sha256": "8c0b284a50a095578f06a1813509c27165cf3a6ff8d923c5c356d924ac5754bf",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14113359991461039
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-app005.process.json",
+      "sha256": "77611da2a24eb6ddeb1f12d82dfd33080280c25325669b0572aac5d2486dc085",
+      "exit_code": 0,
+      "elapsed_seconds": 0.13859890005551279
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-processing001.process.json",
+      "sha256": "b763e42d283667d49a37be26ec64cc60d443fad1dd56d680e9992954835c5dbd",
+      "exit_code": 0,
+      "elapsed_seconds": 0.11398519994691014
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-python001.process.json",
+      "sha256": "b4ba0f2f6695f19796dce69818f41a804bb4dd49b06761dc3ede8364c8448831",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1960420000832528
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-python002.process.json",
+      "sha256": "945559462e3efe6d31b75ef54fa23c3867c8ed5cc8ddf66f26e79d9b03679ca8",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14205479994416237
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-python003.process.json",
+      "sha256": "492c164e230f73416131fe087a651843c3eb232eecfe27031ba7c470b993dc55",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14160840003751218
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-python004.process.json",
+      "sha256": "80abdaa20b7243292f1e4ee3ab9ab70eb7ad9c6547fe44cc5720b38a4139a795",
+      "exit_code": 0,
+      "elapsed_seconds": 0.13940549991093576
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-python005.process.json",
+      "sha256": "f48f9a7b94eb035e4724b8c103c5f9ef42fba02ecb9b153d7bfc7a7cf2e2a764",
+      "exit_code": 0,
+      "elapsed_seconds": 0.304388000164181
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/install-sdk001.process.json",
+      "sha256": "8b2b0f805b3ceb16ad95856be25d2b2f134a3a479af760d0308784d8fcd0b9f6",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2222748000640422
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/linux-build001.process.json",
+      "sha256": "564aeb0325434189b3e30dc22b8700865552a66fe19ba01aa68f52e5dbd6163c",
+      "exit_code": 0,
+      "elapsed_seconds": 7.258283537000011
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/linux-native001.process.json",
+      "sha256": "e463f8ff82fc7b1dc39dc5740528afd615db22e8ffd110ef9e87bbec6068c3f5",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08103788799999734
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/linux-owner001.process.json",
+      "sha256": "d1d3248da536ff1498f6e2d211c949ccaa8908148bbaa2dca37001beaa9b55e2",
+      "exit_code": 0,
+      "elapsed_seconds": 7.669093100121245
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/native-core001.process.json",
+      "sha256": "3b3a41eb94a8848edb84cec2e89c25cc0e023222019dc56618b973829d31a8fa",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07679299986921251
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/native-ui001.process.json",
+      "sha256": "f4f2fc34463f08ed79a63f42ee99093b818f575cfad7f1504f5f65e3302396a1",
+      "exit_code": 0,
+      "elapsed_seconds": 1.272890399908647
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/native-ui005-pack.process.json",
+      "sha256": "644ce54b7c83a472a2d73bce7e2810cf0a4a2657c2b35ee87a33d18a51239757",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3066474001388997
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/native-ui005-verify.process.json",
+      "sha256": "bbba67979708aad7deaa7c49868038c23d8619b6ce6a074bead37c0a34219abb",
+      "exit_code": 0,
+      "elapsed_seconds": 0.20814700005576015
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/native-ui005.process.json",
+      "sha256": "137565b59100a206491e81aa05dbe6fa3b974c471d35063b8939982c6323880d",
+      "exit_code": 0,
+      "elapsed_seconds": 1.3121909000910819
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-regression001.process.json",
+      "sha256": "5512f08be8a6d78f58e0244895441eab52273ab6bdcb16a8adf7c3b55b12d4f0",
+      "exit_code": 0,
+      "elapsed_seconds": 2.8818520999047905
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui002-pack.process.json",
+      "sha256": "2cf52ddcaa7df60cf4e62ca2cac852605545d0fa01faf94c3a401b74c4d7d491",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18944579991512
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui002-verify.process.json",
+      "sha256": "52ba8bdc7fd0889388077720d29c70fa59f6e50152d8dc2515646ca3ec26b5b7",
+      "exit_code": 0,
+      "elapsed_seconds": 0.13040419993922114
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui002.process.json",
+      "sha256": "7be17edb7a683325b4780f6e2f27310e9249a20824b92a262c6d49ecc37bb0ed",
+      "exit_code": 1,
+      "elapsed_seconds": 1.0837449000682682
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui003-pack.process.json",
+      "sha256": "2ae27dbffed86b1df3d16b3ca30e35f8f37d6e8c1c8d035e6577de4f0d5a054f",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18673230009153485
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui003-verify.process.json",
+      "sha256": "59bf44582329beaa0784c60b2d28c9b1e1b933ae730f0c4813c07deba9c4d158",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1454332999419421
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui003.process.json",
+      "sha256": "ba255b8ee21a90563ccea3f30216b5257eef777282b4685b8fc58e0d4f28f964",
+      "exit_code": 1,
+      "elapsed_seconds": 1.0868512000888586
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui004-pack.process.json",
+      "sha256": "19b9672eae4bb15ea0e54496fc7b88802c9447d2caeeee718d905443faa0eba6",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18879540008492768
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui004-verify.process.json",
+      "sha256": "34191671e7785bf4c87ff9168e4ef53c071716d634cf5d0402986ba0b9231f98",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14234860008582473
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui004.process.json",
+      "sha256": "6e6d5e9a5bfec374ff718d113952a6ab6ea417bba7c95b66c76515d4594d2da3",
+      "exit_code": 1,
+      "elapsed_seconds": 1.183133800048381
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui005-pack.process.json",
+      "sha256": "6471636dfe79472ffaad1c4b1337f25ccfde8a206e46cbd3b5da1249a025833d",
+      "exit_code": 0,
+      "elapsed_seconds": 0.17921420000493526
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui005-verify.process.json",
+      "sha256": "cd0c29e7e4f8c015221affc9619ba94297fc1eda8f163f3c596b343fad413820",
+      "exit_code": 0,
+      "elapsed_seconds": 0.13478540000505745
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui005.process.json",
+      "sha256": "4902f1107f07546e55b83491d8ac0db670ea3b1c1e1f00066db81d036fe6ebe6",
+      "exit_code": 0,
+      "elapsed_seconds": 1.1292202998884022
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python001-pack.process.json",
+      "sha256": "f5abd8e01343b243794ae5644a7439a0f2bd540f0554a66ad97383bac457850f",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3805441001895815
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python001-verify.process.json",
+      "sha256": "939c789592f047ad0f6e013118387a7694aaa2204c5c74be025b240173c71b55",
+      "exit_code": 0,
+      "elapsed_seconds": 0.13259050017222762
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/reference-compile001.process.json",
+      "sha256": "96e83f0a51f1833bdeb7bfc67695bd1b9535a39ac34f16198dd3e20731737b09",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5737885998096317
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/reference-observe001.process.json",
+      "sha256": "c38b930f9417d654bb027609ccea1a550e8d78cf5baf2b7b0fef9d9ed762b7b2",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5462450999766588
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/reference001-pack.process.json",
+      "sha256": "8f306b5e835c47d23404e54be1729b2470dbb3a877d6d0a7087a463b60b0f4fc",
+      "exit_code": 0,
+      "elapsed_seconds": 0.17429389990866184
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/reference001-verify.process.json",
+      "sha256": "d615eaf613ff45e69de182961216bffa1bc9ceff8e7b9aa73c3a8ba0ff5cf22e",
+      "exit_code": 0,
+      "elapsed_seconds": 0.21623559994623065
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/sdk-build001.process.json",
+      "sha256": "4063d92838b644b9d27d7d2e67a2d0eb56e8f3e4a0a1e9fb42734a3b3a6b3b49",
+      "exit_code": 0,
+      "elapsed_seconds": 2.331183600006625
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/sdk-configure001.process.json",
+      "sha256": "b1461ba8e279e5ce29b7f264925c8049ac81027265b33823b8c42e8a88e0587f",
+      "exit_code": 0,
+      "elapsed_seconds": 4.713017100002617
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/sdk-run001.process.json",
+      "sha256": "0a07963c9d74d3ff4332829af2f3412f4b63db18608855c7e46b4682faec00e2",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08267850009724498
+    }
+  ],
+  "final_evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-regression001.xml",
+      "sha256": "4397151d47db727c11b3ac913ad87b165a5096b71623a0ca805a8da2198473e9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui005.xml",
+      "sha256": "df1850d8fccf942b6c9c79d30e6a862ae18d173e45c4cab1f63454d95559f3b1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/native-ui-reader005.json",
+      "sha256": "6df366c1fd5593fc38bb4b66caab7faccf334d886ab75d80d98d3dc733a6d531"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/final-installed-identities005.json",
+      "sha256": "44d987e816039546f9ef597c2b2bc5e5ff43372f37cc2ee0da8eba9d15ee6132"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/linux-identities.json",
+      "sha256": "d09b59465d63d4cd663e129a7a3ea1fb9201a3aa7c4652cf0c9a274988339e1e"
+    }
+  ],
+  "retirement": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/native-ui001-retirement.json",
+      "sha256": "3feab3f0eca715fe19e544e109ce6f259d877893a2e1c779887903a36add089b",
+      "state": "hashed_owned_consumer_tree_removed_without_archive"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/native-ui005-retirement.json",
+      "sha256": "a6a09ee8a8324f6d2986fd6a9dc7a2c135c1074450f37708d22190ddc5bc52b4",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui002-retirement.json",
+      "sha256": "5d8e64c4aad68d7d15428938e13bff09128ec0e3135f4ff847dc811730fc51f4",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui003-retirement.json",
+      "sha256": "3c6de4acf65c50c0dd2985206f3c0c0e13e3d797b798a0872722f52343a73594",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui004-retirement.json",
+      "sha256": "fa5b5f3630be4a6370ba196e5df94d911620e769d115fa37a0e9d821b8d4923e",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python-ui005-retirement.json",
+      "sha256": "695e6bfa7ba8241e484ea78772a42db994d18cb682281512e562fef682bccde3",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/python001-retirement.json",
+      "sha256": "23ca835f80209949fff4c343bd5434d5759d1951eac21cbd8fe7067d750f6816",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/reference001-retirement.json",
+      "sha256": "e69683a65bd963788a71d80b6de1c513514a612e0ff8c39d1b123c206c49e75f",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-bounding-rectangle-20261105/sdk001-retirement.json",
+      "sha256": "4e534795784513de4f22db75c4cff985ccd4627c671caa277c8774bda8fdd5ab",
+      "state": "hashed_owned_consumer_tree_removed_without_archive"
+    }
+  ],
+  "storage": {
+    "entry_snapshot": ".tmp/manual-workflow-verification/bounding-rectangle-entry-20261105.json",
+    "entry_known_bytes": 7309136085,
+    "after_snapshot": ".tmp/manual-workflow-verification/bounding-rectangle-closeout-20261105.json",
+    "after_known_bytes": 7310364622,
+    "scope_note": "Complete normalized configured measurement roots; after snapshot precedes final receipt/notebook additions. Inaccessible subtrees are unknown, not zero.",
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_after_bytes": 274220318720,
+    "planned_generated_bytes_upper_bound": 209715200,
+    "scratch": "Nine terminal groups retired: seven compressed/live-hash verified, including all three failed UI diagnostics; two superseded-success/SDK-consumer groups identity-only. No compiler/runtime/SDK archives or new cache generation; warm objects preserved."
+  },
+  "waste_review": {
+    "fix_now": [
+      "Reused existing geometric bounds, selection history and recorder; parameterized shared binding/UI driver rather than duplicate processing paths.",
+      "Verified pure exports and each installed module/component/hash before checks; no stale-module retry this task.",
+      "Late explicit stale-review test caused avoidable modal-input retries. Initial failure kept the modal open; direct clearError did not physically acknowledge it; first-frame button coordinates moved during popup layout. Read the existing imagej_projection_ui_probe.cpp invalid-group recovery: settle two frames, physical error OK, cancel retained draft. Final both-host checks pass with that route. No product guard/assertion was weakened.",
+      "Retained final rendered/error state in shared driver failure diagnostics; narrow test-only correction reruns did not rebuild unchanged core or restart numerical/SDK campaigns."
+    ],
+    "no_action": [
+      "No speculative metadata/admission refactor, new harness or progress ledger. Source API/caller/limits stay on existing owners.",
+      "Do not compare build times to image-processing speed or full completion."
+    ],
+    "measurements": {
+      "initial_windows_seven_target_build_elapsed_seconds": 98.40037040016614,
+      "late_stale_probe_and_correction_four_target_build_groups_elapsed_seconds": [
+        20.487544700037688,
+        19.426967800362036,
+        18.735327099682763,
+        18.968960299855098
+      ],
+      "linux_same_cache_build_elapsed_seconds": 7.258283537000011
+    },
+    "next_prevention": "Inspect actual modal close/acknowledgement/layout lifecycle in a maintained caller before writing stale/error UI fixtures; batch those cases before the shared build. This reuses the existing AGENTS rule, rather than claiming another policy rewrite fixes recurrence."
+  },
+  "remaining": [
+    "Full upstream source-constructor/attachment/ShapeRoi/spline/style transfer and additional supported-platform UI/release gates.",
+    "Curved/mask hull semantics, circle/ellipse/spline/minimum-area-rectangle fits and other G018 transformations.",
+    "Saved-row/scientific/non-XY extent policies and full T00-T15 scope."
+  ],
+  "next": "Fit Circle: both occupied-area/centroid and point-fit branches, existing conversion/loss/history owners; freeze pinned rounding and numerical degeneracy before editing."
+}

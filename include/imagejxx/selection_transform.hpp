@@ -15,4 +15,14 @@ std::size_t estimate_convex_hull_selection(const Selection &, int width, int hei
 Selection convex_hull_selection(const Selection &, int width, int height,
     bool discard_point_metadata = false, const SelectionEditLimits & = {},
     const ExecutionControl & = {});
+// Integer ImageJ bounds for boxes/vertices/straight lines; native analytic and
+// occupied-mask bounds for other native geometry. Empty masks refuse. Point and
+// open-line vertices include their endpoint pixels; box origins truncate and
+// extents ceil. Float32 vertices retain the pinned legacy originward extension
+// for wholly nonpositive coordinates. No canvas clipping or rasterization.
+std::size_t estimate_bounding_rectangle_selection(const Selection &, int width, int height,
+                                                 const SelectionEditLimits & = {});
+Selection bounding_rectangle_selection(const Selection &, int width, int height,
+    bool discard_point_metadata = false, const SelectionEditLimits & = {},
+    const ExecutionControl & = {});
 }

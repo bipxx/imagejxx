@@ -6,6 +6,9 @@
 undoable area polygon. Annotated points require an explicit metadata-discard
 choice. See [supported inputs, Python/C++ API and remaining scope](SELECTION_TRANSFORMS.md).
 
+**Edit → Selection → Bounding Rectangle** converts supported selections to an
+editable integer rectangle, with the same loss review and history controls.
+
 ## Brightness/Contrast
 
 Open **Image → Brightness/Contrast...** for the modeless native panel. See

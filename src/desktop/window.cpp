@@ -1927,6 +1927,11 @@ struct Window::Impl {
       if(selection && (selection->is_path() || selection->kind=="point" || selection->kind=="multipoint"))
         return owner.controller_->active_document_id()==source->id;
     }
+    if(action=="show_bounding_rectangle" || action=="bounding_rectangle_selection") {
+      const auto captured=source->nativeSnapshot();
+      return captured.data().selection.has_value() && !captured.display().orthogonal && !owner.busy() &&
+          owner.controller_->active_document_id()==source->id;
+    }
     if(action=="show_convex_hull" || action=="convex_hull_selection") {
       const auto captured=source->nativeSnapshot();const auto &selected=captured.data().selection;
       if(!selected || captured.display().orthogonal)return false;
@@ -7797,29 +7802,33 @@ void Window::action(const std::string &name, const Json &p) {
         selection_enlargement_command_from_record(source,record,impl->selectionCreationLimits());
     impl->publishEnlargement(command);return;
   }
-  if(name=="show_convex_hull" || name=="convex_hull_selection") {
-    if(!p.is_object())throw std::invalid_argument("Convex Hull options must be an object");
+  if(name=="show_convex_hull" || name=="convex_hull_selection" ||
+      name=="show_bounding_rectangle" || name=="bounding_rectangle_selection") {
+    const bool bounding=name=="show_bounding_rectangle" || name=="bounding_rectangle_selection";
+    const bool show=name=="show_convex_hull" || name=="show_bounding_rectangle";
+    const std::string label=bounding?"Bounding Rectangle":"Convex Hull";
+    if(!p.is_object())throw std::invalid_argument(label+" options must be an object");
     for(const auto &field:p.items())if(field.key()!="document_id" &&
-        !(name=="convex_hull_selection" && field.key()=="discard_point_metadata"))
-      throw std::invalid_argument("Unknown Convex Hull option");
+        !(!show && field.key()=="discard_point_metadata"))
+      throw std::invalid_argument("Unknown "+label+" option");
     const auto source=nativeSnapshot(targetId);
     if(busy() || source.id()!=controller_->active_document_id() || source.display().orthogonal)
-      throw std::invalid_argument("Convex Hull requires the idle active XY selection");
-    if(!source.data().selection)throw std::invalid_argument("Convex Hull requires a selection");
+      throw std::invalid_argument(label+" requires the idle active XY selection");
+    if(!source.data().selection)throw std::invalid_argument(label+" requires a selection");
     const auto &selected=*source.data().selection;
-    if(name=="show_convex_hull" && (selected.attributes.count(point_annotations_attribute) || selected.attributes.count(point_style_attribute))) {
+    if(show && (selected.attributes.count(point_annotations_attribute) || selected.attributes.count(point_style_attribute))) {
       const auto id=source.id();const auto revisions=source.revisions();
       const PlanePosition position{source.display().t,source.display().c,source.display().crosshair[2]};
-      impl->ask("Convert points to Convex Hull",{{"discard_point_metadata",false}},
-          [this,id,revisions,position](Json choice) {
+      impl->ask("Convert points to "+label,{{"discard_point_metadata",false}},
+          [this,id,revisions,position,bounding](Json choice) {
             if(!choice.at("discard_point_metadata").get<bool>())
-              throw std::invalid_argument("Allow discarding per-point data to create an area polygon");
+              throw std::invalid_argument("Allow discarding per-point data to create an area selection");
             const auto current=nativeSnapshot(id);
             if(controller_->active_document_id()!=id || !current.revisions().matches(revisions,Change::Data) ||
                 current.display().t!=position.t || current.display().c!=position.c || current.display().crosshair[2]!=position.z)
               throw RevisionConflict();
-            action("convex_hull_selection",{{"document_id",id},{"discard_point_metadata",true}});
-          },Json::array({{{"name","discard_point_metadata"},{"label","Discard point counters, positions and point-only styling"},{"kind","bool"}}}),"convex_hull");
+            action(bounding?"bounding_rectangle_selection":"convex_hull_selection",{{"document_id",id},{"discard_point_metadata",true}});
+          },Json::array({{{"name","discard_point_metadata"},{"label","Discard point counters, positions and point-only styling"},{"kind","bool"}}}),bounding?"bounding_rectangle":"convex_hull");
       return;
     }
     if(p.contains("discard_point_metadata") && !p.at("discard_point_metadata").is_boolean())
@@ -7827,11 +7836,11 @@ void Window::action(const std::string &name, const Json &p) {
     const auto cap=impl->selectionCreationLimits();
     SelectionEditLimits limits{cap.max_pixels,cap.max_candidate_vertices,cap.max_working_bytes};
     const auto shape=source.data().dataset.shape();
-    auto hull=convex_hull_selection(selected,shape.x,shape.y,p.value("discard_point_metadata",false),limits);
-    std::string completed="Convex Hull created";
+    auto replacement=(bounding?bounding_rectangle_selection:convex_hull_selection)(selected,shape.x,shape.y,p.value("discard_point_metadata",false),limits,{});
+    std::string completed=label+" created";
     // V4 native replacement also accepts ordinary polygons and retains
     // selection-only history on both direct publication and executable replay.
-    applySelectionCreation(source,{SelectionCreationOperation::Replace,std::move(hull),
+    applySelectionCreation(source,{SelectionCreationOperation::Replace,std::move(replacement),
         SelectionCreationGeometry::NativePathV4});
     impl->status.swap(completed);return;
   }
@@ -10656,6 +10665,7 @@ void Window::Impl::menu() {
       item("Restore", "restore_selection");
       item("Invert", "invert_selection");
       item("Convex Hull", "show_convex_hull");
+      item("Bounding Rectangle", "show_bounding_rectangle");
       for(bool shrink:{false,true}){
         const bool enabled=actionAllowed("enlarge_selection");
         const bool selected=ImGui::MenuItem(shrink?"Shrink...":"Expand...",nullptr,false,enabled);

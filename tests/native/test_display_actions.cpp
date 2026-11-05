@@ -356,6 +356,8 @@ void scientificNavigation(const std::filesystem::path& root) {
 void convexHullWorkflow(const std::filesystem::path& root) {
   Window window((root/"convex-hull-preferences.json").u8string());
   imagejxx::desktop::convexHullWorkflowUiCase(window,"imgui_cpp",(root/"convex-hull").u8string());
+  Window box((root/"bounds-preferences.json").u8string());
+  imagejxx::desktop::boundingRectangleWorkflowUiCase(box,"imgui_cpp",(root/"bounding-rectangle").u8string());
   std::cout<<"PASS Convex Hull physical menu/loss choice/cancel/history/session/explicit replay in native C++\n";
 }
 

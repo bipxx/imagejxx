@@ -22,6 +22,22 @@ int main(){try{
   check(convex_hull_selection(input,16,16,false,{},control).points==expected,"Callback redirected captured hull input");
   control.checkpoint=[] {throw std::runtime_error("cancel");};
   refuses([&]{convex_hull_selection(original,16,16,false,{},control);});
+  const std::vector<std::array<double,2>> rectangle{{2,2},{13,13}};
+  check(bounding_rectangle_selection(original,16,16).points==rectangle,"Point bounds must include endpoint pixels");
+  limits=SelectionEditLimits{};limits.max_working_bytes=estimate_bounding_rectangle_selection(original,16,16);
+  check(bounding_rectangle_selection(original,16,16,false,limits).points==rectangle,"Exact bounds cap refused");
+  --limits.max_working_bytes;refuses([&]{bounding_rectangle_selection(original,16,16,false,limits);});
+  refuses([&]{bounding_rectangle_selection(annotated,16,16);});
+  check(bounding_rectangle_selection(annotated,16,16,true).attributes.count(point_annotations_attribute)==0,"Bounds retained incompatible point data");
+  input=original;control.checkpoint=[&]{input.points={{0,0}};};
+  check(bounding_rectangle_selection(input,16,16,false,{},control).points==rectangle,"Bounds callback redirected captured source");
+  const auto region=Selection::from_packed_region(3,2,{0x44},{-5,7});
+  check(bounding_rectangle_selection(region,16,16).points==std::vector<std::array<double,2>>{{-4,7},{-2,9}},"Region bounds lost occupied cells/off-canvas origin");
+  refuses([&]{bounding_rectangle_selection(Selection::from_packed_region(3,2,{0},{-5,7}),16,16);});
+  auto path=Selection::from_path(std::vector<double>{0,2,3,1,8,3,1,8,9,4});
+  check(bounding_rectangle_selection(path,16,16).points==std::vector<std::array<double,2>>{{2,3},{8,9}},"Analytic path bounds differ");
+  check(bounding_rectangle_selection(Selection("line",{{2,3},{12,3}}),16,16).points==std::vector<std::array<double,2>>{{2,3},{13,4}},"Horizontal line pixel bounds differ");
+  std::cout<<"PASS Bounding Rectangle geometry, region/path/line bounds, metadata, caps and frozen callbacks\n";
   std::cout<<"PASS Convex Hull geometry, exact/short limits, point metadata policy and frozen callback input\n";
   return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

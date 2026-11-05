@@ -19,7 +19,8 @@ changes and do not infer live processes/agents from old receipts or role names.
 PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
 verified in both Windows hosts. Scientific TIFF reslice/export now preserves
 world/time transforms. Vertex Convex Hull has scoped API/both-Windows-host
-evidence; next is T06/G018 Bounding Rectangle conversion. The analysis details below retain residual
+evidence. Bounding Rectangle now has scoped API/both-host checks too; next
+is T06/G018 Fit Circle. The analysis details below retain residual
 scope; they do not require finishing every point/manager variant first. Keep
 unrelated print/platform work with its owner; batch related changes and run
 affected checks under PLAN's delivery specifications. Implementation has resumed;

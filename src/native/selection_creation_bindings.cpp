@@ -59,22 +59,26 @@ std::array<int, 2> point_value(py::iterable value) {
 } // namespace
 
 void bind_selection_creation(py::module_ &m) {
-  m.def("estimate_convex_hull_selection",[](const Selection &source,py::handle width,
+  for(bool bounding:{false,true}) {
+  const auto estimate=bounding?estimate_bounding_rectangle_selection:estimate_convex_hull_selection;
+  const auto transform=bounding?bounding_rectangle_selection:convex_hull_selection;
+  m.def(bounding?"estimate_bounding_rectangle_selection":"estimate_convex_hull_selection",[estimate](const Selection &source,py::handle width,
       py::handle height,SelectionEditLimits limits) {
-    return estimate_convex_hull_selection(source,index_value(width),index_value(height),limits);
+    return estimate(source,index_value(width),index_value(height),limits);
   },py::arg("selection"),py::arg("width"),py::arg("height"),py::arg("limits")=SelectionEditLimits{});
-  m.def("convex_hull_selection",[](const Selection &source,py::handle width,
+  m.def(bounding?"bounding_rectangle_selection":"convex_hull_selection",[estimate,transform](const Selection &source,py::handle width,
       py::handle height,py::handle discard,SelectionEditLimits limits,
       std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint) {
     if(!boolean(discard))throw py::type_error("Point metadata discard must be Boolean");
     const auto w=index_value(width),h=index_value(height);const bool dropping=py::cast<bool>(discard);
-    estimate_convex_hull_selection(source,w,h,limits);
+    estimate(source,w,h,limits);
     const Selection frozen=source;
     const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
-    py::gil_scoped_release release;return convex_hull_selection(frozen,w,h,dropping,limits,control);
+    py::gil_scoped_release release;return transform(frozen,w,h,dropping,limits,control);
   },py::arg("selection"),py::arg("width"),py::arg("height"),py::kw_only(),
     py::arg("discard_point_metadata")=py::bool_(false),py::arg("limits")=SelectionEditLimits{},
     py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  }
   py::enum_<SelectionCreationOperation>(m, "SelectionCreationOperation")
       .value("REPLACE", SelectionCreationOperation::Replace)
       .value("ADD", SelectionCreationOperation::Add)

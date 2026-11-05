@@ -544,11 +544,14 @@ Json effectiveDisplayUiCase(Window& window,const std::string& context,const std:
     writeJson((dir/"case.json").u8string(),report);return report;
   } catch(const std::exception& e) {report["failure"]=e.what();writeJson((dir/"failure.json").u8string(),report);throw;}
 }
-Json convexHullWorkflowUiCase(Window& w,const std::string& context,const std::string& directory) {
+namespace {
+Json selectionConversionUiCase(Window& w,const std::string& context,const std::string& directory,bool bounding) {
+  const std::string stem=bounding?"bounds":"hull";
+  const std::string menu=bounding?"menu.action.show_bounding_rectangle":"menu.action.show_convex_hull";
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
   require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh Convex Hull fixture required");
   std::filesystem::create_directories(dir);
-  Json events=Json::array(),controls=Json::array();
+  Json events=Json::array(),controls=Json::array(),last;
   try {
   Selection points("multipoint",{{2,2},{12,2},{8,8},{12,12},{2,12}});
   points=with_point_annotations(points,std::vector<PointAnnotation>(5,PointAnnotation{2,{}}));
@@ -556,8 +559,8 @@ Json convexHullWorkflowUiCase(Window& w,const std::string& context,const std::st
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));
   w.addNativeDocument(owner);w.recording=true;
   const auto original=owner->snapshot();HeadlessInputSession session(w);
-  Json last;
-  auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);require(w.error().empty(),"Convex Hull UI frame failed");};
+  bool expectedError=false;
+  auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);require(expectedError || w.error().empty(),"Selection conversion UI frame failed");};
   auto click=[&](const Json &item,const char* name) {
     const auto control=item;require(control.at("enabled").get<bool>(),"Convex Hull control unavailable");
     controls.push_back({{"name",name},{"control",control}});
@@ -566,23 +569,38 @@ Json convexHullWorkflowUiCase(Window& w,const std::string& context,const std::st
   };
   for(int i=0;i<3;++i)frame();
   for(bool accept:{false,true}) {
-    for(const auto* name:{"menu.Edit","menu.Edit.Selection","menu.action.show_convex_hull"})click(last.at("host_controls").at(name),name);
+    for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection",menu})click(last.at("host_controls").at(name),name.c_str());
     require(last.at("dialog").at("open").get<bool>() && !last.at("dialog").at("values").at("discard_point_metadata").get<bool>(),"Convex Hull must require an explicit discard choice");
     if(!accept) {
       click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
       require(owner->snapshot().shares_data(original) && w.workflow.empty() && owner->undo_steps()==0,"Cancel changed selection/history/recording");
+      if(bounding) {
+        for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection",menu})click(last.at("host_controls").at(name),name.c_str());
+        click(last.at("dialog").at("controls").at("discard_point_metadata"),"dialog.discard_point_metadata");
+        // A source edit during consent must invalidate the captured revision.
+        const Selection changed("point",{{1,1}});owner->select(changed);
+        expectedError=true;click(last.at("dialog").at("controls").at("apply"),"dialog.apply");
+        require(!w.error().empty() && owner->snapshot().data().selection==std::optional<Selection>(changed) &&
+            w.workflow.empty() && owner->undo_steps()==0,"Stale conversion review published output/history");
+        frame();frame(); // Match the existing projection driver: settle the new modal layout.
+        click(last.at("error_modal").at("controls").at("ok"),"error.ok");
+        expectedError=false;frame();
+        click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
+        owner->select(points);frame();
+      }
+
     } else {
       click(last.at("dialog").at("controls").at("discard_point_metadata"),"dialog.discard_point_metadata");
       click(last.at("dialog").at("controls").at("apply"),"dialog.apply");
     }
   }
-  const Selection hull("polygon",{{2,2},{2,12},{12,12},{12,2}});
+  const Selection hull=bounding?Selection("rectangle",{{2,2},{13,13}}):Selection("polygon",{{2,2},{2,12},{12,12},{12,2}});
   require(owner->snapshot().data().selection==std::optional<Selection>(hull) && owner->undo_steps()==1 && w.workflow.size()==1,"Hull menu did not publish a retained area selection");
   const auto record=w.workflow.front();
   w.action("undo");require(owner->snapshot().data().selection==std::optional<Selection>(points),"Hull Undo did not restore point annotations");
   w.action("redo");require(owner->snapshot().data().selection==std::optional<Selection>(hull),"Hull Redo did not restore polygon");
-  w.action("save_workspace",{{"path",(dir/"hull.ijx").u8string()}});session.close();
-  Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"hull.ijx").u8string());
+  w.action("save_workspace",{{"path",(dir/(stem+".ijx")).u8string()}});session.close();
+  Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/(stem+".ijx")).u8string());
   require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(hull) && reopened.workflow.front()==record,"Hull session lost geometry or executable record");
   bool refused=false;try{reopened.replaySelectionCreation(metadataObjectFromJson(record));}catch(const std::exception&){refused=true;}
   require(refused,"Closed-source hull replay must require explicit rebind");
@@ -591,11 +609,18 @@ Json convexHullWorkflowUiCase(Window& w,const std::string& context,const std::st
   reopened.replaySelectionCreation(imagejxx::desktop::metadataObjectFromJson(record),SelectionCreationRequest{SelectionCreationOperation::Replace,hull,SelectionCreationGeometry::NativePathV4});
   require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(hull) && reopened.nativeDocument()->undo_steps()==history+1,"Hull explicit replay lost geometry/history");
   reopened.action("undo");require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(points),"Hull replay Undo lost source points");
-  Json report={{"context",context},{"events",events},{"controls",controls},{"record",record},{"hull",hull.points},{"source",selectionJson(points)},{"state","observed"},{"contract","imagejxx.convex-hull.ui.1"}};
+  Json report={{"context",context},{"events",events},{"controls",controls},{"record",record},{bounding?"rectangle":"hull",hull.points},{"source",selectionJson(points)},{"state","observed"},{"contract",bounding?"imagejxx.bounding-rectangle.ui.1":"imagejxx.convex-hull.ui.1"}};
   writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){
-    writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"events",events},{"controls",controls}});throw;
+    writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",controls}});throw;
   }
+}
+} // namespace
+Json convexHullWorkflowUiCase(Window& w,const std::string& context,const std::string& directory) {
+  return selectionConversionUiCase(w,context,directory,false);
+}
+Json boundingRectangleWorkflowUiCase(Window& w,const std::string& context,const std::string& directory) {
+  return selectionConversionUiCase(w,context,directory,true);
 }
 
 }

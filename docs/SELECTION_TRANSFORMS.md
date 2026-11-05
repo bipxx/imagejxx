@@ -45,7 +45,37 @@ subpixel, duplicate, collinear and seeded cases. This qualifies that vertex
 profile; it does not establish complete ImageJ ROI-kind or style-transfer parity.
 The Java observer is a development reference, not a shipped processing dependency.
 
-Bounding Rectangle, curved/mask hull semantics, other fitting operations,
+## Bounding Rectangle
+
+Use **Edit → Selection → Bounding Rectangle** to replace the active XY selection
+with an editable axis-aligned rectangle. The same explicit point-data loss
+choice, selection-only Undo/Redo, workspace and recorded-replay rules apply.
+Changing the selection while its loss review is open invalidates that review;
+failed review remains open until corrected or canceled.
+
+`ij.bounding_rectangle_selection(selection, width, height, ...)` and
+`ij.estimate_bounding_rectangle_selection(selection, width, height, limits)` use
+the same optional controls and C++ header as the hull API. They preserve generic
+attributes and width and return geometry without editing a document. Empty
+mask/region geometry refuses. Coordinates outside the supported signed-32-bit
+ROI profile refuse instead of saturating or wrapping. Bounds are not clipped
+to the canvas, and no image raster or sample-provider read is needed.
+
+The pinned ImageJ 1.54r bounds profile is checked with 45 constructor/getBounds
+observations. Rectangle/ellipse origins truncate, and their extents round up;
+vertex area selections use enclosing integer bounds. Points and open lines
+include their endpoint pixels. Vertex-based ROI input uses Float32, while straight
+lines and axis-aligned boxes retain binary64 input. The legacy FloatPolygon
+convention extends wholly nonpositive upper bounds toward the origin; this
+observable behavior is preserved rather than silently replaced with tight bounds.
+Degenerate vertex/line results become at least one pixel wide and high.
+
+Native paths use existing analytic bounds; rotated selections use their native
+frame bounds (outer frame for rounded boxes). Packed masks/regions use bounds of
+occupied cells, retaining their intrinsic origin. These native geometry profiles
+do not establish exact upstream spline/ShapeRoi or source-constructor parity.
+
+Curved/mask hull semantics, other fitting operations,
 scientific/saved-row variants and supported-platform UI qualification remain
 with T06/G018 and their existing owners. Commercial eligibility requirements
 remain unchanged; this conversion adds no third-party runtime dependency.

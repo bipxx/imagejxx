@@ -28,6 +28,23 @@ std::size_t admission(const Selection &source,int width,int height,
 double cross(Point a,Point b,Point c) {
   return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
 }
+bool vertex_bounds(const Selection &s) {
+  return s.kind=="point" || s.kind=="multipoint" || s.kind=="polygon" ||
+      s.kind=="freehand" || s.kind=="polyline" || s.kind=="angle";
+}
+std::size_t rectangle_admission(const Selection &s,int width,int height,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  const auto bytes=detail::admit_selection_geometry(s,width,height,limits,control);
+  if(limits.max_vertices<2)throw std::length_error("Bounding Rectangle exceeds vertex limit");
+  if(!s.is_mask() && !s.is_path() && s.points.empty())
+    throw std::invalid_argument("Bounding Rectangle requires nonempty geometry");
+  // Keep the coordinate conversion and inclusive endpoint arithmetic inside the
+  // portable signed-32-bit ROI profile; do not inherit Java saturating casts.
+  for(const auto &point:s.points)for(double value:point)
+    if(value<std::numeric_limits<int>::min()+2.0 || value>std::numeric_limits<int>::max()-2.0)
+      throw std::invalid_argument("Bounding Rectangle coordinate exceeds integer profile");
+  return bytes;
+}
 }
 std::size_t estimate_convex_hull_selection(const Selection &source,int width,int height,
                                          const SelectionEditLimits &limits) {
@@ -79,5 +96,55 @@ Selection convex_hull_selection(const Selection &source,int width,int height,
   result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();
   return result;
+}
+std::size_t estimate_bounding_rectangle_selection(const Selection &source,int width,int height,
+    const SelectionEditLimits &limits) {
+  return rectangle_admission(source,width,height,limits,{});
+}
+Selection bounding_rectangle_selection(const Selection &source,int width,int height,
+    bool discard_point_metadata,const SelectionEditLimits &limits,const ExecutionControl &control) {
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  rectangle_admission(source,width,height,frozen_limits,frozen_control);
+  if(!discard_point_metadata && (source.attributes.count(point_annotations_attribute) ||
+      source.attributes.count(point_style_attribute)))
+    throw std::invalid_argument("Bounding Rectangle requires explicit discard of per-point metadata");
+  Selection frozen=source;
+  ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  if(vertex_bounds(frozen))for(auto &point:frozen.points) {
+    kernel_checkpoint_periodic();for(auto &value:point)value=static_cast<float>(value);
+  }
+  // Reuse the editor's bounded traversal/analytic geometry, without an image
+  // raster. Its own geometry copy remains within the existing admission bound.
+  const SelectionEditor editor(frozen,width,height);
+  auto b=editor.bounds();const auto &kind=frozen.kind;
+  if(frozen.is_mask() && (b[2]<=b[0] || b[3]<=b[1]))
+    throw std::invalid_argument("Bounding Rectangle requires nonempty geometry");
+  const bool box=kind=="rectangle" || kind=="ellipse" || kind=="rounded_rectangle";
+  const bool open=kind=="point" || kind=="multipoint" || kind=="line" || kind=="polyline" || kind=="angle";
+  if(vertex_bounds(frozen)) {
+    // Pinned FloatPolygon initializes its upper bound to Float.MIN_VALUE. Its
+    // subtraction is Float32 before promotion into the ROI's binary64 bounds.
+    for(int axis=0;axis<2;++axis) {
+      const float hi=std::max(static_cast<float>(b[axis+2]),std::numeric_limits<float>::denorm_min());
+      const float extent=hi-static_cast<float>(b[axis]);
+      b[axis+2]=b[axis]+static_cast<double>(extent);
+    }
+  }
+  for(int axis=0;axis<2;++axis) {
+    double low,extent;
+    if(box) {low=std::trunc(b[axis]);extent=std::ceil(b[axis+2]-b[axis]);}
+    else if(open) {low=std::floor(b[axis]+.5);extent=std::floor(b[axis+2]+1.5)-low;}
+    else {low=std::floor(b[axis]);extent=std::ceil(b[axis+2])-low;}
+    extent=std::max(1.0,extent);
+    if(!std::isfinite(low) || !std::isfinite(extent) || low<std::numeric_limits<int>::min() ||
+        low>std::numeric_limits<int>::max() || extent>std::numeric_limits<int>::max() ||
+        low+extent>std::numeric_limits<int>::max())
+      throw std::invalid_argument("Bounding Rectangle exceeds integer profile");
+    b[axis]=low;b[axis+2]=low+extent;
+  }
+  Selection result("rectangle",{{b[0],b[1]},{b[2],b[3]}});result.width=frozen.width;
+  result.attributes=frozen.attributes;
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
+  result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 }
