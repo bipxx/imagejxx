@@ -224,10 +224,65 @@ void exportAcceptedPathsAndMenu(const std::filesystem::path& root) {
   write(root/"async-flatten-menu.json",{{"controls",controls},{"deferred_publication",true},{"source_unchanged",true},{"documents_added",1}});
   std::cout<<"PASS accepted output/font cwd capture and actual asynchronous Flatten menu\n";
 }
+void everydayEditing(const std::filesystem::path& root) {
+  for(const auto* save:{"save_document","save_workspace"}) {
+    const auto dir=root/save;std::filesystem::create_directory(dir);
+    const auto input=dir/"source.pgm";
+    {std::ofstream f(input,std::ios::binary);f<<"P5\n2 8\n255\n";
+      for(int y=0;y<8;++y){f.put(0);f.put(char(255));}}
+    Window w((dir/"preferences.json").u8string());w.openFile(input.u8string());
+    w.document()->select({{"kind","rectangle"},{"points",{{0,0},{1,8}}}});
+    const auto original=w.nativeSnapshot();const auto source=w.document()->frame().pixels;
+    // Fixed ImageJ two-column sigma1 oracle; outside-selection pixels stay255.
+    auto expected=source;for(std::size_t i=0;i<expected.size();i+=2)expected[i]=77;
+    HeadlessInputSession session(w);Json last,events=Json::array();
+    auto frame=[&](Json input=Json::array()) {
+      last=session.frame(input);events.push_back(input);
+      check(w.error().empty(),"Everyday workflow reported an editor error");
+    };
+    auto click=[&](const Json& point) {
+      const auto p=point;
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",p}}}));
+      for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+      frame();
+    };
+    w.action("show_operation",{{"operation","gaussian_blur_imagej"}});
+    for(int i=0;i<3;++i)frame();
+    click(last.at("gaussian_panel").at("sigma_point"));
+    frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",true}}}));
+    frame(Json::array({{{"type","key"},{"name","A"},{"down",true}}}));
+    frame(Json::array({{{"type","key"},{"name","A"},{"down",false}}}));
+    frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",false}}}));
+    frame(Json::array({{{"type","text"},{"value","1"}}}));
+    for(bool down:{true,false})frame(Json::array({{{"type","key"},{"name","Tab"},{"down",down}}}));
+    check(last.at("gaussian_panel").at("sigma")==1,"Everyday Gaussian sigma was not consumed");
+    click(last.at("gaussian_panel").at("preview_point"));w.wait();frame();
+    check(last.at("gaussian_panel").at("preview").get<bool>() && w.nativeSnapshot().shares_data(original),"Preview changed source or did not activate");
+    w.recording=true;click(last.at("gaussian_panel").at("ok_point"));w.wait();frame();
+    check(w.document()->frame().pixels==expected && w.nativeDocument()->undo_steps()==1,"Everyday selected Apply differs from fixed oracle/history");
+    check(w.workflow.size()==1,"Everyday Gaussian Apply was not recorded exactly once");
+    const auto workflow=w.workflow;
+    w.action("undo");check(w.document()->frame().pixels==source,"Everyday Undo lost original pixels");
+    w.action("redo");check(w.document()->frame().pixels==expected,"Everyday Redo lost filtered pixels");
+    w.action("measure");w.wait();
+    check(w.results.size()==1 && w.results[0].at("count")==8 && w.results[0].at("mean")==77 && w.results[0].at("sum")==616,"Everyday Measure differs from independent selected statistics");
+    const auto rows=w.results;
+    w.action("save_results",{{"path",(dir/"measurements.csv").u8string()}});
+    check(std::filesystem::file_size(dir/"measurements.csv")>0,"Everyday CSV was not saved");
+    w.action(save,{{"path",(dir/"edited.ijx").u8string()}});session.close();
+    Window reopened((dir/"reopened-preferences.json").u8string());reopened.openFile((dir/"edited.ijx").u8string());
+    const auto selected=reopened.nativeSnapshot().data().selection;
+    check(reopened.document()->frame().pixels==expected && selected && selected->kind=="rectangle","Everyday reopen lost pixels/selection");
+    check(reopened.results==rows && reopened.workflow==workflow,"Everyday reopen lost results/recorded command");
+    check(w.renderMemoryInfo().at("working_bytes")==0,"Everyday workflow retained working storage");
+    write(dir/"workflow.json",{{"context","imgui_cpp"},{"events",events},{"pixels",expected},{"measurements",rows},{"workflow",workflow},{"save_action",save}});
+  }
+  std::cout<<"PASS everyday open/select/physical Gaussian preview/Apply/Undo/Redo/Measure/CSV/save/reopen in native C++\n";
+}
 } // namespace
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture root required");std::filesystem::create_directories(root);
-  metadata(root);ieee(root);menu(root);exportJobs(root);exportAcceptedPathsAndMenu(root);
+  metadata(root);ieee(root);menu(root);exportJobs(root);exportAcceptedPathsAndMenu(root);everydayEditing(root);
   std::cout<<"PASS metadata-only manual contrast, palette controls, IEEE validation and Image menu defaults\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

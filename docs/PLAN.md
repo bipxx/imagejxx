@@ -2,13 +2,14 @@
 
 Updated 2026-11-05: workflow-first scheduling and measured execution overhead.
 Implementation resumed at the user's request. B2b.1 export recording/replay is
-scoped integrated in both Windows hosts; active next is the everyday editing
-workflow below. Local cleanup retired scratch and compiler
+scoped integrated in both Windows hosts. The bounded everyday editing workflow
+now has both-host composition checks; next is scientific navigation below.
+Local cleanup retired scratch and compiler
 intermediates; preserve existing configured caches/products and rebuild only
 for changed compiler inputs or a demonstrated verification dependency.
 Native snapshot capture and queued ownership are scoped integrated in both
 Windows hosts; Python controls and changed installed clients on Windows/Linux pass.
-Next: everyday editing, then XYZ workflows below. Remaining print/platform/output
+Next: supported stack/CZT/XYZ/reslice/export/reopen. Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
 Appearance interchange, typed draft preview and the full T00-T15
@@ -114,8 +115,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | B2a native snapshot-copy admission foundation. | Allocation-free preflight and guarded complete copying on Document/Application; document/application suites pass on Windows/Linux. [Receipt](parity/reviews/T04a2-snapshot-capture-20261105.json). No Window/Python/SDK qualification yet. |
 | Delivered scoped | Windows B2a captured snapshot/queued ownership and consumers. | 794 distinct affected Python cases ultimately pass (19 new);30 native lifecycle cases, shared-pool concurrency, both173-frame hosts/four readers each and installed snapshot client per Windows/Linux platform pass. [Receipt](parity/reviews/T04a2-capture-consumers-20261105.json). |
 | Delivered scoped | B2b.1 executable export state/replay and recovery. | Both current Windows hosts pass record/Run/rebind review and ten final readers;603 affected case IDs pass. Original609-case attempt failed on six unrelated missing capture environments and remains failed. Native30/35 API evidence reused; no rebuild. [Receipt](parity/reviews/T04a2-export-replay-20261105.json). B2b.2 and full P2 remain open. |
-| Active next | Everyday editing: open -> select -> filter preview/Apply/Undo -> Measure/CSV -> save/reopen (T06/T08/T04/T10 plus owning T15 keys). | Reuse working steps; close the first concrete missing boundary under the next task specification below. Do not wait for all point-tool, manager or platform variants. |
-| Following | Scientific navigation: open supported stack -> C/Z/T and XY/XZ/YZ -> supported reslice -> export/reopen (T07/T10, T11 only where required). | Preserve pixels, affine metadata, selection bindings and saved options; extend one missing supported route at a time. |
+| Delivered bounded workflow | Everyday editing: open PGM -> rectangular selection -> Gaussian preview/Apply/Undo/Redo -> Measure/CSV -> save/reopen. | Existing product paths work in native C++ and Python ImGui hosts. Two native flows plus four Python checks pass; added composition regressions, no duplicate processing/UI code. [Receipt](parity/reviews/everyday-editing-workflow-20261105.json). Other formats/types/tools, replay variants and full families remain open. |
+| Active next | Scientific navigation: open supported stack -> C/Z/T and XY/XZ/YZ -> supported reslice -> export/reopen (T07/T10, T11 only where required). | Preserve pixels, affine metadata, selection bindings and saved options; extend one missing supported route at a time. Inspect exact reader/UI target and export/session behavior before selecting tests. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -662,7 +663,7 @@ by its actual prerequisites and update that row:
 
 ### Immediate delivery specifications after this scheduling review
 
-**Current: close B2b.1 without expanding it.** Preserve the existing replay code
+**Delivered scoped: B2b.1.** See its current receipt and queue row; preserve the replay code
 and original test results. Review source identity/options/destination/font
 recovery, binding mutability and asynchronous return semantics before the next
 build. Run missing actual record/replay/rebind cases in both Windows hosts and
@@ -673,7 +674,9 @@ every output format, other-platform UI or full P2 closure. Keep those requiremen
 in B2b.2/T10/T14/T15. Do not add a generalized recorder, scheduler or resource
 accounting layer unless a reproducible failure requires it.
 
-**Next: complete one everyday editing workflow.** Owning families G013/G015,
+**Delivered bounded workflow: everyday editing.** The current receipt proves
+the ordinary UInt8/rectangle/Gaussian path and both native-session save choices;
+these specifications preserve the broader residual scope. Owning families G013/G015,
 G042/G044/G045, G066/G071, G074/G081 and their existing settings consumers.
 Use an already supported eager finite-scalar raster, existing selection editor,
 Gaussian filter, captured Measure/CSV and existing save/session paths. First
@@ -694,7 +697,7 @@ do not introduce a new format, 3D kernel or every ROI type to demonstrate this
 bounded workflow. Once its current scope works, choose the next unresolved
 workflow rather than adding unrelated variants to this task.
 
-**Following: scientific navigation workflow.** G026/G027/G029/G031/G062/G074
+**Active next: scientific navigation workflow.** G026/G027/G029/G031/G062/G074
 with owning T15 settings. Reuse a supported eager stack and existing C/Z/T,
 linked XY/XZ/YZ and axis-aligned reslice paths; resolve the first actual gap,
 then verify spatial metadata/ROI binding and export/reopen. Oblique/curved

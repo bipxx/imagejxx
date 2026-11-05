@@ -16,12 +16,13 @@ changes and do not infer live processes/agents from old receipts or role names.
 
 ## Near-term delivery order
 
-The active queue in PLAN now closes existing B2b.1 replay WIP, then prioritizes
-everyday editing and XYZ workflows. The analysis details below retain residual
+PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
+verified in both Windows hosts. Next is supported stack/CZT/XYZ/reslice and
+export/reopen. The analysis details below retain residual
 scope; they do not require finishing every point/manager variant first. Keep
 unrelated print/platform work with its owner; batch related changes and run
-affected checks under PLAN's delivery specifications. Implementation stays paused
-until resumed; this scheduling update launches no builds or agents.
+affected checks under PLAN's delivery specifications. Implementation has resumed;
+these role documents authorize no agents.
 
 T04a.1 bounds/configured profiles and scoped read-only lifecycle are delivered;
 T04a.2 captured scalar area/line and grouped manager measurements now work in
