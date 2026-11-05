@@ -1,5 +1,6 @@
 #include "window.hpp"
 #include "headless_session_internal.hpp"
+#include "effective_display_ui_probe.hpp"
 #include "point_raster_font.hpp"
 #include <filesystem>
 #include <fstream>
@@ -11,6 +12,7 @@
 #include <algorithm>
 #include <imagejxx/jobs.hpp>
 #include <imagejxx/io.hpp>
+#include <imagejxx/point_annotations.hpp>
 
 using namespace imagejxx;
 using imagejxx::desktop::Window;
@@ -351,10 +353,16 @@ void scientificNavigation(const std::filesystem::path& root) {
   write(dir/"workflow.json",{{"context","imgui_cpp"},{"events",events},{"export_record",exported_record},{"open_record",open_record},{"shape",restored.shape().dimensions()},{"origin",spatial.origin},{"direction",spatial.direction},{"time_origin",spatial.time_origin}});
   std::cout<<"PASS scientific open/CZT/XYZ/reslice/physical TIFF export/reopen with preserved transform\n";
 }
+void convexHullWorkflow(const std::filesystem::path& root) {
+  Window window((root/"convex-hull-preferences.json").u8string());
+  imagejxx::desktop::convexHullWorkflowUiCase(window,"imgui_cpp",(root/"convex-hull").u8string());
+  std::cout<<"PASS Convex Hull physical menu/loss choice/cancel/history/session/explicit replay in native C++\n";
+}
+
 } // namespace
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture root required");std::filesystem::create_directories(root);
-  metadata(root);ieee(root);menu(root);exportJobs(root);exportAcceptedPathsAndMenu(root);everydayEditing(root);scientificNavigation(root);
+  metadata(root);ieee(root);menu(root);exportJobs(root);exportAcceptedPathsAndMenu(root);everydayEditing(root);scientificNavigation(root);convexHullWorkflow(root);
   std::cout<<"PASS metadata-only manual contrast, palette controls, IEEE validation and Image menu defaults\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

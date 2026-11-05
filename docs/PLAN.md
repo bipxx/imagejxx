@@ -4,13 +4,14 @@ Updated 2026-11-05: workflow-first scheduling and measured execution overhead.
 Implementation resumed at the user's request. B2b.1 export recording/replay is
 scoped integrated in both Windows hosts. The bounded everyday editing workflow
 now has both-host composition checks. Scientific navigation/reslice TIFF export
-now preserves its transform; next is a missing selection transformation below.
+now preserves its transform. Convex Hull vertex conversion has scoped API and
+both-Windows-host evidence; Bounding Rectangle conversion is next.
 Local cleanup retired scratch and compiler
 intermediates; preserve existing configured caches/products and rebuild only
 for changed compiler inputs or a demonstrated verification dependency.
 Native snapshot capture and queued ownership are scoped integrated in both
 Windows hosts; Python controls and changed installed clients on Windows/Linux pass.
-Next: T06/G018 Convex Hull selection conversion. Remaining print/platform/output
+Next: T06/G018 Bounding Rectangle conversion. Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
 Appearance interchange, typed draft preview and the full T00-T15
@@ -118,7 +119,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | B2b.1 executable export state/replay and recovery. | Both current Windows hosts pass record/Run/rebind review and ten final readers;603 affected case IDs pass. Original609-case attempt failed on six unrelated missing capture environments and remains failed. Native30/35 API evidence reused; no rebuild. [Receipt](parity/reviews/T04a2-export-replay-20261105.json). B2b.2 and full P2 remain open. |
 | Delivered bounded workflow | Everyday editing: open PGM -> rectangular selection -> Gaussian preview/Apply/Undo/Redo -> Measure/CSV -> save/reopen. | Existing product paths work in native C++ and Python ImGui hosts. Two native flows plus four Python checks pass; added composition regressions, no duplicate processing/UI code. [Receipt](parity/reviews/everyday-editing-workflow-20261105.json). Other formats/types/tools, replay variants and full families remain open. |
 | Delivered scoped workflow | Scientific navigation: open supported stack -> C/Z/T and XY/XZ/YZ -> XZ reslice -> TIFF export/reopen. | Fixed rejected origin/direction/time metadata with an owned version1 spatial extension.1121 distinct affected Windows Python cases, both actual native/Python ImGui workflows and Windows/Linux native IO controls pass. Spatial values are reviewable in both IO forms. [Receipt](parity/reviews/scientific-spatial-tiff-20261105.json). Other readers may ignore the extension; legacy ImageJ origins, other view/format variants and release gates remain open. |
-| Active next | T06/G018: Convex Hull selection conversion. | Add the missing native geometry/API and actual Edit/Selection controls on existing selection transactions; verify a usable points/polygon -> hull -> edit/history -> save/reopen workflow. Freeze supported-kind and metadata policies against pinned references before editing. |
+| Delivered scoped workflow | T06/G018: vertex Convex Hull conversion. | Native/Python API and actual menu/loss-choice/Undo/Redo/session/rebind work in both Windows hosts.568 affected Python cases, Windows/Linux native checks and installed Windows SDK client pass. [Receipt](parity/reviews/selection-convex-hull-20261105.json). Curved/mask/path inputs, saved-row/scientific variants and other G018 transformations remain open. |
+| Active next | T06/G018: Bounding Rectangle conversion. | Reuse admitted geometric bounds and selection replacement/history; freeze upstream integer/subpixel/degenerate semantics and point-metadata loss policy before implementation. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -707,39 +709,42 @@ reslice, virtual/tiled sources and extra platform qualification remain named
 T07/T10/T11/T14 residuals, not prerequisites unless the chosen consumer needs
 them. Expand this specification only when it becomes the next ready task.
 
-**Active next: Convex Hull selection conversion (T06/G018).** Current source has
-no convex-hull operation. Inspect the existing SelectionEditor, selection
-publication/history and Edit/Selection menu paths before choosing declarations.
-Use a narrow native geometry API and its Python binding, not a second ROI editor
-or generic processing engine. At entry freeze exact new command/API declarations,
-accepted ROI kinds, finite/subpixel coordinate semantics, duplicate/collinear
-handling, output ordering and annotation/style/position policy against the pinned
-ImageJ implementation and independent geometry examples. Existing per-point
-counters/positions must not be silently reinterpreted as polygon attributes.
+**Active next: Bounding Rectangle conversion (T06/G018).** The preceding
+vertex Convex Hull workflow is scoped integrated; see its
+[contract and residuals](SELECTION_TRANSFORMS.md) and
+[receipt](parity/reviews/selection-convex-hull-20261105.json).
+This does not close G018 or its remaining hull-input semantics.
 
-The first usable exit is create/open points or polygon -> Convex Hull -> editable
-closed area selection -> correct history -> save/reopen, in both Windows ImGui
-hosts and public C++/Python APIs. Preserve pixels/calibration and source state on
-refusal/cancel/stale adoption. Reuse existing selection transactions, limits,
-menus, recorder/session/loss-review owners; no new scheduler/cache/controller.
-Required configurations and executable replay accompany this action where
-applicable. Enumerate remaining ROI-kind and scientific/saved-row variants under
-T06 rather than declaring G018 complete from vertex-only geometry. Native masks,
-paths and rounded/ellipse inputs require their own explicit hull semantics.
+Deliver selection -> Edit/Selection Bounding Rectangle -> editable rectangle ->
+Undo/Redo -> workspace save/reopen and explicit recorded replay in both Windows
+hosts. Add a narrow C++ geometry operation in `selection_transform.hpp/.cpp` and
+its existing binding/export route. Reuse `SelectionEditor::bounds()` for accepted
+vertex/box geometry and inspect `SelectionRegion::bounds()` before supporting
+native regions; do not rasterize an image to discover bounds. Inspect pinned
+ImageJ `Selection`/`Roi` bounds behavior first: freeze floor/ceil versus subpixel
+rules, reversed corners, off-canvas coordinates, point/line degeneracy and empty
+regions. State any unsupported profile explicitly rather than silently clamping.
 
-Validate the changed geometry independently and compare pinned upstream cases,
-then exercise actual menu controls and state/history/session behavior. Batch
-public declarations/bindings/consumers before one shared build; refresh only
-changed installed clients. Preserve the now-warm active compiler intermediates.
-Before any installed Python run, verify every changed optional module's exact
-install component/path/hash. Inspect physical key behavior before writing input
-fixtures. Reuse the maintained native/UI drivers and keep captures bounded.
+Retain generic attributes/width, require explicit loss choice for typed point
+data, and reuse the hull's selection-creation Replace/V4 publication/history,
+menu and stale-owner/revision/pose guard. Freeze exact API/action signatures and
+resource estimates in the task entry after inspecting callers. No common public
+struct changes, duplicate transaction, scheduler, controller or recorder schema.
+Preserve pixels/calibration and all source state on cancel/refusal/stale adoption.
 
-**Following candidate: Bounding Rectangle conversion (T06/G018).** Reuse existing
-geometric bounds rather than rerasterizing masks. Detail it only after the hull
-conversion's metadata/history contracts stabilize; keep circle/ellipse/spline
-fitting and other transformation options explicitly open. Choose a different next
-workflow only for a recorded consumer/dependency or higher-value missing route.
+Use literal bounds examples and pinned upstream observations; exact/short caps,
+callback freezing/cancel, metadata guards and editable output checks accompany
+both-host physical controls/history/session/replay. Batch changed sources, then
+build affected targets once in the warm Windows/Linux caches. Before installed
+checks verify built/installed/loaded extension bytes **and pure Python exports**;
+`Unspecified` alone does not install the latter (`processing-python` does).
+Retain consumer scratch through final review; retire terminal groups serially.
+
+**Following candidate: Fit Circle (T06/G018).** Inspect existing fit primitives
+and upstream accepted inputs at its entry. Circle/ellipse/spline fits, curved/mask
+hulls, full saved-row/scientific transformations and additional platform/release
+qualification remain explicit residuals. Reorder only for a recorded consumer or
+higher-value missing workflow.
 
 ### Reduce overhead at the existing task boundaries
 

@@ -15,6 +15,9 @@
 #include "point_raster_font.hpp"
 #include "display_export_io.hpp"
 #include "display_export_record.hpp"
+#include <imagejxx/selection_transform.hpp>
+#include <imagejxx/point_annotations.hpp>
+#include <imagejxx/point_presentation.hpp>
 #include "calibration_plot_view.hpp"
 #include "calibration_plot_annotation.hpp"
 #include "calibration_plot_payload.hpp"
@@ -1923,6 +1926,14 @@ struct Window::Impl {
           ? selectionPanel.preview():captured.data().selection;
       if(selection && (selection->is_path() || selection->kind=="point" || selection->kind=="multipoint"))
         return owner.controller_->active_document_id()==source->id;
+    }
+    if(action=="show_convex_hull" || action=="convex_hull_selection") {
+      const auto captured=source->nativeSnapshot();const auto &selected=captured.data().selection;
+      if(!selected || captured.display().orthogonal)return false;
+      const auto &kind=selected->kind;
+      return !owner.busy() && owner.controller_->active_document_id()==source->id &&
+          (kind=="point" || kind=="multipoint" || kind=="polygon" || kind=="polyline" ||
+           kind=="freehand" || kind=="angle" || kind=="rectangle");
     }
     if(action=="select_all" || action=="select_none" || action=="restore_selection" || action=="invert_selection")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
@@ -7786,6 +7797,44 @@ void Window::action(const std::string &name, const Json &p) {
         selection_enlargement_command_from_record(source,record,impl->selectionCreationLimits());
     impl->publishEnlargement(command);return;
   }
+  if(name=="show_convex_hull" || name=="convex_hull_selection") {
+    if(!p.is_object())throw std::invalid_argument("Convex Hull options must be an object");
+    for(const auto &field:p.items())if(field.key()!="document_id" &&
+        !(name=="convex_hull_selection" && field.key()=="discard_point_metadata"))
+      throw std::invalid_argument("Unknown Convex Hull option");
+    const auto source=nativeSnapshot(targetId);
+    if(busy() || source.id()!=controller_->active_document_id() || source.display().orthogonal)
+      throw std::invalid_argument("Convex Hull requires the idle active XY selection");
+    if(!source.data().selection)throw std::invalid_argument("Convex Hull requires a selection");
+    const auto &selected=*source.data().selection;
+    if(name=="show_convex_hull" && (selected.attributes.count(point_annotations_attribute) || selected.attributes.count(point_style_attribute))) {
+      const auto id=source.id();const auto revisions=source.revisions();
+      const PlanePosition position{source.display().t,source.display().c,source.display().crosshair[2]};
+      impl->ask("Convert points to Convex Hull",{{"discard_point_metadata",false}},
+          [this,id,revisions,position](Json choice) {
+            if(!choice.at("discard_point_metadata").get<bool>())
+              throw std::invalid_argument("Allow discarding per-point data to create an area polygon");
+            const auto current=nativeSnapshot(id);
+            if(controller_->active_document_id()!=id || !current.revisions().matches(revisions,Change::Data) ||
+                current.display().t!=position.t || current.display().c!=position.c || current.display().crosshair[2]!=position.z)
+              throw RevisionConflict();
+            action("convex_hull_selection",{{"document_id",id},{"discard_point_metadata",true}});
+          },Json::array({{{"name","discard_point_metadata"},{"label","Discard point counters, positions and point-only styling"},{"kind","bool"}}}),"convex_hull");
+      return;
+    }
+    if(p.contains("discard_point_metadata") && !p.at("discard_point_metadata").is_boolean())
+      throw std::invalid_argument("Point metadata discard must be Boolean");
+    const auto cap=impl->selectionCreationLimits();
+    SelectionEditLimits limits{cap.max_pixels,cap.max_candidate_vertices,cap.max_working_bytes};
+    const auto shape=source.data().dataset.shape();
+    auto hull=convex_hull_selection(selected,shape.x,shape.y,p.value("discard_point_metadata",false),limits);
+    std::string completed="Convex Hull created";
+    // V4 native replacement also accepts ordinary polygons and retains
+    // selection-only history on both direct publication and executable replay.
+    applySelectionCreation(source,{SelectionCreationOperation::Replace,std::move(hull),
+        SelectionCreationGeometry::NativePathV4});
+    impl->status.swap(completed);return;
+  }
   if(name=="select_all" || name=="select_none" || name=="restore_selection" || name=="invert_selection"){
     const auto facade=documentById(targetId);
     if(facade->scientific()){
@@ -10606,6 +10655,7 @@ void Window::Impl::menu() {
       item("Deselect", "select_none");
       item("Restore", "restore_selection");
       item("Invert", "invert_selection");
+      item("Convex Hull", "show_convex_hull");
       for(bool shrink:{false,true}){
         const bool enabled=actionAllowed("enlarge_selection");
         const bool selected=ImGui::MenuItem(shrink?"Shrink...":"Expand...",nullptr,false,enabled);

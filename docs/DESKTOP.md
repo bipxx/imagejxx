@@ -1,5 +1,11 @@
 # Dear ImGui desktop
 
+## Selection conversions
+
+**Edit → Selection → Convex Hull** converts supported vertex selections into an
+undoable area polygon. Annotated points require an explicit metadata-discard
+choice. See [supported inputs, Python/C++ API and remaining scope](SELECTION_TRANSFORMS.md).
+
 ## Brightness/Contrast
 
 Open **Image → Brightness/Contrast...** for the modeless native panel. See

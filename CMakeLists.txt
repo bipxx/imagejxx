@@ -22,7 +22,7 @@ add_library(imagejxx_core STATIC
   src/native/segmentation.cpp src/native/analysis.cpp src/native/frequency.cpp src/native/binary.cpp src/native/conversion.cpp
   src/native/dataset.cpp src/native/dataset_projection.cpp src/native/dataset_projection_command.cpp src/native/imagej_projection_numeric.cpp src/native/imagej_dataset_projection.cpp src/native/imagej_intensity_calibration.cpp src/native/calibrated_analysis.cpp src/native/imagej_projection_document.cpp src/native/imagej_projection_command.cpp src/native/settings.cpp src/native/preferences.cpp src/native/document.cpp src/native/axis_remap.cpp src/native/axis_region_remap.cpp src/native/z_subset_command.cpp src/native/manual_threshold.cpp src/native/manual_threshold_command.cpp src/native/selection_edit.cpp src/native/selection_boolean.cpp src/native/selection_region_boolean.cpp src/native/selection_region_rotation.cpp src/native/roi_style.cpp src/native/application.cpp src/native/metadata.cpp src/native/session_metadata.cpp src/native/operations.cpp src/native/targets.cpp src/native/execution.cpp src/native/jobs.cpp src/native/kernel_control.cpp)
 add_library(imagejxx::core ALIAS imagejxx_core)
-target_sources(imagejxx_core PRIVATE src/native/target_analysis.cpp src/native/point_annotations.cpp src/native/point_presentation.cpp src/native/point_raster.cpp)
+target_sources(imagejxx_core PRIVATE src/native/target_analysis.cpp src/native/point_annotations.cpp src/native/point_presentation.cpp src/native/point_raster.cpp src/native/selection_transform.cpp)
 set(IMAGEJXX_PRIVATE_ZLIB_SOURCES
   third_party/zlib/adler32.c third_party/zlib/compress.c
   third_party/zlib/crc32.c third_party/zlib/deflate.c
@@ -113,11 +113,13 @@ endif()
 # ImageJ bilinear evaluation preserves separate binary64 operations.
 if(MSVC)
   set_source_files_properties(src/native/execution.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
+  set_source_files_properties(src/native/selection_transform.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
   set_source_files_properties(src/native/channel_display.cpp src/native/float32_display.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
   set_source_files_properties(src/native/dataset_histogram.cpp src/native/rgb_histogram.cpp src/native/imagej_intensity_calibration.cpp src/native/calibrated_analysis.cpp src/native/imagej_projection_numeric.cpp src/native/imagej_dataset_projection.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
   set_source_files_properties(src/native/auto_contrast.cpp src/native/contrast_apply.cpp src/native/rgb_contrast_stack.cpp src/native/rgb_contrast_session.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   set_source_files_properties(src/native/execution.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
+  set_source_files_properties(src/native/selection_transform.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
   set_source_files_properties(src/native/channel_display.cpp src/native/float32_display.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
   set_source_files_properties(src/native/dataset_histogram.cpp src/native/rgb_histogram.cpp src/native/imagej_intensity_calibration.cpp src/native/calibrated_analysis.cpp src/native/imagej_projection_numeric.cpp src/native/imagej_dataset_projection.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
   set_source_files_properties(src/native/auto_contrast.cpp src/native/contrast_apply.cpp src/native/rgb_contrast_stack.cpp src/native/rgb_contrast_session.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
@@ -835,6 +837,9 @@ if(BUILD_TESTING)
   target_link_libraries(imagejxx_selection_enlargement_tests PRIVATE imagejxx::core)
   add_test(NAME native_selection_enlargement COMMAND imagejxx_selection_enlargement_tests)
   add_executable(imagejxx_selection_edit_tests tests/native/test_selection_edit.cpp)
+  add_executable(imagejxx_selection_transform_tests tests/native/test_selection_transform.cpp)
+  target_link_libraries(imagejxx_selection_transform_tests PRIVATE imagejxx::core)
+  add_test(NAME native_selection_transform COMMAND imagejxx_selection_transform_tests)
   add_executable(imagejxx_nan_threshold_display_tests tests/native/test_nan_threshold_display.cpp)
   target_link_libraries(imagejxx_nan_threshold_display_tests PRIVATE imagejxx::core)
   target_include_directories(imagejxx_nan_threshold_display_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/native)

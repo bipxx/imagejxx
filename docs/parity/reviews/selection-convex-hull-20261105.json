@@ -1,0 +1,517 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T06/G018 vertex Convex Hull conversion",
+  "base_commit": "41c9818",
+  "command_candidate": "R-f9f8bc593eb7e83191303559",
+  "state": {
+    "implemented": "Public C++/Python metadata-only Float32 hull geometry with existing limits/control; strict typed point-data discard and existing Edit/Selection menu/publication/history/record owners.",
+    "verified": "44 pinned ImageJ geometry observations across four vertex kinds, 568 final affected Windows Python cases, Windows/Linux native core checks, both Windows physical ImGui host workflows and installed Windows public C++ client pass. Final identities include corrected Float32 pre-cast range guard.",
+    "integrated": "Point/polygon conversion to editable closed area; explicit loss cancel/apply; Undo/Redo preserves original point annotations; workspace reopen and strict replay refusal/explicit V4 rebind.",
+    "release_ready": false
+  },
+  "contract": {
+    "kinds": [
+      "point",
+      "multipoint",
+      "polygon",
+      "freehand",
+      "polyline",
+      "angle",
+      "rectangle"
+    ],
+    "geometry": "Float32 vertices; topmost/leftmost first, visually counterclockwise, omit duplicates/collinear boundary/closing repeat; degenerate output refuses. Width and opaque attributes retained.",
+    "metadata": "Typed point_annotations/point_style require explicit discard; no reinterpretation as polygon metadata.",
+    "ownership": "Existing selection-creation Replace/NativePathV4 transaction, history and record/replay. No new schema/controller/cache/scheduler.",
+    "storage": "Existing geometry admission includes native owned temporaries; document/history/record caller storage separate; no Dataset/provider reads.",
+    "commercial": "Owned monotone-chain implementation; pinned ImageJ source and original Java observer are development references only. No new runtime/library/asset dependency."
+  },
+  "reference": {
+    "archive": ".cache/native-verification/references/imagej154r/source.zip",
+    "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "version": "ImageJ 1.54r source commit 62db90a269cccc1ac79f658e4602043214ed055b",
+    "primary_members": [
+      "ij/plugin/Selection.java",
+      "ij/gui/Roi.java",
+      "ij/process/FloatPolygon.java"
+    ],
+    "fixture_cases": 44,
+    "scope": "FloatPolygon vertex geometry only; does not qualify all upstream ROI-kind extraction or transferProperties behavior."
+  },
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 139502,
+      "sha256": "5fcd1ec03be9feb3ec89cbd962f4581f6ebaeecbc14949cb0d3f411e81de01e7"
+    },
+    {
+      "path": "include/imagejxx/selection_transform.hpp",
+      "bytes": 1063,
+      "sha256": "ef7f184c4d4f72b353520759b3f5633959f48ea704e58c78dc57776ea87c6ad1"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 4129,
+      "sha256": "c8b39ae878dbbba79ae5238e2d9256131662f53a4837fba7c5b8abd52e4395d8"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 20411,
+      "sha256": "9fe9ba7e91928e2f7f0f98674555d9a41d740b9370e9f4388af6aa00d43ace03"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 82773,
+      "sha256": "fd9d52150a72f854addf16c4573e2f060fbd364ea147e977d0277ebb3c42ed6f"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 906967,
+      "sha256": "f3f59378dad08e0b2c2a56357d6402716ebdbabe09fb2d0b3ddec956b3d7562d"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 51084,
+      "sha256": "a52974ee4e9feebadae7a907fd9f964f7a7fcea706b0f2e14b4246daf8182900"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 868,
+      "sha256": "dde0ec1ef6c3e46dbc1619bba253feff3e44caf62e236edfa7b529be9de6a2c6"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 63533,
+      "sha256": "f03354d30836a876f56b644ba7ead65d87d1cecb3664722a9b402d59c67821da"
+    },
+    {
+      "path": "tests/native/test_selection_transform.cpp",
+      "bytes": 2088,
+      "sha256": "aaa85907028527a478f0435ee0fc0e188d8cacb83e317987b29e501b614a0da1"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 27321,
+      "sha256": "f498dbc4c015a3851103cc36eb53df920841ca2421dfa4e504500080cb9f3e1b"
+    },
+    {
+      "path": "tests/python/test_selection_convex_hull.py",
+      "bytes": 8018,
+      "sha256": "e32b50f84462f7103dc22bd6508d5176e19a5ef6c7ba93189ad22203a97d349d"
+    },
+    {
+      "path": "tests/installed_core/CMakeLists.txt",
+      "bytes": 3549,
+      "sha256": "35859e6261654058e8095dc0a332480f8ec648b708e131d3a2500746000e3647"
+    },
+    {
+      "path": "tests/reference/ObserveConvexHull.java",
+      "bytes": 2593,
+      "sha256": "2181613713ac1245c920b33261a4fbe734ff5af3e6204c73d2041115f488b83e"
+    },
+    {
+      "path": "tests/fixtures/convex-hull-imagej154r.json",
+      "bytes": 13389,
+      "sha256": "218ae4a1c4b698f9519396b59853e2d847f590553570431e46960aee8523282d"
+    }
+  ],
+  "processes": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-_desktop001.process.json",
+      "sha256": "05ec9b9d7833b839321559ad18ef0b4e2f3442a797c505a212c04c441773177d",
+      "exit_code": 0,
+      "elapsed_seconds": 6.640999999828637
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-_desktop002.process.json",
+      "sha256": "3456f5faaa19682432859e2d52575990e49cd4627b39ce0640c2aa8908f2b2ef",
+      "exit_code": 0,
+      "elapsed_seconds": 12.966625399887562
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-_desktop003.process.json",
+      "sha256": "26fa45ef3d6557d03e3f4513ea938105e21d64b51877df52b942339b258eec55",
+      "exit_code": 0,
+      "elapsed_seconds": 7.199196599889547
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-_native001.process.json",
+      "sha256": "723301494052685f9552f19977e4164b876c1ba23d2371823d5b058ad01533ea",
+      "exit_code": 0,
+      "elapsed_seconds": 60.640000000130385
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-_native003.process.json",
+      "sha256": "f2ec03b1abd6b634df4218685ffef6f17ea2042aab4805e809fce9ea8a56ac10",
+      "exit_code": 0,
+      "elapsed_seconds": 37.0287943999283
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_app001.process.json",
+      "sha256": "374d495a1157aa9f618f47cdde3e3088c77bd369d07f630f6377931950168f0e",
+      "exit_code": 0,
+      "elapsed_seconds": 2.922000000020489
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_app002.process.json",
+      "sha256": "e7713edd18e63979b3d223d54f81d9ca4b3ce0831295efb92deac29976d302b2",
+      "exit_code": 0,
+      "elapsed_seconds": 8.940026799915358
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_app003.process.json",
+      "sha256": "e9976e99116bb4dc0bac72df6fb1ab33f446fb8fe13c85ba2174c010b1ddd8ee",
+      "exit_code": 0,
+      "elapsed_seconds": 3.1712581000756472
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_core001.process.json",
+      "sha256": "066b73cb8002995370b14fe0a112d4b962804b16608d20c22236c5e74cb1a12a",
+      "exit_code": 0,
+      "elapsed_seconds": 215.81299999984913
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_core003.process.json",
+      "sha256": "1f5344f56c167acd82ec688ba166d5a29ce544d8ea560f58b2a9ea76a9675667",
+      "exit_code": 0,
+      "elapsed_seconds": 2.482843300094828
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_desktop001.process.json",
+      "sha256": "9c68ebeabc1210ad882afe3c676ebac9bfd199f01522ade7d5aec9739f0db4de",
+      "exit_code": 0,
+      "elapsed_seconds": 22.125
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_desktop002.process.json",
+      "sha256": "a3cbffa925adea6680a211c53b29e0fc897d9bb4bd1becfebabd5be741596f66",
+      "exit_code": 0,
+      "elapsed_seconds": 8.109136500163004
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_display_actions_tests002.process.json",
+      "sha256": "30617b355b988c7d4b179a0e5b23b45a960b0641d93da0495a10aea8e1287ae3",
+      "exit_code": 0,
+      "elapsed_seconds": 5.921019500121474
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_display_actions_tests003.process.json",
+      "sha256": "6d29befeba461d8943e8f6e4e67032508d216e111e9d1275965822515fea8c2f",
+      "exit_code": 0,
+      "elapsed_seconds": 2.1934930998831987
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_selection_transform_tests001.process.json",
+      "sha256": "25f7b2884b9258a498a69df906ac2716b5663e78027ddb75ab5b444b983e10fa",
+      "exit_code": 0,
+      "elapsed_seconds": 2.1409999998286366
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/build-imagejxx_selection_transform_tests003.process.json",
+      "sha256": "ca63fcaaa704e41af4aad4f4291b1ccec0977d19ea446ffc3da337425db692d0",
+      "exit_code": 0,
+      "elapsed_seconds": 0.8282836000435054
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/configure001.process.json",
+      "sha256": "e91d71116d16d6aad4fbf33ddc637048a7a0e1027a551b35d05118a0740df586",
+      "exit_code": 0,
+      "elapsed_seconds": 14.765000000130385
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/install-app001.process.json",
+      "sha256": "9e0047c574b087d18c37caee855f97c2b81d9db5a68fb4b5dbcf8e4dd2b26098",
+      "exit_code": 0,
+      "elapsed_seconds": 0.31925539998337626
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/install-app002.process.json",
+      "sha256": "3c378f365b33aa6a00947dc18359f13fa0759d8cb5dc5401a70f77e275ef49e5",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2179992999881506
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/install-processing001.process.json",
+      "sha256": "894cda61dcfedbcc68e3ed4ee81551a609217670f17491e1d9896545c6ab62ce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2452693001832813
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/install-python001.process.json",
+      "sha256": "24bc68f9bbc8cfa36e66420d3e2fcc9107f33ab961c05eb106aff7c3625d6627",
+      "exit_code": 0,
+      "elapsed_seconds": 0.7343919000122696
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/install-python002.process.json",
+      "sha256": "723dd82bdf673b4c7969a6fbc2bfe149c00985ad7db4f1089eb9b4cbdaf19d65",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1962168999016285
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/install-sdk001.process.json",
+      "sha256": "e23d326e331e173568a2edb9acf207061d36e7915c0183caf8242c0098e03e61",
+      "exit_code": 0,
+      "elapsed_seconds": 1.4644563999027014
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/install-sdk002.process.json",
+      "sha256": "52c8a25e95be774a5a48974b4c5adca08999ab18b5101a19cb3e59ae838b393c",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2172567001543939
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/linux-build001.process.json",
+      "sha256": "47cf7c87c22cc9dda2bccd9c75a48bd9580ea640816924e9cac13f18ce296ad2",
+      "exit_code": 0,
+      "elapsed_seconds": 249.22339128500002
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/linux-configure001.process.json",
+      "sha256": "f0895453fd3220341dc031c35014b5264e72a713942f9fe12bde66283b5f80f8",
+      "exit_code": 0,
+      "elapsed_seconds": 7.147646342000002
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/linux-native001.process.json",
+      "sha256": "bbdb8e1a1016cf206f87137624f7262691472ba8ad28b54e779906d8f4776c9a",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07055271999996648
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/linux-owner001.process.json",
+      "sha256": "9d98a803a5b806d3359886376d9362b69fb47c9eaf70c58ac9e429d8c7ada4d5",
+      "exit_code": 0,
+      "elapsed_seconds": 261.6491207999643
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/native-core001.process.json",
+      "sha256": "33a1fb3a90ccd1df8458decbe614f6311998f289a908713a45d2057fd62e2fb1",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08396430010907352
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/native-core002.process.json",
+      "sha256": "3bf9b06b468624fa9494afc01a0719b7825985ff55ec53429283b2755caf7a88",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08024509996175766
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/native-ui001.process.json",
+      "sha256": "5f6e8fac90fef90385ee6365acc9b924a1a0b32ceed216c87aa6c43d1089eb2a",
+      "exit_code": 0,
+      "elapsed_seconds": 1.1901856001932174
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/native-ui002-pack.process.json",
+      "sha256": "4b1891234058f676b1af5d571fc5b9636abcfde7827099b868ebdb30d108cbe9",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3543917001225054
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/native-ui002-verify.process.json",
+      "sha256": "17f2fe45794657a535185cf914d2cf9697757ea10dca5243cb7f3de27a0bcd6f",
+      "exit_code": 0,
+      "elapsed_seconds": 0.21577010001055896
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/native-ui002.process.json",
+      "sha256": "4caa7dd784c1aa3cff4dfc0071d88eff4a19b19ff8c345332d92aa820830249f",
+      "exit_code": 0,
+      "elapsed_seconds": 1.528110799845308
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-api001.process.json",
+      "sha256": "9a6820ec5b2c0216af98a73c6463070b59cd9adbd51b7e013e70df73494120b2",
+      "exit_code": 1,
+      "elapsed_seconds": 2.7130720000714064
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-api002.process.json",
+      "sha256": "dc7455ab5cfe4883edaeb3b790285b6476d0fd095a5a21c189b3fcb201af84c5",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9325687000527978
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-regression001.process.json",
+      "sha256": "8e15ded4ecb3177d728cf20a26b69bd29fdcd74685298b905a5b46f556804105",
+      "exit_code": 0,
+      "elapsed_seconds": 3.142746200086549
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-regression002-pack.process.json",
+      "sha256": "a6030ccbe2c7e0667f232fcaef1a6b62e3e371aa63b7d42f2894c50c5cf5b2c5",
+      "exit_code": 0,
+      "elapsed_seconds": 0.22528039989992976
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-regression002-verify.process.json",
+      "sha256": "a8fa4a49ee8ba1fc908178cac63feaf6de9c521f8ab0db81dccf89a6f33172de",
+      "exit_code": 0,
+      "elapsed_seconds": 0.16816990007646382
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-regression002.process.json",
+      "sha256": "f23bdf45f1f7442bf8407e208ada877a7f4d5df3bb233636d6cb829aec037909",
+      "exit_code": 0,
+      "elapsed_seconds": 2.654471700079739
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-ui001.process.json",
+      "sha256": "825dfea1225615ebb8087e432d168f7e39402d88ff962756a8c4d68950c073f3",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9303202999290079
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/reference-compile001.process.json",
+      "sha256": "e2f139ef8bc9b97cda729997fc2fa3ab7ec32272a944dc690b6041d8dcab6a41",
+      "exit_code": 0,
+      "elapsed_seconds": 0.6720000000204891
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/reference-observe001.process.json",
+      "sha256": "fd08b80566f5cb8211eb59edb2f53da9460b90fcb43e8bd5fb9059fe864f95de",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14099999982863665
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/reference001-pack.process.json",
+      "sha256": "8f9fed9d449f7d47cf1b0144fe2c9567efe9e7f53a550b12f7d693294ff06ec7",
+      "exit_code": 0,
+      "elapsed_seconds": 0.19530729996040463
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/reference001-verify.process.json",
+      "sha256": "84436f2d8456560b35afa8414c1e345a7e8caf2e0518f77e90f3d1df4907e8d0",
+      "exit_code": 0,
+      "elapsed_seconds": 0.32016970007680357
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/sdk-build001.process.json",
+      "sha256": "845c5e49dd353eb51b7bd3251f7ece6fbac7f833494c488ba32c987e30862663",
+      "exit_code": 0,
+      "elapsed_seconds": 2.271732200169936
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/sdk-build002.process.json",
+      "sha256": "1f628674b2b2a096100f1f4638a962df045ce9f3108df4adae1fa0381d2caf7a",
+      "exit_code": 0,
+      "elapsed_seconds": 0.8285157999489456
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/sdk-configure001.process.json",
+      "sha256": "0f08acf849a47f31bad73c755d1c496cdaec244d04017cff311d2955956661d7",
+      "exit_code": 0,
+      "elapsed_seconds": 5.320580099942163
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/sdk-run001.process.json",
+      "sha256": "5a4c6530ff67f27bca4149e11ea9cc7352bf3ccd5da18558bae093ffb184ffcf",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07598970015533268
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/sdk-run002.process.json",
+      "sha256": "8a47a656a5feb55c387385225f2bb55ce48b546b5842dcd80bcab93874c49d32",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07462189998477697
+    }
+  ],
+  "final_evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-regression002.xml",
+      "sha256": "9c150690c1b0570fda637fcb04ef098a1c57a158b74eb3fc88ff2ac4bd3919c8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/native-ui-reader002.json",
+      "sha256": "30c17c4f7c1f65643f4588cbb21e0582576f45664cbf1510bf8133dd41468302"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/final-installed-identities.json",
+      "sha256": "d36036b731e49ec0887c973726ec21cd766667fc9648076f05a43db1599cd5f9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/app-identity.json",
+      "sha256": "133c6f4034f70548ad03f101ef025f96cb2e459d7d8a00c6260f52d71233f318"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/linux-identities.json",
+      "sha256": "0c8d916f99e2bb04835d4789ba92685484c9be4ab931b618d26277b6d76d76b9"
+    }
+  ],
+  "retirement": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/native-ui001-retirement.json",
+      "sha256": "e8c43d084eefa77a28f0cafc0c6f2f7ecd66e5cb3f4039eccb6dfa5cf0d76f7a",
+      "state": "hashed_owned_consumer_tree_removed_without_archive"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/native-ui002-retirement.json",
+      "sha256": "20098e5ede057bfc8f4309615f8f2ff31e062ffa9d64fa1628f3f41c8337c2de",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-regression001-retirement.json",
+      "sha256": "f1d4e0fb6b2525229af575fc0ccc041cdf0cce22ae263c2962cf8285f79233cc",
+      "state": "hashed_owned_consumer_tree_removed_without_archive"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-regression002-retirement.json",
+      "sha256": "b5655afc85d97704408c05925a4800ce715ff3a2ff4a8a88de94cf528ecd59a9",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python-ui001-retirement.json",
+      "sha256": "6f0bc864d714698e128a4da284398c95863326bdec7141fd799509a97aebae1b",
+      "state": "hashed_owned_consumer_tree_removed_without_archive"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/python002-retirement.json",
+      "sha256": "6a642e664fba3024dc70bfef0b9e1f43979b54673055a952e43252ef82cd0789",
+      "state": "hashed_owned_consumer_tree_removed_without_archive"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/reference001-retirement.json",
+      "sha256": "9585220a4a6352221a669ab1103f7f76e98d77b11c7ea334242739724fb290bb",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-convex-hull-20261105/sdk001-retirement.json",
+      "sha256": "7086fb425d2d4672bf5035bd81d4df94a61594320e44b198fe3f61f4ead27ba2",
+      "state": "hashed_owned_consumer_tree_removed_without_archive"
+    }
+  ],
+  "storage": {
+    "inherited_previous_task_snapshot": ".tmp/manual-workflow-verification/scientific-spatial-tiff-closeout-20261105.json",
+    "inherited_known_bytes": 6363952523,
+    "resumed_before_final_verification_snapshot": ".tmp/manual-workflow-verification/convex-hull-validation-entry-20261105.json",
+    "resumed_known_bytes": 7304696516,
+    "after_snapshot": ".tmp/manual-workflow-verification/convex-hull-closeout-20261105.json",
+    "after_known_bytes": 7309043120,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_after_bytes": 278896824320,
+    "note": "Inherited prior measurement is not relabeled as a fresh pre-initial-build inventory. Fresh resumed measurements bracket final verification/retirement; all active cache objects preserved. Eight terminal scratch groups retired; three compressed/live-hash verified and five superseded/consumer groups identity-only."
+  },
+  "waste_review": {
+    "fix_now": [
+      "Reused existing V4 replacement history/replay instead of new command infrastructure.",
+      "Corrected SelectionCreationRequest constructor order after live declaration inspection before execution.",
+      "Initial Python install checked extensions but omitted pure exports; install processing-python and hash pure __init__.py before retry. Failed run remains failed. Missing pytest parent fixed in owned scratch.",
+      "Review replaced out-of-range float conversion with pre-cast bounds test; relinked affected products and reran relevant consumers only.",
+      "Shared existing native UI driver in both hosts; no Python-owned persistent ImGui context."
+    ],
+    "no_action": [
+      "No speculative controller/harness/API-wide refactor. Active caches, runtime and SDK reused.",
+      "Focused independent geometry/core/installed/UI checks do not establish processing throughput or full completion."
+    ],
+    "timing": "Initial Windows core215.813s and _native60.640s; shared-driver desktop8.109s; required final core2.483s and native relink37.029s. Linux one same-cache build249.223s. Distinct workloads, no speedup claim.",
+    "next_prevention": "Include pure export install component/path/hash alongside changed extension identities; preserve warm intermediates. Existing AGENTS execution checkpoints reinforced."
+  },
+  "remaining": [
+    "Curved/ellipse/rotated-box/mask/composite-path hull extraction and exact all-kind ImageJ style transfer.",
+    "Saved-row/scientific/non-XY input/extent policies and full other G018 transformations/fits.",
+    "Linux/macOS physical UI, additional installed/platform/release qualification and full T00-T15 scope remain open."
+  ],
+  "next": "Bounding Rectangle conversion on existing admitted bounds and replacement/loss/history owners; freeze pinned rounding/degenerate/off-canvas profiles first."
+}

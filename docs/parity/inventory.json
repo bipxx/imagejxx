@@ -899,7 +899,9 @@
           "docs/parity/reviews/p12r-creation-workflow001.json",
           "docs/parity/reviews/p12s-region-rotation001.json",
           "docs/parity/reviews/p12t-planar-region001.json",
-          "docs/parity/reviews/p12u-display-remap001.json"
+          "docs/parity/reviews/p12u-display-remap001.json",
+          "docs/SELECTION_TRANSFORMS.md",
+          "docs/parity/reviews/selection-convex-hull-20261105.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
@@ -918,7 +920,9 @@
           "src/native/native_workflow_program.cpp",
           "src/desktop/native_workflow_panel.cpp",
           "src/desktop/native_workflow_parameters.cpp",
-          "include/imagejxx/selection_region.hpp"
+          "include/imagejxx/selection_region.hpp",
+          "include/imagejxx/selection_transform.hpp",
+          "src/native/selection_transform.cpp"
         ],
         "tests": [
           "tests/python/test_selection_enlargement.py",
@@ -934,7 +938,11 @@
           "tests/python/test_selection_region.py",
           "tests/fixtures/selection-region-imagej154r.json",
           "tests/reference/SelectionRegionReference.java",
-          "examples/cpp/selection_region.cpp"
+          "examples/cpp/selection_region.cpp",
+          "tests/python/test_selection_convex_hull.py",
+          "tests/native/test_selection_transform.cpp",
+          "tests/reference/ObserveConvexHull.java",
+          "tests/fixtures/convex-hull-imagej154r.json"
         ]
       },
       "id": "G018",

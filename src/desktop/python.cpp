@@ -269,6 +269,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_point_annotations_ui_case",[](Window& window,const std::string& directory) {
         return pointAnnotationEditingUiCase(window,"imgui_python",directory).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_convex_hull_ui_case",[](Window& window,const std::string& directory) {
+        return convexHullWorkflowUiCase(window,"imgui_python",directory).dump();
+      },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
       .def("_captured_profile_ui_case",[](Window& window,const std::string& directory) {
         return capturedProfileUiCase(window,"imgui_python",directory).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
