@@ -61,6 +61,7 @@ void bind_slicer_resize_command(py::module_& module);
 void bind_planar_annotations(py::module_& module);
 void bind_planar_display_annotations(py::module_& module);
 void bind_imagej_roi(py::module_& module);
+void bind_point_presentation(py::module_& module);
 void bind_imagej_display_roi(py::module_& module);
 void bind_imagej_roi_import(py::module_& module);
 void bind_imagej_annotation_import(py::module_& module);
@@ -282,6 +283,7 @@ PYBIND11_MODULE(_native, m) {
   bind_planar_annotations(m);
   bind_planar_display_annotations(m);
   bind_imagej_roi(m);
+  bind_point_presentation(m);
   bind_imagej_display_roi(m);
   bind_imagej_roi_import(m);
   bind_imagej_annotation_import(m);

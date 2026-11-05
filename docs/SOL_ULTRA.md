@@ -65,15 +65,19 @@ artifact limitations. No speed claim from language choice or build timings.
 [Three-role ownership](THREE_AGENT_EXECUTION.md) is a coordination template;
 agent execution requires authorization under current instructions.
 
-P1 creation counters/positions are now scoped integrated for ordinary tools and
-scientific XY/XZ/YZ. The latest packet has664 focused product cases and23 tools,
-native/installed clients on Windows/Linux and actual both-Windows-host creation/
-lifecycle checks. Next P2 marker presentation, P3 automatic actions and P4 wider
-edit/rebind/replay reconciliation, then manager variants. PLAN owns the two ready
-specs and exact limits. All task scratch is retired with verified hashes; overall
-storage stays unverified where paths are inaccessible. Encode full point metadata
-once at completion, verify actual input ownership and batch focused API changes.
-After each task, update the queue and its concise waste/cleanup decision record.
+P1 creation counters/positions are scoped integrated for ordinary/scientific
+planes. P2a native point styles/layout and explicit wire adapters are scoped
+verified: 112 original traces, 431 Windows product cases, three native controls
+and seven installed SDK clients per Windows/Linux platform. Next P2b actual
+controls/settings/cached drawing, then P2c raster flatten/export; P2 stays open.
+P3 automatic actions and P4 reconciliation follow. PLAN owns exact scope/evidence
+and next-two specs. Scratch is retired with verified retention; full storage
+stays unverified where paths are inaccessible. Each task updates waste/cleanup
+and the queue before the next starts.
+
+Follow the [remaining-work sequence](PLAN.md#execution-sequence-to-finish-the-remaining-work).
+After each accepted task, update its current queue entry and waste disposition
+before the next start; unresolved consumers stay attached to their parent task.
 
 ## Historical link compatibility
 

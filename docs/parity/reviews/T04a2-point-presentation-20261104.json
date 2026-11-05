@@ -1,0 +1,1325 @@
+{
+  "schema": "imagejxx.scoped-task-closeout.001",
+  "date": "2026-11-04",
+  "task": "T04a.2 M2b.2b P2a native point presentation/API",
+  "requirements": [
+    "G013",
+    "G014",
+    "G017",
+    "G020",
+    "G021",
+    "G022",
+    "T15"
+  ],
+  "state": {
+    "implemented": "Version1 native point style and bounded renderer-independent layout, Python interface, explicit wire style adapters and projection adoption.",
+    "verified": "431 focused final Windows Python cases; 112 original drawing traces; three native controls and seven installed C++ SDK clients per Windows/Linux platform.",
+    "integrated": "Explicit native projection and existing session/native envelope owners preserve the style and original raw data.",
+    "release_ready": false
+  },
+  "not_delivered": [
+    "P2b actual UI controls/settings/defaults and cached drawing across active/saved/overlay/scientific roles",
+    "P2c raster flatten, font/AA pixel qualification and complete export/loss-review consumers",
+    "P3 automatic actions",
+    "P4 wider edit/rebind/interchange/replay",
+    "Full T04a.2, ImageJ/Fiji scope, macOS or release qualification",
+    "Any general rendering/processing speed superiority"
+  ],
+  "contract": "docs/POINT_PRESENTATION.md",
+  "sources": [
+    {
+      "path": "include/imagejxx/point_presentation.hpp",
+      "bytes": 3019,
+      "sha256": "1c65f3c68acc6c8cf4cdc6af7672475bdc8273683791876f5d8076cfe92ac628"
+    },
+    {
+      "path": "src/native/point_presentation.cpp",
+      "bytes": 13473,
+      "sha256": "0a094ab3313d762f4c133abe7569fbc2d4fbc72cc9c63c2bee75e7f429893ac2"
+    },
+    {
+      "path": "src/native/point_presentation_bindings.cpp",
+      "bytes": 6471,
+      "sha256": "f9abcdd51a34388ca1e14c686c16a9cbdb49a584f5e3f1438422c1fab0c69747"
+    },
+    {
+      "path": "src/native/imagej_roi_mapping.cpp",
+      "bytes": 9005,
+      "sha256": "8824e9fdc105bb5d754fbaecaf2dd09d23246f4169480980b4f2c52134af47f1"
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 43592,
+      "sha256": "7b9c8c4dc3e5ba6a438b50389ccf62c196d7a703d6534e09d6534322f075189a"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 82569,
+      "sha256": "d56fc47f178ff2cd87585c356d6be696877fa413a8047b0f8da9ad8f77918217"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 138874,
+      "sha256": "85b31064de83cc198ee47714d7425ee859aef1ae228d0f4760398d92df21a40f"
+    },
+    {
+      "path": "tests/installed_core/CMakeLists.txt",
+      "bytes": 2938,
+      "sha256": "3e70a2fe2c20f1358820eb23d09c04448ddf281d1dedad17da247abe2e2a45a0"
+    },
+    {
+      "path": "tests/native/test_point_presentation.cpp",
+      "bytes": 3185,
+      "sha256": "2004031f278f07a81fe15d48143128537675325b5f32f823ce6fd6cafcfd022b"
+    },
+    {
+      "path": "tests/python/test_point_presentation.py",
+      "bytes": 11474,
+      "sha256": "363c92bff9a195f8f2756c8d70306ba3548e5ea7dc40285dc61aa70fdc0ae327"
+    },
+    {
+      "path": "tests/reference/ObservePointPresentation.java",
+      "bytes": 8908,
+      "sha256": "87bfaa6e9e9cb5299b4b90ef12ad6160b3bd075b2e3ffb418578a347f1de5e77"
+    },
+    {
+      "path": "tests/fixtures/point-presentation-imagej154r.jsonl.gz",
+      "bytes": 2632,
+      "sha256": "cf802f66454eaca2e18674c846d9389e56de06cfe2199813bde5e16c386a2293"
+    }
+  ],
+  "reference": {
+    "version": "1.54r",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "source_archive": {
+      "path": ".cache/native-verification/references/imagej154r/source.zip",
+      "bytes": 6146010,
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+    },
+    "inputs": [
+      {
+        "path": ".cache/native-verification/references/imagej154r/source/ij/gui/PointRoi.java",
+        "bytes": 32160,
+        "sha256": "f77398d2822dc2235c06c4340f84ed4a2a7d8d5b7d573fe2870325990a16fd77"
+      },
+      {
+        "path": ".cache/native-verification/references/imagej154r/source/ij/gui/PolygonRoi.java",
+        "bytes": 52637,
+        "sha256": "1c5b398b5423c7f763144f12b95cfa23e08ef9e1cc07a93ba9873411f0f76038"
+      },
+      {
+        "path": ".cache/native-verification/references/imagej154r/source/ij/plugin/PointToolOptions.java",
+        "bytes": 7314,
+        "sha256": "0b6a1453fd22d4589cd6271d42c1541dcc852ff76a69d0587710e42c73231241"
+      },
+      {
+        "path": ".cache/native-verification/references/imagej154r/classes/ij/gui/PointRoi.class",
+        "bytes": 22914,
+        "sha256": "e86824d1d02c5be799e2ab77cf2c99451d492bd3fe6ecb559c2e30af059e1248"
+      },
+      {
+        "path": ".cache/native-verification/references/imagej154r/reviewed-jdk21/release",
+        "bytes": 1333,
+        "sha256": "9b716868a8e6efa2c3782781cdbca109d8e11fcd5c997a9383e8ff5163a11ea8"
+      },
+      {
+        "path": ".cache/native-verification/references/imagej154r/reviewed-jdk21/bin/java.exe",
+        "bytes": 49696,
+        "sha256": "798ffec156ceb8cb1535bf68747d0ee3dfc1fc17dcd0b322f8027018404155c1"
+      },
+      {
+        "path": ".cache/native-verification/references/imagej154r/reviewed-jdk21/bin/javac.exe",
+        "bytes": 23584,
+        "sha256": "494786cb950aca4a0bfb3e69dbc75ce049d6965cdadb6bc486d4c20a07b0eb1a"
+      }
+    ],
+    "observer": "tests/reference/ObservePointPresentation.java",
+    "fixture": "tests/fixtures/point-presentation-imagej154r.jsonl.gz",
+    "cases": 112,
+    "scope": "Actual Graphics2D command order, geometry, colors, stroke, font size and text baseline. Not font/AA raster pixels.",
+    "native_difference": "ImageJ counter colors10..99 are random per process; native deterministic fallback/explicit sparse overrides. Native configurable Hybrid cross color is an extension."
+  },
+  "verification": {
+    "windows_python_unique_final": 431,
+    "new_point_presentation_cases": 151,
+    "modules": {
+      "tests.python.test_point_presentation": 151,
+      "tests.python.test_point_annotations": 86,
+      "tests.python.test_point_roi_interchange": 25,
+      "tests.python.test_point_annotation_editing": 20,
+      "tests.python.test_point_creation_defaults": 33,
+      "tests.python.test_planar_point_defaults": 116
+    },
+    "windows_native_controls": 3,
+    "linux_native_controls": 3,
+    "windows_installed_clients": 7,
+    "linux_installed_clients": 7,
+    "ui_marker_rendering_qualified": false,
+    "legacy_selection_native_control": "Unchanged control binary reused on Windows; affected point/analysis controls and installed consumers use current products.",
+    "final_python_log": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api003.log",
+      "bytes": 1281,
+      "sha256": "df3ec39f0dcdfdd3b0ca60cf16015e5221b96875a81fa9d13988c93cebab0d28"
+    },
+    "final_python_junit": {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api003.xml",
+      "bytes": 63648,
+      "sha256": "3e36993cf17ab8a9007d76e0a51944d70cf5605b9d6d0f45a75a0fe482fa5ac5"
+    },
+    "failed_routes_retained": [
+      ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api001.process.json",
+      ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build001.process.json",
+      ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-observe001.process.json",
+      ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build001.process.json"
+    ],
+    "failure_notes": [
+      "Native test used deleted default aggregate constructor and omitted owning declaration header; corrected test only.",
+      "Reference draw needed an attached image for its updateFullWindow callback; corrected observer setup.",
+      "New Linux target required regenerating existing active CMake cache first.",
+      "One Python fixture omitted required Dataset axes; scoped retry and final focused group pass."
+    ],
+    "processes": [
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api001.process.json",
+        "bytes": 2567,
+        "sha256": "64b4ff10914e5f0d825770003749923422dff014de8260d3571a7004002d007e",
+        "exit_code": 1,
+        "elapsed_seconds": 2.094000000040978,
+        "argv": [
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Scripts\\python.exe",
+          "-I",
+          "-B",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\projection-ui-pytest-bootstrap099.py",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "--basetemp",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\api001\\pytest",
+          "--junitxml",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\api001.xml",
+          "tests/python/test_point_presentation.py",
+          "tests/python/test_point_annotations.py",
+          "tests/python/test_point_roi_interchange.py",
+          "tests/python/test_point_annotation_editing.py",
+          "tests/python/test_point_creation_defaults.py",
+          "tests/python/test_planar_point_defaults.py",
+          "-k",
+          "not actual"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api002.process.json",
+        "bytes": 2554,
+        "sha256": "cacabda60bbbbfbb7d7221fe0eb7c25f81c89b448f189ab038081ee9f678f3cd",
+        "exit_code": 0,
+        "elapsed_seconds": 1.1099999998696148,
+        "argv": [
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Scripts\\python.exe",
+          "-I",
+          "-B",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\projection-ui-pytest-bootstrap099.py",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "--basetemp",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\api002\\pytest",
+          "--junitxml",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\api002.xml",
+          "tests/python/test_point_presentation.py::test_metadata_pure_sparse_roundtrip_and_no_processing_changes",
+          "tests/python/test_point_presentation.py::test_annotation_decode_admission_and_large_output_refusal",
+          "tests/python/test_point_presentation.py::test_nonfinite_input_or_device_overflow_refuses"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api003.process.json",
+        "bytes": 2563,
+        "sha256": "bdb133b7b31d2bc5e215cb3387ca2f7dfa0255618adfec470ce2713b942f4817",
+        "exit_code": 0,
+        "elapsed_seconds": 2.047000000020489,
+        "argv": [
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Scripts\\python.exe",
+          "-I",
+          "-B",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\projection-ui-pytest-bootstrap099.py",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "--basetemp",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\api003\\pytest",
+          "--junitxml",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\api003.xml",
+          "tests/python/test_point_presentation.py",
+          "tests/python/test_point_annotations.py",
+          "tests/python/test_point_roi_interchange.py",
+          "tests/python/test_point_annotation_editing.py",
+          "tests/python/test_point_creation_defaults.py",
+          "tests/python/test_planar_point_defaults.py",
+          "-k",
+          "not actual"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-app001.process.json",
+        "bytes": 2095,
+        "sha256": "788427a3efdb98f68fbbfe37cc431aaf027087aa7401501b11ee960398f4bac4",
+        "exit_code": 0,
+        "elapsed_seconds": 0.13999999989755452,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--install",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "--config",
+          "Release",
+          "--component",
+          "desktop",
+          "--prefix",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-desktop001.process.json",
+        "bytes": 2108,
+        "sha256": "95c08c07b8e2cf618d6deef4bddea23802feeb5ec2c3ab676b707d5efcaa8ccc",
+        "exit_code": 0,
+        "elapsed_seconds": 0.15699999989010394,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--install",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "--config",
+          "Release",
+          "--component",
+          "Unspecified",
+          "--prefix",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-desktop002.process.json",
+        "bytes": 2110,
+        "sha256": "a2def532343a9ae09aae3fde8eaa0f594bcbbe9d13f2acc6aaf3ae582e6723dc",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1559999999590218,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--install",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "--config",
+          "Release",
+          "--component",
+          "Unspecified",
+          "--prefix",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-processing001.process.json",
+        "bytes": 2113,
+        "sha256": "219738cc26d60336497212dbcce25e7b2ca5252d1d3ce5b0f0d90901b32d59dd",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1410000000614673,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--install",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "--config",
+          "Release",
+          "--component",
+          "processing-python",
+          "--prefix",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-processing002.process.json",
+        "bytes": 2118,
+        "sha256": "a5a614cce9a43e480647ba8ea060dccac0934d1bccb681441e37bc4ff52b644b",
+        "exit_code": 0,
+        "elapsed_seconds": 0.10899999993853271,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--install",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "--config",
+          "Release",
+          "--component",
+          "processing-python",
+          "--prefix",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-sdk001.process.json",
+        "bytes": 2101,
+        "sha256": "00457f44ec2a467e9323e619e3a1179217fa3053486249765276a2de5559bb61",
+        "exit_code": 0,
+        "elapsed_seconds": 0.18700000015087426,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--install",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "--config",
+          "Release",
+          "--component",
+          "development",
+          "--prefix",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build001.process.json",
+        "bytes": 1619,
+        "sha256": "6562e2fd5e4575aa11099be5c73351c49cc1e3464f4e1aa8199f043636feff5c",
+        "exit_code": 2,
+        "elapsed_seconds": 0.1488651489999997,
+        "argv": [
+          "/usr/bin/cmake",
+          "--build",
+          "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001",
+          "--target",
+          "imagejxx_point_presentation_tests",
+          "imagejxx_target_analysis_tests",
+          "imagejxx_selection_edit_tests",
+          "--parallel",
+          "2"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build002.process.json",
+        "bytes": 1620,
+        "sha256": "388e530347ab4701bb19a12f8878f7c21eb2a39f928fd8a6466e7b8fdd271176",
+        "exit_code": 0,
+        "elapsed_seconds": 8.273008636000002,
+        "argv": [
+          "/usr/bin/cmake",
+          "--build",
+          "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001",
+          "--target",
+          "imagejxx_point_presentation_tests",
+          "imagejxx_target_analysis_tests",
+          "imagejxx_selection_edit_tests",
+          "--parallel",
+          "2"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build003.process.json",
+        "bytes": 1623,
+        "sha256": "fa5cb4ce9db8c6a3610406b0203e035daf84a658c269f7fa9a83c0cf60b921ff",
+        "exit_code": 0,
+        "elapsed_seconds": 10.280251042999993,
+        "argv": [
+          "/usr/bin/cmake",
+          "--build",
+          "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001",
+          "--target",
+          "imagejxx_point_presentation_tests",
+          "imagejxx_target_analysis_tests",
+          "imagejxx_selection_edit_tests",
+          "--parallel",
+          "2"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-configure001.process.json",
+        "bytes": 1501,
+        "sha256": "a14012086e45b88e93915da26cf524623eba531dd26c26da5723b72c49058acc",
+        "exit_code": 0,
+        "elapsed_seconds": 5.468457273,
+        "argv": [
+          "/usr/bin/cmake",
+          "-S",
+          "/mnt/c/Users/HEQ/Projects/imagejxx",
+          "-B",
+          "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-install-sdk001.process.json",
+        "bytes": 1603,
+        "sha256": "25e4ffdcf1560c88388fa739905091b2cefe1dcf7041c54d165a9abdf9973391",
+        "exit_code": 0,
+        "elapsed_seconds": 1.043703722999993,
+        "argv": [
+          "/usr/bin/cmake",
+          "--install",
+          "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001",
+          "--component",
+          "development",
+          "--prefix",
+          "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-native001.process.json",
+        "bytes": 1595,
+        "sha256": "bf9bc3083683ac8637668cc44b1e8da09fa216fa3a3f0a472fba68394530b3f4",
+        "exit_code": 0,
+        "elapsed_seconds": 0.10619786699999878,
+        "argv": [
+          "/usr/bin/ctest",
+          "--test-dir",
+          "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001",
+          "--no-tests=error",
+          "--output-on-failure",
+          "-R",
+          "^native_(point_presentation|target_analysis|selection_edit)$"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-native002.process.json",
+        "bytes": 1617,
+        "sha256": "2d6b9008e7b3c2796b071585503f59cb627c4002c471e3b5d7337384dc74777e",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1594883030000176,
+        "argv": [
+          "/usr/bin/ctest",
+          "--test-dir",
+          "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001",
+          "-R",
+          "^native_(target_analysis|selection_edit)$",
+          "--no-tests=error",
+          "^native_(point_presentation|target_analysis|selection_edit)$"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-build001.process.json",
+        "bytes": 1549,
+        "sha256": "68fa2bff051459ad88eafaf37413938ace88e5c945ed3da34c5db0d4281160a5",
+        "exit_code": 0,
+        "elapsed_seconds": 13.708852097000005,
+        "argv": [
+          "/usr/bin/cmake",
+          "--build",
+          "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch/sdk-linux001",
+          "--parallel",
+          "2"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-configure001.process.json",
+        "bytes": 2076,
+        "sha256": "9b91693f937cde41ae6c942c0f45a02a79dc3552c7150726cd1e78e7bda30eed",
+        "exit_code": 0,
+        "elapsed_seconds": 3.99667097599999,
+        "argv": [
+          "/usr/bin/cmake",
+          "-S",
+          "/mnt/c/Users/HEQ/Projects/imagejxx/tests/installed_core",
+          "-B",
+          "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch/sdk-linux001",
+          "-G",
+          "Ninja",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DIMAGEJXX_SDK_ROOT=/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed",
+          "-DIMAGEJXX_SDK_PROFILE_CARRIER=/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch/profiles.hpp",
+          "-DIMAGEJXX_SDK_ANALYSIS_CARRIER=/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch/analysis.hpp"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-test001.process.json",
+        "bytes": 1578,
+        "sha256": "c7367e8a94a24eae1f2b37cc25755e724a0d55b06582ae0ba7f33363e93aad98",
+        "exit_code": 0,
+        "elapsed_seconds": 0.5415583580000032,
+        "argv": [
+          "/usr/bin/ctest",
+          "--test-dir",
+          "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch/sdk-linux001",
+          "--no-tests=error",
+          "--output-on-failure"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-compile001.process.json",
+        "bytes": 2164,
+        "sha256": "ed92367375ca15c26ebeb865302592749d5d0185249dbf6e2752205d5958184e",
+        "exit_code": 0,
+        "elapsed_seconds": 0.7349999998696148,
+        "argv": [
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\reviewed-jdk21\\bin\\javac.exe",
+          "-cp",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes",
+          "-d",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\reference",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\reference\\ObservePointPresentation.java"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-compile002.process.json",
+        "bytes": 2164,
+        "sha256": "bb3150cf5d95541a01c454bc5b5d96a3430bd8d9ab0fa694b06fdf3f84adc2da",
+        "exit_code": 0,
+        "elapsed_seconds": 0.6410000000614673,
+        "argv": [
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\reviewed-jdk21\\bin\\javac.exe",
+          "-cp",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes",
+          "-d",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\reference",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\reference\\ObservePointPresentation.java"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-observe001.process.json",
+        "bytes": 2104,
+        "sha256": "240e983dd8fe901d959b278f32f9eaafa2f8f768c96afe460d3601843db485a3",
+        "exit_code": 1,
+        "elapsed_seconds": 0.25,
+        "argv": [
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\reviewed-jdk21\\bin\\java.exe",
+          "-Djava.awt.headless=true",
+          "-cp",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\reference;C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes",
+          "ObservePointPresentation"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-observe002.process.json",
+        "bytes": 2118,
+        "sha256": "03c53d56390e03f45014befcbad65753b16103ca3c76c6a91584eb895469febd",
+        "exit_code": 0,
+        "elapsed_seconds": 0.3279999999795109,
+        "argv": [
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\reviewed-jdk21\\bin\\java.exe",
+          "-Djava.awt.headless=true",
+          "-cp",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\reference;C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes",
+          "ObservePointPresentation"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-pack.process.json",
+        "bytes": 2421,
+        "sha256": "9c807dedc91d447c45b7ce01bfc0e87f81b55cb138c21153b23879575382fcd1",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2660000000614673,
+        "argv": [
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Scripts\\python.exe",
+          "-I",
+          "-B",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\archive_test_evidence.py",
+          "pack",
+          "--source",
+          ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch",
+          "--archive",
+          ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch.zip",
+          "--manifest",
+          ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-manifest.json",
+          "--receipt",
+          ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-pack.json",
+          "--artifact-receipt",
+          ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-artifacts.json"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-verify.process.json",
+        "bytes": 2304,
+        "sha256": "1bdbef8e9246ffa97aef24f56cd16eb88d77c09601ad2620d4eaf27b4dc852d4",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2029999999795109,
+        "argv": [
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Scripts\\python.exe",
+          "-I",
+          "-B",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\archive_test_evidence.py",
+          "verify",
+          "--source",
+          ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch",
+          "--archive",
+          ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch.zip",
+          "--manifest",
+          ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-manifest.json",
+          "--receipt",
+          ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-verify.json"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-build001.process.json",
+        "bytes": 2869,
+        "sha256": "e9896602ecc28af41ff54decbcee2daa33a20ecf3be25e54e6f8594753a44a84",
+        "exit_code": 0,
+        "elapsed_seconds": 9.922000000020489,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--build",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\sdk-windows001",
+          "--config",
+          "Release",
+          "--parallel",
+          "2"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-configure001.process.json",
+        "bytes": 2555,
+        "sha256": "899189ae4b9e61d3c0f2660b7d086cb2797031784d00285ad3bdc469b2c41646",
+        "exit_code": 0,
+        "elapsed_seconds": 5.437000000150874,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "-S",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\installed_core",
+          "-B",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\sdk-windows001",
+          "-G",
+          "Visual Studio 17 2022",
+          "-A",
+          "x64",
+          "-DIMAGEJXX_SDK_ROOT=C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed",
+          "-DIMAGEJXX_SDK_PROFILE_CARRIER=C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\profiles.hpp",
+          "-DIMAGEJXX_SDK_ANALYSIS_CARRIER=C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\analysis.hpp"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-test001.process.json",
+        "bytes": 2057,
+        "sha256": "58b313ac13fa24af7b2e67371c70e43d8bf3cc78e0bfb0f439e2d276ce6a6872",
+        "exit_code": 0,
+        "elapsed_seconds": 0.6410000000614673,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/ctest.exe",
+          "--test-dir",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\t04a2-point-presentation-20261104\\scratch\\sdk-windows001",
+          "-C",
+          "Release",
+          "--no-tests=error",
+          "--output-on-failure"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build001.process.json",
+        "bytes": 2966,
+        "sha256": "952570e81fc588fb7e538c158fadc5b9d5184961bcabf1c4fa55b0c4f48cde4d",
+        "exit_code": 1,
+        "elapsed_seconds": 67.14000000013039,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--build",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "--config",
+          "Release",
+          "--target",
+          "_native",
+          "_desktop",
+          "imagejxx_app",
+          "imagejxx_point_presentation_tests",
+          "imagejxx_target_analysis_tests",
+          "--parallel",
+          "2"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build002.process.json",
+        "bytes": 2077,
+        "sha256": "87f7129a8bf4e0e7b760d5c425bdc809932a3b40a7eed41a63fde7481d78f7d6",
+        "exit_code": 0,
+        "elapsed_seconds": 3.1089999999385327,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--build",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "--config",
+          "Release",
+          "--target",
+          "imagejxx_point_presentation_tests",
+          "imagejxx_target_analysis_tests",
+          "--parallel",
+          "2"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build003.process.json",
+        "bytes": 2971,
+        "sha256": "dc4d9553cf2d41b8cb6e52b5c9cc5585e48611f64fc4b3c0fe660a1fbcf4cd71",
+        "exit_code": 0,
+        "elapsed_seconds": 60.76599999982864,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+          "--build",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "--config",
+          "Release",
+          "--target",
+          "_native",
+          "_desktop",
+          "imagejxx_app",
+          "imagejxx_point_presentation_tests",
+          "imagejxx_target_analysis_tests",
+          "--parallel",
+          "2"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-native001.process.json",
+        "bytes": 2094,
+        "sha256": "d28969b7f43e76ee9eb8de10299778ec30da493a319e47328cb894208f38f382",
+        "exit_code": 0,
+        "elapsed_seconds": 0.40600000019185245,
+        "argv": [
+          "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+          "--test-dir",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "-C",
+          "Release",
+          "--no-tests=error",
+          "--output-on-failure",
+          "-R",
+          "^native_(point_presentation|target_analysis|selection_edit)$"
+        ]
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-native002.process.json",
+        "bytes": 2100,
+        "sha256": "43198fb5ada8cfe46b6b3fd82f4224e1a477a0792fe885f83987a058a0d390d0",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1410000000614673,
+        "argv": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/ctest.exe",
+          "--test-dir",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows",
+          "-C",
+          "Release",
+          "-R",
+          "^native_(target_analysis|selection_edit)$",
+          "--no-tests=error",
+          "^native_(point_presentation|target_analysis|selection_edit)$"
+        ]
+      }
+    ]
+  },
+  "products": {
+    "windows": [
+      {
+        "path": ".cache/native-verification/windows/Release/imagejxx_core.lib",
+        "bytes": 59391068,
+        "sha256": "52e45eeb1528edcaab13c2400e09b9b1ff03b0e7e409ae4dab55b49830cca614"
+      },
+      {
+        "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "bytes": 8225792,
+        "sha256": "ca64925ac848157f703988163987a2ae60b0dc3e7d6244cc7eb005b0cc908b4e"
+      },
+      {
+        "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "bytes": 20021248,
+        "sha256": "77687a355b272d00a7370f08c99f5e62dd3ce973eee922689be2e440ed628367"
+      },
+      {
+        "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/__init__.py",
+        "bytes": 82569,
+        "sha256": "d56fc47f178ff2cd87585c356d6be696877fa413a8047b0f8da9ad8f77918217"
+      },
+      {
+        "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+        "bytes": 20110336,
+        "sha256": "652df8a24a6c51702d66dc20d544d95cec76e05709a8f25763d8c6177a305589"
+      },
+      {
+        "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+        "bytes": 59391068,
+        "sha256": "52e45eeb1528edcaab13c2400e09b9b1ff03b0e7e409ae4dab55b49830cca614"
+      },
+      {
+        "path": ".tmp/p13g-verification/windows/sdk-installed/include/imagejxx/point_presentation.hpp",
+        "bytes": 3019,
+        "sha256": "1c65f3c68acc6c8cf4cdc6af7672475bdc8273683791876f5d8076cfe92ac628"
+      }
+    ],
+    "linux_installed_sdk": [
+      {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+        "bytes": 20571116,
+        "sha256": "09192df7314e7eba0ad38a6f51ee33288fc61dfd22ad603c0fa76c237468c67e"
+      },
+      {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/include/imagejxx/point_presentation.hpp",
+        "bytes": 3019,
+        "sha256": "1c65f3c68acc6c8cf4cdc6af7672475bdc8273683791876f5d8076cfe92ac628"
+      },
+      {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/cmake/imagejxx/imagejxxConfig.cmake",
+        "bytes": 2494,
+        "sha256": "f1a7341964d1d3c96df4858bf21cfc2f3bc185ad1f45d996d72fc888794b1c15"
+      }
+    ]
+  },
+  "waste_review": {
+    "fixed": [
+      "Flat primitive spans/fixed small stack buffer avoid per-glyph heap vectors; exact visible-output admission avoids offscreen worst-case output reservation.",
+      "Move owned wire record through style projection instead of cloning it.",
+      "Focused header/API module; no parallel parser/job/controller or unconsumed Settings keys."
+    ],
+    "deliberate_tradeoff": "Two scans bound output before allocation; not a measured speed improvement.",
+    "deferred": [
+      {
+        "owner": "T02 plus P2b consumer owner",
+        "finding": "Repeated fixture/API/probe/build-order assumptions still cause avoidable retries.",
+        "next_entry": "Inspect exact declarations/aggregate initializers and owning headers, real control/output schemas and active-cache target registration before broad checks.",
+        "exit": "Changed route succeeds without another contract-assumption retry; do not claim policy alone fixes recurrence."
+      }
+    ],
+    "next_task": "P2b actual controls/settings/cached drawing, then P2c raster flatten/export; full P2 remains open."
+  },
+  "storage": {
+    "entry_known_bytes": 8446008842,
+    "before_retirement_known_bytes": 8503083814,
+    "after_retirement_known_bytes": 8468731525,
+    "not_absolute_peak": true,
+    "unknown_subtrees": 214,
+    "complete_budget_verified": false,
+    "observation_limit": "Post-retirement snapshot predates small final receipt/docs updates.",
+    "compiler_bytes_retired": 34008269,
+    "scratch_bytes_retired": 752350,
+    "compressed_bytes": 118156,
+    "all_task_scratch_absent": true,
+    "retention_verified": true,
+    "no_cache_runtime_sdk_generations_created": true,
+    "compiler_trees_not_archived": true,
+    "inventory_pins": [
+      {
+        "path": ".tmp/manual-workflow-verification/point-presentation-entry-20261104.json",
+        "bytes": 66572,
+        "sha256": "6fb3a22853b1a09d9896bd3e567666968e8100996ab3c75eb7d5faaf9b8af62c"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/point-presentation-before-sdk-20261104.json",
+        "bytes": 66572,
+        "sha256": "baa974f2cc061141d4853d51518fef42fedf52ffcfb3892f65bc06ad7ae66c37"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/point-presentation-before-retirement-20261104.json",
+        "bytes": 66571,
+        "sha256": "899b2b5f3b9e9d59406e52d345c42b4c6ba591d89fa2801b76a521e51ad9cf6e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/point-presentation-final-20261104.json",
+        "bytes": 66558,
+        "sha256": "72be66dfe7cf9825a52d2e3d852aab3ebe420081c4a0ecc986a059762e782e17"
+      }
+    ]
+  },
+  "retained_local_artifacts": [
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api001.log",
+      "bytes": 3646,
+      "sha256": "2490942e77ff41dd10ac21768217f8a0c55c13bb4324dbbe2ba4b6280374f2c2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api001.process.json",
+      "bytes": 2567,
+      "sha256": "64b4ff10914e5f0d825770003749923422dff014de8260d3571a7004002d007e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api001.xml",
+      "bytes": 65835,
+      "sha256": "b582d252b7ec5aa38f0ce9926b30498fda0a9472465f84b647843585ef93ed3f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api002.log",
+      "bytes": 876,
+      "sha256": "eb6bab1fdf05dd725b96ecd29fbb647c04ebebe56750bf650f4645d949e44727"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api002.process.json",
+      "bytes": 2554,
+      "sha256": "cacabda60bbbbfbb7d7221fe0eb7c25f81c89b448f189ab038081ee9f678f3cd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api002.xml",
+      "bytes": 937,
+      "sha256": "5452410ee5021b7e33eff0b72cd8e3bd9a0e0b8d39898cacd2d583a4d121ed20"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api003.log",
+      "bytes": 1281,
+      "sha256": "df3ec39f0dcdfdd3b0ca60cf16015e5221b96875a81fa9d13988c93cebab0d28"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api003.process.json",
+      "bytes": 2563,
+      "sha256": "bdb133b7b31d2bc5e215cb3387ca2f7dfa0255618adfec470ce2713b942f4817"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/api003.xml",
+      "bytes": 63648,
+      "sha256": "3e36993cf17ab8a9007d76e0a51944d70cf5605b9d6d0f45a75a0fe482fa5ac5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/carriers.json",
+      "bytes": 1121,
+      "sha256": "f90100e099bb4b88d08fca15306e43ac42d29a361305fe5bf3aa2a76fe51a66d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-app001.log",
+      "bytes": 3760,
+      "sha256": "78991c6e7bc418be753e9eb5854e116c50e7066878eb66331570177771256e0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-app001.process.json",
+      "bytes": 2095,
+      "sha256": "788427a3efdb98f68fbbfe37cc431aaf027087aa7401501b11ee960398f4bac4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-desktop001.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-desktop001.process.json",
+      "bytes": 2108,
+      "sha256": "95c08c07b8e2cf618d6deef4bddea23802feeb5ec2c3ab676b707d5efcaa8ccc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-desktop002.log",
+      "bytes": 4049,
+      "sha256": "1765a0c8bb3bed435d9249cc548e50d2c6c4dfe0fae1625685871d266624cf8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-desktop002.process.json",
+      "bytes": 2110,
+      "sha256": "a2def532343a9ae09aae3fde8eaa0f594bcbbe9d13f2acc6aaf3ae582e6723dc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-processing001.log",
+      "bytes": 5124,
+      "sha256": "ebb458c9da3ece11ebb78b1429166068cf1451e99b802163c04f1783c4d19338"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-processing001.process.json",
+      "bytes": 2113,
+      "sha256": "219738cc26d60336497212dbcce25e7b2ca5252d1d3ce5b0f0d90901b32d59dd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-processing002.log",
+      "bytes": 5124,
+      "sha256": "a59ab006071461459ecf33a94a9765244d80e189f98ad28a3345c0bc706aabfc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-processing002.process.json",
+      "bytes": 2118,
+      "sha256": "a5a614cce9a43e480647ba8ea060dccac0934d1bccb681441e37bc4ff52b644b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-sdk001.log",
+      "bytes": 18722,
+      "sha256": "eab3c6843cb99bac3f2d827045486b33f7a5172f1c64eb2a8ae936eb44a32656"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/install-sdk001.process.json",
+      "bytes": 2101,
+      "sha256": "00457f44ec2a467e9323e619e3a1179217fa3053486249765276a2de5559bb61"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build001.log",
+      "bytes": 78,
+      "sha256": "a9a095a1db0652bb7b2a016cbbc4eadc36e1559ad4a91a8f45d0d692ab9073aa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build001.process.json",
+      "bytes": 1619,
+      "sha256": "6562e2fd5e4575aa11099be5c73351c49cc1e3464f4e1aa8199f043636feff5c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build002.log",
+      "bytes": 798,
+      "sha256": "b1c2dc2893b3472e32a77e4c78ade6039e0d0dbc8df740f27a4e09c37684ce05"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build002.process.json",
+      "bytes": 1620,
+      "sha256": "388e530347ab4701bb19a12f8878f7c21eb2a39f928fd8a6466e7b8fdd271176"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build003.log",
+      "bytes": 798,
+      "sha256": "b1c2dc2893b3472e32a77e4c78ade6039e0d0dbc8df740f27a4e09c37684ce05"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-build003.process.json",
+      "bytes": 1623,
+      "sha256": "fa5cb4ce9db8c6a3610406b0203e035daf84a658c269f7fa9a83c0cf60b921ff"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-configure001.log",
+      "bytes": 544,
+      "sha256": "c9cf735ac15e33aa86b9f40eeebdda7da64ed372b9767b26e1170f6e3b878b7d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-configure001.process.json",
+      "bytes": 1501,
+      "sha256": "a14012086e45b88e93915da26cf524623eba531dd26c26da5723b72c49058acc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-install-sdk001.log",
+      "bytes": 18903,
+      "sha256": "2696468e15948b0f89cc70a3e9051122e791fa2d12afda49e138b875504f45bb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-install-sdk001.process.json",
+      "bytes": 1603,
+      "sha256": "25e4ffdcf1560c88388fa739905091b2cefe1dcf7041c54d165a9abdf9973391"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-native001.log",
+      "bytes": 595,
+      "sha256": "9aea6072bfada2a2150911385dc7329364ceb38fd8501da03a2cd349f223392c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-native001.process.json",
+      "bytes": 1595,
+      "sha256": "bf9bc3083683ac8637668cc44b1e8da09fa216fa3a3f0a472fba68394530b3f4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-native002.log",
+      "bytes": 483,
+      "sha256": "1b8ee8505f765c5c840fa086a666f8042a95d478bc1361db5b78a8e30818ceda"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-native002.process.json",
+      "bytes": 1617,
+      "sha256": "2d6b9008e7b3c2796b071585503f59cb627c4002c471e3b5d7337384dc74777e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-build001.log",
+      "bytes": 1315,
+      "sha256": "ac242287d7146c97bab099cf33d60012f3ad6b66b9788a7eccc2060d7b8ad63d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-build001.process.json",
+      "bytes": 1549,
+      "sha256": "68fa2bff051459ad88eafaf37413938ace88e5c945ed3da34c5db0d4281160a5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-configure001.log",
+      "bytes": 594,
+      "sha256": "d865cb70573d6ad180694ab5763603f608adcc7e7665dc97e82027e357342014"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-configure001.process.json",
+      "bytes": 2076,
+      "sha256": "9b91693f937cde41ae6c942c0f45a02a79dc3552c7150726cd1e78e7bda30eed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-products.json",
+      "bytes": 713,
+      "sha256": "aafb3b66b47c46b9160a8acd6e5ef09b2b00c715a93da9d112222ea7cf53d924"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-test001.log",
+      "bytes": 1172,
+      "sha256": "541edb909b5d48a9d2a14f5e9a3f72b7abf34af11aa57f4645c50ece0473b0c6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/linux-sdk-test001.process.json",
+      "bytes": 1578,
+      "sha256": "c7367e8a94a24eae1f2b37cc25755e724a0d55b06582ae0ba7f33363e93aad98"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-compile001.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-compile001.process.json",
+      "bytes": 2164,
+      "sha256": "ed92367375ca15c26ebeb865302592749d5d0185249dbf6e2752205d5958184e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-compile002.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-compile002.process.json",
+      "bytes": 2164,
+      "sha256": "bb3150cf5d95541a01c454bc5b5d96a3430bd8d9ab0fa694b06fdf3f84adc2da"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-observe001.log",
+      "bytes": 237,
+      "sha256": "7779e0a0b9fe53a2ec4fb7e53305b889475d1f4fb7794d65ab85f1918fa0ab90"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-observe001.process.json",
+      "bytes": 2104,
+      "sha256": "240e983dd8fe901d959b278f32f9eaafa2f8f768c96afe460d3601843db485a3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-observe002.log",
+      "bytes": 71720,
+      "sha256": "00b95f14d49bdf1c18f4797a47a1789b0cff53c71d6717442bcfcd37776d64cf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/reference-observe002.process.json",
+      "bytes": 2118,
+      "sha256": "03c53d56390e03f45014befcbad65753b16103ca3c76c6a91584eb895469febd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-artifacts.json",
+      "bytes": 3167,
+      "sha256": "33afb41b5e609a62a759fcfcef9948e40ed210b0f162d47503dd86534ccac6c1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-manifest.json",
+      "bytes": 20361,
+      "sha256": "0b5b5b7458da1196920671d44a0592b357418f5ee8216753c1f60f989ab6bfd4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-pack.json",
+      "bytes": 1543,
+      "sha256": "ba5d5ae1beb1510d937f6972f9e99725e3dd4dde8b88a0a287d0f85e17bd72f0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-pack.json.started.json",
+      "bytes": 913,
+      "sha256": "6df560ebb84263bff5c975a39c3e30ca3f88ce8719dec29cd3d58980d26ea705"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-pack.log",
+      "bytes": 148,
+      "sha256": "30319139d7bd55e8853b9a650f076b31cd473beaa31d97725f914e893ed53aeb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-pack.process.json",
+      "bytes": 2421,
+      "sha256": "9c807dedc91d447c45b7ce01bfc0e87f81b55cb138c21153b23879575382fcd1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-retirement.json",
+      "bytes": 525,
+      "sha256": "96afa3aedee61f30db0e3a839eb98e892866b2cad6bdc92df6a1fe0d38c6c9fe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-verify.json",
+      "bytes": 1439,
+      "sha256": "bf3eed6db50837e2a406de342eca8e89118a8a0b970a775c39703424154effe6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-verify.json.started.json",
+      "bytes": 807,
+      "sha256": "bd053763445b6e02850c30be8ad56733fd8116de89ae915fc35e81e94cefe887"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-verify.log",
+      "bytes": 151,
+      "sha256": "f21450bd1757dac001c1cb15bdd2d753aefcdcbac6162ed9825db71caa3499b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch-verify.process.json",
+      "bytes": 2304,
+      "sha256": "1bdbef8e9246ffa97aef24f56cd16eb88d77c09601ad2620d4eaf27b4dc852d4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/scratch.zip",
+      "bytes": 118156,
+      "sha256": "fbb96d944ec6bba376033ae4d6ab7a406a6267a66e02b6151e4fb18f73aae8a9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-build001.log",
+      "bytes": 2332,
+      "sha256": "9812b7d02fc5685d934fe4d3851dd496720735cca1f903b73f2310a8b6f752e6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-build001.process.json",
+      "bytes": 2869,
+      "sha256": "e9896602ecc28af41ff54decbcee2daa33a20ecf3be25e54e6f8594753a44a84"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-configure001.log",
+      "bytes": 955,
+      "sha256": "83e626a15f95520173266e96fe861457b25472a6a88c87cff8c06d0553ae2543"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-configure001.process.json",
+      "bytes": 2555,
+      "sha256": "899189ae4b9e61d3c0f2660b7d086cb2797031784d00285ad3bdc469b2c41646"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-linux001-identities.json",
+      "bytes": 50008,
+      "sha256": "f8f8640e6fba5f13f594d71222279afbe472446a996351ec9f3b6a50dbfbc8ad"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-linux001-LastTest.log",
+      "bytes": 6596,
+      "sha256": "d80f0b0db720166e1eb8096abefbd59bf4ff58bebe36f55b2b57942fc2b68a55"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-retirement.json",
+      "bytes": 5917,
+      "sha256": "42ffa028ab05f41108115c186b656bef6b96fb3e729d10be140d787836f4f7c0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-test001.log",
+      "bytes": 1168,
+      "sha256": "ffb0ce4a3e1b6f5823b23f9701b23b098fdf25449725d68f93e0d70f88291388"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-test001.process.json",
+      "bytes": 2057,
+      "sha256": "58b313ac13fa24af7b2e67371c70e43d8bf3cc78e0bfb0f439e2d276ce6a6872"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-windows001-identities.json",
+      "bytes": 120246,
+      "sha256": "82e8296617886a842a3a02dcff6f5b532791df7356b1ed39c4b8970960283e03"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/sdk-windows001-LastTest.log",
+      "bytes": 7057,
+      "sha256": "473a340c84ec258d8fc4e76a7432e5b39ff79c29e9b184ae10cafd4b44486895"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build001.log",
+      "bytes": 4630,
+      "sha256": "66ac9113ec5cb71114ef1db5b491d9bb02949d2f1c75f750fe6cb67612c8c37a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build001.process.json",
+      "bytes": 2966,
+      "sha256": "952570e81fc588fb7e538c158fadc5b9d5184961bcabf1c4fa55b0c4f48cde4d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build002.log",
+      "bytes": 699,
+      "sha256": "ca146ce2dc470e8e79b4c5a97559b2a96d7950fa53549a2359935bfd66265b31"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build002.process.json",
+      "bytes": 2077,
+      "sha256": "87f7129a8bf4e0e7b760d5c425bdc809932a3b40a7eed41a63fde7481d78f7d6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build003.log",
+      "bytes": 2939,
+      "sha256": "61045b7543dd8bcc80884db6fb4a3add5f1be7c214b308dab666c45316ca37e0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-build003.process.json",
+      "bytes": 2971,
+      "sha256": "dc4d9553cf2d41b8cb6e52b5c9cc5585e48611f64fc4b3c0fe660a1fbcf4cd71"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-native001.log",
+      "bytes": 595,
+      "sha256": "112395d7d42ca2addf179913fcbafba3a6fe02d920afeac8fd3ef2196af1d095"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-native001.process.json",
+      "bytes": 2094,
+      "sha256": "d28969b7f43e76ee9eb8de10299778ec30da493a319e47328cb894208f38f382"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-native002.log",
+      "bytes": 483,
+      "sha256": "402ea6caef266ed2bd88b35ea3854119f1371c1f73d5e6360eff00d1d0ca01b5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/t04a2-point-presentation-20261104/windows-native002.process.json",
+      "bytes": 2100,
+      "sha256": "43198fb5ada8cfe46b6b3fd82f4224e1a477a0792fe885f83987a058a0d390d0"
+    }
+  ],
+  "historical_references_or_expectations_modified": false
+}

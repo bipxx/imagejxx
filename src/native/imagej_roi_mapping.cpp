@@ -3,6 +3,7 @@
 #include <imagejxx/imagej_roi_mapping.hpp>
 #include <imagejxx/imagej_roi_projection.hpp>
 #include <imagejxx/point_annotations.hpp>
+#include <imagejxx/point_presentation.hpp>
 #include <imagejxx/roi_style.hpp>
 #include <stdexcept>
 namespace imagejxx {
@@ -154,6 +155,7 @@ ImageJRoi imagej_roi_annotation_projection(const PlanarAnnotation &row,DatasetSh
   }
   out.roi={row.name,std::move(selection),row.t,row.c,row.coordinate,{}};
   out.legacy_position=0;
+  if(const auto style=point_style(row.selection))out=with_imagej_point_style(std::move(out),*style);
   const auto geometry=planar_annotation_geometry(extent,row.plane);
   return imagej_roi_standard_projection(std::move(out),geometry.width,geometry.height,limits);
 }

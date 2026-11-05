@@ -1,7 +1,8 @@
 # ImageJ and Fiji delivery plan
 
-Updated 2026-11-04 after scoped scientific point-creation defaults integration,
-verified group retention and per-task waste closeout. This is the
+Updated 2026-11-04 after the native point-presentation/API increment and
+per-task waste closeout. The ordered remaining-work sequence stays required.
+This is the
 authoritative current queue and completion policy.
 [Inventory](parity/inventory.json) owns the 99 capability families and their
 remaining requirements; [command inventory](parity/commands.json) and
@@ -55,9 +56,10 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 M2b.2b XY interchange increment | Explicit source-extent promotion and native-row projection work in both Windows hosts; 765 focused product cases and 23 tool checks pass, plus two native controls and six installed SDK clients per Windows/Linux platform. | Point-specific ZIP and explicit imported-point handoff are now scoped integrated; finish non-XY policies and point-tool configuration. M2b.2b remains open. [Evidence](parity/reviews/T04a2-point-interchange-20261104.json). |
 | T04a.2 M2b.2b annotation handoff/point ZIP | Scoped integrated in both Windows hosts: 787 unique focused product cases ultimately pass, 23 tool checks; two native controls and six installed SDK clients per Windows/Linux platform. | Independent selection/store/copy-back, Measure/Counter/Count and two-member ZIP controls/reopen pass. Next point-tool configuration/non-XY policy; forward manager recording remains T04a.3/T12. [Evidence](parity/reviews/T04a2-point-handoff-20261104.json). |
 | T04a.2 M2b.2b P1 ordinary creation defaults | Native per-click helper and consumed counter/capture settings; actual singleton/classic-Z creation and preference persistence pass in both Windows hosts. 507 focused product cases ultimately pass, one optional OpenGL skip; two native controls and six SDK clients per Windows/Linux platform. | Scientific defaults are delivered in the following increment; next P2-P4. No full point-tool claim. [Evidence](parity/reviews/T04a2-point-creation-defaults-20261104.json). |
-| T04a.2 M2b.2b P1 scientific creation defaults | Native plane-aware helper and frozen defaults/cap work on XY/XZ/YZ in both Windows hosts. 664 unique focused product cases ultimately pass and23 tool checks; two native controls and six installed SDK clients per Windows/Linux platform. | P1 creation counters/positions are scoped delivered. Next P2 presentation, P3 automatic actions and P4 wider edit/rebind/interchange/replay. [Evidence](parity/reviews/T04a2-planar-point-defaults-20261104.json). |
+| T04a.2 M2b.2b P1 scientific creation defaults | Native plane-aware helper and frozen defaults/cap work on XY/XZ/YZ in both Windows hosts. 664 unique focused product cases ultimately pass and 23 tool checks; two native controls and six installed SDK clients per Windows/Linux platform. | P1 creation counters/positions are scoped delivered. Next P2 presentation, P3 automatic actions and P4 wider edit/rebind/interchange/replay. [Evidence](parity/reviews/T04a2-planar-point-defaults-20261104.json). |
+| T04a.2 P2a native presentation/API | Scoped implemented/verified: four markers/seven sizes, bounded flat commands, strict metadata and explicit wire styles; 112 original draw traces, 431 focused Windows product cases, three native controls and seven installed SDK clients per Windows/Linux platform pass. | P2 remains active: actual UI/settings/cached rendering and raster flatten/export consumers next. [Contract](POINT_PRESENTATION.md), [evidence](parity/reviews/T04a2-point-presentation-20261104.json). |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,445,899,014 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,468,731,525 known bytes before small receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Active work and immediate sequence
@@ -75,7 +77,7 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Order | Task boundary | Exit / next handoff |
 | --- | --- | --- |
 | Delivered scoped | Imported XY handoff and point-specific ZIP increment. | 787 focused product cases,23 tools; native/installed clients on Windows/Linux; all owned scratch retired with failures/hashes retained. |
-| Now | P2 marker presentation, labels/visibility and corresponding interchange. | P1 counters/positions are scoped integrated for ordinary and scientific creation; reuse those owners and freeze all presentation keys before coding. |
+| Now | P2b UI/settings/cached point presentation, then P2c raster flatten/export reconciliation. | P2a native style/layout and explicit interchange APIs are scoped verified; reuse the focused module and preserve raster-width semantics. P2 stays open until its actual consumers pass. |
 | Next | P3 automatic point actions and P4 edit/rebind/replay reconciliation, then M2b.3 manager layouts/Z/T, M3 options and M4. | Complete each on existing owners; hand stable contracts to T04a.3. |
 | Following | T04a.3, T04b, T05, then the delivery stages and T06-T15 roadmap below. | Each stage closes its concrete inventory residuals, including UI/configuration/state, before claiming completion. |
 
@@ -213,10 +215,26 @@ owner was introduced. Do not redo this integration to qualify point-tool default
 | Point-tool checkpoint | Current scope / required exit |
 | --- | --- |
 | P1 — Creation counters/positions | Scoped delivered for ordinary tools and scientific XY/XZ/YZ. Existing-row edits retain explicit metadata; creation defaults do not retag old points. [Scientific contract](TARGET_ANALYSIS.md#scientific-plane-point-creation-defaults). |
-| P2 — Marker presentation | Active next: Hybrid/Cross/Dot/Circle, seven ImageJ sizes, colors, labels and show-on-all-slices across required active/ROI/plane/export roles. Raster width remains a distinct setting. |
+| P2 — Marker presentation | P2a native metadata/layout/wire adapters scoped verified. P2b actual controls/settings/cached drawing and P2c raster flatten/export remain: Hybrid/Cross/Dot/Circle, seven sizes, colors, labels and show-all across active/ROI/overlay/plane roles. Raster width remains distinct. |
 | P3 — Creation side effects | Required next: single-point Auto-measure/Auto-next slice/Add to overlay/Add to ROI Manager and remaining multipoint creation behaviors. |
 | P4 — Plane/rebind and reconciliation | Required: remaining edit/position/rebind/projection policies, all key consumers/defaults/state and executable ordinary creation replay. P1 native creation does not close non-XY ImageJ ROI export. |
 
+- **P2a accepted native increment:** use [point presentation](POINT_PRESENTATION.md)
+  and its [receipt](parity/reviews/T04a2-point-presentation-20261104.json).
+  Do not rebuild the four-type/seven-size layout or add a parallel style parser.
+  No UI/default-setting key or raster flatten consumer was delivered by P2a.
+- **P2b next implementation:** resolve base ROI color once; cache native style/
+  annotation interpretation and flat commands on the existing immutable visual
+  revision/view/settings owners. Connect active, saved-ROI, overlay and scientific
+  plane roles in both hosts. Freeze role/parent versus per-point visibility and
+  default/application policy before editing. Add consumed marker/size/labels/
+  show-all controls through existing settings/properties; keep raster diameter
+  separate. Verify actual effects, reset/cancel/persist/reopen and stale/cap paths.
+- **P2c required before P2 closure:** adopt shared glyph semantics in the existing
+  raster flatten/export owner, specifying fonts/AA tolerances separately from
+  command geometry. Qualify ROI/session/export roundtrips and native-only style
+  loss/recovery; no non-XY projection claim. Do not start P3 as a substitute for
+  these unfinished consumers. P2b/P2c are increments of the same owning task.
 - **Contract before editing:** inspect the pinned PointRoi draw/type/size/label/
   visibility/counter-color rules and PointToolOptions/codec consumers. Reconcile
   required keys with G013/G014/G017/G020-G022 and T15 in the existing consumer
@@ -361,6 +379,59 @@ recovery, before declaring M2b.2 complete. Preserve historical expectations.
   must be delivered before closure; unrelated analysis modes stay explicitly
   owned. Review duplicated record decoders, serialization copies and retained
   providers; reuse fixtures/runners and retire owned scratch at closeout.
+
+## Execution sequence to finish the remaining work
+
+Use this sequence against the full T00-T15 ledger below. Each row is an exit
+checkpoint, not a declaration that its whole family is absent or complete.
+Select actual unresolved command/option IDs from the inventory before editing;
+preserve existing implementations and evidence. Keep one implementation task
+active; the successor may have a specification, but no competing owner changes.
+
+| Order / owning task | Smallest useful delivery and easiest reuse | Required handoff before closing |
+| --- | --- | --- |
+| 1 / P2 | Shared native point style/glyph contract and explicit wire adapters, then existing visual/flatten owners, properties and defaults in both hosts. | Four markers/seven sizes, colors/labels/visibility, all required roles, persistence/export and bounded rendering. Native API-only delivery is an increment; P2 stays active until consumers pass. |
+| 2 / P3 | Compose accepted point creation with existing Measure, overlay, manager and navigation owners. | Required automatic-action combinations, original event order, last-slice policy, cancellation/failure and recording/state behavior. |
+| 3 / P4 | Reconcile existing point editing and transfer owners before extending them. | Edit/rebind/extent/non-XY projection policy, metadata-loss recovery and executable creation replay; no unowned point-tool key. |
+| 4 / M2b.3 | Extend current manager request/results for required MultiMeasure and Z/T layouts. | Actual selection/range/layout/append/label consumers, ordered bounded output and stable persistence schema. |
+| 5 / M3 then M4 | Add only missing Analyzer geometry/options on existing masks/statistics, then exercise mixed workflows. | Required columns, threshold/redirect semantics, units/precision and formatter/CSV agree; reconcile every remaining measurement requirement. |
+| 6 / T04a.3 | Extend existing recorder/session/rebind paths for stable Measure/Profile contracts. | Save/Open, detached results, executable replay, missing-source recovery and compatibility in both hosts. |
+| 7 / T04b then T05 | Adopt existing histogram/threshold jobs; finish remaining calibrated view/time/distance consumers. | Raw versus calibrated policy, Global/bypass, defaults and state lifecycle agree across required consumers. |
+| 8 / T06 with T15 | Close one remaining selection/ROI tool or transform at a time using current editor/manager transactions. | Required gestures/numeric constraints/style, undo/cancel, metadata/interchange and persisted options work end to end. |
+| 9 / T08 with T15 | Close one required filter/segmentation operation at a time on existing target/preview/Apply paths. | Declared 2D/3D/color targets, parameter validation, preview/cancel/undo, numerical behavior and replay. Advance independent filters without waiting for unrelated selection tools. |
+| 10 / T07 with T10 | Finish required stack/CZT/display/slicing operations; add only the reader/export subset needed by each workflow. | XY/XZ/YZ, required reslice variants and axis/remapping options preserve pixels, affine metadata and ROI bindings through export/reopen. |
+| 11 / T10 then T11 | Close remaining required file layouts/recovery, then tile/pyramid/multi-source/volume workflows on one source/cache model. | Explicit format support/options and metadata; bounded CPU/GPU/history, relink/reopen and required 3D interactions. Independent readers may advance earlier for a demonstrated consumer. |
+| 12 / T09 then T12 | Extend established analysis/results and versioned operations for remaining particle/stack/table, automation and extension workflows. | Editable/exportable results; recorder/batch/script/plugin controls and errors; C++ standalone and optional Python host behavior. Feature-specific replay remains due with its owning feature. |
+| 13 / T13 | Deliver eligible Fiji workflows individually, reusing accepted processing/analysis/view primitives. | Per-workflow commercial eligibility including dependencies/assets/models, native core/API/UI and independent results. Exclusions retain an explicit replacement or open workflow gap. |
+| 14 / T14 plus final T15 | Reconcile all required inventory/command/option residuals and run release/platform/workflow gates. | Supported install/recovery and representative end-to-end checks; matched-output time/memory evidence for any speed claim; no required unowned residual. |
+
+T00 missing-reference recovery and T02 measured waste fixes stay bounded side
+work. Do not repeat unchanged searches or hold independent feature delivery for
+unavailable evidence. Reordering requires a named consumer/dependency or measured
+benefit recorded in the current queue; it never deletes displaced requirements.
+No completion percentage or date estimate is justified by the present evidence.
+
+### Start and finish each task with the same small record
+
+At entry, update the existing task specification with unresolved requirement/
+command IDs, exact API signatures and key consumers, owned files, expected
+user-visible exit, affected checks, storage allowance and the prior closeout's
+prevention action. Inspect a real call/control/output route before broad tests.
+Batch related shared API changes; do not add settings without consumers.
+
+At exit, apply the [waste review](#task-closeout-and-waste-review) and update the
+current queue in the same change as the closeout. Carry forward every unfinished
+requirement under its owner, record fix/defer/no-action and its evidence, retire
+owned terminal scratch after verified retention, and make the next two task
+specifications reflect the resulting dependencies. A feature increment can be
+accepted while the parent remains open; do not skip its missing UI/state/export
+consumers. Failed attempts stay in the task and retain their diagnostics.
+
+If waste recurs, replace the ineffective prevention with a small concrete entry
+check: inspect the actual binding/probe schema before assertions, verify real
+canvas ownership before a capture campaign, or estimate all capture copies before
+launch. Change only the affected checks. Do not create a separate audit campaign,
+new runner, extra environment or duplicate planning ledger for this loop.
 
 ## Turning the remaining horizon into executable work
 
@@ -565,40 +636,28 @@ feature or block unrelated ready work.
 
 ## Latest task closeout
 
-2026-11-04 P1 scientific point defaults: native plane-aware initialization and
-strict Python API now feed the existing scientific editor. XY binds fixed Z;
-XZ/YZ bind each vertical Z cell. Wildcard/zero parents, singleton/unbound policy,
-opaque fields, early-cap refusal and native Store/replay/session/undo/redo pass.
-Both Windows hosts qualify all three planes, frozen defaults/cap cancellation,
-source/navigation/escape cancellation and recovery. 664 unique focused product
-cases ultimately pass, 23 tool checks; two native controls and six installed SDK
-clients pass per Windows/Linux platform. [Receipt](parity/reviews/T04a2-planar-point-defaults-20261104.json).
-P1 creation counter/position scope is delivered; P2-P4 and the wider plan stay
-required. No non-XY ImageJ projection/full point-tool/release/speed claim.
+2026-11-04 P2a native point presentation: strict version-1 styles, flat bounded
+layout, Python/public installed API and explicit wire-style projection are
+implemented/scoped verified. 112 original Graphics2D traces match commands;
+431 unique focused Windows product cases pass on final installed products.
+Three native controls and seven installed SDK clients pass per Windows/Linux
+platform. [Receipt](parity/reviews/T04a2-point-presentation-20261104.json).
+No actual point-presentation UI/settings, raster flatten/font pixel, whole-P2,
+platform release or speed completion is claimed. Next P2b then P2c; P3 follows.
 
-| Waste finding | Decision / next start |
+| Waste finding | Disposition / next start |
 | --- | --- |
-| Prototype encoded all point annotations after every click. | Fixed: validate each new vertex and encode full metadata once at finish; reuse plain geometry preview and captured defaults. No second creator/controller. |
-| Multi-stage XY fixture clicked image locations clipped after controls grew. | Retain failed captures, fit only that recipe and require actual control/canvas hover IDs. Retry affected UI only; native/API results reused. All three planes and legacy point/multipoint/rectangle pass in both hosts. |
-| Shared-header/API batch amplified build work. | 94 Windows compile-line observations/379.047s; private preview fix1/12.390s, probe fix1/13.390s; Linux native85.664s. P2 uses a focused presentation header and batches declarations. These are different workloads, not product speed. |
-| Settings tooltip still named ordinary tools only. | Update it for both consumers. Reuse unchanged new-UI logic across this description-only delta; final legacy UI/installed clients use updated products. |
-| Literal/newline orchestration assumptions recurred. | Inspect exact sites and validate a file's anchors before writing its in-memory edit. No new runner; recurrence remains a process problem, not solved by policy alone. |
-| Capture/compiler accumulation. | Retire each failed/successful large group before next; keep SDK consumers through final review, then retire 30,205,863 compiler bytes by identity/logs. Verify 126,337,969 scratch bytes in 5,869,671 archive bytes and remove all owned scratch. Empty API/tools roots need checked removal, not fabricated archives. |
+| Potential per-glyph heap vectors and offscreen worst-case output. | Fix now: flat primitive spans, fixed small stack buffer and exact visible-output admission before one reservation. Two scans intentionally trade work for bounded output; no measured rendering speed claim. |
+| Wire style adapter would copy an already owned projection. | Fix now during allocation review before installed clients: accept owned wire value and move it through projection. Existing metadata/visual/job owners remain. |
+| Fixture/native test/reference setup assumptions and new Linux target ordering recurred. | Preserve failures. Correct required Dataset axes, aggregate constructor/declaration include and attached reference image; regenerate the active Linux CMake cache before requesting a new target. Next consumer owner inspects exact declarations, real control/output routes and probe schemas before broad verification. T02 recurrence remains open. |
+| Shared-header and evidence/build overhead. | Focused header/module, no UI keys without consumers, no new runner/controller/environment. Final header review preceded seven installed clients/platform. Reuse unrelated numerical/UI evidence; do not infer actual marker UI coverage from core checks. |
+| Storage/cleanup. | Retire 34,008,269 disposable SDK compiler bytes by identities/LastTest logs; verify 752,350 remaining scratch bytes in 118,156 archive bytes, then remove all owned scratch. Failures/receipts remain. Known post-retirement storage 8,468,731,525 B before small receipt/doc changes; 214 inaccessible subtrees keep the full budget unverified. |
 
-Known storage before SDK retirement:8,476,491,358 bytes; after cleanup:
-8,445,899,014 before small receipt/doc updates plus 214 inaccessible subtrees.
-These are observations, not an absolute peak or complete budget pass. Historical
-measurements/expectations remain unchanged. Existing cache/runtime/SDK reused.
-
-Document checks pass: 77 local links/anchors, all 99 capability IDs, three
-unchanged historical archive hashes, source/product/SDK-header/retention pins
-and diff hygiene. Linux SDK/header identities are retained separately.
-
-**Next:** P2 presentation, then P3 automatic actions and P4 reconciliation before
-manager variants. The two ready specs above now follow that actual order. Every
-task updates scope/evidence, waste disposition/deferred owner, cleanup and the
-next start; compilexx retains the measured costs and unresolved process issues.
-The full T00-T15 horizon remains open until its requirements are delivered.
+Document checks cover local links/anchors, all 99 capability IDs, preserved
+historical archive hashes and diff hygiene. compilexx retains the concise
+waste/next-entry lesson. Every subsequent task updates its scope, remaining
+requirements, cleanup and next handoff before advancing. Full T00-T15 scope is
+still required.
 
 ## Historical link compatibility
 
