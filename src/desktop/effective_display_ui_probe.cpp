@@ -5,6 +5,7 @@
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
+#include <algorithm>
 #include <stdexcept>
 #include <atomic>
 #include <chrono>
@@ -391,6 +392,46 @@ Json pointAnnotationEditingUiCase(Window& window,const std::string& context,cons
         {"shape",{48,64,3}},{"source_unchanged",true},{"documents_added",window.documents().size()-text_documents},
         {"overlay_kinds",{"text","multipoint","text"}}};
     report["workflow_count"]=window.workflow.size();report["state"]="observed";session.close();
+    // A separate bounded phase preserves the original point/text frame contract.
+    window.workflow=Json::array();window.recording=false;
+    const auto text_index=std::find_if(window.documents().begin(),window.documents().end(),[&](const auto& doc){return doc->id==text_owner->id;});
+    require(text_index!=window.documents().end(),"Replay source missing");
+    const auto source_index=std::size_t(text_index-window.documents().begin());window.setActiveIndex(source_index);
+    HeadlessInputSession replay_session(window);Json replay_last;Json replay_frames=Json::array(),replay_controls=Json::array();
+    const auto replay_frame=[&](Json events=Json::array()) {
+      require(replay_frames.size()<90,"Export replay frame bound");replay_last=replay_session.frame(events);
+      require(replay_last.at("input_frame").at("raw_inputs")==events,"Export replay input mismatch");
+      replay_frames.push_back({{"events",events},{"input_frame",replay_last.at("input_frame")}});
+    };
+    const auto replay_click=[&](const Json& observed,const std::string& name) {
+      const auto control=observed;
+      require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"Export replay control unavailable");
+      replay_controls.push_back({{"name",name},{"control",control}});
+      replay_frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+      for(bool down:{true,false})replay_frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));replay_frame();
+    };
+    replay_frame();auto* workflow_window=ImGui::FindWindowByName("Workflow");require(workflow_window,"Workflow window unavailable");
+    ImGui::SetWindowPos(workflow_window,{20,20});ImGui::SetWindowSize(workflow_window,{950,700});ImGui::FocusWindow(workflow_window);replay_frame();
+    replay_click(replay_last.at("host_controls").at("workflow.record"),"workflow.record");require(window.recording,"Record checkbox did not change");
+    window.action("flatten");window.wait();replay_frame();
+    require(window.workflow.size()==1,"Successful Flatten did not record one action");const auto recorded=window.workflow.front();
+    const auto expected_replay=window.document()->frame().pixels;
+    const auto workflow_file=(dir/"display-export-workflow.json").u8string();window.action("save_workflow",{{"path",workflow_file}});
+    window.workflow=Json::array();window.action("load_workflow",{{"path",workflow_file}});
+    const bool loaded=window.workflow==Json::array({recorded});replay_frame();
+    replay_click(replay_last.at("host_controls").at("workflow.run"),"workflow.run");window.wait();replay_frame();
+    const bool run_equal=window.document()->frame().pixels==expected_replay;
+    require(window.workflow.size()==1 && run_equal,"Workflow run changed capture or pixels");
+    window.setActiveIndex(source_index);replay_frame();
+    replay_click(replay_last.at("host_controls").at("workflow.display_export.0.review"),"workflow.display_export.0.review");
+    require(replay_last.at("dialog").at("open").get<bool>() && replay_last.at("dialog").at("values").at("rebind").get<bool>(),"Export replay review did not open");
+    replay_click(replay_last.at("dialog").at("controls").at("apply"),"display_export_replay.apply");window.wait();replay_frame();
+    const bool review_equal=window.document()->frame().pixels==expected_replay;
+    require(review_equal && !replay_last.at("dialog").at("open").get<bool>(),"Export replay review did not publish/close");
+    report["export_replay"]={{"record_checkbox",window.recording},{"record_count",window.workflow.size()},{"record",recorded},
+      {"saved_loaded_equal",loaded},{"run_equal",run_equal},{"review_equal",review_equal},{"review_submitted",true},
+      {"source_unchanged",text_owner->snapshot().shares_data(text_before)},{"controls",replay_controls},{"frames",replay_frames}};
+    replay_session.close();require(window.error().empty(),"Export replay host error");
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){window.cancel();window.wait();report["failure"]=error.what();writeJson((dir/"failure.json").u8string(),report);throw;}
 }

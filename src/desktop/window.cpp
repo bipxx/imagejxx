@@ -14,6 +14,7 @@
 #include "point_raster_export.hpp"
 #include "point_raster_font.hpp"
 #include "display_export_io.hpp"
+#include "display_export_record.hpp"
 #include "calibration_plot_view.hpp"
 #include "calibration_plot_annotation.hpp"
 #include "calibration_plot_payload.hpp"
@@ -1174,13 +1175,15 @@ struct Window::Impl {
   };
   struct DisplayExportResult {
     // Payloads below are destroyed before their shared cross-thread lease.
-    std::shared_ptr<RenderMemory::Lease> capture_memory;
+    std::shared_ptr<RenderMemory::Lease> capture_memory,record_memory;
+    Json recorded_step;
+    std::optional<DisplayState> replay_display;
     std::shared_ptr<PreparedExportImage> prepared;
     std::optional<Image> pixels;
     std::unique_ptr<imagejxx::detail::StagedAtomicStream> stage;
     std::uint64_t source_id=0;
     std::size_t cap=0,request_bytes=0,capture_bytes=0;
-    bool show_rois=false;
+    bool show_rois=false,guarded_all=false,render_all=false;
   };
   struct JobResult {
     // Declared first so every staged/native payload retires before its lease.
@@ -1850,6 +1853,7 @@ struct Window::Impl {
     if (action == "animation")
       return owner.controller_->active_document_id() == source->id;
     if(ContrastPanel::handles(action))return true;
+    if(action=="replay_display_export" || action=="show_display_export_replay")return !owner.busy();
     if (action == "show_channel_display" || action == "enable_channel_display" ||
         action == "channel_display" || action == "replay_channel_display" ||
         action == "auto_contrast" || action == "replay_auto_contrast")
@@ -7106,6 +7110,27 @@ void Window::action(const std::string &name, const Json &p) {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     impl->histogramPanel.show(nativeSnapshot(),impl->histogramLimits(),settings());impl->animating=false;return;
   }
+  if(name=="show_display_export_replay") {
+    if(busy())throw std::invalid_argument("Wait for the current edit or export");
+    if(!p.is_object() || p.size()!=1 || !p.contains("record"))throw std::invalid_argument("Review needs one display export record");
+    const auto bytes=displayExportRecordWorkingBytes(p.at("record"));
+    if(bytes>=impl->processingCap())throw std::length_error("Display export record exceeds processing memory budget");
+    auto memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(bytes));
+    const auto decoded=decodeDisplayExportRecord(p.at("record"));
+    const auto selected=document()->id;
+    Json values={{"rebind",true},{"font_path",decoded.font.default_path},{"font_directory",decoded.font.directory.u8string()}};
+    Json fields=Json::array({{{"name","rebind"},{"label","Use selected image"},{"kind","bool"}},
+      {{"name","font_path"},{"label","Default label font"},{"kind","text"}},
+      {{"name","font_directory"},{"label","Folder for relative annotation fonts"},{"kind","text"}}});
+    if(decoded.action!="flatten"){values["path"]=decoded.path;fields.insert(fields.begin()+1,Json{{"name","path"},{"label","Output file"},{"kind","text"}});}
+    impl->ask("Replay display export",std::move(values),[this,record=p.at("record"),memory,selected](Json options) {
+      if(options.at("rebind").get<bool>()) {
+        if(documents_.empty() || document()->id!=selected)throw std::invalid_argument("Selected source changed; reopen export replay");
+        options["document_id"]=selected;
+      }
+      options["record"]=record;action("replay_display_export",options);
+    },std::move(fields),"display_export_replay");return;
+  }
   if(name=="replay_histogram" || name=="show_histogram_rebind") {
     if(!p.is_object() || !p.contains("record") || !p.at("record").is_object())throw std::invalid_argument("Histogram replay requires a command record");
     for(const auto &v:p.items())if(v.key()!="record" && !(name=="replay_histogram" && v.key()=="histogram_rebind"))throw std::invalid_argument("Unknown histogram replay parameter");
@@ -8882,6 +8907,10 @@ void Window::action(const std::string &name, const Json &p) {
                                    Json::object(), impl->clipboardSamplePolicy));
     return;
   }
+  if(name=="run_workflow" && workflow.is_array() && workflow.size()==1 && isDisplayExportRecord(workflow[0])) {
+    displayExportRecordWorkingBytes(workflow[0]);
+    Json request=p;request["record"]=workflow[0];action("replay_display_export",request);return;
+  }
   if(name=="native_batch" || ((name=="run_workflow"||name=="batch") && (document()->scientific() || needs_native_workflow_review(workflow)))){
     if(impl->workflowOtherBusy())throw std::invalid_argument("Wait for the current edit");
     const bool batch=name!="run_workflow";
@@ -8894,14 +8923,41 @@ void Window::action(const std::string &name, const Json &p) {
     if(batch)impl->nativeWorkflowPanel.seed_batch(p.value("paths",Json::array()),p.value("output_directory",std::string{}));return;
   }
   auto d = document();
-  if(name=="flatten" || name=="export_display" || name=="export_pdf" || name=="print") {
+  if(name=="flatten" || name=="export_display" || name=="export_pdf" || name=="print" || name=="replay_display_export") {
     if(busy())throw std::invalid_argument("Wait for the current edit or export");
     const auto cap=impl->processingCap();
-    const auto capture_plan=controller_->prepare_snapshot_capture(cap,d->id);
+    const bool replaying=name=="replay_display_export";
+    std::optional<DisplayExportRecord> replay;
+    std::shared_ptr<RenderMemory::Lease> record_memory;
+    std::size_t record_workspace=0;
+    bool rebind=false;
+    if(replaying) {
+      if(!p.is_object() || !p.contains("record"))throw std::invalid_argument("Replay needs a captured display export record");
+      for(const auto& item:p.items())if(item.key()!="record" && item.key()!="document_id" && item.key()!="rebind" && item.key()!="path" && item.key()!="font_path" && item.key()!="font_directory" && item.key()!="asynchronous")throw std::invalid_argument("Unknown display export replay option");
+      if(p.contains("rebind") && !p.at("rebind").is_boolean())throw std::invalid_argument("Rebind choice must be boolean");
+      rebind=p.value("rebind",false);
+      record_workspace=displayExportRecordWorkingBytes(p.at("record"));
+      for(const auto* key:{"path","font_path","font_directory"})if(p.contains(key)) {
+        const auto& value=p.at(key);
+        if(!value.is_string() || value.get_ref<const std::string&>().size()>131064 || value.get_ref<const std::string&>().find('\0')!=std::string::npos)throw std::invalid_argument("Replay path must be bounded text");
+        record_workspace=RenderMemory::add(record_workspace,RenderMemory::mul(value.get_ref<const std::string&>().size(),8));
+      }
+      if(p.contains("asynchronous") && !p.at("asynchronous").is_boolean())throw std::invalid_argument("Asynchronous choice must be boolean");
+      if(record_workspace>=cap || cap-record_workspace<131072)throw std::length_error("Display export record exceeds processing memory budget");
+      record_memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(record_workspace));
+      replay=decodeDisplayExportRecord(p.at("record"));
+      if(p.contains("document_id"))d=documentById(targetId);
+      else if(!rebind) {
+        try {d=documentById(replay->source_id);}
+        catch(const std::out_of_range&) {throw std::invalid_argument("Recorded source is not open; select a compatible image and rebind");}
+      }
+    }
+    const std::string export_action=replay?replay->action:name;
+    const auto capture_plan=controller_->prepare_snapshot_capture(cap-record_workspace,d->id);
     const auto capture_bytes=capture_plan.bytes();
     // One accepted snapshot plus one bounded current-state validation copy.
     const auto capture_allowance=RenderMemory::mul(capture_bytes,2);
-    if(capture_allowance>=cap || cap-capture_allowance<131072)
+    if(capture_allowance>=cap-record_workspace || cap-record_workspace-capture_allowance<131072)
       throw std::length_error("Snapshot capture exceeds processing memory budget");
     auto capture_memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(capture_bytes));
     auto source=controller_->capture_snapshot(capture_plan);
@@ -8911,33 +8967,39 @@ void Window::action(const std::string &name, const Json &p) {
       throw std::invalid_argument("This command is not supported for scientific desktop documents");
     if((shape.s!=1 && shape.s!=3 && shape.s!=4) || shape.t!=1 || shape.c!=1)
       throw std::invalid_argument("Legacy display export requires one T/C source");
-    const bool all=settings().boolean("point_show_all");
+    const bool guarded_all=settings().boolean("point_show_all"),guarded_rois=impl->showRois;
+    const bool all=replay?replay->point_show_all:guarded_all;
+    std::optional<DisplayState> replay_display;
+    if(replay) {
+      validateDisplayExportReplaySource(*replay,source,rebind);
+      replay_display=replay->display;source=source.with_display(*replay_display);
+    }
     std::string path;double dpi=150;bool landscape=false;
     const auto directory=std::filesystem::current_path();
-    if(name=="export_display" || name=="export_pdf") {
-      const auto& value=get(p,"path");
+    if(export_action=="export_display" || export_action=="export_pdf") {
+      const auto& value=p.contains("path")?p.at("path"):(replay?p.at("record").at("file").at("path"):get(p,"path"));
       if(!value.is_string())throw std::invalid_argument("Export needs a bounded output path");
       const auto& requested=value.get_ref<const std::string&>();
       if(requested.empty() || requested.size()>131064 || requested.find('\0')!=std::string::npos)
         throw std::invalid_argument("Export needs a bounded output path");
       path=requested;
-      auto resolved=std::filesystem::u8path(path);if(resolved.is_relative())resolved=directory/resolved;
+      auto resolved=std::filesystem::u8path(path);if(replay && resolved.is_relative() && !p.contains("path"))throw std::invalid_argument("Choose an absolute destination for this platform");if(resolved.is_relative())resolved=directory/resolved;
       path=resolved.lexically_normal().u8string();
       if(path.size()>131064)throw std::invalid_argument("Resolved export path exceeds limit");
     }
-    if(name=="export_display") {
+    if(export_action=="export_display") {
       static const std::set<std::string> formats{".png",".jpg",".jpeg",".bmp",".tga",".pgm",".ppm",".pnm",".npy",".tif",".tiff"};
       const auto suffix=extension(path);
       if(!formats.count(suffix))throw std::invalid_argument("Choose a supported display export format");
       if((suffix==".tif" || suffix==".tiff") && !tiffAvailable())throw std::runtime_error("Scientific TIFF requires optional libtiff");
     }
-    if(name=="export_pdf") {
-      dpi=number(get(p,"dpi"),impl->preferenceState.settings.number("print_dpi"));
+    if(export_action=="export_pdf") {
+      dpi=replay?replay->file.dpi:number(get(p,"dpi"),impl->preferenceState.settings.number("print_dpi"));
       if(!std::isfinite(dpi) || dpi<1 || dpi>2400)throw std::invalid_argument("DPI must be1..2400");
-      landscape=boolean(get(p,"landscape"),impl->preferenceState.settings.boolean("print_landscape"));
+      landscape=replay?replay->file.landscape:boolean(get(p,"landscape"),impl->preferenceState.settings.boolean("print_landscape"));
     }
-    const bool show_rois=impl->showRois;
-    if(name=="print") {
+    const bool show_rois=replay?replay->show_rois:guarded_rois;
+    if(export_action=="print") {
       PreparedExportImage prepared(std::move(source),all,cap-capture_allowance,show_rois,DisplayExportOutput::Pixels);
       auto image=prepared.render();
       if(impl->processingCap()!=cap)throw RevisionConflict();
@@ -8948,24 +9010,45 @@ void Window::action(const std::string &name, const Json &p) {
     }
     if(!p.is_object())throw std::invalid_argument("Export parameters must be an object");
     const bool asynchronous=boolean(get(p,"asynchronous"),true);
-    const bool flatten=name=="flatten";
-    const DisplayExportFileOptions options{name=="export_pdf",dpi,landscape};
+    const bool flatten=export_action=="flatten";
+    const DisplayExportFileOptions options{export_action=="export_pdf",dpi,landscape};
     if(!flatten)validateDisplayExportFormat(path,shape.x,shape.y,options);
-    DisplayExportFontPolicy font_policy{annotationFontPath(),directory};
+    DisplayExportFontPolicy font_policy=replay?replay->font:DisplayExportFontPolicy{annotationFontPath(),directory};
     // Bounded UTF8/UTF16 request, normalized directory and owned stage-path
     // copies/temporary conversions, plus accepted/validation snapshot storage.
-    std::size_t request_bytes=RenderMemory::add(4096,capture_allowance);
+    const auto overrideText=[&](const char* key) -> const std::string& {
+      const auto& value=p.at(key);
+      if(!value.is_string() || value.get_ref<const std::string&>().size()>131064 || value.get_ref<const std::string&>().find('\0')!=std::string::npos)throw std::invalid_argument("Replay font path must be bounded text");
+      return value.get_ref<const std::string&>();
+    };
+    if(replay && p.contains("font_path"))font_policy.default_path=overrideText("font_path");
+    if(replay && p.contains("font_directory"))font_policy.directory=std::filesystem::u8path(overrideText("font_directory"));
+    if(replay && !font_policy.directory.is_absolute())throw std::invalid_argument("Choose an absolute font directory for this platform");
+    const bool record_export=recording && !replaying;
+    if(record_export) {
+      record_workspace=displayExportRecordWorkingBytes(source,path,font_policy);
+      if(record_workspace>=cap-capture_allowance || cap-capture_allowance-record_workspace<131072)throw std::length_error("Display export record exceeds processing memory budget");
+      record_memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(record_workspace));
+    }
+    std::size_t request_bytes=RenderMemory::add(RenderMemory::add(4096,capture_allowance),record_workspace);
     for(const auto& value:{path,font_policy.default_path,directory.u8string()})
       request_bytes=RenderMemory::add(request_bytes,RenderMemory::mul(value.size(),16));
     if(request_bytes>=cap || cap-request_bytes<131072)throw std::length_error("Export request exceeds processing memory budget");
     const auto source_id=source.id();
     struct CapturedSource {
-      std::shared_ptr<RenderMemory::Lease> memory;
+      std::shared_ptr<RenderMemory::Lease> memory,record_memory;
+      Json recorded_step;
+      std::optional<DisplayState> replay_display;
       DocumentSnapshot snapshot;
     };
-    auto capture=std::make_shared<CapturedSource>(CapturedSource{capture_memory,std::move(source)});
+    Json recorded_step=record_export?captureDisplayExportRecord(source,export_action,path,all,show_rois,options,font_policy):Json();
+    auto capture=std::make_shared<CapturedSource>(CapturedSource{capture_memory,record_memory,std::move(recorded_step),std::move(replay_display),std::move(source)});
+    if(document()->id!=source_id) {
+      const auto found=std::find(documents_.begin(),documents_.end(),d);
+      if(found==documents_.end())throw RevisionConflict();setActiveIndex(std::size_t(found-documents_.begin()));
+    }
     impl->startControlled([capture=std::move(capture),all,cap,show_rois,flatten,path=std::move(path),options,
-        request_bytes,source_id,capture_bytes,capture_memory,font_policy=std::move(font_policy)](const JobContext& context) mutable {
+        request_bytes,source_id,capture_bytes,capture_memory,record_memory,guarded_all,guarded_rois,font_policy=std::move(font_policy)](const JobContext& context) mutable {
       context.stage_progress("Prepare display export",0,1);
       auto prepared=std::make_shared<PreparedExportImage>(std::move(capture->snapshot),all,cap-request_bytes,show_rois,
           flatten?DisplayExportOutput::Document:DisplayExportOutput::Pixels,
@@ -8976,7 +9059,8 @@ void Window::action(const std::string &name, const Json &p) {
       context.stage_progress("Render display",1,1);
       Impl::DisplayExportResult result;
       result.prepared=std::move(prepared);result.source_id=source_id;result.cap=cap;
-      result.request_bytes=request_bytes;result.show_rois=show_rois;
+      result.request_bytes=request_bytes;result.show_rois=guarded_rois;result.guarded_all=guarded_all;result.render_all=all;
+      result.record_memory=record_memory;result.recorded_step=std::move(capture->recorded_step);result.replay_display=std::move(capture->replay_display);
       result.capture_memory=capture_memory;result.capture_bytes=capture_bytes;
       if(flatten)result.pixels.emplace(std::move(image));
       else result.stage=stageDisplayExport(path,std::move(image),options,context.execution_control());
@@ -10046,18 +10130,20 @@ void Window::poll() {
         auto validate=[&] {
           if(documents_.empty() || document()->id!=exported.source_id ||
               documentById(exported.source_id)!=impl->jobDocument ||
-              impl->processingCap()!=exported.cap || impl->showRois!=exported.show_rois)throw RevisionConflict();
+              impl->processingCap()!=exported.cap || impl->showRois!=exported.show_rois || settings().boolean("point_show_all")!=exported.guarded_all)throw RevisionConflict();
           const auto current_plan=controller_->prepare_snapshot_capture(exported.capture_bytes,exported.source_id);
           auto validation_memory=impl->renderMemory->acquire(current_plan.bytes());
-          exported.prepared->validate(controller_->capture_snapshot(current_plan),settings().boolean("point_show_all"),
-              exported.cap-exported.request_bytes);
+          const auto current=controller_->capture_snapshot(current_plan);
+          if(exported.replay_display)exported.prepared->validate(current.with_display(*exported.replay_display),exported.render_all,exported.cap-exported.request_bytes);
+          else exported.prepared->validate(current,exported.render_all,exported.cap-exported.request_bytes);
         };
+        OutputPublication outputs(results,workflow,{},"",std::move(exported.recorded_step));
         if(exported.pixels) {
           validate();
           auto flat=std::make_shared<Document>(exported.prepared->document(std::move(*exported.pixels)));
           validate();addDocument(std::move(flat));
         } else publishDisplayExport(std::move(exported.stage),validate,{});
-        impl->status="Display export complete";return;
+        outputs.publish();impl->status="Display export complete";return;
       }
       if(completed.analysis_command) {
         if(impl->cancelled)throw OperationCancelled();
@@ -11656,6 +11742,15 @@ void Window::Impl::recorder() {
       observeControl("workflow.contrast_apply."+std::to_string(i)+".replay");ImGui::SameLine();
       if(ImGui::Button("Rebind Apply..."))guard([&]{owner.action("show_contrast_apply_rebind",{{"record",step}});});
       observeControl("workflow.contrast_apply."+std::to_string(i)+".rebind");
+      ImGui::EndDisabled();ImGui::PopID();continue;
+    }
+    if(isDisplayExportRecord(step)) {
+      ImGui::Text("%zu. Captured display export",i+1);ImGui::PushID(static_cast<int>(i));
+      ImGui::BeginDisabled(owner.busy()||owner.documents_.empty());
+      if(ImGui::Button("Replay captured export"))guard([&]{owner.action("replay_display_export",{{"record",step}});});
+      observeControl("workflow.display_export."+std::to_string(i)+".replay");ImGui::SameLine();
+      if(ImGui::Button("Rebind / output options..."))guard([&]{owner.action("show_display_export_replay",{{"record",step}});});
+      observeControl("workflow.display_export."+std::to_string(i)+".review");
       ImGui::EndDisabled();ImGui::PopID();continue;
     }
     if(get(step,"schema")=="imagejxx.histogram-command") {
@@ -13998,6 +14093,9 @@ void Window::Impl::dialogs() {
     ImGui::EndPopup();
   }
   if(!dialog.open)dialog.calibrationCapture.reset();
+  if(!dialog.open && dialog.id=="display_export_replay") {
+    dialog.submit={};dialog.values=Json::object();dialog.schema=Json::array();dialog.text.clear();dialog.controls=Json::object();dialog.id.clear();
+  }
   if(!dialog.open && dialog.id=="selection_enlargement"){dialog.enlargementSource.reset();dialog.submit={};}
   if (!dialog.open && dialog.id == "axis_plane_export") {
     dialog.axisPlaneSource.reset();

@@ -552,6 +552,71 @@ Source/pose/consumed-setting validation, one provider read, atomic publication
 and synchronous Python error behavior retain their prior contracts. B2b still
 owns executable state/replay and remaining format/PDF/print/platform qualification.
 
+## Accepted export state and replay (P2c.2 B2b)
+
+The [B2b.1 receipt](parity/reviews/T04a2-export-replay-20261105.json) records
+scoped Windows API and actual C++/Python-host delivery. Format/physical printing,
+other-platform qualification and full P2 closure remain separate requirements.
+
+Version1 `imagejxx.display-export-command` records Flatten, display-image export
+and PDF export through the existing workflow array. The record captures:
+
+- Runtime source ID, Data revisions (pixels/metadata/selection), exact T/C/Z/Y/X/S
+  shape and pixel type. IDs already use the core's randomized runtime sequence.
+- Image-plane T/C/Z and the consumed display_range/lut/custom_lut properties;
+  canvas pan/zoom do not affect full-plane export and are not output options.
+- Accepted point_show_all/show_rois, canonical destination, replace publication,
+  DPI/orientation and default/relative annotation font acquisition directory.
+
+This is an executable action record, not a serialized image/ROI/font snapshot.
+Ordinary replay resolves the recorded open source and requires unchanged Data
+revisions and compatible shape/type. Navigation and preference changes before
+replay do not retarget its accepted rendering options. Explicit rebind instead
+uses the selected compatible source's current data/annotations/calibration while
+retaining recorded rendering options. Shape/type changes refuse; no implicit
+coordinate or non-XY reinterpretation. Session reopen requires explicit rebind.
+Current processing/render limits and ordinary cancel/stale checks remain live;
+a record cannot restore an old higher allowance to bypass admission.
+
+Window action replay_display_export accepts record, optional document_id/rebind,
+path/font_path/font_directory replacements and asynchronous. Python defaults to
+synchronous completion/errors; native controls retain asynchronous jobs. Relative
+font replacements resolve under the chosen font_directory. Default replay can
+activate the recorded source without changing its display, data or history.
+Source/pose/settings changes after request acceptance still refuse publication.
+The worker renders a detached captured display state; current preferences and
+navigation are guarded independently rather than being overwritten for replay.
+
+Font policy is explicitly reacquire: saved paths are resolved again on replay.
+Font bytes/glyph assets are not embedded or historically fingerprinted. Resource
+changes can change output under this declared policy; missing/invalid resources
+fail before source reads, and the review form permits choosing a replacement
+font/directory. Cross-platform path/resource qualification remains B2b.2/T15.
+
+Recording is captured when the request is accepted. The existing OutputPublication
+reserves the workflow slot before the output commit and appends only after a
+successful detached-document addition or atomic file promotion. Queued/running/
+READY cancellation, source-close/stale refusal and output failures append nothing.
+Replaying a record does not recursively record it. Published workflow values are
+persistent workflow state, separate from transient job/capture reservations;
+general retained UI/workflow/JSON budgeting remains T11/T12 scope.
+
+The codec preflights at most4096 nodes/eight levels,131064 bytes per string and
+524288 aggregate string bytes before decoding. Workspace charges131072 structural
+bytes for the bounded LUT/control grammar plus eight times variable strings;
+source-derived encoding is sized before JSON construction. The existing shared
+pool lease travels with record/view/request/result payloads through retirement.
+Both processing reservations and creator-side validation include this allowance;
+overlapping pool/scheduler charges are not disjoint physical/RSS storage.
+
+Workflow Save/Load and native sessions preserve the record. A captured row offers
+Replay captured export and Rebind / output options using the existing form owner;
+its payload is released on submit/cancel/close. Run on image executes a workflow
+containing one export record through the same action/job path. Mixed native
+program composition and session batch handling of this schema remain required
+T12 integration; they retain strict unsupported-schema refusal today. Physical
+printing, remaining format metadata/options and platform qualification stay B2b.2.
+
 ## Admitted export preparation (P2c.2 B2a)
 
 Private PreparedExportImage accepts an absolute working-byte admission callback.

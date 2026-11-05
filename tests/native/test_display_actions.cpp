@@ -127,6 +127,7 @@ void exportJobs(const std::filesystem::path& root) {
     auto source=std::make_shared<Document>(Dataset::from_stack({image,image}).observe_reads(reads));
     Window w((dir/"preferences.json").u8string());w.addVirtualDocument(source);
     if(mode==9){w.addVirtualDocument(std::make_shared<Document>(Dataset::from_stack({image})));w.setActiveIndex(0);}
+    w.recording=true;
     const auto source_documents=w.documents().size();HeadlessInputSession session(w);
     auto scheduler=session.fixtureApplication().job_scheduler();scheduler->set_limits({1,32*1048576,64});
     const auto before=source->snapshot();const auto count=reads.counts().plane_reads;
@@ -136,6 +137,11 @@ void exportJobs(const std::filesystem::path& root) {
     auto gate=std::make_shared<ExportGate>();ExportGateRelease release{gate};Job blocker;
     if(mode==1){blocker=scheduler->submit([gate](const JobContext& c){gate->hold(c);});gate->await();}
     if(mode==2 || mode==3)session.fixtureWorkerGate([gate](const JobContext& c){gate->hold(c);});
+    if(mode==8) {
+      refuses([&]{w.action(name,{{"path",target.u8string()}});});
+      check(!w.busy() && reads.counts().plane_reads==count && w.workflow.empty() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0 && !exportTemporary(dir),"Entry record admission must refuse without IO/publication/leaks");
+      check(imagejxx::desktop::readBytes(target.u8string())==std::vector<unsigned char>({'k','e','e','p'}),"Entry record admission changed destination");continue;
+    }
     w.action(name,{{"path",target.u8string()}});
     check(w.busy() && w.documents().size()==source_documents,"Native export action must return before creator publication");
     const auto id=w.jobInfo()->id;
@@ -171,6 +177,7 @@ void exportJobs(const std::filesystem::path& root) {
     }
     check(!w.busy() && scheduler->usage().reserved_bytes==0 && !exportTemporary(dir),"Terminal export must retire payload/stage/lease");
     check(w.renderMemoryInfo().at("working_bytes")==0,"Terminal export must retire captured snapshot storage");
+    check(w.workflow.size()==(mode==0?1:0),"Only successful creator publication records an export");
     if(mode!=0)check(w.documents().size()==source_documents-(mode==3?1:0),"Canceled/stale export published a document");
     if(mode==0) {
       check(w.error().empty(),"Accepted export reported failure");

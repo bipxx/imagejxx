@@ -1,10 +1,16 @@
 # ImageJ and Fiji delivery plan
 
-Updated 2026-11-05: remaining-work and per-task waste-management review.
+Updated 2026-11-05: workflow-first scheduling and measured execution overhead.
+Implementation resumed at the user's request. B2b.1 export recording/replay is
+scoped integrated in both Windows hosts; active next is the everyday editing
+workflow below. Local cleanup retired scratch and compiler
+intermediates; preserve existing configured caches/products and rebuild only
+for changed compiler inputs or a demonstrated verification dependency.
 Native snapshot capture and queued ownership are scoped integrated in both
 Windows hosts; Python controls and changed installed clients on Windows/Linux pass.
-Next: B2b executable export state/replay, recovery and remaining output/printing/
-platform qualification. This is not whole-process/RSS or full editor closure.
+Next: everyday editing, then XYZ workflows below. Remaining print/platform/output
+qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
+workflows. This is not whole-process/RSS or full editor closure.
 Appearance interchange, typed draft preview and the full T00-T15
 delivery horizon remain required. Every task includes waste review, verified
 cleanup and a queue update before its successor starts.
@@ -43,6 +49,17 @@ and declared release gates are satisfied. Test totals are evidence, not a
 completion percentage. Numerical tolerances, license eligibility, data/history
 preservation and stale-result/resource guarantees stay strict where applicable.
 
+**Completion audit, 2026-11-05:** at least54 of99 families have documented partial
+progress (54.5% family breadth), after reconciling seven stale open labels with
+newer scoped receipts. This is not54.5% overall completion. No full family is
+recorded closed. Only17 families have enumerated option children (85 records),
+so neither an implemented/integrated nor release-ready completion percentage is
+currently defensible. [Audit and counting rules](parity/reviews/overall-completion-audit-20261105.json).
+T00/T02 and each owning feature reconcile behavior IDs and scoped evidence at
+entry/closeout; freeze eligible requirements and weights before publishing an
+overall percentage. Keep this bounded alongside delivery, with no blanket
+recertification or arbitrary half-credit for partial families.
+
 ## Current gap summary
 
 | Area | Current recorded state | Next action |
@@ -74,7 +91,7 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 B2a Windows async display jobs | Staged encoding, incremental reservations/preparation and typed Window worker/creator publication are scoped integrated.713 focused Windows Python cases ultimately pass,30 native lifecycle cases plus existing controls; both173-frame hosts/four readers each and one installed job client per Windows/Linux platform pass. | Initial snapshot/queued-capture consumer scope is delivered below; next B2b state/replay/output/printing/platform qualification. No whole-process/RSS, complete B2a or editor/release claim. [Evidence](parity/reviews/T04a2-async-display-export-20261105.json). |
 | T04a.2 B2a captured snapshot/queued ownership | Both Windows hosts now preflight full snapshot copies, retain cross-thread-safe shared capture leases and bound creator validation copies. Capability checks share immutable data; typed jobs skip legacy copies; Python controls and installed snapshot clients pass.794 distinct Python cases (19 new),30 lifecycle cases, native concurrency/regressions and both173-frame hosts/four readers each pass. | B2b state/replay/recovery and remaining output/print/platform qualification. No whole-process/RSS or Linux/macOS UI claim. [Evidence](parity/reviews/T04a2-capture-consumers-20261105.json). |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,350,055,100 known bytes before final consumer receipt/docs;214 inaccessible subtrees keep the full budget unverified. Physical C: exhaustion interrupted Windows verification; recovered in the same cache, preserving the incomplete original receipt and diagnostics. | Check physical free space separately before long builds and at checkpoints, alongside the complete normalized project/root inventory. Keep AGENTS.md cleanup rules. |
+| Storage | Initial cleanup: 8,353,307,372 ->6,814,560,574 known B before receipt/docs. Additional archive/source-copy cleanup: 6,814,638,740 ->5,966,139,460 known B before closeout docs, another848,499,280 B reclaimed.214 inaccessible subtrees keep the complete budget unverified. | [Initial receipt](parity/reviews/local-build-cleanup-20261105.json), [additional cleanup](parity/reviews/local-archive-cleanup-20261105.json). Current apps/runtime/SDKs, cache configuration and protected qualification archives remain. Retired full captures are unavailable evidence; missing objects require recompilation. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Active work and immediate sequence
@@ -96,15 +113,19 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | Windows B2a Flatten/display/PDF job integration. | Both hosts, native lifecycle/cleanup controls and synchronous Python completion/errors pass. The underlying stage/admission increments remain linked by the current receipt. |
 | Delivered scoped | B2a native snapshot-copy admission foundation. | Allocation-free preflight and guarded complete copying on Document/Application; document/application suites pass on Windows/Linux. [Receipt](parity/reviews/T04a2-snapshot-capture-20261105.json). No Window/Python/SDK qualification yet. |
 | Delivered scoped | Windows B2a captured snapshot/queued ownership and consumers. | 794 distinct affected Python cases ultimately pass (19 new);30 native lifecycle cases, shared-pool concurrency, both173-frame hosts/four readers each and installed snapshot client per Windows/Linux platform pass. [Receipt](parity/reviews/T04a2-capture-consumers-20261105.json). |
-| Now | B2b executable export state/replay, recovery and output/platform qualification. | Audit each consumed key below; reuse existing session/recorder/rebind and encoder owners. Capture diagnostic provenance is not executable replay. Keep remaining print/platform/format obligations explicit. |
-| Next | P3 automatic point actions and P4 edit/rebind/replay reconciliation, then M2b.3 manager layouts/Z/T, M3 options and M4. | Complete each on existing owners; hand stable contracts to T04a.3. |
-| Following | T04a.3, T04b, T05, then the delivery stages and T06-T15 roadmap below. | Each stage closes its concrete inventory residuals, including UI/configuration/state, before claiming completion. |
+| Delivered scoped | B2b.1 executable export state/replay and recovery. | Both current Windows hosts pass record/Run/rebind review and ten final readers;603 affected case IDs pass. Original609-case attempt failed on six unrelated missing capture environments and remains failed. Native30/35 API evidence reused; no rebuild. [Receipt](parity/reviews/T04a2-export-replay-20261105.json). B2b.2 and full P2 remain open. |
+| Active next | Everyday editing: open -> select -> filter preview/Apply/Undo -> Measure/CSV -> save/reopen (T06/T08/T04/T10 plus owning T15 keys). | Reuse working steps; close the first concrete missing boundary under the next task specification below. Do not wait for all point-tool, manager or platform variants. |
+| Following | Scientific navigation: open supported stack -> C/Z/T and XY/XZ/YZ -> supported reslice -> export/reopen (T07/T10, T11 only where required). | Preserve pixels, affine metadata, selection bindings and saved options; extend one missing supported route at a time. |
+| Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
 engine. T00 reference recovery and T02 demonstrated overhead fixes remain bounded
 side work. Only required dependencies block another usable workflow.
 
-## Near-term queue
+## Analysis dependencies and residual queue
+
+This records analysis prerequisites and delivered increments. Implementation
+priority comes from the active workflow-first queue above, not these list numbers.
 
 1. **T00 — Publication and CI follow-through.** Published numerical/ingress
    packets precede T03. [Prior-commit run](https://github.com/bipxx/imagejxx/actions/runs/41856511200)
@@ -167,7 +188,10 @@ for the next two executable tasks. Keep one Window editor; use the ownership
 boundaries in [THREE_AGENT_EXECUTION.md](THREE_AGENT_EXECUTION.md). Role descriptions
 do not authorize spawning agents.
 
-## Next two executable task specifications
+## Analysis residual specifications
+
+These retain required analysis/point scope. They do not override the active
+workflow-first queue or make every analysis residual a prerequisite for editing.
 
 ### T04a.2 — Measurement options, geometry and ROI-manager adoption
 
@@ -230,7 +254,7 @@ copies retain the recorder gap owned by T04a.3/T12. No new codec/serializer/job
 owner was introduced. Do not redo this integration to qualify point-tool defaults.
 
 <a id="ready-task-1-m2b2b-p2--point-marker-presentation-and-interchange"></a>
-### Ready task 1: M2b.2b P2c — Raster flatten and point-style interchange
+### Required residual: M2b.2b P2c — Raster flatten and point-style interchange
 
 | Point-tool checkpoint | Current scope / required exit |
 | --- | --- |
@@ -422,6 +446,9 @@ B2b.2 then audits declared format metadata and PDF/print/platform behavior on th
 same encoders, with explicit support evidence. Do not reopen delivered kernels or
 repeat unchanged SDK/UI campaigns without a changed consumer. Both tasks retain
 all owning inventory residuals; P2c.3 and P3/P4 follow, then the full roadmap.
+This is the point/export dependency chain, not the active project-wide execution
+order. After B2b.1, the workflow-first queue may advance independent editing/XYZ
+work while B2b.2 and point-specific successors remain open under their owners.
 
 - Persist supported options and detached results; preserve old records. Real
   record/replay must reproduce accepted source/pose/options, not merely save
@@ -465,7 +492,7 @@ they run. Do not build a speculative general font
 framework. Raster tolerance must come from the independent reference contract,
 not from relaxing an assertion after observing the implementation's pixels.
 
-### Ready task 2: M2b.2b P3 — Point-tool automatic actions
+### Required later task: M2b.2b P3 — Point-tool automatic actions
 
 - **First creation checkpoint — required P2b preview residual:** ordinary
   multipoint previews still materialize styled JSON/geometry each frame and do
@@ -581,13 +608,15 @@ recovery, before declaring M2b.2 complete. Preserve historical expectations.
 
 ## Execution sequence to finish the remaining work
 
-Use this sequence against the full T00-T15 ledger below. Each row is an exit
-checkpoint, not a declaration that its whole family is absent or complete.
+Use these checkpoints against the full T00-T15 ledger below. Their numbers are
+stable scope references, not a mandatory execution order. The active queue above
+prioritizes everyday workflows after the current B2b.1 increment. Each row is an
+exit checkpoint, not a declaration that its whole family is absent or complete.
 Select actual unresolved command/option IDs from the inventory before editing;
 preserve existing implementations and evidence. Keep one implementation task
 active; the successor may have a specification, but no competing owner changes.
 
-| Order / owning task | Smallest useful delivery and easiest reuse | Required handoff before closing |
+| Scope checkpoint / owning task | Smallest useful delivery and easiest reuse | Required handoff before closing |
 | --- | --- | --- |
 | 1 / P2 | Native/API, shared UI, desktop font/flatten and pre-read configured point admission are scoped delivered; finish P2c.2 whole-export scheduling/publication/state, then bare-wire appearance promotion/export/loss review on existing owners. | Four markers/seven sizes, colors/labels/visibility, all required roles, persistence/export and bounded rendering. Native API-only delivery is an increment; P2 stays active until consumers pass. |
 | 2 / P3 | First close the required typed draft-preview residual on the existing creation owner, then compose accepted point creation with existing Measure, overlay, manager and navigation owners. | Static frames do not rebuild typed metadata/geometry; mixed counter/pose previews and lifecycle pass before automatic-action combinations, original event order, last-slice policy and recording/state checks. |
@@ -612,9 +641,9 @@ No completion percentage or date estimate is justified by the present evidence.
 
 ### Dependency and scheduling rules for the remaining horizon
 
-The order above is the default implementation lane, not a requirement to finish
-all analysis before any editor improvement. At each closeout, select the next
-coherent unresolved workflow by its actual prerequisites and update that row:
+The active queue is the implementation lane; the checkpoint table preserves all
+required residuals. At each closeout, select the next coherent unresolved workflow
+by its actual prerequisites and update that row:
 
 - Prefer a workflow that closes a required command/option and its real UI/state
   consumer using accepted primitives. Finish the active increment before switching.
@@ -630,6 +659,75 @@ coherent unresolved workflow by its actual prerequisites and update that row:
 - Expand only the current and next ready specifications. Later T06-T13 rows are
   required scope, not invented signatures or estimates; resolve exact inventory
   commands, option keys and source owners when those tasks become ready.
+
+### Immediate delivery specifications after this scheduling review
+
+**Current: close B2b.1 without expanding it.** Preserve the existing replay code
+and original test results. Review source identity/options/destination/font
+recovery, binding mutability and asynchronous return semantics before the next
+build. Run missing actual record/replay/rebind cases in both Windows hosts and
+the affected native/Python regression set; installed SDK clients rerun only if
+their consumed public contract changed. Reuse unchanged font/raster/numerical
+evidence. Acceptance covers the declared replay increment, not physical printing,
+every output format, other-platform UI or full P2 closure. Keep those requirements
+in B2b.2/T10/T14/T15. Do not add a generalized recorder, scheduler or resource
+accounting layer unless a reproducible failure requires it.
+
+**Next: complete one everyday editing workflow.** Owning families G013/G015,
+G042/G044/G045, G066/G071, G074/G081 and their existing settings consumers.
+Use an already supported eager finite-scalar raster, existing selection editor,
+Gaussian filter, captured Measure/CSV and existing save/session paths. First
+inspect maintained tests and one real route to identify the earliest missing
+boundary. Working steps are reused, not reimplemented or requalified wholesale.
+Freeze that one boundary's exact command/option IDs, signatures and owned files
+in the existing task record before editing; unenumerated requirements get a
+concrete ID in the existing inventory rather than a second registry.
+
+The usable exit is open -> select -> parameter preview -> Apply -> Undo/Redo ->
+Measure/CSV -> save/reopen with correct pixels, selection, effective parameters
+and calibration. Deliver corresponding core/Python controls and both actual
+Windows ImGui launches for the changed route. Check invalid input, cancellation
+and stale/closed-source handling where the changed execution can encounter them.
+Verify settings and replay for the changed action; a missing required part stays
+open under its owner. Use existing capture drivers, fixtures and supported codec;
+do not introduce a new format, 3D kernel or every ROI type to demonstrate this
+bounded workflow. Once its current scope works, choose the next unresolved
+workflow rather than adding unrelated variants to this task.
+
+**Following: scientific navigation workflow.** G026/G027/G029/G031/G062/G074
+with owning T15 settings. Reuse a supported eager stack and existing C/Z/T,
+linked XY/XZ/YZ and axis-aligned reslice paths; resolve the first actual gap,
+then verify spatial metadata/ROI binding and export/reopen. Oblique/curved
+reslice, virtual/tiled sources and extra platform qualification remain named
+T07/T10/T11/T14 residuals, not prerequisites unless the chosen consumer needs
+them. Expand this specification only when it becomes the next ready task.
+
+### Reduce overhead at the existing task boundaries
+
+- Freeze one user-visible exit and its required safety/state behavior. Add a
+  discovered dependency only with a concrete failing consumer or demonstrated
+  correctness/resource problem. Assign unrelated variants to their existing
+  owners instead of extending the current task indefinitely.
+- Before a shared build, inspect all changed callers, actual binding declarations,
+  probe event/receipt shapes and timing contracts. Batch related headers/core/
+  binding/UI edits. Run early narrow syntax/contract checks where useful, then
+  one coherent build per affected platform using the existing cache. Fixes rerun
+  affected checks; do not repeat unchanged full campaigns for receipt/test edits.
+- Use native/kernel checks for changed numerics, binding checks for changed
+  conversion/API contracts, and both-host captures for changed interactions.
+  Resource/async changes retain relevant cancellation/stale/ownership tests;
+  public ABI/package changes retain changed installed-client checks. Other
+  platform checks remain required for those platform claims and final release,
+  but do not block an independently scoped Windows increment.
+- Keep one active implementation and the next specification. No per-increment
+  environment, generic harness, new audit ledger or extra review ceremony.
+  Use existing receipts for elapsed build/check time, retries and generated bytes
+  already available; do not build telemetry to measure the execution process.
+- Close out with delivered user behavior, reused evidence, unresolved IDs and
+  fix/defer/no-action waste decision. Reconcile stale progress links in place;
+  keep historical fingerprints unchanged. Scoped acceptance is visible without
+  waiting for full-family certification; correctness and commercial eligibility
+  are not relaxed. The completion audit's54.5% measures family breadth only.
 
 Do not infer a percentage, date or broad speed advantage from these stages.
 Completion requires every required residual and supported release gate, while
@@ -676,10 +774,11 @@ their implementation. Do not mark the feature complete while that follow-on is
 open. An excluded non-commercial candidate needs a recorded eligibility decision
 and the supported replacement or remaining workflow gap.
 
-Default order after M1-M4 is T04a.3, T04b, T05, then the selection/edit/view
-foundation below. Move a task forward only for a documented dependency or a
-concrete usable workflow; T00 recovery and T02 measured overhead fixes remain
-bounded side work. Complete one coherent increment before opening the next.
+The active queue advances everyday editing and scientific navigation after
+B2b.1; it no longer waits for all M1-M4/analysis/calibration residuals. Analysis,
+point and manager obligations remain in their owning checkpoints. T00 recovery
+and T02 measured overhead fixes stay bounded side work. Complete one coherent
+increment before opening the next.
 
 | Delivery stage | Efficient path and handoff required before advancing |
 | --- | --- |
@@ -835,6 +934,8 @@ feature or block unrelated ready work.
 | Two full double buffers in shared Python ingress | Fixed by T01 for image/stack conversion; inspect other binding paths when touched. | One owned destination, allocation regression and 168 layout/refusal cases. Six measured workloads; no general speed claim. |
 | Many temporary harness generations | T02: reuse existing drivers and data inputs; retire superseded scripts only with evidence identities preserved. | Prior audit counted 732 Python/171 PowerShell scripts; not every retained script is disposable. |
 | Shared headers/Make flags fanout | T02 plus source owners: batch coherent edits; inspect consumer dependencies before adding shared declarations and isolate only where measured reuse justifies it. | T04a.1 full batch: 109 compile entries/830.9 s; UI-only fix: one/38.3 s; smoke-only fix: one/17.4 s. Different workloads, not processing-speed comparisons. Core/SDK results reused for frontend-only fixes. |
+| Local compiler/scratch accumulation | Cleaned on user request while implementation stays paused. Retain one configured cache and installed runtime/SDK; prune regenerable objects and obsolete verification binaries when disk pressure takes priority. | Initial cleanup removed compiler intermediates/obsolete binaries and retired23 paused scratch groups;16 raw groups compressed. Follow-up retired superseded captures and duplicate archives, compressed11 additional raw groups with live hash verification, and retired4 repeated source copies with identities. Current source changes and protected qualification archives hash-checked unchanged. No product build. T02 owns214 ACL-blocked directories: access denied under the current nonadministrator process; sizes unknown, no ACL takeover. Preserve EOLs before future builds. |
+| Narrow feature chains delay everyday workflows | Fix scheduling now: close existing B2b.1 WIP, then everyday editing and XYZ workflows; keep point/manager/print/platform residuals with their owners. Enforced in [AGENTS.md](../AGENTS.md#workflow-delivery-and-execution-efficiency); T00/T02 reconcile progress at existing task boundaries. | Review found recent commits concentrated on point/font/export ownership; shared builds measured379.047/723.093/830.9s on different batches, repeated caller/probe assumption retries and accumulated evidence. These are observed costs, not measured fractions of total delay. New task records use frozen user exits, batched changes and affected checks; evaluate actual elapsed/retry/storage results at closeout. Rule update checked for queue/link consistency and whitespace only; no product builds, generated scratch or new framework. No speedup claimed from documentation. |
 | Repeated calibration queries per draw | T07 owner: capture once per draw and derive spacing from that value when correct. | Confirm repeated validation calls; measure frame cost before claiming a speed gain. |
 | Window hub responsibilities | T04/T06-T12 owners: extract cohesive controllers at touched seams. | No whole-file rewrite based only on its roughly 15,500-line size; preserve input/publication ownership. |
 | Area measurement Bounds reraster / per-segment validation | Fixed in T04a.1: bounds collected during membership scan; profile source validation once per plane and lookup once per preparation. | Independent membership/calibrated sampling, one-read and admission/cancel checks pass. No measured speed claim. |

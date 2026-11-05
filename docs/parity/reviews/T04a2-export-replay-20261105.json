@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T04a.2 P2c.2 B2b.1 accepted export state/record/replay/recovery",
+  "state": {
+    "implemented": "Version1 captured flatten/display/PDF actions, bounded record decode/admission, accepted source identity/revisions/pose/display/render/file/font policy; publication-only recording, workflow/session roundtrip, explicit source/font/destination rebind and review controls.",
+    "verified": "603 distinct passing case IDs in the affected Windows regression run; the parent609-case attempt is FAILED because six unrelated readers lack capture environments. A separate final ten-reader set passes on current actual C++/Python Windows captures. Reused final35 API and30 native lifecycle cases for unchanged source inputs.",
+    "integrated": "Both actual Windows ImGui hosts record successful Flatten, save/load the command, Run it and submit explicit rebind review with equal pixels and unchanged source; API tests exercise PNG/PDF bytes and recovery.",
+    "release_ready": false
+  },
+  "scope": {
+    "actions": [
+      "flatten",
+      "export_display",
+      "export_pdf",
+      "replay_display_export",
+      "show_display_export_replay"
+    ],
+    "record_schema": "imagejxx.display-export-command",
+    "record_version": 1,
+    "source_domain": "Existing supported ordinary legacy T/C source; no expanded scientific/non-XY source support",
+    "remaining": [
+      "B2b.2 format metadata, PDF/physical printing and other-platform qualification",
+      "P2c.3 appearance interchange/loss review",
+      "P3/P4 point actions/edit/rebind/creation replay",
+      "Mixed multi-step/batch export automation remains owning T12 scope",
+      "Full ImageJ/Fiji/editor/release requirements remain open"
+    ]
+  },
+  "inputs": [
+    {
+      "path": "src/desktop/export.cpp",
+      "sha256": "eb3d9565eb51b459f69a5a361ed63eef672b9d51706dc4e51c9582fa90afbbb8",
+      "bytes": 23875
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "sha256": "96be2c8bea6d44d75dc7997ed523b5e7d9ac406e86896b0ac469f09cdc6ccecd",
+      "bytes": 903347
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "sha256": "6a6aaa61dae864fd065558a624c692cd998de8ddb2da7ba5721bf4cf2430d5ef",
+      "bytes": 63294
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "sha256": "3d0ef96cded7d889591d439fce2228fa5ea22a108d0d9752ceee47ef6a3114a4",
+      "bytes": 46543
+    },
+    {
+      "path": "src/desktop/display_export_record.hpp",
+      "sha256": "6b90ebd81f494e82b2776161a293bb8d3a35166ce23a976ec94d7575069b5d1c",
+      "bytes": 1276
+    },
+    {
+      "path": "tests/python/test_display_export_replay.py",
+      "sha256": "514cee6d961130768d81d57128357bdb8db0a789550bfa57956039c660875a90",
+      "bytes": 13331
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "sha256": "fbf0f33cc83c62f345f559ce14909e3fd9413752ccb09b6dfff869c896a049b0",
+      "bytes": 17075
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "sha256": "03677907938406044c44c7a89abe9526629921a5c7be2bd8e6dea638f72e38d0",
+      "bytes": 20275200
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "sha256": "f291f01c88090070441d43e3a9a4a6e4fb1c16e56cf09dd750a030458812a287",
+      "bytes": 20359168
+    }
+  ],
+  "entry_record": {
+    "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-entry.json",
+    "bytes": 2849,
+    "sha256": "d6bb0a99093e11efd1eea29dbd5008413959c7e2a5dbd3361c79415c8142125a"
+  },
+  "checks": {
+    "native-actions004": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/native-actions004.process.json",
+        "bytes": 1954,
+        "sha256": "2c36721a2b5a8b0028a74c6078ad5d593693a541352d25c896d383a2968b6ddd"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.9690000000409782
+    },
+    "api003": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/api003.process.json",
+        "bytes": 2314,
+        "sha256": "e3e217abcf4f97de1c7ec40fd94f02232e25939332abb93392bef4b26d4d8c82"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.5159999998286366
+    },
+    "resume-cpp001": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-cpp001.process.json",
+        "bytes": 1957,
+        "sha256": "11fab5d778d7074424db2e9cf55773e633dc38a7bd7ab3260dbba1794e5f867f"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.7809999999590218
+    },
+    "resume-python001": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-python001.process.json",
+        "bytes": 2104,
+        "sha256": "9075c246ea2d349a65d057d0d806214c7d40cc4ff34c1a70ec286cb53ae3ffda"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 0.125
+    },
+    "resume-python002": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-python002.process.json",
+        "bytes": 2222,
+        "sha256": "37ee12bfbd8ca661b06b94f10ca29ed6bd69b7c0df49d461a1501de7833e2347"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.7349999998696148
+    },
+    "resume-regression001": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-regression001.process.json",
+        "bytes": 2773,
+        "sha256": "36288b010934ba9c1c1ac1116028fb72d20b3ae3f5d25cbe2bace1896ff1b363"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 11.25
+    },
+    "resume-readers001": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-readers001.process.json",
+        "bytes": 3276,
+        "sha256": "75e39964cfa133c03e986d95641dd7793107fca5a48ea906a0792a43ca110539"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.2660000000614673
+    }
+  },
+  "accepted_cases": {
+    "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-regression001-accepted-cases.json",
+    "bytes": 71805,
+    "sha256": "0788a411a551d75c8ee6ad36c6f0f1c30faf1573300ca740fd5d2e5c80107192"
+  },
+  "final_reader_junit": {
+    "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-readers001.xml",
+    "bytes": 1595,
+    "sha256": "f462ab9e34780dbc9fb8e62be7d61cc4c544971611045ce3515e29cd4e8f45e0"
+  },
+  "original_failed_regression_junit": {
+    "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-regression001.xml",
+    "bytes": 100751,
+    "sha256": "f0470df7c37d2a8fa569cf08e6125ab8f5175ff620dc59afd27bb57c37e4687f"
+  },
+  "retirement": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-cpp001-retirement.json",
+        "bytes": 432,
+        "sha256": "44ad067c105f44abfb2f4b275850d8a9452d9ff2759f930dbb0a3f0389c3af9d"
+      },
+      "state": "verified_retention_then_removed",
+      "source": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/scratch/resume-cpp001",
+      "source_bytes": 498734,
+      "source_files": 4,
+      "source_snapshot_sha256": "e59e86c72576371175db16969b2cc176271953034bb133f1a88217ef51163728",
+      "archive_bytes": 15631,
+      "archive_sha256": "0c43da31a68a607ab52c149a4c03b16f29b66f6def024c1945b3bdd76726959d",
+      "source_removed": true
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-python001-empty-retirement.json",
+        "bytes": 275,
+        "sha256": "1feb1dabc8943f51a6ab22923813d33cf097c3695ea735420ef4588e712f8f49"
+      },
+      "state": "removed_verified_empty_owned_scratch",
+      "source": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/scratch/resume-python001",
+      "source_bytes": 0,
+      "source_files": 0,
+      "archive_bytes": 0,
+      "archive_created": false,
+      "source_removed": true
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-python002-retirement.json",
+        "bytes": 435,
+        "sha256": "ec5bc0b38596a95479867920cc94be920cd4fcada07f5fe35d714d3c359af702"
+      },
+      "state": "verified_retention_then_removed",
+      "source": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/scratch/resume-python002",
+      "source_bytes": 498741,
+      "source_files": 4,
+      "source_snapshot_sha256": "04f53847c92f70758a8dd056ae65e18b232e625f07dfafc843c404c3ee85e579",
+      "archive_bytes": 15625,
+      "archive_sha256": "1504358e6d77fbdc0a84b069d664a7322e439d030c7ad6aeb738493e5434f241",
+      "source_removed": true
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-regression001-retirement.json",
+        "bytes": 444,
+        "sha256": "34a2946c0fd02e8208b382d979fb99976e45d3af8d7d08dfa7b73100be005cc8"
+      },
+      "state": "verified_retention_then_removed",
+      "source": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/scratch/resume-regression001",
+      "source_bytes": 33545193,
+      "source_files": 85,
+      "source_snapshot_sha256": "e694a7a01bccaf50c795ec06227f79947875ab7ee5aac0b6477625cff4f5e836",
+      "archive_bytes": 2046332,
+      "archive_sha256": "f9806e4bca78ee6fbcf4d87c4e04a73f7385db5dc99ea1c70ee137dfe84bc1a0",
+      "source_removed": true
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/resume-readers001-empty-retirement.json",
+        "bytes": 276,
+        "sha256": "aa7a32dc6330b877644968738e98bedb9aec9a82cba40e6b8b93a8a68c614eb5"
+      },
+      "state": "removed_verified_empty_owned_scratch",
+      "source": ".tmp/manual-workflow-verification/t04a2-export-replay-20261105/scratch/resume-readers001",
+      "source_bytes": 0,
+      "source_files": 0,
+      "archive_bytes": 0,
+      "archive_created": false,
+      "source_removed": true
+    }
+  ],
+  "storage": {
+    "entry": {
+      "path": ".tmp/manual-workflow-verification/export-replay-resume-entry-20261105.json",
+      "bytes": 66558,
+      "sha256": "2583bf19f89e04a901868c098d0e8938cbd6415f8ba1a37ea528b8d29876536d"
+    },
+    "final_before_public_receipt_docs": {
+      "path": ".tmp/manual-workflow-verification/export-replay-resume-final-20261105.json",
+      "bytes": 66572,
+      "sha256": "e93943ad2df0bad9054d18c7f4ad03ed2d9f743d44955d9eb51f60e66adeafef"
+    },
+    "known_entry_bytes": 5966244098,
+    "known_final_bytes": 5968775806,
+    "unknown_subtrees": 214,
+    "budget_verified": false
+  },
+  "waste_review": {
+    "observed": "Existing installed products were usable after compiler intermediate cleanup. Resume Python launch initially omitted shared NumPy dependency path; retry corrected launch only. Overbroad file selection included six readers for unrelated capture campaigns.",
+    "disposition": "Reuse existing binaries and green case-level evidence. Fix next selection by listing exact actual-reader IDs and their environment inputs before launch; do not regenerate unrelated captures to turn an oversized suite green.",
+    "cleanup": "Five fresh owned groups retired: two verified empty, three live-SHA/ZIP-verified before removal. Failures/logs/JUnit and accepted IDs preserved. No build/new cache/runtime/SDK/harness.",
+    "plan_feedback": "B2b.1 scoped delivery complete; next everyday editing workflow on accepted primitives. Keep B2b.2 and all full-parent residuals open. Future broader regression/release gates remain required."
+  },
+  "acceptance": false
+}
