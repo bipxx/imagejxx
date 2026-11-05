@@ -1,8 +1,10 @@
 #include "effective_display_ui_probe.hpp"
 #include "headless_session_internal.hpp"
+#include "rendering.hpp"
 #include "window.hpp"
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/point_annotations.hpp>
+#include <imagejxx/point_presentation.hpp>
 #include <stdexcept>
 #include <atomic>
 #include <chrono>
@@ -369,6 +371,25 @@ Json pointAnnotationEditingUiCase(Window& window,const std::string& context,cons
         {"output_metadata",metadataJson(window.document()->nativeSnapshot().data().metadata.extensions)},
         {"documents_added",window.documents().size()-documents_before}};
 
+    // Separate mixed text/point fixture; earlier controls and role evidence stay intact.
+    Image text_source(64,48,3,PixelType::UInt8);
+    for(std::size_t i=0;i<text_source.pixels.size();++i)text_source.pixels[i]=31+(i%3)*39;
+    Json text_row{{"kind","text"},{"points",{{2.75,2.5}}},{"text","A12\n\xce\xb2 2"},{"font_size",9},{"color","#40d08080"}};
+    auto text_points=with_point_style(Selection("multipoint",{{24,16},{40,30}}),PointStyle{});
+    Json text_overlays=Json::array({text_row,selectionJson(text_points),text_row});
+    auto legacy_expected=text_source;
+    renderDisplayOverlays(legacy_expected,{{"overlays",text_overlays},{"slice_index",0}},PlanePosition{0,0,0});
+    DocumentData text_data{Dataset::from_stack(Stack{text_source})};
+    for(const auto& overlay:text_overlays)text_data.overlays.push_back(metadataObjectFromJson(overlay));
+    auto text_owner=std::make_shared<imagejxx::Document>(std::move(text_data));const auto text_before=text_owner->snapshot();
+    window.addNativeDocument(text_owner);frame();frame();frame();
+    const auto text_documents=window.documents().size();
+    menu("menu.Image");menu("menu.Image.Overlays");menu("menu.action.flatten");frame();
+    require(window.documents().size()==text_documents+1,"Text flatten did not publish detached output");
+    require(text_owner->snapshot().shares_data(text_before),"Text flatten changed source");
+    report["text_flatten"]={{"pixels",window.document()->frame().pixels},{"expected_legacy_pixels",legacy_expected.pixels},
+        {"shape",{48,64,3}},{"source_unchanged",true},{"documents_added",window.documents().size()-text_documents},
+        {"overlay_kinds",{"text","multipoint","text"}}};
     report["workflow_count"]=window.workflow.size();report["state"]="observed";session.close();
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){window.cancel();window.wait();report["failure"]=error.what();writeJson((dir/"failure.json").u8string(),report);throw;}

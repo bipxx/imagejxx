@@ -2,8 +2,10 @@
 #include "planar_annotation_visual.hpp"
 #include "roi_import_preview.hpp"
 #include "point_visual.hpp"
+#include "rendering.hpp"
 #include "point_raster_export.hpp"
 #include "point_raster_font.hpp"
+#include "../../src/native/kernel_control.hpp"
 #include <cstdlib>
 #include <fstream>
 #include <imagejxx/point_raster.hpp>
@@ -180,6 +182,59 @@ int main() {
         FontEnvironment environment;environment.replace("imagejxx-missing-font-capture-proof.ttf");
         auto actual=prepared.render();check(actual.pixels==expected.pixels && reads.counts().plane_reads==n+1);
       } else std::cout<<"Unavailable platform font capture input: "<<path<<"\n";
+    }
+    {
+      const auto path=annotationFontPath();std::ifstream available(std::filesystem::u8path(path),std::ios::binary);
+      if(available) {
+        available.close();
+        const auto small_budget=std::size_t(std::filesystem::file_size(std::filesystem::u8path(path)))+65536+path.size()*3+512;
+        PointRasterFontCache limited(small_budget);limited.open(path);
+        bool staging=false;try{(void)limited.textGlyph(512,'W');}catch(const std::length_error&){staging=true;}
+        check(staging && limited.working_bytes()<=small_budget);
+        PointRasterFontCache recovery;recovery.open(path);check(!recovery.textGlyph(16,'W')->coverage.empty());
+        const std::vector<std::string> samples{"A12 A12","A\nB\n12","\xce\xb2\xce\xa9 e\xcc\x81","\xe6\xb1\x89\xe5\xad\x97", "", "\n\n", "   "};
+        for(int size:{1,9,32,512})for(const auto& content:samples) {
+          Image rgb(64,48,3,PixelType::UInt8);
+          for(std::size_t i=0;i<rgb.pixels.size();++i)rgb.pixels[i]=31+(i%3)*39;
+          Json overlays=Json::array({{{"kind","text"},{"points",{{-3.25,2.75}}},{"text",content},{"font_size",size},{"color","#40d08080"}}});
+          auto expected=rgb;renderDisplayOverlays(expected,{{"overlays",overlays},{"slice_index",0}},PlanePosition{0,0,0});
+          DatasetReadObserver reads;DocumentData data{Dataset::from_stack(Stack{rgb}).observe_reads(reads)};
+          data.overlays={metadataObjectFromJson(overlays[0])};imagejxx::Document owner(std::move(data));
+          const auto n=reads.counts().plane_reads;PreparedExportImage prepared(owner.snapshot(),false,32*1048576);
+          check(reads.counts().plane_reads==n && prepared.working_bytes()<=32*1048576);
+          check(prepared.render().pixels==expected.pixels && reads.counts().plane_reads==n+1);
+        }
+        // File and process policy disappear after capture; the immutable glyphs
+        // must still render, with no second font IO or provider pre-read.
+        Image rgb(64,48,3,PixelType::UInt8);
+        Json row{{"kind","text"},{"points",{{1.75,2.25}}},{"text","A12\n\xce\xb2 A12"},{"font_size",16},{"color","#80c04080"}};
+        auto expected=rgb;renderDisplayOverlays(expected,{{"overlays",Json::array({row})},{"slice_index",0}},PlanePosition{0,0,0});
+        const auto directory=std::filesystem::temp_directory_path()/("imagejxx-text-font-"+std::to_string(next_document_id()));
+        check(std::filesystem::create_directory(directory));
+        const auto copy=directory/"capture.ttf";
+        std::filesystem::copy_file(std::filesystem::u8path(path),copy);
+        row["font_path"]=copy.u8string();
+        DatasetReadObserver reads;DocumentData data{Dataset::from_stack(Stack{rgb}).observe_reads(reads)};
+        data.overlays={metadataObjectFromJson(row)};imagejxx::Document owner(std::move(data));
+        const auto n=reads.counts().plane_reads;
+        try {
+          PreparedExportImage prepared(owner.snapshot(),false,8*1048576);
+          check(reads.counts().plane_reads==n && prepared.working_bytes()<8*1048576);
+          check(std::filesystem::remove(copy));check(std::filesystem::remove(directory));
+          FontEnvironment environment;environment.replace("imagejxx-missing-text-font-capture-proof.ttf");
+          ExecutionControl cancel;cancel.cancellation=std::make_shared<CancellationToken>();cancel.cancellation->cancel();
+          bool stopped=false;try{(void)prepared.render(cancel);}catch(const OperationCancelled&){stopped=true;}
+          check(stopped && reads.counts().plane_reads==n);
+          check(prepared.render().pixels==expected.pixels && reads.counts().plane_reads==n+1);
+          bool cancelled_capture=false;
+          try {ExecutionScope scope(cancel);PreparedExportImage missing(owner.snapshot(),false,8*1048576);}
+          catch(const OperationCancelled&){cancelled_capture=true;}
+          check(cancelled_capture && reads.counts().plane_reads==n+1);
+        } catch(...) {
+          // Exact fresh owned targets only, never recursive removal.
+          std::error_code cleanup;std::filesystem::remove(copy,cleanup);std::filesystem::remove(directory,cleanup);throw;
+        }
+      }
     }
     std::cout << "PASS " << checks << " path/point visual checks\n";
   } catch (const std::exception &e) {

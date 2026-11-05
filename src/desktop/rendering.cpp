@@ -1009,8 +1009,15 @@ std::size_t exportFontBytes(const PointRasterFont& font) {
 }
 }
 struct PreparedExportImage::State {
+  struct TextGlyph {
+    std::shared_ptr<const PointRasterGlyph> glyph;
+    double x,y;
+  };
   struct Row {
     Json wire;
+    std::vector<TextGlyph> text;
+    RoiColor text_color{};
+    bool text_row=false;
     std::optional<Selection> selection;
     PointPresentation layout;
     std::optional<imagejxx::detail::PreparedPointRaster> raster;
@@ -1117,9 +1124,11 @@ struct PreparedExportImage::State {
       output_metadata->extensions["imagejxx.display_export"]=metadata_object(std::move(provenance));
     }
     rows.reserve(inputs.size());
-    using Fonts=std::map<double,std::shared_ptr<const PointRasterFont>>;
+    struct Fonts {
+      std::map<double,std::shared_ptr<const PointRasterFont>> points;
+      std::vector<std::size_t> text_rows;
+    };
     std::map<std::string,Fonts> fonts;
-    bool legacy_text=false;
     std::optional<std::string> default_font;
     for(const auto& input:inputs) {
       kernel_checkpoint_periodic();
@@ -1128,12 +1137,26 @@ struct PreparedExportImage::State {
       else row.wire={{"kind","roi"},{"selection",selectionJson(*input.selection)},{"color",input.color}};
       const auto kind=string(get(row.wire,"kind"));
       if(kind=="text") {
-        // Legacy text retains its original raster owner. Include its bounded
-        // file/glyph scratch; its complete font capture remains a follow-on.
-        if(!legacy_text){exportCharge(used,1,64*1048576,limit);legacy_text=true;}
-        const int size=integer(get(row.wire,"font_size"),16);
-        if(size<=0 || size>512)throw std::invalid_argument("Font size must be1..512");
-        exportWork(work,string(get(row.wire,"text")).size(),std::size_t(size)*size);
+        row.text_row=true;
+        const auto& anchor=get(row.wire,"points");const auto content=string(get(row.wire,"text"));
+        // Preserve malformed/absent legacy anchors as no-op geometry. Empty
+        // rows acquire no otherwise-unused font resource.
+        if(content.find_first_not_of('\n')==std::string::npos || !anchor.is_array() || anchor.empty() || anchor[0].size()!=2)row.skip=true;
+        else {
+          if(!std::isfinite(number(anchor[0][0])) || !std::isfinite(number(anchor[0][1])))
+            throw std::invalid_argument("Text anchor must be finite");
+          const int size=integer(get(row.wire,"font_size"),16);
+          if(size<=0 || size>512)throw std::invalid_argument("Font size must be1..512");
+          row.font_size=size;row.text_color=color(string(get(row.wire,"color"),"#ffcc00"));
+          const auto configured=string(get(row.wire,"font_path"));
+          if(configured.empty()){if(!default_font)default_font=annotationFontPath();row.font_path=*default_font;}
+          else row.font_path=annotationFontPath(configured);
+          exportCharge(used,row.font_path.size(),3,limit);
+          exportCharge(used,content.size(),sizeof(TextGlyph)+8,limit);
+          exportWork(work,content.size(),8);
+          row.text.reserve(content.size());
+          fonts[row.font_path].text_rows.push_back(rows.size());
+        }
       } else {
         const auto& wire=kind=="roi"?get(row.wire,"selection"):row.wire;
         if(wire.contains(point_style_attribute)) {
@@ -1150,7 +1173,7 @@ struct PreparedExportImage::State {
             else row.font_path=annotationFontPath(configured);
             row.font_size=primitive.font_size;
             exportCharge(used,row.font_path.size(),3,limit);
-            fonts[row.font_path].emplace(row.font_size,nullptr);break;
+            fonts[row.font_path].points.emplace(row.font_size,nullptr);break;
           }
         }
       }
@@ -1158,21 +1181,50 @@ struct PreparedExportImage::State {
     }
     peak=used;
     for(auto& file:fonts) {
-      const auto allowance=std::min<std::size_t>(8*1048576,limit-used);
-      if(allowance<65536)throw std::length_error("Point font exceeds configured processing memory budget");
-      peak=std::max(peak,RenderMemory::add(used,allowance));
-      // Admit aggregate file/decoding work as well as per-file resident bytes.
-      exportWork(work,allowance);
-      PointRasterFontCache owner(allowance);
-      for(auto& entry:file.second) {
+      const auto base=used;
+      const auto allowance=std::min<std::size_t>((file.second.text_rows.empty()?8:64)*1048576,limit-used);
+      if(allowance<65536)throw std::length_error("Annotation font exceeds configured processing memory budget");
+      PointRasterFontCache owner(allowance,work_limit-work);owner.open(file.first);
+      for(auto& entry:file.second.points) {
         auto font=owner.take(file.first,entry.first);
         exportCharge(used,exportFontBytes(font),1,limit);
         entry.second=std::make_shared<const PointRasterFont>(std::move(font));
       }
+      for(auto index:file.second.text_rows) {
+        auto& row=rows[index];const int size=int(row.font_size);
+        const auto& anchor=row.wire.at("points")[0];const auto content=string(get(row.wire,"text"));
+        const double origin=number(anchor[0]);double x=origin,y=std::floor(number(anchor[1]))+owner.textBaseline(size);
+        for(std::size_t i=0;i<content.size();) {
+          kernel_checkpoint_periodic();
+          unsigned cp=static_cast<unsigned char>(content[i++]);int continuation=0;
+          if(cp>=0xf0){cp&=7;continuation=3;}else if(cp>=0xe0){cp&=15;continuation=2;}else if(cp>=0xc0){cp&=31;continuation=1;}
+          for(int k=0;k<continuation && i<content.size();++k)cp=(cp<<6)|(static_cast<unsigned char>(content[i++])&63);
+          if(cp=='\n'){x=origin;y+=size;continue;}
+          std::shared_ptr<const PointRasterGlyph> glyph;
+          const auto digits=file.second.points.find(row.font_size);
+          if(cp>='0' && cp<='9' && digits!=file.second.points.end())
+            glyph=std::shared_ptr<const PointRasterGlyph>(digits->second,&digits->second->digits[cp-'0']);
+          else glyph=owner.textGlyph(size,cp);
+          const double left=std::trunc(x)+glyph->offset_x,top=y+glyph->offset_y;
+          const double l=std::max(0.,left),t=std::max(0.,top);
+          const double r=std::min(double(shape.x),left+glyph->width),b=std::min(double(shape.y),top+glyph->height);
+          if(l<r && t<b) {
+            // Legacy text has integer bitmap anchors. Clip before casting huge
+            // offscreen coordinates; coverage/alpha order remains per glyph.
+            exportWork(work,std::size_t(r-l),std::size_t(b-t));
+            row.text.push_back({glyph,left,top});
+          }
+          x+=float(glyph->advance);
+        }
+        row.wire=Json();
+      }
+      exportCharge(used,owner.text_bytes(),1,limit);
+      exportWork(work,owner.working_work());
+      peak=std::max({peak,used,RenderMemory::add(base,owner.working_bytes())});
     }
     for(auto& row:rows)if(row.selection) {
       if(row.layout.primitives.empty()){row.skip=true;row.selection.reset();continue;}
-      if(row.font_size)row.font=fonts.at(row.font_path).at(row.font_size);
+      if(row.font_size)row.font=fonts.at(row.font_path).points.at(row.font_size);
       PointPresentationOptions options;options.position=position;options.show_all=show_all;
       // Layout already owns the exact resolved colors/options. Raster uses only
       // coordinates, relative mode, clip and emitted font size from that capture.
@@ -1210,12 +1262,21 @@ Image PreparedExportImage::render(const ExecutionControl& control) const {
   auto output=displayImage(*input,state_->metadata,state_->source.data().dataset.sample_policy());
   if(std::any_of(state_->rows.begin(),state_->rows.end(),[](const auto& row){return bool(row.raster);}))
     for(double value:output.pixels){kernel_checkpoint_periodic();if(!std::isfinite(value) || value<0 || value>255)throw std::invalid_argument("Invalid owned display RGB component");}
-  PointRasterFontCache legacy_fonts;
   for(const auto& row:state_->rows) {
     kernel_checkpoint();
     if(row.skip)continue;
     if(row.raster)imagejxx::detail::paint_owned_point_style(output,*row.raster,row.font.get());
-    else paintOverlay(output,row.wire,state_->position,&legacy_fonts,state_->show_all);
+    else if(row.text_row)for(const auto& placed:row.text) {
+      const auto& glyph=*placed.glyph;
+      const int left=int(std::max(0.,placed.x)),top=int(std::max(0.,placed.y));
+      const int right=int(std::min(double(output.width),placed.x+glyph.width));
+      const int bottom=int(std::min(double(output.height),placed.y+glyph.height));
+      for(int y=top;y<bottom;++y)for(int x=left;x<right;++x) {
+        kernel_checkpoint_periodic();
+        const auto gx=std::size_t(x-placed.x),gy=std::size_t(y-placed.y);
+        blend(output,x,y,row.text_color,glyph.coverage[gy*glyph.width+gx]/255.);
+      }
+    } else paintOverlay(output,row.wire,state_->position,nullptr,state_->show_all);
   }
   kernel_checkpoint();imagejxx::detail::without_execution_callbacks([]{kernel_checkpoint();});return output;
 }

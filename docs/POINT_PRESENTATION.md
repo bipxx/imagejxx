@@ -214,7 +214,7 @@ the core. Decimal pixel sizes are positive and at most 512; empty/missing fonts,
 unsupported glyph extents and resource refusal produce explicit errors.
 
 stb's allocation userdata applies the point budget to outline/raster staging;
-legacy text uses its existing null-userdata allocation behavior. Resource tests
+uncaptured live-overlay text retains its existing null-userdata allocation behavior. Resource tests
 include an internal staging refusal followed by successful loading with a normal
 budget. The existing reviewed stb MIT component and notices are reused; no new
 font asset or dependency is incorporated. Font files remain configured/platform
@@ -222,8 +222,8 @@ runtime resources, not a general untrusted-font upload interface. No Java font/
 antialiasing equality is inferred from native analytic geometry or matching
 native-consumer pixels.
 
-Desktop point raster currently reserves the font allowance beside the native
-input/output/layout budget. Its prepared layout is moved into native admission,
+The legacy unprepared point-overlay owner reserves its font allowance beside the
+native input/output/layout budget; prepared export admission is described below. Its prepared layout is moved into native admission,
 so styling/point annotations are decoded once per point overlay. The source
 image and metadata remain unchanged; failed font acquisition publishes no new
 flattened document. Actual input in both Windows hosts turns labels on using
@@ -231,11 +231,10 @@ Properties and then uses Image > Overlays > Flatten. Existing measurement,
 properties and draw-role observations are preserved and read from those same
 captures. PNG and native flattened-session reopen are checked separately.
 
-**P2c.2 remains open:** pre-read point preparation/configured-cap adoption is now
-scoped delivered below. Complete the output calibration/provenance/role and
-general native ROI/font-route contracts, full legacy-text preparation, scheduler/
-publication/cancel/stale/source-close handling and explicit font recovery/state/
-replay policy on the existing owners. PDF/print routes share the code but do not gain end-to-end output or
+**P2c.2 remains open:** pre-read point/text capture, output roles/calibration/
+provenance and the explicit generic ROI/font context are scoped delivered below.
+Complete scheduler-wide reservation, publication/cancel/stale/source-close and
+required state/replay/recovery on the existing owners. PDF/print routes share the code but do not gain end-to-end output or
 platform certification from PNG checks. Non-XY/scientific projection policies
 remain P4/T10; no implicit reinterpretation was added. P2c.3 appearance/loss
 review, P3 draft preview/actions and P4 replay/edit/rebind remain required.
@@ -258,8 +257,11 @@ The model is conservative logical working storage: a 128 KiB owner allowance plu
 `pixels*(64*samples+272)` for the active source plane, display/IEEE conversion,
 RGB output, sequential legacy masks, publication/packing/codec copies, then
 retained metadata/layout/font values. Font staging is admitted from the remaining
-allowance, up to 8 MiB per active file. A separate 512 Mi logical work limit counts
-metadata nodes, display components, font-file/decode allowances and candidate
+allowance, up to 8 MiB for point-only files or 64 MiB for files used by captured
+legacy text. The shared font owner now reports actual charged peak file/control/
+coverage/stb staging rather than reserving a fixed allowance as observed usage.
+A separate 512 Mi logical work limit counts metadata nodes, display components,
+font-file/decode work and candidate
 raster samples, with a distinct work-limit error. These are not RSS, allocator,
 reader-cache, inactive source/history, OS/driver or file-codec implementation
 measurements. Scheduler-wide reservations and exact codec/publication closure
@@ -281,9 +283,9 @@ processing cap and show-all value after preparation and after rendering, before
 starting publication. The private renderer honors inherited/native cancellation,
 including refusal before provider reads. These checks do not yet provide the full
 queued/asynchronous lifecycle or stale-during-file-publication contract. Legacy
-non-point rendering retains its existing owner; legacy text has a conservative
-shared 64 MiB workspace allowance, not frozen Unicode/font coverage. Complete those
-mixed workflows under P2c.2 instead of inferring them from point-only checks.
+non-point mask rendering retains its existing owner. The B1 increment below
+adds frozen legacy-text coverage; scheduler/publication/state guarantees remain
+required instead of being inferred from synchronous pixel checks.
 
 The subsequent output-role increment below adopts those roles and spatial/
 property policy. The admission receipt retains its earlier overlay-only scope;
@@ -385,6 +387,55 @@ per overlay would restore full-image copies. A2 qualifies the additive API with
 installed native clients and independent command pixels; unchanged host-role
 captures need not be repeated. Full text/scheduler/publication/state/replay work
 remains required before P2c.2 closure.
+
+## Captured legacy text exports (P2c.2 B1)
+
+Prepared exports now capture text before asking a provider for image pixels.
+The existing bounded font resource opens each captured path once, loads required
+point-label sizes and text codepoints, and transfers immutable coverage into the
+prepared rows. Metrics and glyphs are shared per path/size/codepoint within the
+request. Decimal text at an already loaded point-label size aliases that font's
+digit coverage without a bitmap copy. The file/resource owner is released before
+source-plane access; no font path is reopened while rendering prepared rows.
+
+Preserve the old text owner's pixel conventions: anchor X truncates per glyph,
+anchor Y floors before the scaled integer ascent, newline resets X and advances
+Y by font size, and advances retain float multiplication before promotion to
+double. The existing byte-decoding behavior, including missing-character .notdef
+and zero-advance combining characters, remains. No kerning/shaping/font-family
+behavior absent from the old owner is implied. Bitmap bounds are clipped before
+integer conversion so huge offscreen anchors stay safe. Per-glyph alpha order
+and overlap with earlier/later point or text rows are unchanged.
+
+Empty/newline-only rows and anchors rejected by the old no-op shape gate acquire
+no unused fonts. Other invalid decoded coordinates still refuse before pixels. Parent-ineligible text is skipped
+before font IO. Required finite anchors, font sizes1..512 and resource errors
+refuse before source reads; preparation observes inherited cancellation. Coverage
+is bounded to the existing4096-pixel glyph extent policy. Configured resources
+remain trusted font files, not an arbitrary uploaded-font parser interface.
+
+Font file/parse work is admitted before file IO; glyph coverage/control bytes and
+stb temporaries are charged before allocation. Actual high-water usage is tracked
+through the existing allocation userdata. The export model additionally charges
+UTF-8-byte-sized worst-case placement capacity, decode work and clipped paint
+samples; it releases duplicate prepared text JSON after layout. Point-only and
+mixed font staging share the remaining processing allowance. Work units include
+two per font-file byte, sixteen per decoded coverage pixel, per-new-glyph control
+and per-text-byte/paint work; they are logical bounds, not a CPU deadline or RSS
+measurement. This does not close scheduler-wide resource reservation or exact
+codec/reader/allocator/driver accounting.
+
+The live cached overlay text owner stays unchanged and supplies a compatibility
+comparison for captured pixels. Native checks compare28 size/content cases,
+including fractional/offscreen, multiline Unicode, missing characters and sizes
+1/9/32/512. Frozen-font checks prepare from a temporary font copy, delete that
+file and replace process font policy before rendering; capture/call cancellation
+and bounded glyph staging/recovery are also checked. No temporary font binary
+is retained or redistributed. Both Windows hosts exercise the actual mixed
+text/point/text Flatten menu with matching legacy-owner pixels. This is scoped
+native text compatibility, not Java font/AA pixel equivalence or Linux/macOS UI
+qualification. B2 still owns queued source/global/settings/close guards, file
+promotion, recovery/state/replay and declared PDF/print output/platform checks.
 
 ## Evidence and remaining integration
 

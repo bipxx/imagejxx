@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 M2b.2b P2c.2 B1 captured legacy text exports",
+  "started": "2026-11-04",
+  "date": "2026-11-05",
+  "state": {
+    "implemented": "Bounded pre-provider-read text/font/metrics/coverage preparation, shared request glyphs and aliased point digits; owned RGB painting without font reopen.",
+    "verified": "418 distinct focused Windows product cases pass (21 new), including8 actual-input readers; native100-check control passes including28 legacy text compatibility cases.",
+    "integrated": "Actual mixed text/point/text Flatten menus in both final Windows hosts,173 frames each; identical pixels and unchanged source.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#captured-legacy-text-exports-p2c2-b1",
+  "results": {
+    "distinct_product_cases": 418,
+    "new_cases": 21,
+    "runs": [
+      {
+        "run": "api001",
+        "cases": 409
+      },
+      {
+        "run": "api002",
+        "cases": 1
+      },
+      {
+        "run": "cpp-reader001",
+        "cases": 4
+      },
+      {
+        "run": "python-reader001",
+        "cases": 4
+      }
+    ],
+    "native_control": "desktop_path_visual",
+    "native_assertions": 100,
+    "native_legacy_size_content_cases": 28,
+    "actual_host_routes": 2,
+    "frames_per_route": 173,
+    "actual_reader_checks": 8,
+    "host_point_and_text_pixels_equal": true,
+    "actual_repeated_campaign": false
+  },
+  "behavior": [
+    "Pre-read failure for bad fonts/sizes/configured cap with no new document/partial export/history mutation.",
+    "Empty/newline-only/no-op anchors and parent-ineligible rows do not load unused font files.",
+    "Captures preserve legacy fractional trunc/floor/baseline, float advance/newline, Unicode/missing/combining glyph and ordered alpha conventions.",
+    "Finite glyph extents/early clipping support huge offscreen anchors without unsafe integer casts.",
+    "One font open per captured path, shared text glyphs by size/codepoint, decimal aliases to already captured point-font coverage.",
+    "Actual allocator-userdata peak, file/control/coverage retention and work checked before resource allocations; no fixed64MiB observed usage claim.",
+    "Deleted temporary font file plus changed process font policy after capture still renders expected pixels with exactly one source read.",
+    "Capture/render pre-cancellation and font-staging refusal/recovery pass; next request recovers after fixing missing font.",
+    "Native-session export/reopen and both actual mixed-role hosts pass; source/history unchanged."
+  ],
+  "resource_model": {
+    "processing_key": "processing_memory_mb",
+    "font_file_limit": "Remaining configured allowance, up to8MiB point-only /64MiB for text-bearing groups; actual charged high-water tracked.",
+    "working_bytes": "Existing source/display/output allowance, visible metadata, worst-case UTF8-byte placement capacity, retained font/glyph data and actual file/stb staging; not RSS.",
+    "logical_work": "512Mi global export units;2 per font-file byte,16 per decoded coverage pixel, per-new-glyph control,8 per text byte and clipped paint samples. These are not exact CPU/time limits.",
+    "exclusions": "Whole scheduler reservation, arbitrary reader cache/allocator/OS/driver/codec internals remain B2/T11; DocumentSnapshot display-property copy cost is unmeasured and owned by B2a/T11."
+  },
+  "legacy_compatibility_owner": {
+    "base_commit": "46a328c",
+    "owner": "src/desktop/rendering.cpp::text",
+    "bytes": 2268,
+    "sha256": "b1da95d9c15fc18d9665b250a7eb8fecc5c2b02ab4e0e652e566fa2ad75c3578",
+    "unchanged": true
+  },
+  "font_resource_identity": {
+    "path": "C:\\WINDOWS\\Fonts\\segoeui.ttf",
+    "bytes": 960076,
+    "sha256": "704eada12961a27fd271f7d3b09e2066520e758390c1776744eff430fee30f6e",
+    "scope": "Existing system/configured font resource identity only; temporary test copy deleted, no binary retained or redistributed"
+  },
+  "waste_review": [
+    {
+      "finding": "Fixed64MiB text allowance and font reload/rasterization during image rendering.",
+      "decision": "Reuse bounded existing resource; capture once before source, share immutable glyphs, charge actual staging and logical work, release file owner before pixels."
+    },
+    {
+      "finding": "Repeated decimal/text bitmap coverage, per-character path resolution and retained duplicate JSON.",
+      "decision": "Alias captured point digits, open explicit path once, reuse glyph map, clear staged text JSON. Keep old float advance conventions."
+    },
+    {
+      "finding": "Probe omitted PointStyle declaring header.",
+      "decision": "Preserve8.938s failed compile log, add direct header;25.703s corrected coherent build passes. Restore one manual include EOL with normalized compiler-input equivalence, no behavior rebuild."
+    },
+    {
+      "finding": "Repeated-line edit guard stopped before write but dependent no-op native build still ran.",
+      "decision": "Preserve1.375s no-op receipt; next owner inspects edit exit before dependent tools, uses unique context and latest same-file bytes. T02 recurrence open."
+    },
+    {
+      "finding": "Small test additions could force unnecessary broad recapture.",
+      "decision": "Only5.219s native test target and one Python recovery case run; product binaries unchanged. Actual host routes run once each, serially retained/retired. No SDK/core/new harness/cache/runtime/font asset."
+    },
+    {
+      "finding": "Snapshot display-property copies may allocate unrelated scalar metadata outside the current per-export model.",
+      "decision": "Defer to B2a/T11 touched capture/reservation review; cost unmeasured, not a speculative whole-core rewrite."
+    }
+  ],
+  "remaining": [
+    "B2a scheduling/resource leases, consumed settings/global/source/pose/close guards through staged file/result publication. Reuse existing Job/JobResult and stage_atomic_file/StagedAtomicFile.",
+    "B2b recovery/state/executable replay and declared format metadata/PDF/print/platform qualification.",
+    "P2c.3 appearance/loss, P3 typed preview/actions, P4 reconciliation and complete T00-T15 scope remain required.",
+    "No new public API/installed SDK campaign, Java font/AA, Linux/macOS UI, full scheduler/RSS, release or broad speed claim."
+  ],
+  "retention": {
+    "archived_groups": 3,
+    "raw_bytes": 1108967,
+    "archive_bytes": 91717,
+    "verified_empty_groups": 12,
+    "all_owned_scratch_absent": true,
+    "temporary_font_copy_absent": true,
+    "compiler_sdk_font_trees_archived": false
+  },
+  "owned_processes": [
+    {
+      "receipt": "api001-pack.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.4529999999795109
+    },
+    {
+      "receipt": "api001-verify.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.26500000013038516
+    },
+    {
+      "receipt": "api001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 4.9060000001918525
+    },
+    {
+      "receipt": "api002.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 1.1869999999180436
+    },
+    {
+      "receipt": "cpp-reader001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9840000001713634
+    },
+    {
+      "receipt": "cpp001-pack.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18700000015087426
+    },
+    {
+      "receipt": "cpp001-verify.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1880000000819564
+    },
+    {
+      "receipt": "cpp001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5470000000204891
+    },
+    {
+      "receipt": "install-app001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18799999984912574
+    },
+    {
+      "receipt": "install-python001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.31299999984912574
+    },
+    {
+      "receipt": "native-build003.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 1.375
+    },
+    {
+      "receipt": "native-build004.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 5.2189999998081475
+    },
+    {
+      "receipt": "native001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3440000000409782
+    },
+    {
+      "receipt": "native002.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18799999984912574
+    },
+    {
+      "receipt": "native003.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3279999999795109
+    },
+    {
+      "receipt": "python-reader001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 1.077999999979511
+    },
+    {
+      "receipt": "python001-pack.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1869999999180436
+    },
+    {
+      "receipt": "python001-verify.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.31200000015087426
+    },
+    {
+      "receipt": "python001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.6410000000614673
+    },
+    {
+      "receipt": "windows-build001.process.json",
+      "exit_code": 1,
+      "elapsed_seconds": 8.938000000081956
+    },
+    {
+      "receipt": "windows-build002.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 25.70300000021234
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "src/desktop/point_raster_font.hpp",
+      "bytes": 1652,
+      "sha256": "7d2df312194fe95b2fde714144cba5600dff87b4e9ce1c8f6206bbcfd3b8d34a"
+    },
+    {
+      "path": "src/desktop/point_raster_font.cpp",
+      "bytes": 10295,
+      "sha256": "c171f53de23f4f59064245be3984eb411567b56778d4a7143cb63b773c01a51b"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "bytes": 62875,
+      "sha256": "862af078183bf4902e2acdb4da190ea6defe845f90cfab112c6e8d44c5a2fded"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 42535,
+      "sha256": "ad1bf9851bf147f7cb0e1a256d555693d43e9057b4dceac7feb6fc779fc991e3"
+    },
+    {
+      "path": "tests/native/test_path_visual.cpp",
+      "bytes": 14556,
+      "sha256": "d3794dac9c3385af47970cb55c2b401af9e02080a28e5e1e2c10a3b1e8c818ac"
+    },
+    {
+      "path": "tests/python/test_text_flatten.py",
+      "bytes": 6247,
+      "sha256": "ccee67abc40b804e5d688e10b11462eeb5a5a2e91d4c8ed8a27dc0a11f253dcd"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 30854,
+      "sha256": "a801bdf7893732e9eb3470c2fa4800683b12da89c95755149aaca746b30244ee"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20170240,
+      "sha256": "a8474d578abe778578283496a62c72023247eed2d68d8a60f9e2af58c6ac90c0"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20256256,
+      "sha256": "585c0306bd48160fba41c30f272bdf1f94851eef0a686c90e729299767a4d1f1"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_path_visual_tests.exe",
+      "bytes": 1035264,
+      "sha256": "18296683d46908e7b71f67b21292635e629d578f7b24932b9495877c04d24e7a"
+    }
+  ],
+  "reference_pins": [
+    {
+      "path": "tests/fixtures/point-presentation-imagej154r.jsonl.gz",
+      "bytes": 2632,
+      "sha256": "cf802f66454eaca2e18674c846d9389e56de06cfe2199813bde5e16c386a2293"
+    }
+  ],
+  "local_evidence_manifest": {
+    "path": ".tmp/manual-workflow-verification/t04a2-text-export-capture-20261104/evidence-manifest.json",
+    "bytes": 19024,
+    "sha256": "dca11a0e0e512b389dc446b2a834fd6831861bcf97e62dda313c9ada084c2847"
+  },
+  "storage_snapshots": [
+    {
+      "path": ".tmp/manual-workflow-verification/text-export-capture-entry001.json",
+      "bytes": 66571,
+      "sha256": "36942e41eb784b320bb9d11e1aeae3d5d42c23a79812f56d90c83cdc1ef43e86",
+      "known_bytes": 8503709284,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/text-export-capture-final001.json",
+      "bytes": 66571,
+      "sha256": "a86357b851c2008f808c5fc6ec0ecd5d791bea0c9baa4ca568a26a75f60c2684",
+      "known_bytes": 8504953926,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    }
+  ]
+}
