@@ -17,6 +17,11 @@ circle. Area work uses the existing background Jobs/log controls; see the
 editable ellipse through the same background and history controls. See
 [point-mask rules and numerical scope](SELECTION_TRANSFORMS.md#fit-ellipse).
 
+**Edit → Selection → Fit Rectangle** creates an editable minimum-area rotated
+rectangle through the same worker, history and explicit replay controls. See
+[source profiles and work limits](SELECTION_TRANSFORMS.md#fit-rectangle-minimum-area).
+
+
 ## Brightness/Contrast
 
 Open **Image → Brightness/Contrast...** for the modeless native panel. See

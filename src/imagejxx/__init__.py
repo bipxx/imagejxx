@@ -60,6 +60,7 @@ from ._native import convex_hull_selection, estimate_convex_hull_selection
 from ._native import bounding_rectangle_selection, estimate_bounding_rectangle_selection
 from ._native import fit_circle_selection, estimate_fit_circle_selection
 from ._native import fit_ellipse_selection, estimate_fit_ellipse_selection
+from ._native import fit_rectangle_selection, estimate_fit_rectangle_selection
 from ._native import auto_threshold_histogram_imagej as auto_threshold_histogram_imagej
 from ._native import pooled_auto_threshold as pooled_auto_threshold, PooledThresholdResult as PooledThresholdResult
 from ._native import pooled_automatic_threshold_display as pooled_automatic_threshold_display

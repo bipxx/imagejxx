@@ -42,4 +42,10 @@ std::size_t estimate_fit_ellipse_selection(const Selection &, int width, int hei
 Selection fit_ellipse_selection(const Selection &, int width, int height,
     bool discard_point_metadata = false, const SelectionEditLimits & = {},
     const ExecutionControl & = {});
+// Minimum-area hull rectangle with editable native axes; straight lines and
+// degenerate hulls refuse. Native masks use occupied cell corners, without a
+// canvas raster; processing curves share the bounded editor contour traversal.
+std::size_t estimate_fit_rectangle_selection(const Selection&,int,int,const SelectionEditLimits& = {});
+Selection fit_rectangle_selection(const Selection&,int,int,bool discard_point_metadata = false,
+    const SelectionEditLimits& = {},const ExecutionControl& = {});
 }

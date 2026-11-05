@@ -1934,7 +1934,7 @@ struct Window::Impl {
         return owner.controller_->active_document_id()==source->id;
     }
     if(action=="show_bounding_rectangle" || action=="bounding_rectangle_selection" ||
-        action=="show_fit_circle" || action=="fit_circle_selection" || action=="show_fit_ellipse" || action=="fit_ellipse_selection") {
+        action=="show_fit_circle" || action=="fit_circle_selection" || action=="show_fit_ellipse" || action=="fit_ellipse_selection" || action=="show_fit_rectangle" || action=="fit_rectangle_selection") {
       const auto captured=source->nativeSnapshot();
       return captured.data().selection.has_value() && !captured.display().orthogonal && !owner.busy() &&
           owner.controller_->active_document_id()==source->id;
@@ -7811,12 +7811,13 @@ void Window::action(const std::string &name, const Json &p) {
   }
   if(name=="show_convex_hull" || name=="convex_hull_selection" ||
       name=="show_bounding_rectangle" || name=="bounding_rectangle_selection" ||
-      name=="show_fit_circle" || name=="fit_circle_selection" || name=="show_fit_ellipse" || name=="fit_ellipse_selection") {
+      name=="show_fit_circle" || name=="fit_circle_selection" || name=="show_fit_ellipse" || name=="fit_ellipse_selection" || name=="show_fit_rectangle" || name=="fit_rectangle_selection") {
     const bool bounding=name=="show_bounding_rectangle" || name=="bounding_rectangle_selection";
     const bool circle=name=="show_fit_circle" || name=="fit_circle_selection";
+    const bool rectangle=name=="show_fit_rectangle" || name=="fit_rectangle_selection";
     const bool ellipse=name=="show_fit_ellipse" || name=="fit_ellipse_selection";
-    const bool show=name=="show_convex_hull" || name=="show_bounding_rectangle" || name=="show_fit_circle" || name=="show_fit_ellipse";
-    const std::string label=ellipse?"Fit Ellipse":circle?"Fit Circle":bounding?"Bounding Rectangle":"Convex Hull";
+    const bool show=name=="show_convex_hull" || name=="show_bounding_rectangle" || name=="show_fit_circle" || name=="show_fit_ellipse" || name=="show_fit_rectangle";
+    const std::string label=rectangle?"Fit Rectangle":ellipse?"Fit Ellipse":circle?"Fit Circle":bounding?"Bounding Rectangle":"Convex Hull";
     if(!p.is_object())throw std::invalid_argument(label+" options must be an object");
     for(const auto &field:p.items())if(field.key()!="document_id" &&
         !(!show && field.key()=="discard_point_metadata"))
@@ -7830,15 +7831,15 @@ void Window::action(const std::string &name, const Json &p) {
       const auto id=source.id();const auto revisions=source.revisions();
       const PlanePosition position{source.display().t,source.display().c,source.display().crosshair[2]};
       impl->ask("Convert points to "+label,{{"discard_point_metadata",false}},
-          [this,id,revisions,position,bounding,circle,ellipse](Json choice) {
+          [this,id,revisions,position,bounding,circle,ellipse,rectangle](Json choice) {
             if(!choice.at("discard_point_metadata").get<bool>())
               throw std::invalid_argument("Allow discarding per-point data to create an area selection");
             const auto current=nativeSnapshot(id);
             if(controller_->active_document_id()!=id || !current.revisions().matches(revisions,Change::Data) ||
                 current.display().t!=position.t || current.display().c!=position.c || current.display().crosshair[2]!=position.z)
               throw RevisionConflict();
-            action(ellipse?"fit_ellipse_selection":circle?"fit_circle_selection":bounding?"bounding_rectangle_selection":"convex_hull_selection",{{"document_id",id},{"discard_point_metadata",true}});
-          },Json::array({{{"name","discard_point_metadata"},{"label","Discard point counters, positions and point-only styling"},{"kind","bool"}}}),ellipse?"fit_ellipse":circle?"fit_circle":bounding?"bounding_rectangle":"convex_hull");
+            action(rectangle?"fit_rectangle_selection":ellipse?"fit_ellipse_selection":circle?"fit_circle_selection":bounding?"bounding_rectangle_selection":"convex_hull_selection",{{"document_id",id},{"discard_point_metadata",true}});
+          },Json::array({{{"name","discard_point_metadata"},{"label","Discard point counters, positions and point-only styling"},{"kind","bool"}}}),rectangle?"fit_rectangle":ellipse?"fit_ellipse":circle?"fit_circle":bounding?"bounding_rectangle":"convex_hull");
       return;
     }
     if(p.contains("discard_point_metadata") && !p.at("discard_point_metadata").is_boolean())
@@ -7849,11 +7850,12 @@ void Window::action(const std::string &name, const Json &p) {
     const bool area=selected.kind!="point" && selected.kind!="multipoint" && selected.kind!="line" && selected.kind!="polyline" && selected.kind!="angle";
     if(ellipse && (selected.kind=="line" || selected.kind=="polyline" || selected.kind=="angle"))
       throw std::invalid_argument("Fit Ellipse does not support line selections");
-    if(ellipse || (circle && area)) {
+    if(rectangle && selected.kind=="line")throw std::invalid_argument("Fit Rectangle does not support straight line selections");
+    if(rectangle || ellipse || (circle && area)) {
       const auto total=cap.max_working_bytes;
       const auto plan=controller_->prepare_snapshot_capture(total/8,source.id());
       const auto allowance=RenderMemory::mul(plan.bytes(),4);
-      if(allowance>=total)throw std::length_error("Fit Circle source capture exceeds processing budget");
+      if(allowance>=total)throw std::length_error(label+" source capture exceeds processing budget");
       auto memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(allowance));
       auto captured=controller_->capture_snapshot(plan);
       if(!source.same_document(captured) || !source.revisions().matches(captured.revisions(),Change::Data))throw RevisionConflict();
@@ -7864,9 +7866,9 @@ void Window::action(const std::string &name, const Json &p) {
       const auto facade=documentById(source.id());
       // Sequential fit and record preparation share one existing prepared-task
       // lease. Reserve the cap conservatively; no second worker or scheduler.
-      impl->startControlled([captured=std::move(captured),limits,creationLimits,dropping,memory,total,captureRecording,ellipse,label](const JobContext& context) {
+      impl->startControlled([captured=std::move(captured),limits,creationLimits,dropping,memory,total,captureRecording,ellipse,rectangle,label](const JobContext& context) {
         const auto shape=captured.data().dataset.shape();
-        auto candidate=(ellipse?fit_ellipse_selection:fit_circle_selection)(*captured.data().selection,shape.x,shape.y,dropping,limits,context.execution_control());
+        auto candidate=(rectangle?fit_rectangle_selection:ellipse?fit_ellipse_selection:fit_circle_selection)(*captured.data().selection,shape.x,shape.y,dropping,limits,context.execution_control());
         auto command=resolve_selection_creation_command(captured,{SelectionCreationOperation::Replace,std::move(candidate),SelectionCreationGeometry::NativePathV4},creationLimits,context.execution_control());
         return Impl::JobResult(std::move(command),memory,total,captureRecording,label);
       },facade,false,label,label,total,{},true);
@@ -10716,6 +10718,7 @@ void Window::Impl::menu() {
       item("Bounding Rectangle", "show_bounding_rectangle");
       item("Fit Circle", "show_fit_circle");
       item("Fit Ellipse", "show_fit_ellipse");
+      item("Fit Rectangle", "show_fit_rectangle");
       for(bool shrink:{false,true}){
         const bool enabled=actionAllowed("enlarge_selection");
         const bool selected=ImGui::MenuItem(shrink?"Shrink...":"Expand...",nullptr,false,enabled);

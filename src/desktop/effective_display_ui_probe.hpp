@@ -14,4 +14,5 @@ Json convexHullWorkflowUiCase(Window&,const std::string& context,const std::stri
 Json boundingRectangleWorkflowUiCase(Window&,const std::string& context,const std::string& fresh_directory);
 Json fitCircleWorkflowUiCase(Window&,const std::string& context,const std::string& fresh_directory,bool area);
 Json fitEllipseWorkflowUiCase(Window&,const std::string& context,const std::string& fresh_directory,bool area);
+Json fitRectangleWorkflowUiCase(Window&,const std::string&,const std::string&,bool area);
 }

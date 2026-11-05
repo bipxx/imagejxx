@@ -54,7 +54,7 @@ double distance_squared(Point p, Point a, Point b) {
 // stored integer origin is applied before the second binary32 rounding.
 template <class Emit>
 void flatten_shape(const std::vector<double> &path, Point origin,
-                   ShapeWork &work, const ImageJRoiLimits &limits, Emit emit) {
+                   ShapeWork &work, const ImageJRoiLimits &limits, Emit emit, double flatness_squared = .0001) {
   std::size_t edge_count = 0;
   auto edge = [&](Point a, Point b) {
     work.poll();
@@ -72,7 +72,7 @@ void flatten_shape(const std::vector<double> &path, Point origin,
   };
   auto quad = [&](auto &self, Point a, Point b, Point c, int depth) -> void {
     work.poll();
-    if (depth == 10 || distance_squared(b, a, c) < .0001) {
+    if (depth == 10 || distance_squared(b, a, c) < flatness_squared) {
       edge(a, c); return;
     }
     const auto ab = midpoint(a, b), bc = midpoint(b, c), m = midpoint(ab, bc);
@@ -82,7 +82,7 @@ void flatten_shape(const std::vector<double> &path, Point origin,
   auto cubic = [&](auto &self, Point a, Point b, Point c, Point d, int depth) -> void {
     work.poll();
     if (depth == 10 || std::max(distance_squared(b, a, d),
-                               distance_squared(c, a, d)) < .0001) {
+                               distance_squared(c, a, d)) < flatness_squared) {
       edge(a, d); return;
     }
     const auto ab = midpoint(a, b), bc = midpoint(b, c), cd = midpoint(c, d),
@@ -123,7 +123,7 @@ struct ShapeRaster {
 };
 
 ShapeRaster prepare_shape(const std::vector<double> &path, int width, int height,
-                          const ImageJRoiLimits &limits, std::size_t cap) {
+                          const ImageJRoiLimits &limits, std::size_t cap, double flatness = .01) {
   require(width > 0 && height > 0 && limits.max_mask_pixels > 0 &&
               limits.max_path_work > 0,
           "Composite ROI requires an explicit positive mask canvas and limits");
@@ -206,7 +206,7 @@ ShapeRaster prepare_shape(const std::vector<double> &path, int width, int height
     state.plan.clipped_bounds = {int(x0), int(y0), int(x1 - x0), int(y1 - y0)};
   const Point origin{left, top};
   flatten_shape(state.normalized, origin, state.work, limits,
-                [&](Point, Point) { ++state.plan.flattened_edges; });
+                [&](Point, Point) { ++state.plan.flattened_edges; }, flatness*flatness);
   const auto edge_bytes = multiply_bytes(state.plan.flattened_edges, sizeof(Edge));
   const auto intersection_bytes = multiply_bytes(state.plan.flattened_edges, sizeof(double));
   state.plan.temporary_bytes = std::max(bounds_peak,
@@ -219,7 +219,7 @@ ShapeRaster prepare_shape(const std::vector<double> &path, int width, int height
   }
   next = 0;
   flatten_shape(state.normalized, origin, state.work, limits,
-                [&](Point a, Point b) { state.edges[next++] = {a, b}; });
+                [&](Point a, Point b) { state.edges[next++] = {a, b}; }, flatness*flatness);
   require(next == state.plan.flattened_edges, "ImageJ shape edge-count mismatch");
   require(!next || std::size_t(height) <= (limits.max_path_work - state.work.units) / next,
           "ImageJ composite scan work limit");
@@ -273,6 +273,21 @@ ImageJShapeMaskPlan plan_imagej_shape_mask(const std::vector<double> &commands,
     kernel_checkpoint();
     return state.plan;
   });
+}
+// Reuse the bounded de Casteljau traversal for editor contours. The mask
+// traversal retains its .01 default; outlines use the pinned .1 profile.
+ImageJShapeMaskPlan plan_imagej_shape_outline(const std::vector<double>& commands,
+    int width,int height,const ImageJRoiLimits& limits,std::size_t cap) {
+  return without_execution_callbacks([&]{return prepare_shape(commands,width,height,limits,cap,.1).plan;});
+}
+std::vector<std::array<double,2>> imagej_shape_outline(const std::vector<double>& commands,
+    int width,int height,const ImageJRoiLimits& limits,std::size_t cap) {
+  auto state=prepare_shape(commands,width,height,limits,cap,.1);
+  const auto bytes=multiply_bytes(state.plan.flattened_edges,sizeof(Point));
+  admit_workspace(state.plan.packed_bytes,add_bytes(state.plan.temporary_bytes,bytes),cap);
+  std::vector<Point> points;points.reserve(state.plan.flattened_edges);
+  for(std::size_t i=0;i<state.plan.flattened_edges;++i){kernel_checkpoint_periodic();points.push_back(state.edges[i][0]);}
+  return points;
 }
 } // namespace detail
 

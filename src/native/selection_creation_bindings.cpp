@@ -60,20 +60,20 @@ std::array<int, 2> point_value(py::iterable value) {
 } // namespace
 
 void bind_selection_creation(py::module_ &m) {
-  for(int operation:{0,1,2,3}) {
-  const bool bounding=operation==1,circle=operation==2,ellipse=operation==3;
-  const auto estimate=ellipse?estimate_fit_ellipse_selection:circle?estimate_fit_circle_selection:bounding?estimate_bounding_rectangle_selection:estimate_convex_hull_selection;
-  const auto transform=ellipse?fit_ellipse_selection:circle?fit_circle_selection:bounding?bounding_rectangle_selection:convex_hull_selection;
-  m.def(ellipse?"estimate_fit_ellipse_selection":circle?"estimate_fit_circle_selection":bounding?"estimate_bounding_rectangle_selection":"estimate_convex_hull_selection",[estimate](const Selection &source,py::handle width,
+  for(int operation:{0,1,2,3,4}) {
+  const bool bounding=operation==1,circle=operation==2,ellipse=operation==3,rectangle=operation==4;
+  const auto estimate=rectangle?estimate_fit_rectangle_selection:ellipse?estimate_fit_ellipse_selection:circle?estimate_fit_circle_selection:bounding?estimate_bounding_rectangle_selection:estimate_convex_hull_selection;
+  const auto transform=rectangle?fit_rectangle_selection:ellipse?fit_ellipse_selection:circle?fit_circle_selection:bounding?bounding_rectangle_selection:convex_hull_selection;
+  m.def(rectangle?"estimate_fit_rectangle_selection":ellipse?"estimate_fit_ellipse_selection":circle?"estimate_fit_circle_selection":bounding?"estimate_bounding_rectangle_selection":"estimate_convex_hull_selection",[estimate](const Selection &source,py::handle width,
       py::handle height,SelectionEditLimits limits) {
     return estimate(source,index_value(width),index_value(height),limits);
   },py::arg("selection"),py::arg("width"),py::arg("height"),py::arg("limits")=SelectionEditLimits{});
-  m.def(ellipse?"fit_ellipse_selection":circle?"fit_circle_selection":bounding?"bounding_rectangle_selection":"convex_hull_selection",[estimate,transform,circle,ellipse](const Selection &source,py::handle width,
+  m.def(rectangle?"fit_rectangle_selection":ellipse?"fit_ellipse_selection":circle?"fit_circle_selection":bounding?"bounding_rectangle_selection":"convex_hull_selection",[estimate,transform,circle,ellipse,rectangle](const Selection &source,py::handle width,
       py::handle height,py::handle discard,SelectionEditLimits limits,
       std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint) {
     if(!boolean(discard))throw py::type_error("Point metadata discard must be Boolean");
     const auto w=index_value(width),h=index_value(height);const bool dropping=py::cast<bool>(discard);
-    if(circle || ellipse)detail::admit_selection_geometry(source,w,h,limits,{});
+    if(circle || ellipse || rectangle)detail::admit_selection_geometry(source,w,h,limits,{});
     else estimate(source,w,h,limits);
     const Selection frozen=source;
     const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));

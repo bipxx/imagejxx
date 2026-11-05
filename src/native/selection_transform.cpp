@@ -29,6 +29,36 @@ std::size_t admission(const Selection &source,int width,int height,
 double cross(Point a,Point b,Point c) {
   return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
 }
+std::vector<Point> ordered_hull(std::vector<Point> points,bool float_profile) {
+  if(float_profile)for(auto &point:points)for(auto &value:point)value=static_cast<float>(value);
+  std::size_t comparisons=0;
+  std::sort(points.begin(),points.end(),[&](const Point &a,const Point &b) {
+    if(!(++comparisons%1024))kernel_checkpoint();
+    return a[0]<b[0] || (a[0]==b[0] && a[1]<b[1]);
+  });
+  points.erase(std::unique(points.begin(),points.end()),points.end());
+  std::vector<Point> hull;hull.reserve(points.size()*2);
+  for(const auto &point:points) {
+    kernel_checkpoint();
+    while(hull.size()>1 && cross(hull[hull.size()-2],hull.back(),point)<=0)hull.pop_back();
+    hull.push_back(point);
+  }
+  const auto lower=hull.size();
+  for(std::size_t i=points.size();i-->0;) {
+    kernel_checkpoint();
+    if(i+1==points.size())continue;
+    while(hull.size()>lower && cross(hull[hull.size()-2],hull.back(),points[i])<=0)hull.pop_back();
+    hull.push_back(points[i]);
+  }
+  if(hull.size()>1)hull.pop_back();
+  if(hull.size()<3)throw std::invalid_argument("Convex Hull needs three non-collinear points");
+  std::reverse(hull.begin(),hull.end());
+  const auto first=std::min_element(hull.begin(),hull.end(),[](const Point &a,const Point &b) {
+    return a[1]<b[1] || (a[1]==b[1] && a[0]<b[0]);
+  });
+  std::rotate(hull.begin(),first,hull.end());
+  return hull;
+}
 bool vertex_bounds(const Selection &s) {
   return s.kind=="point" || s.kind=="multipoint" || s.kind=="polygon" ||
       s.kind=="freehand" || s.kind=="polyline" || s.kind=="angle";
@@ -124,6 +154,82 @@ std::size_t ellipse_admission(const Selection& s,int width,int height,const Sele
     return rectangle_admission(s,width,height,limits,control);
   return area_fit_admission(s,width,height,limits,control,point_selection(s)?sizeof(double):16);
 }
+bool fit_rectangle_curve(const Selection& s) {
+  return s.is_path() || s.is_rounded_box() || s.kind=="ellipse" || s.kind=="rotated_ellipse";
+}
+std::vector<double> fit_rectangle_path(const Selection& s) {
+  if(s.is_path())return s.path_commands();
+  if(s.is_rounded_box()){const auto p=s.rounded_path(true);return {p.begin(),p.end()};}
+  auto frame=*s.box_frame();
+  if(s.kind=="ellipse") {
+    // OvalRoi's processing contour is based on its integer box, expanded by
+    // .0004 before GeneralPath normalization (not its subpixel owner bounds).
+    const double x=std::trunc(std::min(s.points[0][0],s.points[1][0]))-.0004;
+    const double y=std::trunc(std::min(s.points[0][1],s.points[1][1]))-.0004;
+    const double w=std::ceil(std::abs(s.points[1][0]-s.points[0][0]))+.0008;
+    const double h=std::ceil(std::abs(s.points[1][1]-s.points[0][1]))+.0008;
+    frame={{x+w/2,y+h/2},{w/2,0},{0,h/2}};
+  }
+  constexpr double k=.5522847498307933;
+  std::vector<double> path;
+  auto emit=[&](int op,std::initializer_list<Point> pts){path.push_back(op);for(auto q:pts){const auto p=frame.image_point(q);path.push_back(p[0]);path.push_back(p[1]);}};
+  emit(0,{{1,0}});emit(3,{{1,k},{k,1},{0,1}});emit(3,{{-k,1},{-1,k},{-1,0}});
+  emit(3,{{-1,-k},{-k,-1},{0,-1}});emit(3,{{k,-1},{1,-k},{1,0}});path.push_back(4);
+  if(s.kind=="ellipse") {
+    const Point origin{std::floor(frame.center[0]-frame.u[0]),std::floor(frame.center[1]-frame.v[1])};
+    for(std::size_t i=0;i<path.size();) {const int op=int(path[i++]);const std::size_t count=op==4?0:op==3?6:2;for(std::size_t j=0;j<count;++j)path[i+j]-=origin[j%2];i+=count;}
+  }
+  return path;
+}
+std::size_t fit_rectangle_admission(const Selection& s,int w,int h,const SelectionEditLimits& limits,const ExecutionControl& control) {
+  if(s.kind=="line")throw std::invalid_argument("Fit Rectangle does not support straight line selections");
+  auto bytes=detail::admit_selection_geometry(s,w,h,limits,control);
+  for(const auto& point:s.points)for(double v:point)if(std::abs(v)>std::numeric_limits<float>::max())throw std::invalid_argument("Fit Rectangle coordinate exceeds Float32 profile");
+  if(limits.max_vertices<3)throw std::length_error("Fit Rectangle exceeds output vertex limit");
+  std::size_t count=s.points.size();
+  if(s.is_mask())count=std::size_t(s.mask_height())*4;
+  else if(fit_rectangle_curve(s)) {
+    ExecutionScope scope(control);const auto commands=fit_rectangle_path(s);
+    auto roi=ImageJRoiLimits{};roi.max_vertices=limits.max_vertices;roi.max_mask_pixels=limits.max_xy_pixels;
+    const auto plan=detail::plan_imagej_shape_outline(commands,w,h,roi,limits.max_working_bytes-bytes);
+    count=plan.flattened_edges;
+    const auto extra=plan.packed_bytes+plan.temporary_bytes;
+    if(extra>limits.max_working_bytes-bytes)throw std::length_error("Fit Rectangle contour exceeds working limit");
+    bytes+=extra;
+  } else if(s.kind=="rectangle" || s.kind=="rotated_rectangle")count=4;
+  if(count<3)throw std::invalid_argument("Fit Rectangle needs three non-collinear points");
+  if(count>limits.max_vertices || count>(limits.max_working_bytes-bytes)/128)
+    throw std::length_error("Fit Rectangle hull exceeds geometry limits");
+  return bytes+count*128;
+}
+std::vector<Point> fit_rectangle_vertices(const Selection& s,int w,int h,const SelectionEditLimits& limits) {
+  if(fit_rectangle_curve(s)) {
+    auto roi=ImageJRoiLimits{};roi.max_vertices=limits.max_vertices;roi.max_mask_pixels=limits.max_xy_pixels;
+    auto points=detail::imagej_shape_outline(fit_rectangle_path(s),w,h,roi,limits.max_working_bytes);
+    if(s.kind=="ellipse") {
+      const Point origin{std::floor(std::trunc(std::min(s.points[0][0],s.points[1][0]))-.0004),std::floor(std::trunc(std::min(s.points[0][1],s.points[1][1]))-.0004)};
+      for(auto& p:points)for(int a=0;a<2;++a)p[a]=double(float(float(p[a])+float(origin[a])));
+    }
+    return points;
+  }
+  if(s.is_mask()) {
+    std::vector<Point> points;points.reserve(std::size_t(s.mask_height())*4);
+    const auto origin=s.mask_origin();const auto width=s.mask_width();const auto& packed=s.packed_mask();
+    for(int y=0;y<s.mask_height();++y) {
+      int left=width,right=-1;
+      for(int x=0;x<width;++x){kernel_checkpoint_periodic();const auto i=std::size_t(y)*width+x;if(packed[i/8]&(0x80u>>(i%8))){left=std::min(left,x);right=x;}}
+      if(right>=left){const double x0=double(origin[0])+left,x1=double(origin[0])+right+1,y0=double(origin[1])+y;points.insert(points.end(),{{x0,y0},{x1,y0},{x1,y0+1},{x0,y0+1}});}
+    }return points;
+  }
+  if(s.kind=="rectangle" || s.kind=="rotated_rectangle") {
+    const auto frame=*s.box_frame();return {frame.image_point({-1,-1}),frame.image_point({1,-1}),frame.image_point({1,1}),frame.image_point({-1,1})};
+  }
+  auto points=s.points;
+  Point base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
+  for(const auto& p:points)for(int a=0;a<2;++a)base[a]=std::min(base[a],double(float(p[a])));
+  for(auto& p:points)for(int a=0;a<2;++a){const float local=float(p[a])-float(base[a]);p[a]=float(local+float(base[a]));}
+  return points;
+}
 std::array<double,3> circle_from_points(std::vector<Point>& points) {
   Point base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
   for(const auto& p:points)for(int a=0;a<2;++a)base[a]=std::min(base[a],double(float(p[a])));
@@ -182,33 +288,7 @@ Selection convex_hull_selection(const Selection &source,int width,int height,
     const auto a=frozen.points[0],b=frozen.points[1];
     points={a,{a[0],b[1]},b,{b[0],a[1]}};
   } else points=frozen.points;
-  for(auto &point:points)for(auto &value:point)value=static_cast<float>(value);
-  std::size_t comparisons=0;
-  std::sort(points.begin(),points.end(),[&](const Point &a,const Point &b) {
-    if(!(++comparisons%1024))kernel_checkpoint();
-    return a[0]<b[0] || (a[0]==b[0] && a[1]<b[1]);
-  });
-  points.erase(std::unique(points.begin(),points.end()),points.end());
-  std::vector<Point> hull;hull.reserve(points.size()*2);
-  for(const auto &point:points) {
-    kernel_checkpoint();
-    while(hull.size()>1 && cross(hull[hull.size()-2],hull.back(),point)<=0)hull.pop_back();
-    hull.push_back(point);
-  }
-  const auto lower=hull.size();
-  for(std::size_t i=points.size();i-->0;) {
-    kernel_checkpoint();
-    if(i+1==points.size())continue;
-    while(hull.size()>lower && cross(hull[hull.size()-2],hull.back(),points[i])<=0)hull.pop_back();
-    hull.push_back(points[i]);
-  }
-  if(hull.size()>1)hull.pop_back();
-  if(hull.size()<3)throw std::invalid_argument("Convex Hull needs three non-collinear points");
-  std::reverse(hull.begin(),hull.end());
-  const auto first=std::min_element(hull.begin(),hull.end(),[](const Point &a,const Point &b) {
-    return a[1]<b[1] || (a[1]==b[1] && a[0]<b[0]);
-  });
-  std::rotate(hull.begin(),first,hull.end());
+  auto hull=ordered_hull(std::move(points),true);
   Selection result("polygon",std::move(hull));result.width=frozen.width;
   result.attributes=frozen.attributes;
   result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
@@ -345,6 +425,54 @@ Selection fit_ellipse_selection(const Selection& source,int width,int height,boo
   Selection result("rotated_ellipse",{{cx,cy},{cx+ux,cy+uy},{cx+vx,cy+vy}});result.width=frozen.width;result.attributes=frozen.attributes;
   result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
+}
+
+std::size_t estimate_fit_rectangle_selection(const Selection& s,int w,int h,const SelectionEditLimits& limits) {
+  return fit_rectangle_admission(s,w,h,limits,{});
+}
+Selection fit_rectangle_selection(const Selection& source,int w,int h,bool discard_point_metadata,
+    const SelectionEditLimits& limits,const ExecutionControl& control) {
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  fit_rectangle_admission(source,w,h,frozen_limits,frozen_control);
+  if(!discard_point_metadata && (source.attributes.count(point_annotations_attribute) || source.attributes.count(point_style_attribute)))
+    throw std::invalid_argument("Fit Rectangle requires explicit discard of per-point metadata");
+  const Selection frozen=source;ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  const bool legacy=frozen.kind!="rotated_rectangle" && frozen.kind!="rotated_ellipse" && !frozen.is_mask();
+  auto hull=ordered_hull(fit_rectangle_vertices(frozen,w,h,frozen_limits),legacy);
+  if(hull.size()>ImageJRoiLimits{}.max_path_work/hull.size())throw std::length_error("Fit Rectangle hull projection work limit");
+  // Examine each edge in the established topmost/leftmost hull order. Strict
+  // improvement preserves first-edge ties; Float32 differences/products retain
+  // the processing profile while native masks/frames keep binary64 arithmetic.
+  double best=std::numeric_limits<double>::infinity(),bestAngle=0,bestSigned=0,bestLo=0,bestHi=0;Point anchor{};
+  auto sub=[&](double a,double b){return legacy?double(float(float(a)-float(b))):a-b;};
+  auto product=[&](double a,double b){return legacy?double(float(float(a)*float(b))):a*b;};
+  auto sum=[&](double a,double b){return legacy?double(float(float(a)+float(b))):a+b;};
+  for(std::size_t i=0;i<hull.size();++i) {
+    kernel_checkpoint();const auto a=hull[i],b=hull[(i+1)%hull.size()];
+    const double dx=sub(b[0],a[0]),dy=sub(b[1],a[1]),length=legacy?std::sqrt(dx*dx+dy*dy):std::hypot(dx,dy);
+    if(!(length>0) || !std::isfinite(length))throw std::invalid_argument("Fit Rectangle hull edge is singular");
+    double low=0,high=0,far=0;
+    for(const auto& p:hull) {
+      kernel_checkpoint_periodic();const double x=sub(p[0],a[0]),y=sub(p[1],a[1]);
+      const double parallel=sum(product(dx,x),product(dy,y))/length;
+      const double normal=sub(product(dx,y),product(x,dy))/length;
+      low=std::min(low,parallel);high=std::max(high,parallel);if(std::abs(normal)>std::abs(far))far=normal;
+    }
+    const double area=std::abs(far)*(high-low);
+    if(area<best){best=area;bestAngle=std::atan2(dy,dx);bestSigned=far;bestLo=low;bestHi=high;anchor=a;}
+  }
+  if(!(best>0) || !std::isfinite(best))throw std::invalid_argument("Fit Rectangle points are collinear or singular");
+  Point center{anchor[0]+std::cos(bestAngle)*(bestHi+bestLo)/2-std::sin(bestAngle)*bestSigned/2,
+               anchor[1]+std::sin(bestAngle)*(bestHi+bestLo)/2+std::cos(bestAngle)*bestSigned/2};
+  double axis=bestHi-bestLo,span=std::abs(bestSigned);
+  if(span>std::abs(axis)){bestAngle-=std::acos(-1.)/2;span=std::abs(axis);axis=bestSigned;}
+  if(bestAngle*axis>0)axis=-axis;
+  // u points to the first/top control endpoint, v to its perpendicular side.
+  const Point u{std::cos(bestAngle)*axis/2,std::sin(bestAngle)*axis/2};
+  const double length=std::hypot(u[0],u[1]);const Point v{-u[1]*span/(2*length),u[0]*span/(2*length)};
+  Selection result("rotated_rectangle",{center,{center[0]+u[0],center[1]+u[1]},{center[0]+v[0],center[1]+v[1]}});
+  result.width=frozen.width;result.attributes=frozen.attributes;result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
+  result.validate(w,h);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 
 }

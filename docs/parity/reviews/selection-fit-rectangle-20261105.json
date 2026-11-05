@@ -1,0 +1,531 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T06/G018 minimum-area Fit Rectangle",
+  "base_commit": "43f9e1e",
+  "command_candidate": "R-b9a2ede20ac6f03e65b30659",
+  "state": {
+    "implemented": "Public admitted C++/Python estimate and fit APIs,shared ordered hull and bounded editor contours,editable native rotated rectangle,existing controlled worker and explicit V4 candidate route.",
+    "verified": "55 pinned actual Selection.run(rect) observations (8 refusals);2113 distinct affected Windows Python cases pass,including67 new rectangle cases.Windows/Linux core,installed Windows SDK consumer,native creation/parser and composite/rounded/ROI regressions pass.Both physical Windows ImGui hosts and30 shared Circle/Ellipse/Rectangle lifecycle scenarios pass.",
+    "integrated": "Area and point menus,explicit typed point-data loss/cancel/stale error recovery,editable frame,Undo/Redo,workspace save/reopen,strict replay refusal and explicit V4 rebind.Preserve pixels/calibration,zero provider sample reads and terminal scheduler/render resource retirement.",
+    "release_ready": false
+  },
+  "contract": {
+    "api": [
+      "estimate_fit_rectangle_selection(selection,width,height,limits)",
+      "fit_rectangle_selection(selection,width,height,discard_point_metadata=false,limits,control)"
+    ],
+    "profile": "Minimum projected hull area in existing topmost/leftmost order;strict first-edge ties,local Float32 polygon normalization and translated OvalRoi processing contours.Native output is binary64 center/center+u/center+v,not an axis-aligned box or sampled polygon.",
+    "sources": "Vertex area/point/segmented geometry;ordinary rectangles;processing ellipse/rounded/path contours through existing de Casteljau traversal at .1 flatness.Native rotated frames retain binary64 hull arithmetic.Native masks/regions use occupied cell corners through row extrema,including off-canvas intrinsic extents and holes without rasterizing a canvas.",
+    "numeric_tolerances": "Pinned Float32 final endpoints absolute1e-5;minor span absolute1e-6 plus relative1e-7.Fixture unchanged after native corrections.",
+    "resources": "Cheap borrowed geometry admission before Python ownership copy;full contour planning off GIL/creator.Native mask row extrema bounded by4*height;geometry/hull staging charged before allocation.Projection bounded by existing64Mi-work ceiling and cancellable;oversized hull work refuses rather than becoming unbounded.No new memory/RSS claim.",
+    "metadata": "Generic width/opaque attributes retained;typed point data requires explicit discard and Undo restores it.Fit ignores stroke glyph footprints;pixels/calibration untouched.",
+    "v4": "Only explicit NativePathV4 replacement newly accepts validated three-point rotated_rectangle candidates.Default/V1-V3 remain strict;no record schema/public struct layout change.Older readers can refuse new candidate.Replay restores resolved geometry,not fit intent.",
+    "worker": "Reuse captured startControlled lane,source/owner/XY-TCZ/cap/recording guards and retained capture lease through terminal cleanup.Success status staged before commit.Full processing-cap phase reservation remains conservative.",
+    "commercial": "Owned projection/hull adapters and original development-only observer.No new runtime library,asset or imported third-party source."
+  },
+  "reference": {
+    "archive": ".cache/native-verification/references/imagej154r/source.zip",
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "method": "Selection.run(rect) -> fitRectangle;Roi.getFloatConvexHull;PolygonRoi/OvalRoi coordinate constructors",
+    "cases": 55,
+    "refusals": 8
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/selection_transform.hpp",
+      "bytes": 3570,
+      "sha256": "6641a7fe2c5449a60397c9f808cf9831aab92f7419d5572c7e56b68d04a2b49c"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 30787,
+      "sha256": "bc7b13c4ada0cf0fffa4339017cbf5349d4f315871e9e5a6e13e5bf4671eeda2"
+    },
+    {
+      "path": "src/native/imagej_shape.cpp",
+      "bytes": 18765,
+      "sha256": "4186f8ad9be4a00328d93962724d6ae27ed84e4cf0b5118b306b7f6528831d65"
+    },
+    {
+      "path": "src/native/imagej_shape_plan.hpp",
+      "bytes": 1852,
+      "sha256": "8e62195762b9ee8871ec1cdaa49c3605360f97cd3fa17642af1b2651844facdc"
+    },
+    {
+      "path": "src/native/selection_creation.cpp",
+      "bytes": 87779,
+      "sha256": "a3bec04e1d815c45b0e25a3759298540e59f22d2a6c3fc55c56109dd0b33de23"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 21393,
+      "sha256": "f99d5de9bdbdbb01d557a57c3a3ca82c2bdde836d2aa96332ac187c97d87a055"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 83090,
+      "sha256": "c09768bdbcd590c38fbbaa5df188f2d5ee9894df6944c8ee6804105060bed603"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 912839,
+      "sha256": "1d6b2210762e05dadcd69756a107b8473356c53187789379cdcc6e253af279ac"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 54992,
+      "sha256": "fc732d3853d80e8bf38f9ec5cb723be077dbb68d2713413847df6157131cc335"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 1290,
+      "sha256": "d099ad569696135a86259b6e52330c79073e2b58c8f8eff0492dcc7664ad129f"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 65210,
+      "sha256": "7f513b175bade59d1a35521b1054431505d63c0e9cb444b2b9e6629b0b618f42"
+    },
+    {
+      "path": "tests/native/test_selection_transform.cpp",
+      "bytes": 8934,
+      "sha256": "30ff0199dd32e8a73b7954cc56fcf784a99cbee085610f4530d56210764dbce4"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 32424,
+      "sha256": "199ca1e3b476e5a6e17905f77eea8d72080c1d2918f6f3fe0b323d80e8939719"
+    },
+    {
+      "path": "tests/python/test_selection_fit_rectangle.py",
+      "bytes": 11430,
+      "sha256": "b63d23d7ca84a096eaf2edf35e6bbb764a7088266dbb052a589d0bf23d21b077"
+    },
+    {
+      "path": "tests/reference/ObserveFitRectangle.java",
+      "bytes": 4730,
+      "sha256": "1ca640d04df770b1369ab35d8a8b664b47f77a36109f64d44e1651bab96df50a"
+    },
+    {
+      "path": "tests/fixtures/fit-rectangle-imagej154r.json",
+      "bytes": 21611,
+      "sha256": "7b2fde951fc0a4616a1f06284f703280c785cb6a5b4f9e414d6bfc448d8ea0dc"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-_desktop001.process.json",
+      "bytes": 3263,
+      "sha256": "ae21681d80b043770b41dee4c6665b18a5fd15426808738848cbf8aabd2e0b98"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-_native001.process.json",
+      "bytes": 2548,
+      "sha256": "9face72f6e05c3e56b517a16afb4497cee674fd525f7d21c81686bf8d50654be"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-_native002.process.json",
+      "bytes": 2550,
+      "sha256": "65b8f72f1db618dd8f510aed1e29f5d2831ded8a07e461fb4951391d8ee4beba"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_app001.process.json",
+      "bytes": 3272,
+      "sha256": "7d41ddbb8d420f5312e0400fdaddc9513e9a92c2811bafb32f1b753f26a54ec6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_composite_path_tests001.process.json",
+      "bytes": 2572,
+      "sha256": "518824da4695ee977d86a51fd86ef5574954cc6c1b927cb2c366f5f159043639"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_core001.process.json",
+      "bytes": 2558,
+      "sha256": "d393affe745e869b4b53ff9f6a2b6ac9e7da28211ed0bb7f445f03fc6d3fa9b6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_core002.process.json",
+      "bytes": 2557,
+      "sha256": "f7f0a00ab166d0058c8f802bdd77749023d7bc09f70917ba381d0e498030d41b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_desktop001.process.json",
+      "bytes": 3275,
+      "sha256": "f2e3a438e552de051ffd88c09d516b4f4d6c3f3a64f5be9f36180d273a78ea61"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_display_actions_tests001.process.json",
+      "bytes": 3282,
+      "sha256": "9887884bd73d395cf175160bae6867bc374811faea364073e5bb5f86e4f8620c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_imagej_roi_tests001.process.json",
+      "bytes": 2569,
+      "sha256": "fa92d5b4fba7be77e93b23160060115b857ef642cf2df5c51c34feeefb6fbe44"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_rounded_path_tests001.process.json",
+      "bytes": 2566,
+      "sha256": "ec26d938c0ec1d8e9fa4b2f2f4d190e6abeb0bde1533e24ff8c1bf486e069152"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_selection_creation_geometry_tests001.process.json",
+      "bytes": 2582,
+      "sha256": "d79b4c126feb80ede2f29330d0b32ca75d32d91c344b55a2513d5a4096a64710"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_selection_creation_tests001.process.json",
+      "bytes": 2577,
+      "sha256": "43df7b9468bbcadceb750dd5fd17560780c787b994beb17d9c57d96ba7a0b1b6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_selection_transform_tests001.process.json",
+      "bytes": 2577,
+      "sha256": "d3f5869be1a876b60afdb1f555cc24f9d428e15612fc206e9a788ae8c2e785fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/build-imagejxx_selection_transform_tests002.process.json",
+      "bytes": 2573,
+      "sha256": "4ab1ba6b4a4d98d88728141c9a9f738305adf395f10ee2a4249c69d53cb76c43"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/entry.json",
+      "bytes": 2413,
+      "sha256": "5d21abaea6a7c8c321ae2756560fb897a5e591e3aa26e0f7505df49088f6bc97"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/install-app001.process.json",
+      "bytes": 2121,
+      "sha256": "6fa05b57eebadc95c82bb1b1493e8901908070b9b95822043c245c29e1f59a2e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/install-processing001.process.json",
+      "bytes": 2139,
+      "sha256": "91e1727f15631a5135d343fb856ca334a545cf932eae9198ea27b59a3cf6587c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/install-python001.process.json",
+      "bytes": 2131,
+      "sha256": "96f9a23d5be971faee7d503df6153df50e070bd05324a080a88b618b288b554d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/install-python002.process.json",
+      "bytes": 2134,
+      "sha256": "91f4b8c326d991432785ee102e3dd3892d70b360d66f718e70d270ad9204ade4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/install-python003.process.json",
+      "bytes": 2133,
+      "sha256": "d7c39b4f5544951ea19892dda912cde9968faaa4e9d5c4f0fd9ddd288234dec5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/install-sdk001.process.json",
+      "bytes": 2125,
+      "sha256": "bc347edbd453618a4c500af66d86f15693274fce1cb60c028c53eda0570d1de6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/installed-identities001.json",
+      "bytes": 2279,
+      "sha256": "74146328d872877c313fbaee44d6c1a81b77ee72c4501a8f74a299525cd284a6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/linux-build001.process.json",
+      "bytes": 1568,
+      "sha256": "d90441d0c85755ad72368adc06c62f522fab0f4121e65c2e4494e68664fe4c7d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/linux-identities001.json",
+      "bytes": 730,
+      "sha256": "6262f24e6d0c77adfd256c4b61155eb1ec6354d0c6d6a445388ca95f537e86f2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/linux-native001.process.json",
+      "bytes": 1465,
+      "sha256": "9ecc1aa37a39080700eb19c3e35b79141ac9c4908de933da31b00035621b62dc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/linux-owner001.process.json",
+      "bytes": 3015,
+      "sha256": "f77a5f60c628ccddcf2b1dab27e099f4203d8ef14b61777407dd0369d6f7e6d5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-core001.process.json",
+      "bytes": 1842,
+      "sha256": "86b38c2bb62d19589d6081b69c09a325211deef7ed910e40def58ee5c7471034"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-core002.process.json",
+      "bytes": 1841,
+      "sha256": "b3bd9f1288874c59f00545603b33136e749d04ca5db12fa235c6b6ba67f81e53"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-imagejxx_composite_path_tests001.process.json",
+      "bytes": 1828,
+      "sha256": "d721f2a14c553a050ce285fbbba6b4a5e3abc1c7e6b5938795ac44e8f4866efc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-imagejxx_imagej_roi_tests001.process.json",
+      "bytes": 1825,
+      "sha256": "391b1700be6651add86af9ee6071d8a9cd525650aa6b1db416cf3ea79db5e012"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-imagejxx_rounded_path_tests001.process.json",
+      "bytes": 1827,
+      "sha256": "867b7eae4af006276c8524194ef4a740e4c4acf1d20a482db1bcc9abeb4be333"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-imagejxx_selection_creation_geometry_tests001.process.json",
+      "bytes": 1857,
+      "sha256": "0e730d9f10c2ed51b5794ae87166ea897000b9d2db0cda88c4279a363f3691c8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-imagejxx_selection_creation_tests001.process.json",
+      "bytes": 1840,
+      "sha256": "3201e5c94543d5dc73c36bdff37a32d09bf0a3a3da8db96fdf35e31b8d2a8851"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-ui-reader001.json",
+      "bytes": 810,
+      "sha256": "6b2222ba5fa9f589f17a012a496c7ab6022198c911bc7243b3548a5f46df07e1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-ui001-pack.process.json",
+      "bytes": 2516,
+      "sha256": "2bccb5e15707e2f5762d5f184fab373cfa3242176633fe3fd35d930efd1f16d7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-ui001-verify.process.json",
+      "bytes": 2394,
+      "sha256": "591e725d1c83b1cbffce88c881ac030230686ff0d79be4108a0aaf787f516367"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-ui001.process.json",
+      "bytes": 1965,
+      "sha256": "2db47be74714d2f08678738a7c6bdb2658088ed5922798193a6ccb0b887616d1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-ui001.zip",
+      "bytes": 41444,
+      "sha256": "cfc644eabd221de18b95ef740c888a0577f4c71f56a2f697e64cc15bb8a96c9f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python-numeric001.process.json",
+      "bytes": 2412,
+      "sha256": "0aa68adab20e692fcc2a606551a4b2427994aef20aa191f36bbb2eeec81b3067"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python-numeric001.xml",
+      "bytes": 12608,
+      "sha256": "7dc1a1630b41c73764cbfab85c3652f124747ed70b96435e8d7e20d73ecbd1a0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python-numeric002.process.json",
+      "bytes": 2412,
+      "sha256": "14b64341ba9b8ab18dd2767c87de5545e10e3c46c03781e08aa210e29ad2efb4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python-numeric002.xml",
+      "bytes": 8936,
+      "sha256": "b2ba7bd2e5f264f00d294a0ec2a19158985cba8a2514c9d8b3e5e0ae1a4b5d86"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python-regression001.process.json",
+      "bytes": 2910,
+      "sha256": "428f0150f3f346c0dff9d145cc00dbd3a89597c1c7c0c8bd0cc36977a563f032"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python-regression001.xml",
+      "bytes": 282190,
+      "sha256": "bd91cfa45605269b9838965aa0c4801f184a09c36959b4e12aa617e096d3b568"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python001-pack.process.json",
+      "bytes": 2507,
+      "sha256": "0ae4942a78181837d4fc2f31be6a23ec866d61dd3cda068614595dd3a81130fd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python001-verify.process.json",
+      "bytes": 2386,
+      "sha256": "7b31f73c7ff7f890306f491be829a41d26923de4f51d11ed051cee9ae47a6c2f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python001.zip",
+      "bytes": 39104,
+      "sha256": "f186b78169fea5ac9d01d2d09d433e91a705604a6c773a741089f35b92ef0c48"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/reference-compile001.process.json",
+      "bytes": 2192,
+      "sha256": "6ec4664bc3d666095586bb853777174405a4104ea4a764d91cfe392ab16d2cbf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/reference-compile002.process.json",
+      "bytes": 2193,
+      "sha256": "d681f7c368d47e6d46cc48cd718ebf60c6d26214dcb4279f453005dd9fbf2663"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/reference-observe002.process.json",
+      "bytes": 2154,
+      "sha256": "53593f4e1d87faca516ef4994de1b1d4b4f304e4a46e96ef5d9dfe07a0ee993c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/reference001-pack.process.json",
+      "bytes": 2521,
+      "sha256": "3ca5a5b59960b89196d18a1c839672b8d2a92224472622218cf5774ef2d6931a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/reference001-verify.process.json",
+      "bytes": 2397,
+      "sha256": "788373403e64aab21deb53791e44e968e8320acdd231201a78765e05c2a6a0ca"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/reference001.zip",
+      "bytes": 3554,
+      "sha256": "0646105d4d92d3c00a36cada6ed9b1ec29fa802508f5b1a67ff9a77e51d48b77"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/sdk-build001.process.json",
+      "bytes": 2626,
+      "sha256": "bcd3fc15e19b6944c40511d8711088e286418cbae2f9d01624a4aa4513166379"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/sdk-configure001.process.json",
+      "bytes": 2938,
+      "sha256": "11833b5dada7e3fda2ecd0fa0a9407e7f41fbbcf3ad4558b6863679b5c1c2608"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/sdk-run001.process.json",
+      "bytes": 1938,
+      "sha256": "1856886a9cc06b29c96b591432e4b53b5101f8db5554e22c3a92e6a2fc9ff2fb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/source-review.json",
+      "bytes": 2269,
+      "sha256": "9658a833f3919ddc4f3ab0cacd041f17b5168dd494a0b379e7c70bf126021a3d"
+    }
+  ],
+  "failed_attempts": {
+    "reference-compile001": "Attempted package-local direct fitRectangle call;compiled method is private.Used actual public Selection.run(rect) dispatch in compile002/observe002.Failed log retained.",
+    "python-numeric001": "4 fixed-output mismatches from source Float32 local normalization and equal-area tie selection.Corrected PolygonRoi and translated OvalRoi conventions plus exact edge-length evaluation;61 focused cases then passed.No fixture/tolerance change."
+  },
+  "limitations": [
+    "Full source constructor/attachment/style/curve and supported-platform parity remain open;55 cases do not close G018.",
+    "17 legacy gesture checks depend on retired build/references/selection-creation-imagej154r-001/capture-001/capture.json,still unavailable.Not part of2113 passing scope;no new skip,expectation change or retired build regeneration.",
+    "Native mask cell-hull and .1 native path-contour profiles are explicitly distinct from arbitrary external source-constructor equivalence.",
+    "Operation-intent macro compatibility and older-reader acceptance remain T06/T09;current V4 records restore resolved native geometry.",
+    "Contour admission conservatively retains existing planner workspace and scan-work allowance,even though this consumer does not rasterize.Full phase reservation may reduce concurrency;optimize under T02 only with a demonstrated consumer."
+  ],
+  "storage": {
+    "measurements": [
+      {
+        "measurement": {
+          "path": ".tmp/manual-workflow-verification/fit-rectangle-entry-20261105.json",
+          "bytes": 66573,
+          "sha256": "906e8fecd5138f50b802b8432aad660018f5a34a704a99d4b0e1fb9e7dfaa6f1"
+        },
+        "known_bytes": 7316217372,
+        "unknown_subtrees": 214,
+        "budget_verified": false
+      },
+      {
+        "measurement": {
+          "path": ".tmp/manual-workflow-verification/fit-rectangle-closeout-20261105.json",
+          "bytes": 66573,
+          "sha256": "336206e8aef872b0c68e7d0841391fcef5f5d9e67d7534169f5787df434813ab"
+        },
+        "known_bytes": 7318730002,
+        "unknown_subtrees": 214,
+        "budget_verified": false
+      }
+    ],
+    "limit_bytes": 8589934592,
+    "physical_free_at_closeout_observation_bytes": 271531081728,
+    "retirements": [
+      {
+        "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/native-ui001-retirement.json",
+        "bytes": 436,
+        "sha256": "c94b6210aa4edcf5ceafd24b85113f3398bcad0715b48b5ed6720802de05487f"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python-numeric001-empty-retirement.json",
+        "bytes": 280,
+        "sha256": "e056865d41348a0542414f836954f02380a48b1ad3bcb1fc9c1ce6286785bb5d"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python-numeric002-empty-retirement.json",
+        "bytes": 280,
+        "sha256": "8952ec54a84adbef3283673b860b7ba3c592815d0e7cac612ef2200b08005a0b"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/python001-retirement.json",
+        "bytes": 432,
+        "sha256": "3493c253f6db13cf549fa9e729f7a7019e7b9953de7849f125ac103c374cec09"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/reference001-retirement.json",
+        "bytes": 432,
+        "sha256": "76607f5d2e555d76e9c549869fe4c5043f2a2d2bb892194aa97552e409423e6c"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-fit-rectangle-20261105/sdk001-retirement.json",
+        "bytes": 342,
+        "sha256": "65b0e69b6996e40732e9a9d5b4b46431cb88d7d0fa03b4989f7c176ace55808a"
+      }
+    ],
+    "scratch_groups_retired": 6,
+    "policy": "Three final/reference capture groups compressed/live-hash verified;two empty numeric scratch groups removed;SDK consumer hashes retained without whole-tree archive.All process receipts terminal and owned cleanup complete.Warm compiler objects/runtime/SDK preserved.214 inaccessible subtrees remain unknown;full budget unverified."
+  },
+  "execution_seconds": {
+    "build-_desktop001.process.json": 13.330278299981728,
+    "build-_native001.process.json": 41.59111379995011,
+    "build-_native002.process.json": 35.50909020006657,
+    "build-imagejxx_app001.process.json": 8.321141599910334,
+    "build-imagejxx_composite_path_tests001.process.json": 2.854152000043541,
+    "build-imagejxx_core001.process.json": 21.233148300088942,
+    "build-imagejxx_core002.process.json": 2.2879586999770254,
+    "build-imagejxx_desktop001.process.json": 37.32697049994022,
+    "build-imagejxx_display_actions_tests001.process.json": 6.359899000031874,
+    "build-imagejxx_imagej_roi_tests001.process.json": 3.4648108000401407,
+    "build-imagejxx_rounded_path_tests001.process.json": 1.96409110003151,
+    "build-imagejxx_selection_creation_geometry_tests001.process.json": 1.071096200030297,
+    "build-imagejxx_selection_creation_tests001.process.json": 1.4786408999934793,
+    "build-imagejxx_selection_transform_tests001.process.json": 2.4621790000237525,
+    "build-imagejxx_selection_transform_tests002.process.json": 0.9445195998996496,
+    "linux-build001.process.json": 35.429264845999995,
+    "native-ui001-pack.process.json": 0.3675686998758465,
+    "native-ui001-verify.process.json": 0.2472179001197219,
+    "native-ui001.process.json": 2.0662179000210017,
+    "python-numeric001.process.json": 0.9589136000722647,
+    "python-numeric002.process.json": 0.8794340000022203,
+    "python-regression001.process.json": 6.785186600172892,
+    "sdk-build001.process.json": 2.591693599941209,
+    "sdk-configure001.process.json": 5.449015599908307,
+    "sdk-run001.process.json": 0.07732770009897649
+  },
+  "waste_review": {
+    "fix_now": [
+      "Share existing ordered hull and bounded contour traversal;keep .01 raster default unchanged while editor outline uses .1.",
+      "Preflight actual candidate/wire/binding/modal contracts;both hosts pass on first behavioral run.",
+      "Reference-dependent fixtures checked before selected regression;retired17 were not relaunched.",
+      "Keep failed attempts and current captures;retire six scratch groups after source/allocation review and SDK checks."
+    ],
+    "defer": {
+      "T02": "Tighter contour/planner and sequential phase estimates on demonstrated benefit;bounded quadratic projections remain explicit work-limited until a larger-hull consumer warrants calipers.",
+      "T06/T09": "Remaining full source/fit-intent spline/interpolation and external interchange variants.",
+      "T00/T14": "Legacy reference availability and supported-platform release gates."
+    },
+    "no_action": "No new scheduler/controller/schema/common struct,environment or audit framework.No product speedup/RSS/full-family completion claim.Document-only closeout uses link/hash/diff checks,not another build."
+  },
+  "next_task": "T06/G018 spline fitting/removal and its editable control/state consumers;freeze upstream modes and native representation at entry.",
+  "closeout_checks": [
+    "Source and retained evidence hashes current",
+    "Installed core/native/desktop/pure exports/app/header bytes match built sources",
+    "Retained archives hashes and ZIP contents verified;all6 retirement receipts inspected",
+    "All99 inventory states/requirements and non-G018 rows unchanged",
+    "Historical and four unrelated source/doc hashes unchanged",
+    "New documentation file links resolve;git diff --check passes",
+    "Sibling compilexx notebook updated without committing unrelated sibling changes"
+  ]
+}

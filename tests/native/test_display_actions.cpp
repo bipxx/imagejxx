@@ -368,8 +368,13 @@ void convexHullWorkflow(const std::filesystem::path& root) {
 }
 
 void circleJobs(const std::filesystem::path& root) {
-  for(bool ellipse:{false,true})for(int mode=0;mode<10;++mode) {
-    const auto dir=root/(std::string(ellipse?"ellipse-job-":"circle-job-")+std::to_string(mode));std::filesystem::create_directory(dir);
+  for(bool area:{false,true}) {
+    Window rectangle((root/(area?"fit-rectangle-area-preferences.json":"fit-rectangle-preferences.json")).u8string());
+    imagejxx::desktop::fitRectangleWorkflowUiCase(rectangle,"imgui_cpp",(root/(area?"fit-rectangle-area":"fit-rectangle-points")).u8string(),area);
+  }
+  for(int fit:{0,1,2})for(int mode=0;mode<10;++mode) {
+    const bool rectangle=fit==2,ellipse=fit==1;
+    const auto dir=root/(std::string(rectangle?"rectangle-job-":ellipse?"ellipse-job-":"circle-job-")+std::to_string(mode));std::filesystem::create_directory(dir);
     DatasetReadObserver reads;Image image(16,16,1,PixelType::UInt8);
     auto source=std::make_shared<Document>(Dataset::from_stack({image,image}).observe_reads(reads));
     source->select(Selection("rectangle",{{3,3},{13,13}}));
@@ -382,10 +387,10 @@ void circleJobs(const std::filesystem::path& root) {
     if(mode==1){blocker=scheduler->submit([gate](const JobContext& c){gate->hold(c);});gate->await();}
     if(mode==2)session.fixtureWorkerGate([gate](const JobContext& c){gate->hold(c);});
     if(mode==9) {
-      scheduler->set_limits({1,65536,64});refuses([&]{w.action(ellipse?"fit_ellipse_selection":"fit_circle_selection");});
+      scheduler->set_limits({1,65536,64});refuses([&]{w.action(rectangle?"fit_rectangle_selection":ellipse?"fit_ellipse_selection":"fit_circle_selection");});
       check(!w.busy() && source->snapshot().shares_data(before) && w.workflow.empty() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Circle resource refusal retained source/output/resources");continue;
     }
-    w.action(ellipse?"fit_ellipse_selection":"fit_circle_selection");check(w.busy() && source->undo_steps()==0 && w.workflow.empty(),"Area circle must return before publication");
+    w.action(rectangle?"fit_rectangle_selection":ellipse?"fit_ellipse_selection":"fit_circle_selection");check(w.busy() && source->undo_steps()==0 && w.workflow.empty(),"Area circle must return before publication");
     const auto id=w.jobInfo()->id;
     if(mode==1) {
       check(w.jobInfo()->state==JobState::Queued && w.renderMemoryInfo().at("working_bytes").get<std::size_t>()>0,"Queued fit must retain capture without publication");
@@ -403,7 +408,7 @@ void circleJobs(const std::filesystem::path& root) {
       w.wait();
     }
     check(reads.counts().plane_reads==count && !w.busy() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Terminal fit read samples or retained worker/capture storage");
-    if(mode==0)check(w.error().empty() && (ellipse?(source->snapshot().data().selection->kind=="rotated_ellipse" && source->snapshot().data().selection->points[0]==std::array<double,2>{8,8}):source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{2,2},{13,13}}) && source->undo_steps()==1 && w.workflow.size()==1,"Area circle did not publish exactly once");
+    if(mode==0)check(w.error().empty() && (rectangle?(source->snapshot().data().selection->kind=="rotated_rectangle" && source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{8,8},{8,3},{13,8}}):ellipse?(source->snapshot().data().selection->kind=="rotated_ellipse" && source->snapshot().data().selection->points[0]==std::array<double,2>{8,8}):source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{2,2},{13,13}}) && source->undo_steps()==1 && w.workflow.size()==1,"Area circle did not publish exactly once");
     else check(source->undo_steps()==0 && w.workflow.empty(),"Rejected circle published history/recording");
     if(mode==3 || mode==5 || mode==6 || mode==7 || mode==8)check(!w.error().empty(),"Stale circle was not visibly refused");
   }

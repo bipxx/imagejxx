@@ -74,6 +74,21 @@ int main(){try{
   auto ellipseEdit=prepare_selection_creation(ellipseCommand);ellipseOwner.commit(ellipseEdit);
   check(ellipseOwner.snapshot().data().selection==std::optional<Selection>(ellipse) && ellipseOwner.undo_steps()==1,"V4 ellipse candidate lost geometry/history");
   ellipseOwner.undo();check(!ellipseOwner.snapshot().data().selection,"Ellipse candidate Undo lost empty source");
+  const auto fittedRectangle=fit_rectangle_selection(area,16,16);
+  check(fittedRectangle.kind=="rotated_rectangle" && fittedRectangle.points==std::vector<std::array<double,2>>{{8,8},{8,3},{13,8}},"Minimum rectangle frame differs");
+  limits={};limits.max_working_bytes=estimate_fit_rectangle_selection(area,16,16);
+  check(fit_rectangle_selection(area,16,16,false,limits)==fittedRectangle,"Exact minimum rectangle cap refused");
+  --limits.max_working_bytes;refuses([&]{fit_rectangle_selection(area,16,16,false,limits);});
+  refuses([&]{fit_rectangle_selection(Selection("line",{{1,1},{4,4}}),16,16);});
+  refuses([&]{fit_rectangle_selection(Selection("multipoint",{{1,1},{4,4},{8,8}}),16,16);});
+  input=area;control.checkpoint=[&]{input.points={{0,0},{1,1}};};
+  check(fit_rectangle_selection(input,16,16,false,{},control)==fittedRectangle,"Rectangle callback redirected source");
+  refuses([&]{resolve_selection_creation_command(ellipseOwner.snapshot(),{SelectionCreationOperation::Replace,fittedRectangle});});
+  const auto rectangleCommand=resolve_selection_creation_command(ellipseOwner.snapshot(),{SelectionCreationOperation::Replace,fittedRectangle,SelectionCreationGeometry::NativePathV4});
+  validate_selection_creation_command_record(rectangleCommand.record());
+  auto rectangleEdit=prepare_selection_creation(rectangleCommand);ellipseOwner.commit(rectangleEdit);
+  check(ellipseOwner.snapshot().data().selection==std::optional<Selection>(fittedRectangle),"V4 rectangle lost native geometry");
+  std::cout<<"PASS Fit Rectangle minimum-area frame,limits,collinearity,frozen callbacks and V4 candidate\n";
   std::cout<<"PASS Convex Hull geometry, exact/short limits, point metadata policy and frozen callback input\n";
   return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -149,7 +149,46 @@ source-constructor/attachment/style/platform parity. Seventeen older selection
 gesture reference checks currently lack their retired capture environment; their
 expectations remain unchanged and unavailable evidence is not treated as a pass.
 
-Curved/mask hull semantics, spline/minimum-area-rectangle fitting,
+Curved/mask Convex Hull conversion semantics and spline fitting,
 scientific/saved-row variants and supported-platform UI qualification remain
 with T06/G018 and their existing owners. Commercial eligibility requirements
 remain unchanged; this conversion adds no third-party runtime dependency.
+
+## Fit Rectangle (minimum area)
+
+Use **Edit → Selection → Fit Rectangle** for an editable rotated rectangle
+around the selection hull. This differs from the axis-aligned Bounding Rectangle.
+Vertex area, point and segmented selections are supported; straight lines and
+nonarea inputs with fewer than three noncollinear points refuse. Ellipse,
+rounded and path contours reuse the bounded editor outline traversal. Native
+masks/regions fit the convex hull of occupied cell corners, including intrinsic
+off-canvas extents; holes do not add exterior hull vertices. This mask profile
+is explicitly separate from arbitrary ImageJ source-constructor equivalence.
+
+`ij.fit_rectangle_selection(selection, width, height, ...)` and
+`ij.estimate_fit_rectangle_selection(selection, width, height, limits)` use the
+existing geometry limits, execution controls and explicit point-data loss policy.
+The output is a binary64 native `rotated_rectangle` frame with editable axes.
+Generic width/attributes survive; pixels/calibration are unchanged. Processing
+uses uncalibrated coordinates. Polygon input normalization and ellipse local
+GeneralPath translation retain the pinned Float32 tie conventions. Curved
+outlines use .1 flatness; the existing .01 mask raster profile is unchanged.
+
+Geometry/hull storage is admitted before allocation. Native masks use bounded
+row extrema without allocating a canvas raster. Each hull edge is examined with
+live cancellation; more than the existing 64 Mi projection-work units refuses
+rather than running unbounded. Large-hull calipers remain an optimization owned
+by T02 when a real consumer demonstrates the need. Shared contour planning still
+reserves conservative workspace and scan-work allowances; these are not RSS.
+
+Both menus run through the existing captured worker, metadata-loss review,
+stale guards and selection-only history. Explicit V4 replacement newly accepts
+validated three-point rotated-rectangle candidates; default/V1–V3 stay strict.
+Older readers may refuse that new candidate. Workspace and explicit rebind retain
+the frame; replay restores resolved geometry rather than refitting another source.
+
+The [scoped receipt](parity/reviews/selection-fit-rectangle-20261105.json) records
+55 primary observations (eight refusals), native frame/resource checks and both
+physical Windows hosts. Full source-constructor/attachment/style/platform and
+fit-intent macro parity remain open. Seventeen retired legacy gesture-reference
+checks remain unavailable; no pass is inferred from other selection checks.

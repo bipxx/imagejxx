@@ -29,4 +29,10 @@ ImageJShapeMaskPlan plan_imagej_shape_mask(
     const std::vector<double> &commands, int width, int height,
     const ImageJRoiLimits &limits = {},
     std::size_t max_workspace_bytes = std::numeric_limits<std::size_t>::max());
+// Editor contour profile, no canvas raster or image samples. Uses the same
+// bounded traversal with .1 flatness; source geometry remains unchanged.
+ImageJShapeMaskPlan plan_imagej_shape_outline(const std::vector<double>&,int,int,
+    const ImageJRoiLimits&,std::size_t);
+std::vector<std::array<double,2>> imagej_shape_outline(const std::vector<double>&,int,int,
+    const ImageJRoiLimits&,std::size_t);
 } // namespace imagejxx::detail

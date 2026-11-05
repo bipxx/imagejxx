@@ -195,7 +195,7 @@ void candidate_admission(const Selection &candidate, DatasetShape shape,
   }
   if (candidate.kind != "rectangle" && candidate.kind != "ellipse" &&
       candidate.kind != "polygon" && candidate.kind != "freehand" &&
-      candidate.kind != "rounded_rectangle" && !(paths && candidate.kind=="rotated_ellipse"))
+      candidate.kind != "rounded_rectangle" && !(paths && (candidate.kind=="rotated_ellipse" || candidate.kind=="rotated_rectangle")))
     invalid("Selection creation requires a complete rectangle, rounded rectangle, ellipse, polygon or freehand candidate");
   if (candidate.points.size() > limits.max_candidate_vertices)
     invalid("Selection candidate exceeds vertex limit");
@@ -713,10 +713,10 @@ Wire inspect_wire(const MetadataValue &value, DatasetShape shape,
   }
   if (kind=="path" && (!paths || !points.empty())) invalid("Native path payload requires V4 and empty points");
   if (candidate && kind!="path") {
-    if (kind != "rectangle" && kind != "ellipse" && kind != "polygon" && kind != "freehand" && kind != "rounded_rectangle" && !(paths && kind=="rotated_ellipse"))
+    if (kind != "rectangle" && kind != "ellipse" && kind != "polygon" && kind != "freehand" && kind != "rounded_rectangle" && !(paths && (kind=="rotated_ellipse" || kind=="rotated_rectangle")))
       invalid("Unsupported selection creation candidate kind");
     if (((kind == "rectangle" || kind == "ellipse" || kind == "rounded_rectangle") && points.size() != 2) ||
-        ((kind == "polygon" || kind == "freehand") && points.size() < 3) || (kind=="rotated_ellipse" && points.size()!=3))
+        ((kind == "polygon" || kind == "freehand") && points.size() < 3) || ((kind=="rotated_ellipse" || kind=="rotated_rectangle") && points.size()!=3))
       invalid("Incomplete selection creation candidate");
     for (int axis = 0; axis < 2; ++axis)
       if (!std::isfinite(high[axis] - low[axis]) || high[axis] <= low[axis])

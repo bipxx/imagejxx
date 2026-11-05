@@ -14,7 +14,8 @@ editing and scientific XYZ/reslice/TIFF workflows have scoped both-Windows-host
 evidence. Vertex Convex Hull conversion has scoped API/both-Windows-host
 evidence. Bounding Rectangle also has scoped API/both-host checks; T06/G018
 Fit Circle and Fit Ellipse now have scoped API/both-host checks. Minimum-area
-Fit Rectangle is next. Analysis residuals
+Fit Rectangle now has scoped API/both-host checks; spline fitting/removal is next.
+Analysis residuals
 do not impose a blanket prerequisite. Inspect current worktree and
 actual process handles first. Never restart a job based only on an observation
 timeout, nor claim old evidence proves changed inputs. Preserve others' edits.
