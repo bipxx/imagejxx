@@ -75,7 +75,45 @@ frame bounds (outer frame for rounded boxes). Packed masks/regions use bounds of
 occupied cells, retaining their intrinsic origin. These native geometry profiles
 do not establish exact upstream spline/ShapeRoi or source-constructor parity.
 
-Curved/mask hull semantics, other fitting operations,
+## Fit Circle
+
+Use **Edit → Selection → Fit Circle**. Area selections produce a circle from
+their occupied pixel count and centroid on the current canvas; points and
+segmented lines use a Pratt moment fit on ImageJ's integer polygon vertices.
+These are different operations: the area branch does not fit its boundary
+vertices. Both round the final origin and diameter to integer ellipse bounds.
+The underlying equal-area radius is rounded at publication, so the final pixel
+ellipse does not necessarily have exactly the source pixel count.
+
+`ij.fit_circle_selection(selection, width, height, ...)` and
+`ij.estimate_fit_circle_selection(selection, width, height, limits)` use the same
+metadata-discard, limit and execution controls as the other transforms. Geometry
+is frozen before callbacks. Non-area vertices retain the pinned local Float32
+normalization and integer rounding. Straight lines or fewer than three point/
+segmented-line vertices refuse. Singular, nonconvergent, empty canvas area and
+integer-output overflow also refuse. Generic attributes and width survive.
+The API reads selection geometry, not image samples or calibration.
+
+Area fitting reuses existing clipped geometry masks, including packed regions,
+native paths/holes and rotated selections. Admission accounts for the geometry
+raster and existing bounded shape planner; it does not introduce a rasterizer.
+The desktop runs area planning/fitting/command preparation in its existing worker
+lane, retaining an admitted snapshot until publication or cancellation. Point
+fitting is synchronous. Python desktop callers can use `editor.wait()` to wait
+for area publication, and existing Jobs/log controls cancel queued, running or
+ready work. A changed source, owner, XY/T/C/Z pose, effective processing cap or
+recording state invalidates pending area output. Conservative reservation of
+the processing cap covers the sequential phases; it is not measured RSS.
+
+The explicit typed point-data loss review, editable ellipse, selection-only
+Undo/Redo, workspace and V4 rebind behavior are shared with the other conversions.
+Replay restores the resolved ellipse candidate; it does not refit a different
+destination selection. The reference fixture contains 52 observations of pinned
+ImageJ 1.54r `Selection.fitCircle`, including six refusals. Strict native refusal
+of nonconvergence replaces the legacy fallback, and full source-constructor/
+attachment/style/platform and fit-intent macro parity remain separate gaps.
+
+Curved/mask hull semantics, ellipse/spline/minimum-area-rectangle fitting,
 scientific/saved-row variants and supported-platform UI qualification remain
 with T06/G018 and their existing owners. Commercial eligibility requirements
 remain unchanged; this conversion adds no third-party runtime dependency.

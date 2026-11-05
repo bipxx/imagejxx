@@ -9,6 +9,10 @@ choice. See [supported inputs, Python/C++ API and remaining scope](SELECTION_TRA
 **Edit → Selection → Bounding Rectangle** converts supported selections to an
 editable integer rectangle, with the same loss review and history controls.
 
+**Edit → Selection → Fit Circle** fits points or converts occupied area to a
+circle. Area work uses the existing background Jobs/log controls; see the
+[two branches, limits and replay behavior](SELECTION_TRANSFORMS.md#fit-circle).
+
 ## Brightness/Contrast
 
 Open **Image → Brightness/Contrast...** for the modeless native panel. See

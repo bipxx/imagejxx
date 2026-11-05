@@ -545,16 +545,17 @@ Json effectiveDisplayUiCase(Window& window,const std::string& context,const std:
   } catch(const std::exception& e) {report["failure"]=e.what();writeJson((dir/"failure.json").u8string(),report);throw;}
 }
 namespace {
-Json selectionConversionUiCase(Window& w,const std::string& context,const std::string& directory,bool bounding) {
-  const std::string stem=bounding?"bounds":"hull";
-  const std::string menu=bounding?"menu.action.show_bounding_rectangle":"menu.action.show_convex_hull";
+Json selectionConversionUiCase(Window& w,const std::string& context,const std::string& directory,int operation) {
+  const bool bounding=operation==1,circle=operation>=2,area=operation==3;
+  const std::string stem=area?"circle-area":circle?"circle":bounding?"bounds":"hull";
+  const std::string menu=circle?"menu.action.show_fit_circle":bounding?"menu.action.show_bounding_rectangle":"menu.action.show_convex_hull";
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
   require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh Convex Hull fixture required");
   std::filesystem::create_directories(dir);
   Json events=Json::array(),controls=Json::array(),last;
   try {
-  Selection points("multipoint",{{2,2},{12,2},{8,8},{12,12},{2,12}});
-  points=with_point_annotations(points,std::vector<PointAnnotation>(5,PointAnnotation{2,{}}));
+  Selection points=area?Selection("rectangle",{{3,3},{13,13}}):circle?Selection("multipoint",{{3,8},{8,3},{13,8},{8,13}}):Selection("multipoint",{{2,2},{12,2},{8,8},{12,12},{2,12}});
+  if(!area)points=with_point_annotations(points,std::vector<PointAnnotation>(points.points.size(),PointAnnotation{2,{}}));
   DocumentData data{Dataset::from_stack({Image(16,16,1,PixelType::UInt8)})};data.selection=points;
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));
   w.addNativeDocument(owner);w.recording=true;
@@ -568,13 +569,13 @@ Json selectionConversionUiCase(Window& w,const std::string& context,const std::s
     for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
   };
   for(int i=0;i<3;++i)frame();
-  for(bool accept:{false,true}) {
+  if(!area)for(bool accept:{false,true}) {
     for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection",menu})click(last.at("host_controls").at(name),name.c_str());
     require(last.at("dialog").at("open").get<bool>() && !last.at("dialog").at("values").at("discard_point_metadata").get<bool>(),"Convex Hull must require an explicit discard choice");
     if(!accept) {
       click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
       require(owner->snapshot().shares_data(original) && w.workflow.empty() && owner->undo_steps()==0,"Cancel changed selection/history/recording");
-      if(bounding) {
+      if(bounding || circle) {
         for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection",menu})click(last.at("host_controls").at(name),name.c_str());
         click(last.at("dialog").at("controls").at("discard_point_metadata"),"dialog.discard_point_metadata");
         // A source edit during consent must invalidate the captured revision.
@@ -594,7 +595,9 @@ Json selectionConversionUiCase(Window& w,const std::string& context,const std::s
       click(last.at("dialog").at("controls").at("apply"),"dialog.apply");
     }
   }
-  const Selection hull=bounding?Selection("rectangle",{{2,2},{13,13}}):Selection("polygon",{{2,2},{2,12},{12,12},{12,2}});
+  if(area)for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection",menu})click(last.at("host_controls").at(name),name.c_str());
+  w.wait();frame();
+  const Selection hull=circle?(area?Selection("ellipse",{{2,2},{13,13}}):Selection("ellipse",{{3,3},{13,13}})):bounding?Selection("rectangle",{{2,2},{13,13}}):Selection("polygon",{{2,2},{2,12},{12,12},{12,2}});
   require(owner->snapshot().data().selection==std::optional<Selection>(hull) && owner->undo_steps()==1 && w.workflow.size()==1,"Hull menu did not publish a retained area selection");
   const auto record=w.workflow.front();
   w.action("undo");require(owner->snapshot().data().selection==std::optional<Selection>(points),"Hull Undo did not restore point annotations");
@@ -609,7 +612,7 @@ Json selectionConversionUiCase(Window& w,const std::string& context,const std::s
   reopened.replaySelectionCreation(imagejxx::desktop::metadataObjectFromJson(record),SelectionCreationRequest{SelectionCreationOperation::Replace,hull,SelectionCreationGeometry::NativePathV4});
   require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(hull) && reopened.nativeDocument()->undo_steps()==history+1,"Hull explicit replay lost geometry/history");
   reopened.action("undo");require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(points),"Hull replay Undo lost source points");
-  Json report={{"context",context},{"events",events},{"controls",controls},{"record",record},{bounding?"rectangle":"hull",hull.points},{"source",selectionJson(points)},{"state","observed"},{"contract",bounding?"imagejxx.bounding-rectangle.ui.1":"imagejxx.convex-hull.ui.1"}};
+  Json report={{"context",context},{"events",events},{"controls",controls},{"record",record},{circle?"circle":bounding?"rectangle":"hull",hull.points},{"source",selectionJson(points)},{"state","observed"},{"branch",area?"area":"points"},{"contract",circle?"imagejxx.fit-circle.ui.1":bounding?"imagejxx.bounding-rectangle.ui.1":"imagejxx.convex-hull.ui.1"}};
   writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){
     writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",controls}});throw;
@@ -621,6 +624,9 @@ Json convexHullWorkflowUiCase(Window& w,const std::string& context,const std::st
 }
 Json boundingRectangleWorkflowUiCase(Window& w,const std::string& context,const std::string& directory) {
   return selectionConversionUiCase(w,context,directory,true);
+}
+Json fitCircleWorkflowUiCase(Window& w,const std::string& context,const std::string& directory,bool area) {
+  return selectionConversionUiCase(w,context,directory,area?3:2);
 }
 
 }

@@ -1206,6 +1206,11 @@ struct Window::Impl {
     Json analysis_rows;
     // Destroy export payloads before the reservation member releases its lease.
     std::optional<DisplayExportResult> display_export;
+    std::shared_ptr<RenderMemory::Lease> selection_capture_memory;
+    std::optional<ResolvedSelectionCreationCommand> selection_command;
+    std::size_t selection_cap=0;
+    JobResult(ResolvedSelectionCreationCommand command,std::shared_ptr<RenderMemory::Lease> memory,std::size_t cap,bool captureRecording)
+        :recorded(captureRecording),selection_capture_memory(std::move(memory)),selection_command(std::move(command)),selection_cap(cap){}
     JobResult(DisplayExportResult value):display_export(std::move(value)){}
     JobResult(ResolvedTargetAnalysis command,Json rows)
         :analysis_command(std::move(command)),analysis_rows(std::move(rows)){}
@@ -1927,7 +1932,8 @@ struct Window::Impl {
       if(selection && (selection->is_path() || selection->kind=="point" || selection->kind=="multipoint"))
         return owner.controller_->active_document_id()==source->id;
     }
-    if(action=="show_bounding_rectangle" || action=="bounding_rectangle_selection") {
+    if(action=="show_bounding_rectangle" || action=="bounding_rectangle_selection" ||
+        action=="show_fit_circle" || action=="fit_circle_selection") {
       const auto captured=source->nativeSnapshot();
       return captured.data().selection.has_value() && !captured.display().orthogonal && !owner.busy() &&
           owner.controller_->active_document_id()==source->id;
@@ -7803,10 +7809,12 @@ void Window::action(const std::string &name, const Json &p) {
     impl->publishEnlargement(command);return;
   }
   if(name=="show_convex_hull" || name=="convex_hull_selection" ||
-      name=="show_bounding_rectangle" || name=="bounding_rectangle_selection") {
+      name=="show_bounding_rectangle" || name=="bounding_rectangle_selection" ||
+      name=="show_fit_circle" || name=="fit_circle_selection") {
     const bool bounding=name=="show_bounding_rectangle" || name=="bounding_rectangle_selection";
-    const bool show=name=="show_convex_hull" || name=="show_bounding_rectangle";
-    const std::string label=bounding?"Bounding Rectangle":"Convex Hull";
+    const bool circle=name=="show_fit_circle" || name=="fit_circle_selection";
+    const bool show=name=="show_convex_hull" || name=="show_bounding_rectangle" || name=="show_fit_circle";
+    const std::string label=circle?"Fit Circle":bounding?"Bounding Rectangle":"Convex Hull";
     if(!p.is_object())throw std::invalid_argument(label+" options must be an object");
     for(const auto &field:p.items())if(field.key()!="document_id" &&
         !(!show && field.key()=="discard_point_metadata"))
@@ -7820,15 +7828,15 @@ void Window::action(const std::string &name, const Json &p) {
       const auto id=source.id();const auto revisions=source.revisions();
       const PlanePosition position{source.display().t,source.display().c,source.display().crosshair[2]};
       impl->ask("Convert points to "+label,{{"discard_point_metadata",false}},
-          [this,id,revisions,position,bounding](Json choice) {
+          [this,id,revisions,position,bounding,circle](Json choice) {
             if(!choice.at("discard_point_metadata").get<bool>())
               throw std::invalid_argument("Allow discarding per-point data to create an area selection");
             const auto current=nativeSnapshot(id);
             if(controller_->active_document_id()!=id || !current.revisions().matches(revisions,Change::Data) ||
                 current.display().t!=position.t || current.display().c!=position.c || current.display().crosshair[2]!=position.z)
               throw RevisionConflict();
-            action(bounding?"bounding_rectangle_selection":"convex_hull_selection",{{"document_id",id},{"discard_point_metadata",true}});
-          },Json::array({{{"name","discard_point_metadata"},{"label","Discard point counters, positions and point-only styling"},{"kind","bool"}}}),bounding?"bounding_rectangle":"convex_hull");
+            action(circle?"fit_circle_selection":bounding?"bounding_rectangle_selection":"convex_hull_selection",{{"document_id",id},{"discard_point_metadata",true}});
+          },Json::array({{{"name","discard_point_metadata"},{"label","Discard point counters, positions and point-only styling"},{"kind","bool"}}}),circle?"fit_circle":bounding?"bounding_rectangle":"convex_hull");
       return;
     }
     if(p.contains("discard_point_metadata") && !p.at("discard_point_metadata").is_boolean())
@@ -7836,7 +7844,31 @@ void Window::action(const std::string &name, const Json &p) {
     const auto cap=impl->selectionCreationLimits();
     SelectionEditLimits limits{cap.max_pixels,cap.max_candidate_vertices,cap.max_working_bytes};
     const auto shape=source.data().dataset.shape();
-    auto replacement=(bounding?bounding_rectangle_selection:convex_hull_selection)(selected,shape.x,shape.y,p.value("discard_point_metadata",false),limits,{});
+    const bool area=selected.kind!="point" && selected.kind!="multipoint" && selected.kind!="line" && selected.kind!="polyline" && selected.kind!="angle";
+    if(circle && area) {
+      const auto total=cap.max_working_bytes;
+      const auto plan=controller_->prepare_snapshot_capture(total/8,source.id());
+      const auto allowance=RenderMemory::mul(plan.bytes(),4);
+      if(allowance>=total)throw std::length_error("Fit Circle source capture exceeds processing budget");
+      auto memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(allowance));
+      auto captured=controller_->capture_snapshot(plan);
+      if(!source.same_document(captured) || !source.revisions().matches(captured.revisions(),Change::Data))throw RevisionConflict();
+      limits.max_working_bytes=total-allowance;
+      // Geometry/shape planning stays inside the admitted worker as well.
+      auto creationLimits=cap;creationLimits.max_working_bytes=limits.max_working_bytes;
+      const bool dropping=p.value("discard_point_metadata",false),captureRecording=recording;
+      const auto facade=documentById(source.id());
+      // Sequential fit and record preparation share one existing prepared-task
+      // lease. Reserve the cap conservatively; no second worker or scheduler.
+      impl->startControlled([captured=std::move(captured),limits,creationLimits,dropping,memory,total,captureRecording](const JobContext& context) {
+        const auto shape=captured.data().dataset.shape();
+        auto candidate=fit_circle_selection(*captured.data().selection,shape.x,shape.y,dropping,limits,context.execution_control());
+        auto command=resolve_selection_creation_command(captured,{SelectionCreationOperation::Replace,std::move(candidate),SelectionCreationGeometry::NativePathV4},creationLimits,context.execution_control());
+        return Impl::JobResult(std::move(command),memory,total,captureRecording);
+      },facade,false,"Fit Circle","Fit Circle",total,{},true);
+      return;
+    }
+    auto replacement=(circle?fit_circle_selection:bounding?bounding_rectangle_selection:convex_hull_selection)(selected,shape.x,shape.y,p.value("discard_point_metadata",false),limits,{});
     std::string completed=label+" created";
     // V4 native replacement also accepts ordinary polygons and retains
     // selection-only history on both direct publication and executable replay.
@@ -10203,6 +10235,18 @@ void Window::poll() {
         } else publishDisplayExport(std::move(exported.stage),validate,{});
         outputs.publish();impl->status="Display export complete";return;
       }
+      if(completed.selection_command) {
+        if(impl->cancelled)throw OperationCancelled();
+        const auto& command=*completed.selection_command;const auto& captured=command.source();
+        const auto current=nativeSnapshot();
+        if(current.id()!=captured.id() || documentById(captured.id())!=impl->jobDocument || current.display().orthogonal ||
+            current.display().t!=captured.display().t || current.display().c!=captured.display().c || current.display().crosshair[2]!=captured.display().crosshair[2] ||
+            completed.selection_cap!=impl->selectionCreationLimits().max_working_bytes || completed.recorded!=recording)throw RevisionConflict();
+        // Job::complete is in Publishing state, so the existing creator-only
+        // replacement owner can enforce revisions and publish history/record.
+        std::string completedStatus="Fit Circle created";
+        publishSelectionCreation(command);impl->status.swap(completedStatus);return;
+      }
       if(completed.analysis_command) {
         if(impl->cancelled)throw OperationCancelled();
         const auto& command=*completed.analysis_command;
@@ -10666,6 +10710,7 @@ void Window::Impl::menu() {
       item("Invert", "invert_selection");
       item("Convex Hull", "show_convex_hull");
       item("Bounding Rectangle", "show_bounding_rectangle");
+      item("Fit Circle", "show_fit_circle");
       for(bool shrink:{false,true}){
         const bool enabled=actionAllowed("enlarge_selection");
         const bool selected=ImGui::MenuItem(shrink?"Shrink...":"Expand...",nullptr,false,enabled);

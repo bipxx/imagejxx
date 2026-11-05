@@ -38,6 +38,21 @@ int main(){try{
   check(bounding_rectangle_selection(path,16,16).points==std::vector<std::array<double,2>>{{2,3},{8,9}},"Analytic path bounds differ");
   check(bounding_rectangle_selection(Selection("line",{{2,3},{12,3}}),16,16).points==std::vector<std::array<double,2>>{{2,3},{13,4}},"Horizontal line pixel bounds differ");
   std::cout<<"PASS Bounding Rectangle geometry, region/path/line bounds, metadata, caps and frozen callbacks\n";
+  Selection circlePoints("multipoint",{{3,8},{8,3},{13,8},{8,13}});
+  const std::vector<std::array<double,2>> circleBounds{{3,3},{13,13}};
+  check(fit_circle_selection(circlePoints,16,16).points==circleBounds,"Exact point circle differs");
+  Selection area("rectangle",{{3,3},{13,13}});
+  check(fit_circle_selection(area,16,16).points==std::vector<std::array<double,2>>{{2,2},{13,13}},"Equal-area circle differs");
+  limits={};limits.max_working_bytes=estimate_fit_circle_selection(area,16,16);
+  check(fit_circle_selection(area,16,16,false,limits).kind=="ellipse","Exact area fit cap refused");
+  --limits.max_working_bytes;refuses([&]{fit_circle_selection(area,16,16,false,limits);});
+  refuses([&]{fit_circle_selection(Selection("multipoint",{{1,1},{3,3},{7,7}}),16,16);});
+  refuses([&]{fit_circle_selection(Selection::from_packed_region(2,2,{0},{0,0}),16,16);});
+  input=circlePoints;control.checkpoint=[&]{input.points={{0,0}};};
+  check(fit_circle_selection(input,16,16,false,{},control).points==circleBounds,"Fit callback redirected captured points");
+  const auto hole=Selection::from_path(std::vector<double>{0,3,3,1,13,3,1,13,13,1,3,13,4,0,5,5,1,11,5,1,11,11,1,5,11,4});
+  check(fit_circle_selection(hole,16,16).points==std::vector<std::array<double,2>>{{3,3},{12,12}},"Area fit ignored path hole");
+  std::cout<<"PASS Fit Circle point/area/hole geometry, caps, empty/singular and frozen callbacks\n";
   std::cout<<"PASS Convex Hull geometry, exact/short limits, point metadata policy and frozen callback input\n";
   return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

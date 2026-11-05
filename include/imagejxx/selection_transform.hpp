@@ -25,4 +25,13 @@ std::size_t estimate_bounding_rectangle_selection(const Selection &, int width, 
 Selection bounding_rectangle_selection(const Selection &, int width, int height,
     bool discard_point_metadata = false, const SelectionEditLimits & = {},
     const ExecutionControl & = {});
+// Area: occupied canvas-clipped pixel count and centroid, without image samples.
+// Points/open lines: bounded Pratt fit on ImageJ getPolygon integer vertices.
+// Both return an integer-bounds ellipse; empty/singular/nonconvergent/overflow
+// inputs refuse. Estimates include geometry raster/shape-planning workspace.
+std::size_t estimate_fit_circle_selection(const Selection &, int width, int height,
+                                         const SelectionEditLimits & = {});
+Selection fit_circle_selection(const Selection &, int width, int height,
+    bool discard_point_metadata = false, const SelectionEditLimits & = {},
+    const ExecutionControl & = {});
 }

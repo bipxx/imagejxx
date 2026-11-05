@@ -358,13 +358,59 @@ void convexHullWorkflow(const std::filesystem::path& root) {
   imagejxx::desktop::convexHullWorkflowUiCase(window,"imgui_cpp",(root/"convex-hull").u8string());
   Window box((root/"bounds-preferences.json").u8string());
   imagejxx::desktop::boundingRectangleWorkflowUiCase(box,"imgui_cpp",(root/"bounding-rectangle").u8string());
+  for(bool area:{false,true}) {
+    Window circle((root/(area?"circle-area-preferences.json":"circle-preferences.json")).u8string());
+    imagejxx::desktop::fitCircleWorkflowUiCase(circle,"imgui_cpp",(root/(area?"circle-area":"circle-points")).u8string(),area);
+  }
   std::cout<<"PASS Convex Hull physical menu/loss choice/cancel/history/session/explicit replay in native C++\n";
 }
 
+void circleJobs(const std::filesystem::path& root) {
+  for(int mode=0;mode<10;++mode) {
+    const auto dir=root/("circle-job-"+std::to_string(mode));std::filesystem::create_directory(dir);
+    DatasetReadObserver reads;Image image(16,16,1,PixelType::UInt8);
+    auto source=std::make_shared<Document>(Dataset::from_stack({image,image}).observe_reads(reads));
+    source->select(Selection("rectangle",{{3,3},{13,13}}));
+    Window w((dir/"preferences.json").u8string());w.addVirtualDocument(source);w.recording=true;
+    w.updateSettings({{"processing_memory_mb",32}},false);
+    if(mode==8){w.addVirtualDocument(std::make_shared<Document>(Dataset::from_stack({image})));w.setActiveIndex(0);}
+    HeadlessInputSession session(w);auto scheduler=session.fixtureApplication().job_scheduler();scheduler->set_limits({1,64*1048576,64});
+    const auto before=source->snapshot();const auto count=reads.counts().plane_reads;
+    auto gate=std::make_shared<ExportGate>();ExportGateRelease release{gate};Job blocker;
+    if(mode==1){blocker=scheduler->submit([gate](const JobContext& c){gate->hold(c);});gate->await();}
+    if(mode==2)session.fixtureWorkerGate([gate](const JobContext& c){gate->hold(c);});
+    if(mode==9) {
+      scheduler->set_limits({1,65536,64});refuses([&]{w.action("fit_circle_selection");});
+      check(!w.busy() && source->snapshot().shares_data(before) && w.workflow.empty() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Circle resource refusal retained source/output/resources");continue;
+    }
+    w.action("fit_circle_selection");check(w.busy() && source->undo_steps()==0 && w.workflow.empty(),"Area circle must return before publication");
+    const auto id=w.jobInfo()->id;
+    if(mode==1) {
+      check(w.jobInfo()->state==JobState::Queued && w.renderMemoryInfo().at("working_bytes").get<std::size_t>()>0,"Queued fit must retain capture without publication");
+      check(w.cancelJob(id),"Queued circle cancellation refused");gate->release();blocker.wait();blocker.complete([]{});w.wait();
+    } else if(mode==2) {
+      gate->await();check(w.cancelJob(id),"Running circle cancellation refused");gate->release();w.wait();
+    } else {
+      exportUntil([&]{return w.jobInfo()->state==JobState::Ready || w.jobInfo()->state==JobState::Failed;});
+      if(mode==3)source->select(Selection("point",{{1,1}}));
+      if(mode==4)check(w.cancelJob(id),"Ready circle cancellation refused");
+      if(mode==5)w.updateSettings({{"processing_memory_mb",64}},false);
+      if(mode==6)w.recording=false;
+      if(mode==7){auto display=source->snapshot().display();display.crosshair[2]=1;source->set_display(display);}
+      if(mode==8)w.setActiveIndex(1);
+      w.wait();
+    }
+    check(reads.counts().plane_reads==count && !w.busy() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Terminal fit read samples or retained worker/capture storage");
+    if(mode==0)check(w.error().empty() && source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{2,2},{13,13}} && source->undo_steps()==1 && w.workflow.size()==1,"Area circle did not publish exactly once");
+    else check(source->undo_steps()==0 && w.workflow.empty(),"Rejected circle published history/recording");
+    if(mode==3 || mode==5 || mode==6 || mode==7 || mode==8)check(!w.error().empty(),"Stale circle was not visibly refused");
+  }
+  std::cout<<"PASS area Fit Circle asynchronous lifecycle, stale guards and zero sample reads/resources\n";
+}
 } // namespace
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture root required");std::filesystem::create_directories(root);
-  metadata(root);ieee(root);menu(root);exportJobs(root);exportAcceptedPathsAndMenu(root);everydayEditing(root);scientificNavigation(root);convexHullWorkflow(root);
+  metadata(root);ieee(root);menu(root);exportJobs(root);exportAcceptedPathsAndMenu(root);everydayEditing(root);scientificNavigation(root);convexHullWorkflow(root);circleJobs(root);
   std::cout<<"PASS metadata-only manual contrast, palette controls, IEEE validation and Image menu defaults\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

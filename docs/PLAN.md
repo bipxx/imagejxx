@@ -6,13 +6,14 @@ scoped integrated in both Windows hosts. The bounded everyday editing workflow
 now has both-host composition checks. Scientific navigation/reslice TIFF export
 now preserves its transform. Convex Hull vertex conversion has scoped API and
 both-Windows-host evidence. Bounding Rectangle now has the same scoped
-workflow coverage; Fit Circle is next.
+workflow coverage. Both Fit Circle branches now have scoped API/both-host
+evidence; Fit Ellipse is next.
 Local cleanup retired scratch and compiler
 intermediates; preserve existing configured caches/products and rebuild only
 for changed compiler inputs or a demonstrated verification dependency.
 Native snapshot capture and queued ownership are scoped integrated in both
 Windows hosts; Python controls and changed installed clients on Windows/Linux pass.
-Next: T06/G018 Fit Circle. Remaining print/platform/output
+Next: T06/G018 Fit Ellipse. Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
 Appearance interchange, typed draft preview and the full T00-T15
@@ -122,7 +123,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | Scientific navigation: open supported stack -> C/Z/T and XY/XZ/YZ -> XZ reslice -> TIFF export/reopen. | Fixed rejected origin/direction/time metadata with an owned version1 spatial extension.1121 distinct affected Windows Python cases, both actual native/Python ImGui workflows and Windows/Linux native IO controls pass. Spatial values are reviewable in both IO forms. [Receipt](parity/reviews/scientific-spatial-tiff-20261105.json). Other readers may ignore the extension; legacy ImageJ origins, other view/format variants and release gates remain open. |
 | Delivered scoped workflow | T06/G018: vertex Convex Hull conversion. | Native/Python API and actual menu/loss-choice/Undo/Redo/session/rebind work in both Windows hosts.568 affected Python cases, Windows/Linux native checks and installed Windows SDK client pass. [Receipt](parity/reviews/selection-convex-hull-20261105.json). Curved/mask/path inputs, saved-row/scientific variants and other G018 transformations remain open. |
 | Delivered scoped workflow | T06/G018: Bounding Rectangle conversion. |45 pinned bounds observations;619 distinct affected Windows Python cases, Windows/Linux native and installed Windows SDK checks pass. Both physical hosts cover loss cancel/apply, stale-review refusal/error acknowledgement, Undo/Redo/session/rebind. [Receipt](parity/reviews/selection-bounding-rectangle-20261105.json). Native path/rotated/mask profiles are explicit; full source-constructor/style/platform parity remains open. |
-| Active next | T06/G018: Fit Circle. | Implement pixel-area/centroid and non-area point-fit branches through the existing conversion/loss/history owners. Freeze pinned integerization, rounding and degenerate behavior; reuse admitted geometry/masks and avoid image sample reads. |
+| Delivered scoped workflow | T06/G018: Fit Circle, area and point branches. |52 pinned observations;679 distinct affected Windows Python cases, Windows/Linux native and installed Windows SDK checks pass. Both physical hosts cover menus/loss/history/session/rebind; ten gated area-job scenarios cover cancellation/stale/resource retirement and zero provider reads. [Receipt](parity/reviews/selection-fit-circle-20261105.json). Full constructor/style/fallback/fit-intent macro/platform parity remains open. |
+| Active next | T06/G018: Fit Ellipse. | Match pinned occupied-pixel moments/axis conventions through existing mask, worker and selection-history owners. Freeze point-mask behavior separately; lines refuse. Return editable native ellipse geometry with required metadata/loss/session/replay controls. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -711,57 +713,57 @@ reslice, virtual/tiled sources and extra platform qualification remain named
 T07/T10/T11/T14 residuals, not prerequisites unless the chosen consumer needs
 them. Expand this specification only when it becomes the next ready task.
 
-**Active next: Fit Circle (T06/G018).** Vertex Convex Hull and Bounding
-Rectangle now have scoped API and both-Windows-host integration; see
-[contracts and residuals](SELECTION_TRANSFORMS.md), the
-[hull receipt](parity/reviews/selection-convex-hull-20261105.json) and
-[bounds receipt](parity/reviews/selection-bounding-rectangle-20261105.json).
-Neither delivery closes G018 or its remaining hull/source-kind semantics.
+**Active next: Fit Ellipse (T06/G018).** Vertex Convex Hull, Bounding Rectangle
+and both Fit Circle branches have scoped native/Python and both-Windows-host
+integration. See [contracts/residuals](SELECTION_TRANSFORMS.md) and the
+[circle receipt](parity/reviews/selection-fit-circle-20261105.json). G018 and the
+full source-kind/attachment/style/fit-intent macro/platform scopes remain open.
 
-Deliver selection -> Edit/Selection Fit Circle -> editable ellipse/circle ->
-Undo/Redo -> workspace save/reopen and explicit recorded replay in both Windows
-hosts. Pinned ImageJ `Selection.fitCircle` has two required branches: area ROIs
-produce a circle of equal occupied pixel area at their pixel centroid, while
-non-area point/open-line input uses the integer polygon vertices for circle
-fitting (at least three points, with explicit singular/collinear refusal).
-Implement both branches; do not substitute a bounding-box circle or an area-only
-exit. Inspect source constructors/getPolygon, clipping and the complete fit method
-before freezing rounding, numerical/convergence and metadata policies.
+Deliver selection -> Edit/Selection Fit Ellipse -> editable native ellipse ->
+Undo/Redo -> workspace save/reopen and explicit recorded rebind in both Windows
+hosts. Pinned `Selection.createEllipse` rejects lines and uses uncalibrated
+CENTROID+ELLIPSE statistics; it builds an EllipseRoi from major-axis endpoints and
+minor/major ratio. Inspect `EllipseFitter`, statistics, EllipseRoi construction
+and point-mask behavior before freezing coverage, cell-moment correction, area
+normalization, axis sign/ties, tiny/empty/singular results and numeric tolerances.
+Do not substitute a bounding-box ellipse or reuse Circle's point-vertex fitter
+for points: observe the required statistics/mask branch separately.
 
-Add a narrow admitted C++ `fit_circle_selection` operation/estimate alongside
-existing transforms, with Python binding/export. Reuse existing area membership
-and bounds primitives: one admitted geometry raster/count/centroid traversal if
-needed, no image sample/provider read, no second scan converter or fit library.
-Area behavior uses pixel space (the pinned statistics call has no calibration);
-freeze clipping/off-canvas, holes, empty geometry, tiny diameter and integer/double
-output rules. For non-area input use independently implemented bounded numeric
-code and literal known-circle plus pinned observations; preserve nonconvergence
-as a refusal, not plausible-looking output. Account for mask/fit temporaries and
-callback/cancel/frozen-input guarantees before allocation. If area work needs a
-worker, use the existing captured selection job/publication ownership.
+Add admitted C++ `fit_ellipse_selection`/estimate APIs alongside existing
+transforms and their Python exports. Reuse current geometry masks and shape
+workspace planning, with one occupied-pixel count/centroid/moment traversal;
+extract a local shared area helper only where Circle and Ellipse actually reuse
+it. Use independently implemented bounded 2x2 moment/eigenvalue math, no new fit
+library or rasterizer. Match pixel-space clipping/holes and freeze integer versus
+binary64/Float32 output. Reuse `rotated_ellipse`/existing frame and editing
+primitives after checking their actual constructors/interchange consumers.
+Preserve generic style/provenance and pixels/calibration. Required typed point
+metadata loss remains explicit; invalid results refuse without publication.
 
-Reuse the conversion menu, explicit typed point-data loss choice, stale owner/
-revision/pose guards and selection-creation Replace/V4 history/replay. Preserve
-pixels/calibration, generic style/provenance and source state on refusal/cancel.
-Freeze exact declarations, accepted-kind profiles, IDs/settings and affected
-checks in the task entry. No new public common struct, command schema, controller,
-scheduler, cache or dependency. Batch both algorithm branches, bindings and
-physical UI cases before shared compilation in the warm Windows/Linux caches.
+Reuse the captured prepared-task worker and selection-creation Replace/V4
+publication/history/record route. Keep expensive shape planning inside the worker;
+Python processing uses cheap borrowed source-copy admission before releasing the
+GIL, then the full native planner. Admit capture and geometry/record phases before
+allocation, keep cancellation live, retain leases through READY/publication, and
+check source/owner/XY-TCZ/effective cap/recording at adoption. No new common public
+struct, scheduler, controller, cache or command schema. Recorder replay restores
+resolved geometry; full operation-intent macro compatibility retains T09/T06.
 
-Validate both numeric branches, limits/cancel/metadata/editable output and actual
-menu/loss/history/session/replay in both Windows hosts, plus changed installed
-clients. For stale-review error recovery, inspect the maintained projection
-probe and `dialogs()` first: let the modal finish initial layout, physically
-acknowledge error OK, then cancel/resume the retained draft. Keep unrelated
-numerical results; verify extension **and pure-export** install components/loaded
-paths/hashes before checks. Retain consumer scratch through final source review,
-then hash-verify necessary captures/failures and retire terminal scratch serially.
+Freeze exact APIs, IDs/settings, files and checks at entry. Use literal geometric
+moments plus pinned observations, resource exact/short caps, empty/holes/cancel,
+metadata and editable-axis checks. Batch both numerical and physical error/
+lifecycle cases before one build in each warm cache. Reuse the maintained modal
+recovery sequence: settle layout, actual error OK, then resume/cancel retained
+draft. Verify extension and pure-export installed paths/bytes before checks;
+keep SDK scratch through final source/allocation review, then retire terminal
+captures/scratch with live-hash verification. Missing platform gates block only
+claims depending on them; they do not close full release scope.
 
-**Following candidate: Fit Ellipse (T06/G018).** Inspect existing area moments
-and upstream behavior at entry. Spline/minimum-area-rectangle fits, curved/mask
-hulls, full saved-row/scientific transformations and additional platform/release
-qualification remain explicit residuals. Reorder only for a recorded consumer or
-higher-value missing workflow.
+**Following candidate: Fit Rectangle (minimum area, T06/G018).** Inspect pinned
+accepted geometry and reuse the native hull/frame primitives at entry. Spline
+fits, curved/mask hulls, other transforms, full saved-row/scientific variants and
+additional platform/release qualification remain explicit residuals. Reorder only
+for a recorded consumer or higher-value missing workflow.
 
 ### Reduce overhead at the existing task boundaries
 

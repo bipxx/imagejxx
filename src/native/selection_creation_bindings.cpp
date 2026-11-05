@@ -1,4 +1,5 @@
 #include "binding_metadata.hpp"
+#include "selection_region_rotation.hpp"
 #include <imagejxx/selection_creation.hpp>
 #include <imagejxx/selection_enlargement.hpp>
 #include <imagejxx/selection_transform.hpp>
@@ -59,19 +60,21 @@ std::array<int, 2> point_value(py::iterable value) {
 } // namespace
 
 void bind_selection_creation(py::module_ &m) {
-  for(bool bounding:{false,true}) {
-  const auto estimate=bounding?estimate_bounding_rectangle_selection:estimate_convex_hull_selection;
-  const auto transform=bounding?bounding_rectangle_selection:convex_hull_selection;
-  m.def(bounding?"estimate_bounding_rectangle_selection":"estimate_convex_hull_selection",[estimate](const Selection &source,py::handle width,
+  for(int operation:{0,1,2}) {
+  const bool bounding=operation==1,circle=operation==2;
+  const auto estimate=circle?estimate_fit_circle_selection:bounding?estimate_bounding_rectangle_selection:estimate_convex_hull_selection;
+  const auto transform=circle?fit_circle_selection:bounding?bounding_rectangle_selection:convex_hull_selection;
+  m.def(circle?"estimate_fit_circle_selection":bounding?"estimate_bounding_rectangle_selection":"estimate_convex_hull_selection",[estimate](const Selection &source,py::handle width,
       py::handle height,SelectionEditLimits limits) {
     return estimate(source,index_value(width),index_value(height),limits);
   },py::arg("selection"),py::arg("width"),py::arg("height"),py::arg("limits")=SelectionEditLimits{});
-  m.def(bounding?"bounding_rectangle_selection":"convex_hull_selection",[estimate,transform](const Selection &source,py::handle width,
+  m.def(circle?"fit_circle_selection":bounding?"bounding_rectangle_selection":"convex_hull_selection",[estimate,transform,circle](const Selection &source,py::handle width,
       py::handle height,py::handle discard,SelectionEditLimits limits,
       std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint) {
     if(!boolean(discard))throw py::type_error("Point metadata discard must be Boolean");
     const auto w=index_value(width),h=index_value(height);const bool dropping=py::cast<bool>(discard);
-    estimate(source,w,h,limits);
+    if(circle)detail::admit_selection_geometry(source,w,h,limits,{});
+    else estimate(source,w,h,limits);
     const Selection frozen=source;
     const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
     py::gil_scoped_release release;return transform(frozen,w,h,dropping,limits,control);

@@ -3,6 +3,7 @@
 #include <imagejxx/point_presentation.hpp>
 #include "selection_region_rotation.hpp"
 #include "kernel_control.hpp"
+#include "imagej_shape_plan.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -44,6 +45,73 @@ std::size_t rectangle_admission(const Selection &s,int width,int height,
     if(value<std::numeric_limits<int>::min()+2.0 || value>std::numeric_limits<int>::max()-2.0)
       throw std::invalid_argument("Bounding Rectangle coordinate exceeds integer profile");
   return bytes;
+}
+bool circle_area(const Selection &s) {
+  return s.kind!="point" && s.kind!="multipoint" && s.kind!="line" && s.kind!="polyline" && s.kind!="angle";
+}
+std::size_t circle_admission(const Selection &s,int width,int height,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  auto bytes=rectangle_admission(s,width,height,limits,control);
+  if(!circle_area(s)) {
+    if(s.kind=="line" || s.points.size()<3)
+      throw std::invalid_argument("Fit Circle requires at least three non-collinear point/segmented-line vertices");
+    return bytes;
+  }
+  const auto pixels=std::size_t(width)*height;
+  // Dense geometry mask plus packed/output staging; source geometry, polygon
+  // vertices/intersections and fixed slack are already charged by admission.
+  if(pixels>(limits.max_working_bytes-bytes)/16)
+    throw std::length_error("Fit Circle geometry raster exceeds working limit");
+  bytes+=pixels*16;
+  if(s.is_path() || s.is_rounded_box()) {
+    ExecutionScope scope(control);
+    auto charge=[&](const std::vector<double>& path) {
+      const auto plan=detail::plan_imagej_shape_mask(path,width,height,{},limits.max_working_bytes-bytes);
+      bytes+=plan.packed_bytes+plan.temporary_bytes;
+    };
+    if(s.is_path())charge(s.path_commands());
+    else {const auto path=s.rounded_path(true);charge(std::vector<double>(path.begin(),path.end()));}
+  }
+  return bytes;
+}
+std::array<double,3> circle_from_points(std::vector<Point>& points) {
+  Point base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
+  for(const auto& p:points)for(int a=0;a<2;++a)base[a]=std::min(base[a],double(float(p[a])));
+  Point origin{std::floor(base[0]+.5),std::floor(base[1]+.5)},mean{};
+  for(auto& p:points) {
+    kernel_checkpoint_periodic();
+    for(int a=0;a<2;++a){const float relative=float(p[a])-float(base[a]);p[a]=std::floor(double(relative)+.5)+origin[a];mean[a]+=p[a];}
+  }
+  const double count=double(points.size());for(auto& v:mean)v/=count;
+  double xx=0,yy=0,xy=0,xz=0,yz=0,zz=0;
+  for(const auto& p:points) {
+    kernel_checkpoint_periodic();const auto x=p[0]-mean[0],y=p[1]-mean[1],z=x*x+y*y;
+    xx+=x*x;yy+=y*y;xy+=x*y;xz+=x*z;yz+=y*z;zz+=z*z;
+  }
+  xx/=count;yy/=count;xy/=count;xz/=count;yz/=count;zz/=count;
+  const double trace=xx+yy,det=xx*yy-xy*xy;
+  if(!(det>0) || !std::isfinite(det))throw std::invalid_argument("Fit Circle points are collinear or singular");
+  // Pratt's constrained moment equation. Solve its root nearest zero with a
+  // finite iteration bound; unlike legacy fallback, nonconvergence is explicit.
+  const double c2=4*det-3*trace*trace-zz;
+  const double c1=zz*trace+4*det*trace-xz*xz-yz*yz-trace*trace*trace;
+  const double c0=xz*xz*yy+yz*yz*xx-zz*det-2*xz*yz*xy+trace*trace*det;
+  double root=0;bool converged=false;
+  for(int step=0;step<20;++step) {
+    kernel_checkpoint();const double value=c0+root*(c1+root*(c2+4*root*root));
+    if(value==0){converged=true;break;}
+    const double derivative=c1+root*(2*c2+16*root*root);
+    const double next=root-value/derivative;
+    if(!std::isfinite(next) || next<0)break;
+    if(next==root || (next!=0 && std::abs((next-root)/next)<1e-12)){root=next;converged=true;break;}
+    root=next;
+  }
+  if(!converged)throw std::invalid_argument("Fit Circle did not converge");
+  const double determinant=root*root-root*trace+det;
+  const double x=(xz*(yy-root)-yz*xy)/(2*determinant),y=(yz*(xx-root)-xz*xy)/(2*determinant);
+  const double radius=std::sqrt(x*x+y*y+trace+2*root);
+  if(!std::isfinite(radius) || radius<=0)throw std::invalid_argument("Fit Circle is singular");
+  return {x+mean[0],y+mean[1],radius};
 }
 }
 std::size_t estimate_convex_hull_selection(const Selection &source,int width,int height,
@@ -144,6 +212,31 @@ Selection bounding_rectangle_selection(const Selection &source,int width,int hei
   }
   Selection result("rectangle",{{b[0],b[1]},{b[2],b[3]}});result.width=frozen.width;
   result.attributes=frozen.attributes;
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
+  result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
+}
+std::size_t estimate_fit_circle_selection(const Selection &source,int width,int height,
+    const SelectionEditLimits &limits) {return circle_admission(source,width,height,limits,{});}
+Selection fit_circle_selection(const Selection &source,int width,int height,bool discard_point_metadata,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  circle_admission(source,width,height,frozen_limits,frozen_control);
+  if(!discard_point_metadata && (source.attributes.count(point_annotations_attribute) || source.attributes.count(point_style_attribute)))
+    throw std::invalid_argument("Fit Circle requires explicit discard of per-point metadata");
+  Selection frozen=source;ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  std::array<double,3> circle;
+  if(circle_area(frozen)) {
+    const auto mask=frozen.mask(width,height);double sx=0,sy=0;std::size_t count=0;
+    for(std::size_t i=0;i<mask.pixels.size();++i) {
+      kernel_checkpoint_periodic();if(mask.pixels[i]!=0){++count;sx+=double(i%width);sy+=double(i/width);}
+    }
+    if(!count)throw std::invalid_argument("Fit Circle requires nonempty area on the canvas");
+    circle={sx/double(count)+.5,sy/double(count)+.5,std::sqrt(double(count)/3.14159265358979323846)};
+  } else circle=circle_from_points(frozen.points);
+  const double x=std::floor(circle[0]-circle[2]+.5),y=std::floor(circle[1]-circle[2]+.5),d=std::max(1.,std::floor(2*circle[2]+.5));
+  for(double v:{x,y,d,x+d,y+d})if(!std::isfinite(v) || v<std::numeric_limits<int>::min() || v>std::numeric_limits<int>::max())
+    throw std::invalid_argument("Fit Circle exceeds integer output profile");
+  Selection result("ellipse",{{x,y},{x+d,y+d}});result.width=frozen.width;result.attributes=frozen.attributes;
   result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }

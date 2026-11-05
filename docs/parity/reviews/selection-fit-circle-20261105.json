@@ -1,0 +1,464 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T06/G018 Fit Circle, area and point branches",
+  "base_commit": "c94c79f",
+  "command_candidate": "R-b74287ebd677e483d1337005",
+  "state": {
+    "implemented": "Public C++/Python Fit Circle and estimate APIs; occupied-area/centroid and Pratt point branches; existing conversion controls, explicit point-data loss/history/V4 replay; captured prepared-task worker for area planning/fitting/command preparation.",
+    "verified": "52 pinned observations including6 refusals;679 distinct affected Windows Python cases pass, with2 same-ID focused review checks for width and callback-triggered cancellation. Windows/Linux native core and installed Windows public C++ consumer pass. Both actual Windows ImGui host branches, plus10 gated area-job scenarios, pass. All behavioral verification attempts pass on first run. Final creator-status allocation correction passes4 same-ID Python UI/editor cases and native UI/lifecycle regressions; unchanged geometry/Linux/SDK evidence reused.",
+    "integrated": "Editable ellipse after both area/point menu routes; loss cancel/consent, stale review/error acknowledgement, Undo/Redo/workspace and strict replay refusal/explicit rebind. Area jobs return before publication; queued/running/ready cancel, source/pose/owner/cap/recording changes and entry resource refusal produce no history/record. Processing performs zero provider plane reads and retires scheduler/render working storage.",
+    "release_ready": false
+  },
+  "contract": {
+    "api": [
+      "estimate_fit_circle_selection(selection,width,height,limits)",
+      "fit_circle_selection(selection,width,height,discard_point_metadata,limits,control)"
+    ],
+    "area": "Canvas-clipped occupied pixels, centroid of pixel centers and radius sqrt(count/pi). Reuse Selection.mask/shape planner, including holes/packed regions/native rotated geometry. Round final origin and diameter to integer ellipse bounds; do not fit area boundary vertices.",
+    "points": "At least3 point/segmented-line/angle vertices; locally normalized Float32 then integer getPolygon coordinates. Independent Pratt moment equation with at most20 Newton updates and explicit singular/nonconvergent refusal. Straight Line refuses.",
+    "refusal": "Empty canvas area, invalid input, inadequate resource/vertex limits, nonfinite/singular/nonconvergent fit and integer output overflow refuse without source mutation/publication. Native nonconvergence refusal is stricter than legacy fallback.",
+    "metadata": "Retain generic/opaque attributes and width; explicit discard of typed point annotations/style. History restores original metadata. Pixels/calibration unchanged; statistics in pixel space.",
+    "worker": "Existing startControlled prepared-task lane and scheduler; private JobResult carries existing resolved V4 replacement and retained capture lease. Full effective cap reservation conservatively covers sequential geometry/command phases. Capture allowance4*declared snapshot bytes is withheld from each phase. Creator uses existing publishSelectionCreation while Job is Publishing, with owner/revisions/XY-TCZ/cap/recording guards. No new scheduler/controller/common public struct/record schema.",
+    "python": "Cheap borrowed geometry admission before source copy; release GIL before full circle planner/fit. Explicit estimate may traverse geometry; no duplicate full planner under the GIL in the processing binding.",
+    "replay": "V4 restores resolved ellipse candidate, not operation-intent refitting of arbitrary destination selections. Full fit-intent macro compatibility retains T09/T06.",
+    "commercial": "Owned numeric implementation using existing geometry; original development-only observer invokes pinned ImageJ code. No new runtime/library/asset dependency."
+  },
+  "reference": {
+    "archive": ".cache/native-verification/references/imagej154r/source.zip",
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "source": "ImageJ1.54r commit62db90a269cccc1ac79f658e4602043214ed055b; Selection.fitCircle, PolygonRoi.getPolygon/finishPolygon, ROI/statistics/ellipse constructors",
+    "cases": 52,
+    "refusals": 6,
+    "scope": "Actual pinned fitCircle invocation on an attached64x64 ByteProcessor, including area/subpixel/clipped/tiny and cardinal/noisy/duplicate/collinear/few-vertex point cases. Does not blanket-qualify all source constructors/attachments/style/fallback/platform variants."
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/selection_transform.hpp",
+      "bytes": 2489,
+      "sha256": "48c53c40324da024c3a9da9c3fe3396a206a764189525a7189b5cd41e7ed7168"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 14045,
+      "sha256": "4c3a3c28daaee7eb373cd893f188b704a3ffc77f90c0f62a2b641c4106ce39dc"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 21003,
+      "sha256": "edf139cf00550df80ab80e9f2e658d2c381bd5a4c864c95d82c16db67b67ba7e"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 82935,
+      "sha256": "b6533ca5ebad970f412f8d67cd7434e77daa4c337f89a6af581ef6685d61c6f7"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 911555,
+      "sha256": "ba7ea0bcc1ee34193e757ca2daef65d328cde0bf6d9cc1915c1f15c308fecd0f"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 53744,
+      "sha256": "edaa876c4c1393db114043f047dfcf32c88b467ab2f9bdabc5ba173be88e0266"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 1088,
+      "sha256": "8849f63f702db71c841a867897587c8f38725933dc984c9dcde8d776316f261a"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 64276,
+      "sha256": "cca9d7bf031d73f5ec7a6a9a16ba9c5372468d30ee5644691d68abdc73c27e71"
+    },
+    {
+      "path": "tests/native/test_selection_transform.cpp",
+      "bytes": 5257,
+      "sha256": "395e2a7d133184158a7344e5d231d43b077f0a6681768b57a28ce4aec9832632"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 31290,
+      "sha256": "09a857cceea7f8f16d9c8d16134e08bdd76f2e3fdbb04633f1f8d243cd45e1d0"
+    },
+    {
+      "path": "tests/python/test_selection_fit_circle.py",
+      "bytes": 6926,
+      "sha256": "77cb93c71cdb6a91fb87a3ac6aa33839a4c2736ae986b565aa9ff6f991e9dc88"
+    },
+    {
+      "path": "tests/reference/ObserveFitCircle.java",
+      "bytes": 4029,
+      "sha256": "95707b7633da0e5ae37681a7116581244d8b72106538ceea92b105284c0ef0fa"
+    },
+    {
+      "path": "tests/fixtures/fit-circle-imagej154r.json",
+      "bytes": 11418,
+      "sha256": "77b1b2a345a68f354b84ece661f9ee159067f4a496713bac52cbfdf2db2bc893"
+    }
+  ],
+  "processes": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-_desktop001.process.json",
+      "sha256": "4536f259d13c0b3171bdfcf9d3a2c358a14c008ca2e16a57479b2fc985e8ffdd",
+      "exit_code": 0,
+      "elapsed_seconds": 11.97160379984416
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-_desktop002.process.json",
+      "sha256": "229306462f288eb11a6013c29eb30ae7531f69f42cf962fb0ef26eecb89786f6",
+      "exit_code": 0,
+      "elapsed_seconds": 6.7169570999685675
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-_native001.process.json",
+      "sha256": "b4417364a9df7985d065c94ae45c57575ce0d9e4a1f645488d72359ee00e8f7c",
+      "exit_code": 0,
+      "elapsed_seconds": 37.65307189989835
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-imagejxx_app001.process.json",
+      "sha256": "74e7fc6359ecc2d223f780709751ce08900d809db8e0e82c7051a6e031332525",
+      "exit_code": 0,
+      "elapsed_seconds": 7.813788499915972
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-imagejxx_app002.process.json",
+      "sha256": "15e50e7714bbfaa24a626e41fc5da93a54f3e900823addf6c776e19ef7db7faa",
+      "exit_code": 0,
+      "elapsed_seconds": 2.719958500005305
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-imagejxx_core001.process.json",
+      "sha256": "df7d3100786e69bae49b7ae4f1cd15af83c0e7e1327f91d44c1696b1ba42c02e",
+      "exit_code": 0,
+      "elapsed_seconds": 2.7403265999164432
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-imagejxx_desktop001.process.json",
+      "sha256": "fc964ae440423a342f36baa61fc40ecf78643ad3f9952034e778be9b65fcff4d",
+      "exit_code": 0,
+      "elapsed_seconds": 28.187442200025544
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-imagejxx_desktop002.process.json",
+      "sha256": "86109cb73f96c1f8cd17ee796d6b5f361351604d7fc010c4e4bccd6001ee19ab",
+      "exit_code": 0,
+      "elapsed_seconds": 21.992417400004342
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-imagejxx_display_actions_tests001.process.json",
+      "sha256": "7cb190113b50b9a35ae76923696304a5b78503825c91c11e6a6f1e86e4e272b7",
+      "exit_code": 0,
+      "elapsed_seconds": 5.748829799937084
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-imagejxx_display_actions_tests002.process.json",
+      "sha256": "1ce8e11eed348f418cd52db499a10f367ec9a0b026659de0a1de61041b99a28c",
+      "exit_code": 0,
+      "elapsed_seconds": 1.9403228999581188
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/build-imagejxx_selection_transform_tests001.process.json",
+      "sha256": "868d993870885fb9b7db7d010d9cd21d1af5cfb43b308c66131b6f1f1e4f0e96",
+      "exit_code": 0,
+      "elapsed_seconds": 2.0170141998678446
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/install-app001.process.json",
+      "sha256": "69cc49564e105e52b64ee41782c873f0d529ceb3c7e33d8fa965fe631ea76087",
+      "exit_code": 0,
+      "elapsed_seconds": 0.16461959993466735
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/install-app002.process.json",
+      "sha256": "45919a642178f27cfc355b65f56dfcb575ac50410f910a8a85471f9983be6799",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1404397999867797
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/install-processing001.process.json",
+      "sha256": "ddb3c123dbd18ea30aab46746f26e97f494834e5de11f2fc587cbbe69c3c51b4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08968079998157918
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/install-python001.process.json",
+      "sha256": "64d30fcbeb40db2fb63f75663f7698f19ba14d4bf3c961dcd26c73e4d1416ee2",
+      "exit_code": 0,
+      "elapsed_seconds": 0.19432629994116724
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/install-python002.process.json",
+      "sha256": "d4af0af55773e5d61a75ab1a38c99e7933cf52109e89c9695a362595635edc92",
+      "exit_code": 0,
+      "elapsed_seconds": 0.16782029997557402
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/install-sdk001.process.json",
+      "sha256": "bd7339956376c6c0745989b1733c13b8da25128637adab23afc1bd1871be1da1",
+      "exit_code": 0,
+      "elapsed_seconds": 0.22531660017557442
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/linux-build001.process.json",
+      "sha256": "31136ca8ce3076efaa51a3c43e317ea9037a826a11ff63c73f8e97fa05c479b9",
+      "exit_code": 0,
+      "elapsed_seconds": 7.021730924
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/linux-native001.process.json",
+      "sha256": "d155c040af53998473e83d93031b449e41045e5fba9fef5a437c8038930ef105",
+      "exit_code": 0,
+      "elapsed_seconds": 0.06812374999999804
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/linux-owner001.process.json",
+      "sha256": "9bfdb87817698d9379489a256a453987622001647d4044d947b82956f7e3c647",
+      "exit_code": 0,
+      "elapsed_seconds": 7.376471900148317
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-core001.process.json",
+      "sha256": "d9098458c0f91067db7f4749ec7afd678a2f7bb6caba58fe55b06c257fae67d2",
+      "exit_code": 0,
+      "elapsed_seconds": 0.06861349986866117
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-ui001-pack.process.json",
+      "sha256": "c7347259693235de0a537dd2ae3fcf255d0b3fa6df80db5acb03386ff40b6e7d",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3137334999628365
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-ui001-verify.process.json",
+      "sha256": "f0647348eabe7ea53dbf56d86e5cac1f9d0840dec59320bfed7222cc2419fdb8",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18313229992054403
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-ui001.process.json",
+      "sha256": "43f1041417695dc536a924a83c1e2baa40975d090856273ba463771509b771a3",
+      "exit_code": 0,
+      "elapsed_seconds": 1.6163312999997288
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-ui002-pack.process.json",
+      "sha256": "7a8e312bb25116d7a3f5b934001f3e85f8a5fa6853df19013fd8c7128011f37e",
+      "exit_code": 0,
+      "elapsed_seconds": 0.4782817999366671
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-ui002-verify.process.json",
+      "sha256": "237d70996dd5a27abc37740199b853152c4b02d16aa886b0a611e77d667a2757",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18755619996227324
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-ui002.process.json",
+      "sha256": "22ae60bd1daad26bb7a5934ee308cc11cfb886508fc78c1f1a14b07a8e3d0d53",
+      "exit_code": 0,
+      "elapsed_seconds": 1.642871499992907
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-regression001.process.json",
+      "sha256": "c14770acb4da78f545ef2003713ff177b61a52d95fe85884421083f11b1f5a85",
+      "exit_code": 0,
+      "elapsed_seconds": 3.188007799908519
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-review002.process.json",
+      "sha256": "f7fca3768f6edc8974025bfe93d0a80641a6e7fcd65a733bb379e964d80611d7",
+      "exit_code": 0,
+      "elapsed_seconds": 0.90471430006437
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-ui002-pack.process.json",
+      "sha256": "7e645971d1a5ef76c4a67be012dee020e0a4dc53ae5ab8277f42b50d34dc7569",
+      "exit_code": 0,
+      "elapsed_seconds": 0.18826249986886978
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-ui002-verify.process.json",
+      "sha256": "1a25ea617f38d630f525f02f1ca255ac16980e9079c400f77c89b97250b87c90",
+      "exit_code": 0,
+      "elapsed_seconds": 0.13497230014763772
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-ui002.process.json",
+      "sha256": "1ff3397417dca54154756d53e7c587a2ea4dd481488092e2ba9ec2250261798b",
+      "exit_code": 0,
+      "elapsed_seconds": 1.1586806999985129
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python001-pack.process.json",
+      "sha256": "2416b9d86dfb2a63bd4393dcb2555399e89c4dfaee3135028553b806c6584cff",
+      "exit_code": 0,
+      "elapsed_seconds": 0.21021439996547997
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python001-verify.process.json",
+      "sha256": "60f9b919522ae86d119a26e80d3c9434cfc68bf54b8010b4dd34740259ef8305",
+      "exit_code": 0,
+      "elapsed_seconds": 0.15447279997169971
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/reference-compile001.process.json",
+      "sha256": "cc3c142ad6510729ee9343eb228602cd394a1c26b520785a726c52f72ffd3ff4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.6012274001259357
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/reference-observe001.process.json",
+      "sha256": "d88c22df7dab94869dfb89df98cfc0d3c6461dd4a7c990c27a1c78f546c28f3e",
+      "exit_code": 0,
+      "elapsed_seconds": 0.4712765000294894
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/reference001-pack.process.json",
+      "sha256": "86b741a1b6a732f7ed04db81fcf1c105986d4960c68fbb4e72f914f148ec8d6c",
+      "exit_code": 0,
+      "elapsed_seconds": 0.19791470002382994
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/reference001-verify.process.json",
+      "sha256": "e41a3929d56eb3a850b018d88adc97004988cb879e52b2f0158f9bb1b670e2e2",
+      "exit_code": 0,
+      "elapsed_seconds": 0.13610640005208552
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/sdk-build001.process.json",
+      "sha256": "2e5e2f4b83c7a990059d332a797d56b7b01644f36869989218c1487cec6b2b77",
+      "exit_code": 0,
+      "elapsed_seconds": 2.0686452998779714
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/sdk-configure001.process.json",
+      "sha256": "a35f295605a9a9c682130eaab684463083cdb076023e650adab62704608874b8",
+      "exit_code": 0,
+      "elapsed_seconds": 4.559999899938703
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/sdk-run001.process.json",
+      "sha256": "f57e37ba0e3f95f9b73bf97e93b1333e8ceb7d5d67cbc4dae3c5ac3955c27e28",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07633000006899238
+    }
+  ],
+  "final_evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-regression001.xml",
+      "sha256": "93241d7b0e91cea3679e8d92f28b5ad2bbe0cc8baeae8bda71a86064fade9521"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-review002.xml",
+      "sha256": "d67b7fe4cd4f3b96e6c9ed23b1773830b61c961dc85b0b2abb9f27c71967487e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-ui002.xml",
+      "sha256": "13c45d79609e4c32583751469d0630942130b3979f802205a25504119855fd49"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-ui-reader002.json",
+      "sha256": "110694644fbfd1f64123506516735a421036c6c68498406fc4104511a8340c43"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/installed-identities002.json",
+      "sha256": "f1c4963ce4fa24a9cac2ed42b312f8aaceb16d223a94ee41a8b594a937140c0d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/installed-sdk-identities.json",
+      "sha256": "6a5a99abdef8350c23cdf2b2c24c10f8190569a6b350c097eff5cdc51d451bd1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/linux-identities.json",
+      "sha256": "6a089612a2f254a87f672e8a069038104600512f96174647a83f0ee152b43635"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/allocation-review.json",
+      "sha256": "9baa0e88945070d5aee007f2704ba9e36e7d4fe55748a0a6753684226c8668e1"
+    }
+  ],
+  "retirement": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-ui001-retirement.json",
+      "sha256": "cd986621bb3ab1c361e8c40fd122a639b222419013f10985fc9460a9b18479cb",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/native-ui002-retirement.json",
+      "sha256": "93f5a8e6f27a0c7b356507ceb33bd06e79e90b27c6b039328be697b41d5f00f2",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-review002-empty-retirement.json",
+      "sha256": "fe8149c672317cc21eb2539e40565ae0c75151e0fe3f7ccc9e4f1cc40af87917",
+      "state": "removed_verified_empty_owned_scratch"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python-ui002-retirement.json",
+      "sha256": "5da0afea70e60dee82b91083ecaa5f29b8d845e700efbf7ea7b46cf11a42b7a5",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/python001-retirement.json",
+      "sha256": "b3da1947f2bfd501991be02984503ced2dc5aff33ddf12488e37fca2647284c7",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/reference001-retirement.json",
+      "sha256": "0bb071bbe52053b7823f050230a0e137f7e592a7a5e505f36f3fa94b188610a0",
+      "state": "verified_retention_then_removed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-circle-20261105/sdk001-retirement.json",
+      "sha256": "10af12f81cca3d4e27e6e529347145bab3f03c2e83ef7f9d6050e4c3046f8d42",
+      "state": "hashed_owned_consumer_tree_removed_without_archive"
+    }
+  ],
+  "storage": {
+    "entry_snapshot": ".tmp/manual-workflow-verification/fit-circle-entry-20261105.json",
+    "entry_known_bytes": 7310462583,
+    "after_snapshot": ".tmp/manual-workflow-verification/fit-circle-final-20261105.json",
+    "after_known_bytes": 7311937418,
+    "scope_note": "Complete normalized configured roots; after snapshot precedes final receipt/notebook additions. Unknown subtrees are not zero or headroom.",
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_after_bytes": 271861153792,
+    "planned_generated_bytes_upper_bound": 209715200,
+    "scratch": "Seven terminal groups retired:5 compressed/live-hash verified,1 empty,1 SDK-consumer identity-only. Active caches/runtime/SDK preserved; no environment/cache archives or new generations.",
+    "intermediate_after_snapshot": ".tmp/manual-workflow-verification/fit-circle-closeout-20261105.json",
+    "intermediate_after_known_bytes": 7311692212
+  },
+  "waste_review": {
+    "fix_now": [
+      "Reused native masks and shape workspace planner; no second rasterizer or fitting dependency.",
+      "Existing metadata-only conversions are synchronous; demonstrated area scan cost justified prepared-task reuse for area work. Full planning moved inside worker as well, rather than blocking in creator preflight.",
+      "Processing Python binding uses cheap source-copy admission before GIL release; full expensive planner runs once per native processing admission, not twice under the GIL.",
+      "Batched core/binding/worker/menu/physical stale-error/lifecycle tests before the shared build; maintained modal layout/acknowledgement sequence avoided prior task retries. Pure exports and changed extensions were installed and byte/origin-checked first.",
+      "Final review added width and live callback-cancellation assertions to2 existing Python IDs; only those were rerun, with no product rebuild or full campaign restart.",
+      "Final allocation review found async success-status assignment after commit. Preallocate before existing publication and swap afterward, preserving strong success-reporting ordering. One focused frontend relink and4 existing UI/editor IDs plus native lifecycle cases pass; no core/numerical/Linux/SDK rebuild. Existing SDK consumer evidence remained valid, so retired consumer scratch was not regenerated."
+    ],
+    "no_action": [
+      "Conservative full-cap reservation can reduce scheduler concurrency; this exclusive editor lane already admits one UI operation. Keep its proven bound until a concrete concurrent consumer justifies a tighter phase-peak estimate (T02); do not replace it with an unproven small reservation.",
+      "Existing bounded shape planning and rasterization remain separate traversals for borrowed admission. No speculative state-carrier/caching refactor.",
+      "No process-speed, whole-process RSS, full-family or release claim from focused checks.",
+      "Geometry admission uses conservative inherited raster allowances; broad large-image/resource profiles remain with T02/T15. No claim that max_xy_pixels guarantees fit within a smaller byte cap."
+    ],
+    "measurements": {
+      "windows_initial_seven_target_build_elapsed_seconds": 96.1320769994054,
+      "linux_same_cache_build_elapsed_seconds": 7.021730924,
+      "frontend_status_fix_four_target_build_elapsed_seconds": 33.36965589993633
+    },
+    "next_prevention": "Keep heavy planning off creator/GIL paths, batch actual error-modal and worker lifecycle cases at entry, reuse green numerical evidence for unchanged source, and preserve active compiler objects."
+  },
+  "remaining": [
+    "Full source-constructor/attachment/style/legacy-fallback and operation-intent macro profiles.",
+    "Linux/macOS physical UI and additional installed/platform/release qualification.",
+    "Fit Ellipse, spline/minimum-area-rectangle fits, curved/mask hulls, other G018 transforms and saved-row/scientific/non-XY variants.",
+    "Full T00-T15 commercially eligible ImageJ/Fiji scope remains open."
+  ],
+  "next": "Fit Ellipse: pinned occupied-pixel centroid/moment/axis conventions, observed point-mask policy and line refusal; existing area worker, native rotated ellipse and V4 history owners."
+}

@@ -12,4 +12,5 @@ Json capturedPathMeasurementUiCase(Window&,const std::string& context,const std:
 Json pointAnnotationEditingUiCase(Window&,const std::string& context,const std::string& fresh_directory);
 Json convexHullWorkflowUiCase(Window&,const std::string& context,const std::string& fresh_directory);
 Json boundingRectangleWorkflowUiCase(Window&,const std::string& context,const std::string& fresh_directory);
+Json fitCircleWorkflowUiCase(Window&,const std::string& context,const std::string& fresh_directory,bool area);
 }
