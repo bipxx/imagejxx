@@ -41,6 +41,10 @@ checks, storage needs and concrete exit. Reuse existing modules, native jobs,
 CI/ownership helpers and reference inputs. Do not create another worker,
 controller, codec or verification framework without a demonstrated gap.
 
+Follow PLAN's [P2c checkpoints](PLAN.md#p2c-implementation-checkpoints) for
+the current raster/interchange work; P3 closes typed draft preview before auto
+actions. Later work follows the [dependency rules](PLAN.md#dependency-and-scheduling-rules-for-the-remaining-horizon).
+
 Implement and validate the actual outcome, then apply
 [task closeout and waste review](PLAN.md#task-closeout-and-waste-review).
 Before the next task, fix small evidenced waste, or name its owning task,
