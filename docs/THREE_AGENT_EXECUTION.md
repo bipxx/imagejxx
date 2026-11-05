@@ -9,7 +9,9 @@ spawn agents. Apply current user/developer delegation instructions.
 
 ## Authority and resume card
 
-Use T00-T04 in PLAN for the immediate sequence. Inspect current worktree and
+Use the active workflow-first queue in PLAN for the immediate sequence: finish
+existing B2b.1 WIP, then everyday editing and XYZ workflows. Analysis residuals
+do not impose a blanket prerequisite. Inspect current worktree and
 actual process handles first. Never restart a job based only on an observation
 timeout, nor claim old evidence proves changed inputs. Preserve others' edits.
 

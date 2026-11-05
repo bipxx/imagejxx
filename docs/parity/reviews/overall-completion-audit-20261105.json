@@ -1,0 +1,1058 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "Overall completion audit requested by user",
+  "scope": "Repository/documentary audit of current commercial ImageJ/Fiji delivery scope; no new product/runtime certification or implementation.",
+  "head": "320d29dddaa02e0f66f86c7026862d28a0989b21",
+  "inputs": [
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 106026,
+      "sha256": "e0f9012c7396d9c32d1f12557942e052a39269518fe64c7fec16264d8de46598"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 11023784,
+      "sha256": "109d5c555374b81cc4c1ed346da30f081ca857c498472ec2e1e0900637e769ba"
+    },
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 4939408,
+      "sha256": "4301987f5e5a1a32b669bdc2fe27bf43ae0e3d617fbd249a92404a0e63fb4ef5"
+    },
+    {
+      "path": "docs/parity/fiji-components.json",
+      "bytes": 8945367,
+      "sha256": "5f2ad3f617c354189759d5e1c81d16e1ed977ac730461c80987d1581998e17a1"
+    }
+  ],
+  "overall_completion_percent": null,
+  "overall_completion_reason": "Required option/workflow denominator and effort weights are incomplete. Partial families have unequal size and unknown internal completion. No defensible implemented, integrated, or release-ready completion percentage can be derived.",
+  "metrics": {
+    "capability_families": 99,
+    "historical_status_counts": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "historical_in_progress_family_percent": 47.5,
+    "minimum_families_with_documented_partial_progress": 54,
+    "minimum_documented_partial_family_coverage_percent": 54.5,
+    "not_counted_by_this_conservative_partial_progress_metric": 45,
+    "fully_closed_families": 0,
+    "fully_closed_family_percent": 0.0,
+    "option_requirements_enumerated": 85,
+    "families_with_enumerated_option_requirements": 17,
+    "option_enumeration_family_reach_percent": 17.2,
+    "families_without_enumerated_option_requirements": 82,
+    "option_implementation_states": {
+      "partial": 81,
+      "open": 4
+    },
+    "option_verification_states": {
+      "partial": 76,
+      "unverified": 9
+    },
+    "descriptor_candidates": 2810,
+    "descriptor_candidates_assigned": 0,
+    "descriptor_enumeration_status": "partial",
+    "bundled_fiji_file_candidates": 1437,
+    "bundled_fiji_file_candidate_decisions": {
+      "pending": 1437
+    }
+  },
+  "aspects": {
+    "implemented": "At least54/99 families have documented partial implementation. This is breadth, not percent of required behavior implemented. Other families may also have old kernels or unindexed work; not counted as absent.",
+    "verified": "Scoped checks exist. Their scopes/platforms remain as recorded. No new runs or inference from total test counts; retired artifacts are unavailable evidence.",
+    "integrated": "Recent point, measurement, profile and export receipts demonstrate stated both-Windows-host integration. No denominator for all required UI/settings/persistence/replay workflows; percentage unknown.",
+    "release_ready": "No full family closure recorded. Product release gates remain open; zero fully closed families is not zero delivered code or zero released subfeatures."
+  },
+  "reconciliation": [
+    {
+      "family": "G020",
+      "receipt": {
+        "path": "docs/parity/reviews/T04a2-point-handoff-20261104.json",
+        "bytes": 36484,
+        "sha256": "2c286e66d31a8143e821de9915c8b28141afc09b9f54f75ce0b1114464622b43"
+      },
+      "source_path": "src/native/imagej_roi_zip_export.cpp",
+      "documented_progress": "Scoped ROI/ZIP import, point handoff and export/reopen; full format variants remain.",
+      "effect": "Count as partial reach only; preserve original inventory status and expectations."
+    },
+    {
+      "family": "G025",
+      "receipt": {
+        "path": "docs/parity/reviews/T04a2-point-flatten-roles-20261104.json",
+        "bytes": 8556,
+        "sha256": "ee086cb7c88680da9a943099853477877040bac2a08b3c10b74c93e2eae69a4d"
+      },
+      "source_path": "src/desktop/export.cpp",
+      "documented_progress": "Ordered overlay/manager/active rendering and Flatten; broader text/overlay editing remains.",
+      "effect": "Count as partial reach only; preserve original inventory status and expectations."
+    },
+    {
+      "family": "G034",
+      "receipt": {
+        "path": "docs/parity/reviews/G034-grouped-z-projection-progress001.json",
+        "bytes": 66268,
+        "sha256": "22a2dd56fb124aa7fd756df779863b38f9e7e2cb90dd413b54c5e97ab5621ad5"
+      },
+      "source_path": "src/native/imagej_dataset_projection.cpp",
+      "documented_progress": "Scoped grouped projection; full scientific targets/options remain.",
+      "effect": "Count as partial reach only; preserve original inventory status and expectations."
+    },
+    {
+      "family": "G066",
+      "receipt": {
+        "path": "docs/parity/reviews/T04a2-point-rows-20261104.json",
+        "bytes": 25050,
+        "sha256": "3fb7a0024c4d5dff43f9cce43fcb28c60d3a36024e477b7c33ccae390f3784db"
+      },
+      "source_path": "src/native/target_analysis.cpp",
+      "documented_progress": "Scoped Measure/point/manager consumers; remaining geometry/options/replay stay open.",
+      "effect": "Count as partial reach only; preserve original inventory status and expectations."
+    },
+    {
+      "family": "G070",
+      "receipt": {
+        "path": "docs/parity/reviews/T04a1-configured-profile-20261104.json",
+        "bytes": 20831,
+        "sha256": "35a2e9ecce7bdce101c2a83eb6cfa081d19a2a560dfe348ba15f83524fc5e1f2"
+      },
+      "source_path": "src/native/target_analysis.cpp",
+      "documented_progress": "Configured Profile menus, sampling, persistence and CSV; wider profile variants remain.",
+      "effect": "Count as partial reach only; preserve original inventory status and expectations."
+    },
+    {
+      "family": "G080",
+      "receipt": {
+        "path": "docs/parity/reviews/T04a2-point-handoff-20261104.json",
+        "bytes": 36484,
+        "sha256": "2c286e66d31a8143e821de9915c8b28141afc09b9f54f75ce0b1114464622b43"
+      },
+      "source_path": "src/native/imagej_roi_import.cpp",
+      "documented_progress": "Scoped native/ImageJ ROI handoff/interchange; complete LUT/TIFF/metadata variants remain.",
+      "effect": "Count as partial reach only; preserve original inventory status and expectations."
+    },
+    {
+      "family": "G082",
+      "receipt": {
+        "path": "docs/parity/reviews/T04a2-capture-consumers-20261105.json",
+        "bytes": 13802,
+        "sha256": "92bb2186acb228a7d87b8191b67e17617c65670f9bc1a2cdf9498de7a56ae79f"
+      },
+      "source_path": "src/desktop/export.cpp",
+      "documented_progress": "Scoped Windows async display/PDF export; system printing, replay and platform qualification remain.",
+      "effect": "Count as partial reach only; preserve original inventory status and expectations."
+    }
+  ],
+  "families": [
+    {
+      "id": "G001",
+      "name": "Persistent preferences",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 22,
+      "indexed_verification_ids": 9
+    },
+    {
+      "id": "G002",
+      "name": "Preferences dialog",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 22,
+      "indexed_verification_ids": 7
+    },
+    {
+      "id": "G003",
+      "name": "Appearance",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 11,
+      "indexed_verification_ids": 2
+    },
+    {
+      "id": "G004",
+      "name": "Colors and drawing defaults",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 8,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G005",
+      "name": "Point and text defaults",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 8,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G006",
+      "name": "Wand defaults",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 8,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G007",
+      "name": "Conversion defaults",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 8,
+      "existing_indexed_implementation_paths": 14,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G008",
+      "name": "Binary processing defaults",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 4,
+      "existing_indexed_implementation_paths": 13,
+      "indexed_verification_ids": 2
+    },
+    {
+      "id": "G009",
+      "name": "Measurement/plot defaults",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 8,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G010",
+      "name": "Resource settings",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 4,
+      "existing_indexed_implementation_paths": 35,
+      "indexed_verification_ids": 10
+    },
+    {
+      "id": "G011",
+      "name": "File settings",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 8,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G012",
+      "name": "Keyboard/startup/settings management",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 10,
+      "existing_indexed_implementation_paths": 11,
+      "indexed_verification_ids": 2
+    },
+    {
+      "id": "G013",
+      "name": "Basic selections",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 16,
+      "indexed_verification_ids": 3
+    },
+    {
+      "id": "G014",
+      "name": "Additional tools",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G015",
+      "name": "Editing an existing ROI",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 6,
+      "existing_indexed_implementation_paths": 16,
+      "indexed_verification_ids": 3
+    },
+    {
+      "id": "G016",
+      "name": "Combining ROIs",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 1,
+      "existing_indexed_implementation_paths": 4,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G017",
+      "name": "Numeric ROI properties",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 3,
+      "existing_indexed_implementation_paths": 14,
+      "indexed_verification_ids": 2
+    },
+    {
+      "id": "G018",
+      "name": "ROI transformations and fitting",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 17,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G019",
+      "name": "ROI conversion",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 8,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G020",
+      "name": "ROI file interchange",
+      "historical_status": "open",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G021",
+      "name": "ROI manager",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 1,
+      "existing_indexed_implementation_paths": 11,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G022",
+      "name": "Slice positions",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 18,
+      "indexed_verification_ids": 4
+    },
+    {
+      "id": "G023",
+      "name": "Clipboard editing",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G024",
+      "name": "Pixel fill/draw/clear",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G025",
+      "name": "Text and overlays",
+      "historical_status": "open",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G026",
+      "name": "Z stacks",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 7,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G027",
+      "name": "Linked XY/XZ/YZ panels",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 1,
+      "existing_indexed_implementation_paths": 11,
+      "indexed_verification_ids": 3
+    },
+    {
+      "id": "G028",
+      "name": "Physical display coordinates",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 11,
+      "indexed_verification_ids": 2
+    },
+    {
+      "id": "G029",
+      "name": "Axis-aligned reslice",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 9,
+      "existing_indexed_implementation_paths": 57,
+      "indexed_verification_ids": 6
+    },
+    {
+      "id": "G030",
+      "name": "Oblique/curved reslice",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G031",
+      "name": "C/Z/T hyperstacks",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 17,
+      "indexed_verification_ids": 4
+    },
+    {
+      "id": "G032",
+      "name": "Channel splitting/merging",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G033",
+      "name": "Composite channel display",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 2,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G034",
+      "name": "Z projections",
+      "historical_status": "open",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 6,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G035",
+      "name": "Stack organization",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G036",
+      "name": "Montage",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G037",
+      "name": "Animation",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 13,
+      "indexed_verification_ids": 5
+    },
+    {
+      "id": "G038",
+      "name": "Z/time profiles and stack measurements",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G039",
+      "name": "Rotating projections and surface plots",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G040",
+      "name": "Interactive volume/surface viewer",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G041",
+      "name": "Large datasets",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 29,
+      "indexed_verification_ids": 11
+    },
+    {
+      "id": "G042",
+      "name": "Standard 2D filters",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 6,
+      "existing_indexed_implementation_paths": 12,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G043",
+      "name": "True 3D filters",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G044",
+      "name": "Filter dialogs and previews",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 33,
+      "indexed_verification_ids": 6
+    },
+    {
+      "id": "G045",
+      "name": "Processing extent",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 25,
+      "indexed_verification_ids": 5
+    },
+    {
+      "id": "G046",
+      "name": "Background estimation",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G047",
+      "name": "Automatic global threshold",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 26,
+      "indexed_verification_ids": 7
+    },
+    {
+      "id": "G048",
+      "name": "Automatic local threshold",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G049",
+      "name": "Interactive threshold display",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 1,
+      "existing_indexed_implementation_paths": 29,
+      "indexed_verification_ids": 3
+    },
+    {
+      "id": "G050",
+      "name": "Color threshold",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G051",
+      "name": "Local contrast",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G052",
+      "name": "Binary/distance segmentation",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 16,
+      "existing_indexed_implementation_paths": 13,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G053",
+      "name": "Find-maxima workflow",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G054",
+      "name": "Frequency editing",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G055",
+      "name": "Directional shadow filters",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 11,
+      "indexed_verification_ids": 4
+    },
+    {
+      "id": "G056",
+      "name": "Pixel equations and nonfinite data",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 12,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G057",
+      "name": "Brightness/contrast and window/level",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 1,
+      "existing_indexed_implementation_paths": 67,
+      "indexed_verification_ids": 20
+    },
+    {
+      "id": "G058",
+      "name": "Color balance",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G059",
+      "name": "LUT display/editing",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 21,
+      "indexed_verification_ids": 4
+    },
+    {
+      "id": "G060",
+      "name": "Image types",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 11,
+      "existing_indexed_implementation_paths": 14,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G061",
+      "name": "2D geometry",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G062",
+      "name": "Geometric metadata",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 11,
+      "indexed_verification_ids": 2
+    },
+    {
+      "id": "G063",
+      "name": "Duplicate/subset",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 1,
+      "existing_indexed_implementation_paths": 18,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G064",
+      "name": "Image calculator",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 12,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G065",
+      "name": "Zoom and pan",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 11,
+      "indexed_verification_ids": 3
+    },
+    {
+      "id": "G066",
+      "name": "Image/ROI measurements",
+      "historical_status": "open",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G067",
+      "name": "Particle analysis",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G068",
+      "name": "Scale and calibration",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 11,
+      "indexed_verification_ids": 2
+    },
+    {
+      "id": "G069",
+      "name": "Histogram",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 29,
+      "indexed_verification_ids": 16
+    },
+    {
+      "id": "G070",
+      "name": "Profiles",
+      "historical_status": "open",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G071",
+      "name": "Results and tables",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G072",
+      "name": "Annotation utilities",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G073",
+      "name": "Analysis utilities",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G074",
+      "name": "Basic raster/scientific pixels",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G075",
+      "name": "Image information",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G076",
+      "name": "Microscopy datasets",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G077",
+      "name": "DICOM/FITS",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G078",
+      "name": "Image sequence import",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G079",
+      "name": "Additional exports",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 6,
+      "indexed_verification_ids": 1
+    },
+    {
+      "id": "G080",
+      "name": "ImageJ interchange",
+      "historical_status": "open",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G081",
+      "name": "File lifecycle",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G082",
+      "name": "Print/display export",
+      "historical_status": "open",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G083",
+      "name": "Menus and window management",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G084",
+      "name": "Accessibility/platform UI",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G085",
+      "name": "Workflow recorder/batch",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 22,
+      "indexed_verification_ids": 2
+    },
+    {
+      "id": "G086",
+      "name": "Script editor/macros",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G087",
+      "name": "Plugin management",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G088",
+      "name": "Job feedback",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 34,
+      "indexed_verification_ids": 7
+    },
+    {
+      "id": "G089",
+      "name": "Python document control",
+      "historical_status": "in_progress",
+      "counted_partial_progress": true,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 54,
+      "indexed_verification_ids": 13
+    },
+    {
+      "id": "G090",
+      "name": "BigDataViewer",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G091",
+      "name": "3D Viewer",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G092",
+      "name": "MorphoLibJ",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G093",
+      "name": "Registration",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G094",
+      "name": "Stitching",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G095",
+      "name": "Deconvolution",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G096",
+      "name": "TrackMate",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G097",
+      "name": "AnalyzeSkeleton",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G098",
+      "name": "Coloc 2",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    },
+    {
+      "id": "G099",
+      "name": "Interactive/trainable segmentation",
+      "historical_status": "open",
+      "counted_partial_progress": false,
+      "option_children": 0,
+      "existing_indexed_implementation_paths": 0,
+      "indexed_verification_ids": 0
+    }
+  ],
+  "findings": [
+    "14 delivery checkpoints are a decomposition of remaining work, not completed/original work units.",
+    "At least seven open family labels lag newer scoped deliveries. Preserve historical labels; reconcile current progress separately.",
+    "85 option requirements span only17 families; 82 families lack option children. The selected option subset cannot represent whole-product completion.",
+    "2810 static descriptor candidates are unassigned in this ledger; they include services/providers and cannot be treated as editor command denominator.",
+    "1437 bundled file candidates have pending decisions in that descriptor inventory. This does not invalidate separate owned-code/dependency reviews or imply every bundled file belongs in commercial scope.",
+    "Uncommitted B2b replay is WIP and excluded from delivered progress. Full supported-platform, format/print, performance and eligible Fiji workflows remain required."
+  ],
+  "recommended_measurement": "T00/T02 reconcile known scoped receipts and enumerate unresolved behavior IDs just in time for each owning T04-T15 family. Before publishing a completion percentage, freeze commercially eligible behavior denominator and explicit weights; track core, bindings, both UI hosts/settings/state and verification separately. Do not assign an arbitrary50% to every partial family. Do not block independent feature delivery on a global recertification campaign.",
+  "waste_review": {
+    "observed": "Stale aggregate labels and incomplete option denominator make task/family/test-count percentages misleading.",
+    "disposition": "Fix current progress interpretation now; defer detailed denominator reconciliation to T00/T02 and each owning feature at entry/closeout.",
+    "checks": "JSON aggregate invariants; seven overlay receipts tracked and present; relevant source paths present; historical ledgers unchanged. No product builds/tests or runtime requalification.",
+    "cleanup": "Read-only aggregation through stdin, one concise audit receipt, no compiler/cache/runtime/capture generation. Existing214 ACL-blocked storage subtrees remain unknown.",
+    "plan_feedback": "Link this audit in the current plan; preserve paused implementation and current B2b priority. Use54.5% only as minimum documented family breadth, not completion."
+  },
+  "acceptance": false
+}
