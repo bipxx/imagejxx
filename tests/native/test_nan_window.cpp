@@ -187,11 +187,20 @@ public:
     return result;
   }
   void close() {
+    const auto scheduler=session_.fixtureApplication().job_scheduler();
     session_.close();
     const auto closed = session_.lifecycle();
     writeJson(artifacts_.file(prefix_ + "-closed.json").u8string(), closed);
+    const auto usage=scheduler->usage();bool terminal=true;Json tickets=Json::array();
+    for(const auto& job:window_.jobs()) {
+      terminal=terminal && (job.state==JobState::Completed || job.state==JobState::Canceled || job.state==JobState::Failed);
+      tickets.push_back({{"id",job.id},{"state",int(job.state)},{"resource_bytes",job.resource_bytes}});
+    }
+    writeJson(artifacts_.file(prefix_ + "-closed-jobs.json").u8string(),
+        {{"tickets",tickets},{"running",usage.running},{"queued",usage.queued},{"reserved_bytes",usage.reserved_bytes}});
     check(closed.at("open") == false && closed.at("context_id") == 0 &&
-              closed.at("current_context_id") == 0 && !window_.busy() && window_.jobs().empty(),
+              closed.at("current_context_id") == 0 && !window_.busy() && terminal &&
+              usage.running==0 && usage.queued==0 && usage.reserved_bytes==0,
           "Creator cleanup retained a renderer context or native work");
   }
 private:
@@ -347,7 +356,7 @@ void W05_flatten_is_finite_rendered_copy(Artifacts &artifacts) {
   const auto before = source->snapshot();
   Frames frames(window, artifacts, "w05");
   frames.warm();
-  window.action("flatten");
+  window.action("flatten",{{"asynchronous",false}});
   const auto flattened = window.document();
   check(window.documents().size() == 2 && flattened->id != source->id &&
             flattened->samplePolicy() == finite && flattened->frame().type == PixelType::UInt8 &&

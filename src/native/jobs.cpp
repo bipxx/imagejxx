@@ -329,6 +329,12 @@ Job JobScheduler::submit(std::function<void(const JobContext &)> task,
                          JobOptions options) {
   return submit_with_cleanup(std::move(task), std::move(options), {});
 }
+Job JobScheduler::submit(std::function<void(const JobContext &)> task,
+                         JobOptions options, std::function<void()> retire_result) {
+  if (retire_result && !options.retain_result_resources)
+    throw std::invalid_argument("Result retirement requires retained resources");
+  return submit_with_cleanup(std::move(task), std::move(options), std::move(retire_result));
+}
 Job JobScheduler::submit_with_cleanup(
     std::function<void(const JobContext &)> task, JobOptions options,
     std::function<void()> cleanup) {

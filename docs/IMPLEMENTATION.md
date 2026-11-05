@@ -2433,7 +2433,16 @@ throw `OperationCancelled`; contexts that have left Running cannot acquire more
 bytes. Successful growth updates JobInfo's current/peak declared bytes and flows
 through the existing retained-result guard, including release and queue wakeup.
 This accounts declared workspace, not arbitrary allocations or process RSS.
-Export preparation will adopt it in the next B2a integration increment.
+Admitted display preparation uses it before layout/font work; Window export
+workers carry the reservation through creator publication.
+
+Native retained tasks can call `JobScheduler::submit(task, options,
+retire_result)` to register the existing terminal-result cleanup. A nonempty
+callback requires retained resources; an empty callback keeps ordinary submit semantics. The callback must not throw; it runs once outside
+scheduler/job locks and may reenter the scheduler. Failed/canceled workers retire
+staged payload before running bytes release; READY cancel and creator publication
+also retire the result. Ordinary two-argument submit keeps its current semantics.
+Owners must destroy result payloads before dropping their reservation guard.
 
 The states are Queued, Running, Ready, Publishing, Completed, Failed and Canceled.
 Ready means the worker has prepared an isolated result; it has not edited the

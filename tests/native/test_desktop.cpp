@@ -1924,7 +1924,7 @@ void testNestedRoiStyleRenderingAndRecords() {
   const auto reopened = documentFromJson(record);
   check(metadata_equal(reopened->nativeSnapshot().data().overlays[0], overlay),
         "Native JSON/session record adapter lost a valid nested ROI style");
-  window.action("flatten");
+  window.action("flatten",{{"asynchronous",false}});
   check(window.document()->frame().pixels ==
                 render_roi_style(rgb, styled).pixels &&
             native->snapshot().data().dataset.plane({0, 0, 0})->pixels ==

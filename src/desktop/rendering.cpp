@@ -1038,7 +1038,8 @@ struct PreparedExportImage::State {
   std::size_t limit,used=0,peak=0,work=0;
   Json metadata=Json::object();
   std::vector<Row> rows;
-  State(DocumentSnapshot snapshot,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output,ExportAdmission admission)
+  State(DocumentSnapshot snapshot,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output,ExportAdmission admission,
+      std::optional<DisplayExportFontPolicy> font_policy)
       :admit(std::move(admission)),source(std::move(snapshot)),
        position{source.display().t,source.display().c,source.display().crosshair[2]},show_all(all),limit(cap) {
     kernel_checkpoint();const auto shape=source.data().dataset.shape();
@@ -1134,6 +1135,15 @@ struct PreparedExportImage::State {
       std::vector<std::size_t> text_rows;
     };
     std::map<std::string,Fonts> fonts;
+    auto fontPath=[&](std::string configured) {
+      auto path=annotationFontPath(configured.empty() && font_policy?font_policy->default_path:std::move(configured));
+      if(font_policy) {
+        auto resolved=std::filesystem::u8path(path);if(resolved.is_relative())resolved=font_policy->directory/resolved;
+        path=resolved.lexically_normal().u8string();
+        if(path.size()>131064)throw std::invalid_argument("Resolved font path exceeds limit");
+      }
+      return path;
+    };
     std::optional<std::string> default_font;
     for(const auto& input:inputs) {
       kernel_checkpoint_periodic();
@@ -1154,8 +1164,8 @@ struct PreparedExportImage::State {
           if(size<=0 || size>512)throw std::invalid_argument("Font size must be1..512");
           row.font_size=size;row.text_color=color(string(get(row.wire,"color"),"#ffcc00"));
           const auto configured=string(get(row.wire,"font_path"));
-          if(configured.empty()){if(!default_font)default_font=annotationFontPath();row.font_path=*default_font;}
-          else row.font_path=annotationFontPath(configured);
+          if(configured.empty()){if(!default_font)default_font=fontPath({});row.font_path=*default_font;}
+          else row.font_path=fontPath(configured);
           exportCharge(used,row.font_path.size(),3,limit,admit);
           exportCharge(used,content.size(),sizeof(TextGlyph)+8,limit,admit);
           exportWork(work,content.size(),8);
@@ -1175,8 +1185,8 @@ struct PreparedExportImage::State {
           exportCharge(used,row.layout.working_bytes,1,limit,admit);
           for(const auto& primitive:row.layout.primitives)if(primitive.kind==PointPrimitiveKind::Text) {
             const auto configured=string(get(row.wire,"font_path"));
-            if(configured.empty()){if(!default_font)default_font=annotationFontPath();row.font_path=*default_font;}
-            else row.font_path=annotationFontPath(configured);
+            if(configured.empty()){if(!default_font)default_font=fontPath({});row.font_path=*default_font;}
+            else row.font_path=fontPath(configured);
             row.font_size=primitive.font_size;
             exportCharge(used,row.font_path.size(),3,limit,admit);
             fonts[row.font_path].points.emplace(row.font_size,nullptr);break;
@@ -1248,11 +1258,12 @@ struct PreparedExportImage::State {
     admit={}; // Do not retain the worker admission callback in a detached result.
   }
 };
-PreparedExportImage::PreparedExportImage(DocumentSnapshot source,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output,ExportAdmission admit) {
+PreparedExportImage::PreparedExportImage(DocumentSnapshot source,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output,ExportAdmission admit,
+    std::optional<DisplayExportFontPolicy> font_policy) {
   // Admit the fixed owner/control allowance before constructing State. The
   // accepted snapshot is moved into it, never cloned by this preparation path.
   std::size_t initial=0;exportCharge(initial,1,131072,cap,admit);
-  state_=std::make_unique<State>(std::move(source),all,cap,show_rois,output,std::move(admit));
+  state_=std::make_unique<State>(std::move(source),all,cap,show_rois,output,std::move(admit),std::move(font_policy));
 }
 PreparedExportImage::~PreparedExportImage()=default;
 std::size_t PreparedExportImage::working_bytes() const{return state_->peak;}
@@ -1260,6 +1271,13 @@ void PreparedExportImage::validate(const DocumentSnapshot& now,bool all,std::siz
   if(!state_->source.same_document(now) || !state_->source.shares_data(now) ||
       !now.revisions().matches(state_->source.revisions(),Change::All) ||
       all!=state_->show_all || cap!=state_->limit)throw RevisionConflict();
+  const auto& a=now.display();const auto& b=state_->source.display();
+  if(a.t!=b.t || a.c!=b.c || a.crosshair[2]!=b.crosshair[2])throw RevisionConflict();
+  for(const auto* key:{"display_range","lut","custom_lut"}) {
+    const auto left=a.properties.find(key),right=b.properties.find(key);
+    if((left==a.properties.end())!=(right==b.properties.end()) ||
+        (left!=a.properties.end() && !metadata_equal(left->second,right->second)))throw RevisionConflict();
+  }
 }
 std::shared_ptr<imagejxx::Document> PreparedExportImage::document(Image image) const {
   if(!state_->output_metadata)throw std::logic_error("Pixel-only export has no document metadata");

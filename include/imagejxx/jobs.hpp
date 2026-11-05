@@ -114,6 +114,12 @@ public:
   JobScheduler &operator=(const JobScheduler &) = delete;
   Job submit(std::function<void(const JobContext &)> task,
              JobOptions options = {});
+  // Opt-in retained-result cleanup, invoked once outside scheduler/job locks on
+  // cancellation, failure or publication. Worker failure/cancellation retires
+  // staged payloads before releasing the running reservation. Requires retain.
+  // The retirement callback must not throw and may reenter the scheduler.
+  Job submit(std::function<void(const JobContext &)> task, JobOptions options,
+             std::function<void()> retire_result);
   JobLimits limits() const;
   // accept runs under the scheduling lock before limits change; it must not
   // reenter this scheduler. Used for atomic preference-file publication.

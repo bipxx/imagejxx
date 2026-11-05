@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstring>
 #include <iomanip>
+#include <limits>
 #include <sstream>
 #include <zlib.h>
 #ifdef _WIN32
@@ -15,6 +16,23 @@
 #endif
 
 namespace imagejxx::desktop {
+void validateDisplayExportFormat(const std::string& path,int width,int height,const DisplayExportFileOptions& options) {
+  if(width<=0 || height<=0)throw std::invalid_argument("Display export needs positive dimensions");
+  const auto suffix=extension(path);
+  if(!options.pdf && (suffix==".jpg" || suffix==".jpeg" || suffix==".tga") && (width>65535 || height>65535))
+    throw std::invalid_argument("JPEG/TGA dimensions must be at most65535");
+  if(!options.pdf && suffix==".bmp") {
+    const auto row=(std::uint64_t(width)*3+3)&~std::uint64_t(3);
+    if(row*std::uint64_t(height)+54>std::uint64_t(std::numeric_limits<int>::max()))
+      throw std::invalid_argument("BMP exceeds encoder byte range");
+  }
+  if(options.pdf) {
+    require_finite(options.dpi,"Print DPI");
+    if(options.dpi<1 || options.dpi>2400)throw std::invalid_argument("DPI must be1..2400");
+    if(std::uint64_t(width)*std::uint64_t(height)>std::numeric_limits<uLong>::max()/3)
+      throw std::length_error("PDF RGB samples exceed compression byte range");
+  }
+}
 void writePdfImpl(const std::string &path,const Image &image,double dpi,bool landscape,
     const ImageByteSink* sink,bool normalized) {
   require_finite(dpi, "Print DPI");
@@ -84,6 +102,7 @@ void writePreparedPdfToSink(const std::string& path,const Image& image,double dp
 std::unique_ptr<imagejxx::detail::StagedAtomicStream> stageDisplayExport(
     const std::string& path,Image image,const DisplayExportFileOptions& options,const ExecutionControl& control) {
   ExecutionScope scope(control);kernel_checkpoint();
+  validateDisplayExportFormat(path,image.width,image.height,options);
   if(image.width<=0 || image.height<=0 || image.type!=PixelType::UInt8 || image.channels!=3 ||
       image.pixels.size()!=std::size_t(image.width)*image.height*3)
     throw std::invalid_argument("Display export needs complete normalized uint8 RGB");

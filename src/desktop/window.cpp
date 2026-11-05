@@ -12,6 +12,7 @@
 #include "path_visual.hpp"
 #include "point_visual.hpp"
 #include "point_raster_export.hpp"
+#include "point_raster_font.hpp"
 #include "display_export_io.hpp"
 #include "calibration_plot_view.hpp"
 #include "calibration_plot_annotation.hpp"
@@ -1171,7 +1172,17 @@ struct Window::Impl {
     std::uint64_t id() const noexcept{return document_id;}
     bool same_document(const DocumentSnapshot& source) const noexcept{return document_id==source.id();}
   };
+  struct DisplayExportResult {
+    std::shared_ptr<PreparedExportImage> prepared;
+    std::optional<Image> pixels;
+    std::unique_ptr<imagejxx::detail::StagedAtomicStream> stage;
+    std::uint64_t source_id=0;
+    std::size_t cap=0,request_bytes=0;
+    bool show_rois=false;
+  };
   struct JobResult {
+    // Declared first so every staged/native payload retires before its lease.
+    std::shared_ptr<const void> reservation;
     State state;
     ComponentCounts components;
     std::optional<PreparedOperation> prepared;
@@ -1182,10 +1193,12 @@ struct Window::Impl {
     std::optional<ImageJIntensityFitPlot> fit_plot;
     std::optional<CalibrationPlotAnnotation> fit_plot_annotation;
     std::optional<FitPlotBinding> fit_plot_source;
-    std::shared_ptr<const void> reservation;
     std::optional<ResolvedTargetAnalysis> analysis_command;
     std::optional<TargetAnalysisResult> analysis_profile;
     Json analysis_rows;
+    // Destroy export payloads before the reservation member releases its lease.
+    std::optional<DisplayExportResult> display_export;
+    JobResult(DisplayExportResult value):display_export(std::move(value)){}
     JobResult(ResolvedTargetAnalysis command,Json rows)
         :analysis_command(std::move(command)),analysis_rows(std::move(rows)){}
     JobResult(ResolvedTargetAnalysis command,TargetAnalysisResult profile)
@@ -1216,7 +1229,7 @@ struct Window::Impl {
   std::shared_ptr<std::optional<JobResult>> jobResult;
   RenderMemory::Lease measurementPendingMemory;
   std::vector<RenderMemory::Lease> measurementRowMemory;
-  enum class ReadOnlyTask { None, Measurement, Profile };
+  enum class ReadOnlyTask { None, Measurement, Profile, DisplayExport };
   ReadOnlyTask analysisTask=ReadOnlyTask::None;
   std::shared_ptr<Document> jobDocument;
   Revisions jobRevisions;
@@ -4160,6 +4173,16 @@ struct Window::Impl {
              std::size_t extraWorkspace = 0,
              std::shared_ptr<WorkflowReplayLineage> replayLineage = {},
              bool preparedTask = false) {
+    startControlled([function=std::move(function)](const JobContext&){return function();},
+        std::move(target),newDocument,std::move(title),std::move(label),extraWorkspace,
+        std::move(replayLineage),preparedTask);
+  }
+  void startControlled(std::function<JobResult(const JobContext&)> function,
+             std::shared_ptr<Document> target, bool newDocument = false,
+             std::string title = "", std::string label = "",
+             std::size_t extraWorkspace = 0,
+             std::shared_ptr<WorkflowReplayLineage> replayLineage = {},
+             bool preparedTask = false) {
     if (target && !preparedTask)
       target->requireLegacyEditable();
     if (owner.busy())
@@ -4189,6 +4212,8 @@ struct Window::Impl {
           "Job reservation overflows addressable memory");
     options.resource_bytes += extraWorkspace;
     auto gate = std::exchange(diagnosticWorkerGate, {});
+    std::function<void()> retirement;
+    if(preparedTask)retirement=[result]{result->reset();};
     auto submitted = owner.controller_->job_scheduler()->submit(
         [function = std::move(function), result, gate = std::move(gate), preparedTask](const JobContext &context) {
           // Establish the scope in the frontend's core module as well, so an
@@ -4196,11 +4221,11 @@ struct Window::Impl {
           ExecutionScope scope(context.execution_control());
           if (gate)
             gate(context);
-          auto completed = function();
+          auto completed = function(context);
           if (preparedTask) completed.reservation = context.result_resource_guard();
           result->emplace(std::move(completed));
         },
-        std::move(options));
+        std::move(options),std::move(retirement));
     if (replayLineage) {
       replayLineage->bindJob(submitted);
       workflowReplayLineage = std::move(replayLineage);
@@ -8866,13 +8891,21 @@ void Window::action(const std::string &name, const Json &p) {
   }
   auto d = document();
   if(name=="flatten" || name=="export_display" || name=="export_pdf" || name=="print") {
-    const auto source=d->nativeSnapshot();
+    if(busy())throw std::invalid_argument("Wait for the current edit or export");
+    auto source=d->nativeSnapshot();
+    const auto shape=source.data().dataset.shape();
+    if((shape.s!=1 && shape.s!=3 && shape.s!=4) || shape.t!=1 || shape.c!=1)
+      throw std::invalid_argument("Legacy display export requires one T/C source");
     const auto cap=impl->processingCap();const bool all=settings().boolean("point_show_all");
     std::string path;double dpi=150;bool landscape=false;
+    const auto directory=std::filesystem::current_path();
     if(name=="export_display" || name=="export_pdf") {
       path=string(get(p,"path"));
       if(path.empty() || path.size()>131064 || path.find('\0')!=std::string::npos)
         throw std::invalid_argument("Export needs a bounded output path");
+      auto resolved=std::filesystem::u8path(path);if(resolved.is_relative())resolved=directory/resolved;
+      path=resolved.lexically_normal().u8string();
+      if(path.size()>131064)throw std::invalid_argument("Resolved export path exceeds limit");
     }
     if(name=="export_display") {
       static const std::set<std::string> formats{".png",".jpg",".jpeg",".bmp",".tga",".pgm",".ppm",".pnm",".npy",".tif",".tiff"};
@@ -8886,21 +8919,47 @@ void Window::action(const std::string &name, const Json &p) {
       landscape=boolean(get(p,"landscape"),impl->preferenceState.settings.boolean("print_landscape"));
     }
     const bool show_rois=impl->showRois;
-    PreparedExportImage prepared(source,all,cap,show_rois,
-        name=="flatten"?DisplayExportOutput::Document:DisplayExportOutput::Pixels);
-    auto validate=[&] {
-      if(document()->id!=source.id() || documentById(source.id())!=d)throw RevisionConflict();
-      if(impl->showRois!=show_rois)throw RevisionConflict();
+    if(name=="print") {
+      PreparedExportImage prepared(std::move(source),all,cap,show_rois,DisplayExportOutput::Pixels);
+      auto image=prepared.render();
       prepared.validate(d->nativeSnapshot(),settings().boolean("point_show_all"),impl->processingCap());
-    };
-    validate();auto image=prepared.render();validate();
-    if(name=="flatten") {
-      addDocument(std::make_shared<Document>(prepared.document(std::move(image))));
-    } else if(name=="export_display" || name=="export_pdf") {
-      const ExecutionControl control{};
-      auto staged=stageDisplayExport(path,std::move(image),{name=="export_pdf",dpi,landscape},control);
-      publishDisplayExport(std::move(staged),validate,control);
-    } else printImage(image);
+      printImage(image);return;
+    }
+    if(!p.is_object())throw std::invalid_argument("Export parameters must be an object");
+    const bool asynchronous=boolean(get(p,"asynchronous"),true);
+    const bool flatten=name=="flatten";
+    const DisplayExportFileOptions options{name=="export_pdf",dpi,landscape};
+    if(!flatten)validateDisplayExportFormat(path,shape.x,shape.y,options);
+    DisplayExportFontPolicy font_policy{annotationFontPath(),directory};
+    // Bounded UTF8/UTF16 request, normalized directory and owned stage-path
+    // copies/temporary conversions; not arbitrary source DisplayState storage.
+    std::size_t request_bytes=4096;
+    for(const auto& value:{path,font_policy.default_path,directory.u8string()})
+      request_bytes=RenderMemory::add(request_bytes,RenderMemory::mul(value.size(),16));
+    if(request_bytes>=cap || cap-request_bytes<131072)throw std::length_error("Export request exceeds processing memory budget");
+    const auto source_id=source.id();
+    impl->startControlled([snapshot=std::move(source),all,cap,show_rois,flatten,path=std::move(path),options,
+        request_bytes,source_id,font_policy=std::move(font_policy)](const JobContext& context) mutable {
+      context.stage_progress("Prepare display export",0,1);
+      auto prepared=std::make_shared<PreparedExportImage>(std::move(snapshot),all,cap-request_bytes,show_rois,
+          flatten?DisplayExportOutput::Document:DisplayExportOutput::Pixels,
+          [&](std::size_t bytes){context.reserve_resources(RenderMemory::add(request_bytes,bytes));},std::move(font_policy));
+      context.stage_progress("Prepare display export",1,1);
+      context.stage_progress("Render display",0,1);
+      auto image=prepared->render(context.execution_control());
+      context.stage_progress("Render display",1,1);
+      Impl::DisplayExportResult result;
+      result.prepared=std::move(prepared);result.source_id=source_id;result.cap=cap;
+      result.request_bytes=request_bytes;result.show_rois=show_rois;
+      if(flatten)result.pixels.emplace(std::move(image));
+      else result.stage=stageDisplayExport(path,std::move(image),options,context.execution_control());
+      return Impl::JobResult(std::move(result));
+    },d,false,"",flatten?"Flatten display":"Export display",request_bytes,{},true);
+    impl->analysisTask=Impl::ReadOnlyTask::DisplayExport;
+    if(!asynchronous) {
+      Job submitted;{std::lock_guard<std::mutex> lock(impl->jobMutex);submitted=impl->job;}
+      wait();submitted.rethrow();
+    }
     return;
   }
   State edited = d->state();
@@ -9949,6 +10008,23 @@ void Window::poll() {
     impl->job.rethrow();
     impl->job.complete([&] {
       auto &completed = impl->jobResult->value();
+      if(completed.display_export) {
+        if(impl->cancelled)throw OperationCancelled();
+        auto& exported=*completed.display_export;
+        auto validate=[&] {
+          if(documents_.empty() || document()->id!=exported.source_id ||
+              documentById(exported.source_id)!=impl->jobDocument ||
+              impl->processingCap()!=exported.cap || impl->showRois!=exported.show_rois)throw RevisionConflict();
+          exported.prepared->validate(impl->jobDocument->nativeSnapshot(),settings().boolean("point_show_all"),
+              exported.cap-exported.request_bytes);
+        };
+        if(exported.pixels) {
+          validate();
+          auto flat=std::make_shared<Document>(exported.prepared->document(std::move(*exported.pixels)));
+          validate();addDocument(std::move(flat));
+        } else publishDisplayExport(std::move(exported.stage),validate,{});
+        impl->status="Display export complete";return;
+      }
       if(completed.analysis_command) {
         if(impl->cancelled)throw OperationCancelled();
         const auto& command=*completed.analysis_command;

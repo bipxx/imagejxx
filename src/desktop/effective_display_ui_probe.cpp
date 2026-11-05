@@ -360,7 +360,7 @@ Json pointAnnotationEditingUiCase(Window& window,const std::string& context,cons
     window.action("clear_overlays");window.action("add_overlay",{{"all_slices",true}});frame();
     const auto role_owner=window.document();const auto role_before=role_owner->nativeSnapshot();
     const auto documents_before=window.documents().size();
-    menu("menu.Image");menu("menu.Image.Overlays");menu("menu.action.flatten");frame();
+    menu("menu.Image");menu("menu.Image.Overlays");menu("menu.action.flatten");window.wait();frame();
     require(window.documents().size()==documents_before+1,"Point flatten did not publish a detached document");
     require(role_owner->nativeSnapshot().shares_data(role_before),"Point flatten changed source data");
     report["point_flatten"]={{"pixels",window.document()->frame().pixels},{"shape",{window.document()->frame().height,window.document()->frame().width,window.document()->frame().channels}},
@@ -384,7 +384,7 @@ Json pointAnnotationEditingUiCase(Window& window,const std::string& context,cons
     auto text_owner=std::make_shared<imagejxx::Document>(std::move(text_data));const auto text_before=text_owner->snapshot();
     window.addNativeDocument(text_owner);frame();frame();frame();
     const auto text_documents=window.documents().size();
-    menu("menu.Image");menu("menu.Image.Overlays");menu("menu.action.flatten");frame();
+    menu("menu.Image");menu("menu.Image.Overlays");menu("menu.action.flatten");window.wait();frame();
     require(window.documents().size()==text_documents+1,"Text flatten did not publish detached output");
     require(text_owner->snapshot().shares_data(text_before),"Text flatten changed source");
     report["text_flatten"]={{"pixels",window.document()->frame().pixels},{"expected_legacy_pixels",legacy_expected.pixels},

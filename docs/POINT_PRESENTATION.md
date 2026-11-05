@@ -437,6 +437,45 @@ native text compatibility, not Java font/AA pixel equivalence or Linux/macOS UI
 qualification. B2 still owns queued source/global/settings/close guards, file
 promotion, recovery/state/replay and declared PDF/print output/platform checks.
 
+## Asynchronous display actions (P2c.2 B2a)
+
+Flatten, display-file and PDF actions use the existing Window job lane. Native
+menu actions queue work and return control to the editor; ordinary Python action
+calls keep their historical synchronous return/error behavior. The Boolean
+`asynchronous` field in the action parameter object overrides execution timing:
+true returns a pending job, false waits through creator publication and rethrows
+the original ticket's worker/publication exception. It is a per-call execution
+option, not a persisted rendering preference or executable replay record.
+
+At acceptance, capture source identity/data/revisions, consumed display pose,
+point/manager visibility, processing cap, output path, default font path and cwd.
+Resolve the destination before queueing; relative font resources resolve against
+the accepted directory. Capture DPI/orientation as accepted request options.
+JPEG/TGA dimensions, BMP encoder byte range and PDF compression range preflight
+before provider reads. Initial arbitrary snapshot/display-property copies remain
+an explicit B2a/T11 boundary rather than a whole-process memory guarantee.
+
+Bounded path/control allowance and incremental preparation use the same scheduler
+reservation. Rendering and encoding run once on its worker with explicit
+execution/IO controls. A typed result keeps either owned Flatten RGB or a closed
+atomic file stage plus frozen resources. Creator publication verifies active and
+registered ownership, source data/revisions, consumed pose/display properties,
+visibility and cap before one new document or file replacement. Source history
+is untouched; no callback follows the final file validator. Native print remains
+on the existing creator/platform path pending B2b qualification.
+
+The scheduler's existing result-cleanup hook is exposed through a retained-task
+submit overload. Cleanup is nonthrowing and runs outside scheduler/job locks.
+For failed/canceled workers it retires staged resources before running reservation
+release; READY cancellation retires the retained result; publication retires it
+after creator completion/failure. Result payload members are destroyed before
+their reservation guard. A closure-destructor token check alone cannot cover the
+cancel race between closure retirement and scheduler finalization, so no separate
+watcher or scheduler is used. Cancel requests drain through the existing job
+poll/wait lifecycle; read-only source close cancels the export and cannot publish
+an abandoned stage. Persistence/replay and remaining output/platform variants
+remain B2b, and full P2c.2/editor completion is still open.
+
 ## Admitted export preparation (P2c.2 B2a)
 
 Private PreparedExportImage accepts an absolute working-byte admission callback.

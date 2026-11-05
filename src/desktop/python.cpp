@@ -1240,6 +1240,8 @@ PYBIND11_MODULE(_desktop, m) {
           "action",
           [](Window &w, const std::string &name, const std::string &p) {
             auto params = Json::parse(p);
+            if((name=="flatten" || name=="export_display" || name=="export_pdf") && params.is_object() && !params.contains("asynchronous"))
+              params["asynchronous"]=false;
             py::gil_scoped_release release;
             const bool sampled=name=="measure" || name=="measure_rois" || name=="profile";
             const bool wasBusy=sampled && w.busy();

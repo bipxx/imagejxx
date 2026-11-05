@@ -167,7 +167,7 @@ int Window::smokeTest(const std::string &directory) {
     }
   }
   writeJson(directory + "/native-commands.json", {{"outputs", outputs}});
-  action("export_pdf", {{"path", directory + "/native.pdf"}});
+  action("export_pdf", {{"path", directory + "/native.pdf"},{"asynchronous",false}});
   check(readBytes(directory + "/native.pdf")[0] == '%', "PDF export");
   auto drawing = renderHeadless();
   check(drawing["vertices"].get<int>() > 0, "ImGui drawing");

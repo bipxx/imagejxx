@@ -8,6 +8,7 @@ using ImageByteSink=std::function<void(const unsigned char*,std::size_t)>;
 void writePreparedDisplayToSink(const std::string&,const Stack&,const ImageByteSink&);
 void writePreparedPdfToSink(const std::string&,const Image&,double,bool,const ImageByteSink&);
 struct DisplayExportFileOptions { bool pdf=false;double dpi=150;bool landscape=false; };
+void validateDisplayExportFormat(const std::string&,int width,int height,const DisplayExportFileOptions&);
 // Consume owned already normalized rendered pixels, without a second component
 // scan. Encoder runs once; destination stays untouched.
 std::unique_ptr<imagejxx::detail::StagedAtomicStream> stageDisplayExport(

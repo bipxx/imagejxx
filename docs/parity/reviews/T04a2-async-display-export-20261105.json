@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 P2c.2 B2a scoped Windows asynchronous display integration",
+  "date": "2026-11-05",
+  "base_commit": "639c96e",
+  "state": {
+    "implemented": "Flatten/display/PDF use existing retained jobs, admitted preparation, one worker encode/stage and guarded creator publication. Native menus asynchronous; Python remains synchronous by default.",
+    "verified": "713 distinct focused Windows Python cases ultimately pass (20 new),30 native export lifecycle cases, scoped native regressions and both Windows actual-host captures.",
+    "integrated": "Both final Windows hosts, accepted path/font/cwd policy, explicit IO, native result retirement and Python completion/errors; changed installed job client passes per Windows/Linux platform.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#asynchronous-display-actions-p2c2-b2a",
+  "predecessors": [
+    "docs/parity/reviews/T04a2-staged-display-export-20261105.json",
+    "docs/parity/reviews/T04a2-job-reservation-growth-20261105.json",
+    "docs/parity/reviews/T04a2-export-preparation-admission-20261105.json"
+  ],
+  "results": {
+    "distinct_python_cases": 713,
+    "new_python_cases": 20,
+    "final_python_failures": 0,
+    "final_python_skips": 0,
+    "runs": [
+      {
+        "run": "api001",
+        "cases": 705
+      },
+      {
+        "run": "api002",
+        "cases": 6
+      },
+      {
+        "run": "cpp-reader001",
+        "cases": 4
+      },
+      {
+        "run": "python-reader001",
+        "cases": 4
+      },
+      {
+        "run": "jobs-panel001",
+        "cases": 1
+      }
+    ],
+    "native_export_actions": 3,
+    "native_lifecycle_modes_per_action": 10,
+    "native_lifecycle_cases": 30,
+    "native_modes": [
+      "publish",
+      "queued cancel",
+      "running gate cancel",
+      "source close",
+      "stale source",
+      "READY cancel",
+      "changed pose",
+      "changed consumed setting",
+      "low reservation refusal",
+      "changed active owner"
+    ],
+    "native_controls": [
+      "display actions including actual held-worker menu and accepted cwd/font paths",
+      "path/point388 checks",
+      "jobs",
+      "retained jobs",
+      "desktop regressions",
+      "NaN Window six cases"
+    ],
+    "core_platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "changed_installed_clients_per_platform": 1,
+    "host_observations": [
+      {
+        "context": "imgui_cpp",
+        "state": "observed",
+        "frames": 173,
+        "report_bytes": 469848,
+        "report_sha256": "acd5d68dc70fc13e4d038106dda4c3bb195fd290d3d69028cf65c9329fa27356",
+        "text_shape": [
+          48,
+          64,
+          3
+        ],
+        "text_pixels_sha256": "9ddfb7589c708d0021e264be75d44d845aa0bfa87788fc15186141e7f7e87c33",
+        "source_unchanged": true,
+        "documents_added": 1
+      },
+      {
+        "context": "imgui_python",
+        "state": "observed",
+        "frames": 173,
+        "report_bytes": 469855,
+        "report_sha256": "84c10733b165749f4912bd6586d77e60ea6348c0f040c261693b0239ff2714c9",
+        "text_shape": [
+          48,
+          64,
+          3
+        ],
+        "text_pixels_sha256": "9ddfb7589c708d0021e264be75d44d845aa0bfa87788fc15186141e7f7e87c33",
+        "source_unchanged": true,
+        "documents_added": 1
+      }
+    ],
+    "actual_readers_per_host": 4,
+    "existing_jobs_panel_exercise": "Explicit IMAGEJXX_RENDER_TESTS=1 check passes; no GPU performance claim."
+  },
+  "behavior": [
+    "Additive per-call asynchronous Boolean; Python defaults false for compatibility, native menu actions default true.",
+    "Blocking action retains original Job across wait/poll and rethrows its worker/publication failure.",
+    "Metadata domain/format preflight before provider reads, normalized output path and captured default/ordinary relative font resource policy.",
+    "Only frozen snapshots/scalars/resources reach worker; explicit JobContext controls and incremental admission, no second scheduler/preparation/encoder.",
+    "Native submit overload forwards to existing result-cleanup hook; closure-only cancellation retirement rejected due finalization race.",
+    "Nonthrowing cleanup runs outside scheduler/job locks and retires worker failure/cancellation staging before running bytes release; READY cancellation and publication retire result ownership.",
+    "JobResult reservation declared first so every payload destructs before its lease.",
+    "Creator validates source identity/data/revisions, consumed pose/display/visibility/cap and active registered facade; no stale document/file/history publication.",
+    "Print stays on creator/platform path for B2b; arbitrary initial snapshot/queued-capture memory remains unqualified B2a/T11."
+  ],
+  "process_summary": {
+    "terminal_process_records": 53,
+    "successful": 51,
+    "expected_retained_failed_attempts": [
+      "native-nan001: obsolete empty-history cleanup assumption after numeric pass",
+      "api001: six refusal-message regex assumptions"
+    ],
+    "all_owned_groups_drained": true,
+    "timeouts": 0,
+    "full_windows_build_seconds": 723.0930000001099,
+    "selected_file_preflight_seconds": [
+      3.875,
+      21.063
+    ],
+    "narrow_caller_followup_seconds": 46.109,
+    "nan_test_only_retry_seconds": 4.265
+  },
+  "waste_review": [
+    {
+      "finding": "Closure-only token check has a cancel gap before finalization.",
+      "decision": "Use existing native cleanup owner via one overload, not another watcher/scheduler. Payloads retire before lease; public client and native Window cancellation prove ordering."
+    },
+    {
+      "finding": "Shared header fanout dominates build cost.",
+      "decision": "Batch API/host/SDK changes once with1200s; selected-file type feedback before723.093s coherent build. Native caller audit should precede first freeze; actual follow-up limited to46.109s."
+    },
+    {
+      "finding": "Internal C++ callers expected sync and tests assumed empty history/refusal wording.",
+      "decision": "Explicit asynchronous=false at smoke/two test callers. Update lifecycle to terminal records plus zero work/reservations, keep IEEE literals and numerical expectations. Preserve failures; only affected retries."
+    },
+    {
+      "finding": "Duplicate generated evidence and consumer trees.",
+      "decision": "Retain/retire hosts serially; exact prior carrier archive reused. Superseded native successes and consumer trees hashed/removed without archives; final/failure captures retained."
+    },
+    {
+      "finding": "Initial snapshot/display-property and queued-capture costs precede worker admission.",
+      "decision": "Required next B2a/T11 capture task, based on Document::snapshot_locked and Application::snapshot, no allocation/RSS or full B2a claim."
+    }
+  ],
+  "retention": {
+    "groups": 42,
+    "states": {
+      "verified_retention_then_removed": 7,
+      "removed_verified_empty_owned_scratch": 30,
+      "identical_retained_input_reused_then_removed": 1,
+      "superseded_success_artifacts_hashed_then_removed": 2,
+      "disposable_consumer_tree_verified_then_removed": 2
+    },
+    "necessary_raw_bytes": 6581718,
+    "new_verified_archive_bytes": 1068052,
+    "consumer_tree_bytes_removed": 1558245,
+    "superseded_success_bytes_removed": 56260,
+    "duplicate_carrier_bytes_removed": 723580,
+    "carrier_archive_reused": {
+      "path": ".tmp/manual-workflow-verification/t04a2-export-reservation-20261105/carriers.zip",
+      "bytes": 98102,
+      "sha256": "5f72f3eeb24ee4fce0e216c2252a9c9504b0b7ff2923305072c29ec9ec326d06",
+      "member": "profiles.txt",
+      "member_bytes": 723580,
+      "member_sha256": "2c87bb77fd6fe3a58485f0e7665fa6f7337ca53e6b7d4fe2a87c97e3de9c7a89"
+    },
+    "archives_and_members_reverified": true,
+    "scratch_absent": true,
+    "compiler_sdk_runtime_tree_archived": false
+  },
+  "storage": {
+    "observations": [
+      {
+        "observation": "entry001",
+        "known_bytes": 8525690766,
+        "unknown_subtrees": 214,
+        "identity": {
+          "path": ".tmp/manual-workflow-verification/async-display-export-entry001.json",
+          "bytes": 66571,
+          "sha256": "96e7b135f3a4041989dba7bfebe3f179a4de47db83a97962ab494496724d9695"
+        }
+      },
+      {
+        "observation": "postcheck001",
+        "known_bytes": 8568458525,
+        "unknown_subtrees": 214,
+        "identity": {
+          "path": ".tmp/manual-workflow-verification/async-display-export-postcheck001.json",
+          "bytes": 66571,
+          "sha256": "8499cbb4f79d1b51b3a1b122e00a964a56663f00981848a4063778b3f6aa68fa"
+        }
+      },
+      {
+        "observation": "final001",
+        "known_bytes": 8561915303,
+        "unknown_subtrees": 214,
+        "identity": {
+          "path": ".tmp/manual-workflow-verification/async-display-export-final001.json",
+          "bytes": 66572,
+          "sha256": "2de28b44bd4f69fba6a40156447a47ef844f4784d545e4b0c8b158591eab0600"
+        }
+      }
+    ],
+    "whole_budget_verified": false,
+    "limitation": "214 inaccessible subtrees remain unknown; final before receipt/doc deltas, observations not absolute peak/RSS."
+  },
+  "remaining": [
+    "B2a/T11 bounded initial snapshot and queued-capture ownership before copying; avoid repeated arbitrary DisplayState copies.",
+    "B2b persisted options/detached state, executable replay/rebind/resource recovery.",
+    "B2b/T10/T15 remaining output metadata/layout/path/printing/platform variants and actual file-dialog options.",
+    "Linux/macOS UI, remote CI/reference availability and full T00-T15 commercially eligible ImageJ/Fiji scope."
+  ],
+  "source_pins": [
+    {
+      "path": "include/imagejxx/jobs.hpp",
+      "bytes": 6780,
+      "sha256": "0f4d6056512842634e8c92799212618fb5b8eb418b807321ab2f626a0c4cb618"
+    },
+    {
+      "path": "src/native/jobs.cpp",
+      "bytes": 22987,
+      "sha256": "fec7de6f14e87b47502ee846df629528aabbcd22e61a5255dd269fcbc46ad4bd"
+    },
+    {
+      "path": "src/desktop/display_export_io.hpp",
+      "bytes": 1188,
+      "sha256": "b450dfc79e8411c7b3b3a35de02fa75753b375b023e53047cfcbbb8becf4bc7e"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 42562,
+      "sha256": "da6681d6a91724db0f1b7979240e73e936d3ad3d5f18d1b5ae21bc5e65c6ab60"
+    },
+    {
+      "path": "src/desktop/export.cpp",
+      "bytes": 11914,
+      "sha256": "c3bec3d3d33673b759a3d45e3da336136c58f64b8ed4bd52dee677848f248ad0"
+    },
+    {
+      "path": "src/desktop/point_raster_export.hpp",
+      "bytes": 1247,
+      "sha256": "b3fe0a0832b73f71a165e7ea2078aded25a0356f422758e2348d3edced2db26b"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 63261,
+      "sha256": "a6f4f5bc26af0ef95d8f4182ea3db6cb1faf4c8db3a29272b6b4f139fe9c0e7d"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "bytes": 65056,
+      "sha256": "aa70fa341e85575b3f98144a53c9887576a1ad375a5afd343fe9b0238bbded48"
+    },
+    {
+      "path": "src/desktop/smoke.cpp",
+      "bytes": 18941,
+      "sha256": "6fe3b8e252a1ab8dd120361da6bc4a5c9cf5944d7be184b716865f3b4aea3541"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 892276,
+      "sha256": "8bb1de1a31475eedc738c230b0174a50a0ad256317bc89304be5af0d6865f313"
+    },
+    {
+      "path": "tests/installed_core/job_resources.cpp",
+      "bytes": 2201,
+      "sha256": "f82a80def03290a0bdf06792d772d02dfea2b0d08ffd73a593b233e722acd377"
+    },
+    {
+      "path": "tests/native/test_desktop.cpp",
+      "bytes": 128065,
+      "sha256": "cc66e2360bba714c6c4b5aa8fb6830cf17030cd76e2340191086d898262f386a"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 16041,
+      "sha256": "10fe76fb16468595f0ca10a323c11584c1c64b94f65b4af55ce43bc69fa9263d"
+    },
+    {
+      "path": "tests/native/test_nan_window.cpp",
+      "bytes": 21839,
+      "sha256": "a91a77b99199baa36172c6f8c12a4f8a55d33e0d35968599a01e1bcd1d69ccd4"
+    },
+    {
+      "path": "tests/python/test_display_export_jobs.py",
+      "bytes": 4891,
+      "sha256": "f6418e65120bfaa351c966c4b2b2247ae1a41829013e4bfaafcbc67b585927e9"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 38586,
+      "sha256": "957a6f29b56ef84f9754b7dadb42fb2d0ee4fc4fe6f6cc27d0d7e66d4d4002bf"
+    },
+    {
+      "path": "docs/IMPLEMENTATION.md",
+      "bytes": 213599,
+      "sha256": "86ae2f356d7e979ba69fe5e4ea44fec56f6780ac02644eeb3d1dcd194bd57082"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8284672,
+      "sha256": "28c49de65eff9b6c69e3f284c233181abc35b46af17643eee2c18c57bab5910e"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20204544,
+      "sha256": "e6a8b3220a17755c26ad58abe8a8f085ed049aef979f09802603faffc86e3234"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20287488,
+      "sha256": "58e462a0a69b238caccf1e3759ecc0c2d94cd86c9fbf9b187cb07e92ba2a9f2a"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_display_actions_tests.exe",
+      "bytes": 9950208,
+      "sha256": "da8b885579e15dec9f32907383c18bbdd6c87a47b3eb8b0e1163a5fa54d33db3"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_path_visual_tests.exe",
+      "bytes": 1246720,
+      "sha256": "c3eb4f611ded21ebaa13e0c421d232eea8489b0247ad1816cd1df35c7fa259a7"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_job_tests.exe",
+      "bytes": 1386496,
+      "sha256": "f8907487943b58b7139117fca3cc4516de79f0c73b4ef03a9dbf9dbac2f30b81"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_retained_jobs_tests.exe",
+      "bytes": 1367040,
+      "sha256": "9afbcfa946e5befb34e008b9b31ee7245e8481673788d6350d2eb0b27438d81f"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_desktop_tests.exe",
+      "bytes": 10220544,
+      "sha256": "f717f19714dbe6619f92d9dea3c0824d0d9253623fad30bec101755a97e36c3d"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_nan_window_tests.exe",
+      "bytes": 9838592,
+      "sha256": "f2e4d18515d76ad828ba9935594e4d7a16979d358d2572400654615c2cdb71fc"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/include/imagejxx/jobs.hpp",
+      "bytes": 6780,
+      "sha256": "0f4d6056512842634e8c92799212618fb5b8eb418b807321ab2f626a0c4cb618"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+      "bytes": 59541860,
+      "sha256": "1466da32958cfac31cae5705c293e0f13336d526b6f4a441182f892963500db7"
+    }
+  ],
+  "linux_sdk_and_retired_client_identities": [
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/include/imagejxx/jobs.hpp",
+      "bytes": 6780,
+      "sha256": "0f4d6056512842634e8c92799212618fb5b8eb418b807321ab2f626a0c4cb618"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+      "bytes": 20628810,
+      "sha256": "c11c8dd401f5cbb5a26ecf8d68aae335f2babb178e37f1d5e4bccca39a4c6995"
+    },
+    {
+      "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/t04a2-async-display-export-20261105/scratch/sdk-linux001/job_resource_api",
+      "bytes": 128704,
+      "sha256": "7ebbf9f571626bec813e29ab8988d3096f8082264621575f3cf9cad26e802c03"
+    }
+  ],
+  "font_resource_identity": {
+    "path": "C:/WINDOWS/Fonts/segoeui.ttf",
+    "bytes": 960076,
+    "sha256": "704eada12961a27fd271f7d3b09e2066520e758390c1776744eff430fee30f6e",
+    "scope": "Existing resource identity only; no font binary retained/redistributed."
+  },
+  "local_evidence_manifest": {
+    "path": ".tmp/manual-workflow-verification/t04a2-async-display-export-20261105/closeout-manifest.json",
+    "bytes": 49451,
+    "sha256": "7284609a56b0cdfb8a51bbb978483027e0b9497a7faa32be61daa98a42b40eec"
+  },
+  "closeout_verification": {
+    "source_product_and_local_evidence_pins": "pass, including retained carrier dependency and current font identity",
+    "traceability": "99 capability IDs,3 unchanged history hashes,64 plan links/anchors pass",
+    "sdk_header_identity": "active Windows installed header matches source",
+    "scratch": "all42 owned groups absent",
+    "whitespace": "project and compilexx note diffs pass",
+    "scope": "Windows integration increment accepted; full B2a/editor/release objective remains open"
+  }
+}
