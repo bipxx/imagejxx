@@ -212,8 +212,9 @@ void Job::complete(const std::function<void()> &publication) {
   state_->changed.notify_all();
 }
 JobContext::JobContext(std::shared_ptr<Job::State> state,
-                       std::shared_ptr<const void> result_guard)
-    : result_guard_(std::move(result_guard)) {
+                       std::shared_ptr<const void> result_guard,
+                       std::function<void(std::size_t)> reserve)
+    : reserve_(std::move(reserve)), result_guard_(std::move(result_guard)) {
   control_.cancellation = state->cancellation;
   control_.progress = [state](std::size_t completed, std::size_t total) {
     if (completed > total)
@@ -238,6 +239,10 @@ JobContext::JobContext(std::shared_ptr<Job::State> state,
     state->info.stage_completed = completed;
     state->info.stage_total = total;
   };
+}
+void JobContext::reserve_resources(std::size_t total_bytes) const {
+  checkpoint();
+  reserve_(total_bytes);
 }
 void JobContext::checkpoint() const {
   if (control_.cancellation->canceled())
@@ -493,7 +498,28 @@ void JobScheduler::work(std::shared_ptr<Shared> shared) {
     }
     std::exception_ptr failure;
     try {
-      JobContext context(state, resource);
+      JobContext context(state, resource, [shared, state, resource](std::size_t bytes) {
+        // Same scheduler -> ticket lock order as dispatch/finalization. No user
+        // callbacks or waiting while holding either lock.
+        std::lock_guard<std::mutex> lock(shared->mutex);
+        std::lock_guard<std::mutex> job_lock(state->mutex);
+        if (state->cancellation->canceled()) throw OperationCancelled();
+        if (state->info.state != JobState::Running)
+          throw std::invalid_argument("Only running jobs can grow reservations");
+        const auto previous = state->options.resource_bytes;
+        if (bytes <= previous) return;
+        const auto extra = bytes - previous;
+        if (extra > std::numeric_limits<std::size_t>::max() - shared->reserved ||
+            (shared->limits.memory_budget &&
+             extra > shared->limits.memory_budget - shared->reserved))
+          throw std::length_error("Job reservation growth exceeds available memory budget");
+        shared->reserved += extra;
+        shared->ledger->running_bytes += extra;
+        state->options.resource_bytes = bytes;
+        state->info.resource_bytes = bytes;
+        state->info.peak_reserved_bytes = bytes;
+        if (resource) resource->bytes = bytes;
+      });
       ExecutionScope scope(context.execution_control());
       context.checkpoint();
       task->function(context);

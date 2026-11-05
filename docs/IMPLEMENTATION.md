@@ -2423,6 +2423,18 @@ published = app.publish(job)
 assert published.document_id == owner.id and owner.undo_steps == 1
 ```
 
+Native worker code can grow its declared reservation before allocating through
+`JobContext::reserve_resources(total_bytes)`. The argument is an absolute,
+monotonic total: smaller requests do not release workspace. Growth is admitted
+immediately against the same scheduler ledger and current budget; contention or
+overflow throws `std::length_error` without changing the ticket or ledger. It
+never waits while retaining a worker's existing reservation. Canceled contexts
+throw `OperationCancelled`; contexts that have left Running cannot acquire more
+bytes. Successful growth updates JobInfo's current/peak declared bytes and flows
+through the existing retained-result guard, including release and queue wakeup.
+This accounts declared workspace, not arbitrary allocations or process RSS.
+Export preparation will adopt it in the next B2a integration increment.
+
 The states are Queued, Running, Ready, Publishing, Completed, Failed and Canceled.
 Ready means the worker has prepared an isolated result; it has not edited the
 document. Publication runs on the caller's permitted thread, validates owner

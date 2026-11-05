@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 B2a incremental scheduler reservation prerequisite",
+  "date": "2026-11-05",
+  "base_commit": "de332cd",
+  "state": {
+    "implemented": "JobContext::reserve_resources(size_t total_bytes) const admits monotonic absolute growth on the existing ledger without blocking.",
+    "verified": "Native jobs and retained-job suites plus one public-only installed SDK client pass on each Windows/Linux platform.",
+    "integrated": "Existing native scheduler/guard; export/font admission consumer and async UI remain next.",
+    "release_ready": false
+  },
+  "contract": "docs/IMPLEMENTATION.md#shared-native-jobs",
+  "behavior": [
+    "Growth admitted before caller allocation, not automatic allocation tracking.",
+    "Same scheduler-to-ticket lock order as dispatch/finalization; no user callbacks or blocking admission under locks.",
+    "Contention and size_t overflow refuse atomically with length_error; smaller requests do not release bytes.",
+    "Current and peak ticket bytes, running ledger and successful retained guard all carry grown bytes.",
+    "Canceled contexts reject with OperationCancelled; no-longer-running contexts cannot reacquire.",
+    "Current limit changes account for grown running/retained bytes. Final guard drop wakes queued work.",
+    "Original failed/canceled worker retention semantics unchanged; only successful worker results enter retained READY accounting."
+  ],
+  "checks": {
+    "native_suites_per_platform": [
+      "jobs",
+      "retained_jobs"
+    ],
+    "new_native_test_functions": [
+      "testReservationGrowth",
+      "testReservationGrowthContentionAndOverflow",
+      "testReservationGrowthFailureCancellationAndLifetime"
+    ],
+    "installed_client_per_platform": "job_resource_api, public headers/imported library only",
+    "processes": [
+      {
+        "run": "carriers-pack",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2190000000409782,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "carriers-verify",
+        "exit_code": 0,
+        "elapsed_seconds": 0.14099999982863665,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "carriers001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1410000000614673,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-build001",
+        "exit_code": 0,
+        "elapsed_seconds": 27.550575692,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-install-sdk001",
+        "exit_code": 0,
+        "elapsed_seconds": 1.0213406080000027,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-jobs001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2119608839999998,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-outer-sdk001",
+        "exit_code": 0,
+        "elapsed_seconds": 7.2350000001024455,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-outer001",
+        "exit_code": 0,
+        "elapsed_seconds": 31.54700000002049,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-retained001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.08401688600000057,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-sdk-build001",
+        "exit_code": 0,
+        "elapsed_seconds": 1.1359515949999945,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-sdk-configure001",
+        "exit_code": 0,
+        "elapsed_seconds": 2.970929319999996,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-sdk-identity001",
+        "exit_code": 0,
+        "elapsed_seconds": 3.8119999999180436,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-sdk-test001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.07358587800000294,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-jobs001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.45399999991059303,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-retained001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.0779999999795109,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "windows-build001",
+        "exit_code": 0,
+        "elapsed_seconds": 19.484999999869615,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "windows-install-sdk001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.8589999999385327,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "windows-sdk-build001",
+        "exit_code": 0,
+        "elapsed_seconds": 1.968000000109896,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "windows-sdk-configure001",
+        "exit_code": 0,
+        "elapsed_seconds": 4.016000000061467,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "windows-sdk-test001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.06299999984912574,
+        "terminal_cleanup_complete": true
+      }
+    ],
+    "product_failures": 0,
+    "python_ui_campaign": false,
+    "calibration_clients_rerun": false
+  },
+  "sdk": {
+    "roots_reused": true,
+    "linux_installed_identities": [
+      {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/include/imagejxx/jobs.hpp",
+        "bytes": 6335,
+        "sha256": "2dc0e3bac0c3d44711e6fcbba2156707d77a4804e0bc684da653557b08c549a4"
+      },
+      {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+        "bytes": 20625504,
+        "sha256": "7ca8a736533927b5f3c5b0cd9376659386590fc4d830a192456df49ba8546f4a"
+      }
+    ],
+    "profile_carrier": "Existing installed-core configure contract requires real carrier; generated/pinned/retained, but job_resource_api does not consume it. No calibration evidence claim."
+  },
+  "waste_review": [
+    {
+      "finding": "Fixed initial reservation cannot charge incrementally discovered font work.",
+      "disposition": "Small additive native API on existing ledger, no second scheduler, whole-cap reserve or duplicate preparation. Consumer adoption required next."
+    },
+    {
+      "finding": "Public header changes could trigger full unrelated platform/reference/UI work.",
+      "disposition": "Run affected native suites and one new public-only client per installed SDK; reuse roots, no Python/UI campaign."
+    },
+    {
+      "finding": "CRLF edit anchor and guessed path/glob reads failed.",
+      "disposition": "Refused before product work; inspect bytes and rg discovery/-g filters. T02 recurrence remains open."
+    },
+    {
+      "finding": "Cleanup assumed one generated CMake import configuration.",
+      "disposition": "Guard refused before deletion; inspect generated files and retain tested Release import explicitly, then verify live tree and retire. No product rerun."
+    },
+    {
+      "finding": "Grown declared reservation is not measured allocation/RSS.",
+      "disposition": "B2a/T11 must wire pre-allocation preparation charges and staged-result cleanup before claiming the consumer bound."
+    }
+  ],
+  "retention": {
+    "all_scratch_groups": 21,
+    "empty_groups": 18,
+    "consumer_trees_removed_bytes": 1514947,
+    "raw_carrier_bytes": 723580,
+    "verified_archive_bytes": 98102,
+    "compiler_sdk_runtime_tree_archived": false,
+    "scratch_absent": true
+  },
+  "storage": {
+    "entry": {
+      "path": ".tmp/manual-workflow-verification/export-job-reservation-entry001.json",
+      "bytes": 66572,
+      "sha256": "3ac90ad634d502f34bab81a1bdfeaf6d4f23a35a4643836e70e02ddf56ad54ff"
+    },
+    "final": {
+      "path": ".tmp/manual-workflow-verification/export-job-reservation-final001.json",
+      "bytes": 66571,
+      "sha256": "dcb7da5e510e83a22a9deb0d83d1416f51b4170670913a2695c390174abe7cfd"
+    },
+    "entry_known_bytes": 8509051020,
+    "final_known_bytes": 8524605649,
+    "unknown_subtrees": 214,
+    "whole_budget_verified": false,
+    "limitation": "Final complete normalized observation precedes receipt/doc deltas; not an absolute peak or RSS."
+  },
+  "remaining": [
+    "B2a actual snapshot/font/layout pre-allocation admission, no duplicate preparation.",
+    "B2a async worker-stage/creator-publication integration, cancellation/source-close disposal and Python synchronous errors.",
+    "B2b state/replay, output/format/print/platform qualification.",
+    "Full T00-T15 commercially eligible editor scope."
+  ],
+  "source_pins": [
+    {
+      "path": "include/imagejxx/jobs.hpp",
+      "bytes": 6335,
+      "sha256": "2dc0e3bac0c3d44711e6fcbba2156707d77a4804e0bc684da653557b08c549a4"
+    },
+    {
+      "path": "src/native/jobs.cpp",
+      "bytes": 22598,
+      "sha256": "d195e95ab0cf9f457effdcc0793a28778182a1c0f9ce95ed97cb582530380549"
+    },
+    {
+      "path": "tests/native/test_jobs.cpp",
+      "bytes": 42678,
+      "sha256": "fcadd57ca5f0282a206f22cfd60a0a94f68702fcc8d4ac67574b073a6e55aa5a"
+    },
+    {
+      "path": "tests/installed_core/CMakeLists.txt",
+      "bytes": 3119,
+      "sha256": "5327b5a29998ff5a468626a3ecc3701afebc6810b8f0de5eab7823edc8fcdc1f"
+    },
+    {
+      "path": "tests/installed_core/job_resources.cpp",
+      "bytes": 1309,
+      "sha256": "d6b37c2563af2ceb3f07f33f52f5f30e27e0ebeb4fff69cc37e2b25854d6058e"
+    },
+    {
+      "path": "docs/IMPLEMENTATION.md",
+      "bytes": 212928,
+      "sha256": "e9b3bd0826b858111ef5b7f9ed1f91f9747fd9ef5eadab69a0199ce085f2f9fd"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_job_tests.exe",
+      "bytes": 1386496,
+      "sha256": "56d2f910f44781f1c82820bfb14cfb764e907f1169ebc62423a8c8d930c062be"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_retained_jobs_tests.exe",
+      "bytes": 1367040,
+      "sha256": "be818f5c8813922143cbd2f624808fe1c77b3509429e65d717d91d596a367f4f"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/include/imagejxx/jobs.hpp",
+      "bytes": 6335,
+      "sha256": "2dc0e3bac0c3d44711e6fcbba2156707d77a4804e0bc684da653557b08c549a4"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+      "bytes": 59533248,
+      "sha256": "12a8df5e1808f67880d342cc2567a88c6040128192d3225fe57755ab31a10bee"
+    }
+  ],
+  "local_evidence_manifest": {
+    "path": ".tmp/manual-workflow-verification/t04a2-export-reservation-20261105/closeout-manifest.json",
+    "bytes": 16582,
+    "sha256": "cd62823d9ca8027bf787c3f15ed2085047536306b1c099e665dac78be292c06f"
+  }
+}

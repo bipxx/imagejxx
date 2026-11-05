@@ -86,6 +86,12 @@ class JobContext {
 public:
   const ExecutionControl &execution_control() const { return control_; }
   std::shared_ptr<const void> result_resource_guard() const { return result_guard_; }
+  // Grow this running ticket's absolute declared reservation before allocating.
+  // Monotonic: a smaller value does not release memory. Admission is immediate;
+  // budget/overflow refusal throws length_error without changing the ledger.
+  // A canceled or no-longer-running context cannot acquire more resources.
+  // Retained results keep the grown reservation until their guard is retired.
+  void reserve_resources(std::size_t total_bytes) const;
   void checkpoint() const;
   void progress(std::size_t completed, std::size_t total) const;
   void stage_progress(std::string_view name, std::size_t completed,
@@ -94,8 +100,10 @@ public:
 private:
   friend class JobScheduler;
   explicit JobContext(std::shared_ptr<Job::State> state,
-                      std::shared_ptr<const void> result_guard = {});
+                      std::shared_ptr<const void> result_guard,
+                      std::function<void(std::size_t)> reserve);
   ExecutionControl control_;
+  std::function<void(std::size_t)> reserve_;
   std::shared_ptr<const void> result_guard_;
 };
 class JobScheduler {

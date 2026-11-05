@@ -5,6 +5,7 @@
 #include <iostream>
 #include <limits>
 #include <mutex>
+#include <optional>
 #include <thread>
 using namespace imagejxx;
 using namespace std::chrono_literals;
@@ -47,6 +48,81 @@ struct Gate {
     changed.notify_all();
   }
 };
+void testReservationGrowth() {
+  JobScheduler scheduler({2, 100, 8});
+  Gate gate;
+  std::shared_ptr<const void> retained;
+  auto first = scheduler.submit([&](const JobContext &context) {
+    context.reserve_resources(60);
+    context.reserve_resources(20); // Monotonic, never release live workspace.
+    retained = context.result_resource_guard();
+    rejects<std::length_error>([&] { context.reserve_resources(101); });
+    gate.work(context);
+  }, {"grow retained", {}, 0, 10, true});
+  gate.await();
+  check(first.info().resource_bytes == 60 && first.info().peak_reserved_bytes == 60 &&
+            scheduler.usage().running_bytes == 60 && scheduler.usage().reserved_bytes == 60,
+        "Successful growth charges exact running bytes; refusals/smaller requests do not alter them");
+  rejects<std::invalid_argument>([&] { scheduler.set_limits({2, 59, 8}); });
+  auto queued = scheduler.submit([](const JobContext &) {}, {"queued", {}, 0, 50});
+  check(queued.info().state == JobState::Queued, "Grown ticket gates queued work");
+  gate.release(); first.wait(); first.rethrow();
+  check(scheduler.usage().running_bytes == 0 && scheduler.usage().retained_bytes == 60 &&
+            scheduler.usage().reserved_bytes == 60,
+        "Grown reservation transfers to the result guard without double charging");
+  first.complete([] {});
+  check(scheduler.usage().retained_bytes == 60, "Published retained payload still owns its grown lease");
+  retained.reset();
+  check(queued.wait_for(2s), "Retiring grown result wakes queued work"); queued.rethrow();
+  check(scheduler.usage().reserved_bytes == 0, "All grown/queued bytes release exactly once");
+}
+void testReservationGrowthContentionAndOverflow() {
+  for (const auto budget : {std::size_t(100), std::size_t(0)}) {
+    JobScheduler scheduler({2, budget, 8});
+    Gate gate;
+    auto blocker = scheduler.submit([&](const JobContext &context) { gate.work(context); },
+                                    {"blocker", {}, 0, 60});
+    gate.await();
+    auto request = scheduler.submit([&](const JobContext &context) {
+      rejects<std::length_error>([&] { context.reserve_resources(
+          budget ? 41 : std::numeric_limits<std::size_t>::max()); });
+      check(scheduler.usage().reserved_bytes == 80,
+            "Budget contention/overflow refusal is atomic and does not wait for another worker");
+    }, {"refused growth", {}, 0, 20});
+    check(request.wait_for(2s), "Growth refusal must not deadlock behind held reservations"); request.rethrow();
+    check(request.info().resource_bytes == 20 && request.info().peak_reserved_bytes == 20 &&
+              scheduler.usage().reserved_bytes == 60,
+          "Rejected growth preserves original ticket and releases only its own bytes");
+    gate.release(); blocker.wait(); blocker.rethrow();
+    check(scheduler.usage().reserved_bytes == 0, "Contention leaves no reservation leak");
+  }
+}
+void testReservationGrowthFailureCancellationAndLifetime() {
+  JobScheduler scheduler({1, 100, 8});
+  auto failure = scheduler.submit([](const JobContext &context) {
+    context.reserve_resources(70);
+    throw std::runtime_error("after admitted growth");
+  }, {"growth then failure", {}, 0, 10, true});
+  failure.wait(); rejects<std::runtime_error>([&] { failure.rethrow(); });
+  check(failure.info().peak_reserved_bytes == 70 && scheduler.usage().reserved_bytes == 0,
+        "Failed grown ticket releases its full reservation");
+  Gate gate;
+  std::optional<JobContext> saved;
+  auto canceled = scheduler.submit([&](const JobContext &context) {
+    context.reserve_resources(80); saved.emplace(context); gate.work(context);
+  }, {"growth then cancel", {}, 0, 10});
+  gate.await();check(canceled.cancel(), "Running grown ticket remains cancelable"); canceled.wait();
+  rejects<OperationCancelled>([&] { saved->reserve_resources(90); });
+  check(canceled.info().peak_reserved_bytes == 80 && scheduler.usage().reserved_bytes == 0,
+        "Canceled grown ticket cannot reacquire resources"); saved.reset();
+  auto terminal = scheduler.submit([&](const JobContext &context) {
+    context.reserve_resources(40);saved.emplace(context);
+  }, {"terminal context", {}, 0, 10});
+  terminal.wait();terminal.rethrow();
+  rejects<std::invalid_argument>([&] { saved->reserve_resources(50); });
+  check(scheduler.usage().reserved_bytes == 0, "A copied terminal context cannot reacquire bytes");
+  saved.reset();
+}
 void testReservationsAndPublication() {
   JobScheduler scheduler({2, 100, 8});
   Gate gate;
@@ -775,6 +851,9 @@ int main() {
   try {
     testLegacyRoundedSupplement();
     testRoundedMaskAdmission();
+    testReservationGrowth();
+    testReservationGrowthContentionAndOverflow();
+    testReservationGrowthFailureCancellationAndLifetime();
     testReservationsAndPublication();
     testSupersessionFailuresAndShutdown();
     testQueuedCaptureRelease();
