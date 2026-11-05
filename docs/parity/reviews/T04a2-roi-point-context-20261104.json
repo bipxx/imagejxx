@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 M2b.2b P2c.2 A2 explicit generic ROI/font API",
+  "date": "2026-11-04",
+  "state": {
+    "implemented": "Additive native render_roi_style explicit point-options/font/point-limit/execution context and Python keyword opt-in; core color resolution and shared admitted point preparation.",
+    "verified": "519 focused Windows Python cases pass (128 new), two native controls and one changed installed point API client per Windows/Linux platform pass.",
+    "integrated": "Public C++/Python route installed and verified; existing desktop owned-buffer composition unchanged, scoped actual-host output evidence reused.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#explicit-generic-native-roi-display-context-p2c2-a2",
+  "results": {
+    "windows_python_passed": 519,
+    "new_generic_cases": 128,
+    "independent_generic_original_command_pixel_cases": 112,
+    "unchanged_direct_raster_cases": 147,
+    "windows_native_controls": [
+      "native_point_presentation",
+      "native_roi_style"
+    ],
+    "linux_native_controls": [
+      "native_point_presentation",
+      "native_roi_style"
+    ],
+    "installed_client_per_platform": [
+      "installed_point_presentation_api"
+    ],
+    "actual_host_campaign": "Not rerun; no consumer behavior change. Prior output-role receipts retain original scope.",
+    "native_failed_attempts": 2,
+    "native_failure_reason": "Test assumed periodic callback count repeats. Deterministic empty legacy point verifies final-callback cancellation; no API/core correction needed."
+  },
+  "behavior": [
+    "Explicit new context routes tagged points to shared point raster; core resolves ROI stroke/legacy color/fallback once without mutating options.",
+    "Point metadata/font/output/work admission precedes NumPy conversion; binding uses the same prepared layout, without pre-admission argument clones.",
+    "Native and Python new calls support supplied decimal glyph coverage, pose/visibility/clip/scale, resource refusal and cancellation.",
+    "Native final-callback cancellation and inherited token recheck preserve detached publication guarantees.",
+    "Existing positional calls retain legacy masks; untagged new-context calls ignore point-only options/font/limits, with no bounded legacy-mask claim.",
+    "No core font IO, new asset/dependency/UI coupling, geometry kernel, runner or environment; desktop owned RGB composition retained."
+  ],
+  "remaining": [
+    "B1 captured Unicode/multiline legacy text font/geometry and actual aggregate staging before source reads.",
+    "B2 scheduler reservation and global/source/options lifecycle through file/result publication, format metadata/PDF/print qualification, recovery/state/executable replay.",
+    "P2c.3 appearance/loss, P3 typed preview/actions, P4 reconciliation and complete T00-T15 horizon.",
+    "No Linux Python/macOS UI, exact Java font/AA, release or broad speed claim."
+  ],
+  "waste_review": [
+    {
+      "finding": "A new detached generic call per desktop overlay would repeat image copies.",
+      "decision": "Use the shared point helper/painter and retain existing owned-buffer consumer; no new renderer/font framework."
+    },
+    {
+      "finding": "Wrong install component returned0 without installing native module.",
+      "decision": "Use configured processing-python; verify installed/cache binary hashes and both SDK headers. Next owner reads configured manifest before component changes."
+    },
+    {
+      "finding": "Native final callback test counted nondeterministic periodic checkpoints.",
+      "decision": "Retain two failures, improve refusal index, use no-periodic-work empty legacy point. Only native test target rebuilt; green Python/core build reused."
+    },
+    {
+      "finding": "Byte-EOL and document edit anchors assumed CRLF.",
+      "decision": "Guards stopped before writes; use exact observed local LF/CRLF anchor, validate all before any write. Unchanged source line endings validated before publish, no normalization rebuild."
+    },
+    {
+      "finding": "Seven unrelated SDK clients/unchanged UI captures would add work and retained bytes.",
+      "decision": "Qualify one changed installed client per platform, serially; preserve identities/LastTest then delete consumer trees, never archive caches. Share one maintained CMake-required profile carrier; no unrelated profile campaign."
+    }
+  ],
+  "retention": {
+    "test_payload_groups": 2,
+    "test_payload_bytes": 882366,
+    "verified_archive_bytes": 152933,
+    "compiler_consumer_bytes_retired": 4962782,
+    "compiler_trees_archived": false,
+    "all_owned_scratch_absent": true
+  },
+  "owned_process_summary": [
+    {
+      "receipt": "api001-pack.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3130000000819564
+    },
+    {
+      "receipt": "api001-verify.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1880000000819564
+    },
+    {
+      "receipt": "api001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 5.391000000061467
+    },
+    {
+      "receipt": "carrier001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1410000000614673
+    },
+    {
+      "receipt": "carriers-pack.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.34300000010989606
+    },
+    {
+      "receipt": "carriers-verify.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1410000000614673
+    },
+    {
+      "receipt": "install-app001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14000000013038516
+    },
+    {
+      "receipt": "install-native001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.06300000008195639
+    },
+    {
+      "receipt": "install-native002.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.11000000010244548
+    },
+    {
+      "receipt": "install-python001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2029999999795109
+    },
+    {
+      "receipt": "install-sdk001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2029999999795109
+    },
+    {
+      "receipt": "linux-build001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 9.136476793
+    },
+    {
+      "receipt": "linux-install-sdk001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.8163887640000027
+    },
+    {
+      "receipt": "linux-native001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08538666100000114
+    },
+    {
+      "receipt": "linux-outer001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 18.594000000040978
+    },
+    {
+      "receipt": "linux-sdk-build001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 3.199800058000001
+    },
+    {
+      "receipt": "linux-sdk-configure001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 2.930339768000003
+    },
+    {
+      "receipt": "linux-sdk-test001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.11641167500000194
+    },
+    {
+      "receipt": "native-build002.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 2.2659999998286366
+    },
+    {
+      "receipt": "native-build003.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 2.219000000040978
+    },
+    {
+      "receipt": "native001.process.json",
+      "exit_code": 8,
+      "elapsed_seconds": 0.34399999980814755
+    },
+    {
+      "receipt": "native002.process.json",
+      "exit_code": 8,
+      "elapsed_seconds": 0.1410000000614673
+    },
+    {
+      "receipt": "native003.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.10999999986961484
+    },
+    {
+      "receipt": "sdk-build001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 2.281999999890104
+    },
+    {
+      "receipt": "sdk-configure001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 3.843000000109896
+    },
+    {
+      "receipt": "sdk-test001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.10899999993853271
+    },
+    {
+      "receipt": "windows-build001.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 86.28099999995902
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/imagejxx/point_raster.hpp",
+      "bytes": 2243,
+      "sha256": "48110e89f6552437b0870bbd6a67ac459acc47f4d914e938be65b7e22453bcc4"
+    },
+    {
+      "path": "src/native/point_raster.cpp",
+      "bytes": 12072,
+      "sha256": "34d3e10e42bcac06ea653718039ba05e50024a480a921337d5c6fb10270c7301"
+    },
+    {
+      "path": "src/native/point_raster_internal.hpp",
+      "bytes": 1159,
+      "sha256": "d66937b5b809794debb0ad1cab87af491268278f28dc2f6a9d1e0fb538fb5a23"
+    },
+    {
+      "path": "src/native/point_presentation_bindings.cpp",
+      "bytes": 12321,
+      "sha256": "b414f17ff0b3b1a13f3c8c054dc9e8227f6d3deebe4bcbc611746cc358a3b15f"
+    },
+    {
+      "path": "tests/native/test_point_presentation.cpp",
+      "bytes": 7990,
+      "sha256": "08005ac1da9b206cd8ec73492b1cb18b4a83effc42f4ca5eb5bb5d515f39e5b6"
+    },
+    {
+      "path": "tests/python/test_roi_point_context.py",
+      "bytes": 4618,
+      "sha256": "a9d6a86a999d6d67f26eac9d03e5799c6b3ce9d383811f46f104d325360097c6"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 27301,
+      "sha256": "050c40e51997a1b2087253e2339a5bfb51fadef3048c36a1d75224ca44f743a4"
+    },
+    {
+      "path": "tests/installed_core/CMakeLists.txt",
+      "bytes": 2938,
+      "sha256": "3e70a2fe2c20f1358820eb23d09c04448ddf281d1dedad17da247abe2e2a45a0"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8282112,
+      "sha256": "dae77ecffc94e6d59a058c7a1b9d4eb7d25148b2fdff3faa69293ac48ff1f997"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20155392,
+      "sha256": "e73d7ca3eb66e81a44f41a30937bc286cb8e3eea54ec4c54461b6d876ec157ae"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20239872,
+      "sha256": "f9964e12dd2c92fc30c5e22856ba521fec9dc1f586adb904e7d93ba84ec6b6ec"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+      "bytes": 59502720,
+      "sha256": "02a0d25e542daae1355232b51d0a9fe6135fd829bf05a70b29069cd0020441da"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/include/imagejxx/point_raster.hpp",
+      "bytes": 2243,
+      "sha256": "48110e89f6552437b0870bbd6a67ac459acc47f4d914e938be65b7e22453bcc4"
+    },
+    {
+      "platform": "linux",
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+      "bytes": 20618044,
+      "sha256": "cf0269e05e1e619caf4b4a86e74591174a77225b70459eb018a270d473452764"
+    },
+    {
+      "platform": "linux",
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/include/imagejxx/point_raster.hpp",
+      "bytes": 2243,
+      "sha256": "48110e89f6552437b0870bbd6a67ac459acc47f4d914e938be65b7e22453bcc4"
+    }
+  ],
+  "reference_pins": [
+    {
+      "path": "tests/fixtures/point-presentation-imagej154r.jsonl.gz",
+      "bytes": 2632,
+      "sha256": "cf802f66454eaca2e18674c846d9389e56de06cfe2199813bde5e16c386a2293"
+    },
+    {
+      "path": "tests/fixtures/roi-style-imagej154r.json",
+      "bytes": 11629,
+      "sha256": "e8e845400f8d69c1e9d41e693b1b70a57e71b05b3c19a108d8953edaea3d186a"
+    }
+  ],
+  "local_evidence_manifest": {
+    "path": ".tmp/manual-workflow-verification/t04a2-roi-point-context-20261104/evidence-manifest.json",
+    "bytes": 22989,
+    "sha256": "19afd37bdfea3a3aded80157458dfdca4e92c9959a7f8d5663b1f1e78ecf0cc5"
+  },
+  "storage_snapshots": [
+    {
+      "path": ".tmp/manual-workflow-verification/roi-display-context-entry001.json",
+      "bytes": 66572,
+      "sha256": "beffb017a392db56e5f74755698a5a0e74b825eefb689dc0536524dad423160c",
+      "known_bytes": 8497768908,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/roi-display-context-windows-consumer001.json",
+      "bytes": 66571,
+      "sha256": "ed666b630471f7ef69b0e99eebaad2fdba1a3f23272a872b29b1f68186ffc4d8",
+      "known_bytes": 8502676378,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/roi-display-context-linux-consumer001.json",
+      "bytes": 66572,
+      "sha256": "6c79255eb8c332dbebbf927892f6aa2625c2d61db6c60d96f43d294c52f26139",
+      "known_bytes": 8507450635,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/roi-display-context-final001.json",
+      "bytes": 66571,
+      "sha256": "ce077633f78e55c3eba094e4aa448f5ae8ed21ad9a3e2e50be0e69eff58e41b1",
+      "known_bytes": 8503605913,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "scope": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown"
+    }
+  ]
+}

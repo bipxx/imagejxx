@@ -211,4 +211,27 @@ Image render_point_style(const Image& rgb,const Selection& selection,const Point
   const auto prepared=detail::prepare_point_raster(rgb.width,rgb.height,selection,options,font,limits);
   return detail::raster_point_style(rgb,prepared,font);
 }
+namespace detail {
+PreparedPointRaster prepare_roi_point_raster(int width,int height,const Selection& selection,
+    RoiColor fallback,const PointPresentationOptions& point_options,
+    const PointRasterFont* font,const PointRasterLimits& point_limits) {
+  kernel_checkpoint();
+  auto options=point_options;
+  options.color=resolve_roi_style(selection,fallback).stroke_color.value_or(RoiColor{0,0,0,0});
+  return prepare_point_raster(width,height,selection,options,font,point_limits);
+}
+}
+Image render_roi_style(const Image& rgb,const Selection& selection,RoiColor fallback,
+    const PointPresentationOptions& options,const PointRasterFont* font,
+    const PointRasterLimits& limits,const ExecutionControl& control) {
+  ExecutionScope scope(control);kernel_checkpoint();
+  if(selection.attributes.count(point_style_attribute)) {
+    if(rgb.type!=PixelType::UInt8 || rgb.channels!=3)invalid("Point raster requires uint8 RGB display pixels");
+    const auto prepared=detail::prepare_roi_point_raster(rgb.width,rgb.height,selection,fallback,options,font,limits);
+    return detail::raster_point_style(rgb,prepared,font);
+  }
+  auto result=render_roi_style(rgb,selection,fallback);
+  kernel_checkpoint();detail::without_execution_callbacks([] {kernel_checkpoint();});
+  return result;
+}
 }

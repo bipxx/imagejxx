@@ -30,4 +30,13 @@ struct PointRasterLimits {
 Image render_point_style(const Image& rgb,const Selection&,
     const PointPresentationOptions& = {},const PointRasterFont* font=nullptr,
     const PointRasterLimits& = {},const ExecutionControl& = {});
+// Explicit generic display context. Tagged points resolve ROI stroke/fallback
+// once and use the point raster (options.color is replaced by that resolution).
+// Untagged geometry retains legacy render_roi_style semantics: point-only
+// options/font/limits are ignored; no bounded legacy-mask claim is made.
+// Both routes honor inherited/control cancellation and return detached pixels.
+// No font IO. Existing three-argument calls remain unchanged.
+Image render_roi_style(const Image& rgb,const Selection&,RoiColor fallback,
+    const PointPresentationOptions& point_options,const PointRasterFont* font=nullptr,
+    const PointRasterLimits& point_limits={},const ExecutionControl& = {});
 }

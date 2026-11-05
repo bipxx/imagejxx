@@ -336,11 +336,55 @@ the configured allowance. The typed private `DisplayExportOutput::Pixels` mode
 used by raster/PDF/print actions avoids unused document metadata copies; it does
 not claim format metadata preservation. Pixel format metadata/codec promotion
 and PDF/print output checks remain owned by P2c.2/T10. Flattened native-session
-save/open preserves the spatial fields, properties and provenance. General native
-`render_roi_style` still owns legacy masks; a shared explicit styled-point/font
-context route is the next API increment, reusing `render_point_style` rather than
-creating another renderer. Complete that seam and remaining text/scheduler/
-publication/state/replay before closing P2c.2.
+save/open preserves the spatial fields, properties and provenance. General native ROI rendering retains old mask behavior for existing calls; the
+explicit context below adds shared styled-point/font routing. Remaining text/
+scheduler/publication/state/replay still blocks P2c.2 closure.
+
+## Explicit generic native ROI display context (P2c.2 A2)
+
+Include `imagejxx/point_raster.hpp` for the additive C++ overload:
+
+```cpp
+auto output = imagejxx::render_roi_style(rgb, selection, fallback,
+    point_options, font, point_limits, execution);
+```
+
+The fourth argument is required `PointPresentationOptions`; optional coverage,
+`PointRasterLimits` and `ExecutionControl` follow. Python keeps its existing
+positional fallback and opts into this route with a required keyword:
+
+```python
+output = ij.render_roi_style(rgb, selection, fallback,
+    point_options=options, font=coverage, point_limits=limits,
+    cancellation=token)
+```
+
+The versioned point-style attribute selects the shared point raster. Core
+preparation resolves ROI stroke/legacy color/fallback once, replacing only color
+in a private copy of point options. Palette/counter/cross colors keep their
+accepted meanings. Pose, scale, clip, labels and show-all pass through. Malformed
+point styles refuse rather than falling back to masks. Caller-supplied immutable
+decimal coverage means no core font IO, ImGui dependency or bundled asset.
+
+Bindings prepare metadata/layout/font/output/work on borrowed arguments before
+NumPy conversion, then consume the same layout in the native painter. Native
+callers share this preparation. Direct `render_point_style` stays unchanged and
+uses its explicit color; the generic route owns ROI color resolution.
+
+Untagged geometry delegates to legacy ROI rendering, ignoring point-only
+options/font/limits. This does not introduce a bounded legacy-mask guarantee.
+Existing three-argument calls retain their legacy meaning even for tagged
+points; callers explicitly select styled-point display. Both new branches honor
+inherited/explicit cancellation and return detached pixels without changing
+source or selection metadata. A final quiet token check guards legacy return,
+including cancellation from the final checkpoint callback.
+
+Desktop admitted owned-buffer composition already resolves color and shares the
+same point preparation/painter. Preserve it: invoking the detached public API
+per overlay would restore full-image copies. A2 qualifies the additive API with
+installed native clients and independent command pixels; unchanged host-role
+captures need not be repeated. Full text/scheduler/publication/state/replay work
+remains required before P2c.2 closure.
 
 ## Evidence and remaining integration
 

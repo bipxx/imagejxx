@@ -11,6 +11,9 @@ struct PreparedPointRaster {
 PreparedPointRaster prepare_point_raster(int width,int height,const Selection&,
     const PointPresentationOptions&,const PointRasterFont*,const PointRasterLimits&,
     PointPresentation* captured_layout=nullptr,bool owned_rgb=false);
+// Resolve the generic ROI display color once, then share point ingress/layout.
+PreparedPointRaster prepare_roi_point_raster(int width,int height,const Selection&,
+    RoiColor fallback,const PointPresentationOptions&,const PointRasterFont*,const PointRasterLimits&);
 // Internal caller owns an admitted, complete normalized RGB buffer. No source
 // pixel validation/copy; partial output on exception must never be published.
 void paint_owned_point_style(Image&,const PreparedPointRaster&,const PointRasterFont*);

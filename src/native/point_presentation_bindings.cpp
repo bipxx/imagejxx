@@ -131,6 +131,28 @@ void bind_point_presentation(py::module_& m) {
     return bindings::numpy_image(output);
   },py::arg("rgb"),py::arg("selection"),py::arg("options")=PointPresentationOptions{},
       py::arg("font")=nullptr,py::arg("limits")=PointRasterLimits{},py::arg("cancellation")=nullptr);
+  m.def("render_roi_style",[](const py::array& rgb,const Selection& selection,RoiColor fallback,
+      const PointPresentationOptions& options,const PointRasterFont* font,const PointRasterLimits& limits,
+      std::shared_ptr<CancellationToken> cancellation) {
+    ExecutionControl control;control.cancellation=std::move(cancellation);ExecutionScope scope(control);
+    kernel_checkpoint();
+    std::optional<detail::PreparedPointRaster> prepared;
+    if(selection.attributes.count(point_style_attribute)) {
+      if(rgb.ndim()!=3 || rgb.shape(2)!=3 || rgb.shape(0)<=0 || rgb.shape(1)<=0 ||
+          rgb.shape(0)>INT_MAX || rgb.shape(1)>INT_MAX || !rgb.dtype().is(py::dtype::of<unsigned char>()))
+        throw py::value_error("Point raster requires uint8 RGB display pixels");
+      prepared=detail::prepare_roi_point_raster(int(rgb.shape(1)),int(rgb.shape(0)),selection,fallback,options,font,limits);
+    }
+    const auto input=bindings::read_numpy_image(rgb);
+    auto output=[&] {
+      py::gil_scoped_release release;
+      if(prepared)return detail::raster_point_style(input,*prepared,font);
+      return render_roi_style(input,selection,fallback,options,font,limits);
+    }();
+    return bindings::numpy_image(output);
+  },py::arg("rgb"),py::arg("selection"),py::arg("fallback")=RoiColor{255,204,0,255},
+      py::kw_only(),py::arg("point_options"),py::arg("font")=nullptr,
+      py::arg("point_limits")=PointRasterLimits{},py::arg("cancellation")=nullptr);
   // Keep the GIL over borrowed immutable arguments: copying geometry before
   // native admission would defeat max_working_bytes. No callbacks/provider reads.
   m.def("point_presentation",&point_presentation,py::arg("selection"),

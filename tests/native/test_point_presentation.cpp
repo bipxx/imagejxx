@@ -8,7 +8,8 @@
 #include <iostream>
 using namespace imagejxx;
 void check(bool value) { if(!value)throw std::runtime_error("point presentation check failed"); }
-template<class E,class F> void refuses(F f) { try { f(); } catch(const E&) { return; } throw std::runtime_error("missing expected refusal"); }
+int refusal_cases=0;
+template<class E,class F> void refuses(F f) { const auto index=++refusal_cases;try { f(); } catch(const E&) { return; } throw std::runtime_error("missing expected refusal "+std::to_string(index)); }
 int main() try {
   Selection selection("multipoint");selection.points={{2.5,3.5},{7,9}};selection.width=17;
   selection.attributes["opaque"]=std::string("preserve");
@@ -77,6 +78,28 @@ int main() try {
   const auto text_raster=render_point_style(Image(96,96,3,PixelType::UInt8),labeled,{},&font);
   check(text_raster.at(5,14,0)>0);
   refuses<std::invalid_argument>([&]{render_point_style(rgb,labeled);});
+  // Explicit generic display context shares point pixels and resolves ROI ink.
+  auto ink=with_roi_style(dot,{{"stroke_color",std::string("#80112233")}});
+  auto ink_options=raster_options;ink_options.color={17,34,51,128};
+  check(render_roi_style(rgb,ink,{1,2,3,255},raster_options).pixels==render_point_style(rgb,ink,ink_options).pixels);
+  check(render_roi_style(rgb,ink).pixels==render_roi_style(rgb,without_point_style(ink)).pixels);
+  check(render_roi_style(Image(96,96,3,PixelType::UInt8),labeled,{255,255,0,255},{},&font).pixels==text_raster.pixels);
+  refuses<std::invalid_argument>([&]{render_roi_style(rgb,labeled,{255,255,0,255},{});});
+  PointRasterLimits no_space;no_space.max_working_bytes=1;
+  refuses<std::length_error>([&]{render_roi_style(bad_rgb,dot,{255,255,0,255},{},nullptr,no_space);});
+  Selection legacy("rectangle",{{1,1},{5,5}});
+  PointRasterFont irrelevant;irrelevant.font_size=-1;
+  check(render_roi_style(rgb,legacy,{7,8,9,255},{},&irrelevant,no_space).pixels==render_roi_style(rgb,legacy,{7,8,9,255}).pixels);
+  ExecutionControl cancelled;cancelled.cancellation=std::make_shared<CancellationToken>();cancelled.cancellation->cancel();
+  refuses<OperationCancelled>([&]{render_roi_style(rgb,dot,{1,2,3,255},{},nullptr,{},cancelled);});
+  refuses<OperationCancelled>([&]{render_roi_style(rgb,legacy,{1,2,3,255},{},nullptr,{},cancelled);});
+  // Empty legacy point has no periodic pixel work: callback count is stable.
+  Selection empty_legacy("point");
+  ExecutionControl late;late.cancellation=std::make_shared<CancellationToken>();int callbacks=0;
+  late.checkpoint=[&]{++callbacks;};
+  (void)render_roi_style(rgb,empty_legacy,{1,2,3,255},{},nullptr,{},late);
+  const int last=callbacks;callbacks=0;late.checkpoint=[&]{if(++callbacks==last)late.cancellation->cancel();};
+  refuses<OperationCancelled>([&]{render_roi_style(rgb,empty_legacy,{1,2,3,255},{},nullptr,{},late);});
   font.digits[0].coverage.clear();
   refuses<std::invalid_argument>([&]{render_point_style(rgb,labeled,{},&font);});
   std::cout<<"Point presentation: bounded flat layout, semantic adapters and metadata preservation passed\n";
