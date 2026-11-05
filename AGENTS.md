@@ -28,6 +28,9 @@
   justify restarting an unchanged campaign. Shared ownership/numerical/public
   contract changes still require their affected regression, lifecycle and
   installed-client checks. Broaden when failures or release gates warrant it.
+  Before installed checks, identify each changed module's install component and
+  verify its loaded path and bytes against the built artifact, including optional
+  extensions. The `Unspecified` component does not include every Python module.
 - Missing references or an unrelated platform gate block only the claims that
   depend on them. Record exact missing inputs and advance independent work;
   repeat recovery searches only when a new plausible source exists. Preserve
@@ -45,6 +48,9 @@
 - Keep one active compiler cache and one active installed verification runtime per platform.
   Reuse the active cache; do not create a build/environment generation for each
   feature packet, retry or observation run.
+- Preserve active compiler intermediates during routine cleanup when the storage
+  budget allows. Reclaim them for necessary disk pressure or an explicit cleanup
+  request, recording that future verification will recompile them.
 - The historical project `build/` generations were retired at the user's
   request. Do not recreate them. Local Windows verification uses
   `.cache/native-verification/`; reuse the configured Linux cache when available.
@@ -53,6 +59,9 @@
   small result receipts and losslessly compressed necessary captures, verify
   their hashes, then remove the scratch. Preserve failure diagnostics before
   deleting failed-run scratch as well.
+  Linux filesystem/publication checks use host-local Linux scratch, not `/mnt/c`
+  or another 9P mount. Own WSL descendants through the existing nested Linux
+  process helper; hash-verify any necessary evidence transport before retirement.
 - Do not archive whole compiler caches, virtual environments, dependency SDKs
   or repeated source checkouts as evidence. Record their identities and hashes.
 - Measure generated storage before and after substantial verification. Normal

@@ -372,6 +372,22 @@ int main(int argc, char **argv) {
     for (const auto &entry : fs::directory_iterator(failures))
       check(entry.path().extension() == ".tif",
             "Failure-path streaming temporary leaked");
+    auto spatial = calibration;
+    spatial.origin = {11, -7, 19};
+    spatial.direction = {1, 0, 0, 0, 0, 1, 0, 1, 0};
+    spatial.time_origin = 2.25;
+    auto transformed = make({2, 3, 2, 3, 5, 1}, spatial);
+    const auto spatial_path = failures / "spatial.tif";
+    const auto spatial_estimate = estimate_image_write(transformed);
+    write_image_series(spatial_path.u8string(), transformed);
+    const auto spatial_result = read_image_series(spatial_path.u8string());
+    const auto &restored = spatial_result.dataset.calibration();
+    check(restored.origin == spatial.origin && restored.direction == spatial.direction &&
+              restored.time_origin == spatial.time_origin &&
+              restored.spacing == spatial_estimate.encoded_calibration.spacing,
+          "Spatial TIFF transform differs after reopen");
+    equations(spatial_result.dataset);
+    std::cout << "PASS spatial TIFF origin/direction/time metadata roundtrip\n";
     std::cout << "PASS scientific TIFF native service: " << valid
               << " valid and " << bad << " malformed carriers\n";
     return 0;

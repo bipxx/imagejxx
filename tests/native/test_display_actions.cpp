@@ -10,6 +10,7 @@
 #include <thread>
 #include <algorithm>
 #include <imagejxx/jobs.hpp>
+#include <imagejxx/io.hpp>
 
 using namespace imagejxx;
 using imagejxx::desktop::Window;
@@ -279,10 +280,81 @@ void everydayEditing(const std::filesystem::path& root) {
   }
   std::cout<<"PASS everyday open/select/physical Gaussian preview/Apply/Undo/Redo/Measure/CSV/save/reopen in native C++\n";
 }
+void scientificNavigation(const std::filesystem::path& root) {
+  const auto dir=root/"scientific-navigation";std::filesystem::create_directory(dir);
+  SpatialCalibration calibration;calibration.spacing={.5,1.25,2};
+  calibration.unit="um";calibration.frame_interval=.75;
+  Stack planes;
+  for(int t=0;t<2;++t)for(int c=0;c<3;++c)for(int z=0;z<4;++z) {
+    Image image(6,5,1,PixelType::UInt16);
+    for(int y=0;y<5;++y)for(int x=0;x<6;++x)image.at(x,y)=10000*t+1000*c+100*z+10*y+x;
+    planes.push_back(std::move(image));
+  }
+  const auto input=dir/"source.tif",output=dir/"resliced.tif";
+  write_image_series(input.u8string(),Dataset::from_planes({2,3,4,5,6,1},std::move(planes),calibration));
+  Window w((dir/"preferences.json").u8string());w.openFile(input.u8string());w.wait();
+  w.action("scientific_io_draft",{{"confirm_axes",true}});w.action("scientific_io_apply");w.wait();
+  check(w.documents().size()==1 && w.error().empty(),"Scientific workflow did not open its reviewed stack");
+  const auto original=w.nativeSnapshot();
+  w.action("view",{{"t",1},{"c",2},{"crosshair",{3,2,1}},{"orthogonal",true}});
+  for(auto plane:{Plane::XY,Plane::XZ,Plane::YZ}) {
+    const auto image=w.document()->plane(plane,plane==Plane::XY?1:plane==Plane::XZ?2:3);
+    for(int y=0;y<image.height;++y)for(int x=0;x<image.width;++x) {
+      const int z=plane==Plane::XY?1:y,sy=plane==Plane::XY?y:plane==Plane::XZ?2:x,sx=plane==Plane::YZ?3:x;
+      check(image.at(x,y)==12000+100*z+10*sy+sx,"CZT/XYZ plane differs from literal source equation");
+    }
+  }
+  w.action("reslice_axis_range",{{"document_id",original.id()},{"plane","xz"},{"first",1},{"last",3},{"step",2}});
+  check(w.documents().size()==2 && w.error().empty(),"Scientific range did not publish a detached stack");
+  const auto derived=w.nativeSnapshot();
+  check(derived.data().dataset.shape().dimensions()==std::array<int,6>{1,1,2,4,6,1},"Scientific reslice shape differs");
+  w.recording=true;w.action("show_scientific_export",{{"path",output.u8string()}});
+  w.action("scientific_io_inspect");w.wait();
+  HeadlessInputSession session(w);Json last,events=Json::array();
+  auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);check(w.error().empty(),"Scientific UI frame reported an error");};
+  for(int i=0;i<3;++i)frame();
+  check(last.at("scientific_io").at("estimate").at("calibration").at("origin")==Json::array({0,1.25,0}),"Scientific export review lost reslice origin");
+  check(last.at("scientific_io").at("controls").at("spatial_calibration").at("enabled").get<bool>(),"Spatial calibration review control unavailable");
+  auto click=[&](const char* key) {
+    const auto control=last.at("scientific_io").at("controls").at(key);
+    check(control.at("enabled").get<bool>(),"Scientific export control unavailable");
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+    for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+  };
+  click("accept_loss");check(last.at("scientific_io").at("accept_loss").get<bool>(),"Scientific export consent was not consumed");
+  click("apply");w.wait();frame();
+  check(!last.at("scientific_io").at("open").get<bool>() && last.at("scientific_io").at("error")=="","Scientific export did not complete");
+  session.close();
+  const auto exported_record=w.workflow.back();
+  w.action("review_scientific_io",{{"record",exported_record}});w.action("cancel_scientific_io");
+  const auto restored=read_image_series(output.u8string()).dataset;
+  for(int k=0;k<2;++k) {
+    const auto image=restored.plane({0,0,k});
+    for(int z=0;z<4;++z)for(int x=0;x<6;++x)
+      check(image->at(x,z)==12000+100*z+10*(1+2*k)+x,"Scientific TIFF reopen lost resliced pixels");
+  }
+  const auto &spatial=restored.calibration();
+  check(spatial.origin==std::array<double,3>{0,1.25,0} && spatial.direction==std::array<double,9>{1,0,0,0,0,1,0,1,0} && spatial.time_origin==.75,"Scientific TIFF reopen lost world/time transform");
+  Window reopened((dir/"reopened-preferences.json").u8string());reopened.recording=true;
+  reopened.openFile(output.u8string());reopened.wait();
+  {
+    HeadlessInputSession review(reopened);const auto observed=review.frame();
+    check(observed.at("scientific_io").at("inspection").at("calibration").at("origin")==Json::array({0,1.25,0}) &&
+              observed.at("scientific_io").at("controls").contains("spatial_calibration"),"Reopened TIFF did not expose its spatial review");
+  }
+  reopened.action("scientific_io_draft",{{"confirm_axes",true}});reopened.action("scientific_io_apply");reopened.wait();
+  const auto opened=reopened.nativeSnapshot();const auto &opened_cal=opened.data().dataset.calibration();
+  check(opened_cal.origin==spatial.origin && opened_cal.direction==spatial.direction && opened_cal.time_origin==spatial.time_origin,"Native editor reopen lost spatial calibration");
+  const auto open_record=reopened.workflow.back();
+  reopened.action("review_scientific_io",{{"record",open_record}});reopened.action("cancel_scientific_io");
+  check(w.nativeDocument(original.id())->snapshot().shares_data(original),"Scientific workflow mutated original source");
+  write(dir/"workflow.json",{{"context","imgui_cpp"},{"events",events},{"export_record",exported_record},{"open_record",open_record},{"shape",restored.shape().dimensions()},{"origin",spatial.origin},{"direction",spatial.direction},{"time_origin",spatial.time_origin}});
+  std::cout<<"PASS scientific open/CZT/XYZ/reslice/physical TIFF export/reopen with preserved transform\n";
+}
 } // namespace
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture root required");std::filesystem::create_directories(root);
-  metadata(root);ieee(root);menu(root);exportJobs(root);exportAcceptedPathsAndMenu(root);everydayEditing(root);
+  metadata(root);ieee(root);menu(root);exportJobs(root);exportAcceptedPathsAndMenu(root);everydayEditing(root);scientificNavigation(root);
   std::cout<<"PASS metadata-only manual contrast, palette controls, IEEE validation and Image menu defaults\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

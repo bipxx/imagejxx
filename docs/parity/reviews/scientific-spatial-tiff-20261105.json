@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "Scientific navigation/reslice TIFF spatial metadata integration",
+  "base_commit": "fd2dddd",
+  "state": {
+    "implemented": "Owned version1 TIFF spatial transform extension, strict bounded metadata parsing, complete encoded calibration estimates, shared import/export spatial details and portability notice, closed optional spatial subrecords in IO review descriptors. Existing public signatures, codecs and canonical descriptions remain unchanged.",
+    "verified": "1121 distinct affected Windows Python cases ultimately pass, including36 spatial/workflow cases; final changed-UI checks pass independently. Native scientific IO/refusal/publication suites pass on Windows and Linux, including the new transform roundtrip. Native shared-form descriptor negatives and Window lifecycle regressions pass.",
+    "integrated": "Native C++ and Python ImGui hosts open a scientific TCZ stack, navigate C/Z/T and XY/XZ/YZ, reslice XZ, accept actual export controls and reopen TIFF with correct pixels, origin, axis directions and time origin. IO descriptors retain the spatial metadata and reopen inert review.",
+    "release_ready": false
+  },
+  "reproduction": "Existing XZ range reslice produced origin[0,1.25,0] and axis permutation; TIFF estimate rejected it with TIFF profile cannot encode nonzero origins/directions.",
+  "contract": {
+    "description_fields": {
+      "imagejxx_spatial": "1",
+      "imagejxx_origin": "three finite world components",
+      "imagejxx_direction": "nine finite row-major values with invertible matrix",
+      "imagejxx_time_origin": "finite value in declared time unit"
+    },
+    "compatibility": "Emit all four fields only when needed. Existing canonical files/descriptors retain their original fields. Native extension is not an ImageJ affine compatibility claim; other readers may ignore it. Existing XY rational1e-6 precision and unit normalization remain.",
+    "review": "Expand Spatial origin and axis directions to inspect origin/basis/time values. Export displays a portability notice and still requires pixels/calibration-only consent. New descriptor subrecords require spatial_version1 with all fields; old four-field calibrations remain accepted.",
+    "malformed": "Unsupported/partial/duplicate/spelling/vector/nonfinite/singular transforms reject during metadata inspection, before sample decode/progress. Native origin fields from unextended ImageJ inputs keep prior unsupported semantics.",
+    "formats_checked": "UInt8/UInt16/Float32 classic and BigTIFF XY/XZ/YZ; additional Deflate/LZW/PackBits, RGB horizontal tiled and Float32 floating tiled, eager/virtual reads; independent description and raw native TIFF samples.",
+    "licensing": "Owned implementation; no new dependency, external code, model, font or asset."
+  },
+  "sources": [
+    {
+      "path": "src/io/encode.cpp",
+      "bytes": 31122,
+      "sha256": "7bedebc0fc46820c438b17f6428494c60809f2d96da6e5b1964e0806b293d3f8"
+    },
+    {
+      "path": "src/io/layout.cpp",
+      "bytes": 30981,
+      "sha256": "9da466c8919c6ecc53baa011b295004e5f884e3abae05ae669b85f670149523f"
+    },
+    {
+      "path": "src/desktop/scientific_io_panel.cpp",
+      "bytes": 67976,
+      "sha256": "36fa3227319ff52d3e4066f0f2d2b138ff4e26fc8f8d170fa5707155864d1612"
+    },
+    {
+      "path": "tests/native/test_scientific_tiff.cpp",
+      "bytes": 16896,
+      "sha256": "f2b18b746d0b3726b20fe13e4bdc95272377c2b46ccae547939b7d1ae1145a14"
+    },
+    {
+      "path": "tests/native/test_scientific_io_panel.cpp",
+      "bytes": 12424,
+      "sha256": "0b80026d6b2229f9349ef0d98ad081c35b18820cab1273da15119a005c230777"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 26868,
+      "sha256": "5de4dc2ba634d9a0f3f4061a2ca8052fecbaae1801b5340fb814ef099934e484"
+    },
+    {
+      "path": "tests/python/test_spatial_tiff_workflow.py",
+      "bytes": 14263,
+      "sha256": "e0fb7739818ac6d40f8cbc319633f275602982507005640857e46d1f2c4feadd"
+    },
+    {
+      "path": "tests/python/test_tiff_refusals.py",
+      "bytes": 6578,
+      "sha256": "65cca3b0bf35c4c9e1c721c7e7060e95a92bca77bb58c0da7f4f0d932430efb4"
+    }
+  ],
+  "products": [
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_io.lib",
+      "bytes": 1692422,
+      "sha256": "ad18d17a27b0f9428731cdedd4f7552f7937473220e87b604ce091c64e412034"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_desktop.lib",
+      "bytes": 300564952,
+      "sha256": "cea2433dc8ac1a24a5f6290dbc334c8007914d10fb875eda49a1e27bd3fc25cc"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_scientific_io.cp312-win_amd64.pyd",
+      "bytes": 594944,
+      "sha256": "bc722be5005c5da9dd1948120f2b1ec1088e3ffdda439f0063e8f6bf43c3a6eb"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20280832,
+      "sha256": "aae1354812fc9a20210573951eba1b5c708643e73b0f9efeb231ba4edf4962c3"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20364800,
+      "sha256": "2f2faf6f2706f8664a87ee8ed4c2f8c085cef7b5cf10716dd7bb1ce2a56d4d50"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_display_actions_tests.exe",
+      "bytes": 10059776,
+      "sha256": "21a247fa7136463bcd65159571d006cf54458636307240ba5072b23f38fd8bac"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_scientific_io_panel_tests.exe",
+      "bytes": 1259008,
+      "sha256": "1fe54b04acef2ebda982c58ebe680d8acfe019bcc8810debff05b726acf95006"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_scientific_tiff_tests.exe",
+      "bytes": 387072,
+      "sha256": "e1f0181a46ed1c2c938bc1c7e528e4d13217681510035787508c3b92bd9bcae0"
+    }
+  ],
+  "checks": {
+    "io-tests001": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/io-tests001.process.json",
+        "bytes": 2470,
+        "sha256": "0925a2bdbcc501c552094725a4bfea2c9735573a0e720a32398a7239e39343ee"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 10.264999999897555
+    },
+    "io-tests002": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/io-tests002.process.json",
+        "bytes": 2471,
+        "sha256": "301cdd057e4c07ecfa457bf4935af23bea746e9853d07cd191b82c8d0d766819"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 5.5469999997876585
+    },
+    "affected-regression005": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/affected-regression005.process.json",
+        "bytes": 2582,
+        "sha256": "44e4eb28bd04a21fc7d4d64d96023d9b151b6858736bb831e5947f133e4d4ae6"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 10.187999999849126
+    },
+    "final-review-ui006": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/final-review-ui006.process.json",
+        "bytes": 2475,
+        "sha256": "b3bbcb95805106fd484b38a0a56268692382dfcc30ef95fd79e33a3324af8b51"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.1559999999590218
+    },
+    "writer-transforms007": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/writer-transforms007.process.json",
+        "bytes": 2379,
+        "sha256": "d15642f5aefbe362ff67ac7cfc198c789848775b630a5cda496a3445257eb129"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.0310000001918525
+    },
+    "native-io003": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-io003.process.json",
+        "bytes": 2036,
+        "sha256": "ebf59b0ac681d8ee56e7167db8eda42509606c845cd24447b03f744bed502a96"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.40699999989010394
+    },
+    "native-review-panel003": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-review-panel003.process.json",
+        "bytes": 2053,
+        "sha256": "b315140c62b1977710c11775ab218370b047346c992cd7431eb1b8bd8e5dcbb0"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.0940000000409782
+    },
+    "native-review-window004": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-review-window004.process.json",
+        "bytes": 1966,
+        "sha256": "ebb2a5d47acf43db61a4ba0f8b7ea8dc0b38c86400ab23869c8a0eab4bb47f95"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.1559999999590218
+    },
+    "linux-build001": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/linux-build001.process.json",
+        "bytes": 1564,
+        "sha256": "a51a29a55e3c25b4e00450a11aafce426c232aa491443866807af89d0a6d0760"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 263.59789430399996
+    },
+    "linux-native001": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/linux-native001.process.json",
+        "bytes": 1680,
+        "sha256": "9beac1126d5cbb4af40c332faf3a361debfeca32eb777fc1a9921235f096a7bc"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 2.683123061999993
+    },
+    "linux-native002": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/linux-native002.process.json",
+        "bytes": 1639,
+        "sha256": "076a643bd4c9e55cbc46fbec58492f0499e25812254db0722a171f95e56023ad"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 3.4098492719999998
+    },
+    "linux-owner003": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/linux-owner003.process.json",
+        "bytes": 4165,
+        "sha256": "9e150774bd57ac7884aaa4304baa122dd100a912e6273a0d586b92b4526fe1a7"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 8.609999999869615
+    },
+    "build-desktop001": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/build-desktop001.process.json",
+        "bytes": 2848,
+        "sha256": "8b6cf3865e25c286bfc2bfe608559a2fbad902b5e563a0801c9551bb41578023"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 697.0319999998901
+    },
+    "build-desktop-review003": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/build-desktop-review003.process.json",
+        "bytes": 2839,
+        "sha256": "2574af8d4cdb07a318674a879e178d7c83799d265c14d2ce54ac8d1b5f3c36eb"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 6.390999999828637
+    },
+    "build-reopen-window005": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/build-reopen-window005.process.json",
+        "bytes": 2870,
+        "sha256": "96407390074473eb71a82b775a6ed10ff4ea747986d204bd6b67ca5f2c206c28"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 5.687000000150874
+    },
+    "native-reopen-window005": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-reopen-window005.process.json",
+        "bytes": 1966,
+        "sha256": "0f7f2d8debbf94a32fc6b9220643565c51dd7e02096aa707203c356093ef351f"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.1099999998696148
+    },
+    "final-reopen-ui008": {
+      "process": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/final-reopen-ui008.process.json",
+        "bytes": 2474,
+        "sha256": "f2b28ff4faadb18e76b822ddfa4029f6a034806c5cf41286a2419e0ce5ef3e97"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.0619999999180436
+    }
+  },
+  "accepted_cases": {
+    "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/accepted-cases-final.json",
+    "bytes": 123123,
+    "sha256": "3027d62f247eef221b6b3e8fd01c77d7d656f61c800f223ef31eb25c2d185701"
+  },
+  "new_spatial_cases": 36,
+  "retirement": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/affected-regression005-retirement.json",
+        "bytes": 450,
+        "sha256": "8936529b10767bac30aeacb07f0880b649c642bc695e51594c8bdcb80177c497"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/affected-regression005",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 7427721,
+      "archive_bytes": 5327623
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/final-api-ui004-retirement.json",
+        "bytes": 349,
+        "sha256": "28a1806cb61b2aae46705bfeeae779b79a96f2d090296493977ee9e17687eb9f"
+      },
+      "source": ".tmp\\manual-workflow-verification\\scientific-spatial-tiff-20261105\\scratch\\final-api-ui004",
+      "state": "hashed_owned_consumer_tree_removed_without_archive",
+      "source_bytes": 33154,
+      "archive_bytes": 0
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/final-review-ui006-retirement.json",
+        "bytes": 438,
+        "sha256": "6966151d65d37ebc97c49499173103d7fdd9fd6a6cfa9ee42b83f929d51f98e5"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/final-review-ui006",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 7510,
+      "archive_bytes": 2692
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/io-tests001-retirement.json",
+        "bytes": 438,
+        "sha256": "a29bf25da489e0dde04b606bf3a854c166467f2195e713b283cfc9b6e0688cae"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/io-tests001",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 6150495,
+      "archive_bytes": 5054972
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/io-tests002-retirement.json",
+        "bytes": 347,
+        "sha256": "8e47965731c6fb1ff970dfc86cf0ccdf40da25f09ce4f814eec1ec5de95187ee"
+      },
+      "source": ".tmp\\manual-workflow-verification\\scientific-spatial-tiff-20261105\\scratch\\io-tests002",
+      "state": "hashed_owned_consumer_tree_removed_without_archive",
+      "source_bytes": 6167575,
+      "archive_bytes": 0
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/linux-native001-empty-retirement.json",
+        "bytes": 278,
+        "sha256": "d220f25f1fae15e3bb2b505a5b2e6ba5d5420aff7809455a9ddcd0ac3336913f"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/linux-native001",
+      "state": "removed_verified_empty_owned_scratch",
+      "source_bytes": 0,
+      "archive_bytes": 0
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/linux-native002-retirement.json",
+        "bytes": 440,
+        "sha256": "04de0e5bc3dd5439f3d1b30675baa6407cdd28e5ef35c794f9f7510f1c43f3b0"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/linux-native002",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 148847,
+      "archive_bytes": 127547
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-io001-retirement.json",
+        "bytes": 347,
+        "sha256": "1193c61abc3016b58937dcee29990b0d160d775746b1a7b84e84c10854704c56"
+      },
+      "source": ".tmp\\manual-workflow-verification\\scientific-spatial-tiff-20261105\\scratch\\native-io001",
+      "state": "hashed_owned_consumer_tree_removed_without_archive",
+      "source_bytes": 148847,
+      "archive_bytes": 0
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-io003-retirement.json",
+        "bytes": 437,
+        "sha256": "d976c9c7ce9cd51c685b1444b30ae11ab32279bf3e2d672da9afbe102652b29a"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/native-io003",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 148847,
+      "archive_bytes": 127727
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-panel002-retirement.json",
+        "bytes": 347,
+        "sha256": "82b02ec7c3718f3a411c0e4de4ba503ff35dbbeead2603ee5dcdae8da40ee736"
+      },
+      "source": ".tmp\\manual-workflow-verification\\scientific-spatial-tiff-20261105\\scratch\\native-panel002",
+      "state": "hashed_owned_consumer_tree_removed_without_archive",
+      "source_bytes": 6414,
+      "archive_bytes": 0
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-review-panel003-retirement.json",
+        "bytes": 442,
+        "sha256": "f946dc9ae48b0371b37ed6cff20ee796d9ce760364412691a5834876c5f49ea0"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/native-review-panel003",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 6414,
+      "archive_bytes": 2195
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-review-window004-retirement.json",
+        "bytes": 446,
+        "sha256": "270d7c582ac507c9fe09b773734eb7be7ebaf576b086e21f3510a9def6231a9e"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/native-review-window004",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 49251,
+      "archive_bytes": 22964
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-window003-retirement.json",
+        "bytes": 350,
+        "sha256": "281f9bc7b32247474e48d106314368b631c34a293d3cf6ac3d2611316dc7f36e"
+      },
+      "source": ".tmp\\manual-workflow-verification\\scientific-spatial-tiff-20261105\\scratch\\native-window003",
+      "state": "hashed_owned_consumer_tree_removed_without_archive",
+      "source_bytes": 49245,
+      "archive_bytes": 0
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/spatial-api003-retirement.json",
+        "bytes": 348,
+        "sha256": "7d5f000c17e78a720914518837272ed8428a809efbb20e91f51f64bd4e3aa42f"
+      },
+      "source": ".tmp\\manual-workflow-verification\\scientific-spatial-tiff-20261105\\scratch\\spatial-api003",
+      "state": "hashed_owned_consumer_tree_removed_without_archive",
+      "source_bytes": 25644,
+      "archive_bytes": 0
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/writer-transforms007-retirement.json",
+        "bytes": 440,
+        "sha256": "d6fcba5283c54813a426f79dbc24ce5abf7165b4781350258d4588f5ecb5a63c"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/writer-transforms007",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 1434,
+      "archive_bytes": 1886
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/native-reopen-window005-retirement.json",
+        "bytes": 446,
+        "sha256": "d58ab3dc9f48e1949c775c60ee13c9546241aae42319b4b0b68e1d1b2bcd6ecb"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/native-reopen-window005",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 51443,
+      "archive_bytes": 23273
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/final-reopen-ui008-retirement.json",
+        "bytes": 438,
+        "sha256": "40d7df0a63aa3be26aeb2770e9653c4a66b301b3b23773b1593612bf66a235b2"
+      },
+      "source": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/scratch/final-reopen-ui008",
+      "state": "verified_retention_then_removed",
+      "source_bytes": 7510,
+      "archive_bytes": 2692
+    }
+  ],
+  "linux_transport": {
+    "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/linux-native002-transport.json",
+    "bytes": 2646,
+    "sha256": "5534f7368dbe3a5e62ffad83d6d1010561d5712e6bf54f796a9a458364d81bcf"
+  },
+  "storage": {
+    "entry_reused": ".tmp/manual-workflow-verification/everyday-editing-final-20261105.json",
+    "known_entry_bytes": 5971188637,
+    "final_before_receipt_docs": {
+      "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-closeout-20261105.json",
+      "bytes": 66573,
+      "sha256": "c7a06c048e9251c826b34eab782a4b46ea9184f2a7dbd11672fa1618770fdb2a"
+    },
+    "known_final_bytes": 6363952523,
+    "unknown_subtrees": 214,
+    "budget_verified": false
+  },
+  "remaining": [
+    "Legacy ImageJ nonzero-origin interpretation and OME/vendor interoperability remain T10",
+    "Oblique/curved and remaining axes/source variants remain T07/T11",
+    "Linux/macOS actual UI, SDK package qualification and full supported-platform release gates remain T14",
+    "ROI/overlay/display/history TIFF loss review remains explicit; native sessions preserve broader state",
+    "Full ImageJ/Fiji and all owning family requirements remain open"
+  ],
+  "waste_review": {
+    "observed": "Routine source reuse avoided new caches/runtimes. Windows UI batch697.032s rebuilt intermediates retired under earlier disk pressure; later single-panel refinement rebuilt in6.391s. Linux same-cache core/IO batch263.598s. Initial IO tests used old optional module because Unspecified excludes scientific-python; actual component install and byte check fixed only deployment. First Linux native run used unsupported9P output; host-local retry passed unchanged binary.",
+    "disposition": "Keep active compiler objects within budget. Before installed checks, resolve every changed module install component/path/hash. Native Linux filesystem tests use host-local scratch and nested process ownership. These are now explicit AGENTS rules. No blanket benchmark/audit/framework or product changes for environment failures.",
+    "cleanup": "17 terminal groups retired: ten necessary capture/failure groups losslessly packed/live-hash verified, six superseded success groups identity-only, one empty group. Host-local Linux data SHA-verified on transport before retirement. Failure logs, receipts, JUnit and the earlier closeout draft remain. No whole cache/runtime/SDK/source archive.",
+    "plan_feedback": "Scientific workflow blocker closed with actual editor reopen/publication in both Windows hosts; T06/G018 Convex Hull is next. Required legacy origins, other format/view/point/platform/Fiji residuals remain. No overall completion or broad speed claim."
+  },
+  "acceptance": false,
+  "previous_draft": {
+    "path": ".tmp/manual-workflow-verification/scientific-spatial-tiff-20261105/pre-editor-reopen-receipt.json",
+    "bytes": 21030,
+    "sha256": "bde0f03605beb23b197e5cf00dbd42221e0b66492afa5595c52f9fd20f71ecbc"
+  },
+  "scope_correction": "Final verification additionally reopens the exported TIFF through each editor review/publication path and validates inert review of the emitted open descriptor. Earlier API reopen evidence alone was insufficient for this UI-route claim."
+}

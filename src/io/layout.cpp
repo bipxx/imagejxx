@@ -264,7 +264,9 @@ void description(Scan &s, const std::string &text, bool resolutions) {
   static const std::set<std::string_view> allowed{
       "ImageJ",  "images",  "channels",  "slices", "frames",  "hyperstack",
       "unit",    "spacing", "finterval", "tunit",  "xorigin", "yorigin",
-      "zorigin", "yunit",   "zunit",     "loop",   "min",     "max"};
+      "zorigin", "yunit",   "zunit",     "loop",   "min",     "max",
+      "imagejxx_spatial", "imagejxx_origin", "imagejxx_direction",
+      "imagejxx_time_origin"};
   std::size_t start = 0;
   while (start < text.size()) {
     token(s.control);
@@ -396,12 +398,35 @@ void description(Scan &s, const std::string &text, bool resolutions) {
     cal.time_unit = unit(fields.at("tunit"), true);
   else
     missing("tunit");
+  const bool spatial_extension = fields.count("imagejxx_spatial") ||
+      fields.count("imagejxx_origin") || fields.count("imagejxx_direction") ||
+      fields.count("imagejxx_time_origin");
   for (const auto *key : {"xorigin", "yorigin", "zorigin"}) {
     if (fields.count(key))
       require(number(fields.at(key)) == 0,
               "Nonzero TIFF origin is unsupported");
-    else
+    else if (!spatial_extension)
       missing(key);
+  }
+  if (spatial_extension) {
+    require(fields.count("imagejxx_spatial") && fields.at("imagejxx_spatial")=="1" &&
+                fields.count("imagejxx_origin") && fields.count("imagejxx_direction") &&
+                fields.count("imagejxx_time_origin"),
+            "Incomplete or unsupported imagejxx TIFF spatial calibration");
+    const auto values = [&](std::string_view text, auto &output) {
+      std::size_t start=0;
+      for (std::size_t i=0;i<output.size();++i) {
+        auto end=text.find(',',start);
+        require((i+1==output.size()) == (end==std::string_view::npos),
+                "Invalid imagejxx TIFF spatial vector length");
+        if (end==std::string_view::npos)end=text.size();
+        output[i]=number(text.substr(start,end-start));
+        start=end+1;
+      }
+    };
+    values(fields.at("imagejxx_origin"),cal.origin);
+    values(fields.at("imagejxx_direction"),cal.direction);
+    cal.time_origin=number(fields.at("imagejxx_time_origin"));
   }
   cal.validate();
   s.charge(512);

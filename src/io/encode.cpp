@@ -212,11 +212,9 @@ WritePlan plan_write(const Dataset &source, const MetadataObject &metadata,
   cap(samples, limits.max_total_samples, "TIFF output total sample limit");
   const auto &cal = source.calibration();
   cal.validate();
-  require(cal.origin == std::array<double, 3>{0, 0, 0} &&
-              cal.direction ==
-                  std::array<double, 9>{1, 0, 0, 0, 1, 0, 0, 0, 1} &&
-              cal.time_origin == 0,
-          "TIFF profile cannot encode nonzero origins/directions");
+  const bool spatial_extension = cal.origin != std::array<double, 3>{0, 0, 0} ||
+      cal.direction != std::array<double, 9>{1, 0, 0, 0, 1, 0, 0, 0, 1} ||
+      cal.time_origin != 0;
   auto &estimate = plan.estimate;
   // Unit validation precedes calibration copies, including arbitrarily large
   // caller-owned strings. No plane/region access occurs during planning.
@@ -225,9 +223,6 @@ WritePlan plan_write(const Dataset &source, const MetadataObject &metadata,
   estimate.encoded_calibration = cal;
   estimate.encoded_calibration.unit = space;
   estimate.encoded_calibration.time_unit = time;
-  estimate.encoded_calibration.origin = {0, 0, 0};
-  estimate.encoded_calibration.time_origin = 0;
-  estimate.encoded_calibration.direction = {1, 0, 0, 0, 1, 0, 0, 0, 1};
   for (std::size_t i = 0; i < 2; ++i) {
     auto pair = resolution(cal.spacing[i]);
     estimate.xy_resolution[i] = pair;
@@ -255,6 +250,17 @@ WritePlan plan_write(const Dataset &source, const MetadataObject &metadata,
               << "\nspacing=" << cal.spacing[2]
               << "\nfinterval=" << cal.frame_interval
               << "\ntunit=" << (time == "s" ? "sec" : time) << "\n";
+  if (spatial_extension) {
+    // ImageJ's axis-aligned fields cannot express a resliced world transform.
+    // Preserve it explicitly for imagejxx readers; keep canonical files unchanged.
+    description << "imagejxx_spatial=1\nimagejxx_origin=";
+    for (std::size_t i=0;i<cal.origin.size();++i)
+      description << (i ? "," : "") << cal.origin[i];
+    description << "\nimagejxx_direction=";
+    for (std::size_t i=0;i<cal.direction.size();++i)
+      description << (i ? "," : "") << cal.direction[i];
+    description << "\nimagejxx_time_origin=" << cal.time_origin << '\n';
+  }
   plan.description = description.str();
   plan.software = "imagejxx " IMAGEJXX_IO_VERSION;
   const auto first_entries = add(add(18, borrowed.size()),(plan.predictor!=1?1:0)+(plan.tiled?1:0)),

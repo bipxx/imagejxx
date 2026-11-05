@@ -56,9 +56,7 @@ def test_independent_refusals_before_user_hooks(case, tmp_path):
 
 
 @pytest.mark.parametrize("options", [
-    {"origin":(1.,0.,0.)},
-    {"direction":(-1.,0.,0.,0.,1.,0.,0.,0.,1.)},
-    {"time_origin":1.}, {"unit":"nm"}, {"time_unit":"hour"},
+    {"unit":"nm"}, {"time_unit":"hour"},
 ])
 def test_unsupported_writer_calibration_before_reads_or_publication(tmp_path, options):
     source=ij.Dataset(np.array([[0,1,255],[256,32768,65535]],dtype=np.uint16), axes="YX", calibration=ij.SpatialCalibration(**options))

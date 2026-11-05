@@ -13,9 +13,12 @@ reading, write estimates and atomic streaming export for
 `F.G080.tiff-imagej-u16-uncompressed-ifd-czt-v1`. It is independent of Python and
 Dear ImGui. The core target remains independent of libtiff.
 
+Reuse the configured verification cache for the platform; historical repository
+`build/` generations are retired. The placeholder below names that active cache.
+
 ```console
-cmake -S . -B build/io -DIMAGEJXX_BUILD_IO=ON -DIMAGEJXX_BUILD_PYTHON=OFF -DCMAKE_PREFIX_PATH=<reviewed-TIFF-prefix>
-cmake --build build/io --config Release
+cmake -S . -B <active-build-cache> -DIMAGEJXX_BUILD_IO=ON -DCMAKE_PREFIX_PATH=<reviewed-TIFF-prefix>
+cmake --build <active-build-cache> --config Release --target imagejxx_io
 ```
 
 An installed C++ consumer requests the optional component explicitly:
@@ -46,11 +49,43 @@ returned Dataset planes use native TCZ ordering. Unsupported compression, tiling
 BigTIFF, hidden contiguous stacks, private metadata, overlays, palettes, RGB,
 multiple series and OME/vendor metadata remain outside this profile.
 
-Spatial units are px, um or mm; time units are s or ms. Origins must be zero and
-direction identity. XY calibration uses positive uint32 rational pairs with at
+Spatial units are px, um or mm; time units are s or ms. Canonical files retain
+their existing description. Nonzero origins, nonidentity axis directions or a
+nonzero time origin use the imagejxx spatial extension described below.
+XY calibration uses positive uint32 rational pairs with at
 most 1e-6 relative error. Estimates expose the actual pairs, decoded calibration
 and error; Z spacing and frame interval retain binary64 decimal precision.
 Inspection reports defaults and source provenance without decoding pixel planes.
+
+### Spatial transform extension
+
+Reslicing permutes spatial axes and shifts the world origin. Scientific export
+preserves those values in optional ASCII ImageDescription lines:
+
+```text
+imagejxx_spatial=1
+imagejxx_origin=11,-7,19
+imagejxx_direction=1,0,0,0,0,1,0,1,0
+imagejxx_time_origin=2.25
+```
+
+Origin is a three-component world coordinate; direction is a row-major3x3 matrix.
+Time origin uses the declared time unit. All values use locale-independent
+round-trip decimal spelling. All four fields are required together, with version1,
+finite values, exact vector lengths and an invertible direction matrix. Unknown
+versions, partial/duplicate fields and malformed values refuse during metadata
+inspection, before decoding samples or invoking progress callbacks. Native eager
+and virtual readers reconstruct the transform; write estimates report the actual
+encoded calibration. Existing XY rational precision and unit normalization rules
+still apply. Ordinary nonzero ImageJ xorigin/yorigin/zorigin fields remain outside
+the supported legacy interpretation; this extension does not reinterpret them.
+
+The extension is owned imagejxx metadata, not an ImageJ affine interchange claim.
+Other TIFF readers may ignore it. The scientific export form explains that limit
+when the transform needs the extension. Native sessions retain full document
+state; TIFF export still requires explicit consent to exporting only pixels and
+calibration. IO review descriptors include a closed version1 spatial subrecord
+only when needed; existing canonical descriptors retain their original fields.
 
 ImageJ 1.54r FileSaver emits `unit=\u00B5m`, `loop=false`, `min` and `max` for an
 ordinary calibrated scalar stack. The runtime-driven amendment in

@@ -53,11 +53,20 @@ Json limits_json(const ImageFileLimits &limits) {
     out[name] = limits.*member;
   return out;
 }
+bool extended_calibration(const SpatialCalibration &c) {
+  return c.origin != std::array<double,3>{0,0,0} ||
+      c.direction != std::array<double,9>{1,0,0,0,1,0,0,0,1} || c.time_origin != 0;
+}
 Json calibration_json(const SpatialCalibration &c) {
-  return {{"spacing", c.spacing},
+  Json out = {{"spacing", c.spacing},
           {"unit", c.unit},
           {"frame_interval", c.frame_interval},
           {"time_unit", c.time_unit}};
+  if (extended_calibration(c)) {
+    out["spatial_version"]=1;out["origin"]=c.origin;
+    out["direction"]=c.direction;out["time_origin"]=c.time_origin;
+  }
+  return out;
 }
 Json info_json(const ImageSeriesInfo &s) {
   return {{"series_index", s.index},
@@ -177,7 +186,13 @@ void record_shape(const Json &value, const ImageFileLimits &limits, std::size_t 
                  "Scientific IO recorded sample limit");
 }
 void record_calibration(const Json &value) {
-  closed_object(value, {"spacing", "unit", "frame_interval", "time_unit"});
+  const bool spatial = value.contains("spatial_version") || value.contains("origin") ||
+      value.contains("direction") || value.contains("time_origin");
+  if (spatial)
+    closed_object(value, {"spacing", "unit", "frame_interval", "time_unit",
+                         "spatial_version", "origin", "direction", "time_origin"});
+  else
+    closed_object(value, {"spacing", "unit", "frame_interval", "time_unit"});
   const auto &spacing = value.at("spacing");
   require(spacing.is_array() && spacing.size() == 3,
           "Scientific IO spacing requires XYZ");
@@ -189,6 +204,25 @@ void record_calibration(const Json &value) {
           "Scientific IO recorded spatial unit must be canonical");
   require(value.at("time_unit") == "s" || value.at("time_unit") == "ms",
           "Scientific IO recorded time unit must be canonical");
+  if (spatial) {
+    require(value.at("spatial_version").is_number_integer() &&
+                !value.at("spatial_version").is_boolean() && value.at("spatial_version")==1,
+            "Unsupported recorded spatial calibration version");
+    SpatialCalibration calibration;
+    const auto vector = [&](const Json &input, auto &output) {
+      require(input.is_array() && input.size()==output.size(),"Invalid recorded spatial vector");
+      for (std::size_t i=0;i<output.size();++i) {
+        require(input[i].is_number(),"Recorded spatial values must be finite numbers");
+        output[i]=input[i].get<double>();
+        require(std::isfinite(output[i]),"Recorded spatial values must be finite numbers");
+      }
+    };
+    vector(value.at("origin"),calibration.origin);
+    vector(value.at("direction"),calibration.direction);
+    require(value.at("time_origin").is_number(),"Recorded time origin must be finite");
+    calibration.time_origin=value.at("time_origin").get<double>();
+    calibration.validate();
+  }
 }
 void record_names(const Json &value,
                   std::initializer_list<const char *> allowed) {
@@ -1011,6 +1045,20 @@ void ScientificIoPanel::draw(const std::function<void()> &browse,
   s.controls = Json::object();
   if (!s.open)
     return;
+  const auto spatial_details = [&](const SpatialCalibration &calibration) {
+    if (!extended_calibration(calibration))return;
+    const bool expanded=ImGui::TreeNode("Spatial origin and axis directions");
+    s.observe("spatial_calibration");
+    if (expanded) {
+      ImGui::Text("Origin: %.12g, %.12g, %.12g %s",calibration.origin[0],
+          calibration.origin[1],calibration.origin[2],calibration.unit.c_str());
+      for (int axis=0;axis<3;++axis)
+        ImGui::Text("Axis %c: %.12g, %.12g, %.12g",'X'+axis,
+            calibration.direction[axis],calibration.direction[3+axis],calibration.direction[6+axis]);
+      ImGui::Text("Time origin: %.12g %s",calibration.time_origin,calibration.time_unit.c_str());
+      ImGui::TreePop();
+    }
+  };
   ImGui::SetNextWindowSize({580, 0}, ImGuiCond_FirstUseEver);
   if (s.focus) {
     ImGui::SetNextWindowFocus();
@@ -1127,6 +1175,7 @@ void ScientificIoPanel::draw(const std::function<void()> &browse,
                   series.calibration.unit.c_str(),
                   series.calibration.frame_interval,
                   series.calibration.time_unit.c_str());
+      spatial_details(series.calibration);
       const auto defaults = series.metadata.find("defaulted_fields");
       if (defaults != series.metadata.end())
         ImGui::TextWrapped("Defaulted fields: %s",
@@ -1169,6 +1218,13 @@ void ScientificIoPanel::draw(const std::function<void()> &browse,
                   e.encoded_calibration.unit.c_str(),
                   e.encoded_calibration.frame_interval,
                   e.encoded_calibration.time_unit.c_str());
+      spatial_details(e.encoded_calibration);
+      const auto &calibration = e.encoded_calibration;
+      if (extended_calibration(calibration))
+        ImGui::TextWrapped(
+            "Spatial origin, axis directions and time origin use imagejxx "
+            "metadata. Reopen in imagejxx to preserve them; other TIFF readers "
+            "may ignore this metadata.");
       ImGui::TextWrapped(
           "Only pixels and calibration are exported. Display, selections, "
           "annotations, history and extra document metadata are excluded.");

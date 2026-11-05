@@ -247,6 +247,41 @@ int main(int argc, char **argv) {
           "IO retained job reservation leaked");
     for (const auto &entry : fs::directory_iterator(root))
       check(entry.path().extension() == ".tif", "Panel temporary leaked");
+    auto spatial = owner->snapshot().data().dataset.calibration();
+    spatial.origin = {11, -7, 19};
+    spatial.direction = {1, 0, 0, 0, 0, 1, 0, 1, 0};
+    spatial.time_origin = 2.25;
+    auto spatial_edit = owner->begin_edit();spatial_edit.set_calibration(spatial);
+    owner->commit(std::move(spatial_edit));
+    panel.show(true,current(),128*1048576,(root/"spatial.tif").u8string(),true);
+    panel.inspect();wait();
+    check(panel.diagnostics().at("error")=="" &&
+              panel.diagnostics().at("estimate").at("calibration").at("origin")==Json(spatial.origin),
+          "Spatial export estimate lost the world origin");
+    panel.patch({{"accept_pixels_and_calibration_only",true}});
+    ImGui::CreateContext();
+    auto &spatial_io=ImGui::GetIO();spatial_io.IniFilename=nullptr;
+    spatial_io.DisplaySize={1000,800};spatial_io.DeltaTime=1.f/60;
+    spatial_io.Fonts->GetTexDataAsRGBA32(&pixels,&width,&height);
+    ImGui::NewFrame();panel.draw([]{});ImGui::Render();
+    check(panel.diagnostics().at("controls").at("apply").at("enabled")==true,
+          "Spatial export controls were not available");
+    ImGui::DestroyContext();
+    panel.apply();panel.wait();tick();
+    check(!panel.visible() && panel.diagnostics().at("error")=="","Spatial export failed");
+    const auto restored=read_image_series((root/"spatial.tif").u8string());
+    check(restored.dataset.calibration().origin==spatial.origin &&
+              restored.dataset.calibration().direction==spatial.direction &&
+              restored.dataset.calibration().time_origin==spatial.time_origin,
+          "Shared form export did not preserve spatial calibration");
+    replayChecks(record);
+    for(int malformed=0;malformed<3;++malformed) {
+      auto invalid=record;auto &cal=invalid["encoded_calibration"];
+      if(malformed==0)cal["spatial_version"]=2;
+      else if(malformed==1)cal.erase("origin");
+      else cal["direction"]={0,0,0,0,0,0,0,0,0};
+      refuses([&]{scientific_io_replay_draft(invalid);});
+    }
     scheduler->shutdown();
     std::cout << "PASS scientific IO shared form, review, jobs, clean open, "
                  "staged export and lifecycle\n";
