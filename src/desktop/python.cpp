@@ -281,6 +281,12 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_fit_circle_area_ui_case",[](Window& window,const std::string& directory) {
         return fitCircleWorkflowUiCase(window,"imgui_python",directory,true).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_fit_ellipse_ui_case",[](Window& window,const std::string& directory) {
+        return fitEllipseWorkflowUiCase(window,"imgui_python",directory,false).dump();
+      },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_fit_ellipse_area_ui_case",[](Window& window,const std::string& directory) {
+        return fitEllipseWorkflowUiCase(window,"imgui_python",directory,true).dump();
+      },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
       .def("_captured_profile_ui_case",[](Window& window,const std::string& directory) {
         return capturedProfileUiCase(window,"imgui_python",directory).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())

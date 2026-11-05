@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T06/G018 Fit Ellipse",
+  "base_commit": "67bd9b6",
+  "command_candidate": "R-1307f5c8081a335383bb3ad0",
+  "state": {
+    "implemented": "C++/Python admitted pixel-moment fitting, editable native rotated ellipse, shared conversion controls and captured worker.",
+    "verified": "55 pinned observations (12 line refusals);836 distinct affected Windows Python cases across broad835 and focused8 runs. Windows/Linux native core,1297 native creation checks and geometry regression, installed Windows SDK consumer. Both Windows physical host branches and20 shared Circle/Ellipse lifecycle scenarios.",
+    "integrated": "Explicit typed point-data loss review, menu/error recovery, Undo/Redo, workspace reopen, strict replay refusal and explicit V4 rebind; cancellation and stale source/owner/pose/cap/recording guards.",
+    "release_ready": false
+  },
+  "contract": {
+    "api": [
+      "estimate_fit_ellipse_selection(selection,width,height,limits)",
+      "fit_ellipse_selection(selection,width,height,discard_point_metadata=false,limits,control)"
+    ],
+    "geometry": "Rectangle/single-point fast path; other sources use canvas-clipped occupied pixel moments with processor-local ROI origin, cell variance correction and legacy axis-tie regularization. Native binary64 center/major/minor axis points; no sampled contour output. Lines/empty/singular/nonfinite results refuse.",
+    "points": "Float32 local normalization and rounded absolute processing pixels, independent of marker width; generic width/opaque attributes retained, typed point metadata requires explicit discard.",
+    "numeric_tolerances": "Center/axes1e-7, circular angle2e-5deg, upstream Float32 final endpoints1e-5; fixture unchanged by implementation fixes.",
+    "resources": "Rectangle fast path no raster charge; sparse points directly mark one dense double occupancy buffer.4096x4096 rectangle and900 points verified within192MiB. Other kinds reuse mask/shape planner.",
+    "worker": "Existing captured startControlled lane; expensive planning off creator/GIL, frozen source/limits, retained lease through READY/publication. Success label staged before history commit. Zero provider reads and zero terminal scheduler/render working storage. Conservative full processing-cap reservation remains.",
+    "v4": "Explicit NativePathV4 replacement newly admits validated three-point rotated_ellipse candidates. Default/V1-V3 remain strict; no record schema/public layout change. Older readers may reject new candidate. Replay restores resolved geometry, not fit intent.",
+    "commercial": "Owned implementation and original development-only observer; no new runtime dependency, imported algorithm source or asset."
+  },
+  "reference": {
+    "archive": ".cache/native-verification/references/imagej154r/source.zip",
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "source": "Selection.createEllipse, EllipseFitter, PointRoi/PolygonRoi and processor ROI handling",
+    "cases": 55,
+    "refusals": 12
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/selection_transform.hpp",
+      "bytes": 3068,
+      "sha256": "dc5bbecdc85cfc693b1197c846949968033aac369a211f52f85e0a7457ffc772"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 21735,
+      "sha256": "22741e1c7d7fdf1086ac6b8035f2a1be076ebe77ab4b16564d78b08cfd3d05ed"
+    },
+    {
+      "path": "src/native/selection_creation.cpp",
+      "bytes": 87676,
+      "sha256": "ebfb2a778b9baa4166c0de4f8903e9784b11bf8695472e934663e4fd7e53c8af"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 21187,
+      "sha256": "651af70b38749e98b156ec68b95b96c43bf324cb6bd935aae0332c7b6ccaaff4"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 83010,
+      "sha256": "c49caa9cdf8156e1056c1054f8ddf622a0f3c545252d0e0f1fe45a482fdbe352"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 912255,
+      "sha256": "a74944e5539d77c974013f20015d8af23109461e5ef210de8813bd468fbe3daf"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 54441,
+      "sha256": "31b57394b85b89401e40aa11074a7c64d93d7b4fe1fcd23bcfb080b8159926a7"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 1200,
+      "sha256": "57cca16d1b80465f3e23a74c0b5e7dfd7e59b1322ef68d89475ff1c67d931b18"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 64770,
+      "sha256": "47c9ef684adb7109609e27043ca8bacd46d9f175900607c202c3e76c8ff9f2df"
+    },
+    {
+      "path": "tests/native/test_selection_transform.cpp",
+      "bytes": 7318,
+      "sha256": "8d16bc220173a72836a27cd6cc106a10c6f49d4d56a92870f376bb23380874cb"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 31807,
+      "sha256": "5f0206564c75b95fcacda070db165ae8f010c92138f7ebedf5e6d652c7c1fddb"
+    },
+    {
+      "path": "tests/python/test_selection_fit_ellipse.py",
+      "bytes": 9457,
+      "sha256": "e385e6c8c93bc91af195c34a026b4132b52afbbd8b8b0b99f5899e8051cc56c8"
+    },
+    {
+      "path": "tests/reference/ObserveFitEllipse.java",
+      "bytes": 4831,
+      "sha256": "556427b1658ee4f124c689851b88e2a20823ff6b56b682f999ceb166bc99e649"
+    },
+    {
+      "path": "tests/fixtures/fit-ellipse-imagej154r.json",
+      "bytes": 19168,
+      "sha256": "22777b522943ca4e0576a2f0092058d7ccf121b0e00d68c49e3279efdb464975"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-core004.process.json",
+      "bytes": 1839,
+      "sha256": "2ee0336591d7f6e92e1b446824945fbc430a6c78e2e6f065194d87ae63ff78d9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-core004.log",
+      "bytes": 366,
+      "sha256": "6b05913a4ed35a947a558c79eaff6a57d278234922e086878d5dc4ebe37987ba"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui004.process.json",
+      "bytes": 1963,
+      "sha256": "ec9bdbf971ed171f5c5da63307e06ec2686a81da3c7c7d805647539ea4f7f774"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui004.log",
+      "bytes": 681,
+      "sha256": "612a95337f9cc5d710217ba14ab0cd6b5cfc34063f8f97c725e04a3237bdf780"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/linux-owner004.process.json",
+      "bytes": 3776,
+      "sha256": "b901bf674555e13e9086e3b391bad06c6a79deb18c29aade531349133e2e58fe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/linux-owner004.log",
+      "bytes": 67,
+      "sha256": "a151cd76a538274622fc0f47a560a0d173e1bf5a3b958c2fdb971929742e2c5a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/linux-build004.process.json",
+      "bytes": 1558,
+      "sha256": "d333963bf65a41b3b5ef13eaba8c473cc674e94adb861722b3aafe3255023472"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/linux-build004.log",
+      "bytes": 334,
+      "sha256": "be1399be20eefe53887a511b803a8c385be0810bf03730aa7739da153161aae0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/linux-native004.process.json",
+      "bytes": 1463,
+      "sha256": "ed11c0c5f4638dcf72741a60476777cf3fe83306a5921a45872ddfe5e7548d2a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/linux-native004.log",
+      "bytes": 362,
+      "sha256": "3a45c8fbfcbbefc249663ec5b13785c389371faf91b9bd86b166e5e000e355d1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/sdk-run004.process.json",
+      "bytes": 1935,
+      "sha256": "a20d5dfcfe7a3913af15cafaaee5184a2b5760e6f3afd820e870d54d864e22d9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/sdk-run004.log",
+      "bytes": 366,
+      "sha256": "6b05913a4ed35a947a558c79eaff6a57d278234922e086878d5dc4ebe37987ba"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-regression003.process.json",
+      "bytes": 2732,
+      "sha256": "1c81120016e27b39ef5780b2c09b70f118e9ec31a6e49d189a0a6503f997005f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-regression003.log",
+      "bytes": 1778,
+      "sha256": "75efd55280f09caa1ea928c7adf67cf8d6ba6143c4e577e95525ce4a4a80db30"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-review004.process.json",
+      "bytes": 2813,
+      "sha256": "7ef7faddb001a1a0502d7c054409db83395dbeef1970fdad79e1966d7c48c8bf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-review004.log",
+      "bytes": 883,
+      "sha256": "f825897a9e85aabbd40fac62fabbe640ecc8ae5871b3dd0dc9edfa0d4fba425d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-imagejxx_selection_creation_tests002.process.json",
+      "bytes": 1839,
+      "sha256": "0bd0c0e4fb39d8c9f1874a3d8bb3f54db57d45627f96435fa589b69adb89dbc4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-imagejxx_selection_creation_tests002.log",
+      "bytes": 180,
+      "sha256": "a41aca0cc2544b23e1d4998363b4d8bee494266ac32e8f4717a54382c4840689"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-imagejxx_selection_creation_geometry_tests002.process.json",
+      "bytes": 1857,
+      "sha256": "77197aac5a6f2ddd579aeb6eb4d8142be249e37ea643d0ffbeacb6e0172d0be9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-imagejxx_selection_creation_geometry_tests002.log",
+      "bytes": 77,
+      "sha256": "c4fcc5c427251cc27d0100f5aefed892ebf2d5c260653c306600332624a05dc7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/entry.json",
+      "bytes": 3283,
+      "sha256": "ea96bfe0990c5ad7320d687413b613afbc9b458dbd9133f8c6fbef9fdf33c604"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/boundary-review.json",
+      "bytes": 860,
+      "sha256": "723be1c4a60807f28fbc326f527371cd5231ccee9c7d7cc2ff984a77f6e4cdaf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/reference-observer-correction.json",
+      "bytes": 478,
+      "sha256": "b111bff0547de04ada1fe0274c0f8e2ce133b28d468688b158e6e2af8e70b05f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/final-installed-identities004.json",
+      "bytes": 2277,
+      "sha256": "cce5447954142d442c741f487fc37f41cc185a57c2d56ec6bd393f961157c668"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/linux-identities004.json",
+      "bytes": 730,
+      "sha256": "8daeaa0278e00a075a910cfc33640a8bc065ce4d93908e74525653c673bf4177"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui-reader004.json",
+      "bytes": 910,
+      "sha256": "882b66aad9d058c64ffaab3b670cae3b729f54f06eb15dcb1ac973c2da6c10b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-regression003.xml",
+      "bytes": 119975,
+      "sha256": "0c4adf68b4afadf5391abd3da56cba91d0033b570f050783a7e528248b17cda8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-review004.xml",
+      "bytes": 1349,
+      "sha256": "3a4db8451ca031493f9b049ef073c0002d30fdeef483eb1d75eb908283a4bd82"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-numeric001.xml",
+      "bytes": 14054,
+      "sha256": "df3bf74d01b091283cd9177403ef8c23fd3ae92f95036ffe52eed4daab9822fc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-regression002.xml",
+      "bytes": 141076,
+      "sha256": "57d55803ba5ec7091f3ecd47e253fcee49837cc00bf5204b19a4687246a4cdc4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui001.process.json",
+      "bytes": 1964,
+      "sha256": "0e71ded7a7367f5e9f6c0eb53c4d9588004493480318c0917e18bf91afd1fd25"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui001.zip",
+      "bytes": 42493,
+      "sha256": "50f97be922f828126fe9bc52a4a6a72e094f0fe039ee4f8429f6bb85f03f8c72"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui004.zip",
+      "bytes": 36285,
+      "sha256": "7db374e0d97cd3f3db003ce0e3ef6f66442d2ae577053591f8bb4655284077b7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-review004.zip",
+      "bytes": 8278,
+      "sha256": "3528080aa42961779a72621f8c82ee6d25312176e7da118af62ffbc83295dc7d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python002.zip",
+      "bytes": 28565,
+      "sha256": "a98559b8478e24a510faf4b699fcccf67f6fe3c56a374f0ed2a055beb732f7ac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python003.zip",
+      "bytes": 31026,
+      "sha256": "d76b8ef701842d025f2e0eed1ffcff5c83f9bf3f35ec88b42269c630ae1b8f05"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/reference001.zip",
+      "bytes": 9338,
+      "sha256": "26254d78c31e94377e0a2d8b33c57c290e1b54979e0744e257b0d791dcf5f906"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/reference002.zip",
+      "bytes": 3671,
+      "sha256": "3fdb2c2f9cba17d49c586092a76c97f40f349e63c969c36f22fa008e61333365"
+    }
+  ],
+  "failures_and_limits": [
+    "Initial observer re-fetched ImagePlus processor, resetting point ROI before stats. Corrected before native implementation; faulty output retained in reference001.zip with original hash.",
+    "native-ui001 failed because rotated ellipse was admitted as a base but not candidate. Fixed only explicit V4 candidate and wire gates; failure diagnostics retained.",
+    "python-numeric001 had6 numeric failures; python-regression002 retained1 numerical failure plus17 missing-reference setup errors. Corrected local-ROI summation and tie lengths without repinning fixtures or weakening tolerances.",
+    "17 legacy gesture checks require build/references/selection-creation-imagej154r-001/capture-001/capture.json, retired and unavailable. Not included in green836; no source skip, historical regeneration or full qualification claim.",
+    "A cleanup launch exceeded Windows command-line length and did not start. Reused existing templates with short sequential loops; no duplicate process.",
+    "Full constructor/attachment/style/contour/platform and operation-intent macro parity, G018 and full editor/release scope remain open."
+  ],
+  "storage": {
+    "measurements": [
+      {
+        "measurement": {
+          "path": ".tmp/manual-workflow-verification/fit-ellipse-entry-20261105.json",
+          "bytes": 66573,
+          "sha256": "68afe30a08505edcee592b4d792c3e67c3d163feb36d08acff33d04f61b72de8"
+        },
+        "known_bytes": 7312009326,
+        "unknown_subtrees": 214,
+        "budget_verified": false
+      },
+      {
+        "measurement": {
+          "path": ".tmp/manual-workflow-verification/fit-ellipse-closeout-20261105.json",
+          "bytes": 66573,
+          "sha256": "b842aa1710f4fd863755da07ac638cdf4805d0665c2a9f7eb8754e60687288c6"
+        },
+        "known_bytes": 7316126951,
+        "unknown_subtrees": 214,
+        "budget_verified": false
+      }
+    ],
+    "physical_free_at_entry_bytes": 271823884288,
+    "physical_free_at_closeout_observation_bytes": 271774195712,
+    "limit_bytes": 8589934592,
+    "retirements": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui001-retirement.json",
+          "bytes": 434,
+          "sha256": "95295519faa85e4c353041b0de4cf7fb3e04a6943c1d3bb69e9968ec01d13270"
+        },
+        "state": "verified_retention_then_removed"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui002-retirement.json",
+          "bytes": 345,
+          "sha256": "8096d4af91371aa02c2f6977af60f33c4f3fa3cd97bf9d727bf319dda3c98cd8"
+        },
+        "state": "hashed_owned_consumer_tree_removed_without_archive"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui003-retirement.json",
+          "bytes": 345,
+          "sha256": "5c019d5f6fadd0013fc859035375cce51e57ada97034e784d424bf5b7901d09e"
+        },
+        "state": "hashed_owned_consumer_tree_removed_without_archive"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/native-ui004-retirement.json",
+          "bytes": 434,
+          "sha256": "488519bff650284521f9e40e94a57bc5547d78ac4e365cc0088a3124c8f2cfb8"
+        },
+        "state": "verified_retention_then_removed"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-numeric001-empty-retirement.json",
+          "bytes": 278,
+          "sha256": "09ef4e2a36464dbd98e9c8dca306fa2cae99a58ff9c1ee935c8e88bdc650717f"
+        },
+        "state": "removed_verified_empty_owned_scratch"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python-review004-retirement.json",
+          "bytes": 435,
+          "sha256": "fe960d46d1092b6d7b02f52d63e82cd1138b24ad1979378b06a8a1b0a04ecb05"
+        },
+        "state": "verified_retention_then_removed"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python001-empty-retirement.json",
+          "bytes": 270,
+          "sha256": "9bb3f9e2f5501be39e12836728662b00535a7fa2241458600021ba8c4d225b0b"
+        },
+        "state": "removed_verified_empty_owned_scratch"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python002-retirement.json",
+          "bytes": 430,
+          "sha256": "35339f4b8456b4e43e034b44f1858b2e08124a4d2a88a34866cccb04f2959a81"
+        },
+        "state": "verified_retention_then_removed"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/python003-retirement.json",
+          "bytes": 430,
+          "sha256": "0260534cf9710564d563dafd14f751c8a51b45915702e85d3c23f49fce2f3ff2"
+        },
+        "state": "verified_retention_then_removed"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/reference001-retirement.json",
+          "bytes": 431,
+          "sha256": "a42590e68d81ee69141b3d643072ba87f1a9b0c24b4913d7329f2e0febd4919c"
+        },
+        "state": "verified_retention_then_removed"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/reference002-retirement.json",
+          "bytes": 430,
+          "sha256": "73573c22d1ad68a0f47511a3d09e1d3df015163b5f22b8ebbe3e459443616189"
+        },
+        "state": "verified_retention_then_removed"
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-fit-ellipse-20261105/sdk001-retirement.json",
+          "bytes": 340,
+          "sha256": "e5daf7bac45413af2babdb157c49b8d3fc645344b565330a654cf910fcd5f222"
+        },
+        "state": "hashed_owned_consumer_tree_removed_without_archive"
+      }
+    ],
+    "compiler_objects_preserved": true,
+    "retired_build_generations_recreated": false,
+    "note": "214 inaccessible subtrees remain unknown, never zero. Before/after scopes preserved; known bytes below8GiB do not prove complete budget compliance."
+  },
+  "execution_seconds": {
+    "native-core004": 0.06172589980997145,
+    "native-ui004": 1.824975100113079,
+    "linux-owner004": 6.445837500039488,
+    "linux-build004": 6.050699878,
+    "linux-native004": 0.07314984399999958,
+    "sdk-run004": 0.06412390014156699,
+    "python-regression003": 4.080424099927768,
+    "python-review004": 1.282841700129211,
+    "native-imagejxx_selection_creation_tests002": 0.0638930001296103,
+    "native-imagejxx_selection_creation_geometry_tests002": 0.06183349993079901
+  },
+  "waste_review": {
+    "fix_now": [
+      "Sparse point masks avoid per-point full-canvas copies; rectangle and point admission match actual buffers.",
+      "Inspect both candidate and wire gates, not only supported base kinds.",
+      "Record failed attempts; preserve final/failure captures via live-hash verified compression and retire12 scratch groups.",
+      "AGENTS execution checkpoints reinforced: re-read on handoff, reference preflight, evidence before dependent actions, explicit unresolved cleanup targets. Documentation-only rule change checked without build."
+    ],
+    "defer": {
+      "T02": "Tighter sequential-phase reservations only on demonstrated concurrency need; existing conservative bound retained.",
+      "T00/T14": "Legacy17 reference availability and full supported-platform release gates.",
+      "T06/T09": "Remaining fits/source variants and operation-intent macro compatibility."
+    },
+    "no_action": "Reuse835 broad green cases after resource-only change, with8 focused final checks plus affected native/UI/SDK and Linux core. No new scheduler, controller, common public struct, environment or audit framework. No processing-speed/RSS or whole-family completion claim."
+  },
+  "next_task": "T06/G018 Fit Rectangle: minimum-area editable rotated rectangle using existing hull/frame, worker/history and explicit V4 route.",
+  "build_seconds": {
+    "windows_target_elapsed_sum_by_revision": {
+      "001": 97.52668539946899,
+      "002": 58.63543749973178,
+      "003": 50.74367089965381,
+      "004": 48.62427399982698
+    },
+    "linux_builds": {
+      "001": 7.262221394999997,
+      "002": 10.487375753,
+      "003": 6.687049286000001,
+      "004": 6.050699878
+    },
+    "interpretation": "Different changed inputs and target groups; sums are execution cost, not image-processing benchmarks."
+  },
+  "closeout_checks": [
+    "git diff --check passed",
+    "New documentation links resolve",
+    "Current source/evidence hashes and installed built/source bytes match",
+    "All99 capability statuses/required_work and non-G018 rows unchanged",
+    "Historical fingerprints and four unrelated untracked source/doc hashes unchanged",
+    "All12 scratch retirement receipts inspected; archive hashes and compressed contents checked; scratch parent absent",
+    "compilexx notebook diff whitespace check passed; sibling changes left uncommitted"
+  ]
+}

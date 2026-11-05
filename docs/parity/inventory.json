@@ -903,7 +903,8 @@
           "docs/SELECTION_TRANSFORMS.md",
           "docs/parity/reviews/selection-convex-hull-20261105.json",
           "docs/parity/reviews/selection-bounding-rectangle-20261105.json",
-          "docs/parity/reviews/selection-fit-circle-20261105.json"
+          "docs/parity/reviews/selection-fit-circle-20261105.json",
+          "docs/parity/reviews/selection-fit-ellipse-20261105.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
@@ -950,7 +951,10 @@
           "tests/fixtures/bounding-rectangle-imagej154r.json",
           "tests/python/test_selection_fit_circle.py",
           "tests/reference/ObserveFitCircle.java",
-          "tests/fixtures/fit-circle-imagej154r.json"
+          "tests/fixtures/fit-circle-imagej154r.json",
+          "tests/python/test_selection_fit_ellipse.py",
+          "tests/reference/ObserveFitEllipse.java",
+          "tests/fixtures/fit-ellipse-imagej154r.json"
         ]
       },
       "id": "G018",

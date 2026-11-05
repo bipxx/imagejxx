@@ -113,7 +113,43 @@ ImageJ 1.54r `Selection.fitCircle`, including six refusals. Strict native refusa
 of nonconvergence replaces the legacy fallback, and full source-constructor/
 attachment/style/platform and fit-intent macro parity remain separate gaps.
 
-Curved/mask hull semantics, ellipse/spline/minimum-area-rectangle fitting,
+## Fit Ellipse
+
+Use **Edit → Selection → Fit Ellipse** for an editable native ellipse derived
+from occupied pixels. Lines refuse. Points use one-pixel processing masks,
+independent of marker/stroke size; this differs from Fit Circle's vertex fit.
+Rectangle and single-point profiles retain ImageJ's rectangle fast path. Other
+masks use pixel-cell moments, centroid and area-normalized axes. Native output
+uses binary64 `rotated_ellipse` geometry rather than a sampled Float32 contour.
+
+`ij.fit_ellipse_selection(selection, width, height, ...)` and
+`ij.estimate_fit_ellipse_selection(selection, width, height, limits)` expose the
+same limits, explicit point-data loss and execution controls as the other fits.
+The native implementation preserves ImageJ's local processor-ROI moment origin,
+cell variance correction and axis-tie regularization, including its effect on
+axis lengths. Empty/nonfinite/singular geometry refuses. Generic style/width,
+pixels and calibration survive; the fit uses uncalibrated pixel space.
+
+The rectangle fast path reserves no canvas raster. Sparse points use one dense
+occupancy buffer and direct cell marks, avoiding per-point image copies. Other
+geometry reuses the existing bounded mask/planner. The desktop runs the fit and
+command preparation through the existing captured worker; cancellation, stale
+owner/revision/pose/cap/recording guards and resource retirement match Fit Circle.
+
+Explicit V4 replacement now accepts validated three-point native rotated-ellipse
+candidates. Default/V1–V3 candidate admission stays strict. Geometry encoding is
+unchanged; older readers may reject this newly admitted V4 candidate. Undo/Redo,
+workspace and explicit rebind retain the editable axes and original point data.
+Recorder replay restores resolved geometry rather than refitting new inputs.
+
+The pinned fixture observes 55 `Selection.createEllipse` cases, including 12
+line refusals. Native moments/axes and float-contour parameters are compared at
+declared numerical tolerances; this is not bitwise contour or complete upstream
+source-constructor/attachment/style/platform parity. Seventeen older selection
+gesture reference checks currently lack their retired capture environment; their
+expectations remain unchanged and unavailable evidence is not treated as a pass.
+
+Curved/mask hull semantics, spline/minimum-area-rectangle fitting,
 scientific/saved-row variants and supported-platform UI qualification remain
 with T06/G018 and their existing owners. Commercial eligibility requirements
 remain unchanged; this conversion adds no third-party runtime dependency.

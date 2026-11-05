@@ -50,12 +50,29 @@
 
 These checkpoints apply to every task, including fixes and documentation. Use
 its existing task record; do not create another checklist, ledger or runner.
+They are execution requirements, not suggestions. Complete the applicable
+checkpoint before its dependent action; mentioning the rule or promising later
+compliance does not satisfy it.
+
+- At task entry and after a handoff or context compaction, read these instructions
+  and the current task record. Reconcile live processes, receipts and outstanding
+  cleanup before resuming. Reuse completed work; do not restart verification
+  merely because conversational context was lost.
+- If a checkpoint is unsatisfied, stop only its dependent action, record the
+  missing evidence or concrete blocker, and correct it within existing authority.
+  Continue independent safe work. Do not waive a checkpoint because a prior task
+  skipped it, because the user says continue, or because a deadline is near.
+  Apply explicit user overrides within their stated scope.
 
 - Before a build, install or verification run, inspect live processes and existing
   receipts. State the changed input or unresolved risk requiring that run, its
   affected targets, and the existing cache/runtime/scratch paths. Resume or collect
   an active run instead of launching a duplicate. A tool timeout is not proof
   that its process exited.
+- Before selecting reference-dependent checks, verify that their required inputs
+  exist at the consumed paths. Record unavailable checks separately from passing
+  checks; do not recreate retired build trees, change historical expectations or
+  repeatedly launch a suite whose required reference is known to be unavailable.
 - Before substantial verification, record the complete normalized storage scope,
   inaccessible roots and physical free space. If budget compliance is unknown,
   report it as unverified and bound the planned allocation explicitly; do not
@@ -69,6 +86,10 @@ its existing task record; do not create another checklist, ledger or runner.
   terminal disposable scratch and record retained evidence, cleanup results and
   unresolved blockers. For substantial verification, include before/after storage
   measurements. A promised later cleanup does not satisfy this checkpoint.
+  Cite actual receipt paths and observed outcomes, including failures and unknown
+  storage. An unresolved safety blocker must name the retained target and reason;
+  it is not evidence of successful cleanup. Carry it forward explicitly before
+  independent work proceeds.
 - When a checkpoint is missed, record the actual lapse and corrective action in
   the same task record. Do not claim compliance from updating these instructions,
   or repeat unchanged builds merely to produce a cleaner receipt.

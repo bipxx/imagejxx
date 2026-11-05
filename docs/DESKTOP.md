@@ -13,6 +13,10 @@ editable integer rectangle, with the same loss review and history controls.
 circle. Area work uses the existing background Jobs/log controls; see the
 [two branches, limits and replay behavior](SELECTION_TRANSFORMS.md#fit-circle).
 
+**Edit → Selection → Fit Ellipse** fits occupied area or point masks to an
+editable ellipse through the same background and history controls. See
+[point-mask rules and numerical scope](SELECTION_TRANSFORMS.md#fit-ellipse).
+
 ## Brightness/Contrast
 
 Open **Image → Brightness/Contrast...** for the modeless native panel. See

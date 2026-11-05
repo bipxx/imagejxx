@@ -34,4 +34,12 @@ std::size_t estimate_fit_circle_selection(const Selection &, int width, int heig
 Selection fit_circle_selection(const Selection &, int width, int height,
     bool discard_point_metadata = false, const SelectionEditLimits & = {},
     const ExecutionControl & = {});
+// Pixel-mask centroid and area-normalized moment axes. Points use one-pixel
+// processing masks; lines refuse. Native binary64 rotated_ellipse output keeps
+// editable axes, independent of upstream's Float32 contour approximation.
+std::size_t estimate_fit_ellipse_selection(const Selection &, int width, int height,
+                                          const SelectionEditLimits & = {});
+Selection fit_ellipse_selection(const Selection &, int width, int height,
+    bool discard_point_metadata = false, const SelectionEditLimits & = {},
+    const ExecutionControl & = {});
 }

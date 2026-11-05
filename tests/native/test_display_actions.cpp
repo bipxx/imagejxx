@@ -361,13 +361,15 @@ void convexHullWorkflow(const std::filesystem::path& root) {
   for(bool area:{false,true}) {
     Window circle((root/(area?"circle-area-preferences.json":"circle-preferences.json")).u8string());
     imagejxx::desktop::fitCircleWorkflowUiCase(circle,"imgui_cpp",(root/(area?"circle-area":"circle-points")).u8string(),area);
+    Window ellipse((root/(area?"ellipse-area-preferences.json":"ellipse-preferences.json")).u8string());
+    imagejxx::desktop::fitEllipseWorkflowUiCase(ellipse,"imgui_cpp",(root/(area?"ellipse-area":"ellipse-points")).u8string(),area);
   }
   std::cout<<"PASS Convex Hull physical menu/loss choice/cancel/history/session/explicit replay in native C++\n";
 }
 
 void circleJobs(const std::filesystem::path& root) {
-  for(int mode=0;mode<10;++mode) {
-    const auto dir=root/("circle-job-"+std::to_string(mode));std::filesystem::create_directory(dir);
+  for(bool ellipse:{false,true})for(int mode=0;mode<10;++mode) {
+    const auto dir=root/(std::string(ellipse?"ellipse-job-":"circle-job-")+std::to_string(mode));std::filesystem::create_directory(dir);
     DatasetReadObserver reads;Image image(16,16,1,PixelType::UInt8);
     auto source=std::make_shared<Document>(Dataset::from_stack({image,image}).observe_reads(reads));
     source->select(Selection("rectangle",{{3,3},{13,13}}));
@@ -380,10 +382,10 @@ void circleJobs(const std::filesystem::path& root) {
     if(mode==1){blocker=scheduler->submit([gate](const JobContext& c){gate->hold(c);});gate->await();}
     if(mode==2)session.fixtureWorkerGate([gate](const JobContext& c){gate->hold(c);});
     if(mode==9) {
-      scheduler->set_limits({1,65536,64});refuses([&]{w.action("fit_circle_selection");});
+      scheduler->set_limits({1,65536,64});refuses([&]{w.action(ellipse?"fit_ellipse_selection":"fit_circle_selection");});
       check(!w.busy() && source->snapshot().shares_data(before) && w.workflow.empty() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Circle resource refusal retained source/output/resources");continue;
     }
-    w.action("fit_circle_selection");check(w.busy() && source->undo_steps()==0 && w.workflow.empty(),"Area circle must return before publication");
+    w.action(ellipse?"fit_ellipse_selection":"fit_circle_selection");check(w.busy() && source->undo_steps()==0 && w.workflow.empty(),"Area circle must return before publication");
     const auto id=w.jobInfo()->id;
     if(mode==1) {
       check(w.jobInfo()->state==JobState::Queued && w.renderMemoryInfo().at("working_bytes").get<std::size_t>()>0,"Queued fit must retain capture without publication");
@@ -401,7 +403,7 @@ void circleJobs(const std::filesystem::path& root) {
       w.wait();
     }
     check(reads.counts().plane_reads==count && !w.busy() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Terminal fit read samples or retained worker/capture storage");
-    if(mode==0)check(w.error().empty() && source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{2,2},{13,13}} && source->undo_steps()==1 && w.workflow.size()==1,"Area circle did not publish exactly once");
+    if(mode==0)check(w.error().empty() && (ellipse?(source->snapshot().data().selection->kind=="rotated_ellipse" && source->snapshot().data().selection->points[0]==std::array<double,2>{8,8}):source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{2,2},{13,13}}) && source->undo_steps()==1 && w.workflow.size()==1,"Area circle did not publish exactly once");
     else check(source->undo_steps()==0 && w.workflow.empty(),"Rejected circle published history/recording");
     if(mode==3 || mode==5 || mode==6 || mode==7 || mode==8)check(!w.error().empty(),"Stale circle was not visibly refused");
   }

@@ -1,7 +1,9 @@
 #include <imagejxx/selection_transform.hpp>
 #include <imagejxx/point_annotations.hpp>
+#include <imagejxx/selection_creation.hpp>
 #include <iostream>
 #include <stdexcept>
+#include <cmath>
 using namespace imagejxx;
 void check(bool condition,const char* message){if(!condition)throw std::runtime_error(message);}
 template<class F>void refuses(F f){try{f();}catch(const std::exception&){return;}throw std::runtime_error("Expected hull refusal");}
@@ -53,6 +55,25 @@ int main(){try{
   const auto hole=Selection::from_path(std::vector<double>{0,3,3,1,13,3,1,13,13,1,3,13,4,0,5,5,1,11,5,1,11,11,1,5,11,4});
   check(fit_circle_selection(hole,16,16).points==std::vector<std::array<double,2>>{{3,3},{12,12}},"Area fit ignored path hole");
   std::cout<<"PASS Fit Circle point/area/hole geometry, caps, empty/singular and frozen callbacks\n";
+  const auto ellipse=fit_ellipse_selection(area,16,16);const auto frame=*ellipse.box_frame();
+  check(ellipse.kind=="rotated_ellipse" && frame.center==std::array<double,2>{8,8} && std::abs(frame.u[0]-10/1.772453851)<1e-12,"Rectangle moment ellipse differs");
+  const auto pointEllipse=fit_ellipse_selection(circlePoints,16,16);
+  check(pointEllipse.points[0]==std::array<double,2>{8.5,8.5},"Point fit must use pixel centers, not circle vertices");
+  limits={};limits.max_working_bytes=estimate_fit_ellipse_selection(area,16,16);
+  check(fit_ellipse_selection(area,16,16,false,limits)==ellipse,"Exact ellipse cap refused");
+  --limits.max_working_bytes;refuses([&]{fit_ellipse_selection(area,16,16,false,limits);});
+  refuses([&]{fit_ellipse_selection(Selection("polyline",{{1,1},{2,2},{4,1}}),16,16);});
+  refuses([&]{fit_ellipse_selection(Selection::from_packed_region(2,2,{0},{0,0}),16,16);});
+  input=area;control.checkpoint=[&]{input.points={{0,0},{1,1}};};
+  check(fit_ellipse_selection(input,16,16,false,{},control)==ellipse,"Ellipse callback redirected source");
+  std::cout<<"PASS Fit Ellipse pixel moments, point convention, caps, line/empty and frozen callbacks\n";
+  Document ellipseOwner(Dataset::from_stack({Image(16,16,1,PixelType::UInt8)}));
+  refuses([&]{resolve_selection_creation_command(ellipseOwner.snapshot(),{SelectionCreationOperation::Replace,ellipse});});
+  const auto ellipseCommand=resolve_selection_creation_command(ellipseOwner.snapshot(),{SelectionCreationOperation::Replace,ellipse,SelectionCreationGeometry::NativePathV4});
+  validate_selection_creation_command_record(ellipseCommand.record());
+  auto ellipseEdit=prepare_selection_creation(ellipseCommand);ellipseOwner.commit(ellipseEdit);
+  check(ellipseOwner.snapshot().data().selection==std::optional<Selection>(ellipse) && ellipseOwner.undo_steps()==1,"V4 ellipse candidate lost geometry/history");
+  ellipseOwner.undo();check(!ellipseOwner.snapshot().data().selection,"Ellipse candidate Undo lost empty source");
   std::cout<<"PASS Convex Hull geometry, exact/short limits, point metadata policy and frozen callback input\n";
   return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

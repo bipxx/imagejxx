@@ -49,20 +49,15 @@ std::size_t rectangle_admission(const Selection &s,int width,int height,
 bool circle_area(const Selection &s) {
   return s.kind!="point" && s.kind!="multipoint" && s.kind!="line" && s.kind!="polyline" && s.kind!="angle";
 }
-std::size_t circle_admission(const Selection &s,int width,int height,
-    const SelectionEditLimits &limits,const ExecutionControl &control) {
+std::size_t area_fit_admission(const Selection &s,int width,int height,
+    const SelectionEditLimits &limits,const ExecutionControl &control,std::size_t raster_bytes_per_pixel=16) {
   auto bytes=rectangle_admission(s,width,height,limits,control);
-  if(!circle_area(s)) {
-    if(s.kind=="line" || s.points.size()<3)
-      throw std::invalid_argument("Fit Circle requires at least three non-collinear point/segmented-line vertices");
-    return bytes;
-  }
   const auto pixels=std::size_t(width)*height;
   // Dense geometry mask plus packed/output staging; source geometry, polygon
   // vertices/intersections and fixed slack are already charged by admission.
-  if(pixels>(limits.max_working_bytes-bytes)/16)
-    throw std::length_error("Fit Circle geometry raster exceeds working limit");
-  bytes+=pixels*16;
+  if(pixels>(limits.max_working_bytes-bytes)/raster_bytes_per_pixel)
+    throw std::length_error("Selection fit geometry raster exceeds working limit");
+  bytes+=pixels*raster_bytes_per_pixel;
   if(s.is_path() || s.is_rounded_box()) {
     ExecutionScope scope(control);
     auto charge=[&](const std::vector<double>& path) {
@@ -73,6 +68,61 @@ std::size_t circle_admission(const Selection &s,int width,int height,
     else {const auto path=s.rounded_path(true);charge(std::vector<double>(path.begin(),path.end()));}
   }
   return bytes;
+}
+std::size_t circle_admission(const Selection &s,int width,int height,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  if(circle_area(s))return area_fit_admission(s,width,height,limits,control);
+  auto bytes=rectangle_admission(s,width,height,limits,control);
+  if(!circle_area(s)) {
+    if(s.kind=="line" || s.points.size()<3)
+      throw std::invalid_argument("Fit Circle requires at least three non-collinear point/segmented-line vertices");
+    return bytes;
+  }
+  return bytes;
+}
+struct AreaMoments {std::size_t count=0;double sx=0,sy=0,cxx=0,cyy=0,cxy=0;};
+AreaMoments mask_moments(const Image& mask,int width,bool second,std::array<int,2> origin={0,0}) {
+  AreaMoments m;double lx=0,ly=0;
+  for(int y=0;y<mask.height;++y) {
+    double lineSum=0;std::size_t lineCount=0;
+    for(int x=0;x<width;++x) {
+      kernel_checkpoint_periodic();if(mask.pixels[std::size_t(y)*width+x]==0)continue;
+      ++m.count;m.sx+=x;m.sy+=y;
+      if(second){const double local=x-double(origin[0]);lineSum+=local;++lineCount;m.cxx+=local*local;}
+    }
+    if(second){const double local=y-double(origin[1]);lx+=lineSum;ly+=double(lineCount)*local;m.cxy+=lineSum*local;m.cyy+=local*local*double(lineCount);}
+  }
+  if(second && m.count) {
+    const double n=double(m.count),mx=lx/n,my=ly/n;
+    m.cxx=(m.cxx+.08333333*n)/n-mx*mx;m.cyy=(m.cyy+.08333333*n)/n-my*my;m.cxy=m.cxy/n-mx*my;
+  }
+  return m;
+}
+AreaMoments area_moments(const Selection& s,int width,int height,bool second,std::array<int,2> origin={0,0}) {
+  const auto mask=s.mask(width,height);return mask_moments(mask,width,second,origin);
+}
+// Match the processor ROI's clipped local origin so floating moment ties are
+// evaluated in the same coordinate frame as the pinned statistics method.
+std::array<int,2> moment_origin(const Selection& s,int width,int height) {
+  std::array<double,2> low;
+  if(s.is_mask()){const auto o=s.mask_origin();low={double(o[0]),double(o[1])};}
+  else if(s.kind=="point" || s.kind=="multipoint" || s.kind=="polygon" || s.kind=="freehand") {
+    low={std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
+    for(const auto& p:s.points)for(int a=0;a<2;++a)low[a]=std::min(low[a],double(float(p[a])));
+    for(auto& v:low)v=std::floor(v+((s.kind=="point" || s.kind=="multipoint")?.5:0));
+  } else if(s.kind=="ellipse" || s.kind=="rounded_rectangle") {
+    for(int a=0;a<2;++a)low[a]=std::trunc(std::min(s.points[0][a],s.points[1][a]));
+  } else {const auto bounds=SelectionEditor(s,width,height).bounds();low={std::floor(bounds[0]),std::floor(bounds[1])};}
+  return {int(std::clamp(low[0],0.,double(width))),int(std::clamp(low[1],0.,double(height)))};
+}
+bool point_selection(const Selection& s){return s.kind=="point" || s.kind=="multipoint";}
+bool line_selection(const Selection& s){return s.kind=="line" || s.kind=="polyline" || s.kind=="angle";}
+std::size_t ellipse_admission(const Selection& s,int width,int height,const SelectionEditLimits& limits,const ExecutionControl& control) {
+  if(line_selection(s))throw std::invalid_argument("Fit Ellipse does not support line selections");
+  if(limits.max_vertices<3)throw std::length_error("Fit Ellipse exceeds output vertex limit");
+  if(s.kind=="rectangle" || (s.kind=="rounded_rectangle" && s.corner_diameter()==0))
+    return rectangle_admission(s,width,height,limits,control);
+  return area_fit_admission(s,width,height,limits,control,point_selection(s)?sizeof(double):16);
 }
 std::array<double,3> circle_from_points(std::vector<Point>& points) {
   Point base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
@@ -226,12 +276,9 @@ Selection fit_circle_selection(const Selection &source,int width,int height,bool
   Selection frozen=source;ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
   std::array<double,3> circle;
   if(circle_area(frozen)) {
-    const auto mask=frozen.mask(width,height);double sx=0,sy=0;std::size_t count=0;
-    for(std::size_t i=0;i<mask.pixels.size();++i) {
-      kernel_checkpoint_periodic();if(mask.pixels[i]!=0){++count;sx+=double(i%width);sy+=double(i/width);}
-    }
-    if(!count)throw std::invalid_argument("Fit Circle requires nonempty area on the canvas");
-    circle={sx/double(count)+.5,sy/double(count)+.5,std::sqrt(double(count)/3.14159265358979323846)};
+    const auto m=area_moments(frozen,width,height,false);
+    if(!m.count)throw std::invalid_argument("Fit Circle requires nonempty area on the canvas");
+    circle={m.sx/double(m.count)+.5,m.sy/double(m.count)+.5,std::sqrt(double(m.count)/3.14159265358979323846)};
   } else circle=circle_from_points(frozen.points);
   const double x=std::floor(circle[0]-circle[2]+.5),y=std::floor(circle[1]-circle[2]+.5),d=std::max(1.,std::floor(2*circle[2]+.5));
   for(double v:{x,y,d,x+d,y+d})if(!std::isfinite(v) || v<std::numeric_limits<int>::min() || v>std::numeric_limits<int>::max())
@@ -240,4 +287,64 @@ Selection fit_circle_selection(const Selection &source,int width,int height,bool
   result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
+std::size_t estimate_fit_ellipse_selection(const Selection& s,int width,int height,const SelectionEditLimits& limits) {
+  return ellipse_admission(s,width,height,limits,{});
+}
+Selection fit_ellipse_selection(const Selection& source,int width,int height,bool discard_point_metadata,
+    const SelectionEditLimits& limits,const ExecutionControl& control) {
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  ellipse_admission(source,width,height,frozen_limits,frozen_control);
+  if(!discard_point_metadata && (source.attributes.count(point_annotations_attribute) || source.attributes.count(point_style_attribute)))
+    throw std::invalid_argument("Fit Ellipse requires explicit discard of per-point metadata");
+  const Selection frozen=source;ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  constexpr double pi=3.14159265358979323846;double cx,cy,major,minor,angle=0;
+  const bool rectangle=frozen.kind=="rectangle" || (frozen.kind=="rounded_rectangle" && frozen.corner_diameter()==0);
+  if(rectangle) {
+    const auto& p=frozen.points;
+    const double x=std::trunc(std::min(p[0][0],p[1][0])),y=std::trunc(std::min(p[0][1],p[1][1]));
+    const double left=std::max(0.,x),top=std::max(0.,y),right=std::min(double(width),x+std::ceil(std::abs(p[1][0]-p[0][0]))),bottom=std::min(double(height),y+std::ceil(std::abs(p[1][1]-p[0][1])));
+    if(right<=left || bottom<=top)throw std::invalid_argument("Fit Ellipse requires nonempty area on the canvas");
+    cx=(left+right)/2;cy=(top+bottom)/2;major=2*(right-left)/1.772453851;minor=2*(bottom-top)/1.772453851;
+    if(major<minor){std::swap(major,minor);angle=pi/2;}
+  } else {
+    AreaMoments m;const auto origin=moment_origin(frozen,width,height);
+    if(point_selection(frozen)) {
+      Point base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
+      for(const auto& p:frozen.points)for(int a=0;a<2;++a)base[a]=std::min(base[a],double(float(p[a])));
+      // Sparse cell marks, not draw_line's per-point full-image copy or styled
+      // glyph footprint. This is the PointRoi processing-mask convention.
+      Image mask(width,height,1,PixelType::UInt8);kernel_checkpoint();
+      for(const auto& p:frozen.points) {
+        kernel_checkpoint_periodic();Point q;
+        for(int a=0;a<2;++a){const float relative=float(p[a])-float(base[a]);q[a]=std::floor(double(relative)+base[a]+.5);}
+        if(q[0]>=0 && q[0]<width && q[1]>=0 && q[1]<height)mask.pixels[std::size_t(q[1])*width+std::size_t(q[0])]=255;
+      }
+      m=mask_moments(mask,width,true,origin);
+    } else m=area_moments(frozen,width,height,true,origin);
+    if(!m.count)throw std::invalid_argument("Fit Ellipse requires nonempty area on the canvas");
+    const double n=double(m.count),xx=m.cxx,yy=m.cyy,xy=m.cxy;
+    const double root=std::hypot(xx-yy,2*xy),large=(xx+yy+root)/2,small=(xx*yy-xy*xy)/large;
+    if(!(small>0) || !std::isfinite(large))throw std::invalid_argument("Fit Ellipse moments are singular");
+    cx=m.sx/n+.5;cy=m.sy/n+.5;
+    // Inverse concentration coefficients retain the legacy zero-difference
+    // regularization in its original units. General orientation/conditioning
+    // follows the symmetric moment matrix; projected ratio preserves tie output.
+    const double scale=std::max(4*std::abs(xx*yy-xy*xy),.000001),a=yy/scale,c=xx/scale,cross=xy/scale;
+    double difference=a-c;if(difference==0)difference=.000001;
+    constexpr double halfPi=1.5707963267949;
+    angle=.5*std::atan(2*cross/difference);if(angle<0)angle+=halfPi;if(cross>0)angle+=halfPi;
+    if(cross==0)angle=c>a?0:a!=c?halfPi:0;
+    double sine=std::sin(angle);if(sine==0)sine=.000001;
+    const double projection=cross*std::cos(angle)/sine,quotient=std::abs((a-projection)/(c+projection));
+    const double ratio=std::pow(std::max(quotient,1/quotient),.25),diameter=2*std::sqrt(n/pi);
+    major=diameter*ratio;minor=diameter/ratio;
+    if(180*angle/pi==180)angle=0;
+    if(point_selection(frozen) && frozen.points.size()==1)major=minor=2/1.772453851;
+  }
+  const double ux=std::cos(angle)*major/2,uy=-std::sin(angle)*major/2,vx=std::sin(angle)*minor/2,vy=std::cos(angle)*minor/2;
+  Selection result("rotated_ellipse",{{cx,cy},{cx+ux,cy+uy},{cx+vx,cy+vy}});result.width=frozen.width;result.attributes=frozen.attributes;
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
+  result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
+}
+
 }
