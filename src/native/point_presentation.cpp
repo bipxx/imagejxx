@@ -1,4 +1,4 @@
-#include <imagejxx/point_presentation.hpp>
+#include "point_presentation_internal.hpp"
 #include <imagejxx/point_annotations.hpp>
 #include <algorithm>
 #include <cmath>
@@ -114,9 +114,10 @@ bool visible(const Commands& g,const PointPresentationOptions& view,std::array<d
   }
   return hit;
 }
-void charge(std::size_t& used,std::size_t n,std::size_t width,std::size_t maximum) {
+void charge(std::size_t& used,std::size_t n,std::size_t width,std::size_t maximum,
+    const std::function<void(std::size_t)>& admit) {
   if(used>maximum || (n && width>(maximum-used)/n))throw std::length_error("Point presentation working byte limit");
-  used+=n*width;
+  const auto next=used+n*width;if(admit)admit(next);used=next;
 }
 }
 std::optional<PointStyle> point_style(const Selection& selection) {
@@ -185,7 +186,8 @@ ImageJRoi with_imagej_point_style(ImageJRoi wire,const PointStyle& style) {
   wire.point_type=static_cast<unsigned char>(style.marker);wire.point_size=static_cast<unsigned char>(style.size);
   wire.options=std::uint16_t((wire.options&~1024u)|(style.labels?1024u:0u));return wire;
 }
-PointPresentation point_presentation(const Selection& selection,const PointPresentationOptions& view,const PointPresentationLimits& limits) {
+PointPresentation detail::point_presentation_admitted(const Selection& selection,const PointPresentationOptions& view,
+    const PointPresentationLimits& limits,const std::function<void(std::size_t)>& admit) {
   point_selection(selection);
   if(!limits.max_points || limits.max_points>1000000 || selection.points.size()>limits.max_points)
     throw std::length_error("Point presentation vertex limit");
@@ -200,10 +202,10 @@ PointPresentation point_presentation(const Selection& selection,const PointPrese
   }
   std::size_t used=0;
   // Bounded palette/style parsing plus the small stack command buffer.
-  charge(used,1,16384,limits.max_working_bytes);
+  charge(used,1,16384,limits.max_working_bytes,admit);
   const auto style=point_style(selection).value_or(PointStyle{});
   const bool tagged=selection.attributes.count(point_annotations_attribute)!=0;
-  if(tagged)charge(used,selection.points.size(),sizeof(PointAnnotation),limits.max_working_bytes);
+  if(tagged)charge(used,selection.points.size(),sizeof(PointAnnotation),limits.max_working_bytes,admit);
   const auto entries=point_annotations(selection,limits.max_points);
   const bool categories=std::any_of(entries.begin(),entries.end(),[](const PointAnnotation& e){return e.counter!=0;});
   const bool labels=style.labels && view.labels && selection.points.size()>1;
@@ -232,9 +234,9 @@ PointPresentation point_presentation(const Selection& selection,const PointPrese
       label_chars+=n;
     }
   }
-  charge(used,glyph_count,sizeof(PointGlyph),limits.max_working_bytes);
-  charge(used,primitive_count,sizeof(PointPrimitive),limits.max_working_bytes);
-  charge(used,label_chars,1,limits.max_working_bytes);
+  charge(used,glyph_count,sizeof(PointGlyph),limits.max_working_bytes,admit);
+  charge(used,primitive_count,sizeof(PointPrimitive),limits.max_working_bytes,admit);
+  charge(used,label_chars,1,limits.max_working_bytes,admit);
   PointPresentation out;out.working_bytes=used;out.glyphs.reserve(glyph_count);out.primitives.reserve(primitive_count);
   for(std::size_t i=0;i<selection.points.size();++i) {
     std::array<double,2> center{};auto g=commands(i,center);
@@ -245,4 +247,8 @@ PointPresentation point_presentation(const Selection& selection,const PointPrese
   }
   return out;
 }
+PointPresentation point_presentation(const Selection& selection,const PointPresentationOptions& view,const PointPresentationLimits& limits) {
+  return detail::point_presentation_admitted(selection,view,limits,{});
+}
+
 }

@@ -10,6 +10,8 @@
 #include <cstdlib>
 #include <fstream>
 #include <imagejxx/point_raster.hpp>
+#include <imagejxx/jobs.hpp>
+#include <optional>
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -235,6 +237,55 @@ int main() {
           // Exact fresh owned targets only, never recursive removal.
           std::error_code cleanup;std::filesystem::remove(copy,cleanup);std::filesystem::remove(directory,cleanup);throw;
         }
+      }
+    }
+    {
+      const auto path=annotationFontPath();std::ifstream available(std::filesystem::u8path(path),std::ios::binary);
+      if(available) {
+        available.close();
+        // The callback at stb's allocation boundary must return null to C code,
+        // then preserve the original C++ admission exception after stb unwinds.
+        std::size_t calls=0,deny=std::numeric_limits<std::size_t>::max();
+        PointRasterFontCache guarded(8*1048576,512*1048576,[&](std::size_t) {
+          if(++calls==deny)throw std::runtime_error("owned admission refusal");
+        });
+        guarded.open(path);deny=calls+2;bool refused=false;
+        try{(void)guarded.take(path,16);}catch(const std::runtime_error& e){refused=std::string(e.what())=="owned admission refusal";}
+        check(refused);
+        PointRasterFontCache recovery;check(!recovery.take(path,16).digits[0].coverage.empty());
+        Selection points("multipoint",{{4,4},{9,9}});points=with_point_style(points,PointStyle{});
+        Json overlays=Json::array({{{"kind","text"},{"points",{{1,2}}},{"text","A12 beta"},{"font_size",16}},selectionJson(points)});
+        DatasetReadObserver reads;DocumentData data{Dataset::from_stack(Stack{Image(16,16,1,PixelType::UInt8)}).observe_reads(reads)};
+        for(const auto& row:overlays)data.overlays.push_back(metadataObjectFromJson(row));
+        imagejxx::Document source(std::move(data));
+        // A small scheduler cap refuses font-file storage before provider reads,
+        // although the independent per-request cap would otherwise allow it.
+        JobScheduler low({1,512*1024,8});
+        auto failure=low.submit([&,snapshot=source.snapshot()](const JobContext& context) mutable {
+          PreparedExportImage prepared(std::move(snapshot),false,8*1048576,false,DisplayExportOutput::Pixels,
+              [&](std::size_t bytes){context.reserve_resources(bytes);});
+        },{"admitted export refusal",{},source.id,0,true});
+        failure.wait();refused=false;try{failure.rethrow();}catch(const std::length_error&){refused=true;}
+        check(refused && reads.counts().plane_reads==0 && low.usage().reserved_bytes==0);
+        check(failure.info().peak_reserved_bytes>131072 && failure.info().peak_reserved_bytes<512*1024);
+        JobScheduler scheduler({1,8*1048576,8});std::optional<Image> actual;
+        std::size_t required=0;std::shared_ptr<const void> retained;
+        std::shared_ptr<PreparedExportImage> held;std::weak_ptr<int> admission_lifetime;
+        auto success=scheduler.submit([&,snapshot=source.snapshot()](const JobContext& context) mutable {
+          auto marker=std::make_shared<int>(1);admission_lifetime=marker;
+          held=std::make_shared<PreparedExportImage>(std::move(snapshot),false,8*1048576,false,DisplayExportOutput::Pixels,
+              [&,marker](std::size_t bytes){check(reads.counts().plane_reads==0);context.reserve_resources(bytes);});
+          marker.reset();required=held->working_bytes();retained=context.result_resource_guard();
+          actual.emplace(held->render(context.execution_control()));
+        },{"admitted export render",{},source.id,0,true});
+        success.wait();success.rethrow();
+        auto expected=Image(16,16,3,PixelType::UInt8);
+        renderDisplayOverlays(expected,{{"overlays",overlays},{"slice_index",0}},PlanePosition{0,0,0});
+        check(actual->pixels==expected.pixels && reads.counts().plane_reads==1 && admission_lifetime.expired());
+        check(success.info().peak_reserved_bytes>=required && success.info().peak_reserved_bytes<8*1048576 &&
+            scheduler.usage().retained_bytes==success.info().peak_reserved_bytes);
+        success.complete([]{});held.reset();retained.reset();check(scheduler.usage().reserved_bytes==0);
+        std::cout<<"Admitted export preparation: pre-read font refusal, allocator exception recovery, one-read render and retained release passed\n";
       }
     }
     {

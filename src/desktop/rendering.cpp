@@ -3,6 +3,7 @@
 #include "point_visual.hpp"
 #include "point_raster_font.hpp"
 #include "point_raster_export.hpp"
+#include "../native/point_presentation_internal.hpp"
 #include "render_memory.hpp"
 #include "../native/point_raster_internal.hpp"
 #include "../native/kernel_control.hpp"
@@ -962,30 +963,32 @@ void renderDisplayOverlays(Image &image, const Json &metadata,
 }
 namespace {
 void exportCharge(std::size_t& used,std::size_t count,std::size_t width,std::size_t limit,
+                  const ExportAdmission& admit={},
                   const char* error="Display export exceeds configured processing memory budget") {
   if(used>limit || (count && width>(limit-used)/count))
     throw std::length_error(error);
-  used+=count*width;
+  const auto next=used+count*width;if(admit)admit(next);used=next;
 }
 constexpr std::size_t export_work_limit=512*1048576;
 void exportWork(std::size_t& used,std::size_t count,std::size_t width=1) {
-  exportCharge(used,count,width,export_work_limit,"Display export exceeds bounded work limit");
+  exportCharge(used,count,width,export_work_limit,{},"Display export exceeds bounded work limit");
 }
-void exportMetadataCharge(const MetadataValue& value,std::size_t& used,std::size_t cap,std::size_t& work) {
+void exportMetadataCharge(const MetadataValue& value,std::size_t& used,std::size_t cap,std::size_t& work,
+    const ExportAdmission& admit={}) {
   kernel_checkpoint_periodic();
   exportWork(work,1);
   // JSON staging, native selection decoding and retained render records. The
   // source's immutable metadata is borrowed, never cloned before admission.
-  exportCharge(used,1,512,cap);
-  if(const auto* text=std::get_if<std::string>(&value))exportCharge(used,text->size(),4,cap);
+  exportCharge(used,1,512,cap,admit);
+  if(const auto* text=std::get_if<std::string>(&value))exportCharge(used,text->size(),4,cap,admit);
   else if(const auto* texts=std::get_if<std::vector<std::string>>(&value))
-    for(const auto& text:*texts){exportCharge(used,1,512,cap);exportCharge(used,text.size(),4,cap);}
+    for(const auto& text:*texts){exportCharge(used,1,512,cap,admit);exportCharge(used,text.size(),4,cap,admit);}
   else if(const auto* tree=std::get_if<std::shared_ptr<const MetadataTree>>(&value)) {
     if(!*tree)throw std::invalid_argument("Invalid display export metadata");
     if(const auto* array=std::get_if<MetadataArray>(&(*tree)->value))
-      for(const auto& child:*array)exportMetadataCharge(child,used,cap,work);
+      for(const auto& child:*array)exportMetadataCharge(child,used,cap,work,admit);
     else for(const auto& child:std::get<MetadataObject>((*tree)->value)) {
-      exportCharge(used,child.first.size(),4,cap);exportMetadataCharge(child.second,used,cap,work);
+      exportCharge(used,child.first.size(),4,cap,admit);exportMetadataCharge(child.second,used,cap,work,admit);
     }
   }
 }
@@ -1026,6 +1029,7 @@ struct PreparedExportImage::State {
     double font_size=0;
     bool skip=false;
   };
+  ExportAdmission admit;
   DocumentSnapshot source;
   PlanePosition position;
   bool show_all;
@@ -1034,25 +1038,26 @@ struct PreparedExportImage::State {
   std::size_t limit,used=0,peak=0,work=0;
   Json metadata=Json::object();
   std::vector<Row> rows;
-  State(const DocumentSnapshot& snapshot,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output)
-      :source(snapshot),position{snapshot.display().t,snapshot.display().c,snapshot.display().crosshair[2]},show_all(all),limit(cap) {
+  State(DocumentSnapshot snapshot,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output,ExportAdmission admission)
+      :admit(std::move(admission)),source(std::move(snapshot)),
+       position{source.display().t,source.display().c,source.display().crosshair[2]},show_all(all),limit(cap) {
     kernel_checkpoint();const auto shape=source.data().dataset.shape();
     if((shape.s!=1 && shape.s!=3 && shape.s!=4) || shape.t!=1 || shape.c!=1)throw std::invalid_argument("Legacy display export requires one T/C source");
     const auto pixels=RenderMemory::mul(std::size_t(shape.x),std::size_t(shape.y));
     // Source-plane lease, display conversion/IEEE projection, RGB result,
     // sequential legacy masks, publication and codec/packing copies. Existing
     // document/history and arbitrary reader caches remain outside this budget.
-    exportCharge(used,1,131072,limit);
-    exportCharge(used,pixels,RenderMemory::add(64*std::size_t(shape.s),272),limit);
+    exportCharge(used,1,131072,limit,admit);
+    exportCharge(used,pixels,RenderMemory::add(64*std::size_t(shape.s),272),limit,admit);
     constexpr auto work_limit=export_work_limit;
     exportWork(work,pixels,8*std::size_t(shape.s)+3);
     const auto labels=source.data().metadata.extensions.find("labels");
     if(labels!=source.data().metadata.extensions.end()) {
-      exportMetadataCharge(labels->second,used,limit,work);metadata["labels"]=metadataJson(labels->second);
+      exportMetadataCharge(labels->second,used,limit,work,admit);metadata["labels"]=metadataJson(labels->second);
     }
     for(const auto* key:{"display_range","lut","custom_lut"}) {
       const auto found=source.display().properties.find(key);if(found==source.display().properties.end())continue;
-      exportMetadataCharge(found->second,used,limit,work);metadata[key]=metadataJson(found->second);
+      exportMetadataCharge(found->second,used,limit,work,admit);metadata[key]=metadataJson(found->second);
     }
     metadata["slice_index"]=position.z;
     // Validate mapping metadata with a bounded carrier before any source reads.
@@ -1063,9 +1068,9 @@ struct PreparedExportImage::State {
       output_metadata.emplace();
       // Admit source properties before copying any owned strings. Structural
       // extensions/codec layouts describe the source, not the detached RGB result.
-      exportCharge(used,source.data().metadata.title.size(),4,limit);
+      exportCharge(used,source.data().metadata.title.size(),4,limit,admit);
       for(const auto& field:source.data().metadata.properties) {
-        exportCharge(used,field.first.size(),4,limit);exportMetadataCharge(field.second,used,limit,work);
+        exportCharge(used,field.first.size(),4,limit,admit);exportMetadataCharge(field.second,used,limit,work,admit);
       }
       provenance={{"version",std::int64_t(1)},
           {"source_document_id",source.id()}, {"source_title",source.data().metadata.title},
@@ -1082,8 +1087,8 @@ struct PreparedExportImage::State {
         output_metadata->properties.erase(intensity);
       }
       const auto& source_calibration=source.data().dataset.calibration();
-      exportCharge(used,source_calibration.unit.size(),4,limit);
-      exportCharge(used,source_calibration.time_unit.size(),4,limit);
+      exportCharge(used,source_calibration.unit.size(),4,limit,admit);
+      exportCharge(used,source_calibration.time_unit.size(),4,limit,admit);
       output_calibration=source_calibration;
       // Output z=0 denotes the rendered source plane in the native affine model.
       output_calibration.origin=output_calibration.voxel_to_world({0,0,double(position.z)});
@@ -1092,19 +1097,19 @@ struct PreparedExportImage::State {
     struct Input {const MetadataObject* overlay;const Selection* selection;const char* color;};
     std::vector<Input> inputs;
     auto admitSelection=[&](const Selection& selection,const char* color) {
-      exportCharge(used,1,sizeof(Input)+sizeof(Row)+1024,limit);
-      exportCharge(used,selection.points.size(),256,limit);exportWork(work,selection.points.size());
-      if(selection.is_path()){exportCharge(used,selection.path_commands().size(),64,limit);exportWork(work,selection.path_commands().size());}
-      if(selection.is_mask())exportCharge(used,selection.packed_mask().size(),16,limit);
-      for(const auto& field:selection.attributes){exportCharge(used,field.first.size(),4,limit);exportMetadataCharge(field.second,used,limit,work);}
+      exportCharge(used,1,sizeof(Input)+sizeof(Row)+1024,limit,admit);
+      exportCharge(used,selection.points.size(),256,limit,admit);exportWork(work,selection.points.size());
+      if(selection.is_path()){exportCharge(used,selection.path_commands().size(),64,limit,admit);exportWork(work,selection.path_commands().size());}
+      if(selection.is_mask())exportCharge(used,selection.packed_mask().size(),16,limit,admit);
+      for(const auto& field:selection.attributes){exportCharge(used,field.first.size(),4,limit,admit);exportMetadataCharge(field.second,used,limit,work,admit);}
       inputs.push_back({nullptr,&selection,color});
     };
     // ImageCanvas paints overlays, the visible manager list, then the active ROI.
     for(const auto& row:source.data().overlays) {
       kernel_checkpoint_periodic();exportWork(work,1);
       if(!exportVisible(row,position))continue;
-      exportCharge(used,1,sizeof(Input)+sizeof(Row)+256,limit);
-      for(const auto& field:row){exportCharge(used,field.first.size(),4,limit);exportMetadataCharge(field.second,used,limit,work);}
+      exportCharge(used,1,sizeof(Input)+sizeof(Row)+256,limit,admit);
+      for(const auto& field:row){exportCharge(used,field.first.size(),4,limit,admit);exportMetadataCharge(field.second,used,limit,work,admit);}
       inputs.push_back({&row,nullptr,nullptr});
     }
     const auto overlay_count=inputs.size();
@@ -1151,8 +1156,8 @@ struct PreparedExportImage::State {
           const auto configured=string(get(row.wire,"font_path"));
           if(configured.empty()){if(!default_font)default_font=annotationFontPath();row.font_path=*default_font;}
           else row.font_path=annotationFontPath(configured);
-          exportCharge(used,row.font_path.size(),3,limit);
-          exportCharge(used,content.size(),sizeof(TextGlyph)+8,limit);
+          exportCharge(used,row.font_path.size(),3,limit,admit);
+          exportCharge(used,content.size(),sizeof(TextGlyph)+8,limit,admit);
           exportWork(work,content.size(),8);
           row.text.reserve(content.size());
           fonts[row.font_path].text_rows.push_back(rows.size());
@@ -1165,14 +1170,15 @@ struct PreparedExportImage::State {
           PointPresentationOptions options;options.position=position;options.show_all=show_all;
           options.color=style.stroke_color.value_or(RoiColor{0,0,0,0});
           PointPresentationLimits bounds;bounds.max_working_bytes=std::min(bounds.max_working_bytes,limit-used);
-          row.layout=point_presentation(*row.selection,options,bounds);
-          exportCharge(used,row.layout.working_bytes,1,limit);
+          row.layout=imagejxx::detail::point_presentation_admitted(*row.selection,options,bounds,
+              [&](std::size_t bytes){if(admit)admit(RenderMemory::add(used,bytes));});
+          exportCharge(used,row.layout.working_bytes,1,limit,admit);
           for(const auto& primitive:row.layout.primitives)if(primitive.kind==PointPrimitiveKind::Text) {
             const auto configured=string(get(row.wire,"font_path"));
             if(configured.empty()){if(!default_font)default_font=annotationFontPath();row.font_path=*default_font;}
             else row.font_path=annotationFontPath(configured);
             row.font_size=primitive.font_size;
-            exportCharge(used,row.font_path.size(),3,limit);
+            exportCharge(used,row.font_path.size(),3,limit,admit);
             fonts[row.font_path].points.emplace(row.font_size,nullptr);break;
           }
         }
@@ -1184,10 +1190,12 @@ struct PreparedExportImage::State {
       const auto base=used;
       const auto allowance=std::min<std::size_t>((file.second.text_rows.empty()?8:64)*1048576,limit-used);
       if(allowance<65536)throw std::length_error("Annotation font exceeds configured processing memory budget");
-      PointRasterFontCache owner(allowance,work_limit-work);owner.open(file.first);
+      PointRasterFontCache owner(allowance,work_limit-work,[&](std::size_t bytes) {
+        const auto total=RenderMemory::add(base,bytes);if(admit)admit(total);peak=std::max(peak,total);
+      });owner.open(file.first);
       for(auto& entry:file.second.points) {
         auto font=owner.take(file.first,entry.first);
-        exportCharge(used,exportFontBytes(font),1,limit);
+        exportCharge(used,exportFontBytes(font),1,limit,admit);
         entry.second=std::make_shared<const PointRasterFont>(std::move(font));
       }
       for(auto index:file.second.text_rows) {
@@ -1218,7 +1226,7 @@ struct PreparedExportImage::State {
         }
         row.wire=Json();
       }
-      exportCharge(used,owner.text_bytes(),1,limit);
+      exportCharge(used,owner.text_bytes(),1,limit,admit);
       exportWork(work,owner.working_work());
       peak=std::max({peak,used,RenderMemory::add(base,owner.working_bytes())});
     }
@@ -1233,13 +1241,19 @@ struct PreparedExportImage::State {
       row.raster=imagejxx::detail::prepare_point_raster(shape.x,shape.y,*row.selection,options,row.font.get(),bounds,&row.layout,true);
       exportWork(work,row.raster->pixel_samples);
       peak=std::max(peak,RenderMemory::add(used-row.raster->layout.working_bytes,row.raster->working_bytes));
+      if(admit)admit(peak);
       row.selection.reset();
     }
     kernel_checkpoint();
+    admit={}; // Do not retain the worker admission callback in a detached result.
   }
 };
-PreparedExportImage::PreparedExportImage(const DocumentSnapshot& source,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output)
-    :state_(std::make_unique<State>(source,all,cap,show_rois,output)){}
+PreparedExportImage::PreparedExportImage(DocumentSnapshot source,bool all,std::size_t cap,bool show_rois,DisplayExportOutput output,ExportAdmission admit) {
+  // Admit the fixed owner/control allowance before constructing State. The
+  // accepted snapshot is moved into it, never cloned by this preparation path.
+  std::size_t initial=0;exportCharge(initial,1,131072,cap,admit);
+  state_=std::make_unique<State>(std::move(source),all,cap,show_rois,output,std::move(admit));
+}
 PreparedExportImage::~PreparedExportImage()=default;
 std::size_t PreparedExportImage::working_bytes() const{return state_->peak;}
 void PreparedExportImage::validate(const DocumentSnapshot& now,bool all,std::size_t cap) const {

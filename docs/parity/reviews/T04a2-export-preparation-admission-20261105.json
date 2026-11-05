@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 P2c.2 B2a export preparation consumes incremental admission",
+  "date": "2026-11-05",
+  "base_commit": "996b04e",
+  "state": {
+    "implemented": "Private admitted export/layout/file/font ingress requests JobContext workspace before allocations, with moved snapshot ownership and one preparation pass.",
+    "verified": "643 focused Windows Python cases,388-check Windows native control and Windows/Linux native point presentation pass.",
+    "integrated": "Real native JobContext worker controls prove pre-read scheduler refusal, one-read rendering, retained release and cleared callback capture. Existing synchronous Window still uses the default compatibility path.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#admitted-export-preparation-p2c2-b2a",
+  "behavior": [
+    "Admit fixed owner/control allowance before constructing export state, consumed metadata before conversion, native annotation/layout storage before allocation.",
+    "One shared native layout implementation; public API passes empty admission.",
+    "Font size is determined from opened stream and admitted before file vector allocation. Ordinary readBytes remains a wrapper with empty admission.",
+    "Glyph retained coverage and actual stb temporary allocation use the existing local budget and scheduler admission.",
+    "Allocator callback returns null on admission refusal, stores the first C++ exception, refuses further allocations and rethrows after stb unwinds.",
+    "No duplicate font capture/layout pass, whole-cap reservation or source pre-read.",
+    "Move accepted snapshot into state, clear admission callback at preparation completion, retain immutable resources for rendering.",
+    "Existing JobContext guard retains successful declared peak until result retirement; initial request snapshot acquisition remains caller-owned."
+  ],
+  "results": {
+    "focused_python_cases": 643,
+    "python_failures": 0,
+    "python_skips": 0,
+    "native_path_visual_checks": 388,
+    "native_staged_format_controls": 12,
+    "native_point_presentation_platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "native_font_admission_platforms": [
+      "Windows"
+    ],
+    "actual_ui_campaign_repeated": false,
+    "installed_clients_repeated": false,
+    "sdk_libraries_refreshed": [
+      "Windows",
+      "Linux"
+    ],
+    "processes": [
+      {
+        "run": "api001-pack",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.4059999999590218,
+        "cleanup_complete": true
+      },
+      {
+        "run": "api001-verify",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2190000000409782,
+        "cleanup_complete": true
+      },
+      {
+        "run": "api001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 4.687999999849126,
+        "cleanup_complete": true
+      },
+      {
+        "run": "install-app001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1869999999180436,
+        "cleanup_complete": true
+      },
+      {
+        "run": "install-native001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2029999999795109,
+        "cleanup_complete": true
+      },
+      {
+        "run": "install-python001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1559999999590218,
+        "cleanup_complete": true
+      },
+      {
+        "run": "install-sdk001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1880000000819564,
+        "cleanup_complete": true
+      },
+      {
+        "run": "linux-build001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 5.116506220000019,
+        "cleanup_complete": true
+      },
+      {
+        "run": "linux-identities001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 3.828999999910593,
+        "cleanup_complete": true
+      },
+      {
+        "run": "linux-install-sdk001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.8781308149999916,
+        "cleanup_complete": true
+      },
+      {
+        "run": "linux-outer001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 6.875,
+        "cleanup_complete": true
+      },
+      {
+        "run": "linux-points001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.06065548800000897,
+        "cleanup_complete": true
+      },
+      {
+        "run": "native-path001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.5,
+        "cleanup_complete": true
+      },
+      {
+        "run": "native-points001",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 0.09399999980814755,
+        "cleanup_complete": true
+      },
+      {
+        "run": "windows-build001",
+        "state": "timed_out",
+        "exit_code": 1,
+        "elapsed_seconds": 600.0460000000894,
+        "cleanup_complete": true
+      },
+      {
+        "run": "windows-build002",
+        "state": "exited",
+        "exit_code": 1,
+        "elapsed_seconds": 135.09400000004098,
+        "cleanup_complete": true
+      },
+      {
+        "run": "windows-native-build003",
+        "state": "exited",
+        "exit_code": 0,
+        "elapsed_seconds": 7.094000000040978,
+        "cleanup_complete": true
+      }
+    ]
+  },
+  "waste_review": [
+    {
+      "finding": "Checks followed point-layout/font allocations.",
+      "disposition": "Shared private admission overloads, opened-stream size admission and existing budget callbacks move admission before work; no second implementation."
+    },
+    {
+      "finding": "Retained callback could retain/reference completed worker context.",
+      "disposition": "Clear callback; retained-owner test proves captured marker expires while owner survives."
+    },
+    {
+      "finding": "Inherited shared JobContext header fanout exceeded600s deadline.",
+      "disposition": "Retain timeout with verified empty process group; resume same cache135.094s. Next full shared-header consumer build uses prior duration/fanout and1200s deadline, not short focused-test defaults."
+    },
+    {
+      "finding": "New native test assumed Document.id() and default Image constructor.",
+      "disposition": "Read declarations, use id field and optional<Image>; only affected native targets rebuilt7.094s. Product and Linux results reused."
+    },
+    {
+      "finding": "Mixed EOLs inflated source diff.",
+      "disposition": "Restore baseline bytes with recorded normalized compiler-input equality; no behavior rebuild for EOL-only corrections."
+    },
+    {
+      "finding": "Initial snapshot copy, font-policy/path freezing and queued/source-close lifecycle remain outside adapter.",
+      "disposition": "B2a/T11 owns touched request capture; next actual Window job integration must adopt admitted preparation and prove canceled staged-result retirement before lease release."
+    }
+  ],
+  "storage": {
+    "entry": {
+      "path": ".tmp/manual-workflow-verification/export-preparation-admission-entry001.json",
+      "bytes": 66572,
+      "sha256": "28d157032dea0c21ca44ef2f8034441e9f7b892d6511df691b6c94b5b57b304a"
+    },
+    "final": {
+      "path": ".tmp/manual-workflow-verification/export-preparation-admission-final001.json",
+      "bytes": 66572,
+      "sha256": "1091c1d29aa293adbcb306b715e645d48b0eb546578e160c7a8fad3797dd9da5"
+    },
+    "entry_known_bytes": 8524699809,
+    "final_known_bytes": 8525595004,
+    "unknown_subtrees": 214,
+    "whole_budget_verified": false,
+    "limitation": "Complete normalized inventory observations precede final receipt/doc deltas; not peak/RSS."
+  },
+  "retention": {
+    "groups": 15,
+    "empty_groups": 14,
+    "raw_payload_bytes": 174634,
+    "verified_archive_bytes": 68129,
+    "archives_members_reverified": true,
+    "scratch_absent": true,
+    "compiler_sdk_runtime_tree_archived": false
+  },
+  "remaining": [
+    "B2a actual Window accepted-request/job/result/creator integration, progress/cancel/close and Python synchronous error propagation.",
+    "B2a/T11 initial snapshot/display-property capture costs and consumed font/path policy freezing.",
+    "Format-specific dimension/option preflight, B2b state/replay/printing/metadata/platform qualification.",
+    "Full commercially eligible ImageJ/Fiji T00-T15 scope."
+  ],
+  "source_pins": [
+    {
+      "path": "src/desktop/admitted_file_io.hpp",
+      "bytes": 334,
+      "sha256": "08db167b5ae981c28603db076cabf72baaf85de24b40729a88465068f827d4aa"
+    },
+    {
+      "path": "src/desktop/point_raster_export.hpp",
+      "bytes": 1092,
+      "sha256": "bbec3f7f347aa1bd46151630eaa478164270f51a711587f2eeff65afbe6f9348"
+    },
+    {
+      "path": "src/desktop/point_raster_font.hpp",
+      "bytes": 1869,
+      "sha256": "30118b61662dba90966bcbb5fe77d6177378f8a97dac470e428478500ed2d0f1"
+    },
+    {
+      "path": "src/desktop/point_raster_font.cpp",
+      "bytes": 11146,
+      "sha256": "c6e1f3c4103d1d027e34fb9259be7227539d4cd8b354ed8a4f24456650932f91"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "bytes": 63975,
+      "sha256": "d1424c91f661acd437174d373268e585cc6e939609c01bf2fb2b98984fab310d"
+    },
+    {
+      "path": "src/desktop/util.cpp",
+      "bytes": 3663,
+      "sha256": "58dcf2f39bce138e88734c9566e99e34bb29ca0bf57dad40de2c16bc590f15da"
+    },
+    {
+      "path": "src/native/point_presentation.cpp",
+      "bytes": 14533,
+      "sha256": "a6f9537a737239fd003a09b20841f97016858655c0604f86972c97f7c3c1aee0"
+    },
+    {
+      "path": "src/native/point_presentation_internal.hpp",
+      "bytes": 455,
+      "sha256": "254746760fa0954037c7d9f4bba161a87ff40a032482a0a968ff1b26da184a7a"
+    },
+    {
+      "path": "tests/native/test_path_visual.cpp",
+      "bytes": 23111,
+      "sha256": "de0d687a4c388492722e3dc4098656f2d37c3f6ec292fa2eee65ac19d447901e"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 35954,
+      "sha256": "39823c832837fef30655ca9ade50a0f9b7ba2c6f40827d4153375959391b5c6c"
+    },
+    {
+      "path": "include/imagejxx/jobs.hpp",
+      "bytes": 6335,
+      "sha256": "2dc0e3bac0c3d44711e6fcbba2156707d77a4804e0bc684da653557b08c549a4"
+    },
+    {
+      "path": "src/native/jobs.cpp",
+      "bytes": 22598,
+      "sha256": "d195e95ab0cf9f457effdcc0793a28778182a1c0f9ce95ed97cb582530380549"
+    },
+    {
+      "path": "tests/python/test_staged_display_export.py",
+      "bytes": 4012,
+      "sha256": "9edc73752926a1ab60a1d35cf1d74b1b090ec540d7a859b97214724721360638"
+    },
+    {
+      "path": "tests/python/test_point_export_admission.py",
+      "bytes": 6928,
+      "sha256": "4f60a71dc404cabc63e4990b6341923de9878daf4e69e0a74cc33b7d128736e5"
+    },
+    {
+      "path": "tests/python/test_point_flatten.py",
+      "bytes": 10852,
+      "sha256": "1cbc1545b7efa66107ce2e32b6de2b4641ef7b92889123d553f2e5316a0bab45"
+    },
+    {
+      "path": "tests/python/test_point_flatten_roles.py",
+      "bytes": 6397,
+      "sha256": "585e66244463987ba589898fcd5599739665fecd4287a2d09f2dc0224a07d72a"
+    },
+    {
+      "path": "tests/python/test_text_flatten.py",
+      "bytes": 6247,
+      "sha256": "ccee67abc40b804e5d688e10b11462eeb5a5a2e91d4c8ed8a27dc0a11f253dcd"
+    },
+    {
+      "path": "tests/python/test_point_presentation.py",
+      "bytes": 13401,
+      "sha256": "16c7c543589b7b8a22646e262f58ca6a402343f1334062cfb723639a55739722"
+    },
+    {
+      "path": "tests/python/test_point_raster.py",
+      "bytes": 11967,
+      "sha256": "c13dae68e801e7abd6a489e1e1cf42f015c83d94923f189f7e28b7328720d51e"
+    },
+    {
+      "path": "tests/python/test_roi_point_context.py",
+      "bytes": 4618,
+      "sha256": "a9d6a86a999d6d67f26eac9d03e5799c6b3ce9d383811f46f104d325360097c6"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8284672,
+      "sha256": "3dcd869005095a6517e27bac6cf4f30cbff3fac9211adc579a92e7e28f6307fe"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20184576,
+      "sha256": "f9c450bfc527eca160185f7bb35bdd5202aa95354febd9222db8c5813f14df79"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20269056,
+      "sha256": "28800ad6e89696e7ee251277a9764951b67e3517aede1cb92b7d4a683314803b"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_path_visual_tests.exe",
+      "bytes": 1242112,
+      "sha256": "3db7024916e88a6e5a21e4f6393fe804dc728a5a2f408445562f54f9fcb09129"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_point_presentation_tests.exe",
+      "bytes": 254976,
+      "sha256": "1688b42900535b518d067a1c7e593e7ee192c92a178b52b67dd02a046af0251a"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/sdk-installed/lib/imagejxx_core.lib",
+      "bytes": 59537444,
+      "sha256": "d3ee860cf80ae86bf3c4f00c0cb6d716dd1a65b918969feadea321eae20a4859"
+    }
+  ],
+  "linux_product_identities": [
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+      "bytes": 20627304,
+      "sha256": "a4971617c8416e5d0e95b91fa42f2edc7803910a8f7316a8c1d64552d590e12b"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/imagejxx_point_presentation_tests",
+      "bytes": 3051976,
+      "sha256": "f0af2c9e9d920fe2b0ca39658c36eacf5dddb08cc1da34ac8db86de1b0b477aa"
+    }
+  ],
+  "font_resource_identity": {
+    "path": "C:/WINDOWS/Fonts/segoeui.ttf",
+    "bytes": 960076,
+    "sha256": "704eada12961a27fd271f7d3b09e2066520e758390c1776744eff430fee30f6e",
+    "scope": "Existing system/configured font identity; not retained or redistributed."
+  },
+  "local_evidence_manifest": {
+    "path": ".tmp/manual-workflow-verification/t04a2-export-preparation-admission-20261105/closeout-manifest.json",
+    "bytes": 14193,
+    "sha256": "7a0c806ce31998f34c5d9d8ddd8dffe93ab3564c629ac927855ecddb89a50518"
+  },
+  "closeout_verification": {
+    "pins": "Source/product/local evidence and font hashes pass.",
+    "traceability": "All99 capability IDs,3 unchanged history hashes and68 local plan links/anchors pass.",
+    "scratch": "All15 owned groups absent; archives/members reverified.",
+    "whitespace": "Project and compilexx note diffs pass.",
+    "scope": "No full B2a/editor/release completion claim."
+  }
+}

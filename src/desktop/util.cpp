@@ -1,6 +1,7 @@
 #include "../native/atomic_file.hpp"
 #include "../native/session_metadata.hpp"
 #include "desktop.hpp"
+#include "admitted_file_io.hpp"
 #include <algorithm>
 #include <atomic>
 #include <chrono>
@@ -54,7 +55,8 @@ bool boolean(const Json &v, bool d) {
 std::array<unsigned char, 4> color(const std::string &name) {
   return parse_color(name);
 }
-std::vector<unsigned char> readBytes(const std::string &path, size_t limit) {
+std::vector<unsigned char> readBytes(const std::string &path, size_t limit,
+    const std::function<void(std::size_t)>& admit) {
   std::ifstream in(std::filesystem::u8path(path),
                    std::ios::binary | std::ios::ate);
   if (!in)
@@ -62,6 +64,7 @@ std::vector<unsigned char> readBytes(const std::string &path, size_t limit) {
   auto length = in.tellg();
   if (length < 0 || static_cast<uint64_t>(length) > limit)
     throw std::invalid_argument("File exceeds size limit");
+  if(admit)admit(static_cast<size_t>(length));
   std::vector<unsigned char> data(static_cast<size_t>(length));
   in.seekg(0);
   if (!data.empty() &&
@@ -69,6 +72,7 @@ std::vector<unsigned char> readBytes(const std::string &path, size_t limit) {
     throw std::runtime_error("File read failed");
   return data;
 }
+std::vector<unsigned char> readBytes(const std::string& path,size_t limit) {return readBytes(path,limit,{});}
 void writeBytes(const std::string &path,
                 const std::vector<unsigned char> &data) {
   imagejxx::detail::atomic_replace_file(std::filesystem::u8path(path),

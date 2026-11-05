@@ -1,5 +1,6 @@
 #include "point_raster_font.hpp"
 #include "desktop.hpp"
+#include "admitted_file_io.hpp"
 #include <stb_truetype.h>
 #include <algorithm>
 #include <cmath>
@@ -15,6 +16,7 @@ struct alignas(std::max_align_t) Allocation {std::size_t bytes;};
 void Budget::retain(std::size_t bytes) {
   if(allocated>limit || held>limit-allocated || bytes>limit-allocated-held)
     throw std::length_error("Point font resource limit");
+  if(admit)admit(held+allocated+bytes);
   held+=bytes;peak=std::max(peak,held+allocated);
 }
 void* allocate(std::size_t bytes,void* user) {
@@ -25,7 +27,12 @@ void* allocate(std::size_t bytes,void* user) {
       bytes>budget.limit-budget.allocated-budget.held-sizeof(Allocation)) {
     budget.denied=true;return nullptr;
   }
+  if(budget.admission_failure)return nullptr;
   const auto amount=bytes+sizeof(Allocation);
+  // stb callbacks cannot propagate C++ exceptions through its C-style allocator.
+  // Refuse allocation and restore the original admission exception after unwind.
+  if(budget.admit)try{budget.admit(budget.held+budget.allocated+amount);}
+  catch(...){budget.admission_failure=std::current_exception();budget.denied=true;return nullptr;}
   auto* block=static_cast<Allocation*>(std::malloc(amount));
   if(!block){budget.denied=true;return nullptr;}
   block->bytes=amount;budget.allocated+=amount;budget.peak=std::max(budget.peak,budget.held+budget.allocated);return block+1;
@@ -62,7 +69,9 @@ struct PointRasterFontCache::State {
   std::map<double,PointRasterFont> fonts;
   std::map<std::pair<int,unsigned>,std::shared_ptr<const PointRasterGlyph>> text_glyphs;
   std::size_t text_bytes=0,work=0,work_limit;
-  explicit State(std::size_t limit,std::size_t max_work=512*1048576):budget{limit},work_limit(max_work) {
+  explicit State(std::size_t limit,std::size_t max_work=512*1048576,
+      std::function<void(std::size_t)> admit={}):budget{limit},work_limit(max_work) {
+    budget.admit=std::move(admit);
     if(limit<65536 || limit>64*1048576)throw std::invalid_argument("Point font budget must be64 KiB..64 MiB");
     budget.retain(65536); // Fixed owner, metrics and map/control allowance.
   }
@@ -72,13 +81,14 @@ struct PointRasterFontCache::State {
     work+=count*width;
   }
   void open(const std::string& name) {
-    text_glyphs.clear();text_bytes=0;fonts.clear();std::vector<unsigned char>().swap(data);path.clear();budget.held=65536;budget.denied=false;
+    text_glyphs.clear();text_bytes=0;fonts.clear();std::vector<unsigned char>().swap(data);path.clear();budget.held=65536;budget.denied=false;budget.admission_failure={};
     // Charge bounded path/control copies alongside file, coverage and stb work.
     budget.retain(name.size()*3);
     kernel_checkpoint();
     // File bytes plus a logical parse allowance are admitted before file IO.
-    data=readBytes(name,std::min(budget.limit-budget.held,(work_limit-work)/2));
-    chargeWork(data.size(),2);budget.retain(data.size());
+    data=readBytes(name,std::min(budget.limit-budget.held,(work_limit-work)/2),
+        [&](std::size_t bytes){budget.retain(bytes);});
+    chargeWork(data.size(),2);
     // stb's parser assumes a complete trusted font resource. Reject obviously
     // short files before its header accesses; configured fonts remain resources,
     // not a general untrusted-font upload/validation interface.
@@ -111,15 +121,17 @@ struct PointRasterFontCache::State {
       const auto bytes=std::size_t(width)*std::size_t(height);chargeWork(bytes,16);budget.retain(bytes);
       glyph.coverage.resize(bytes);
       if(bytes)stbtt_MakeCodepointBitmap(&face,glyph.coverage.data(),glyph.width,glyph.height,glyph.width,scale,scale,int('0'+d));
+      if(budget.admission_failure)std::rethrow_exception(budget.admission_failure);
       if(budget.denied || budget.allocated)throw std::length_error("Point font raster staging limit");
     }
     kernel_checkpoint();return result;
   }
 };
-PointRasterFontCache::PointRasterFontCache(std::size_t bytes,std::size_t work):max_bytes_(bytes),max_work_(work){}
+PointRasterFontCache::PointRasterFontCache(std::size_t bytes,std::size_t work,
+    std::function<void(std::size_t)> admit):max_bytes_(bytes),max_work_(work),admit_(std::move(admit)){}
 PointRasterFontCache::~PointRasterFontCache()=default;
 void PointRasterFontCache::open(const std::string& configured) {
-  if(!state_)state_=std::make_unique<State>(max_bytes_,max_work_);
+  if(!state_)state_=std::make_unique<State>(max_bytes_,max_work_,admit_);
   const auto path=annotationFontPath(configured);
   if(state_->path!=path)state_->open(path);
 }
@@ -158,6 +170,7 @@ std::shared_ptr<const PointRasterGlyph> PointRasterFontCache::textGlyph(int size
   glyph->width=int(width);glyph->height=int(height);glyph->offset_x=left;glyph->offset_y=top;glyph->advance=step;
   glyph->coverage.resize(bytes);
   if(bytes)stbtt_MakeCodepointBitmap(&state_->face,glyph->coverage.data(),glyph->width,glyph->height,glyph->width,scale,scale,int(cp));
+  if(state_->budget.admission_failure)std::rethrow_exception(state_->budget.admission_failure);
   if(state_->budget.denied || state_->budget.allocated)throw std::length_error("Text font raster staging limit");
   state_->text_glyphs.emplace(key,glyph);return glyph;
 }

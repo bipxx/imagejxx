@@ -2,7 +2,8 @@
 
 Updated 2026-11-05: remaining-work and per-task waste-management review.
 Next: whole-export scheduling/reservations and creator publication, followed by
-state/replay and output qualification. Staged-encoder foundation is scoped delivered. Appearance interchange, typed draft preview and the full T00-T15
+state/replay and output qualification. Staged encoding, reservation growth and
+preparation admission are scoped delivered; async Window integration remains open. Appearance interchange, typed draft preview and the full T00-T15
 delivery horizon remain required. Every task includes waste review, verified
 cleanup and a queue update before its successor starts.
 This is the
@@ -70,8 +71,9 @@ preservation and stale-result/resource guarantees stay strict where applicable.
 | T04a.2 P2c.2 B1 captured legacy text | Text glyphs/metrics now join immutable point coverage before source access; shared path/size/codepoint and digit aliases replace fixed64MiB reservation with charged actual font staging. 418 focused Windows product cases pass (21 new), including both actual mixed text/point Flatten hosts; native100-check control passes. | B2a scheduling/source guards/file promotion, then B2b state/replay/PDF/print/format qualification. No full scheduler/RSS, Java font/AA or Linux/macOS UI claim. [Evidence](parity/reviews/T04a2-text-export-capture-20261105.json). |
 | T04a.2 P2c.2 B2a staged-file foundation | Existing shared encoders emit once into an owned StagedAtomicStream; final validation/cancellation precedes one replacement.161 distinct focused Windows Python cases pass (19 new), Windows native213-check control and Windows/Linux PNM controls pass. | Next async scheduling/resource reservation/source-close integration, then B2b state/replay/format/print/platform qualification. Current Python action is synchronous; no whole-job, actual-menu, SDK campaign or speed claim. [Evidence](parity/reviews/T04a2-staged-display-export-20261105.json). |
 | T04a.2 B2a job reservation prerequisite | Existing JobContext supports monotonic nonblocking workspace admission; native jobs/retained suites and one installed public-only client pass per Windows/Linux platform. | Next adopt before font/export allocations and carry staged results through existing jobs/creator publication. No async UI or full-resource claim. [Evidence](parity/reviews/T04a2-job-reservation-growth-20261105.json). |
+| T04a.2 B2a preparation admission | Private admitted export/layout/file/font paths request JobContext bytes before allocations; moved snapshots and released callback ownership avoid another preparation copy or retained worker reference.643 focused Windows Python cases and388-check Windows native control pass; public point layout passes Windows/Linux. | Next actual Window async capture/worker/creator lifecycle and synchronous Python errors. Initial snapshot capture, format preflight and whole-job/UI qualification remain open. [Evidence](parity/reviews/T04a2-export-preparation-admission-20261105.json). |
 | Recorded regression checkpoint | 2026-10-29: 2,335 passed, two optional skips; installed SDKs 5/5 each. Added Windows CI consumer is verified separately; full remote matrix remains pending. | Reuse matching evidence; test the changed CI path, not another unchanged core rebuild. |
-| Storage | Latest post-retirement inventory: 8,524,605,649 known bytes before final reservation receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
+| Storage | Latest post-retirement inventory: 8,525,595,004 known bytes before final preparation receipt/doc changes; 214 inaccessible subtrees leave the full budget unverified. | Apply AGENTS.md storage rules to each substantial verification. |
 | Remaining product scope | Partial implementations and open variants across the inventory. | Follow the full roadmap below; no family-wide completion inferred. |
 
 ## Active work and immediate sequence
@@ -375,6 +377,19 @@ public-only installed client pass on Windows/Linux. [Receipt](parity/reviews/T04
 not deliver async exports; the immediately following increment must use it in
 the preparation/worker/creator path below. Reuse active caches; no captures.
 
+**Preparation admission scoped delivered:** consume the delivered growth
+API in the existing PreparedExportImage path. Private admitted overloads share
+native point layout and file reads; font retained bytes and stb staging request
+absolute admission before allocation, preserving the original exception after
+C allocator refusal. Move the accepted snapshot into preparation, release its
+admission callback before retaining a result, and test with real JobContext
+reservations, zero-read font refusal, one-read rendering and retained release.
+643 focused Windows Python cases and the388-check Windows native control pass;
+public point-layout controls pass on Windows/Linux. Existing synchronous Window
+remains on the default compatibility path. [Receipt](parity/reviews/T04a2-export-preparation-admission-20261105.json). Next wire this admitted worker into the existing Window JobResult/publication lane;
+no additional scheduler or font-preparation pass. Initial request-snapshot capture
+is still caller-owned; broader snapshot/property-copy admission remains B2a/T11.
+
 **Owned seam:** `src/desktop/window.cpp`, `src/desktop/python.cpp`, the private
 `display_export_io.hpp` and their affected tests; change shared jobs/native
 contracts only if the existing reservation API demonstrably cannot express the
@@ -395,6 +410,23 @@ scoped core/API/UI evidence, no stale or partial publication, terminal-resource
 release, and the closeout decision table below. Unknown process/RSS or storage
 costs remain explicit; no full resource-bound claim from a tiny raster test.
 B2b remains required after this usable scheduling increment.
+
+**Async consumer design to resolve at the next start:** use the existing
+Window action parameter object for an explicit asynchronous option. Native menu
+actions can default to queued work; the Python binding can default those exports
+to synchronous action execution. The action retains its real Job handle before
+waiting/polling and rethrows it after creator publication, preserving original
+exception types without adding a shared Window header method. Validate the
+actual binding and action schema before freezing this additive option.
+
+For running-result cancellation, inspect the existing task-capture retirement
+point: the worker closure is destroyed after the scheduler's final checkpoint
+and before its running reservation releases. A narrow result-retirement owner
+there can clear a canceled staged payload without another public scheduler API;
+creator cancellation/close must also clear READY results. Prove each race with
+controlled gates before relying on that path. If it cannot meet the invariant,
+use the existing native cleanup mechanism through the smallest justified API
+change, rather than a second scheduler. Batch any necessary shared change once.
 
 ### Next executable handoff: B2b state, replay and output qualification
 
@@ -851,36 +883,35 @@ hashes unchanged, and both document diffs pass whitespace checks.
 
 ## Latest accepted implementation closeout
 
-2026-11-05 B2a reservation prerequisite: existing JobContext now admits
-monotonic absolute workspace growth before allocation. Refusal for contention/
-overflow is immediate and leaves accounting unchanged; terminal/canceled jobs
-cannot reacquire bytes. The existing retained guard carries grown bytes through
-Ready/publication/disposal and wakes queued work on final release.
-[Receipt](parity/reviews/T04a2-job-reservation-growth-20261105.json).
+2026-11-05 B2a preparation admission: the private export owner now admits fixed
+owner/metadata, native point layout, file bytes, glyph coverage and stb staging
+before allocation. Existing layout and read implementations are shared; fonts
+prepare once. A moved accepted snapshot avoids another preparation copy, and
+completed preparation drops its worker callback before retention.
+[Receipt](parity/reviews/T04a2-export-preparation-admission-20261105.json).
 
-Windows/Linux native jobs and retained-job controls pass, plus one public-only
-installed SDK client per platform. The native extension is ready for its export
-consumer; async UI and font-preparation admission are not delivered by this
-prerequisite. Next B2a must adopt it before preparation allocations, carry one
-request/result through existing jobs and preserve synchronous Python errors.
+643 focused Windows Python cases pass with no skips; the388-check native control
+includes a real JobContext low-budget refusal before source reads, preserved
+allocator exception/recovery, one-read render, callback lifetime and retained
+release. Public point-layout controls pass on Windows/Linux; active SDKs refreshed
+without another installed-client campaign. Existing actual-host evidence is
+reused for unchanged synchronous UI behavior. No Linux/macOS font/UI, whole-job,
+RSS, replay, broad speed or full B2a completion claim.
 
 | Waste finding | Disposition and next-task prevention |
 | --- | --- |
-| Fixed JobOptions cannot admit incrementally discovered font staging without a whole-cap reservation or duplicate preparation. | Add one monotonic admission method to the existing ledger, with nonblocking refusal. Next wire actual pre-allocation charges; do not claim the consumer bound yet. |
-| SDK tests could duplicate a complete reference campaign. | Add one public-only client to the existing installed-core project. Reuse the current SDK roots and native controls; do not run unchanged calibration clients or regenerate SDK/environment generations. |
-| A CRLF edit anchor refused before writing; guessed source/glob paths also failed. | No product build ran on a failed edit. Check actual bytes and use rg file discovery and -g filters before reads; use UTF8 explicitly. Repeated path assumptions remain a T02 prevention issue. |
-| Reservation declaration is not observed allocation/RSS. | Keep scope explicit. B2a/T11 owns preparation/snapshot admission; actual allocations must request admission before work, with no second preparation pass. |
+| Local budget checks followed layout/font storage allocation. | Fixed using shared admitted ingress, opened-stream size admission and existing font budget callbacks. No second layout/reader/renderer or full-cap reservation. |
+| Retaining an admission callback could retain or reference a completed worker context. | Clear it after preparation; native test keeps the prepared owner alive while proving the callback capture expires. |
+| Earlier shared JobContext header changes required a coherent desktop rebuild;600s was too short. | Preserve600.046s timeout with verified empty process group; resume the same cache135.094s. Product targets pass, then new fixture compilation exposes two assumptions. Next broad shared-header consumer batch uses prior duration/fanout and1200s deadline; focused targets keep short deadlines. Do not restart a live handle or create another cache. |
+| New test assumed Document.id was callable and Image default-constructible. | Correct from actual declarations and extend existing fixture patterns. Only native test targets rebuilt7.094s; product binaries and prior successful Linux checks reused. Next async fixture begins with actual action/binding/owner schemas rather than another invented setup. |
+| Mixed original EOLs enlarged the diff. | Restore unchanged source bytes with normalized compiler-input equality recorded; no behavior rebuild for EOL-only changes. |
+| Initial snapshot copies, default font policy/path capture and queued lifecycle are outside this adapter. | Keep B2a/T11 ownership explicit. The next task must integrate accepted requests, reservations, cancellation/close and creator publication on existing Window jobs, preserving Python completion/errors; no further independent preparation framework. |
 
-All21 scratch groups retired:18 empty groups, two disposable SDK consumer trees
-(1,514,947 B) removed after live-hash verification, and one723,580 B carrier
-retained in98,102 verified archive B. No compiler/SDK/runtime tree archived.
-Known entry8,509,051,020 B; final8,524,605,649 B before final receipt/doc deltas;
-214 inaccessible subtrees leave the complete budget unverified. Build workloads
-were19.485s Windows and27.551s Linux, not app speed. Keep failed/canceled worker
-cleanup consistent with existing scheduler semantics: only successful retained
-results own the READY lease. The export integration must retire any staged result
-before a failed/canceled worker releases that lease. Full B2a/B2b and T00-T15
-remain open.
+All15 scratch groups retired:14 empty groups and174,634 raw B retained in68,129
+verified archive B. Timeout/test-compile diagnostics and source/product hashes
+remain; no compiler/SDK/runtime tree archived. Known entry8,524,699,809 B;
+final8,525,595,004 B before receipt/doc deltas;214 inaccessible subtrees keep the
+whole budget unverified. Observations are not peak/RSS. Full T00-T15 remains open.
 
 ## Historical link compatibility
 

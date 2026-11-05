@@ -437,6 +437,39 @@ native text compatibility, not Java font/AA pixel equivalence or Linux/macOS UI
 qualification. B2 still owns queued source/global/settings/close guards, file
 promotion, recovery/state/replay and declared PDF/print output/platform checks.
 
+## Admitted export preparation (P2c.2 B2a)
+
+Private PreparedExportImage accepts an absolute working-byte admission callback.
+The admitted worker passes a moved accepted snapshot and JobContext reservation
+growth. Fixed owner, consumed metadata/row conversion and source/output/codec
+allowances are admitted before their allocations; font/layout preparation still
+runs once and performs no source-plane read. Source snapshot acquisition is a
+separate caller-owned boundary; arbitrary display-property copies there are not
+qualified by this increment.
+
+The native point-layout implementation has one private admitted ingress. It
+charges before annotation parsing and before output vector storage; the public
+API uses the same implementation with empty admission. There is no second layout
+pass or conservative full-cap reservation. Font file size comes from the opened
+stream and is admitted before allocating file storage. File/path/control, glyph
+coverage and actual stb staging request admission through the existing bounded
+font owner. Its C-style allocator returns null on refusal, retains the original
+C++ exception, and rethrows after stb unwinds; no exception crosses that allocator
+boundary. Ordinary file/layout/font callers retain their default behavior.
+
+Admission is absolute and monotonic at the scheduler. Local fonts can report
+smaller live totals after releasing temporary storage; the scheduler retains the
+largest acquired ticket until successful result-guard retirement, or existing
+failed/canceled-worker cleanup. These are declared working bounds, not allocator
+or RSS measurements. Preparation clears its admission callback before returning,
+so detached results do not retain a worker-context reference. Rendering consumes
+captured immutable resources and reads the source plane once.
+
+The Window async consumer, accepted default font/path policy, queued lifecycle
+and creator publication remain the next B2a integration. B2b still owns replay,
+state and format/printing/platform qualification. This private adapter does not
+complete either task or the full point-tool/editor scope.
+
 ## Staged display-file publication (P2c.2 B2a foundation)
 
 Raster and PDF actions now encode to an explicit private byte sink and hold an
