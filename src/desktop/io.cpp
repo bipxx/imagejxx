@@ -1,4 +1,7 @@
 #include "desktop.hpp"
+#include "display_export_io.hpp"
+#include "../native/pnm_encoding.hpp"
+#include "../native/kernel_control.hpp"
 #include <algorithm>
 #include <cstring>
 #include <exception>
@@ -17,6 +20,9 @@
 namespace imagejxx::desktop {
 namespace {
 constexpr size_t limit = 1024ULL * 1024 * 1024;
+void emitEncoded(const std::string& path,const std::vector<unsigned char>& data,const ImageByteSink* sink) {
+  if(sink)(*sink)(data.data(),data.size());else writeBytes(path,data);
+}
 uint64_t word(const unsigned char *ptr, int bytes, bool big) {
   uint64_t value = 0;
   for (int k = 0; k < bytes; ++k)
@@ -106,7 +112,7 @@ Stack readNpy(const std::string &path) {
   return decodeRaw(data, dims[k + 1], dims[k], color ? dims.back() : 1,
                    stack ? dims[0] : 1, type, start + length, descr[1] == ">");
 }
-void writeNpy(const std::string &path, const Stack &images) {
+void writeNpy(const std::string &path, const Stack &images,const ImageByteSink* sink,bool normalized) {
   const auto &f = images[0];
   std::string shape =
       images.size() > 1 ? std::to_string(images.size()) + ", " : "";
@@ -133,13 +139,13 @@ void writeNpy(const std::string &path, const Stack &images) {
       static_cast<unsigned char>(header.size() >> 8)};
   data.insert(data.end(), header.begin(), header.end());
   int bytes = descr[2] - '0';
-  for (auto image : images) {
-    require_same_shape(f, image);
-    if (image.type != f.type)
-      throw std::invalid_argument("Mixed stack types");
-    image = canonical(std::move(image));
+  for (const auto& frame : images) {
+    require_same_shape(f, frame);
+    if (frame.type != f.type)throw std::invalid_argument("Mixed stack types");
+    std::optional<Image> mapped;if(!normalized)mapped=canonical(frame);
+    const auto& image=mapped?*mapped:frame;
     for (double v : image.pixels) {
-      uint64_t bits = 0;
+      kernel_checkpoint_periodic();uint64_t bits = 0;
       if (f.type == PixelType::Float32) {
         float value = float(v);
         uint32_t raw;
@@ -153,7 +159,7 @@ void writeNpy(const std::string &path, const Stack &images) {
         data.push_back(static_cast<unsigned char>(bits >> (8 * k)));
     }
   }
-  writeBytes(path, data);
+  emitEncoded(path,data,sink);
 }
 #ifdef IMAGEJXX_HAS_TIFF
 TIFF *openTiff(const std::string &path, const char *mode) {
@@ -332,7 +338,7 @@ struct TiffMemory {
     return static_cast<TiffMemory *>(context)->bytes.size();
   }
 };
-void writeTiff(const std::string &path, const Stack &images) {
+void writeTiff(const std::string &path, const Stack &images,const ImageByteSink* sink,bool normalized) {
   // Encode once in bounded memory, then use the shared exclusive atomic writer.
   // Never open a predictable sibling or read the encoded file back from disk.
   TiffMemory encoded;
@@ -343,8 +349,9 @@ void writeTiff(const std::string &path, const Stack &images) {
     encoded.check();
     throw std::runtime_error("Could not initialize TIFF encoding");
   }
-  for (auto image : images) {
-    image = canonical(std::move(image));
+  for (const auto& frame : images) {
+    std::optional<Image> mapped;if(!normalized)mapped=canonical(frame);
+    const auto& image=mapped?*mapped:frame;
     int bits = image.type == PixelType::UInt8     ? 8
                : image.type == PixelType::UInt16  ? 16
                : image.type == PixelType::Float32 ? 32
@@ -387,6 +394,7 @@ void writeTiff(const std::string &path, const Stack &images) {
         } else
           std::memcpy(ptr, &value, 8);
       }
+      kernel_checkpoint();
       if (TIFFWriteScanline(file.get(), row.data(), y) < 0) {
         encoded.check();
         throw std::runtime_error("TIFF write failed");
@@ -399,7 +407,7 @@ void writeTiff(const std::string &path, const Stack &images) {
   }
   file.reset();
   encoded.check();
-  writeBytes(path, encoded.bytes);
+  emitEncoded(path,encoded.bytes,sink);
 }
 
 #endif
@@ -478,7 +486,7 @@ Image readPng(const std::string &path) {
           b->samples.data() + y * rowBytes + x * (bits / 8), bits / 8, true));
   return image;
 }
-void writePng(const std::string &path, const Image &image) {
+void writePng(const std::string &path, const Image &image,const ImageByteSink* sink) {
   auto b = std::make_unique<PngBuffer>();
   auto png =
       png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
@@ -489,12 +497,17 @@ void writePng(const std::string &path, const Image &image) {
     png_destroy_write_struct(&png, nullptr);
     throw std::runtime_error("PNG initialization failed");
   }
+  struct PngOwner {
+    png_structp png;png_infop info;
+    void close(){if(png)png_destroy_write_struct(&png,&info);}
+    ~PngOwner(){close();}
+  } owner{png,info};
   std::vector<unsigned char> samples;
   int bits = image.type == PixelType::UInt16 ? 16 : 8;
   size_t row = size_t(image.width) * image.channels * bits / 8;
   samples.resize(row * image.height);
   for (size_t i = 0; i < image.pixels.size(); ++i) {
-    auto v = uint16_t(image.pixels[i]);
+    kernel_checkpoint_periodic();auto v = uint16_t(image.pixels[i]);
     samples[i * (bits / 8)] =
         static_cast<unsigned char>(bits == 16 ? v >> 8 : v);
     if (bits == 16)
@@ -503,10 +516,7 @@ void writePng(const std::string &path, const Image &image) {
   b->rows.resize(image.height);
   for (int y = 0; y < image.height; ++y)
     b->rows[y] = samples.data() + y * row;
-  if (setjmp(png_jmpbuf(png))) {
-    png_destroy_write_struct(&png, &info);
-    throw std::runtime_error("PNG write failed");
-  }
+  if (setjmp(png_jmpbuf(png)))throw std::runtime_error("PNG write failed");
   png_set_write_fn(png, b.get(), pngWrite, [](png_structp) {});
   png_set_IHDR(png, info, image.width, image.height, bits,
                image.channels == 1   ? PNG_COLOR_TYPE_GRAY
@@ -515,10 +525,9 @@ void writePng(const std::string &path, const Image &image) {
                PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
                PNG_FILTER_TYPE_DEFAULT);
   png_write_info(png, info);
-  png_write_image(png, b->rows.data());
-  png_write_end(png, info);
-  png_destroy_write_struct(&png, &info);
-  writeBytes(path, b->bytes);
+  for(int y=0;y<image.height;++y){kernel_checkpoint();png_write_row(png,b->rows[y]);}
+  png_write_end(png, info);owner.close();
+  emitEncoded(path,b->bytes,sink);
 }
 void stbWrite(void *context, void *data, int size) {
   auto &buffer = *static_cast<std::vector<unsigned char> *>(context);
@@ -582,17 +591,17 @@ Stack readImages(const std::string &path) {
                                 : static_cast<unsigned char *>(pixels)[i];
   return {canonical(std::move(image))};
 }
-void writeImages(const std::string &path, const Stack &images) {
+void writeImagesImpl(const std::string &path, const Stack &images,const ImageByteSink* sink,bool normalized) {
   if (images.empty())
     throw std::invalid_argument("No image to save");
   auto suffix = extension(path);
   if (suffix == ".npy") {
-    writeNpy(path, images);
+    writeNpy(path, images,sink,normalized);
     return;
   }
   if (suffix == ".tif" || suffix == ".tiff") {
 #ifdef IMAGEJXX_HAS_TIFF
-    writeTiff(path, images);
+    writeTiff(path, images,sink,normalized);
     return;
 #else
     throw std::runtime_error("Scientific TIFF requires optional libtiff");
@@ -600,16 +609,17 @@ void writeImages(const std::string &path, const Stack &images) {
   }
   if (images.size() != 1)
     throw std::invalid_argument("Save stacks as TIFF, NPY or a session");
-  auto image = canonical(images[0]);
+  std::optional<Image> mapped;if(!normalized)mapped=canonical(images[0]);
+  const auto& image=mapped?*mapped:images[0];
   if (suffix == ".pgm" || suffix == ".ppm" || suffix == ".pnm") {
-    write_pnm(image, path);
+    if(sink)imagejxx::detail::encode_pnm_payload(image,*sink);else write_pnm(image, path);
     return;
   }
   if (image.type != PixelType::UInt8 && image.type != PixelType::UInt16)
     throw std::invalid_argument("Save floating pixels as TIFF or NPY; Export "
                                 "display saves rendered pixels");
   if (suffix == ".png") {
-    writePng(path, image);
+    writePng(path, image,sink);
     return;
   }
   if (image.type != PixelType::UInt8)
@@ -617,7 +627,7 @@ void writeImages(const std::string &path, const Stack &images) {
         "16-bit raster output requires PNG, TIFF or NPY");
   std::vector<unsigned char> data, pixels(image.pixels.size());
   for (size_t i = 0; i < pixels.size(); ++i)
-    pixels[i] = static_cast<unsigned char>(image.pixels[i]);
+    {kernel_checkpoint_periodic();pixels[i] = static_cast<unsigned char>(image.pixels[i]);}
   int ok = 0;
   if (suffix == ".jpg" || suffix == ".jpeg")
     ok = stbi_write_jpg_to_func(stbWrite, &data, image.width, image.height,
@@ -631,8 +641,13 @@ void writeImages(const std::string &path, const Stack &images) {
   else
     throw std::invalid_argument(
         "Use PNG, TIFF, NPY, PNM, JPEG, BMP or TGA output");
-  if (!ok)
-    throw std::runtime_error("Raster write failed");
-  writeBytes(path, data);
+  kernel_checkpoint();
+  if (!ok)throw std::runtime_error("Raster write failed");
+  emitEncoded(path,data,sink);
+}
+void writeImages(const std::string& path,const Stack& images){writeImagesImpl(path,images,nullptr,false);}
+void writePreparedDisplayToSink(const std::string& path,const Stack& images,const ImageByteSink& sink) {
+  if(!sink)throw std::invalid_argument("Display encoder needs a byte sink");
+  writeImagesImpl(path,images,&sink,true);
 }
 } // namespace imagejxx::desktop

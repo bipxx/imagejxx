@@ -12,6 +12,7 @@
 #include "path_visual.hpp"
 #include "point_visual.hpp"
 #include "point_raster_export.hpp"
+#include "display_export_io.hpp"
 #include "calibration_plot_view.hpp"
 #include "calibration_plot_annotation.hpp"
 #include "calibration_plot_payload.hpp"
@@ -8895,10 +8896,11 @@ void Window::action(const std::string &name, const Json &p) {
     validate();auto image=prepared.render();validate();
     if(name=="flatten") {
       addDocument(std::make_shared<Document>(prepared.document(std::move(image))));
-    } else if(name=="export_display") {
-      Stack frames;frames.push_back(std::move(image));writeImages(path,frames);
-    } else if(name=="export_pdf")writePdf(path,image,dpi,landscape);
-    else printImage(image);
+    } else if(name=="export_display" || name=="export_pdf") {
+      const ExecutionControl control{};
+      auto staged=stageDisplayExport(path,std::move(image),{name=="export_pdf",dpi,landscape},control);
+      publishDisplayExport(std::move(staged),validate,control);
+    } else printImage(image);
     return;
   }
   State edited = d->state();

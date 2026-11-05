@@ -4,6 +4,7 @@
 #include "point_visual.hpp"
 #include "rendering.hpp"
 #include "point_raster_export.hpp"
+#include "display_export_io.hpp"
 #include "point_raster_font.hpp"
 #include "../../src/native/kernel_control.hpp"
 #include <cstdlib>
@@ -235,6 +236,57 @@ int main() {
           std::error_code cleanup;std::filesystem::remove(copy,cleanup);std::filesystem::remove(directory,cleanup);throw;
         }
       }
+    }
+    {
+      namespace fs=std::filesystem;
+      const auto directory=fs::absolute(fs::temp_directory_path()).lexically_normal()/("imagejxx-stage-"+std::to_string(next_document_id()));
+      check(fs::create_directory(directory));
+      Image rgb(24,18,3,PixelType::UInt8);for(std::size_t i=0;i<rgb.pixels.size();++i)rgb.pixels[i]=(i*17)%256;
+      std::vector<std::string> formats{"png","jpg","jpeg","bmp","tga","pgm","ppm","pnm","npy","pdf"};
+      if(tiffAvailable()){formats.push_back("tif");formats.push_back("tiff");}
+      for(const auto& format:formats) {
+        const auto target=directory/("target."+format),reference=directory/("reference."+format);
+        DisplayExportFileOptions options;options.pdf=format=="pdf";options.dpi=96;options.landscape=true;
+        if(options.pdf)writePdf(reference.u8string(),rgb,options.dpi,options.landscape);
+        else writeImages(reference.u8string(),Stack{rgb});
+        const auto expected=readBytes(reference.u8string());writeBytes(target.u8string(),{'k','e','e','p'});
+        auto owned=rgb;auto staged=stageDisplayExport(target.u8string(),std::move(owned),options,{});
+        check(owned.pixels.empty());
+        const auto temporary=staged->temporary_path();
+        check(temporary.parent_path()==directory && fs::exists(temporary));
+        check(readBytes(target.u8string())==std::vector<unsigned char>({'k','e','e','p'}));
+        int callbacks=0,guarded=-1;ExecutionControl finish;finish.checkpoint=[&]{++callbacks;};
+        publishDisplayExport(std::move(staged),[&]{guarded=callbacks;},finish);
+        check(guarded>0 && callbacks==guarded && !fs::exists(temporary));
+        check(readBytes(target.u8string())==expected);
+        // Cancellation during the final file callback cannot replace the target.
+        writeBytes(target.u8string(),{'k','e','e','p'});owned=rgb;
+        staged=stageDisplayExport(target.u8string(),std::move(owned),options,{});
+        const auto canceled_temp=staged->temporary_path();
+        finish.cancellation=std::make_shared<CancellationToken>();finish.checkpoint=[&]{finish.cancellation->cancel();};
+        bool canceled=false;try{publishDisplayExport(std::move(staged),[]{},finish);}catch(const OperationCancelled&){canceled=true;}
+        check(canceled && !fs::exists(canceled_temp) && readBytes(target.u8string())==std::vector<unsigned char>({'k','e','e','p'}));
+        ExecutionControl running;running.cancellation=std::make_shared<CancellationToken>();
+        running.stage_progress=[&](std::string_view,std::size_t n,std::size_t){if(n)running.cancellation->cancel();};
+        owned=rgb;canceled=false;try{(void)stageDisplayExport(target.u8string(),std::move(owned),options,running);}catch(const OperationCancelled&){canceled=true;}
+        check(canceled && readBytes(target.u8string())==std::vector<unsigned char>({'k','e','e','p'}));
+        check(fs::remove(target));check(fs::remove(reference));
+      }
+      const auto target=directory/"stale.png";writeBytes(target.u8string(),{'k'});
+      DatasetReadObserver reads;DocumentData data{Dataset::from_stack(Stack{rgb}).observe_reads(reads)};
+      imagejxx::Document source(std::move(data));const auto before=source.snapshot();
+      PreparedExportImage prepared(before,false,8*1048576);auto output=prepared.render();
+      auto staged=stageDisplayExport(target.u8string(),std::move(output),{},{});const auto temporary=staged->temporary_path();
+      ExecutionControl mutation;mutation.checkpoint=[&]{source.select(Selection("rectangle",{{1,1},{4,4}}));};
+      bool stale=false;try{publishDisplayExport(std::move(staged),[&]{prepared.validate(source.snapshot(),false,8*1048576);},mutation);}catch(const RevisionConflict&){stale=true;}
+      check(stale && reads.counts().plane_reads==1 && !fs::exists(temporary) && readBytes(target.u8string())==std::vector<unsigned char>({'k'}));
+      // A guard-triggered cancellation is checked quietly, without another callback.
+      auto owned=rgb;staged=stageDisplayExport(target.u8string(),std::move(owned),{},{});
+      ExecutionControl final;final.cancellation=std::make_shared<CancellationToken>();bool canceled=false;
+      try{publishDisplayExport(std::move(staged),[&]{final.cancellation->cancel();},final);}catch(const OperationCancelled&){canceled=true;}
+      check(canceled && readBytes(target.u8string())==std::vector<unsigned char>({'k'}));
+      check(fs::remove(target));check(fs::remove(directory));
+      std::cout<<"Staged display formats: "<<formats.size()<<"; unchanged targets, guarded replacement and cancellation passed\n";
     }
     std::cout << "PASS " << checks << " path/point visual checks\n";
   } catch (const std::exception &e) {

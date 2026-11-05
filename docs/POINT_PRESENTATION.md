@@ -437,6 +437,51 @@ native text compatibility, not Java font/AA pixel equivalence or Linux/macOS UI
 qualification. B2 still owns queued source/global/settings/close guards, file
 promotion, recovery/state/replay and declared PDF/print output/platform checks.
 
+## Staged display-file publication (P2c.2 B2a foundation)
+
+Raster and PDF actions now encode to an explicit private byte sink and hold an
+owned closed stage before replacement. `stageDisplayExport` takes ownership of
+already normalized RGB pixels by value; both raster and PDF callers move their
+buffer. It performs descriptor checks, not another full component scan. Raster
+staging borrows those normalized pixels through the shared encoders; PDF staging
+skips redundant display mapping and its extra RGB copy. Generic save callers keep
+their existing normalization, dtype and frame semantics.
+
+One shared core P5/P6 payload encoder serves public `write_pnm` and desktop staged
+PNM output. Its bounded chunks go straight to the existing `StagedAtomicStream`;
+there is no second PNM codec, predictable sibling, encoded-file reread or second
+encode pass. PNG, JPEG, BMP, TGA, NPY, TIFF and PDF use their existing encoder body
+with an explicit byte sink. The PNG owner now releases codec resources on normal,
+error and cancellation exits. Pixel/row checkpoints cover owned packing stages;
+opaque library calls retain their existing per-call responsiveness limits.
+
+The export layer reports staged-byte progress explicitly; the underlying stream
+provides checkpoints but does not promise progress callbacks. File IO always gets
+the passed execution control. A completed stage leaves the destination untouched
+until `publishDisplayExport` runs its final file checkpoint, creator-owned source/
+settings validation and quiet token recheck, then replaces once. No execution
+callback runs after validation returns. Validator failure, final callback
+cancellation or abandoned ownership destroys only the owned stage. The final
+creator validation defines the accepted snapshot boundary; it does not restart
+encoding for edits that occur after publication has begun.
+
+Current Window raster/PDF actions use that final guard after encoding/staging.
+The commands are still synchronous here: this foundation does not itself add
+queued execution, scheduler admission, source-close handling or replay. Next B2a
+must attach the same owned stage to the existing Job/result lane with one defined
+lease before preparation and through publication, preserving script error/wait
+behavior. B2b retains format metadata/options, executable state/replay and full
+PDF/printing/platform qualification.
+
+Windows native checks compare all12 existing output suffix routes against legacy
+writer bytes and test target preservation, staged cancellation, final source
+mutation, final callback cancellation and ownership release. Scripted checks reopen
+all11 raster suffixes (TIFF through the explicit flat compatibility import), verify
+RGB PDF samples/layout and preserve generic PNG8/16-bit and legacy TIFF type/stack
+behavior. Shared public PNM literal/failure/ownership checks pass on Windows and
+Linux. This is scoped writer compatibility and guarded synchronous publication,
+not a full async/UI/platform or performance claim.
+
 ## Evidence and remaining integration
 
 The original `ObservePointPresentation.java` records actual Graphics2D drawing

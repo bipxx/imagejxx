@@ -1,0 +1,419 @@
+{
+  "schema_version": 1,
+  "task": "T04a.2 M2b.2b P2c.2 B2a staged display-file foundation",
+  "date": "2026-11-05",
+  "base_commit": "58aae8b",
+  "state": {
+    "implemented": "Shared existing raster/PDF encoders emit once to owned StagedAtomicStream; prepared RGB bypasses redundant conversion; shared bounded PNM encoder.",
+    "verified": "161 distinct focused Windows Python cases pass (19 new), Windows213-check native control, Windows/Linux native PNM controls.",
+    "integrated": "Existing synchronous Window display/PDF action uses staged encoding and final source validation. Actual physical-menu async routes not qualified in this increment.",
+    "release_ready": false
+  },
+  "contract": "docs/POINT_PRESENTATION.md#staged-display-file-publication-p2c2-b2a-foundation",
+  "results": {
+    "distinct_python_cases": 161,
+    "new_python_cases": 19,
+    "final_skips": 0,
+    "runs": [
+      {
+        "run": "api001",
+        "cases": 98
+      },
+      {
+        "run": "api002",
+        "cases": 13
+      },
+      {
+        "run": "api003",
+        "cases": 76
+      },
+      {
+        "run": "api004",
+        "cases": 19
+      }
+    ],
+    "native_path_visual_checks": 213,
+    "native_format_byte_comparisons": 12,
+    "native_pnm_platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "processes": [
+      {
+        "run": "api001-pack",
+        "exit_code": 0,
+        "elapsed_seconds": 0.3440000000409782,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api001-verify",
+        "exit_code": 0,
+        "elapsed_seconds": 0.21800000010989606,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api001",
+        "exit_code": 1,
+        "elapsed_seconds": 2.1409999998286366,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api002-pack",
+        "exit_code": 0,
+        "elapsed_seconds": 0.20300000021234155,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api002-verify",
+        "exit_code": 0,
+        "elapsed_seconds": 0.18700000015087426,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api002",
+        "exit_code": 0,
+        "elapsed_seconds": 0.8900000001303852,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api003-pack",
+        "exit_code": 0,
+        "elapsed_seconds": 0.875,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api003-verify",
+        "exit_code": 0,
+        "elapsed_seconds": 0.39099999982863665,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api003",
+        "exit_code": 0,
+        "elapsed_seconds": 2.75,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api004-pack",
+        "exit_code": 0,
+        "elapsed_seconds": 0.25,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api004-verify",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1720000000204891,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "api004",
+        "exit_code": 0,
+        "elapsed_seconds": 1.031999999890104,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "install-app001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1559999999590218,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "install-app002",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1720000000204891,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "install-app003",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1559999999590218,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "install-native001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.23400000017136335,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "install-python001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.15600000019185245,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "install-python002",
+        "exit_code": 0,
+        "elapsed_seconds": 0.17100000008940697,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "install-python003",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1410000000614673,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-build001",
+        "exit_code": 0,
+        "elapsed_seconds": 5.835626786000001,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-outer001",
+        "exit_code": 0,
+        "elapsed_seconds": 10.422000000020489,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-pnm001-pack",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2190000000409782,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-pnm001-verify",
+        "exit_code": 0,
+        "elapsed_seconds": 0.13999999989755452,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "linux-pnm001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.3459472350000006,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-pnm001-pack",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2029999999795109,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-pnm001-verify",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2660000000614673,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-pnm001",
+        "exit_code": 0,
+        "elapsed_seconds": 0.10999999986961484,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-stage001-pack",
+        "exit_code": 0,
+        "elapsed_seconds": 0.17199999978765845,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-stage001-verify",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2970000000204891,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-stage001",
+        "exit_code": 1,
+        "elapsed_seconds": 0.1880000000819564,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-stage002",
+        "exit_code": 0,
+        "elapsed_seconds": 0.5,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "native-stage003",
+        "exit_code": 0,
+        "elapsed_seconds": 0.35900000017136335,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "windows-build001",
+        "exit_code": 0,
+        "elapsed_seconds": 77.0,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "windows-build002",
+        "exit_code": 0,
+        "elapsed_seconds": 12.453999999910593,
+        "terminal_cleanup_complete": true
+      },
+      {
+        "run": "windows-build003",
+        "exit_code": 0,
+        "elapsed_seconds": 39.84400000004098,
+        "terminal_cleanup_complete": true
+      }
+    ]
+  },
+  "publication_guarantees": [
+    "Destination unchanged until one guarded replacement.",
+    "Final IO checkpoint precedes source validation, followed by quiet cancellation recheck and publication; no callback after validation.",
+    "Owned stage discarded on cancellation, validation conflict or encode failure.",
+    "Stage helper consumes normalized RGB by value for raster and PDF."
+  ],
+  "waste_review": [
+    {
+      "finding": "Repeated prepared RGB normalization/copies and potential duplicate PNM codec.",
+      "disposition": "Fixed using explicit prepared sinks and one shared core PNM encoder; generic legacy semantics retained."
+    },
+    {
+      "finding": "Stream progress assumption failed initial native-stage001.",
+      "disposition": "Retain failure; explicit export-layer staged-byte progress; actual JobContext controls required next."
+    },
+    {
+      "finding": "Two api001 TIFF reopen failures entered scientific review.",
+      "disposition": "Correct test to explicit flat legacy import; narrow reruns pass. Scientific metadata remains B2b/T10."
+    },
+    {
+      "finding": "Late review showed rvalue-reference PDF argument did not consume storage.",
+      "disposition": "Use private by-value ownership, assert emptied caller in all12 formats, rerun final affected native/Python checks."
+    },
+    {
+      "finding": "Mixed inserted EOLs differed from source convention.",
+      "disposition": "EOL-only restoration with normalized compiler-input equality recorded locally; no redundant rebuild."
+    },
+    {
+      "finding": "Whole-job accounting/snapshot metadata copy costs and lifecycle not established.",
+      "disposition": "Defer to B2a/T11 touched reservation boundary; require lease-before-work, source-close and disposal checks. No RSS or resource-cap claim."
+    }
+  ],
+  "retention": {
+    "payload_groups": 7,
+    "empty_groups": 14,
+    "raw_payload_bytes": 3429960,
+    "archive_bytes": 2116510,
+    "archives_and_members_reverified": true,
+    "scratch_absent": true,
+    "compiler_sdk_runtime_archived": false
+  },
+  "storage": {
+    "entry": {
+      "path": ".tmp/manual-workflow-verification/staged-display-export-entry001.json",
+      "bytes": 66571,
+      "sha256": "d1fb05c3d9e860b498bddb9fe7d56216c4a3fa974aab960e04ab31487e8d4b93"
+    },
+    "final": {
+      "path": ".tmp/manual-workflow-verification/staged-display-export-final001.json",
+      "bytes": 66571,
+      "sha256": "b974bfb632749b2641254be5d3e948ef9859d0f5396eae00693a1573556f86a2"
+    },
+    "entry_known_bytes": 8505052498,
+    "final_known_bytes": 8508934303,
+    "unknown_subtrees": 214,
+    "whole_budget_verified": false,
+    "scope": "Existing complete normalized inventory; final observation precedes receipt/doc deltas, not peak or RSS."
+  },
+  "remaining": [
+    "B2a existing scheduler/reservation integration and queued/running/source-close lifecycle.",
+    "B2a preserve synchronous Python completion/error propagation while physical menus become asynchronous.",
+    "B2b state/replay, format-specific limits/metadata, PDF/printing and declared platforms.",
+    "P2c.3/P3/P4 and all remaining T00-T15 requirements."
+  ],
+  "limitations": [
+    "No new physical-host UI or installed SDK campaign; no public API change.",
+    "TIFF reopen is explicit flat legacy import, not scientific metadata qualification.",
+    "Opaque codec calls do not provide hard cancellation latency.",
+    "No Linux/macOS UI, whole scheduler/RSS, broad speed or release completion claim."
+  ],
+  "source_pins": [
+    {
+      "path": "src/desktop/export.cpp",
+      "bytes": 10772,
+      "sha256": "61089be8d39f2ef058d367301237d02c8e333b06f236a8c0961857ab09025bf1"
+    },
+    {
+      "path": "src/desktop/io.cpp",
+      "bytes": 27080,
+      "sha256": "f6cad25b92fb0954aa9b3dc18506bb67852288d2b4ebd614dc3d7e8920a78588"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 887432,
+      "sha256": "5377ce39ce86f357eaf6c26b38fc2408408dd5f3d20eecb22ef2ffec337a390f"
+    },
+    {
+      "path": "src/desktop/display_export_io.hpp",
+      "bytes": 1081,
+      "sha256": "1861fc543d7ca0280bf91b86beef2197c18ca4c45d46bd2b191fc1f14ac7deab"
+    },
+    {
+      "path": "src/native/image.cpp",
+      "bytes": 20764,
+      "sha256": "b310ecc966267217764d03a372f99cb7c85d19f862a2162f7461ddbce67267c6"
+    },
+    {
+      "path": "src/native/pnm_encoding.hpp",
+      "bytes": 345,
+      "sha256": "4d1cb2e328d8da97be2dd864752de16fa0cedc60356d2a63f6923b39025f941b"
+    },
+    {
+      "path": "tests/native/test_path_visual.cpp",
+      "bytes": 19151,
+      "sha256": "a5f4bad55b05ddf83777c9eee49bbd5bf2fa7ee58708295b87f3536665828d8f"
+    },
+    {
+      "path": "tests/python/test_staged_display_export.py",
+      "bytes": 4012,
+      "sha256": "9edc73752926a1ab60a1d35cf1d74b1b090ec540d7a859b97214724721360638"
+    },
+    {
+      "path": "tests/python/test_pnm_publication.py",
+      "bytes": 3528,
+      "sha256": "e08839f5a47b0cd996e7905dfa1d0c8bc06f9f6e9adae626bd18993300565fa1"
+    },
+    {
+      "path": "tests/python/test_legacy_tiff_io.py",
+      "bytes": 5166,
+      "sha256": "681c28d37307a386f24bfe44a66696aaf6dcdf08c05f4371cc63495d347608fd"
+    },
+    {
+      "path": "docs/POINT_PRESENTATION.md",
+      "bytes": 33849,
+      "sha256": "c6ee7e68a047da27c3270c660504261ec84afbb780e3e5501126ee9d6e5f96d9"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 8282624,
+      "sha256": "41165bd9fddb5033646f0a29d8dd73a0222b3b86b1ebd0fa78983f3f42040ec3"
+    },
+    {
+      "path": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 20176384,
+      "sha256": "61f44f93020cdf36ff5adb8eca67394154d67097b9364490192aa926578f28ef"
+    },
+    {
+      "path": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+      "bytes": 20262400,
+      "sha256": "12d799681cba3bb824b97ddb9ac55b512290443c00f1507d912165da058c72bf"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_path_visual_tests.exe",
+      "bytes": 1186304,
+      "sha256": "9e22c731828c296cd30a0fb4093c5a5f5de5ad344bf607b3f7b9f12336ccaef9"
+    },
+    {
+      "path": ".cache/native-verification/windows/Release/imagejxx_pnm_tests.exe",
+      "bytes": 102912,
+      "sha256": "bca9e9040055351c029d11ca9b1819b28251d189389865a06e1c02d83aa2a27d"
+    }
+  ],
+  "local_evidence_manifest": {
+    "path": ".tmp/manual-workflow-verification/t04a2-staged-display-export-20261105/closeout-manifest.json",
+    "bytes": 34086,
+    "sha256": "4a9e9826423cbf87784d40a13e6432a3b4cf4e32a6c1a10631e3d535cdc763e7"
+  },
+  "closeout_verification": {
+    "pins": "Source/product/local evidence manifest and145 retained files match.",
+    "traceability": "All99 capability IDs covered,3 historical hashes unchanged,66 local links/anchors resolve.",
+    "whitespace": "Project and compilexx note diffs pass.",
+    "verifier_retry": "Initial static verifier used Windows default GBK and stopped decoding inventory after pin checks. Explicit UTF8 retry passes; no product/test rerun or source change."
+  }
+}

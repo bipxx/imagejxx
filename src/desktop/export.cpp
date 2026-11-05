@@ -1,4 +1,6 @@
 #include "desktop.hpp"
+#include "display_export_io.hpp"
+#include "../native/kernel_control.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstring>
@@ -13,15 +15,17 @@
 #endif
 
 namespace imagejxx::desktop {
-void writePdf(const std::string &path, const Image &image, double dpi,
-              bool landscape) {
+void writePdfImpl(const std::string &path,const Image &image,double dpi,bool landscape,
+    const ImageByteSink* sink,bool normalized) {
   require_finite(dpi, "Print DPI");
   if (dpi < 1 || dpi > 2400)
     throw std::invalid_argument("DPI must be 1..2400");
-  auto rgb = displayImage(image);
+  std::optional<Image> mapped;if(!normalized)mapped=displayImage(image);
+  const auto& rgb=mapped?*mapped:image;
   std::vector<unsigned char> samples(rgb.pixels.size());
-  for (size_t i = 0; i < samples.size(); ++i)
-    samples[i] = static_cast<unsigned char>(rgb.pixels[i]);
+  for (size_t i = 0; i < samples.size(); ++i) {
+    kernel_checkpoint_periodic();samples[i] = static_cast<unsigned char>(rgb.pixels[i]);
+  }
   uLongf size = compressBound(static_cast<uLong>(samples.size()));
   std::string compressed(size, '\0');
   if (compress2(reinterpret_cast<Bytef *>(compressed.data()), &size,
@@ -67,7 +71,41 @@ void writePdf(const std::string &path, const Image &image, double dpi,
   pdf << "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n"
       << xref << "\n%%EOF\n";
   auto bytes = pdf.str();
-  writeBytes(path, {bytes.begin(), bytes.end()});
+  if(sink)(*sink)(reinterpret_cast<const unsigned char*>(bytes.data()),bytes.size());
+  else writeBytes(path,{bytes.begin(),bytes.end()});
+}
+void writePdf(const std::string& path,const Image& image,double dpi,bool landscape) {
+  writePdfImpl(path,image,dpi,landscape,nullptr,false);
+}
+void writePreparedPdfToSink(const std::string& path,const Image& image,double dpi,bool landscape,const ImageByteSink& sink) {
+  if(!sink)throw std::invalid_argument("PDF encoder needs a byte sink");
+  writePdfImpl(path,image,dpi,landscape,&sink,true);
+}
+std::unique_ptr<imagejxx::detail::StagedAtomicStream> stageDisplayExport(
+    const std::string& path,Image image,const DisplayExportFileOptions& options,const ExecutionControl& control) {
+  ExecutionScope scope(control);kernel_checkpoint();
+  if(image.width<=0 || image.height<=0 || image.type!=PixelType::UInt8 || image.channels!=3 ||
+      image.pixels.size()!=std::size_t(image.width)*image.height*3)
+    throw std::invalid_argument("Display export needs complete normalized uint8 RGB");
+  auto staged=std::make_unique<imagejxx::detail::StagedAtomicStream>(std::filesystem::u8path(path));
+  staged->open(control);
+  std::size_t encoded=0;
+  const ImageByteSink sink=[&](const unsigned char* data,std::size_t count) {
+    if(count>std::numeric_limits<std::size_t>::max()-encoded)throw std::length_error("Encoded display bytes overflow");
+    staged->append(data,count,control);encoded+=count;
+    imagejxx::detail::file_stage_progress(control,"Display export staged bytes",encoded,encoded);
+  };
+  if(options.pdf)writePreparedPdfToSink(path,image,options.dpi,options.landscape,sink);
+  else {Stack frames;frames.push_back(std::move(image));writePreparedDisplayToSink(path,frames,sink);}
+  staged->close(control);return staged;
+}
+void publishDisplayExport(std::unique_ptr<imagejxx::detail::StagedAtomicStream> staged,
+    const std::function<void()>& validate,const ExecutionControl& control) {
+  if(!staged || !validate)throw std::invalid_argument("Display publication needs a stage and owner guard");
+  imagejxx::detail::file_checkpoint(control);
+  validate();
+  if(control.cancellation && control.cancellation->canceled())throw OperationCancelled();
+  staged->publish(true);
 }
 #ifdef _WIN32
 namespace {

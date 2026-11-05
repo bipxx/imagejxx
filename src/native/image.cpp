@@ -1,5 +1,6 @@
 #include "imagejxx/image.hpp"
 #include "atomic_file.hpp"
+#include "pnm_encoding.hpp"
 #include "kernel_control.hpp"
 
 #include <algorithm>
@@ -485,7 +486,7 @@ Image read_pnm(const std::string &path) {
   }
   return out;
 }
-void write_pnm(const Image &input, const std::string &path) {
+void detail::encode_pnm_payload(const Image &input,const std::function<void(const unsigned char*,std::size_t)>& emit) {
   if (!integer_type(input.type) || (input.channels != 1 && input.channels != 3))
     throw std::invalid_argument(
         "PNM writing requires uint8/uint16 grayscale or RGB");
@@ -493,22 +494,12 @@ void write_pnm(const Image &input, const std::string &path) {
       pixel_count(input.width, input.height, input.channels))
     throw std::invalid_argument(
         "PNM pixel storage does not match its dimensions");
-  if (path.empty() || path.find('\0') != std::string::npos)
-    throw std::invalid_argument(
-        "PNM output path must be nonempty text without NUL");
-  // Use one exclusive sibling for both the core API and desktop callers. Keep
-  // encoded scratch bounded instead of materializing or rereading a whole file.
-  const ExecutionControl control{};
-  detail::StagedAtomicStream output(
-      std::filesystem::absolute(std::filesystem::u8path(path)));
-  output.open(control);
   int maximum = static_cast<int>(type_max(input.type));
   const auto header = std::string(input.channels == 1 ? "P5\n" : "P6\n") +
                       std::to_string(input.width) + " " +
                       std::to_string(input.height) + "\n" +
                       std::to_string(maximum) + "\n";
-  output.append(reinterpret_cast<const unsigned char *>(header.data()),
-                header.size(), control);
+  emit(reinterpret_cast<const unsigned char *>(header.data()),header.size());
   std::array<unsigned char, 65536> encoded;
   std::size_t used = 0;
   for (double v : input.pixels) {
@@ -519,13 +510,25 @@ void write_pnm(const Image &input, const std::string &path) {
       encoded[used++] = static_cast<unsigned char>(sample >> 8);
     encoded[used++] = static_cast<unsigned char>(sample & 255);
     if (used == encoded.size()) {
-      output.append(encoded.data(), used, control);
+      emit(encoded.data(), used);
       used = 0;
     }
   }
   if (used)
-    output.append(encoded.data(), used, control);
-  output.close(control);
-  output.publish(true);
+    emit(encoded.data(), used);
+}
+void write_pnm(const Image &input,const std::string &path) {
+  const ExecutionControl control{};
+  std::unique_ptr<detail::StagedAtomicStream> output;
+  detail::encode_pnm_payload(input,[&](const unsigned char* bytes,std::size_t count) {
+    if(!output) {
+      if(path.empty() || path.find('\0')!=std::string::npos)
+        throw std::invalid_argument("PNM output path must be nonempty text without NUL");
+      output=std::make_unique<detail::StagedAtomicStream>(std::filesystem::absolute(std::filesystem::u8path(path)));
+      output->open(control);
+    }
+    output->append(bytes,count,control);
+  });
+  output->close(control);output->publish(true);
 }
 } // namespace imagejxx
