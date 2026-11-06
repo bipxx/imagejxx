@@ -14,7 +14,8 @@ void bind_target_analysis(py::module_& m) {
     .def_readwrite("line",&TargetAnalysisOptions::line).def_readwrite("interpolate",&TargetAnalysisOptions::interpolate)
     .def_readwrite("path",&TargetAnalysisOptions::path).def_readwrite("samples_per_segment",&TargetAnalysisOptions::samples_per_segment)
     .def_readwrite("measurement",&TargetAnalysisOptions::measurement).def_readwrite("roi_indices",&TargetAnalysisOptions::roi_indices)
-    .def_readwrite("reflex_angle",&TargetAnalysisOptions::reflex_angle);
+    .def_readwrite("reflex_angle",&TargetAnalysisOptions::reflex_angle)
+    .def_readwrite("shape_descriptors",&TargetAnalysisOptions::shape_descriptors);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
     .def_readwrite("max_working_bytes",&TargetAnalysisLimits::max_working_bytes)
@@ -50,6 +51,10 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("midpoint_world",&TargetAnalysisPlane::midpoint_world)
     .def_readonly("centroid_world",&TargetAnalysisPlane::centroid_world)
     .def_readonly("center_of_mass_world",&TargetAnalysisPlane::center_of_mass_world)
+    .def_readonly("circularity",&TargetAnalysisPlane::circularity)
+    .def_readonly("aspect_ratio",&TargetAnalysisPlane::aspect_ratio)
+    .def_readonly("roundness",&TargetAnalysisPlane::roundness)
+    .def_readonly("solidity",&TargetAnalysisPlane::solidity)
     .def_property_readonly("statistics",[](const TargetAnalysisPlane& v)->py::object{
       if(v.statistics)return bindings::calibrated_statistics_python(*v.statistics);
       return py::none();})

@@ -7,6 +7,7 @@
 #include "kernel_control.hpp"
 #include "imagej_shape_plan.hpp"
 #include "selection_polygon_type.hpp"
+#include "selection_shape_detail.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -96,7 +97,7 @@ std::size_t admission(const Selection &source,int width,int height,
 double cross(Point a,Point b,Point c) {
   return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
 }
-std::vector<Point> ordered_hull(std::vector<Point> points,bool float_profile) {
+std::vector<Point> ordered_hull(std::vector<Point> points,bool float_profile,bool allow_degenerate=false) {
   if(float_profile)for(auto &point:points)for(auto &value:point)value=static_cast<float>(value);
   std::size_t comparisons=0;
   std::sort(points.begin(),points.end(),[&](const Point &a,const Point &b) {
@@ -118,7 +119,7 @@ std::vector<Point> ordered_hull(std::vector<Point> points,bool float_profile) {
     hull.push_back(points[i]);
   }
   if(hull.size()>1)hull.pop_back();
-  if(hull.size()<3)throw std::invalid_argument("Convex Hull needs three non-collinear points");
+  if(hull.size()<3 && !allow_degenerate)throw std::invalid_argument("Convex Hull needs three non-collinear points");
   std::reverse(hull.begin(),hull.end());
   const auto first=std::min_element(hull.begin(),hull.end(),[](const Point &a,const Point &b) {
     return a[1]<b[1] || (a[1]==b[1] && a[0]<b[0]);
@@ -194,6 +195,26 @@ AreaMoments mask_moments(const Image& mask,int width,bool second,std::array<int,
     m.cxx=(m.cxx+.08333333*n)/n-mx*mx;m.cyy=(m.cyy+.08333333*n)/n-my*my;m.cxy=m.cxy/n-mx*my;
   }
   return m;
+}
+std::array<double,3> moment_ellipse_axes(const AreaMoments& m) {
+  if(!m.count){const auto nan=std::numeric_limits<double>::quiet_NaN();return {nan,nan,0};}
+  constexpr double pi=3.14159265358979323846;
+  const double n=double(m.count),xx=m.cxx,yy=m.cyy,xy=m.cxy;
+  double major,minor,angle;
+  // Inverse concentration coefficients retain the legacy zero-difference
+  // regularization in its original units. General orientation/conditioning
+  // follows the symmetric moment matrix; projected ratio preserves tie output.
+  const double scale=std::max(4*std::abs(xx*yy-xy*xy),.000001),a=yy/scale,c=xx/scale,cross=xy/scale;
+  double difference=a-c;if(difference==0)difference=.000001;
+  constexpr double halfPi=1.5707963267949;
+  angle=.5*std::atan(2*cross/difference);if(angle<0)angle+=halfPi;if(cross>0)angle+=halfPi;
+  if(cross==0)angle=c>a?0:a!=c?halfPi:0;
+  double sine=std::sin(angle);if(sine==0)sine=.000001;
+  const double projection=cross*std::cos(angle)/sine,quotient=std::abs((a-projection)/(c+projection));
+  const double ratio=std::pow(std::max(quotient,1/quotient),.25),diameter=2*std::sqrt(n/pi);
+  major=diameter*ratio;minor=diameter/ratio;
+  if(180*angle/pi==180)angle=0;
+  return {major,minor,angle};
 }
 AreaMoments area_moments(const Selection& s,int width,int height,bool second,std::array<int,2> origin={0,0}) {
   const auto mask=s.mask(width,height);return mask_moments(mask,width,second,origin);
@@ -337,6 +358,54 @@ std::array<double,3> circle_from_points(std::vector<Point>& points) {
   return {x+mean[0],y+mean[1],radius};
 }
 }
+namespace detail {
+AreaShapeEstimate estimate_area_shape_geometry(const Selection* source,int width,int height,const SelectionEditLimits& limits) {
+  if(!source)return {4096,std::size_t(width)*height};
+  const auto& s=*source;
+  if(s.kind!="rectangle" && s.kind!="ellipse" && s.kind!="polygon" && s.kind!="freehand")
+    throw std::invalid_argument("Shape descriptors require ordinary area geometry");
+  auto bytes=admit_selection_geometry(s,width,height,limits,{});
+  for(const auto& point:s.points)for(double coordinate:point)if(std::abs(coordinate)>std::numeric_limits<float>::max())
+    throw std::invalid_argument("Shape descriptor coordinate exceeds Float32 range");
+  std::size_t count=s.kind=="rectangle"?4:s.points.size(),work=std::size_t(width)*height;
+  if(s.kind=="ellipse") {
+    const auto path=fit_rectangle_path(s);auto roi=ImageJRoiLimits{};roi.max_vertices=limits.max_vertices;roi.max_mask_pixels=limits.max_xy_pixels;
+    const auto plan=plan_imagej_shape_outline(path,width,height,roi,limits.max_working_bytes-bytes);
+    const auto extra=plan.packed_bytes+plan.temporary_bytes;
+    if(extra>limits.max_working_bytes-bytes)throw std::length_error("Shape contour exceeds working limit");
+    bytes+=extra;count=plan.flattened_edges;work+=plan.work_units;
+  }
+  if(count>limits.max_vertices || count>(limits.max_working_bytes-bytes)/128)
+    throw std::length_error("Shape hull exceeds geometry limits");
+  std::size_t levels=0;for(auto n=count;n>1;n=(n+1)/2)++levels;
+  return {bytes+count*128,work+count*(4*levels+8)};
+}
+AreaShapeGeometry prepare_area_shape_geometry(const Selection* source,int width,int height,const SelectionEditLimits& limits) {
+  AreaShapeGeometry out;
+  if(!source){out.rectangle=true;out.box_extent={double(width),double(height)};out.hull_area=double(width)*height;return out;}
+  const auto& s=*source;out.origin=moment_origin(s,width,height);out.rectangle=s.kind=="rectangle";
+  if(s.kind=="rectangle" || s.kind=="ellipse") {
+    const double x=std::trunc(std::min(s.points[0][0],s.points[1][0])),y=std::trunc(std::min(s.points[0][1],s.points[1][1]));
+    out.box_extent={std::max(0.,std::min(double(width),x+std::ceil(std::abs(s.points[1][0]-s.points[0][0])))-std::max(0.,x)),std::max(0.,std::min(double(height),y+std::ceil(std::abs(s.points[1][1]-s.points[0][1])))-std::max(0.,y))};
+    out.empty_box=out.box_extent[0]==0 || out.box_extent[1]==0;
+  }
+  auto vertices=fit_rectangle_vertices(s,width,height,limits);
+  if(vertices.empty())return out;
+  auto hull=ordered_hull(std::move(vertices),true,true);
+  std::uint32_t area=0;
+  auto rounded=[](double v){return std::uint32_t(std::int64_t(std::clamp(std::floor(double(float(v))+.5),double(std::numeric_limits<std::int32_t>::min()),double(std::numeric_limits<std::int32_t>::max()))));};
+  for(std::size_t i=0;i<hull.size();++i){kernel_checkpoint_periodic();const auto& a=hull[i];const auto& b=hull[(i+hull.size()-1)%hull.size()];area+=(rounded(a[0])+rounded(b[0]))*(rounded(a[1])-rounded(b[1]));}
+  const auto signed_area=area<0x80000000u?std::int64_t(area):std::int64_t(area)-0x100000000LL;
+  out.hull_area=std::abs(double(signed_area)/2);return out;
+}
+std::array<double,2> area_shape_ellipse_axes(const Image* mask,int width,int height,const AreaShapeGeometry& geometry) {
+  if(geometry.empty_box)return {0,0};
+  if(geometry.rectangle){const double a=2*geometry.box_extent[0]/1.772453851,b=2*geometry.box_extent[1]/1.772453851;return {std::max(a,b),std::min(a,b)};}
+  if(!mask)throw std::invalid_argument("Shape ellipse summary requires its admitted area mask");
+  if(mask->width!=width || mask->height!=height)throw std::invalid_argument("Shape ellipse mask differs from admitted extent");
+  const auto axes=moment_ellipse_axes(mask_moments(*mask,width,true,geometry.origin));return {axes[0],axes[1]};
+}
+}
 std::size_t estimate_convex_hull_selection(const Selection &source,int width,int height,
                                          const SelectionEditLimits &limits) {
   return admission(source,width,height,limits,{});
@@ -473,19 +542,7 @@ Selection fit_ellipse_selection(const Selection& source,int width,int height,boo
     const double root=std::hypot(xx-yy,2*xy),large=(xx+yy+root)/2,small=(xx*yy-xy*xy)/large;
     if(!(small>0) || !std::isfinite(large))throw std::invalid_argument("Fit Ellipse moments are singular");
     cx=m.sx/n+.5;cy=m.sy/n+.5;
-    // Inverse concentration coefficients retain the legacy zero-difference
-    // regularization in its original units. General orientation/conditioning
-    // follows the symmetric moment matrix; projected ratio preserves tie output.
-    const double scale=std::max(4*std::abs(xx*yy-xy*xy),.000001),a=yy/scale,c=xx/scale,cross=xy/scale;
-    double difference=a-c;if(difference==0)difference=.000001;
-    constexpr double halfPi=1.5707963267949;
-    angle=.5*std::atan(2*cross/difference);if(angle<0)angle+=halfPi;if(cross>0)angle+=halfPi;
-    if(cross==0)angle=c>a?0:a!=c?halfPi:0;
-    double sine=std::sin(angle);if(sine==0)sine=.000001;
-    const double projection=cross*std::cos(angle)/sine,quotient=std::abs((a-projection)/(c+projection));
-    const double ratio=std::pow(std::max(quotient,1/quotient),.25),diameter=2*std::sqrt(n/pi);
-    major=diameter*ratio;minor=diameter/ratio;
-    if(180*angle/pi==180)angle=0;
+    const auto axes=moment_ellipse_axes(m);major=axes[0];minor=axes[1];angle=axes[2];
     if(point_selection(frozen) && frozen.points.size()==1)major=minor=2/1.772453851;
   }
   const double ux=std::cos(angle)*major/2,uy=-std::sin(angle)*major/2,vx=std::sin(angle)*minor/2,vy=std::cos(angle)*minor/2;

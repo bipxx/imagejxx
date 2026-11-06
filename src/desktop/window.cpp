@@ -4293,6 +4293,8 @@ struct Window::Impl {
     TargetAnalysisOptions options;options.measurement=manager?TargetMeasurementMode::RoiManager:TargetMeasurementMode::Selection;
     options.roi_indices=indices;
     options.reflex_angle=preferenceState.settings.boolean("reflex_angle");
+    const auto& columns=preferenceState.settings.strings("measurements");
+    options.shape_descriptors=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Circ." || column=="AR" || column=="Round" || column=="Solidity";});
     const auto command=resolve_target_analysis(target,options,limits);
     const auto rows=captured_measurement_row_bytes(command);
     const auto workspace=RenderMemory::add(command.estimate().working_bytes,rows);

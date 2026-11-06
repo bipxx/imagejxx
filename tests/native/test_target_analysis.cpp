@@ -29,6 +29,37 @@ struct Source final:PlaneSource {
 }
 int main(){
   {
+    for(const char* kind:{"rectangle","ellipse"}) {
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_stack({Image(40,40,1,PixelType::UInt8)}).observe_reads(reads));
+      owner->select(Selection(kind,{{0,0},{1e100,10}}));Application app;app.adopt(owner);TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.shape_descriptors=true;
+      refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target(),options);});check(reads.counts().plane_reads==0);
+    }
+  }
+  {
+    const double expected[][4]={{.7757018897752576,1.25,.8000000000852909,1},{.9998303296042818,1.3018205877502111,.7681550049290482,.9696969696969697},{.7144763353520187,1.559370073701773,.6412845910439401,.8571428571428571},{.4363323129985824,0,0,1},{0,0,0,0},{0,0,0,0},{.7775441817634738,1.2222222222222223,.8181818182690476,1.2375},{1,1,1,.9548387096774194}};
+    for(int i=0;i<8;++i) {
+      SpatialCalibration spatial;spatial.unit="um";if(i==3)spatial.spacing={2,.5,1};
+      Selection selection(i==1 || i==4?"ellipse":i==2 || i==5 || i==7?"polygon":"rectangle",{{3,3},{13,11}});
+      if(i==2)selection.points={{3,3},{13,3},{13,7},{8,7},{8,11},{3,11}};
+      if(i==4)selection.points={{60,60},{64,64}};
+      if(i==5)selection.points={{3,3},{4,3},{5,3}};
+      if(i==6)selection.points={{3.2,4.7},{13.4,13}};
+      if(i==7)selection=fit_spline_selection(Selection("polygon",{{3,3},{13,3},{13,13},{3,13}}),40,40);
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},spatial).observe_reads(reads));owner->select(selection);Application app;app.adopt(owner);
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.shape_descriptors=true;
+      const auto before=reads.counts().plane_reads;const auto command=resolve_target_analysis(app.resolve_target(),options);check(command.record().at("version")==MetadataValue(std::int64_t(12)) && reads.counts().plane_reads==before);
+      owner->select(Selection("rectangle",{{0,0},{1,1}}));const auto frozen=owner->snapshot();const auto result=execute_target_analysis(command);const auto& row=result.planes.front();
+      check(row.circularity && row.aspect_ratio && row.roundness && row.solidity);
+      check(std::abs(*row.circularity-expected[i][0])<1e-11);
+      if(i==3)check(std::isnan(*row.aspect_ratio) && std::isinf(*row.roundness));
+      else if(i==4 || i==5)check(std::isnan(*row.aspect_ratio) && std::isnan(*row.roundness));
+      else check(std::abs(*row.aspect_ratio-expected[i][1])<1e-11 && std::abs(*row.roundness-expected[i][2])<1e-11);
+      if(i==5)check(std::isnan(*row.solidity));else check(std::abs(*row.solidity-expected[i][3])<1e-11);
+      check(reads.counts().plane_reads==before+1 && owner->snapshot().shares_data(frozen) && owner->undo_steps()==0);
+      TargetAnalysisLimits limits;limits.max_measurement_work=1;refuses<std::invalid_argument>([&]{resolve_target_analysis(command.target(),options,limits);});check(reads.counts().plane_reads==before+1);
+    }
+  }
+  {
     SpatialCalibration spatial;spatial.spacing={2,.5,1};spatial.origin={-6.5,.75,0};spatial.unit="um";
     const PixelType types[]={PixelType::UInt8,PixelType::UInt16,PixelType::Float32,PixelType::Float32,PixelType::UInt8};
     for(int i=0;i<5;++i) {

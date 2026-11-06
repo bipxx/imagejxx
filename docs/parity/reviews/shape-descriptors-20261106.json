@@ -1,0 +1,536 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 Shape descriptors option",
+  "implemented": true,
+  "verified": true,
+  "integrated": true,
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "scope": "One explicit defaultfalse shape_descriptors flag requests named readonly circularity/aspect_ratio/roundness/solidity for ordinary/fitted area/manager Measure. Captured bounded rounded-hull geometry and borrowed-mask ellipse summary reuse owning algorithms, with pre-narrowing Float32 guard. Existing scalar defaults and strict hull/FitEllipse contracts preserved. Existing settings canonical columns, CSV/workspace and version12 requested provenance integrated. Public option/result layout requires matching C++ clients.",
+  "checks": {
+    "python_distinct_case_ids": 2287,
+    "python_passed": 2286,
+    "python_skipped": 1,
+    "skip": "Optional hidden-OpenGL settings context; unchanged renderer not selected.",
+    "latest_source_reuse": {
+      "python005_unchanged_passed": 2007,
+      "python005_skipped": 1,
+      "python009_affected_passed": 279
+    },
+    "original_rows": 225,
+    "new_physical_profiles_per_windows_host": 7,
+    "matching_final_host_pairs": 44,
+    "unsupported_option_refusal_pairs": 1,
+    "native": "Windows descriptor/analysis/transform/settings/UI, final Float32range controls on Windows/Linux, unchanged shared Linux transform/settings evidence and two installed Windows C++ clients pass."
+  },
+  "remaining": "Full M3/T06/editor/release remains open. Feret five-column option next. RECT/ELLIPSE measurement columns, threshold/redirect, manager/replay and unsampled constructor/large/affine/nonordinary/mask/path/line/point/platform variants retain explicit owning tasks. Retired G016/17gesture inputs unavailable, not passed/recreated/repinned.",
+  "cleanup": "retirement012.json proves all8exact task scratch groups and parent absent. Four original/failure/final capture groups retained losslessly with live hashes; superseded python006/native006captures, SDK/compiler products identity-only. Necessary failures/logs/receipts outside scratch preserved. No disposable Linux scratch; active compiler/runtime/app/installed SDK kept.",
+  "storage": {
+    "before_bytes": 7419256218,
+    "measured_checkpoint_bytes": 7431042582,
+    "after_bytes": 7423128165,
+    "measured_growth_bytes": 11786364,
+    "physical_free_after_bytes": 231347769344,
+    "allocation_bound_bytes": 268435456,
+    "unknown_subtrees": 214,
+    "budget_verified": false
+  },
+  "cost": {
+    "windows_build_commands": 19,
+    "windows_build_command_seconds": 162.588,
+    "native_module_build_commands": 2,
+    "native_module_build_seconds": 66.568,
+    "linux_build_seconds": [
+      15.2,
+      10.458
+    ],
+    "python_run_seconds": {
+      "initial005": 11.056,
+      "physical006": 4.38,
+      "affected009": 4.812
+    },
+    "sdk_command_seconds": 12.226,
+    "failed_compilations": 0,
+    "probe_rebuild_commands": 4,
+    "range_core_rebuild_commands": 2,
+    "range_consumer_relink_commands": 4
+  },
+  "failures_and_corrections": [
+    "python005 had2279passes/5failures/1skip; captures proved legitimate hover pixel sampling after Measure popup close. Cursor parked in final observation, not a weakened read assertion or renderer change.00644physical and final009279affected checks pass.",
+    "range-review007 proved a1e100rectangle accepted by new geometry entry. Source review missed separate Float32guard in old owning FitRectangle admission. Guard added before narrowing and new native/Python negative consumers pass on Windows/Linux/installedSDK. Corrected source before SDK configure; one necessary extra binding link, no late SDK reconfiguration."
+  ],
+  "sources": [
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 6801,
+      "sha256": "67305e05c068bde50e43b1eb6ea54963471c288dfbfccf19f0d2cca08a3392c8"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 43581,
+      "sha256": "310f29d5568195eeff4bdbfdf5d52128114b50d4d159be6690a43228c3dd484e"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 7444,
+      "sha256": "ac6a531f14725855eb42649b605ebc4ce6850edb91bba7d9a41858ccbff2cf87"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 62648,
+      "sha256": "e866e97b30bb2af16af53ba25867bb2df1e8db1d620cac8d73e971063698778e"
+    },
+    {
+      "path": "src/native/selection_shape_detail.hpp",
+      "bytes": 774,
+      "sha256": "d756805ab71c4b1360cbebe70bc32393a2f5e40260056f790aa02e66d52b60b6"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 27705,
+      "sha256": "fb8e2ced49f7a1ca4af57d9e8ef7ca793f56e1c35dddd08126e9ec857d8bb47d"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 928879,
+      "sha256": "ff9e530e238feb08d5cd78d71518c9c428e2c6acbaad03d2074173f2e4cab937"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 7346,
+      "sha256": "7817e03b282040788a7807f7acb351b72ac8f55b4e97b0cd57d6685378a8f9e8"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 104436,
+      "sha256": "91aa2d8cf2b97502e5ed8e1c2022c4c3425dadeee37fd52fc4bcedface7244e1"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 27971,
+      "sha256": "13a7de652301135fd7c93227136e4ab110589f35d441bfd3de6d3a6c6f94bf4c"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38288,
+      "sha256": "5b1738343699533385b5b708b9d08ca767bfbf5db1b2ae683aee8a6cb1299736"
+    },
+    {
+      "path": "tests/python/test_shape_descriptors.py",
+      "bytes": 8833,
+      "sha256": "d26382ad618dc6a7b30c9705d99fff1d14fe269c6790c873419970962efa9468"
+    },
+    {
+      "path": "tests/reference/ObserveShapeDescriptors.java",
+      "bytes": 3854,
+      "sha256": "57a7185ebb787b31df2ff442e8d016a59e93da566a76162fbbfffb34af6ea3c6"
+    },
+    {
+      "path": "tests/fixtures/shape-descriptors-imagej154r.json",
+      "bytes": 335987,
+      "sha256": "d6fc2b379ea6449f3d23912e74cf7706296ec667141c84539a1564a25eb11c1c"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 143885,
+      "sha256": "b18e2ec0a8b1ee25f73d55b5392cf754f4e80229a00387657916715dcfbc0dd4"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 7818,
+      "sha256": "7739b6a2a67824ea4c7b4650a27da9f0431463b7e396072582d46f41a544741f"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 7811,
+      "sha256": "45da7290d376b8786e0913737cc22487405a924488f37d1880fcd1cda901b962"
+    },
+    {
+      "path": "docs/TARGET_ANALYSIS.md",
+      "bytes": 40930,
+      "sha256": "ae42aeb7f922cf03086946989daee54abaf788350b9adb9a05397b1daf5d5452"
+    },
+    {
+      "path": "tests/python/test_subtype_measurements.py",
+      "bytes": 11917,
+      "sha256": "5f344d8a1ab2db2ea677e2634bb43f3a732130544ceac0662beacd599367dfd4"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/entry.json",
+      "bytes": 32731,
+      "sha256": "e51fefa052a990a14656fe8541cf6479c0ad0ce9a90c52e232349ee3f307fc3a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python005.xml",
+      "bytes": 382710,
+      "sha256": "9fda11bbd3521c4a4ed0cd428d10d38d80de87fd32cccc6292879942bb1ef9a7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python006.xml",
+      "bytes": 6596,
+      "sha256": "3bf35b1916a1034ab42942918b98fe53a0356d5a7a45b796cc08dbfaf028f1df"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python009.xml",
+      "bytes": 43374,
+      "sha256": "c0ec3441af45e7ce2c66a28e3a6130f1855172f19744eafa8dd5a0f1a7556c44"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/installed-identities009.json",
+      "bytes": 3391,
+      "sha256": "a8e11167740e9787b0b19d1c9c5bd927fe61efbb6b4e8f71d6ea06a4730806e7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/review011.json",
+      "bytes": 1797,
+      "sha256": "80f8f188693ff4c3e698d4dbcb90ff23736c9d805c08c112662ada65014f8f63"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/retirement012.json",
+      "bytes": 1579,
+      "sha256": "6eacb9f642b6029619687b9fe3e12a162e20dad991632f170fadbdda5a91cdd8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/scratch-identities012.json",
+      "bytes": 988838,
+      "sha256": "0c9d7afae4dacb04e58738104d8bbe65cc23b5039494e00f565e577893de5ae3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/range-review007.log",
+      "bytes": 189,
+      "sha256": "84012837d279bb95a11bc2534b0a64e25fedf7f50e88e80f75b8518254a8ef59"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-prebuild-20261106.json",
+      "bytes": 66573,
+      "sha256": "c751f9b1987c8252f80a650cf35316da3091c7312d02ef594200ca05aa46d46a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-range-prebuild-20261106.json",
+      "bytes": 66573,
+      "sha256": "a612291f49ec7caca49466e8cd04220ffb72a5cc4e6e77b8fba1930234a46a5a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-preretirement-20261106.json",
+      "bytes": 66573,
+      "sha256": "8b7f927d5ce71507041d803c3a75104abbf8d9718472e35e649316d5970b7088"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-final-20261106.json",
+      "bytes": 66573,
+      "sha256": "9ab743ee1df8df9fdbe746bd2aae1cbd01d484e67d7124a42cbebd4af77fee6d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-_desktop004.process.json",
+      "bytes": 2855,
+      "sha256": "863dc9618ea55fe344b5d6798b5c33b9cadc2b1b22af167c253c8320f8d46b30"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-_desktop006.process.json",
+      "bytes": 2856,
+      "sha256": "a44cb1febac738cd4abd468740a9dfb1b7ca37896af945e27ba0fc8e91931601"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-_desktop008.process.json",
+      "bytes": 2855,
+      "sha256": "8fe3e7d21096465835f1b819d0ae7590f194938e2d52183648f8c55a0001a47a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-_native004.process.json",
+      "bytes": 2031,
+      "sha256": "818766748d6f2f9a12b5716a1284808b946968768673d651d5bee2365b0be5bf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-_native008.process.json",
+      "bytes": 2030,
+      "sha256": "25a75f7417149d84b518debeba4d41d562e1d4e584b9bda703a1e36a4cf82e2c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_app004.process.json",
+      "bytes": 2856,
+      "sha256": "4cbe2e32ea68904d1423fe16e1eee7a209468f4e60a4ebf8430b962fb4501725"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_app006.process.json",
+      "bytes": 2858,
+      "sha256": "c166d99b869cb49df8b857ca82ff5a12cee3d4c1220902275cef69eb05d6ad8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_app008.process.json",
+      "bytes": 2859,
+      "sha256": "846252355355d13e90d2890b1605efb2415afd9ab0a289bac75a1e193db6ea87"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_core003.process.json",
+      "bytes": 2036,
+      "sha256": "7231bad179fba075369f649a1e68d913f0409075a36d010bd29c10cb6905c246"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_core007.process.json",
+      "bytes": 2038,
+      "sha256": "1c4fe8c97822c888bbac95e4ecf5e61bfe5e3a6b7c6be26c3ad61d1de31f2b57"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_desktop004.process.json",
+      "bytes": 2859,
+      "sha256": "c1fd0b09a2cc96e85d25ebe36a250568b020465c3ffc4108961dd47507fcd35f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_desktop006.process.json",
+      "bytes": 2861,
+      "sha256": "cb99e79a65e5221cfb4d2d233826a4283919d00c9083b9f28ef1ee4ba617f055"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_display_actions_tests004.process.json",
+      "bytes": 2874,
+      "sha256": "7f5a21cbec85797398a709b1c84fa33dbc846c911b487a09bd86d7f0d07cabd7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_display_actions_tests006.process.json",
+      "bytes": 2870,
+      "sha256": "92ad2c0c404540da8c2d6d8ff59ef40d121712d88b1ce6aa236f3ceeb9d66564"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_display_actions_tests008.process.json",
+      "bytes": 2876,
+      "sha256": "9890c37dc7761448edd67a506871ad29093057e36fb16e88801e4ed3142da772"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_selection_transform_tests003.process.json",
+      "bytes": 2058,
+      "sha256": "717825bca510be46442da63632d43528194e8cfc21c548bfed55796bcfc92c94"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_settings_tests004.process.json",
+      "bytes": 2049,
+      "sha256": "b9b42db931a432d7bf656f8db6bb4449e8cec8214c050d7a2179bfbddb40a279"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_target_analysis_tests003.process.json",
+      "bytes": 2053,
+      "sha256": "46a6d94127dca00ab4e4b277a31c3435bf723599d058864aba5da9d71816a272"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/build-imagejxx_target_analysis_tests007.process.json",
+      "bytes": 2053,
+      "sha256": "3f65a973545a2bbf7cc9fea25c315999eeb2efcd7c5545a2f6e5ab548245b59b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/compile001.process.json",
+      "bytes": 2287,
+      "sha256": "b910fcfac18c9189daa1fc4b2971c1a5e2b51543c90aca659108563cafb23261"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/imagejxx_display_actions_tests006.process.json",
+      "bytes": 1952,
+      "sha256": "cb6d91f04519db3117e4ecedae6d1f46f3ec6b6cf9d7fd5b211e72a662c3563f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/imagejxx_selection_transform_tests003.process.json",
+      "bytes": 1842,
+      "sha256": "5fc23ca5224dedc3019ebced7a7a88cb43e2fe620f292a5b378785583975ab69"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/imagejxx_settings_tests006.process.json",
+      "bytes": 1820,
+      "sha256": "90b9b338ba6e6e92432151b5f6ee97bba26ddddf636ae7b27e52fae8b5176f53"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/imagejxx_target_analysis_tests003.process.json",
+      "bytes": 1833,
+      "sha256": "76342f41b9e347460d65736f72e0f415f11137aaaa65f4f5b1d692bb5de417f7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/install-desktop005.process.json",
+      "bytes": 2119,
+      "sha256": "78f909c9e32c948f03a7de1d3818e1cd32adb06170c51e00eb676a5d5973ebd4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/install-desktop006.process.json",
+      "bytes": 2119,
+      "sha256": "5cfba31532e8b81f39ca853b5763f1092c07cf18359d39758ce375c7feb8a8e6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/install-desktop009.process.json",
+      "bytes": 2118,
+      "sha256": "f509fc03260a54431e6e8a82c00a5f2190681cc78157f7faadb00b05ef1e4a0b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/install-development005.process.json",
+      "bytes": 2124,
+      "sha256": "3fe64a882fe05313aa4f85d9207bcdbea8f99b788decba0212d7290f154ada59"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/install-development009.process.json",
+      "bytes": 2124,
+      "sha256": "81b51bf6a3190fa60aad4c172b4f286423394db81b08df9239b778914d7daa6f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/install-Unspecified005.process.json",
+      "bytes": 2133,
+      "sha256": "78c6ab200ca4c5b04df28f606427fbd7bbc4febea0fb5886328f20ad3807411a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/install-Unspecified006.process.json",
+      "bytes": 2131,
+      "sha256": "5c48670dd418e08612a0efcfafabd4c3f31a71bd7ffa0fad8f38671797c6112a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/install-Unspecified009.process.json",
+      "bytes": 2132,
+      "sha256": "b92adbfbfd8ec42a0c8d0fc5c7c2747cd51a8b35f38d4e2142cb2c6b27bedc0e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/linux-analysis008.process.json",
+      "bytes": 1490,
+      "sha256": "42d2ae2f618eba2bc36c3236bf73996524314aaaf0a02cfbac17d5c67c9a2d7f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/linux-build004.process.json",
+      "bytes": 1639,
+      "sha256": "f05d67d4c6a9382228b84ebb9c112148764b6fe7079828613cd3cf735beae758"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/linux-build008.process.json",
+      "bytes": 1567,
+      "sha256": "53d9330ee7b382efe383edd1ddc1f545a54a2df5047c9cdd97d5af0d6da85a58"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/linux-imagejxx_selection_transform_tests004.process.json",
+      "bytes": 1494,
+      "sha256": "38bd191865d9500d272c1a8e06c3f7238aded51f1890cc7ee4adf6685d6b5f4b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/linux-imagejxx_settings_tests004.process.json",
+      "bytes": 1482,
+      "sha256": "4119ddae9c760e5958db1f263caca2da0bfa369a140e0829ace7454c0faad162"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/linux-imagejxx_target_analysis_tests004.process.json",
+      "bytes": 1488,
+      "sha256": "3c9500f577eb8e723e9b5d498e8640eb09c5eb3d6e9f7d3dbcbc95a6d473a105"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/linux-owner004.process.json",
+      "bytes": 5149,
+      "sha256": "89cbae6de14536496d8f240b884587ac212442a3381aa099f473b226df0f0de5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/linux-owner008.process.json",
+      "bytes": 4300,
+      "sha256": "9a4665358110325bd53699320e84d5efe43e51ac1190207c4a67d1d290b61d0e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/native-host010.process.json",
+      "bytes": 1952,
+      "sha256": "02cc60aa97c12a101a921fd46d95cd830b56225d0f7dcc02369c45407722a89a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/native-range007.process.json",
+      "bytes": 1832,
+      "sha256": "c9997f74440fca657b534fa4b856f906d36fe924fc7c4e9a592472ed0deed0ee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/observe001.process.json",
+      "bytes": 2159,
+      "sha256": "1ade6f143b9976b2e38cb65fa27999483d31315d05ba16474d0190226c484c1b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python005.process.json",
+      "bytes": 2969,
+      "sha256": "820aae346727c0b49dc587946596a7f00a4619051dfb8ae309ef451b53314f41"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python006.process.json",
+      "bytes": 2936,
+      "sha256": "48a49fdffdb2e34b60744f369b542dcfdc9420c9c273fda03d1b9746b8b7f7d3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python009.process.json",
+      "bytes": 2891,
+      "sha256": "8f15f7e264fe17b873d63f36cc5325721e778f793c7e6bc8effa0b261c58b93b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/range-review007.process.json",
+      "bytes": 2697,
+      "sha256": "aced050bd666e625ee76f759acec56be413dd27f37b9340be7f007ca5c786814"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/sdk-build010.process.json",
+      "bytes": 2126,
+      "sha256": "6f4330d9a7d91e674b0663e249aa46fd8bf76fb4f5a56180c7a21675cb1f1d55"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/sdk-carrier010.process.json",
+      "bytes": 2021,
+      "sha256": "d700d995da223cb145eddb2f05543d75c70995fa11a2682b18a091200db8ae89"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/sdk-configure010.process.json",
+      "bytes": 2406,
+      "sha256": "064f61d45bae2eddbd675d40222639a88944716cbc277015f48713e4563302f0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/sdk-selection_transform_api010.process.json",
+      "bytes": 1923,
+      "sha256": "b63c6c9ba591e7d2a1c7620f5677d321c61d97e6216994e4794dfafebbf08311"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/sdk-target_analysis_api010.process.json",
+      "bytes": 1916,
+      "sha256": "75e900139eb6f5200072b55f18673016d648eba5d514470724842c30b54de2ed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/native010-retained011.zip",
+      "bytes": 421665,
+      "sha256": "7177341fa5eced870ba8b3c4e4cf28f886bca5796fb995ccbff9bfa99ef5ae7f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python005-retained011.zip",
+      "bytes": 344216,
+      "sha256": "1ad65266fa6fd93a1ac87dfce5d0be95ef5bbe5553dbfdff48697d22f09ebb5d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python009-retained011.zip",
+      "bytes": 242807,
+      "sha256": "6db5cbaba6a6985a7ce5401e521723000367a4558f5912f0a2b9523126916a3e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/reference001-retained011.zip",
+      "bytes": 12130,
+      "sha256": "59912436859e5312b6986fd4006d89734c3c4b25627bb8b774306b1bae3838ef"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/native010-verify011.json",
+      "bytes": 1456,
+      "sha256": "def5e8411cc47eef17213f98e96bf422880761edfad78e3520a1511272285f26"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python005-verify011.json",
+      "bytes": 1456,
+      "sha256": "d2cfea71e80b03f6788ede36d7a58096e0ee3858015a794055099701630a2f9c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/python009-verify011.json",
+      "bytes": 1453,
+      "sha256": "de370fad5809d17327c83ac97740534cdd65e9517745d3051380187cacf9be86"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/shape-descriptors-20261106/reference001-verify011.json",
+      "bytes": 1468,
+      "sha256": "288c77ebb9309c44d8041374ddfd5432b7bf08338f6f14e61ed7974b2bbd87df"
+    }
+  ],
+  "task_record": ".tmp/manual-workflow-verification/shape-descriptors-20261106/entry.json",
+  "next": "T04a.2 M3 Feret measurements option (five columns)",
+  "limits": [
+    "225sampled ordinary/fitted constructor/calibration/scalar cases, not whole-family parity",
+    "One additional existing borrowed-mask moment pass is admitted; not an extra source read or mask copy",
+    "Default scalar calls unchanged; nonordinary descriptors explicitly refuse before reads",
+    "One optional hidden-OpenGL skip; Linux UI/installed SDK/macOS/release gates remain",
+    "Retired G016/gesture refs unavailable; no repin/reconstruction"
+  ]
+}

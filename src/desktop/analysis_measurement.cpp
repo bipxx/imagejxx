@@ -89,6 +89,10 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       values["Perim."]=scalar(*row.perimeter);
       values["Perim. unit"]=row.perimeter_in_pixels?std::string("pixel"):result.spatial.unit;
     }
+    if(row.circularity) {
+      values["Circ."]=scalar(*row.circularity);values["AR"]=scalar(*row.aspect_ratio);
+      values["Round"]=scalar(*row.roundness);values["Solidity"]=scalar(*row.solidity);
+    }
     if(row.center_of_mass_world) {
       values["XM"]=scalar((*row.center_of_mass_world)[0]);values["YM"]=scalar((*row.center_of_mass_world)[1]);
     }

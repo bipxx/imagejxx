@@ -491,10 +491,23 @@ and cancelling denominators, density NaN/Inf and signed16 preserve their origina
 numerical meaning. Nonfinite moment components propagate only through nonzero
 affine axes, with captured plane Z; these diagnostic values do not weaken the
 finite-only public geometry API. Geometric X/Y remains independent.
-Commands containing area rows carry diagnostic version11, `area_centroid_policy`
-and `center_of_mass_policy`; non-area provenance keeps its previous meaning.
+Scalar area commands retain diagnostic version11, `area_centroid_policy` and
+`center_of_mass_policy`; non-area provenance keeps its previous meaning.
+Setting `TargetAnalysisOptions.shape_descriptors=True` in SELECTION/ROI_MANAGER
+mode requests the four readonly optional outputs `circularity`, `aspect_ratio`,
+`roundness`, `solidity`. It defaults false. Ordinary rectangle/ellipse/polygon/
+freehand and fitted area rows are supported; other kinds refuse before reads.
+The existing Measurements choices Circ./AR/Round/Solidity request this option
+when selected. Empty/default choices keep scalar behavior. Requested commands
+use diagnostic version12 and `shape_descriptor_policy`. Circ. alone clamps at
+one; legacy near-square-pixel ellipse scaling and rounded int32 hull-area rules
+are preserved, including NaN/Inf and solidity above one. Geometric/density counts
+stay distinct. One admitted area mask is borrowed for the existing ellipse
+moment pass, without another mask allocation or provider read. No pixels/source
+handles survive in descriptor results.
+[Scoped shape evidence](parity/reviews/shape-descriptors-20261106.json).
 [Scoped centroid evidence](parity/reviews/area-centroid-20261106.json) and
-[weighted evidence](parity/reviews/center-of-mass-20261106.json). Other descriptors,
+[weighted evidence](parity/reviews/center-of-mass-20261106.json). Feret, RECT/ELLIPSE columns,
 threshold/redirect and remaining variants stay open.
 
 
@@ -502,7 +515,7 @@ threshold/redirect and remaining variants stay open.
 | --- | --- |
 | `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Point properties/vertex alignment are scoped delivered; interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
-| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. Feret/other shape, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
+| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set. Feret, RECT/ELLIPSE, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
 | `reflex_angle` | Boolean false by default; shared Preferences control/API/persistence, captured once per measurement. True selects 360 minus the refreshed calibrated angle. |

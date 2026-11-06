@@ -21,6 +21,8 @@ struct TargetAnalysisOptions {
   // Manager mode: empty means every stored row; otherwise ordered unique IDs.
   std::vector<std::size_t> roi_indices;
   bool reflex_angle = false;
+  // Explicit ordinary-area Circ./AR/Round./Solidity request; old scalar defaults stay unchanged.
+  bool shape_descriptors = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -64,6 +66,8 @@ struct TargetAnalysisPlane {
   // Area-only intensity-weighted summary, at captured plane z. NaN/Inf moment
   // components propagate through nonzero spatial axes, not geometry APIs.
   std::optional<std::array<double,3>> center_of_mass_world;
+  // Present together for an explicit shape_descriptors request.
+  std::optional<double> circularity,aspect_ratio,roundness,solidity;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image
