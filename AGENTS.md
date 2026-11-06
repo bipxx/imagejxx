@@ -17,6 +17,11 @@ as the authority for whether the required checkpoint is satisfied:
   scratch with its owner and safety blocker. Do not mark an affected checkpoint
   or task complete while its required evidence or safe retirement is unresolved.
 
+An unsatisfied checkpoint blocks its dependent action, including a retry or
+successor start; pressure to continue does not satisfy it. For a repeated
+lapse, perform and record the concrete corrective check immediately before
+the next affected action. Restating this rule is not corrective evidence.
+
 Use the existing task records and maintained tools below. This file governs
 agent decisions; it is not an automatic filesystem or process guard. Reinforcing
 its text does not prove compliance or justify rerunning unchanged verification.
