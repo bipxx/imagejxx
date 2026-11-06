@@ -94,6 +94,8 @@ void bind_selection_creation(py::module_ &m) {
       py::arg("integer_coordinates").noconvert()=false,
       py::arg("max_working_bytes")=128ULL*1024*1024);
   m.def("selection_polygon_type",&selection_polygon_type,py::arg("selection"));
+  m.def("selection_polygon_integer_coordinates",&selection_polygon_integer_coordinates,py::arg("selection"));
+  m.def("with_selection_polygon_coordinates",&with_selection_polygon_coordinates,py::arg("selection"),py::arg("integer_coordinates").noconvert());
   m.def("with_selection_polygon_type",&with_selection_polygon_type,py::arg("selection"),py::arg("type"));
   py::class_<SelectionInterpolationOptions>(m,"SelectionInterpolationOptions")
       .def(py::init<>())

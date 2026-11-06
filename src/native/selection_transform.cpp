@@ -34,6 +34,11 @@ const char* polygon_native_kind(SelectionPolygonType type) {
 }
 std::optional<SelectionPolygonType> detail::polygon_type(const std::string& kind,const MetadataObject& attributes) {
   const auto found=attributes.find(polygon_type_attribute);
+  if(const auto coordinates=attributes.find(polygon_integer_coordinates_attribute);coordinates!=attributes.end()) {
+    const auto flag=std::get_if<bool>(&coordinates->second);
+    if(!flag || !*flag || found==attributes.end())
+      throw std::invalid_argument("Integer polygon coordinates require true and explicit polygon subtype state");
+  }
   if(found==attributes.end()) {
     if(kind=="polygon")return SelectionPolygonType::Polygon;
     if(kind=="freehand")return SelectionPolygonType::Freehand;
@@ -55,6 +60,18 @@ std::optional<SelectionPolygonType> selection_polygon_type(const Selection& sour
 Selection with_selection_polygon_type(const Selection& source,SelectionPolygonType type) {
   if(source.kind!=polygon_native_kind(type))throw std::invalid_argument("Polygon subtype differs from native geometry");
   Selection result=source;result.attributes[polygon_type_attribute]=std::string(polygon_type_name(type));
+  result.validate(1,1);return result;
+}
+bool selection_polygon_integer_coordinates(const Selection& source) {
+  (void)selection_polygon_type(source);
+  return source.attributes.count(polygon_integer_coordinates_attribute)!=0;
+}
+Selection with_selection_polygon_coordinates(const Selection& source,bool integers) {
+  const auto type=selection_polygon_type(source);
+  if(!type)throw std::invalid_argument("Coordinate constructor requires ordinary polygon geometry");
+  Selection result=source;
+  if(integers){result.attributes[polygon_type_attribute]=std::string(polygon_type_name(*type));result.attributes[polygon_integer_coordinates_attribute]=true;}
+  else result.attributes.erase(polygon_integer_coordinates_attribute);
   result.validate(1,1);return result;
 }
 namespace {
@@ -339,7 +356,7 @@ Selection convex_hull_selection(const Selection &source,int width,int height,
   auto hull=ordered_hull(std::move(points),true);
   Selection result("polygon",std::move(hull));result.width=frozen.width;
   result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);result.attributes.erase(polygon_integer_coordinates_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();
   return result;
 }
@@ -390,7 +407,7 @@ Selection bounding_rectangle_selection(const Selection &source,int width,int hei
   }
   Selection result("rectangle",{{b[0],b[1]},{b[2],b[3]}});result.width=frozen.width;
   result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);result.attributes.erase(polygon_integer_coordinates_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 std::size_t estimate_fit_circle_selection(const Selection &source,int width,int height,
@@ -412,7 +429,7 @@ Selection fit_circle_selection(const Selection &source,int width,int height,bool
   for(double v:{x,y,d,x+d,y+d})if(!std::isfinite(v) || v<std::numeric_limits<int>::min() || v>std::numeric_limits<int>::max())
     throw std::invalid_argument("Fit Circle exceeds integer output profile");
   Selection result("ellipse",{{x,y},{x+d,y+d}});result.width=frozen.width;result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);result.attributes.erase(polygon_integer_coordinates_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 std::size_t estimate_fit_ellipse_selection(const Selection& s,int width,int height,const SelectionEditLimits& limits) {
@@ -471,7 +488,7 @@ Selection fit_ellipse_selection(const Selection& source,int width,int height,boo
   }
   const double ux=std::cos(angle)*major/2,uy=-std::sin(angle)*major/2,vx=std::sin(angle)*minor/2,vy=std::cos(angle)*minor/2;
   Selection result("rotated_ellipse",{{cx,cy},{cx+ux,cy+uy},{cx+vx,cy+vy}});result.width=frozen.width;result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);result.attributes.erase(polygon_integer_coordinates_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 
@@ -519,7 +536,7 @@ Selection fit_rectangle_selection(const Selection& source,int w,int h,bool disca
   const Point u{std::cos(bestAngle)*axis/2,std::sin(bestAngle)*axis/2};
   const double length=std::hypot(u[0],u[1]);const Point v{-u[1]*span/(2*length),u[0]*span/(2*length)};
   Selection result("rotated_rectangle",{center,{center[0]+u[0],center[1]+u[1]},{center[0]+v[0],center[1]+v[1]}});
-  result.width=frozen.width;result.attributes=frozen.attributes;result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
+  result.width=frozen.width;result.attributes=frozen.attributes;result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);result.attributes.erase(polygon_integer_coordinates_attribute);
   result.validate(w,h);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 
@@ -599,7 +616,8 @@ InterpolationPlan interpolation_plan(const Selection& source,int width,int heigh
     auto kind=source.kind;
     if(const auto type=selection_polygon_type(source))kind=polygon_type_name(*type);
     if(fitted) {
-      const auto controls=selection_spline_fit(source)->controls;
+      const auto state=selection_spline_fit(source);
+      const auto& controls=state->controls;
       kind=controls.kind;if(const auto type=selection_polygon_type(controls))kind=polygon_type_name(*type);
     }
     std::vector<Point> points;
@@ -641,7 +659,7 @@ void interpolation_result_type(Selection& result,const std::string& source_kind,
   bool polyline=options.interval>=8;
   if(options.magnification>=12 && result.points.size()<=150)polygon=polyline=true;
   result.kind=open?"polyline":polygon?"polygon":"freehand";
-  result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
+  result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);result.attributes.erase(polygon_integer_coordinates_attribute);
   if(open && (!polyline || result.points.size()<2))result.attributes[polygon_type_attribute]=std::string(polyline?"polyline":"freeline");
   else if(!open && result.points.size()<3)result.attributes[polygon_type_attribute]=result.kind;
 }
@@ -847,7 +865,7 @@ CompoundInterpolationPlan compound_interpolation_plan(const Selection& source,in
       commands.push_back(4);
     }
     auto result=Selection::from_path(commands);result.width=source.width;result.attributes=source.attributes;
-    result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);if(source.is_rounded_box())result.attributes.erase("corner_diameter");
+    result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);result.attributes.erase(polygon_integer_coordinates_attribute);if(source.is_rounded_box())result.attributes.erase("corner_diameter");
     result.validate(width,height);return CompoundInterpolationPlan{std::move(result),bytes};
   });
 }

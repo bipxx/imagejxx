@@ -1,0 +1,331 @@
+{
+  "schema": "imagejxx.scoped-delivery.1",
+  "task": "T04a.2 M3/T06 current-plane subtype-sensitive Measure",
+  "base_commit": "d751d0bbdd6920abbb7ed64aad9c64f4842e9659",
+  "state": {
+    "implemented": "Canonicalownedconstructorstateandget/setAPI;integerbareROIwriter/reader;V5/session/rebindandedit/conversionboundaries;qualifiedcapturedperimeter/smoothedLength;explicitone-vertexpathmeasurement;existingresultscolumn/CSV/workspace/UI integration. PublicrowABIupdated,matchingclientsrebuilt.",
+    "verified": "3662distinctinstalledPythonIDsultimatelygreen;180capturedoriginalconstructor/statisticrowsandnewactualInterpolate->Analyzercomposition17.99071999827739.14newphysicalflows,7pairedresult/CSVreaders. Windows/Linuxnativeanalysis/geometry/ROI/settings/sessionand2WindowsinstalledSDKclients. OneoptionalOpenGLskip.",
+    "integrated": "BothWindowsImGuihostsMeasure/Perim.column/CSV/workspace/cancelandconstructorstaleguard;source/pixels/historypreserved. No extra provider read duringplanning;onepermeasurementgroup inqualifiedcases.",
+    "scoped_task_closed": true,
+    "parent_M3_T06_closed": false,
+    "family_closed": false,
+    "release_ready": false,
+    "full_editor_closed": false
+  },
+  "contract": {
+    "state_key": "imagejxx.polygon_integer_coordinates",
+    "grammar": "CanonicaltrueBooleanonly,requiresownedpolygon_typestate;absenceisnativeFloat32constructor. Getter/setterreuseexistingpolygonowner;setterFalseerasesmarker. IntegercoordinatesmustintegralInt32.",
+    "api": [
+      "selection_polygon_integer_coordinates(const Selection&) ->bool",
+      "with_selection_polygon_coordinates(const Selection&,bool) ->ownedvalidatedSelection",
+      "TargetAnalysisPlane.perimeter optional<double>;readonlyPythonproperty"
+    ],
+    "compatibility": "PublicTargetAnalysisPlane layoutchanges;C++clientsmustrebuild.Matchingcore/native/desktop/app/SDKproductsinstalledand2SDKclientsrebuilt. ExistingSessionV5andcreationprofilefenceused,noformatversion/newowner.",
+    "state_flow": "BareintegerImageJROIread/writepreservesconstructorviaexistingintegercoordinatewriter. V5/session/rebind/integraleditingpreserve;fractionaleditsandnewFloat32fit/interpolation/conversiongeometrypromote/clear. Opaquepropertypatchcannoteditownedstate.",
+    "metric": "Qualifiedunfittedordinarypolygonmetricfrozeninexistingrowplanbeforeproviderread. FREELINELengthsmoothed;areaPerim.published,straightlinePerim.reusesqualifiedLength. FloatedTRACEDNaNandintegertracedcorrectionremainexplicit.",
+    "admission": "Metricnativeextent1..65536;privatecaptureadmitsonevertexpolylineemptyprofilewhilepublicirregularprofileAPIstays2..4096. MetrictemporarypeakandrowABIbytesaccounted. Originalsamplingaggregatequotaunchanged;separatemetricsegmentaggregateboundedbyexistingmax_measurement_work. No wholeCPU/RSSclaim.",
+    "results": "ExistingSettingsresultschoicePerim.,bothWindowhosts,CSVprecisionandworkspacepersistence. NaNkeptasnanstringinJSON/CSV.",
+    "empty_area_policy": "NativeexplicitdegenerateareasretainedandmeasureArea0;24upstreamdroppedROIsmeasurewholeimage.ThispolicyisnotupstreamAnalyzerequivalence.",
+    "record": "Qualifiedpolygonanalysisprovenanceversion7capturesconstructor/typepolicywithoutNaNnumericmetadata;unchangedangle/point/annotation/rectanglecontractsretainolderversions.",
+    "cancellation": "Existingcapturedread-onlyjobowner/capability/creatorpublication;cancelpreservespriorrows/reservations;constructorchangeissource-datarevisionstaleness.",
+    "remaining": "Fitted,analytic/mask/path perimeters,widerconstructor/scientific/saved-rowvariants,T07externalannotationprojectionprecision,T09operation-intent,T14platform/release gates retainowners. RetiredG016/17gesture referencesunavailable,norecreation/repin/passclaim."
+  },
+  "references": {
+    "matrix": "tests/fixtures/subtype-measurements-imagej154r.json (180unchangedoriginalrows;sourcepinintheearlierkernelreceipt)",
+    "new_composition": {
+      "path": "tests/fixtures/interpolated-measurement-imagej154r.json",
+      "bytes": 1042,
+      "sha256": "09c434c49599233947362caf214ebeae78cf761b3ac7a8ad98455c8c520f0ff6"
+    },
+    "observer": {
+      "path": "tests/reference/ObserveInterpolatedMeasurement.java",
+      "bytes": 1880,
+      "sha256": "f3d30d9447168a071b767c749a20d56790f192f69962c7640a0eada1108d9460"
+    },
+    "composition": "OriginalSelection.run(interpolate),interval2.7Adjust,thenAnalyzeron3pointPolyline:8samples,typeFREELINE,Length/Perim.17.99071999827739. OldrawEuclideanexpectationwasunqualified;noneofoldfixturebytes/fingerprints/tolerancesrepinned."
+  },
+  "verification": {
+    "distinct_installed_python_passed": 3662,
+    "initial_failures_recovered": [
+      "tests.python.test_path_measurements::test_mixed_manager_aggregate_work_and_ordered_geometry_only_groups",
+      "tests.python.test_path_measurements::test_polyline_work_admission_and_batch_budget_precede_reads",
+      "tests.python.test_selection_interpolation::test_desktop_edit_history_and_invalid_options"
+    ],
+    "skips": {
+      "tests.python.test_settings::test_settings_in_hidden_opengl_and_recreated_context": "Set IMAGEJXX_RENDER_TESTS=1 for hidden OpenGL"
+    },
+    "python_receipts": [
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-python006.xml",
+        "bytes": 454886,
+        "sha256": "143549b5390778e1eb1a1d3726d32fc0f99b587e7ef0513a380072b67576b823"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-python008.xml",
+        "bytes": 63946,
+        "sha256": "6258ab19bb9cc07dfb915556697e91704e79c4da14bfe1cd3ec70d6d94eb8614"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-roi009.xml",
+        "bytes": 62355,
+        "sha256": "8a1c85bae1f180f531fa2b0152f78e6be439df457c65fa0059b3edccb095decd"
+      }
+    ],
+    "physical_new_cases": 14,
+    "paired_hosts": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-both-host-readers010.json",
+      "bytes": 1190,
+      "sha256": "2a2904e58319007e91d3d532d77489aeb3ef1fe6cf3e73d17a260a1938e57488"
+    },
+    "native_receipts": [
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-native-target008.process.json",
+        "bytes": 1834,
+        "sha256": "64adb07b2ba67b571d780fa8f8209f903a947e54ab2e0febff1f6465e9160388"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-native-display008.process.json",
+        "bytes": 1978,
+        "sha256": "b184d49f5f18e8d028c4932d04c934164923f40fca1137dd0594672d3163c7cc"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-native-session006.process.json",
+        "bytes": 1964,
+        "sha256": "78785f55b385c1ffd8654c42fa8ada820354ace8bab0c0202d90540fb751c173"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-linux-owner005.process.json",
+        "bytes": 4117,
+        "sha256": "5ab18e9426acdb8e3d02c62879c23c85a902547315c7fef6412fab1d8cb40738"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-linux-owner008.process.json",
+        "bytes": 3144,
+        "sha256": "a5eea4a828c27ce79e64a8f9c1ed6c2b4ac5831ee5bbc08f50c284fc36ee31c4"
+      }
+    ],
+    "installed_clients": [
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-sdk-target_analysis_api008.process.json",
+        "bytes": 1919,
+        "sha256": "39caad7353bfb0a3a5053371fca2f37e3c38d5a155520c03b23742be25844aeb"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-sdk-selection_transform_api008.process.json",
+        "bytes": 1927,
+        "sha256": "07833763d0b1edc55709201d30cd9936f0658e66178cd87a0bee89f79872200f"
+      }
+    ],
+    "installed_source_bytes": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-installed-identities008.json",
+      "bytes": 3391,
+      "sha256": "1a2eae45dc22dabc70c44d40d71e9791f6dd359be391c0873182942a5422e471"
+    },
+    "reuse": "Geometry/ROI/settings/session005/006greenresultssourceunchangedafterprivatequota fix;no broadunchangedcampaignrerun. Earlierkernel180directreference/APIevidencepreserved.",
+    "unavailable": "GlobalretiredG016/17gesturegatesnotselected;norecreate/repin/passclaim. No newLinuxinstalledSDK/PythonUI/macOSUI/releaseclaim."
+  },
+  "cleanup": {
+    "windows": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-windows-retirement010.json",
+      "bytes": 612,
+      "sha256": "c5da9c09762b4257618325202cb025966b26c09ddde8a22923dee19310d26524"
+    },
+    "linux": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-linux-retirement010.json",
+      "bytes": 245,
+      "sha256": "b552ee7a02753fc69c29d67d443a178d9e2c17c66c863807257c36c09a171036"
+    },
+    "sdk_hashes": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-sdk-hashes010.json",
+      "bytes": 20125,
+      "sha256": "c57706f28ecae8bf80fc8cd9dd0e9486b075ff839f8130a36c256c489388492c"
+    },
+    "groups": [
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/composition-reference007-retirement.json",
+        "bytes": 450,
+        "sha256": "4c5785c0086bf532ba063b5fb9280d887ba9b56dd8c5cc9fc63a09ac3a680dd7"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-native-display006-retirement.json",
+        "bytes": 461,
+        "sha256": "d067033e81723b18e4fde0410aa0aed6cc053cd57c6379806f1ccad179ad4aae"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-native-display008-retirement.json",
+        "bytes": 461,
+        "sha256": "80684e7e8239b6cc9118cde8ab6022d6662f83b6185a175aed5fc0d8dad2e097"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-native-session006-retirement.json",
+        "bytes": 453,
+        "sha256": "7ae7762e076db0549c71f9626de279223bdb71bc700f623f5f3ca74af9baad0c"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-python006-retirement.json",
+        "bytes": 453,
+        "sha256": "ed62eef0771ff52004ce0bd792c6b24ff15f9b7e483c85ff5e663ce5cab37e69"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-python008-retirement.json",
+        "bytes": 450,
+        "sha256": "9fd0dee6ea3d522b09ecd18daa75725c0ebb63ba7ee01a44d4dfa172b91ddb86"
+      }
+    ],
+    "earlier_kernel_groups": "3alreadyarchived/removed;immutablekernelreceiptretained. Total9nonemptygroupslive-sourceverified.",
+    "retained_consumer_now": null,
+    "scratch_absent": true,
+    "warm_products": "Activecache/runtime/SDKpreserved;noarchiveofSDK/compiler/environment."
+  },
+  "storage": {
+    "task_entry_known_bytes": 7401207027,
+    "integration_entry_known_bytes": 7406691565,
+    "measured_checkpoint_known_bytes": 7412969682,
+    "final_before_prose_known_bytes": 7406563774,
+    "known_peak_growth_bytes": 11762655,
+    "known_final_growth_bytes": 5356747,
+    "allocation_bound_bytes": 134217728,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "final_physical_free_bytes": 247446372352
+  },
+  "waste": {
+    "decision": "Fixnow:privateworkstageboundpreservesexistingexact400/800andone-stepquotas;replaceunqualifiedrawlengthtestwithactualoriginalcommandcompositionref. Removedlocalextra fitted-controlcopyatnecessarycoretouch withoutboundrelaxation. MissingincludeC3861causedone4.94sfailedintegrationbuild;correctiveactualdeclaration/includecheckwasrecordedbeforeretry. Reusedsuccessfulcore/Linuxand3235greenIDs;onlyaffected/newmoduleandfailedIDsreran. No newruntime/measurementengine/controller/registry/cleanup runner.",
+    "deferred": "T02remainingrepeatedfitreconstructionrequiresmeasuredconsumer;T07integerwriterdiagnosticsstilluseexistinginteger-splinemessagewording,cosmeticnotnumerical,handleonowningIOtouchratherthanrelinkcampaign.",
+    "actual_lapse": "Missingdirectprobeincludeaftercallerreview;C3861desktop005failure4.94s preserved.Correctivedeclaration/includecheckrecordedbefore006retry;core/Linuxnotrepeated.",
+    "cost": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/integration-build-cost010.json",
+      "bytes": 230,
+      "sha256": "fafdb3ea3ac219171f545570ca2cca7be0757808ebbe246695e9db37172b42a6"
+    },
+    "remaining_T02": "Localcontrolcopyremovedthroughownedoptional+borrowedreference;conservativeestimateandvalidationunchanged. Repeatedreconstructionneedsmeasuredconsumer."
+  },
+  "task_record": {
+    "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/entry.json",
+    "bytes": 44284,
+    "sha256": "1216a27380b50238e7b0743808b06133109742d4710db16b44d3120dd0c7abb7"
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/line_measurement.hpp",
+      "bytes": 3813,
+      "sha256": "7eac45e5374a0437d992dd8f2991849e5b7b9540f6738611d2e201aaf3fcc53b"
+    },
+    {
+      "path": "include/imagejxx/selection_interpolation.hpp",
+      "bytes": 1573,
+      "sha256": "56ec0829551e90fc26908361c84773f7e7fd49c6cefd537aafa9542e7df7473b"
+    },
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 5900,
+      "sha256": "7ce11aed9b6aea8aedd97b7a70dff0eda31e9a65111a188f83a9b0fc79351843"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 6571,
+      "sha256": "caf7220eb296bbbc81497e4da22c00e9429bbe2d2000aabec1a9da611a69a893"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 95831,
+      "sha256": "e5a2c8af155aad7c9457193520164b978bee323ca280da6b7969e5b3062b2c37"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 1904,
+      "sha256": "082f10980e950fbd4b89719d140fd90a4dcdd6688c512f0a286ecbc132b87750"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 67116,
+      "sha256": "cd901f27bb4faf912d79ff411dc6dc6b21de5d25f4cbba64486ecf961ac1622a"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 83681,
+      "sha256": "040407195514e4263aa037859c0fe7ed3df800bf6e295e8ca0fcb3ae218dc121"
+    },
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 30284,
+      "sha256": "35283758180e976705e043e122a903fa3e3c26129832f21100ace2d766ccdf12"
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 61523,
+      "sha256": "e2db2fc2572e2e0a072b19e9e94e65e077d61c296b1074f555218a579b1e1aa9"
+    },
+    {
+      "path": "src/native/imagej_roi.cpp",
+      "bytes": 50245,
+      "sha256": "c4fda66b711c5cb1d2660e33a90d3cad3e35cc98a7b18587e84c94f6457f6146"
+    },
+    {
+      "path": "src/native/imagej_spline.cpp",
+      "bytes": 26634,
+      "sha256": "0aa31d275908565bb8064a32ca444212a70198852bc41d2dabc34dbf93365ff3"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 28382,
+      "sha256": "7da5edb2bce9f11779a2d3505780710f3adb197738c429d9bafd2b79e7ab03f4"
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 78875,
+      "sha256": "41a7b287bcf2183170965ccabc30d7c8072cdb6b1264dd1550fd1e3787a74217"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 58177,
+      "sha256": "48b3294622aaaaaa190d510ecf369c65f3a0b20adf945947f03863301599d0ab"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 27461,
+      "sha256": "e774c08f22fb48b6e307e509baa65e96838735641bee209063ab86c93b009253"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 36398,
+      "sha256": "e842d9bb199a73000fb4112be9106a9033d654c0055238bb7657fde2b8086f76"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 6861,
+      "sha256": "bbb1a114c8c1bc58677ca2760b0a37759c1c3b6c29dd7e54933c86e848de70ab"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 37281,
+      "sha256": "541531d1bae0fb1ecf105cf91fac1a68a46c89a91865e66b8e9e86d619959166"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 15832,
+      "sha256": "8e43f13b406e38d60a694421690b6ff0892871c6d2fc90a3b7ef0fabff96da88"
+    },
+    {
+      "path": "tests/python/test_selection_interpolation.py",
+      "bytes": 7273,
+      "sha256": "0ee609c93cb77b2b971cd56bb6eb8543fa72b79659cf4335a6ee3d10fcefc4c3"
+    },
+    {
+      "path": "tests/python/test_subtype_measurements.py",
+      "bytes": 11808,
+      "sha256": "a6336e0aec3973198f10924e743a3610af6d87cdd8c60eaeb6d76b57e26e2cbb"
+    },
+    {
+      "path": "tests/reference/ObserveInterpolatedMeasurement.java",
+      "bytes": 1880,
+      "sha256": "f3d30d9447168a071b767c749a20d56790f192f69962c7640a0eada1108d9460"
+    },
+    {
+      "path": "tests/fixtures/interpolated-measurement-imagej154r.json",
+      "bytes": 1042,
+      "sha256": "09c434c49599233947362caf214ebeae78cf761b3ac7a8ad98455c8c520f0ff6"
+    }
+  ],
+  "next_ready": "T04a.2M3/T06fitted-sourceFitSpline->Measurequalificationthrough existingfit/analysisowners;currentboundedsubtypetaskclosed,parentandfullgoalremainopen."
+}

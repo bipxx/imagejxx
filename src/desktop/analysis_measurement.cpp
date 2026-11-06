@@ -21,6 +21,10 @@ bool captured_measurement_available(const DocumentSnapshot& source) {
        dataset.pixel_type()!=PixelType::Float32))return false;
   if(!data.selection)return true;
   const auto& kind=data.selection->kind;
+  if(kind=="polyline" && data.selection->points.size()==1 && data.selection->width<=1) {
+    const auto& p=data.selection->points.front();const auto shape=dataset.shape();
+    return p[0]>=0 && p[1]>=0 && p[0]<=shape.x-1 && p[1]<=shape.y-1;
+  }
   if(kind=="line" || kind=="polyline")return captured_profile_available(source);
   if(kind=="angle")return data.selection->points.size()==3;
   if(kind=="point" || kind=="multipoint")return !data.selection->points.empty();
@@ -81,6 +85,7 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       values["ROI"]=source.data().selection->kind;
       values["Bounds"]=row.bounds?Json(*row.bounds):Json();
     }
+    if(row.perimeter)values["Perim."]=scalar(*row.perimeter);
     if(row.length)values["Length"]=scalar(*row.length);
     if(row.angle_degrees)values["Angle"]=scalar(*row.angle_degrees);
     if(row.point_index) {

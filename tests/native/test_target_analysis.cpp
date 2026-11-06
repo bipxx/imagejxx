@@ -35,6 +35,17 @@ int main(){
     check(std::isnan(imagej_calibrated_polygon_length(traced,calibration)));
     check(std::abs(imagej_calibrated_polygon_length(traced,calibration,true)-48.24621125123532)<1e-11);
     refuses<std::invalid_argument>([&]{imagej_calibrated_polygon_length(free,calibration,false,8255);});
+    const auto integer=with_selection_polygon_coordinates(traced,true);
+    check(selection_polygon_integer_coordinates(integer));
+    check(!selection_polygon_integer_coordinates(SelectionEditor(integer,40,40).moved_vertex(0,{3.25,3})));
+    DocumentData data{Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},calibration)};
+    data.selection=integer;auto document=std::make_shared<Document>(std::move(data));Application application;application.adopt(document);
+    TargetAnalysisOptions settings;settings.measurement=TargetMeasurementMode::Selection;
+    const auto command=resolve_target_analysis(application.resolve_target(),settings);
+    document->select(with_selection_polygon_coordinates(integer,false));
+    const auto result=execute_target_analysis(command);
+    check(result.planes.front().perimeter && std::abs(*result.planes.front().perimeter-48.24621125123532)<1e-11);
+    check(command.record().at("version")==MetadataValue(std::int64_t(7)));
   }
   auto provider=std::make_shared<Source>();auto owner=std::make_shared<Document>(Dataset(provider));
   Application app;app.adopt(owner);

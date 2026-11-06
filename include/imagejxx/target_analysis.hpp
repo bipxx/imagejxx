@@ -51,6 +51,9 @@ struct TargetAnalysisPlane {
   // Present only when this parent uses more than one distinct counter.
   std::optional<std::size_t> point_counter_count;
   std::optional<double> length, angle_degrees;
+  // Qualified ordinary polygon perimeter (also the open-path length); not a
+  // generic mask/path/analytic/spline perimeter. Float TRACED may be NaN.
+  std::optional<double> perimeter;
   std::optional<std::array<double,3>> midpoint_world;
 };
 // Detached results retain no source/provider or application. Distances are

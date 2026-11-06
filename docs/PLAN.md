@@ -19,8 +19,10 @@ Native snapshot capture and queued ownership are scoped integrated in both
 Windows hosts; Python controls and changed installed clients on Windows/Linux pass.
 Repeated interpolation, subtype/zoom and degenerate geometry now have scoped
 API/both-host evidence. Remembered Interpolate options now have scoped native
-settings and both-Windows-host integration. Next: T04a.2 M3/T06 scientific
-subtype-sensitive lengths/perimeters.
+settings and both-Windows-host integration. Subtype-sensitive current-plane
+Measure now preserves constructor precision and publishes calibrated Length/
+Perim. with both-host CSV/workspace checks. Next: fitted-source measurement
+qualification within T04a.2 M3/T06.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -140,7 +142,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T06/G018: point interpolation no-op. | Core/API and actual menus in both Windows hosts preserve annotated point/multipoint state without dialog,job,history,recording or extra pixel reads.344 affected Python cases (14new),4physical point cases,Windows/Linux core andWindows installed SDK pass. [Receipt](parity/reviews/interpolation-point-noop-20261105.json).120two-command reference rows inform remaining source/type/zoom work;only4point rows are claimed equivalent here. |
 | Delivered scoped workflow | T06/G018: repeated-source/type, zoom and degenerate interpolation. |115 comparable actual two-command rows across129observations,including149/150/151sample boundaries;14rows retain explicit native compound/empty policies.1923distinct affected Python IDs ultimately pass;8physical repeat/edit/zoom cases,Windows/Linux native/session andWindows SDK pass. Typed state persists through edits,V5 andV4 rebind/ROI interchange. [Receipt](parity/reviews/interpolation-types-20261105.json). Scientific subtype lengths/perimeters andother parent residuals remain open. |
 | Delivered scoped workflow | T15: remembered Interpolate options. | Three native Settings keys drive both dialogs and omitted action values. Accepted options save before capture/launch; Cancel/stale/invalid/point no-op preserve preferences.613 distinct Python IDs pass; Windows/Linux native settings/preferences and both Windows UI hosts pass. [Receipt](parity/reviews/interpolation-settings-20261105.json). |
-| Active | T04a.2 M3/T06: scientific subtype-sensitive lengths/perimeters. | Constructor-explicit metric API matches180observations;195focused/642distinct Python IDs andWindows/Linuxnative/WindowsSDK pass. Retain constructor precision, add captured area perimeter andboth-host Measure integration before closing this task. [Kernel evidence](parity/reviews/subtype-length-api-20261106.json). |
+| Delivered scoped workflow | T04a.2 M3/T06: current-plane subtype-sensitive Measure. | Constructor precision persists through bare ROI/session/rebind/editing; captured Length/Perim., result columns/CSV/workspace and cancellation work in both Windows hosts.3662distinct Python IDs pass,180captured reference rows,14physical flows; Windows/Linux native andtwoWindowsSDKclients pass. [Evidence](parity/reviews/subtype-measurement-20261106.json). |
+| Active next | T04a.2 M3/T06: fitted-source measurement qualification. | Observe original Fit Spline -> Measure for retained controls/samples/type/precision before changing existing fit/analysis owners; reuse current perimeter field and frozen row publication. Other scientific/shape variants retain their owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -848,8 +851,9 @@ Five current-phase groups,including the failed attempt,were live-hash archived;
 six empty roots andthe SDK consumer retired,plus two Linux native-session roots
 retained as identities only. Known measured growth22,214,918B stayed below128MiB;
 214unknown subtrees keep complete budget unverified. Warm products remain.
-T02 retains conservative fitted-state extraction/copy work;no observed cap failure
-or measured bottleneck justifies another optimization-only rebuild.
+The local fitted-control copy is fixed in the subtype Measure increment below.
+T02 retains repeated extraction only for a measured consumer; no observed cap
+failure or bottleneck justifies an optimization-only rebuild.
 
 **T15 Interpolate settings: scoped delivered.** The native Selection registry
 owns selection_interpolation_interval (finite signed Number, abs >=0.01,
@@ -886,54 +890,77 @@ Known storage7,396,916,972 -> measured checkpoint7,403,435,735 ->
 7,401,113,226 B after retirement before prose;6,518,763 B measured growth stayed
 under128MiB.214 unknown subtrees keep the complete budget unverified.
 
-**Active: T04a.2 M3/T06 current-plane subtype lengths/perimeters.**
+**Scoped delivered: T04a.2 M3/T06 current-plane subtype Measure.**
 
-Kernel/API checkpoint: imagej_calibrated_polygon_length now exposes explicit
-integer versus Float32-relative constructor precision through C++/Python.
-180 pinned observations match,195 focused cases and642 distinct affected Python
-IDs pass; Windows/Linux native and Windows installed SDK controls pass.
-[Kernel evidence](parity/reviews/subtype-length-api-20261106.json). This does
-not finish the current task: captured Measure still loses the constructor
-profile and area results still lack perimeter publication/both-host coverage.
-The24 zero-extent upstream area cases drop their ROI and measure the whole
-image; keep that observation distinct from the established native retained-empty
-area policy. Do not silently turn an explicit empty native selection into a
-whole-image measurement.
+The existing polygon owner now retains canonical integer constructor state;
+absence remains the native Float32 constructor. Bare ImageJ ROI import/export,
+V5/session/rebind and integral edits preserve it; fractional edits and new
+Float32 fit/interpolation/conversion outputs promote or clear it. Existing
+metadata/profile fences reject malformed/legacy state; no new format owner.
 
-Next ready edit: retain constructor precision through existing polygon/ROI
-owners, then consume the qualified metric in existing captured analysis and
-result presentation. Float TRACED_ROI returns NaN; integer TRACED uses corner
-correction, so subtype alone cannot choose this branch. Inspect import source
-flags, source creation, geometry edits and V5/session/rebind ownership before
-choosing the smallest persistent representation. Keep old records explicit;
-do not guess missing historical precision or add a separate measurement engine.
-The configured SDK consumer at
-.tmp/manual-workflow-verification/subtype-measurement-20261105/scratch/sdk001
-(3,621,762 B at checkpoint) stays active for this task's pending source/allocation
-review and changed-contract checks; /root owns retirement after those finish.
-Terminal reference/Python scratch is retired with failure diagnostics retained.
+Captured row planning freezes the qualified metric before provider acquisition.
+The original aggregate sampling quota remains unchanged; metric segments have
+a separately bounded aggregate stage. Calibrated FREELINE Length and ordinary
+polygon Perim. are available through C++/Python, the existing results-column
+choice, both Windows hosts, CSV and workspace reopen. Explicit one-vertex paths
+measure an empty profile, while the public irregular-profile API stays2..4096.
+The metric supports the native65536-vertex default, avoiding an artificial4096
+area-workflow gate. Native retained-empty-area policy stays explicit; the24
+upstream dropped-ROI/full-image observations are not claimed equivalent.
+Float TRACED NaN and integer traced corner correction remain distinct.
 
-1. Inspect maintained analysis/geometry owners and actual Measure route; freeze
-   signatures, consumed measurement/calibration options and unresolved IDs in
-   the task record. Reuse selection_polygon_type, captured read-only jobs and
-   existing result publication; do not add a measurement engine or type owner.
-2. Observe pinned PolygonRoi.getLength FREELINE/TRACED branches over a finite
-   matrix: ordinary versus typed contours, open endpoints/closed seams, short
-   and degenerate geometry, unit and anisotropic calibrated spacing. Preserve
-   historical fixtures; add observations through existing reference tools.
-3. Batch native length/perimeter and affected analysis/binding/UI changes only
-   after that matrix exposes actual dependencies. Keep current area membership,
-   numerical/data/history contracts, admission and cancellation guarantees.
-4. Verify affected C++/Python APIs and actual both-host current-plane Measure
-   output; select installed-client/lifecycle checks from changed contracts.
-   Reuse unchanged interpolation/rebind evidence, retire scratch and review
-   waste before selecting the next concrete residual.
+[Integration evidence](parity/reviews/subtype-measurement-20261106.json):
+3662 distinct installed Python IDs ultimately pass, including180 captured
+constructor/statistic rows;14 actual physical workflows across both Windows
+hosts, seven paired result/CSV readers, Windows/Linux native geometry/ROI/session/
+analysis controls and two installed Windows SDK clients pass. One optional
+OpenGL check skips. C++ clients must rebuild: TargetAnalysisPlane adds optional
+perimeter. Qualifying provenance is version7; older angle/point/annotation/
+rectangle contracts remain for unchanged inputs. Historical references remain
+unchanged. The [kernel checkpoint](parity/reviews/subtype-length-api-20261106.json)
+is earlier scoped evidence, not the current pending-work pointer.
 
-Saved-row/scientific variants, constructor profiles, T09 operation-intent macros
-and T14 Linux installed-client/remaining platform releases stay open. T00 owns
-retired G016/17gesture references; none was recreated, repinned or counted passed.
-T02 retains fitted-state extraction/copy work on the next core touch or measured
-large-control consumer; no optimization-only rebuild is justified yet.
+Waste/cleanup: a missing direct probe include caused one4.94s compiler failure;
+completed core/Linux work was reused. The first3235green/3failed Python attempt
+caught a sampling-quota regression and an unqualified raw-length expectation.
+Separate stage bounds preserve399/400,799/800 and one-step degenerate consumers.
+A new actual ImageJ Interpolate -> Analyzer observation proves Length
+17.99071999827739 and supplies the composition assertion without repinning old
+fixtures. Only affected/new-function checks reran. T02's local fitted-control
+copy was removed at this necessary core touch; its conservative estimate and
+required validation remain, with no speed/RSS claim.
+
+All owned Windows/Linux scratch, including the previously retained SDK consumer,
+is retired after final source/allocation review. Six integration groups plus
+three earlier kernel groups were live-hash archived; SDK/Linux session products
+retain identities only. Known task storage7,401,207,027 -> checkpoint
+7,412,969,682 ->7,406,563,774 B after retirement before prose;11,762,655 B measured
+peak growth stayed below128MiB.214 unknown subtrees keep the full budget unverified.
+Warm caches/runtime/SDKs remain. Do not recreate the retired SDK consumer merely
+to repeat this green checkpoint.
+
+**Active next: T04a.2 M3/T06 fitted-source measurement qualification.**
+
+1. Inspect actual Fit Spline -> Measure callers and existing retained controls/
+   samples/type/constructor ownership. Observe pinned PolygonRoi.getLength,
+   including traced-before-spline and freehand/freeline-before-spline branches,
+   source control minima and calibrated spacing. Preserve all old fixtures.
+2. Freeze the actual missing semantics and smallest state/API change before
+   editing. Reuse current optional perimeter, captured row plan, result settings/
+   CSV/session paths and existing fit state; add no measurement engine/controller.
+   Do not force retained fitted geometry through the fresh-constructor helper.
+3. Batch affected numerical/state/binding/UI changes once, then run meaningful
+   native/Python/installed-client and both-host checks. Reuse the qualified
+   ordinary-source matrix; keep necessary consumers through final review,
+   retire terminal scratch and review waste before its successor.
+
+Analytic/mask/native-path perimeters, wider scientific/saved-row/constructor
+variants, T07 external annotation projection precision, T09 operation-intent
+macros and T14 Linux installed-client/remaining platform releases retain owners.
+Parent M3/T06, the99families and full editor goal remain open. T00 owns retired
+G016/17gesture references; none was recreated, repinned or counted passed.
+T02's remaining repeated fitted-state reconstruction needs a measured consumer
+before another optimization; the local extra vector/metadata copy is fixed.
 
 ### Reduce overhead at the existing task boundaries
 
@@ -1164,7 +1191,7 @@ feature or block unrelated ready work.
 
 | Finding | Owner / action | Evidence or closeout condition |
 | --- | --- | --- |
-| Repeated fitted-source extraction during interpolation | T02: optimize only on a measured large-control consumer;reuse borrowed kind/validated state within the existing owner without weakening checks. | Code review found full fit validation followed by reconstructed controls and a local value copy to read subtype. Four-payload admission charges metadata;no observed cap failure or measured bottleneck. Reuse an owned optional state plus a borrowed controls reference on the next core touch or measured large-control cost;do not restart qualified consumers only for this deferred saving. |
+| Repeated fitted-source extraction during interpolation | T02: remaining reconstruction needs a measured large-control consumer; retain validation and current admission. | Local extra vector/metadata copy is fixed in the subtype Measure core touch by holding the optional state and borrowing controls. Existing spline/interpolation checks pass; no additional performance campaign or bound relaxation. Full validation/reconstruction remains; no observed cap failure or measured bottleneck justifies another optimization-only rebuild. |
 | Two full double buffers in shared Python ingress | Fixed by T01 for image/stack conversion; inspect other binding paths when touched. | One owned destination, allocation regression and 168 layout/refusal cases. Six measured workloads; no general speed claim. |
 | Many temporary harness generations | T02: reuse existing drivers and data inputs; retire superseded scripts only with evidence identities preserved. | Prior audit counted 732 Python/171 PowerShell scripts; not every retained script is disposable. |
 | Shared headers/Make flags fanout | T02 plus source owners: batch coherent edits; inspect consumer dependencies before adding shared declarations and isolate only where measured reuse justifies it. | T04a.1 full batch: 109 compile entries/830.9 s; UI-only fix: one/38.3 s; smoke-only fix: one/17.4 s. Different workloads, not processing-speed comparisons. Core/SDK results reused for frontend-only fixes. |

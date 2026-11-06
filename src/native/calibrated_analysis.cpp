@@ -213,8 +213,8 @@ struct NormalizedPath {
   std::vector<std::array<float,2>> relative,absolute;
   std::array<int,4> bounds{};
 };
-NormalizedPath normalize_path(const std::vector<std::array<double,2>>& points) {
-  if(points.size()<2 || points.size()>4096)throw std::invalid_argument("Measurement path requires 2..4096 vertices");
+NormalizedPath normalize_path(const std::vector<std::array<double,2>>& points,std::size_t minimum=2) {
+  if(points.size()<minimum || points.size()>4096)throw std::invalid_argument("Measurement path has an invalid vertex count");
   std::array<float,2> low{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()},high{-low[0],-low[1]};
   for(const auto& p:points)for(int a=0;a<2;++a) {
     kernel_checkpoint_periodic();
@@ -233,13 +233,13 @@ NormalizedPath normalize_path(const std::vector<std::array<double,2>>& points) {
 }
 struct PolylinePlan {NormalizedPath path;detail::PolylineEstimate estimate;};
 PolylinePlan polyline_plan(int width,int height,PixelType type,const SpatialCalibration& spatial,
-    const std::vector<std::array<double,2>>& points,std::size_t maximum,std::size_t work_limit) {
+    const std::vector<std::array<double,2>>& points,std::size_t maximum,std::size_t work_limit,std::size_t minimum=2) {
   spatial.validate();
   if(width<=0 || height<=0 || !work_limit ||
       (type!=PixelType::UInt8 && type!=PixelType::UInt16 && type!=PixelType::Float32))
     throw std::invalid_argument("Invalid scalar polyline measurement layout or work limit");
   cap(add(8192,mul(points.size(),32)),maximum);
-  PolylinePlan out;out.path=normalize_path(points);auto& e=out.estimate;e.bounds=out.path.bounds;
+  PolylinePlan out;out.path=normalize_path(points,minimum);auto& e=out.estimate;e.bounds=out.path.bounds;
   double pixel_length=0;
   for(const auto& p:out.path.absolute)
     if(!std::isfinite(p[0]) || !std::isfinite(p[1]) || p[0]<0 || p[1]<0 || p[0]>width-1 || p[1]>height-1)
@@ -340,7 +340,7 @@ double imagej_calibrated_polygon_length(const Selection& source,const SpatialCal
   spatial.validate();
   const auto type=selection_polygon_type(source);
   const auto n=source.points.size();
-  if(!type || !n || n>4096)throw std::invalid_argument("Polygon length requires 1..4096 ordinary vertices");
+  if(!type || !n || n>SelectionEditLimits{}.max_vertices)throw std::invalid_argument("Polygon length requires 1..65536 ordinary vertices");
   cap(add(8192,mul(n,sizeof(std::array<double,2>))),maximum);
   std::array<double,2> low{std::numeric_limits<double>::max(),std::numeric_limits<double>::max()};
   for(const auto& point:source.points)for(int a=0;a<2;++a) {
@@ -454,12 +454,12 @@ ImageJLineMeasurement imagej_calibrated_line_measurement(const Image& im,
 namespace detail {
 PolylineEstimate estimate_polyline_measurement(int width,int height,PixelType type,const SpatialCalibration& spatial,
     const std::vector<std::array<double,2>>& points,std::size_t maximum,std::size_t work) {
-  return polyline_plan(width,height,type,spatial,points,maximum,work).estimate;
+  return polyline_plan(width,height,type,spatial,points,maximum,work,1).estimate;
 }
 ImageJPolylineMeasurement calibrated_polyline_measurement_with_table(const Image& im,const SpatialCalibration& spatial,
     const ImageJIntensityCalibration& density,const std::vector<std::uint32_t>& lut,
     const std::vector<std::array<double,2>>& points,bool interpolate,std::size_t maximum,std::size_t work,bool validated) {
-  shape(im);density.validate_for(im.type,im.channels);const auto plan=polyline_plan(im.width,im.height,im.type,spatial,points,maximum,work);
+  shape(im);density.validate_for(im.type,im.channels);const auto plan=polyline_plan(im.width,im.height,im.type,spatial,points,maximum,work,1);
   if(!validated)pixels(im);
   return {profile_statistics(irregular_values(im,density,lut,plan,interpolate),spatial,maximum),plan.estimate.length,plan.estimate.bounds};
 }

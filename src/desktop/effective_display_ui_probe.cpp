@@ -4,10 +4,12 @@
 #include "window.hpp"
 #include <imagejxx/selection_spline.hpp>
 #include <imagejxx/selection_interpolation.hpp>
+#include <imagejxx/line_measurement.hpp>
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
 #include <algorithm>
+#include <fstream>
 #include <cmath>
 #include <stdexcept>
 #include <atomic>
@@ -776,6 +778,62 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
   }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",buttons}});throw;}
 }
 
+
+Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::string& directory,int profile) {
+  require(profile>=0 && profile<=6,"Unknown subtype measurement profile");
+  const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
+  require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh subtype measurement fixture required");std::filesystem::create_directories(dir);
+  Selection source(profile==0 || profile==5?"polyline":profile==3?"polygon":"freehand",{{3,3},{13,3},{13,13},{3,13}});
+  if(profile==0)source=with_selection_polygon_type(source,SelectionPolygonType::Freeline);
+  if(profile==1 || profile==2)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
+  if(profile==1)source=with_selection_polygon_coordinates(source,true);
+  if(profile>=5){source.points={{3,3}};source=with_selection_polygon_type(source,profile==5?SelectionPolygonType::Polyline:SelectionPolygonType::Freehand);}
+  SpatialCalibration spatial;spatial.spacing={2,.5,1};spatial.unit="um";DatasetReadObserver reads;
+  Image pixels(40,40,1,PixelType::UInt8);for(int y=0;y<40;++y)for(int x=0;x<40;++x)pixels.at(x,y)=x+2*y;
+  DocumentData data{Dataset::from_planes({1,1,1,40,40,1},{pixels},spatial).observe_reads(reads)};data.selection=source;
+  auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);
+  w.updateSettings({{"measurements",{"ROI","Area","Length","Perim.","Unit"}},{"measurement_precision",6}},false);
+  Json last,events=Json::array(),controls=Json::array(),report;std::atomic<bool> entered{false},release{false};
+  HeadlessInputSession session(w);bool expectedError=false;
+  try {
+    auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);require(expectedError || w.error().empty(),"Subtype measurement frame failed");};
+    auto click=[&](const Json& item,const std::string& name){const auto control=item;require(control.at("enabled").get<bool>(),"Subtype measurement control disabled");controls.push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto acknowledge=[&](){expectedError=true;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();};
+    for(int i=0;i<3;++i)frame();const auto original=owner->snapshot();const auto beforeReads=reads.counts().plane_reads;
+    for(const auto& key:{"menu.Analyze","menu.action.measure"})click(last.at("host_controls").at(key),key);
+    w.wait();frame();require(w.results.size()==1 && !w.busy(),"Subtype Measure did not publish one row");
+    const auto rows=w.results;const double length=imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
+    const auto& value=rows[0].at("Perim.");
+    require(std::isnan(length)?value==Json("nan"):(value.is_number() && std::abs(value.get<double>()-length)<1e-11),"Subtype Measure perimeter differs from constructor metric");
+    if(source.kind=="polyline")require(rows[0].at("Length").get<double>()==length,"Freeline Length lost smoothing");
+    if(profile>=5)require(rows[0].at("Area")==0,"Native retained degenerate geometry measured the whole image");
+    const auto columns=last.at("results_columns");
+    require(columns==Json::array({"ROI","Area","Length","Perim.","Unit"}),"Configured perimeter column not consumed");
+    require(owner->snapshot().shares_data(original) && owner->undo_steps()==0,"Read-only subtype Measure changed source/history");
+    const auto measuredReads=reads.counts().plane_reads-beforeReads;require(measuredReads==1,"Subtype Measure repeated provider acquisition");
+    w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});
+    std::ifstream csv(dir/"measure.csv");std::string heading;std::getline(csv,heading);require(heading.find("Perim.")!=std::string::npos,"CSV omitted configured perimeter");csv.close();
+    auto gate=[&](const JobContext& c){entered=true;while(!release.load()){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}};
+    auto start=[&](){entered=false;release=false;session.fixtureWorkerGate(gate);w.action("measure");const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered.load() && std::chrono::steady_clock::now()<deadline)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered.load(),"Subtype worker gate did not enter");};
+    const auto reserved=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
+    const auto working=w.renderMemoryInfo().at("working_bytes");
+    start();w.cancel();release=true;w.wait();
+    require(w.results==rows && !w.busy() && session.fixtureApplication().job_scheduler()->usage().reserved_bytes==reserved && w.renderMemoryInfo().at("working_bytes")==working,"Cancelled subtype Measure changed results or retained reservations");
+    if(!w.error().empty())acknowledge();
+    if(profile==1) {
+      start();owner->select(with_selection_polygon_coordinates(source,false));release=true;w.wait();
+      require(!w.error().empty() && w.results==rows,"Changed constructor profile was not rejected as stale");
+      acknowledge();owner->select(source);frame();
+    }
+    session.fixtureWorkerGate({});
+    w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});session.close();
+    Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"measured.ijx").u8string());
+    require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(source) && reopened.results==rows,"Workspace lost constructor state or perimeter result");
+    require(reopened.nativeSnapshot().data().dataset.plane({})->pixels==pixels.pixels,"Subtype Measure changed stored pixels");
+    report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
+    writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& e){release=true;w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",e.what()},{"rendered",last},{"error",w.error()},{"events",events},{"controls",controls}});throw;}
+}
 
 Json interpolationRepeatUiCase(Window& w,const std::string& context,const std::string& directory,bool opened,bool highZoom) {
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));

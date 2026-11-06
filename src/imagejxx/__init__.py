@@ -63,6 +63,7 @@ from ._native import fit_ellipse_selection, estimate_fit_ellipse_selection
 from ._native import fit_rectangle_selection, estimate_fit_rectangle_selection
 from ._native import SelectionInterpolationOptions, interpolate_selection, estimate_interpolated_selection
 from ._native import SelectionPolygonType, selection_polygon_type, with_selection_polygon_type
+from ._native import selection_polygon_integer_coordinates, with_selection_polygon_coordinates
 from ._native import SplineFitMode, SplineFitOptions, SelectionSplineFit, selection_spline_fit
 from ._native import fit_spline_selection, estimate_spline_selection, remove_spline_fit, validate_selection_spline_fit
 from ._native import auto_threshold_histogram_imagej as auto_threshold_histogram_imagej

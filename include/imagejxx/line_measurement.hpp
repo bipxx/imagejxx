@@ -10,7 +10,8 @@ struct Selection;
 // as upstream does when its integer coordinate array is absent. No source reads.
 // Working bound is 8192 + 16*vertex_count bytes, excluding borrowed input and RSS.
 // The spatial affine transforms segment vectors; traced correction uses axis
-// lengths. Origin is irrelevant. 1..4096 vertices; other ROI kinds are refused.
+// lengths. Origin is irrelevant. 1..65536 vertices (SelectionEditLimits default);
+// other ROI kinds are refused.
 double imagej_calibrated_polygon_length(const Selection&,const SpatialCalibration&,
     bool integer_coordinates=false,std::size_t max_working_bytes=128ULL*1024*1024);
 

@@ -487,6 +487,8 @@ decode_imagej_roi_impl(const Bytes &bytes, const ImageJRoiLimits &l,
   else if((result.roi.selection.kind=="polygon" || result.roi.selection.kind=="freehand") && result.roi.selection.points.size()<3)
     result.roi.selection=with_selection_polygon_type(result.roi.selection,
         result.roi.selection.kind=="polygon"?SelectionPolygonType::Polygon:SelectionPolygonType::Freehand);
+  if(!spline && !floats && selection_polygon_type(result.roi.selection))
+    result.roi.selection=with_selection_polygon_coordinates(result.roi.selection,true);
   result.roi.selection =
       with_roi_style(result.roi.selection, {{"stroke_width", stroke},
                                             {"stroke_color", color(r.u32(40))},
@@ -632,7 +634,8 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
   need(roi.attributes.empty(),
        "Opaque ROI attributes require an explicit interchange mapping");
   for (const auto &[key, value] : s.attributes)
-    need(key == roi_style_attribute || key == polygon_type_attribute,
+    need(key == roi_style_attribute || key == polygon_type_attribute ||
+             key == polygon_integer_coordinates_attribute,
          "Opaque selection attributes require an explicit interchange mapping");
   if (auto found = s.attributes.find(roi_style_attribute);
       found != s.attributes.end()) {
@@ -755,9 +758,10 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
                             : rotated ? fallback
                                       : s.points;
   const std::size_t n = vertices ? wire_points.size() : 0;
-  const bool integer_spline = spline && record.spline->integer_coordinates;
+  const bool integer_coordinates = spline ? record.spline->integer_coordinates :
+      vertices && selection_polygon_integer_coordinates(s);
   std::array<double, 2> integer_base{};
-  if (integer_spline) {
+  if (integer_coordinates) {
     need(!(record.options & 256),
          "ImageJ integer spline cannot use draw-offset");
     integer_base = wire_points.front();
@@ -808,14 +812,14 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
     text_payload = 20 + font_text.size() * 2 + body_text.size() * 2;
   }
   need(l.max_bytes >= 128 &&
-           n <= (l.max_bytes - 128) / (integer_spline ? 4 : 12),
+           n <= (l.max_bytes - 128) / (integer_coordinates ? 4 : 12),
        "ImageJ ROI coordinate byte limit");
   need(!composite || shape_path.size() <= (l.max_bytes - 128) / 4,
        "ImageJ composite path byte limit");
   auto h2 = 64 + (image_record  ? image_payload.size()
                   : text_record ? text_payload
                   : composite   ? 4 * shape_path.size()
-                                : (integer_spline ? 4 : 12) * n);
+                                : (integer_coordinates ? 4 : 12) * n);
   std::size_t total = h2 + 64;
   for (auto amount :
        {name.size() * 2, props.size() * 2, record.point_counters.size() * 4}) {
@@ -833,7 +837,7 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
   out[6] = static_cast<unsigned char>(type);
   put16(out, 48, subtype);
   put16(out, 50,
-        (integer_spline ? (record.options & ~128) : (record.options | 128)) |
+        (integer_coordinates ? (record.options & ~128) : (record.options | 128)) |
             (spline ? 1 : 0));
   put32(out, 56, std::uint32_t(record.legacy_position));
   put32(out, 60, std::uint32_t(h2));
@@ -883,7 +887,7 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
     putf(out, 30, p[3]);
     out[52] = record.arrow->style;
     out[53] = record.arrow->head_size;
-  } else if (integer_spline) {
+  } else if (integer_coordinates) {
     put16(out, 8, unsigned(int(integer_base[1])) & 65535);
     put16(out, 10, unsigned(int(integer_base[0])) & 65535);
     for (std::size_t i = 0; i < n; ++i) {
@@ -1035,7 +1039,7 @@ ImageJRoi imagej_roi_standard_projection(ImageJRoi record, int width, int height
   }
   mask.width = selection.width;
   mask.attributes = selection.attributes;
-  mask.attributes.erase("corner_diameter");mask.attributes.erase(polygon_type_attribute);
+  mask.attributes.erase("corner_diameter");mask.attributes.erase(polygon_type_attribute);mask.attributes.erase(polygon_integer_coordinates_attribute);
   record.roi.selection = std::move(mask);
   return record;
 }

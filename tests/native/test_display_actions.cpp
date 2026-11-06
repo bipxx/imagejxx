@@ -355,6 +355,11 @@ void scientificNavigation(const std::filesystem::path& root) {
   std::cout<<"PASS scientific open/CZT/XYZ/reslice/physical TIFF export/reopen with preserved transform\n";
 }
 void convexHullWorkflow(const std::filesystem::path& root) {
+  for(int profile=0;profile<7;++profile) {
+    const auto name="subtype-measurement-"+std::to_string(profile);
+    Window measurement((root/(name+"-preferences.json")).u8string());
+    imagejxx::desktop::subtypeMeasurementUiCase(measurement,"imgui_cpp",(root/name).u8string(),profile);
+  }
   Window window((root/"convex-hull-preferences.json").u8string());
   imagejxx::desktop::convexHullWorkflowUiCase(window,"imgui_cpp",(root/"convex-hull").u8string());
   Window box((root/"bounds-preferences.json").u8string());

@@ -6,6 +6,7 @@ import pytest
 import imagejxx as ij
 
 REFERENCE = json.loads((Path(__file__).parents[1] / "fixtures/selection-interpolation-imagej154r.json").read_bytes())
+COMPOSITION = json.loads((Path(__file__).parents[1] / "fixtures/interpolated-measurement-imagej154r.json").read_bytes())["case"]
 
 
 @pytest.mark.parametrize("case", REFERENCE["cases"], ids=lambda c: c["id"])
@@ -104,8 +105,9 @@ def test_desktop_edit_history_and_invalid_options(tmp_path):
     result = owner.snapshot().selection
     editor.update_settings(json.dumps({"measurements": ["Length", "Bounds", "count"]}), False)
     editor.action("measure", "{}"); editor.wait()
-    expected_length = np.linalg.norm(np.diff(np.asarray(result.points), axis=0), axis=1).sum()
-    assert json.loads(editor.results)[-1]["Length"] == pytest.approx(expected_length, abs=1e-5)
+    np.testing.assert_allclose(result.points, COMPOSITION["samples"], atol=1e-5, rtol=1e-7)
+    assert ij.selection_polygon_type(result) == ij.SelectionPolygonType.FREELINE
+    assert json.loads(editor.results)[-1]["Length"] == pytest.approx(COMPOSITION["columns"]["Length"], abs=1e-5)
     before = owner.undo_steps
     editor.action("move_selection_vertex", json.dumps({"index": 1, "x": 7, "y": 2}))
     assert owner.snapshot().selection.points[1] == [7, 2] and owner.undo_steps == before

@@ -377,6 +377,7 @@ const std::vector<SettingDefinition> &Settings::schema() {
         "ROI",
         "Bounds",
         "Length",
+        "Perim.",
         "Angle",
         "label",
         "x",

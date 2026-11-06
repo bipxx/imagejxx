@@ -293,7 +293,7 @@ Selection trim_spline_controls(Selection controls,std::optional<double> original
   std::vector<std::array<double,2>> knots;knots.reserve(n);knots.push_back({blurred[0][0],blurred[0][1]});
   const float dx=blurred[1][0]-blurred[0][0],dy=blurred[1][1]-blurred[0][1];double accumulated=std::sqrt(double(float(dx*dx+dy*dy)));
   for(std::size_t i=1;i+1<n;++i){kernel_checkpoint_periodic();accumulated+=std::hypot(double(blurred[i+1][0])-blurred[i][0],double(blurred[i+1][1])-blurred[i][1])+1+double(float(curvature[i]*2));if(accumulated>=threshold){knots.push_back({blurred[i+1][0],blurred[i+1][1]});accumulated=0;}}
-  check(knots.size()>=3,"Trimmed spline has fewer than three controls");controls.kind="polygon";controls.attributes.erase(polygon_type_attribute);controls.points=std::move(knots);return controls;
+  check(knots.size()>=3,"Trimmed spline has fewer than three controls");controls.kind="polygon";controls.attributes.erase(polygon_type_attribute);controls.attributes.erase(polygon_integer_coordinates_attribute);controls.points=std::move(knots);return controls;
 }
 double spline_control_length(const Selection& controls) {
   std::vector<P> relative;relative.reserve(controls.points.size());P base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
@@ -399,7 +399,9 @@ Selection fit_spline_impl(const Selection& source,int w,int h,const SplineFitOpt
   auto plan=spline_plan(source,w,h,frozen_options,frozen_limits,frozen_control,preprocess);
   ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
   auto result=sample_spline({plan.controls.points,static_cast<unsigned char>(spline_type(plan.controls)),false},plan.roi,plan.options,plan.sampling_points);
-  result.width=plan.controls.width;result.attributes=plan.controls.attributes;result.attributes[spline_fit_attribute]=spline_record(plan.controls,plan.options,plan.sampling_points);
+  result.width=plan.controls.width;result.attributes=plan.controls.attributes;
+  result.attributes.erase(polygon_integer_coordinates_attribute); // New sampled geometry uses Float32 controls.
+  result.attributes[spline_fit_attribute]=spline_record(plan.controls,plan.options,plan.sampling_points);
   result.validate(w,h);validate_selection_spline_fit(result);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 }

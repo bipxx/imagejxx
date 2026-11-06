@@ -20,9 +20,9 @@ checks. Point interpolation no-op also has scoped both-host checks.
 Repeated-source/type,zoom anddegenerate geometry now have scoped129-observation
 andboth-host evidence. T15 remembered Interpolate options now have scoped
 native settings and both-host integration; T04a.2 M3/T06 scientific subtype
-lengths/perimeters is active: metric API qualified, constructor-state/captured
-Measure and both-host integration pending. Reuse its retained configured SDK
-consumer through final source/allocation review. This card does not authorize new agents.
+lengths/perimeters has scoped constructor-state/captured Measure and both-host
+CSV/workspace integration. Its SDK consumer is retired after final review.
+Next: fitted-source measurement qualification through existing fit/analysis owners. This card does not authorize new agents.
 Analysis residuals
 do not impose a blanket prerequisite. Inspect current worktree and
 actual process handles first. Never restart a job based only on an observation

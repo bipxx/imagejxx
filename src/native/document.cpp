@@ -232,9 +232,14 @@ void Selection::validate(int w, int h) const {
   require_finite(width, "Selection width");
   if (width <= 0)
     throw std::invalid_argument("Selection width must be positive");
+  const bool integer_polygon=selection_polygon_integer_coordinates(*this);
   for (const auto &p : points)
-    for (double coordinate : p)
+    for (double coordinate : p) {
       require_finite(coordinate, "Selection point");
+      if(integer_polygon && (std::floor(coordinate)!=coordinate ||
+          coordinate<std::numeric_limits<int>::min() || coordinate>std::numeric_limits<int>::max()))
+        throw std::invalid_argument("Integer polygon coordinates require integral Int32 vertices");
+    }
   if (is_rounded_box()) {
     (void)rounded_path();
     (void)rounded_path(true);
