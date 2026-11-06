@@ -12,6 +12,7 @@
 namespace imagejxx {
 namespace {
 using P = std::array<float, 2>;
+struct SplineBasis {std::vector<P> controls;P origin;};
 void check(bool ok, const char *message) {
   if (!ok)
     throw std::invalid_argument(message);
@@ -120,7 +121,7 @@ double processing_length(const std::vector<P>& points,unsigned type,bool integer
 } // namespace
 namespace {
 Selection sample_spline(const ImageJSpline &s,const ImageJRoiLimits &limits,
-    const SplineFitOptions& options,std::size_t resolved_points=0,std::size_t* used_points=nullptr,bool editor_controls=false) {
+    const SplineFitOptions& options,std::size_t resolved_points=0,std::size_t* used_points=nullptr,bool editor_controls=false,const SplineBasis* retained_basis=nullptr,SplineBasis* captured_basis=nullptr) {
   const auto n = s.control_points.size();
   const bool closed = s.type == 0 || s.type == 7 || s.type == 8;
   check(closed || s.type == 4 || s.type == 5 || s.type == 9,
@@ -150,6 +151,11 @@ Selection sample_spline(const ImageJSpline &s,const ImageJRoiLimits &limits,
   for (auto &p : points)
     for (int axis = 0; axis < 2; ++axis)
       p[axis] -= base[axis];
+  if(retained_basis) {
+    check(retained_basis->controls.size()==n,"Retained spline basis control count");
+    points=retained_basis->controls;base=retained_basis->origin;
+  }
+  if(captured_basis)*captured_basis=SplineBasis{points,base};
   if (s.integer_coordinates) {
     for (float b : base)
       check(b >= -5000 && b <= 60535, "ImageJ integer spline origin range");
@@ -322,19 +328,8 @@ Selection spline_command_controls(const Selection& source,Selection controls,boo
   }
   return trim_spline_controls(std::move(controls));
 }
-bool spline_traced_polygon(const Selection& controls) {
-  if(controls.kind!="polygon")return false;
-  P base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
-  for(const auto& p:controls.points)for(int a=0;a<2;++a)base[a]=std::min(base[a],float(p[a]));
-  for(std::size_t i=0;i<controls.points.size();++i){const auto& a=controls.points[i];const auto& b=controls.points[(i+1)%controls.points.size()];P u{float(a[0])-base[0],float(a[1])-base[1]},v{float(b[0])-base[0],float(b[1])-base[1]};if((u[0]!=v[0] && u[1]!=v[1]) || u[0]!=std::floor(u[0]) || u[1]!=std::floor(u[1]))return false;}
-  return true;
-}
-double spline_curve_length(const Selection& source) {
-  double length=0;const bool closed=source.kind!="polyline";
-  const auto count=source.points.size();for(std::size_t i=1;i<count+std::size_t(closed);++i){kernel_checkpoint_periodic();const auto& a=source.points[i-1];const auto& b=source.points[i%count];length+=std::hypot(double(float(b[0])-float(a[0])),double(float(b[1])-float(a[1])));}
-  return length;
-}
-struct SplinePlan {Selection controls;SplineFitOptions options;ImageJRoiLimits roi;std::size_t bytes,sampling_points;};
+std::optional<SplineBasis> retained_spline_basis(const Selection&,bool after_fit);
+struct SplinePlan {Selection controls;SplineFitOptions options;ImageJRoiLimits roi;std::size_t bytes,sampling_points;std::optional<SplineBasis> basis;};
 SplinePlan spline_plan(const Selection& source,int w,int h,const SplineFitOptions& options,const SelectionEditLimits& limits,const ExecutionControl& control,bool preprocess=true) {
   spline_options(options);auto bytes=detail::admit_selection_geometry(source,w,h,limits,control);
   ExecutionScope planning(control);
@@ -345,35 +340,41 @@ SplinePlan spline_plan(const Selection& source,int w,int h,const SplineFitOption
     check(bytes<=limits.max_working_bytes && limits.max_working_bytes-bytes>=16384 && n<=(limits.max_working_bytes-bytes-16384)/1024,"Spline control workspace limit");
     bytes+=16384+n*1024;
     ImageJRoiLimits roi;roi.max_vertices=std::min(limits.max_vertices,std::size_t(65536));roi.max_bytes=std::min(roi.max_bytes,n*32+(limits.max_working_bytes-bytes)/8);
+    const bool segmented=retained && (spline_type(retained->controls)==0 || spline_type(retained->controls)==5);
+    auto basis=retained && (!preprocess || segmented)?retained_spline_basis(source,true):std::optional<SplineBasis>{};
     if(preprocess)controls=spline_command_controls(source,std::move(controls),bool(retained));
     std::size_t resolved=0;
-    if(preprocess && retained && (spline_type(retained->controls)==0 || spline_type(retained->controls)==5) && !spline_traced_polygon(retained->controls) && !options.evaluation_points) {
-      const auto length=spline_curve_length(source);
+    if(preprocess && retained && segmented && !options.evaluation_points) {
+      const auto length=imagej_calibrated_polygon_length(source,SpatialCalibration{});
       const double requested=options.mode==SplineFitMode::Straighten?std::floor(length*2)+1:std::max(100.,std::floor(std::floor(length/2)*std::min(1.,options.magnification)));
       check(std::isfinite(requested) && requested>=2 && requested<=roi.max_vertices,"Spline captured evaluation limit");resolved=std::size_t(requested);
     }
     std::size_t sampling_points=0;
-    const auto sampled=sample_spline({controls.points,static_cast<unsigned char>(spline_type(controls)),selection_polygon_integer_coordinates(controls)},roi,options,resolved,&sampling_points,true);
+    const auto sampled=sample_spline({controls.points,static_cast<unsigned char>(spline_type(controls)),selection_polygon_integer_coordinates(controls)},roi,options,resolved,&sampling_points,true,basis?&*basis:nullptr);
     check(sampled.points.size()<=(limits.max_working_bytes-bytes)/256,"Spline sample workspace limit");
     const std::size_t peak_samples=std::max(sampled.points.size(),sampling_points);
     check(peak_samples<=(limits.max_working_bytes-bytes)/256,"Spline preliminary workspace limit");
     bytes+=peak_samples*256;
-    return SplinePlan{std::move(controls),options,roi,bytes,sampling_points};
+    return SplinePlan{std::move(controls),options,roi,bytes,sampling_points,std::move(basis)};
   });
 }
-MetadataValue spline_record(const Selection& controls,const SplineFitOptions& options,std::size_t sampling_points) {
+MetadataValue spline_record(const Selection& controls,const SplineFitOptions& options,std::size_t sampling_points,const SplineBasis& basis) {
   MetadataArray points;points.reserve(controls.points.size());
   for(const auto& p:controls.points)points.push_back(metadata_array({p[0],p[1]}));
-  return metadata_object({{"version",1},{"kind",controls.kind},{"mode",options.mode==SplineFitMode::Fit?"fit":"straighten"},{"evaluation_points",std::uint64_t(options.evaluation_points)},{"magnification",options.magnification},{"sampling_points",std::uint64_t(sampling_points)},{"controls",metadata_array(std::move(points))}});
+  MetadataArray relative;relative.reserve(basis.controls.size());
+  for(const auto& p:basis.controls)relative.push_back(metadata_array({double(p[0]),double(p[1])}));
+  return metadata_object({{"version",2},{"kind",controls.kind},{"mode",options.mode==SplineFitMode::Fit?"fit":"straighten"},{"evaluation_points",std::uint64_t(options.evaluation_points)},{"magnification",options.magnification},{"sampling_points",std::uint64_t(sampling_points)},{"controls",metadata_array(std::move(points))},{"relative_controls",metadata_array(std::move(relative))},{"origin",metadata_array({double(basis.origin[0]),double(basis.origin[1])})}});
 }
 }
 namespace {
-struct SplineView {const std::string* kind;const MetadataArray* controls;SplineFitOptions options;std::size_t sampling_points;};
+struct SplineView {const std::string* kind;const MetadataArray* controls;SplineFitOptions options;std::size_t sampling_points;const MetadataArray* relative=nullptr;P origin{};};
 std::optional<SplineView> inspect_spline(const Selection& source) {
   const auto it=source.attributes.find(spline_fit_attribute);if(it==source.attributes.end())return {};
   const auto& record=spline_container<MetadataObject>(it->second);
-  check(record.size()==7,"Invalid spline state fields");for(const auto* name:{"version","kind","mode","evaluation_points","magnification","sampling_points","controls"})check(record.count(name)!=0,"Incomplete spline state");
-  check(spline_integer(record.at("version"))==1,"Unsupported spline state version");
+  for(const auto* name:{"version","kind","mode","evaluation_points","magnification","sampling_points","controls"})check(record.count(name)!=0,"Incomplete spline state");
+  const auto version=spline_integer(record.at("version"));
+  check(version==1 || version==2,"Unsupported spline state version");
+  check(record.size()==(version==1?7u:9u),"Invalid spline state fields");
   const auto kind=std::get_if<std::string>(&record.at("kind")),mode=std::get_if<std::string>(&record.at("mode"));check(kind && mode,"Invalid spline state kind/mode");
   check(*kind=="polygon" || *kind=="polyline" || *kind=="freehand","Invalid spline control kind");
   SplineFitOptions options;check(*mode=="fit" || *mode=="straighten","Unknown spline state mode");options.mode=*mode=="fit"?SplineFitMode::Fit:SplineFitMode::Straighten;options.evaluation_points=spline_integer(record.at("evaluation_points"));options.magnification=spline_number(record.at("magnification"));spline_options(options);
@@ -382,29 +383,67 @@ std::optional<SplineView> inspect_spline(const Selection& source) {
   for(const auto& value:points){const auto& p=spline_container<MetadataArray>(value);check(p.size()==2,"Invalid spline control coordinate");check(std::abs(spline_number(p[0]))<=1e9 && std::abs(spline_number(p[1]))<=1e9,"Spline control coordinate range");}
   check(source.kind==(*kind=="polyline"?"polyline":"polygon") && source.points.size()>=2 && source.points.size()<=65536,"Spline sample kind/count mismatch");
   if(options.mode==SplineFitMode::Fit)check(source.points.size()==sampling_points && (!options.evaluation_points || sampling_points==options.evaluation_points),"Spline sample count differs from options/context");
-  return SplineView{kind,&points,options,sampling_points};
+  SplineView view{kind,&points,options,sampling_points};
+  if(version==2) {
+    check(record.count("origin") && record.count("relative_controls"),"Incomplete spline basis");
+    const auto& origin=spline_container<MetadataArray>(record.at("origin"));check(origin.size()==2,"Invalid spline basis origin");
+    auto coordinate=[](const MetadataValue& value){const double number=spline_number(value);check(std::abs(number)<=std::numeric_limits<float>::max(),"Spline basis coordinate range");const float result=float(number);check(double(result)==number,"Spline basis requires Float32 coordinates");return result;};
+    for(int a=0;a<2;++a)view.origin[a]=coordinate(origin[a]);
+    const auto& relative=spline_container<MetadataArray>(record.at("relative_controls"));check(relative.size()==points.size(),"Spline basis control count mismatch");
+    for(std::size_t i=0;i<relative.size();++i) {
+      kernel_checkpoint_periodic();const auto& point=spline_container<MetadataArray>(relative[i]);check(point.size()==2,"Invalid spline basis control");
+      const auto& absolute=spline_container<MetadataArray>(points[i]);
+      for(int a=0;a<2;++a) {
+        const float local=coordinate(point[a]),expected=float(spline_number(absolute[a]));
+        const float reconstructed=local+view.origin[a];
+        const double tolerance=std::max(1e-6,2*std::abs(double(std::nextafter(expected,std::numeric_limits<float>::infinity()))-expected));
+        check(std::isfinite(reconstructed) && std::abs(double(reconstructed)-expected)<=tolerance,"Spline basis differs from retained controls");
+      }
+    }
+    view.relative=&relative;
+  }
+  return view;
+}
+std::optional<SplineBasis> retained_spline_basis(const Selection& source,bool after_fit) {
+  const auto view=inspect_spline(source);if(!view || !view->relative)return {};
+  SplineBasis basis;basis.origin=view->origin;basis.controls.reserve(view->relative->size());
+  for(const auto& value:*view->relative){const auto& point=spline_container<MetadataArray>(value);basis.controls.push_back({float(spline_number(point[0])),float(spline_number(point[1]))});}
+  if(after_fit) {
+    P minimum{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
+    for(const auto& point:source.points){kernel_checkpoint_periodic();for(int a=0;a<2;++a){check(std::isfinite(point[a]) && std::abs(point[a])<=std::numeric_limits<float>::max(),"Invalid fitted polygon sample coordinates");minimum[a]=std::min(minimum[a],float(point[a]));}}
+    P shift{};for(int a=0;a<2;++a)shift[a]=basis.controls[0][a]-float(float(basis.controls[0][a]+basis.origin[a])-minimum[a]);
+    for(auto& point:basis.controls){kernel_checkpoint_periodic();for(int a=0;a<2;++a)point[a]-=shift[a];}
+    basis.origin=minimum;
+  }
+  return basis;
 }
 }
 std::size_t detail::spline_control_count(const Selection& source) {
   const auto view=inspect_spline(source);return view?view->controls->size():0;
 }
-Selection detail::spline_length_controls(const Selection& source) {
+Selection detail::spline_length_controls(const Selection& source,bool* relative) {
   const auto view=inspect_spline(source);check(bool(view),"Selection has no retained spline fit");
   Selection controls(*view->kind);controls.points.reserve(view->controls->size());
-  for(const auto& value:*view->controls){kernel_checkpoint_periodic();const auto& p=spline_container<MetadataArray>(value);controls.points.push_back({spline_number(p[0]),spline_number(p[1])});}
+  const auto basis=retained_spline_basis(source,true);
+  if(relative)*relative=bool(basis);
+  if(basis)for(const auto& point:basis->controls)controls.points.push_back({point[0],point[1]});
+  else for(const auto& value:*view->controls){kernel_checkpoint_periodic();const auto& p=spline_container<MetadataArray>(value);controls.points.push_back({spline_number(p[0]),spline_number(p[1])});}
   if(const auto type=source.attributes.find(polygon_type_attribute);type!=source.attributes.end())controls.attributes[polygon_type_attribute]=type->second;
   (void)selection_polygon_type(controls);return controls;
 }
 std::optional<SelectionSplineFit> selection_spline_fit(const Selection& source) {
   const auto view=inspect_spline(source);if(!view)return {};
   Selection controls(*view->kind);controls.points.reserve(view->controls->size());
+  // Editable native controls retain their declared Double precision. The private
+  // Float32 basis independently preserves original processing/history semantics.
   for(const auto& value:*view->controls){const auto& p=spline_container<MetadataArray>(value);controls.points.push_back({spline_number(p[0]),spline_number(p[1])});}
   controls.width=source.width;controls.attributes=source.attributes;controls.attributes.erase(spline_fit_attribute);controls.validate(1,1);return SelectionSplineFit{std::move(controls),view->options,view->sampling_points};
 }
 void validate_selection_spline_fit(const Selection& source) {
   const auto state=selection_spline_fit(source);if(!state)return;
   detail::without_execution_callbacks([&] {
-    const auto expected=sample_spline({state->controls.points,static_cast<unsigned char>(spline_type(state->controls)),false},{},state->options,state->sampling_points,nullptr,true);
+    const auto basis=retained_spline_basis(source,false);
+    const auto expected=sample_spline({state->controls.points,static_cast<unsigned char>(spline_type(state->controls)),false},{},state->options,state->sampling_points,nullptr,true,basis?&*basis:nullptr);
     check(source.kind==expected.kind && source.points.size()==expected.points.size(),"Spline samples differ from retained controls/options");
     for(std::size_t i=0;i<source.points.size();++i)for(int a=0;a<2;++a){const float v=float(expected.points[i][a]);const double tolerance=std::max(1e-6,2*std::abs(double(std::nextafter(v,std::numeric_limits<float>::infinity()))-v));check(std::abs(source.points[i][a]-expected.points[i][a])<=tolerance,"Spline samples differ from retained controls/options");}
     return 0;
@@ -418,10 +457,11 @@ Selection fit_spline_impl(const Selection& source,int w,int h,const SplineFitOpt
   const auto frozen_limits=limits;const auto frozen_options=options;const auto frozen_control=control;
   auto plan=spline_plan(source,w,h,frozen_options,frozen_limits,frozen_control,preprocess);
   ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
-  auto result=sample_spline({plan.controls.points,static_cast<unsigned char>(spline_type(plan.controls)),selection_polygon_integer_coordinates(plan.controls)},plan.roi,plan.options,plan.sampling_points,nullptr,true);
+  SplineBasis captured_basis;
+  auto result=sample_spline({plan.controls.points,static_cast<unsigned char>(spline_type(plan.controls)),selection_polygon_integer_coordinates(plan.controls)},plan.roi,plan.options,plan.sampling_points,nullptr,true,plan.basis?&*plan.basis:nullptr,&captured_basis);
   plan.controls.attributes.erase(polygon_integer_coordinates_attribute); // Fitting enables Float32 controls.
   result.width=plan.controls.width;result.attributes=plan.controls.attributes;
-  result.attributes[spline_fit_attribute]=spline_record(plan.controls,plan.options,plan.sampling_points);
+  result.attributes[spline_fit_attribute]=spline_record(plan.controls,plan.options,plan.sampling_points,captured_basis);
   result.validate(w,h);validate_selection_spline_fit(result);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 }

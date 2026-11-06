@@ -22,8 +22,9 @@ API/both-host evidence. Remembered Interpolate options now have scoped native
 settings and both-Windows-host integration. Subtype-sensitive current-plane
 Measure now preserves constructor precision and publishes calibrated Length/
 Perim. with both-host CSV/workspace checks. Initial Fit Spline -> Measure now
-has scoped subtype/constructor/short-control and both-host integration. Next:
-fitted-source lifecycle and command variants within T04a.2 M3/T06.
+has scoped subtype/constructor/short-control and both-host integration. Refit,
+straighten/remove and segmented explicit counts now have scoped lifecycle and
+both-host evidence. Next: rectangle/ellipse area-selection perimeter in M3.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -144,8 +145,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T06/G018: repeated-source/type, zoom and degenerate interpolation. |115 comparable actual two-command rows across129observations,including149/150/151sample boundaries;14rows retain explicit native compound/empty policies.1923distinct affected Python IDs ultimately pass;8physical repeat/edit/zoom cases,Windows/Linux native/session andWindows SDK pass. Typed state persists through edits,V5 andV4 rebind/ROI interchange. [Receipt](parity/reviews/interpolation-types-20261105.json). Scientific subtype lengths/perimeters andother parent residuals remain open. |
 | Delivered scoped workflow | T15: remembered Interpolate options. | Three native Settings keys drive both dialogs and omitted action values. Accepted options save before capture/launch; Cancel/stale/invalid/point no-op preserve preferences.613 distinct Python IDs pass; Windows/Linux native settings/preferences and both Windows UI hosts pass. [Receipt](parity/reviews/interpolation-settings-20261105.json). |
 | Delivered scoped workflow | T04a.2 M3/T06: current-plane subtype-sensitive Measure. | Constructor precision persists through bare ROI/session/rebind/editing; captured Length/Perim., result columns/CSV/workspace and cancellation work in both Windows hosts.3662distinct Python IDs pass,180captured reference rows,14physical flows; Windows/Linux native andtwoWindowsSDKclients pass. [Evidence](parity/reviews/subtype-measurement-20261106.json). |
-| Delivered scoped workflow | T04a.2 M3/T06: initial fitted-source Measure. | All100 actual-command reference rows now match controls/samples/metrics; subtype/constructor preprocessing and legal short editor controls work.2785distinct Python IDs ultimately pass,16new fit/Measure physical flows across both Windows hosts, Windows/Linux native and2WindowsSDKclients pass. [Evidence](parity/reviews/fitted-measurement-20261106.json). |
-| Active next | T04a.2 M3/T06: fitted-source lifecycle and command variants. | Qualify new subtype/constructor refit, straighten/remove and explicit-count consumers using existing retained fit/state/analysis owners. Reuse initial-fit evidence; no new engine/controller. |
+| Delivered scoped workflow | T04a.2 M3/T06: fitted Measure and lifecycle. | Initial-fit evidence remains valid; versioned private Float32 basis now preserves refit/straighten history without changing native Double edit controls.840distinct affected Python IDs pass,14new physical lifecycle flows,2worker-refusal checks, Windows/Linux native and2WindowsSDKclients. [Evidence](parity/reviews/spline-lifecycle-20261106.json). |
+| Active next | T04a.2 M3: rectangle/ellipse area-selection perimeter. | Reuse captured area Measure, frozen optional perimeter and existing columns/CSV/workspace. Qualify original geometry/calibration semantics before a bounded analytic helper; remaining shape, mask/path and constructor variants retain their owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -941,44 +942,50 @@ peak growth stayed below128MiB.214 unknown subtrees keep the full budget unverif
 Warm caches/runtime/SDKs remain. Do not recreate the retired SDK consumer merely
 to repeat this green checkpoint.
 
-**Scoped delivered: initial Fit Spline -> Measure.**
+**Scoped delivered: Fit Spline -> Measure and fitted lifecycle.**
 
-[Evidence](parity/reviews/fitted-measurement-20261106.json) now qualifies all100
-actual-command rows from the200 original observations. Subtype/constructor-aware
-preprocessing and legal short editor control sets preserve controls/samples;
-traced and smoothed control metrics take precedence over spline sample segments.
-The existing captured row plan publishes calibrated Length/Perim., with fitted
-provenance8 and unchanged ordinary contracts.2785 distinct installed Python IDs
-ultimately pass;16 new fitted physical flows across both Windows hosts preserve
-CSV/workspace, history, cancellation and stale-fit refusal. Windows/Linux native
-and two Windows installed SDK clients pass. The separate100 explicit-count
-observations are reference evidence, not public command coverage.
+The [initial-fit receipt](parity/reviews/fitted-measurement-20261106.json) still
+qualifies its100 actual-command rows and both-host integration. The current
+[lifecycle receipt](parity/reviews/spline-lifecycle-20261106.json) adds304 original
+refit/remove/straighten/direct-count compositions, including16 refusals, and
+reuses40 initial segmented count7 observations.840 distinct affected installed
+Python IDs ultimately pass;14 new physical lifecycle flows, two controlled
+worker-refusal checks, Windows/Linux native and two Windows SDK clients pass.
+All22 subtype workflow pairs match rows/columns/selections/CSV across Windows
+hosts. This is not whole-family, Linux UI/SDK or platform-release closure.
 
-All task scratch and the SDK consumer are retired after review. Captures and
-failure diagnostics are retained with verified hashes. Known storage grew from
-7,406,663,786 to a measured checkpoint7,415,560,108 B, then7,409,649,324 B after
-retirement before prose;214 unknown subtrees keep full budget unverified.
-A final API review caught missing finite/range checks in a new control-first
-branch; three targeted red checks then passed after the guard fix. Reuse green
-campaigns for unchanged inputs. Inspect each new consumer branch before narrowing
-or early return before the next first build. A nested cleanup quoting failure
-occurred before execution; syntax-checked transport corrected only that action.
+Existing spline metadata now writes v2 pre-solve Float32 local controls/origin;
+the strict v1 reader remains. This preserves processing history while keeping
+native Double editable controls and public signatures/layout unchanged. Cached
+traced length also controls retained sample-count selection. Old references and
+tolerances remain. Unsegmented direct fitSpline(count) is distinct from editor
+preprocessing; legacy v1 lost-basis fidelity and wider constructor/scientific
+variants retain T06 ownership rather than blocking independent area Measure.
 
-**Active next: T04a.2 M3/T06 fitted-source lifecycle and command variants.**
+All task scratch and the5,016,615 B SDK consumer are retired after final review;
+four necessary capture/reference/session groups have verified archives. Known
+7,409,749,432 ->7,417,021,318 ->7,412,145,574 B before prose;214 unknown subtrees
+keep full budget unverified. Two _native links used61.175s of118.927s in cached
+Windows product-build commands. Before the next expensive Python link, put the
+actual failing geometry/contract in an existing narrow native control when it
+can expose the failure; a scalar-only check would miss resampling differences.
+Any saved link time is an unmeasured opportunity to evaluate in the next task.
 
-1. Inspect actual consumers and observe subtype/constructor refit, straighten,
-   remove and explicit-count compositions. Distinguish editor preprocessing from
-   the original direct fitSpline(count) method; do not equate their outputs.
-2. Freeze actual missing state/numerics before editing. Reuse retained v1 fit
-   state, existing spline solver and captured metrics/results. Check legal short
-   controls, Float32 bases, cancellation and working bounds in all new branches;
-   include malformed inputs before the first expensive links.
-3. Batch required changes, select affected lifecycle/installed-client/both-host
-   checks, and reuse the qualified initial-fit matrix. Preserve old fixtures,
-   retain consumers through final review, retire scratch and review waste before
-   advancing. No new measurement engine, registry or qualification framework.
+**Active next: T04a.2 M3 rectangle/ellipse area-selection perimeter.**
 
-Analytic/mask/native-path perimeters, wider scientific/saved-row/constructor
+1. Inspect maintained area Measure callers and pinned Rectangle/Oval length
+   branches. Freeze pixel extents, calibration/affine meaning, degenerate behavior,
+   source/profile requirements and actual API signatures before editing.
+2. Reuse the existing captured row plan, optional perimeter, columns/CSV/workspace
+   and accepted geometry/calibration primitives. Deliver usable rectangle/ellipse
+   Measure first; do not make rounded/rotated/mask/path variants prerequisites.
+   Add only the bounded owning analytic helper needed by this real consumer.
+3. Check proven numeric geometry in an existing native control before Python
+   links where practical, then affected installed-client and both-host workflows.
+   Reuse unchanged polygon/fitted evidence; keep consumers through final review,
+   retire scratch and update the queue/waste decision before the successor.
+
+Other analytic/mask/native-path perimeters, wider scientific/saved-row/constructor
 variants, T07 external annotation projection precision, T09 operation-intent
 macros and T14 Linux installed-client/remaining platform releases retain owners.
 Parent M3/T06, the99families and full editor goal remain open. T00 owns retired

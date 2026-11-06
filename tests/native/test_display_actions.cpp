@@ -355,10 +355,20 @@ void scientificNavigation(const std::filesystem::path& root) {
   std::cout<<"PASS scientific open/CZT/XYZ/reslice/physical TIFF export/reopen with preserved transform\n";
 }
 void convexHullWorkflow(const std::filesystem::path& root) {
-  for(int profile=0;profile<15;++profile) {
+  for(int profile=0;profile<22;++profile) {
     const auto name="subtype-measurement-"+std::to_string(profile);
     Window measurement((root/(name+"-preferences.json")).u8string());
     imagejxx::desktop::subtypeMeasurementUiCase(measurement,"imgui_cpp",(root/name).u8string(),profile);
+  }
+  {
+    Window rejected((root/"rejected-straighten-preferences.json").u8string());
+    const auto fitted=fit_spline_selection(Selection("freehand",{{3,3},{13,3},{13,13},{3,13}}),40,40);
+    auto owner=std::make_shared<Document>(Dataset::from_stack({Image(40,40,1,PixelType::UInt8)}));owner->select(fitted);rejected.addNativeDocument(owner);
+    const auto before=owner->snapshot();const auto steps=owner->undo_steps();const auto working=rejected.renderMemoryInfo().at("working_bytes");
+    rejected.action("fit_spline_selection",{{"mode","straighten"}});rejected.wait();
+    check(!rejected.error().empty() && owner->snapshot().shares_data(before) && owner->undo_steps()==steps,"Rejected straighten changed source/history");
+    check(rejected.renderMemoryInfo().at("working_bytes")==working,"Rejected straighten retained working memory");
+    write(root/"rejected-straighten.json",{{"context","imgui_cpp"},{"source_history_preserved",true},{"working_memory_preserved",true},{"error_observed",true}});
   }
   Window window((root/"convex-hull-preferences.json").u8string());
   imagejxx::desktop::convexHullWorkflowUiCase(window,"imgui_cpp",(root/"convex-hull").u8string());

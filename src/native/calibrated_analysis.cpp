@@ -422,8 +422,9 @@ double imagej_calibrated_polygon_length(const Selection& source,const SpatialCal
   if(!count)return polygon_length_impl(source,spatial,integers,maximum);
   const auto peak=add(8192,mul(add(count,std::max(count,source.points.size())),sizeof(std::array<double,2>)));
   cap(peak,maximum);spatial.validate();
-  auto controls=detail::spline_length_controls(source);
+  bool relative=false;auto controls=detail::spline_length_controls(source,&relative);
   const auto type=selection_polygon_type(controls);
+  if(!relative) {
   std::array<float,2> control_base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()},sample_base=control_base;
   for(const auto& point:controls.points)for(int a=0;a<2;++a)control_base[a]=std::min(control_base[a],float(point[a]));
   for(const auto& point:source.points) {
@@ -437,6 +438,7 @@ double imagej_calibrated_polygon_length(const Selection& source,const SpatialCal
   std::array<float,2> shift{};
   for(int a=0;a<2;++a){const float first=float(controls.points[0][a])-control_base[a];shift[a]=first-float(float(first+control_base[a])-sample_base[a]);}
   for(auto& point:controls.points){kernel_checkpoint_periodic();for(int a=0;a<2;++a)point[a]=float(float(float(point[a])-control_base[a])-shift[a]);}
+  }
   bool traced=*type==SelectionPolygonType::Traced;
   if(*type==SelectionPolygonType::Polygon) {
     traced=true;

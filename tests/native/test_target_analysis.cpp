@@ -67,6 +67,23 @@ int main(){
     check(result.planes.front().perimeter && std::abs(*result.planes.front().perimeter-48.24621125123532)<1e-11);
     check(command.record().at("version")==MetadataValue(std::int64_t(7)));
   }
+  {
+    // Original lifecycle rows: fractional repeated closed fit, traced straighten,
+    // and segmented direct-count refit; the same source is an installed SDK client.
+    SpatialCalibration calibration;calibration.spacing={2,.5,1};
+    const std::vector<std::array<double,2>> fractional={{3.2,4.7},{13.8,3.1},{19.4,14.2},{11.1,20.6},{4.3,13.8}};
+    const auto first=fit_spline_selection(Selection("polygon",fractional),40,40);
+    const auto repeated=fit_spline_selection(first,40,40);
+    check(std::abs(imagej_calibrated_polygon_length(repeated,calibration)-74.14868185876702)<1e-7*74.14868185876702);
+    SplineFitOptions straighten;straighten.mode=SplineFitMode::Straighten;
+    const auto square=fit_spline_selection(Selection("polygon",{{3,3},{13,3},{13,13},{3,13}}),40,40);
+    const auto straight=fit_spline_selection(square,40,40,straighten);
+    check(std::abs(imagej_calibrated_polygon_length(straight,calibration)-48.24621125123532)<1e-7*48.24621125123532);
+    SplineFitOptions seven;seven.evaluation_points=7;
+    const auto path=fit_spline_selection(Selection("polyline",{{3,3},{13,3},{13,13}}),40,40);
+    const auto counted=fit_spline_selection(path,40,40,seven);
+    check(std::abs(imagej_calibrated_polygon_length(counted,calibration)-26.556521351852417)<1e-7*26.556521351852417);
+  }
   auto provider=std::make_shared<Source>();auto owner=std::make_shared<Document>(Dataset(provider));
   Application app;app.adopt(owner);
   SpatialCalibration spatial;spatial.spacing={.5,2,3};spatial.unit="um";

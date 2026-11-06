@@ -1,0 +1,286 @@
+{
+  "schema": "imagejxx.scoped-workflow-review.001",
+  "task": "T04a.2 M3/T06 fitted-source lifecycle and segmented explicit counts",
+  "base_commit": "216698d597247c226bb793fe554270e5dc35d352",
+  "state": {
+    "implemented": true,
+    "scoped_verified": true,
+    "both_Windows_hosts_integrated": true,
+    "scoped_increment_closed": true,
+    "parent_M3_T06_closed": false,
+    "family_closed": false,
+    "release_ready": false,
+    "full_editor_closed": false
+  },
+  "contract": {
+    "state": "Existing owned spline attribute writes strict v2 pre-solve relative Float32 controls and origin. Strict v1 reader remains; no new public signature/layout/controller/registry. Native Double editable controls remain as declared.",
+    "processing": "Derive post-fit processing coordinates from stored input basis and actual output bounds; validate current samples against the pre-solve basis. Retained sampling counts use the qualified metric, including cached traced controls. Duplicate fresh-control classifiers retired.",
+    "admission": "New fields validate structure/counts, finite Float32 range and control consistency before narrowing. Existing conservative n*1024 fit workspace covers additional O(n) basis; metric peak remains within8192+16*(controls+max(controls,samples)), excluding borrowed source/copies/RSS.",
+    "workflow": "Existing controlled Fit/Remove/Measure, settings/CSV/workspace/history/cancellation/stale rejection; no extra user-facing implementation settings."
+  },
+  "references": {
+    "original_lifecycle_rows": 304,
+    "original_refusals": 16,
+    "reused_initial_segmented_count7_rows": 40,
+    "segmented_refit7_rows": 32,
+    "qualified_segmented_count_rows": 72,
+    "pins": [
+      {
+        "path": "tests/fixtures/spline-lifecycle-imagej154r.json",
+        "bytes": 2363649,
+        "sha256": "04243dd4493ddbe3ba6ec1980ca4c6d4953ca9d21f92acd4a88011b4abc71768"
+      },
+      {
+        "path": "tests/reference/ObserveSplineLifecycle.java",
+        "bytes": 4562,
+        "sha256": "8520a1f202ca25dd9d235fd89deb55685d4e0c75859dbe36960ae8a30ab24a65"
+      },
+      {
+        "path": "tests/reference/ObserveFittedMeasurements.java",
+        "bytes": 4125,
+        "sha256": "06f4c5b831542403ea065d3ade968f5270ad3474cb31a83115e8f1b82216add3"
+      },
+      {
+        "path": "tests/fixtures/fitted-measurements-imagej154r.json",
+        "bytes": 1032120,
+        "sha256": "a0d40927f7d80f438487badb63446651dab6ac13e04d62467e4858ebabe8555e"
+      }
+    ],
+    "tolerances": "Existing controls/samples abs1e-5 rel1e-7, metrics abs1e-7 rel1e-7; old fixtures/fingerprints unchanged.",
+    "limitations": "Unsegmented direct fitSpline(count) differs from editor preprocessing and remains separately owned. Legacy v1 records retain their prior native contract; lost historical Float32 basis is not claimed recovered. Wider constructor/scientific/external projection variants retain owners."
+  },
+  "verification": {
+    "unique_installed_Windows_Python_IDs_ultimately_passed": 840,
+    "new_physical_lifecycle_flows": 14,
+    "total_subtype_physical_flows": 44,
+    "paired_host_readers": 22,
+    "rows_columns_selections_CSV_identical": true,
+    "controlled_worker_refusal_checks": 2,
+    "refusal_guarantees": "Source/history/working memory unchanged in both Windows hosts for a known degenerate straighten refusal.",
+    "native_platforms": "Affected analysis/geometry/ROI/session controls on Windows and Linux.",
+    "installed_Windows_SDK_clients": [
+      "target_analysis_api",
+      "selection_transform_api"
+    ],
+    "installed_link_origin": "SDK consumer project links the actual installed core.lib path; built/installed headers/core/native/desktop/pure/app pairs verified.",
+    "recovered_failures": [
+      "10 repeated closed-fit failures exposed lost Float32 local history; retained v2 basis fixes them at unchanged tolerances.",
+      "First v2 attempt exposed6 cached-trace/sample-count cases,1 removal metric shift,1 exact Double edit contract and2 assertion construction-boundary errors; corrected metric ownership/Double getter/assertion guards.",
+      "No compiler failures; no reference/tolerance repinning or old campaign restart."
+    ],
+    "unavailable": "Retired G016/17gesture references remain unavailable, not recreated/selected/countedaspassing. No Linux installed SDK/Python UI/macOS or release closure claim.",
+    "evidence": [
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/checks-summary007.json",
+        "bytes": 559,
+        "sha256": "3cc82bd7a7144fecaf72673b8828601f94f5ac488242a1ae405dd0a7cd10e59e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/both-host-readers007.json",
+        "bytes": 9294,
+        "sha256": "65462e5fd84d300aa5a4ea9d5ff22e57b55d5952ea6dd6e43c5cd0c00d819839"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/python002.xml",
+        "bytes": 59458,
+        "sha256": "75c3be20d82965091b372b123115950cd46c24fde87e2ae41c93024178c5bf09"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/python003.xml",
+        "bytes": 83972,
+        "sha256": "056467d148431dc9c4332781d3aa1ee1fe8ccbe87df2498e1a127f6642d43bd8"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/python004.xml",
+        "bytes": 76601,
+        "sha256": "8fd946cac005c6173924d87f850959c9b5fd5e4e6eecfb8679b1db0496b6b700"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/python006.xml",
+        "bytes": 46110,
+        "sha256": "94ec72ee748f75559f8592065bf90a42219492927cb36c482caf4f8c68ae613f"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/direct-count007.xml",
+        "bytes": 7562,
+        "sha256": "f0d268626a155cca77af072a778bc5345fb3ab58fd6723a2c1c32aae85f9d3c2"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/installed-identities006.json",
+        "bytes": 3391,
+        "sha256": "ac3b07fcd32805b16b4190807243e4d9d2068a04af47fa5dcdc3d8e4b1aaa017"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/native-imagejxx_target_analysis_tests006.process.json",
+        "bytes": 1831,
+        "sha256": "5d082cb1888b3e1617918de7f14594811d3610e6d5b08e50eb63993682aedced"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/native-imagejxx_selection_transform_tests006.process.json",
+        "bytes": 1843,
+        "sha256": "8fabddb12ece0a8ed31b2668d6e7bde5c861e9bc4e1a571998b67bf76b30ad6a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/native-imagejxx_selection_edit_tests006.process.json",
+        "bytes": 1830,
+        "sha256": "b327eb23096062a8bb9d729e97734d04d9a6f17c49885a17d632fc38286137cf"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/native-imagejxx_selection_creation_tests006.process.json",
+        "bytes": 1838,
+        "sha256": "acbf4f01b3b87e27f7ae549ab309612f770bd2d7bc2c85d8533aabb6dbc56fed"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/native-imagejxx_imagej_roi_tests006.process.json",
+        "bytes": 1819,
+        "sha256": "eb4d040a69af90544f3776d5bd784f920620f2d681aec892d611133ce03c853e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/native-ui006.process.json",
+        "bytes": 1960,
+        "sha256": "589cb12184940bdef5268b2860d8905c8101b8187b76119c1fd4224b074c5f4e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/native-session006.process.json",
+        "bytes": 1949,
+        "sha256": "f6373c975a57dcf020db2e79c36646e161a04fd43b07f42461d1bc309b334321"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/linux-owner005.process.json",
+        "bytes": 3848,
+        "sha256": "0778cd646095ee8244408d4ad8fa18987bfbd9e828abe42b87009a899122f3b8"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/linux-identities005.json",
+        "bytes": 1923,
+        "sha256": "e0ed6044eeb45264b2031dcfc622defdb4ef4fb47bdd156730e6e39a27988f7e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/sdk-target_analysis_api009.process.json",
+        "bytes": 1917,
+        "sha256": "a179429084373a38de44121b54602eeda5f17d3821dc1cd3f43baf42948ac8b5"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/sdk-selection_transform_api009.process.json",
+        "bytes": 1923,
+        "sha256": "63463b5663bc2d55b886b40b9f14025dd595139147efc1a999dc71b90b22678a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/Windows-capture-retirement008.json",
+        "bytes": 3022,
+        "sha256": "dbaab45c4ca580761dfe860bcb4e15fc87512683f6058abc6936bc6300c6e4c4"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/Windows-final-retirement010.json",
+        "bytes": 418,
+        "sha256": "6b0d54a7352b22857d0a8b34aeeea316dde00320ee6f730ec20ebae90b05e47d"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/SDK-consumer-identities010.json",
+        "bytes": 73043,
+        "sha256": "b7b6ac1f027585c082411e316701187b9cbb8c49f56e73b36a349639e3d08af5"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/linux-retirement008.json",
+        "bytes": 341,
+        "sha256": "dcf9fdd927e63a76ac2b9d252e40046655cb7c37fb56f631737327e6d68f961d"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/linux-retirement-inner008.process.json",
+        "bytes": 3866,
+        "sha256": "ab4a2e4f5051d6b1295805d53dd99eff3c251329053da61f1bf8e8ec1ef5b711"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/linux-retirement-owner008.process.json",
+        "bytes": 5596,
+        "sha256": "dee058257f2d0a5541f3140b95d99fd40e1e883faa5fb0fda8b806cdadf9b588"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/build-cost010.json",
+        "bytes": 3121,
+        "sha256": "8cfc3d137002ef9ca9ad304bce36371e8fb35fae91ce11cccf5322c6ea6c72f3"
+      }
+    ]
+  },
+  "cleanup": {
+    "Windows_task_scratch_absent": true,
+    "Linux_hostlocal_session_absent": true,
+    "verified_capture_reference_session_archives": 4,
+    "SDK_consumer_retired_bytes": 5016615,
+    "SDK_and_Linux_session_retention": "Identity hashes only; no environment, dependency SDK or compiler-cache archive.",
+    "warm_active_products_preserved": true,
+    "diagnostics_preserved": true,
+    "nested_retirement": "Syntax-checked/base64 transport and nested process ownership passed on first attempt, reusing the prior corrective pattern."
+  },
+  "storage": {
+    "entry_known_bytes": 7409749432,
+    "peak_checkpoint_known_bytes": 7417021318,
+    "final_before_prose_known_bytes": 7412145574,
+    "known_peak_growth_bytes": 7271886,
+    "known_final_growth_bytes": 2396142,
+    "allocation_bound_bytes": 134217728,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_bytes": 234441015296
+  },
+  "waste": {
+    "measured": "17 cached Windows product-build commands total118.927s, zero compiler failures; two _native links total61.175s. One Linux build21.545s. Command sums are not walltime/speed/RSS claims.",
+    "fix": "Keep Float32 processing history separate from public Double edit precision; use qualified retained length for sample count; inspect attribute-conversion and wait/error boundaries before assertions.",
+    "reuse": "304new lifecycle observations plus40existing direct-count observations; no initial reference rerun or unrelated ROI/envelope campaign. Needed current v2 consumers were checked after state format changed.",
+    "next_prevention": "Use an actual failing numeric geometry/contract in an existing narrow native control before expensive Python links when it can expose the failure. Scalar-only checks miss resampling differences. Expected saved time is unmeasured; evaluate next-task results.",
+    "deferred": "T02 repeated fit-state reconstruction needs a measured consumer; no optimization-only rebuild. T06 remaining direct/constructor variants do not block independent rectangle/ellipse Measure. T07 projection, T09 operation intent and T14 platform release remain."
+  },
+  "task_record": {
+    "path": ".tmp/manual-workflow-verification/spline-lifecycle-20261106/entry.json",
+    "bytes": 29416,
+    "sha256": "7ec74064b307eaab666537f46150e49345ec5658da136099bad42aa70903990d"
+  },
+  "sources": [
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 98722,
+      "sha256": "cc0ba6a107cb482a7534b7e10a6e32eb83ec7a44d7cfd9473ae8beb7525538d1"
+    },
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 32898,
+      "sha256": "e40895e6c910be1dc26e3665f0c57e61354f6dc9511d69ab76dd2f474479ec85"
+    },
+    {
+      "path": "src/native/imagej_spline.cpp",
+      "bytes": 31626,
+      "sha256": "04c8a5db0fa65c7622bd126652d27decedf3b0012642e02c9c1a485a74745ed0"
+    },
+    {
+      "path": "src/native/selection_spline_detail.hpp",
+      "bytes": 780,
+      "sha256": "d29fee2da8e1507b127109678a4404f506db93e6c0333167a23f5501467bf2be"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38288,
+      "sha256": "a320b5f5c1e4e0e855bf897b8d40c084cb6b734f187b26ffc736cd53f948107b"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 18664,
+      "sha256": "d7874d23e7730ae4840afb5b59d401ae36ef96ac8931b1ddec074deceae656be"
+    },
+    {
+      "path": "tests/reference/ObserveSplineLifecycle.java",
+      "bytes": 4562,
+      "sha256": "8520a1f202ca25dd9d235fd89deb55685d4e0c75859dbe36960ae8a30ab24a65"
+    },
+    {
+      "path": "tests/fixtures/spline-lifecycle-imagej154r.json",
+      "bytes": 2363649,
+      "sha256": "04243dd4493ddbe3ba6ec1980ca4c6d4953ca9d21f92acd4a88011b4abc71768"
+    },
+    {
+      "path": "tests/python/test_spline_lifecycle.py",
+      "bytes": 7229,
+      "sha256": "3697b3cc1e98ca5211261ec1a2ab74bf1c6a30f9bb8eecb970e22d0d5aee701b"
+    }
+  ],
+  "next_ready": "T04a.2 M3 rectangle/ellipse area-selection perimeter using existing captured analysis/results."
+}

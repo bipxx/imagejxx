@@ -20,10 +20,10 @@ PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
 verified in both Windows hosts. Scientific TIFF reslice/export now preserves
 world/time transforms. Vertex Convex Hull has scoped API/both-Windows-host
 evidence. Bounding Rectangle now has scoped API/both-host checks too; next
-is T04a.2 M3/T06 fitted-source lifecycle and command variants. Initial Fit Spline
--> Measure now has scoped subtype/constructor/short-control and both-host
-CSV/workspace evidence; its scratch and SDK consumer are retired. Reuse it while
-qualifying refit/straighten/remove and explicit-count consumers. T15 remembered
+is T04a.2 M3 rectangle/ellipse area-selection perimeter. Fit Spline -> Measure,
+refit/straighten/remove and segmented explicit counts have scoped evidence;
+private Float32 processing history preserves native Double editable controls.
+Task scratch and SDK consumers are retired; reuse the qualified fitted matrix. T15 remembered
 Interpolate options have scoped native settings and both-host integration.
 Repeated-source/type,zoom anddegenerate
 geometry now have scoped129-observation API/both-host evidence. Point no-op is scoped delivered;

@@ -780,7 +780,7 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
 
 
 Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::string& directory,int profile) {
-  require(profile>=0 && profile<=14,"Unknown subtype measurement profile");
+  require(profile>=0 && profile<=21,"Unknown subtype measurement profile");
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
   require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh subtype measurement fixture required");std::filesystem::create_directories(dir);
   Selection source(profile==0 || profile==5?"polyline":profile==3?"polygon":"freehand",{{3,3},{13,3},{13,13},{3,13}});
@@ -796,6 +796,13 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(p==2 || p==5)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
     if(p==3 || p==6)source=with_selection_polygon_type(source,SelectionPolygonType::Freeline);
     if(p==4)source=with_selection_polygon_coordinates(source,true);
+  }
+  if(profile>=15) {
+    source=Selection(profile==17?"polyline":profile==18 || profile==21?"freehand":"polygon",{{3,3},{13,3},{13,13}});
+    if(profile==15 || profile==19)source.points={{3.2,4.7},{13.8,3.1},{19.4,14.2},{11.1,20.6},{4.3,13.8}};
+    if(profile==16)source.points={{3,3},{203,3},{403,203}};
+    if(profile==20)source.points={{3,3},{13,3},{13,13},{3,13}};
+    if(profile==21)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   }
   SpatialCalibration spatial;spatial.spacing={2,.5,1};spatial.unit="um";DatasetReadObserver reads;
   Image pixels(40,40,1,PixelType::UInt8);for(int y=0;y<40;++y)for(int x=0;x<40;++x)pixels.at(x,y)=x+2*y;
@@ -814,6 +821,21 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
       click(last.at("dialog").at("controls").at("apply"),"fit.apply");w.wait();frame();
       source=*owner->snapshot().data().selection;
       require(bool(selection_spline_fit(source)) && owner->undo_steps()==1,"Fit menu did not preserve editable fitted source/history");
+      if(profile>=15) {
+        const bool removing=profile==18 || profile==19 || profile==21;
+        const std::string action=removing?"menu.action.remove_spline_fit":"menu.action.show_fit_spline";
+        for(const auto& key:std::vector<std::string>{"menu.Edit","menu.Edit.Selection",action})click(last.at("host_controls").at(key),key);
+        if(!removing) {
+          if(profile==17 || profile==20) {
+            click(last.at("dialog").at("controls").at("mode"),"lifecycle.mode");frame();frame();
+            for(const char* key:{"Home","Down","Enter"})for(bool down:{true,false}){frame(Json::array({{{"type","key"},{"name",key},{"down",down}}}));frame();}
+            require(last.at("dialog").at("values").at("mode")=="straighten","Lifecycle straighten choice failed");
+          }
+          click(last.at("dialog").at("controls").at("apply"),"lifecycle.apply");
+        }
+        w.wait();frame();source=*owner->snapshot().data().selection;
+        require(bool(selection_spline_fit(source))!=removing && owner->undo_steps()==2,"Lifecycle menu lost fit state/history");
+      }
     }
     const auto original=owner->snapshot();const auto beforeUndo=owner->undo_steps();const auto beforeReads=reads.counts().plane_reads;
     for(const auto& key:{"menu.Analyze","menu.action.measure"})click(last.at("host_controls").at(key),key);
@@ -836,7 +858,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     start();w.cancel();release=true;w.wait();
     require(w.results==rows && !w.busy() && session.fixtureApplication().job_scheduler()->usage().reserved_bytes==reserved && w.renderMemoryInfo().at("working_bytes")==working,"Cancelled subtype Measure changed results or retained reservations");
     if(!w.error().empty())acknowledge();
-    if(profile==1 || profile==9) {
+    if(profile==1 || profile==9 || profile==15) {
       start();owner->select(profile==1?with_selection_polygon_coordinates(source,false):remove_spline_fit(source,40,40));release=true;w.wait();
       require(!w.error().empty() && w.results==rows,"Changed constructor profile was not rejected as stale");
       acknowledge();owner->select(source);frame();
@@ -846,7 +868,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"measured.ijx").u8string());
     require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(source) && reopened.results==rows,"Workspace lost constructor state or perimeter result");
     require(reopened.nativeSnapshot().data().dataset.plane({})->pixels==pixels.pixels,"Subtype Measure changed stored pixels");
-    report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1},{"fitted",profile>=7},{"stale_fit_checked",profile==9},{"fit_undo_steps",beforeUndo},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
+    report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1},{"fitted",source.attributes.count(spline_fit_attribute)!=0},{"lifecycle",profile>=15},{"stale_fit_checked",profile==9 || profile==15},{"fit_undo_steps",beforeUndo},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& e){release=true;w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",e.what()},{"rendered",last},{"error",w.error()},{"events",events},{"controls",controls}});throw;}
 }
