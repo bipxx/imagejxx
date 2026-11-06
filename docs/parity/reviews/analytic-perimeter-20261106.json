@@ -1,0 +1,324 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 rectangle/ellipse area-selection perimeter",
+  "implemented": true,
+  "verified": true,
+  "integrated": true,
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "scope": "Captured rectangle/ellipse integer-extent calibrated perimeter, no-ROI pixel perimeter, readonly unit flag, provenance9 and existing frontend/settings Perim. unit path. Public DTO layout requires matching C++ client rebuild.",
+  "checks": "806 distinct installed Windows Python case IDs;171 original observations (12native zero-bound refusals,6huge-oval direct-length-only cases), native analysis/settings,28matching Windows host profiles including6new analytic profiles/host, installed Windows target-analysis client and Linux native analysis/settings.",
+  "remaining": "Full M3/T06/editor/platform/release scope remains open. Fractional area membership unchanged; other analytic/mask/path/rounded/rotated constructors, centroid/weighted/shape descriptors, threshold/redirect, manager/replay/platform owners remain. Retired G016/gesture references unavailable, not passed.",
+  "cleanup": "retirement009.json proves five exact scratch groups and parent absent; three archives live-hash verified, SDK/compiler identities retained only, warm cache/runtime/app/installed SDK preserved. Linux used no disposable scratch.",
+  "storage": {
+    "storage_before_bytes": 7412385814,
+    "storage_measured_checkpoint_bytes": 7418557581,
+    "storage_after_bytes": 7414428523,
+    "physical_free_after_bytes": 233876619264,
+    "allocation_bound_bytes": 268435456,
+    "unknown_subtrees": 214,
+    "budget_verified": false
+  },
+  "cost": {
+    "windows_build_commands": 9,
+    "windows_build_command_seconds": 88.0,
+    "native_module_build_seconds": 33.376,
+    "linux_build_seconds": 10.119,
+    "python_seconds": 6.302,
+    "sdk_command_seconds": 9.003
+  },
+  "failures": [
+    "build-imagejxx_core003.log (wrong local variable; corrected before Python links)",
+    "linux-owner007.process.json (launch_failed, no target; corrected absolute executable in outer008)",
+    "instruction_reinforcement.closeout.check_correction (document assertion corrected to preserve original mixed endings)"
+  ],
+  "sources": [
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 39263,
+      "sha256": "3f4a3c1ce4bbe4d6e393fd1af502881834c1840dfe44308a400aecd54d4cfe83"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 21043,
+      "sha256": "e4cbc372960101b3714d0813660e2eabd0a35220951debd2fd5a77a0dec029c7"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 99594,
+      "sha256": "a1ab688ebe5e163d29592903ec228e1e65b2a601e328eff47ccc5fba044b5d00"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38288,
+      "sha256": "9fbe30d51f722ed636958c5605bfd9f7f3450df9da70f629f940eef72de6c173"
+    },
+    {
+      "path": "tests/python/test_analytic_perimeter.py",
+      "bytes": 5234,
+      "sha256": "297796bcdcdd094d39cd1de6e7062b66f1d0b4c6d40fb0f51e353a98fbdfa709"
+    },
+    {
+      "path": "tests/reference/ObserveAnalyticPerimeter.java",
+      "bytes": 3420,
+      "sha256": "5620170991946e6c5fa5aba6725feeb23101b64330a2082fb6a45b9a0d4be790"
+    },
+    {
+      "path": "tests/fixtures/analytic-perimeter-imagej154r.json",
+      "bytes": 95531,
+      "sha256": "cd45da355b52efc92cbec8207c2eb83eee2e4bf843192b0ea3d7f784b7c3548a"
+    },
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 6116,
+      "sha256": "736b842f9790328792200de42f28f36f362340f563e006037b1f3d9c424d28e9"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 6944,
+      "sha256": "65226ad81826a24f524a22d384e80ab6636b03d7f9ebfdc57339fa4060269998"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 27552,
+      "sha256": "3f84f5006c2066d577b4fc98e0b501ceca253e1dcc22cefd2992e594e4969599"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 6680,
+      "sha256": "ea3e8238bdd38b5dc1650c88dc211d22611b726d49be12baf4cf67b0c287d13d"
+    },
+    {
+      "path": "tests/python/test_target_measurements.py",
+      "bytes": 7970,
+      "sha256": "5e79cb5594b81f41b5dc4112d955a07a37e5395344eb01d05dd5d6ace1ed32ac"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 17973,
+      "sha256": "d9a348a85aab48f0c46707b9eaff758cc5b8913ebdc4e437bd2bfc1274473740"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/entry.json",
+      "bytes": 25225,
+      "sha256": "e542819085d6d3c73c07d1baad1aaa2840e8be318c070ab153b76c3d5979e58f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/python006.xml",
+      "bytes": 129468,
+      "sha256": "069b4109fb37cfc1afdd2ccf797cfb2360f97ba564ad094e6c1a99f10a0f694a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/installed-identities006.json",
+      "bytes": 3391,
+      "sha256": "00ba95a27fc09a73c18e956a2025fa67bc202e4f87ccdd895242bf168c9420c1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/review008.json",
+      "bytes": 1085,
+      "sha256": "e740fb2ec451dab8e3c36fa8f6102b8cb2270afafb8e654cbe26c65bb6024666"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/retirement009.json",
+      "bytes": 1136,
+      "sha256": "12241d17c5e99ac58ef183f98dc81ec1c5eb07ab458761cf8e4531d104d2ca6a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/scratch-identities009.json",
+      "bytes": 381519,
+      "sha256": "768eff29f71fc7bc88fda17ba286b0e0fdccbbbe8d53cff9e1966d07ea81bba5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-prebuild-20261106.json",
+      "bytes": 66574,
+      "sha256": "f1cd088c6aaf08eb83cbce3c156661566359744c09c5d7ecf7608669770428f6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-preretirement-20261106.json",
+      "bytes": 66573,
+      "sha256": "a400ca38b2d903341c3e8d659a82172c4763235393d621aa832f291d9dbaffb3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-final-20261106.json",
+      "bytes": 66574,
+      "sha256": "57621e45a08179c55dc1b5678b04c5c92ac51b0582555d7dd908f8d6ae5f5344"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/build-_desktop005.process.json",
+      "bytes": 2855,
+      "sha256": "002f4c9918cdd72aebde206c14d5a01ff1dc7440366eab3d66560c39a0f86658"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/build-_native005.process.json",
+      "bytes": 2030,
+      "sha256": "86db689bb990777fa1387e51f90d4eb6de8556628c32c3c120d2846911c897a2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/build-imagejxx_app005.process.json",
+      "bytes": 2860,
+      "sha256": "c9cc879719fb4b89aa663e3bd4868b21ab071b57705cae8f0da28607940b15e5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/build-imagejxx_core003.process.json",
+      "bytes": 2037,
+      "sha256": "1e368d6b73d40c5d38cb68690f01ddbc280f1f3836370a04383a56a06c776754"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/build-imagejxx_core004.process.json",
+      "bytes": 2037,
+      "sha256": "2798be766a5e871822d7011c902edc45393b1b2e262170b78f2d8d2772648f5f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/build-imagejxx_desktop005.process.json",
+      "bytes": 2857,
+      "sha256": "0bb9e1007b6ca70f1c9f6c5c01bb7d1d983831b8d36f2eca77da8187d32042bc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/build-imagejxx_display_actions_tests005.process.json",
+      "bytes": 2876,
+      "sha256": "ba02a5afa5b9fdcf1f5f16b86fac6720b706902f38c008804a86b0cab985a102"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/build-imagejxx_settings_tests005.process.json",
+      "bytes": 2049,
+      "sha256": "f086c41cde5b005b2ef905ebb4104536787c0aef434a9822e151a001ca28f510"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/build-imagejxx_target_analysis_tests004.process.json",
+      "bytes": 2048,
+      "sha256": "31c73172d7f3ca5581a401b6dbc920b67722ef144a8c441751d10557d8ce2386"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/compile001.process.json",
+      "bytes": 2299,
+      "sha256": "8926d8c04ece8f3ffb81d4c7d4c48c19469558ad6ebfa8177679fe9eab548fab"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/imagejxx_display_actions_tests006.process.json",
+      "bytes": 1956,
+      "sha256": "c14c405bba28107d80b78688ebde21d1ef8ae88a581ee66c1c48834e927728c3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/imagejxx_settings_tests006.process.json",
+      "bytes": 1819,
+      "sha256": "48c85794f0f65469d221a8d6ec0cf36ec2f51f4d2f50bec16a980629c5b0e37b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/install-desktop006.process.json",
+      "bytes": 2117,
+      "sha256": "67881bb81f5b417fb98f2b22e0f4323f779c37830a129a2e280df3635ffb76ec"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/install-development006.process.json",
+      "bytes": 2124,
+      "sha256": "620e93063ae0072d570401c415cd84bdb6e675d860ecb1fcad8eac92b2904713"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/install-Unspecified006.process.json",
+      "bytes": 2129,
+      "sha256": "222a15a34cee13c3ba0f33a95532316e74c53558b51dcf32f3ea31fd4e5f01e9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/linux-analysis007.process.json",
+      "bytes": 1489,
+      "sha256": "8eee57b9e4796efac8a7d13ba71b295ba3040f15d8298ffd9c206cc2b26d27bc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/linux-build007.process.json",
+      "bytes": 1597,
+      "sha256": "7cab82f65b616c51fce7e026cea0808841c8aeddf147ab3c42c9094bd5d8944e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/linux-owner007.process.json",
+      "bytes": 3748,
+      "sha256": "177caee9088b35cc68a23f4f918ae2e67fd79f044d1289af2eefcf5623288bca"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/linux-owner008.process.json",
+      "bytes": 3852,
+      "sha256": "06b6a7051c6844b3b54abb96a507385f8ff90a583def30ca0683c57c02bfd610"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/linux-settings007.process.json",
+      "bytes": 1482,
+      "sha256": "fa7df114f08b3d4976bf4a5d598ba83397708e0669333dada6f0e35e6a8750c6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/native004.process.json",
+      "bytes": 1832,
+      "sha256": "03272a7ed3c637642312da23906392f9154022c7b785357d28545cea81e4b783"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/observe001.process.json",
+      "bytes": 2162,
+      "sha256": "ba4eb043711ad4dc86d54d584177386a7a6aec96c6995b336b9e7d326fb1e901"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/python006.process.json",
+      "bytes": 2636,
+      "sha256": "e10fa7b416b4b86f103d71107772ce4445d9d31257d3cbbd85ce46f622283ce3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/sdk-build007.process.json",
+      "bytes": 2100,
+      "sha256": "a641d80f5204f6dcd05900a61e930d2ba1ea1abfb15099d5e4b160ec9157f2ec"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/sdk-carrier007.process.json",
+      "bytes": 2022,
+      "sha256": "62a176e435a55adca007fb80cf1d8d32deab15d475c81ea1a75ffb787e3ee274"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/sdk-configure007.process.json",
+      "bytes": 2407,
+      "sha256": "72220d1bdb370938f10167487b610ca221a36cdaf50076ee622803fad2ef25d2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/sdk-run007.process.json",
+      "bytes": 1918,
+      "sha256": "166b2ce9158bec5956259d601e28328745bba1b468419a3fd63582ccb8755c2b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/native006-retained008.zip",
+      "bytes": 365355,
+      "sha256": "81bf51ec952ae27b62c8bd58eaaeea418d8a49c355883668737868a75363cbe4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/python006-retained008.zip",
+      "bytes": 197703,
+      "sha256": "7117384a1824089b00a8c5ae193cf2e99b4cc3dfb312208527db95f1c70e7316"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/reference001-retained008.zip",
+      "bytes": 9642,
+      "sha256": "9d2fc9c98180ca8c1acb7fa71a18255b1a4f9155d305e9c80d8e43979708cc10"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/native006-verify008.json",
+      "bytes": 1462,
+      "sha256": "6913d5cee2df4fbdba1d3b87fd37269f292ed81686e2dd65f68cdcd3195ca288"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/python006-verify008.json",
+      "bytes": 1460,
+      "sha256": "d9124507a77376bba51e621983d8939a906587f11aaaf379d553322e20a6ce01"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/reference001-verify008.json",
+      "bytes": 1472,
+      "sha256": "0dae21fc9b7fc8e5d970a0d745d35a0e2f9327353c61cbb63bff902d5762cc93"
+    }
+  ],
+  "task_record": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/entry.json",
+  "next": "T04a.2 M3 calibrated area centroid columns",
+  "limits": [
+    "Fractional area parity is not asserted",
+    "Huge original oval Analyzer masks explicitly unavailable; direct perimeter observed",
+    "12native zero-bound refusals are not original-constructor parity",
+    "Linux UI/installed SDK and macOS not qualified",
+    "Retired G016/gesture inputs remain unavailable"
+  ]
+}

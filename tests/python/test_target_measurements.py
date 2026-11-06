@@ -46,7 +46,7 @@ def test_manager_grouped_reads_preserve_row_order_and_frozen_axes(dtype, indices
     n = reads.counts().plane_reads
     before = owner.snapshot()
     command = prepare(app, owner, indices)
-    assert reads.counts().plane_reads == n and command.record["version"] == 3
+    assert reads.counts().plane_reads == n and command.record["version"] == 9
     order = indices or [0, 1, 2, 3]
     positions = [(1, 0, 1), (0, 1, 0), (1, 0, 1), (1, 1, 0)]
     assert command.estimate.row_count == len(order)
@@ -95,6 +95,8 @@ def test_global_values_are_frozen_and_original_manager_revision_is_guarded(bypas
     assert reads.counts().plane_reads == n + 3
     assert result.planes[0].statistics["mean"] == (112.5 if bypass else 235)
     assert result.planes[1].statistics["mean"] == (35.5 if bypass else 81)
+    assert result.planes[0].perimeter == (28 if bypass else 10)
+    assert not result.planes[0].perimeter_in_pixels
     if bypass:
         app.validate_target(command.target)
     else:

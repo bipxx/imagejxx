@@ -7,6 +7,15 @@ as the authority for whether the required checkpoint is satisfied:
 - Proceed only from observed evidence for the inputs and process state being
   consumed. Name the evidence path and decision before launching the action;
   a planned check, previous summary or instruction edit does not establish it.
+- Evidence must identify the consumed inputs, exact paths or artifact identities,
+  observed outcomes and applicable process/storage state. A generic "checked",
+  "passed" or "will clean" statement is insufficient. If a checkpoint does not
+  apply, record the concrete reason in the same task record; do not invent work
+  or repeat valid checks merely to fill a receipt.
+- Immediately before issuing a dependent command, confirm its recorded decision
+  matches that command and its current inputs. If it does not, record a stop
+  decision and resolve the mismatch before execution, including retries and
+  successor work. Reuse valid evidence rather than duplicating scans.
 - If evidence is missing, stale or contradictory, stop that dependent action and
   record the concrete blocker. Correct it within existing authority; continue
   independent safe work without requesting routine permission or bypassing it.

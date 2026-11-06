@@ -1,0 +1,5118 @@
+{
+  "source": {
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "observers": [
+      {
+        "path": "tests/reference/ObserveAnalyticPerimeter.java",
+        "sha256": "5620170991946e6c5fa5aba6725feeb23101b64330a2082fb6a45b9a0d4be790"
+      },
+      {
+        "path": "tests/reference/ObserveFittedMeasurements.java",
+        "sha256": "06f4c5b831542403ea065d3ade968f5270ad3474cb31a83115e8f1b82216add3"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "shape0-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 36.0,
+      "rows": [
+        {
+          "Area": 80.0,
+          "Perim.": 36.0
+        }
+      ]
+    },
+    {
+      "id": "shape0-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.0,
+      "rows": [
+        {
+          "Area": 80.0,
+          "Perim.": 48.0
+        }
+      ]
+    },
+    {
+      "id": "shape0-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 53.0,
+      "rows": [
+        {
+          "Area": 60.0,
+          "Perim.": 53.0
+        }
+      ]
+    },
+    {
+      "id": "shape0-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 36.0,
+      "rows": [
+        {
+          "Area": 80.0,
+          "Perim.": 36.0
+        }
+      ]
+    },
+    {
+      "id": "shape0-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.0,
+      "rows": [
+        {
+          "Area": 80.0,
+          "Perim.": 48.0
+        }
+      ]
+    },
+    {
+      "id": "shape0-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 53.0,
+      "rows": [
+        {
+          "Area": 60.0,
+          "Perim.": 53.0
+        }
+      ]
+    },
+    {
+      "id": "shape0-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 28.36166778425462,
+      "rows": [
+        {
+          "Area": 64.0,
+          "Perim.": 28.36166778425462
+        }
+      ]
+    },
+    {
+      "id": "shape0-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 42.01120851869869,
+      "rows": [
+        {
+          "Area": 64.0,
+          "Perim.": 42.01120851869869
+        }
+      ]
+    },
+    {
+      "id": "shape0-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.783804025807974,
+      "rows": [
+        {
+          "Area": 48.0,
+          "Perim.": 48.783804025807974
+        }
+      ]
+    },
+    {
+      "id": "shape0-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 28.36166778425462,
+      "rows": [
+        {
+          "Area": 64.0,
+          "Perim.": 28.36166778425462
+        }
+      ]
+    },
+    {
+      "id": "shape0-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 42.01120851869869,
+      "rows": [
+        {
+          "Area": 64.0,
+          "Perim.": 42.01120851869869
+        }
+      ]
+    },
+    {
+      "id": "shape0-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.783804025807974,
+      "rows": [
+        {
+          "Area": 48.0,
+          "Perim.": 48.783804025807974
+        }
+      ]
+    },
+    {
+      "id": "shape1-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.2,
+        8.3
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 40.0,
+      "rows": [
+        {
+          "Area": 99.0,
+          "Perim.": 40.0
+        }
+      ]
+    },
+    {
+      "id": "shape1-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.2,
+        8.3
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 53.0,
+      "rows": [
+        {
+          "Area": 99.0,
+          "Perim.": 53.0
+        }
+      ]
+    },
+    {
+      "id": "shape1-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.2,
+        8.3
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 59.5,
+      "rows": [
+        {
+          "Area": 74.25,
+          "Perim.": 59.5
+        }
+      ]
+    },
+    {
+      "id": "shape1-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 36.0,
+      "rows": [
+        {
+          "Area": 80.0,
+          "Perim.": 36.0
+        }
+      ]
+    },
+    {
+      "id": "shape1-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.0,
+      "rows": [
+        {
+          "Area": 80.0,
+          "Perim.": 48.0
+        }
+      ]
+    },
+    {
+      "id": "shape1-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 53.0,
+      "rows": [
+        {
+          "Area": 60.0,
+          "Perim.": 53.0
+        }
+      ]
+    },
+    {
+      "id": "shape1-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.2,
+        8.3
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 31.494515501078165,
+      "rows": [
+        {
+          "Area": 79.0,
+          "Perim.": 31.494515501078165
+        }
+      ]
+    },
+    {
+      "id": "shape1-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.2,
+        8.3
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 46.295306614080765,
+      "rows": [
+        {
+          "Area": 79.0,
+          "Perim.": 46.295306614080765
+        }
+      ]
+    },
+    {
+      "id": "shape1-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.2,
+        8.3
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 54.84586753585561,
+      "rows": [
+        {
+          "Area": 59.25,
+          "Perim.": 54.84586753585561
+        }
+      ]
+    },
+    {
+      "id": "shape1-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 28.36166778425462,
+      "rows": [
+        {
+          "Area": 64.0,
+          "Perim.": 28.36166778425462
+        }
+      ]
+    },
+    {
+      "id": "shape1-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 42.01120851869869,
+      "rows": [
+        {
+          "Area": 64.0,
+          "Perim.": 42.01120851869869
+        }
+      ]
+    },
+    {
+      "id": "shape1-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.783804025807974,
+      "rows": [
+        {
+          "Area": 48.0,
+          "Perim.": 48.783804025807974
+        }
+      ]
+    },
+    {
+      "id": "shape2-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        -2.7,
+        -1.2,
+        5.1,
+        4.4
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        6,
+        5
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 22.0,
+      "rows": [
+        {
+          "Area": 16.0,
+          "Perim.": 22.0
+        }
+      ]
+    },
+    {
+      "id": "shape2-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        -2.7,
+        -1.2,
+        5.1,
+        4.4
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        6,
+        5
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 29.0,
+      "rows": [
+        {
+          "Area": 16.0,
+          "Perim.": 29.0
+        }
+      ]
+    },
+    {
+      "id": "shape2-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        -2.7,
+        -1.2,
+        5.1,
+        4.4
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        6,
+        5
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 33.0,
+      "rows": [
+        {
+          "Area": 12.0,
+          "Perim.": 33.0
+        }
+      ]
+    },
+    {
+      "id": "shape2-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        -2.0,
+        -1.0,
+        5.0,
+        4.0
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        5,
+        4
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 18.0,
+      "rows": [
+        {
+          "Area": 9.0,
+          "Perim.": 18.0
+        }
+      ]
+    },
+    {
+      "id": "shape2-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        -2.0,
+        -1.0,
+        5.0,
+        4.0
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        5,
+        4
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 24.0,
+      "rows": [
+        {
+          "Area": 9.0,
+          "Perim.": 24.0
+        }
+      ]
+    },
+    {
+      "id": "shape2-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        -2.0,
+        -1.0,
+        5.0,
+        4.0
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        5,
+        4
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 26.5,
+      "rows": [
+        {
+          "Area": 6.75,
+          "Perim.": 26.5
+        }
+      ]
+    },
+    {
+      "id": "shape2-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        -2.7,
+        -1.2,
+        5.1,
+        4.4
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        6,
+        5
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 17.314477970375712,
+      "rows": [
+        {
+          "Area": 15.0,
+          "Perim.": 17.314477970375712
+        }
+      ]
+    },
+    {
+      "id": "shape2-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        -2.7,
+        -1.2,
+        5.1,
+        4.4
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        6,
+        5
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 25.29010750401782,
+      "rows": [
+        {
+          "Area": 15.0,
+          "Perim.": 25.29010750401782
+        }
+      ]
+    },
+    {
+      "id": "shape2-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        -2.7,
+        -1.2,
+        5.1,
+        4.4
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        6,
+        5
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 30.45414388885573,
+      "rows": [
+        {
+          "Area": 11.25,
+          "Perim.": 30.45414388885573
+        }
+      ]
+    },
+    {
+      "id": "shape2-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        -2.0,
+        -1.0,
+        5.0,
+        4.0
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        5,
+        4
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 14.18083389212731,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 14.18083389212731
+        }
+      ]
+    },
+    {
+      "id": "shape2-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        -2.0,
+        -1.0,
+        5.0,
+        4.0
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        5,
+        4
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 21.005604259349344,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 21.005604259349344
+        }
+      ]
+    },
+    {
+      "id": "shape2-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        -2.0,
+        -1.0,
+        5.0,
+        4.0
+      ],
+      "integer_bounds": [
+        -2,
+        -1,
+        5,
+        4
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 24.391902012903987,
+      "rows": [
+        {
+          "Area": 6.0,
+          "Perim.": 24.391902012903987
+        }
+      ]
+    },
+    {
+      "id": "shape3-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        12.3,
+        12.9,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.0,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 4.0
+        }
+      ]
+    },
+    {
+      "id": "shape3-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        12.3,
+        12.9,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 5.0,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 5.0
+        }
+      ]
+    },
+    {
+      "id": "shape3-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        12.3,
+        12.9,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.5,
+      "rows": [
+        {
+          "Area": 0.75,
+          "Perim.": 6.5
+        }
+      ]
+    },
+    {
+      "id": "shape3-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        12.0,
+        12.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.0,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 4.0
+        }
+      ]
+    },
+    {
+      "id": "shape3-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        12.0,
+        12.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 5.0,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 5.0
+        }
+      ]
+    },
+    {
+      "id": "shape3-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        12.0,
+        12.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.5,
+      "rows": [
+        {
+          "Area": 0.75,
+          "Perim.": 6.5
+        }
+      ]
+    },
+    {
+      "id": "shape3-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        12.3,
+        12.9,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 3.141592653589793,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 3.141592653589793
+        }
+      ]
+    },
+    {
+      "id": "shape3-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        12.3,
+        12.9,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.288751483104749,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 4.288751483104749
+        }
+      ]
+    },
+    {
+      "id": "shape3-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        12.3,
+        12.9,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.063887225727187,
+      "rows": [
+        {
+          "Area": 0.75,
+          "Perim.": 6.063887225727187
+        }
+      ]
+    },
+    {
+      "id": "shape3-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        12.0,
+        12.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 3.141592653589793,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 3.141592653589793
+        }
+      ]
+    },
+    {
+      "id": "shape3-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        12.0,
+        12.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.288751483104749,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 4.288751483104749
+        }
+      ]
+    },
+    {
+      "id": "shape3-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        12.0,
+        12.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        12,
+        12,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.063887225727187,
+      "rows": [
+        {
+          "Area": 0.75,
+          "Perim.": 6.063887225727187
+        }
+      ]
+    },
+    {
+      "id": "shape4-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.0,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 4.0
+        }
+      ]
+    },
+    {
+      "id": "shape4-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 5.0,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 5.0
+        }
+      ]
+    },
+    {
+      "id": "shape4-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.5,
+      "rows": [
+        {
+          "Area": 0.75,
+          "Perim.": 6.5
+        }
+      ]
+    },
+    {
+      "id": "shape4-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.0,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 4.0
+        }
+      ]
+    },
+    {
+      "id": "shape4-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 5.0,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 5.0
+        }
+      ]
+    },
+    {
+      "id": "shape4-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.5,
+      "rows": [
+        {
+          "Area": 0.75,
+          "Perim.": 6.5
+        }
+      ]
+    },
+    {
+      "id": "shape4-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 3.141592653589793,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 3.141592653589793
+        }
+      ]
+    },
+    {
+      "id": "shape4-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.288751483104749,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 4.288751483104749
+        }
+      ]
+    },
+    {
+      "id": "shape4-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.063887225727187,
+      "rows": [
+        {
+          "Area": 0.75,
+          "Perim.": 6.063887225727187
+        }
+      ]
+    },
+    {
+      "id": "shape4-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 3.141592653589793,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 3.141592653589793
+        }
+      ]
+    },
+    {
+      "id": "shape4-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.288751483104749,
+      "rows": [
+        {
+          "Area": 1.0,
+          "Perim.": 4.288751483104749
+        }
+      ]
+    },
+    {
+      "id": "shape4-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.063887225727187,
+      "rows": [
+        {
+          "Area": 0.75,
+          "Perim.": 6.063887225727187
+        }
+      ]
+    },
+    {
+      "id": "shape5-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 30.0,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 30.0
+        }
+      ]
+    },
+    {
+      "id": "shape5-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 18.0,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 18.0
+        }
+      ]
+    },
+    {
+      "id": "shape5-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 84.5,
+      "rows": [
+        {
+          "Area": 10.5,
+          "Perim.": 84.5
+        }
+      ]
+    },
+    {
+      "id": "shape5-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 30.0,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 30.0
+        }
+      ]
+    },
+    {
+      "id": "shape5-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 18.0,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 18.0
+        }
+      ]
+    },
+    {
+      "id": "shape5-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 84.5,
+      "rows": [
+        {
+          "Area": 10.5,
+          "Perim.": 84.5
+        }
+      ]
+    },
+    {
+      "id": "shape5-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 28.216196088293504,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 28.216196088293504
+        }
+      ]
+    },
+    {
+      "id": "shape5-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 15.24989319465221,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 15.24989319465221
+        }
+      ]
+    },
+    {
+      "id": "shape5-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 83.69901338338087,
+      "rows": [
+        {
+          "Area": 10.5,
+          "Perim.": 83.69901338338087
+        }
+      ]
+    },
+    {
+      "id": "shape5-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 28.216196088293504,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 28.216196088293504
+        }
+      ]
+    },
+    {
+      "id": "shape5-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 15.24989319465221,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 15.24989319465221
+        }
+      ]
+    },
+    {
+      "id": "shape5-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        14.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        14
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 83.69901338338087,
+      "rows": [
+        {
+          "Area": 10.5,
+          "Perim.": 83.69901338338087
+        }
+      ]
+    },
+    {
+      "id": "shape6-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 30.0,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 30.0
+        }
+      ]
+    },
+    {
+      "id": "shape6-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 57.0,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 57.0
+        }
+      ]
+    },
+    {
+      "id": "shape6-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 13.0,
+      "rows": [
+        {
+          "Area": 10.5,
+          "Perim.": 13.0
+        }
+      ]
+    },
+    {
+      "id": "shape6-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 30.0,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 30.0
+        }
+      ]
+    },
+    {
+      "id": "shape6-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 57.0,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 57.0
+        }
+      ]
+    },
+    {
+      "id": "shape6-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 13.0,
+      "rows": [
+        {
+          "Area": 10.5,
+          "Perim.": 13.0
+        }
+      ]
+    },
+    {
+      "id": "shape6-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 28.216196088293504,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 28.216196088293504
+        }
+      ]
+    },
+    {
+      "id": "shape6-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 55.877235019830046,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 55.877235019830046
+        }
+      ]
+    },
+    {
+      "id": "shape6-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 10.225285524865532,
+      "rows": [
+        {
+          "Area": 10.5,
+          "Perim.": 10.225285524865532
+        }
+      ]
+    },
+    {
+      "id": "shape6-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 28.216196088293504,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 28.216196088293504
+        }
+      ]
+    },
+    {
+      "id": "shape6-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 55.877235019830046,
+      "rows": [
+        {
+          "Area": 14.0,
+          "Perim.": 55.877235019830046
+        }
+      ]
+    },
+    {
+      "id": "shape6-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        14.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        14,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 10.225285524865532,
+      "rows": [
+        {
+          "Area": 10.5,
+          "Perim.": 10.225285524865532
+        }
+      ]
+    },
+    {
+      "id": "shape7-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.000000000000002,
+        8.000000000000002
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 40.0,
+      "rows": [
+        {
+          "Area": 99.0,
+          "Perim.": 40.0
+        }
+      ]
+    },
+    {
+      "id": "shape7-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.000000000000002,
+        8.000000000000002
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 53.0,
+      "rows": [
+        {
+          "Area": 99.0,
+          "Perim.": 53.0
+        }
+      ]
+    },
+    {
+      "id": "shape7-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.000000000000002,
+        8.000000000000002
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 59.5,
+      "rows": [
+        {
+          "Area": 74.25,
+          "Perim.": 59.5
+        }
+      ]
+    },
+    {
+      "id": "shape7-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 36.0,
+      "rows": [
+        {
+          "Area": 80.0,
+          "Perim.": 36.0
+        }
+      ]
+    },
+    {
+      "id": "shape7-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.0,
+      "rows": [
+        {
+          "Area": 80.0,
+          "Perim.": 48.0
+        }
+      ]
+    },
+    {
+      "id": "shape7-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 53.0,
+      "rows": [
+        {
+          "Area": 60.0,
+          "Perim.": 53.0
+        }
+      ]
+    },
+    {
+      "id": "shape7-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.000000000000002,
+        8.000000000000002
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 31.494515501078165,
+      "rows": [
+        {
+          "Area": 79.0,
+          "Perim.": 31.494515501078165
+        }
+      ]
+    },
+    {
+      "id": "shape7-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.000000000000002,
+        8.000000000000002
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 46.295306614080765,
+      "rows": [
+        {
+          "Area": 79.0,
+          "Perim.": 46.295306614080765
+        }
+      ]
+    },
+    {
+      "id": "shape7-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.2,
+        4.7,
+        10.000000000000002,
+        8.000000000000002
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        11,
+        9
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 54.84586753585561,
+      "rows": [
+        {
+          "Area": 59.25,
+          "Perim.": 54.84586753585561
+        }
+      ]
+    },
+    {
+      "id": "shape7-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 28.36166778425462,
+      "rows": [
+        {
+          "Area": 64.0,
+          "Perim.": 28.36166778425462
+        }
+      ]
+    },
+    {
+      "id": "shape7-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 42.01120851869869,
+      "rows": [
+        {
+          "Area": 64.0,
+          "Perim.": 42.01120851869869
+        }
+      ]
+    },
+    {
+      "id": "shape7-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        4.0,
+        10.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        4,
+        10,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.783804025807974,
+      "rows": [
+        {
+          "Area": 48.0,
+          "Perim.": 48.783804025807974
+        }
+      ]
+    },
+    {
+      "id": "shape8-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 160.0,
+      "rows": [
+        {
+          "Area": 1600.0,
+          "Perim.": 160.0
+        }
+      ]
+    },
+    {
+      "id": "shape8-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 200.0,
+      "rows": [
+        {
+          "Area": 1600.0,
+          "Perim.": 200.0
+        }
+      ]
+    },
+    {
+      "id": "shape8-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 260.0,
+      "rows": [
+        {
+          "Area": 1200.0,
+          "Perim.": 260.0
+        }
+      ]
+    },
+    {
+      "id": "shape8-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 160.0,
+      "rows": [
+        {
+          "Area": 1600.0,
+          "Perim.": 160.0
+        }
+      ]
+    },
+    {
+      "id": "shape8-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 200.0,
+      "rows": [
+        {
+          "Area": 1600.0,
+          "Perim.": 200.0
+        }
+      ]
+    },
+    {
+      "id": "shape8-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 260.0,
+      "rows": [
+        {
+          "Area": 1200.0,
+          "Perim.": 260.0
+        }
+      ]
+    },
+    {
+      "id": "shape8-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 125.66370614359172,
+      "rows": [
+        {
+          "Area": 1264.0,
+          "Perim.": 125.66370614359172
+        }
+      ]
+    },
+    {
+      "id": "shape8-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 171.55005932418993,
+      "rows": [
+        {
+          "Area": 1264.0,
+          "Perim.": 171.55005932418993
+        }
+      ]
+    },
+    {
+      "id": "shape8-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 242.55548902908754,
+      "rows": [
+        {
+          "Area": 948.0,
+          "Perim.": 242.55548902908754
+        }
+      ]
+    },
+    {
+      "id": "shape8-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 125.66370614359172,
+      "rows": [
+        {
+          "Area": 1264.0,
+          "Perim.": 125.66370614359172
+        }
+      ]
+    },
+    {
+      "id": "shape8-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 171.55005932418993,
+      "rows": [
+        {
+          "Area": 1264.0,
+          "Perim.": 171.55005932418993
+        }
+      ]
+    },
+    {
+      "id": "shape8-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 242.55548902908754,
+      "rows": [
+        {
+          "Area": 948.0,
+          "Perim.": 242.55548902908754
+        }
+      ]
+    },
+    {
+      "id": "shape9-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        60.1,
+        70.2,
+        10.4,
+        12.3
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        11,
+        13
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.0,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 48.0
+        }
+      ]
+    },
+    {
+      "id": "shape9-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        60.1,
+        70.2,
+        10.4,
+        12.3
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        11,
+        13
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 57.0,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 57.0
+        }
+      ]
+    },
+    {
+      "id": "shape9-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        60.1,
+        70.2,
+        10.4,
+        12.3
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        11,
+        13
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 83.5,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 83.5
+        }
+      ]
+    },
+    {
+      "id": "shape9-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        60.0,
+        70.0,
+        10.0,
+        12.0
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        10,
+        12
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 44.0,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 44.0
+        }
+      ]
+    },
+    {
+      "id": "shape9-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        60.0,
+        70.0,
+        10.0,
+        12.0
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        10,
+        12
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 52.0,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 52.0
+        }
+      ]
+    },
+    {
+      "id": "shape9-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        60.0,
+        70.0,
+        10.0,
+        12.0
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        10,
+        12
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 77.0,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 77.0
+        }
+      ]
+    },
+    {
+      "id": "shape9-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        60.1,
+        70.2,
+        10.4,
+        12.3
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        11,
+        13
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 37.76459012176462,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 37.76459012176462
+        }
+      ]
+    },
+    {
+      "id": "shape9-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        60.1,
+        70.2,
+        10.4,
+        12.3
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        11,
+        13
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.14164990114128,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 48.14164990114128
+        }
+      ]
+    },
+    {
+      "id": "shape9-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        60.1,
+        70.2,
+        10.4,
+        12.3
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        11,
+        13
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 78.58548784702964,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 78.58548784702964
+        }
+      ]
+    },
+    {
+      "id": "shape9-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        60.0,
+        70.0,
+        10.0,
+        12.0
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        10,
+        12
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 34.628955940751425,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 34.628955940751425
+        }
+      ]
+    },
+    {
+      "id": "shape9-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        60.0,
+        70.0,
+        10.0,
+        12.0
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        10,
+        12
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 43.85673381454986,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 43.85673381454986
+        }
+      ]
+    },
+    {
+      "id": "shape9-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        60.0,
+        70.0,
+        10.0,
+        12.0
+      ],
+      "integer_bounds": [
+        60,
+        70,
+        10,
+        12
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 72.5225211126236,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 72.5225211126236
+        }
+      ]
+    },
+    {
+      "id": "shape10-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        100000000.1,
+        100000000.2,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.0,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 4.0
+        }
+      ]
+    },
+    {
+      "id": "shape10-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        100000000.1,
+        100000000.2,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 5.0,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 5.0
+        }
+      ]
+    },
+    {
+      "id": "shape10-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        100000000.1,
+        100000000.2,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.5,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 6.5
+        }
+      ]
+    },
+    {
+      "id": "shape10-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        100000000.0,
+        100000000.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.0,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 4.0
+        }
+      ]
+    },
+    {
+      "id": "shape10-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        100000000.0,
+        100000000.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 5.0,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 5.0
+        }
+      ]
+    },
+    {
+      "id": "shape10-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        100000000.0,
+        100000000.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.5,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 6.5
+        }
+      ]
+    },
+    {
+      "id": "shape10-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        100000000.1,
+        100000000.2,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 3.141592653589793,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 3.141592653589793
+        }
+      ]
+    },
+    {
+      "id": "shape10-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        100000000.1,
+        100000000.2,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.288751483104749,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 4.288751483104749
+        }
+      ]
+    },
+    {
+      "id": "shape10-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        100000000.1,
+        100000000.2,
+        0.2,
+        0.8
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.063887225727187,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 6.063887225727187
+        }
+      ]
+    },
+    {
+      "id": "shape10-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        100000000.0,
+        100000000.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 3.141592653589793,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 3.141592653589793
+        }
+      ]
+    },
+    {
+      "id": "shape10-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        100000000.0,
+        100000000.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4.288751483104749,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 4.288751483104749
+        }
+      ]
+    },
+    {
+      "id": "shape10-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        100000000.0,
+        100000000.0,
+        1.0,
+        1.0
+      ],
+      "integer_bounds": [
+        100000000,
+        100000000,
+        1,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 6.063887225727187,
+      "rows": [
+        {
+          "Area": 0.0,
+          "Perim.": 6.063887225727187
+        }
+      ]
+    },
+    {
+      "id": "shape11-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483747.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4294967296.0,
+      "rows": [
+        {
+          "Area": 40.0,
+          "Perim.": 4294967296.0
+        }
+      ]
+    },
+    {
+      "id": "shape11-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483747.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 8589934589.0,
+      "rows": [
+        {
+          "Area": 40.0,
+          "Perim.": 8589934589.0
+        }
+      ]
+    },
+    {
+      "id": "shape11-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483747.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 1073741829.5,
+      "rows": [
+        {
+          "Area": 30.0,
+          "Perim.": 1073741829.5
+        }
+      ]
+    },
+    {
+      "id": "shape11-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483647.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4294967296.0,
+      "rows": [
+        {
+          "Area": 40.0,
+          "Perim.": 4294967296.0
+        }
+      ]
+    },
+    {
+      "id": "shape11-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483647.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 8589934589.0,
+      "rows": [
+        {
+          "Area": 40.0,
+          "Perim.": 8589934589.0
+        }
+      ]
+    },
+    {
+      "id": "shape11-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483647.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 1073741829.5,
+      "rows": [
+        {
+          "Area": 30.0,
+          "Perim.": 1073741829.5
+        }
+      ]
+    },
+    {
+      "id": "shape11-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483747.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4277121563.409046,
+      "analyzer_unavailable": "mask extent exceeds bounded reference allocation"
+    },
+    {
+      "id": "shape11-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483747.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 8554243126.551256,
+      "analyzer_unavailable": "mask extent exceeds bounded reference allocation"
+    },
+    {
+      "id": "shape11-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483747.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 1069280391.3414607,
+      "analyzer_unavailable": "mask extent exceeds bounded reference allocation"
+    },
+    {
+      "id": "shape11-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483647.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 4277121563.409046,
+      "analyzer_unavailable": "mask extent exceeds bounded reference allocation"
+    },
+    {
+      "id": "shape11-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483647.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 8554243126.551256,
+      "analyzer_unavailable": "mask extent exceeds bounded reference allocation"
+    },
+    {
+      "id": "shape11-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        2147483647.0,
+        1.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 1069280391.3414607,
+      "analyzer_unavailable": "mask extent exceeds bounded reference allocation"
+    },
+    {
+      "id": "shape12-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        0.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 18.0,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 18.0
+        }
+      ]
+    },
+    {
+      "id": "shape12-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        0.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 12.0,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 12.0
+        }
+      ]
+    },
+    {
+      "id": "shape12-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        0.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 48.5,
+      "rows": [
+        {
+          "Area": 6.0,
+          "Perim.": 48.5
+        }
+      ]
+    },
+    {
+      "id": "shape12-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 18.0,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 18.0
+        }
+      ]
+    },
+    {
+      "id": "shape12-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 12.0,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 12.0
+        }
+      ]
+    },
+    {
+      "id": "shape12-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 48.5,
+      "rows": [
+        {
+          "Area": 6.0,
+          "Perim.": 48.5
+        }
+      ]
+    },
+    {
+      "id": "shape12-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        0.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 16.362790633226425,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 16.362790633226425
+        }
+      ]
+    },
+    {
+      "id": "shape12-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        0.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 9.688421097671288,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 9.688421097671288
+        }
+      ]
+    },
+    {
+      "id": "shape12-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        0.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 47.85122178922748,
+      "rows": [
+        {
+          "Area": 6.0,
+          "Perim.": 47.85122178922748
+        }
+      ]
+    },
+    {
+      "id": "shape12-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 16.362790633226425,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 16.362790633226425
+        }
+      ]
+    },
+    {
+      "id": "shape12-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 9.688421097671288,
+      "rows": [
+        {
+          "Area": 8.0,
+          "Perim.": 9.688421097671288
+        }
+      ]
+    },
+    {
+      "id": "shape12-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        1.0,
+        8.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        1,
+        8
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 47.85122178922748,
+      "rows": [
+        {
+          "Area": 6.0,
+          "Perim.": 47.85122178922748
+        }
+      ]
+    },
+    {
+      "id": "shape13-rectangle-double-1.0-1.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        0.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 22.0,
+      "rows": [
+        {
+          "Area": 10.0,
+          "Perim.": 22.0
+        }
+      ]
+    },
+    {
+      "id": "shape13-rectangle-double-2.0-0.5",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        0.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 41.0,
+      "rows": [
+        {
+          "Area": 10.0,
+          "Perim.": 41.0
+        }
+      ]
+    },
+    {
+      "id": "shape13-rectangle-double-0.25-3.0",
+      "kind": "rectangle",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        0.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 11.0,
+      "rows": [
+        {
+          "Area": 7.5,
+          "Perim.": 11.0
+        }
+      ]
+    },
+    {
+      "id": "shape13-rectangle-int-1.0-1.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 22.0,
+      "rows": [
+        {
+          "Area": 10.0,
+          "Perim.": 22.0
+        }
+      ]
+    },
+    {
+      "id": "shape13-rectangle-int-2.0-0.5",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 41.0,
+      "rows": [
+        {
+          "Area": 10.0,
+          "Perim.": 41.0
+        }
+      ]
+    },
+    {
+      "id": "shape13-rectangle-int-0.25-3.0",
+      "kind": "rectangle",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 11.0,
+      "rows": [
+        {
+          "Area": 7.5,
+          "Perim.": 11.0
+        }
+      ]
+    },
+    {
+      "id": "shape13-ellipse-double-1.0-1.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        0.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 20.302762592570485,
+      "rows": [
+        {
+          "Area": 10.0,
+          "Perim.": 20.302762592570485
+        }
+      ]
+    },
+    {
+      "id": "shape13-ellipse-double-2.0-0.5",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        0.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 39.95177218852303,
+      "rows": [
+        {
+          "Area": 10.0,
+          "Perim.": 39.95177218852303
+        }
+      ]
+    },
+    {
+      "id": "shape13-ellipse-double-0.25-3.0",
+      "kind": "ellipse",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        0.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": false,
+      "selection_retained": true,
+      "length": 8.657238985187856,
+      "rows": [
+        {
+          "Area": 7.5,
+          "Perim.": 8.657238985187856
+        }
+      ]
+    },
+    {
+      "id": "shape13-ellipse-int-1.0-1.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 20.302762592570485,
+      "rows": [
+        {
+          "Area": 10.0,
+          "Perim.": 20.302762592570485
+        }
+      ]
+    },
+    {
+      "id": "shape13-ellipse-int-2.0-0.5",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 39.95177218852303,
+      "rows": [
+        {
+          "Area": 10.0,
+          "Perim.": 39.95177218852303
+        }
+      ]
+    },
+    {
+      "id": "shape13-ellipse-int-0.25-3.0",
+      "kind": "ellipse",
+      "integer": true,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        3.0,
+        3.0,
+        10.0,
+        1.0
+      ],
+      "integer_bounds": [
+        3,
+        3,
+        10,
+        1
+      ],
+      "positive_extent": true,
+      "selection_retained": true,
+      "length": 8.657238985187856,
+      "rows": [
+        {
+          "Area": 7.5,
+          "Perim.": 8.657238985187856
+        }
+      ]
+    },
+    {
+      "id": "shape14-whole_image-double-1.0-1.0",
+      "kind": "whole_image",
+      "integer": false,
+      "spacing": [
+        1.0,
+        1.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": false,
+      "length": 160.0,
+      "rows": [
+        {
+          "Area": 1600.0,
+          "Perim.": 160.0
+        }
+      ]
+    },
+    {
+      "id": "shape14-whole_image-double-2.0-0.5",
+      "kind": "whole_image",
+      "integer": false,
+      "spacing": [
+        2.0,
+        0.5
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": false,
+      "length": 200.0,
+      "rows": [
+        {
+          "Area": 1600.0,
+          "Perim.": 160.0
+        }
+      ]
+    },
+    {
+      "id": "shape14-whole_image-double-0.25-3.0",
+      "kind": "whole_image",
+      "integer": false,
+      "spacing": [
+        0.25,
+        3.0
+      ],
+      "geometry_bounds": [
+        0.0,
+        0.0,
+        40.0,
+        40.0
+      ],
+      "integer_bounds": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "positive_extent": true,
+      "selection_retained": false,
+      "length": 260.0,
+      "rows": [
+        {
+          "Area": 1200.0,
+          "Perim.": 160.0
+        }
+      ]
+    }
+  ]
+}

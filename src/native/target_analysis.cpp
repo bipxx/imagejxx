@@ -35,6 +35,38 @@ double profile_length(const SpatialCalibration& spatial,const std::array<double,
   if(!std::isfinite(length))invalid("Analysis profile physical length must be finite");
   return length;
 }
+bool analytic_selection(const Selection* selection) {
+  return !selection || selection->kind=="rectangle" || selection->kind=="ellipse";
+}
+std::array<double,2> analytic_extent(const Selection* selection,const DatasetShape& shape) {
+  if(!selection)return {double(shape.x),double(shape.y)};
+  if(selection->points.size()!=2)invalid("Analytic perimeter requires two corners");
+  std::array<double,2> out{};
+  for(int a=0;a<2;++a) {
+    const double first=selection->points[0][a],second=selection->points[1][a];
+    const double span=std::abs(second-first);
+    if(!std::isfinite(first) || !std::isfinite(second) || !std::isfinite(span) || span<=0)
+      invalid("Analytic perimeter requires finite positive spans");
+    // Roi(double...) delegates to the integer constructor: ceil, saturate,
+    // minimum one. Its perimeter does not use the floating display bounds.
+    out[a]=std::max(1.,std::min(std::ceil(span),double(std::numeric_limits<int>::max())));
+  }
+  return out;
+}
+double analytic_perimeter(const Selection* selection,const DatasetShape& shape,const SpatialCalibration& spatial) {
+  const auto extent=analytic_extent(selection,shape);
+  // Analyzer's no-ROI fallback is deliberately unscaled pixel perimeter.
+  if(!selection)return 2.*extent[0]+2.*extent[1];
+  const double width=profile_length(spatial,{0,0,extent[0],0});
+  const double height=profile_length(spatial,{0,0,0,extent[1]});
+  double result=2.*width+2.*height;
+  if(selection->kind=="ellipse") {
+    const double a=.5*width,b=.5*height;
+    result=(3.*(a+b)-std::sqrt((3.*a+b)*(a+3.*b)))*3.141592653589793;
+  }
+  if(!std::isfinite(result))invalid("Analytic physical perimeter must be finite");
+  return result;
+}
 std::size_t segment_count(const TargetAnalysisOptions& options) {
   return options.line?1:options.path.empty()?0:options.path.size()-1;
 }
@@ -76,7 +108,7 @@ struct MeasurementRowPlan {
   std::array<double,2> point{};
   std::optional<unsigned> counter;
   std::optional<std::size_t> counter_count;
-  std::optional<double> polygon_length;
+  std::optional<double> perimeter;
 };
 struct MeasurementGroup {PlanePosition position;std::vector<std::size_t> rows;bool pixels=false;};
 struct MeasurementPlan {std::vector<MeasurementRowPlan> rows;std::vector<MeasurementGroup> groups;};
@@ -186,7 +218,11 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       }
       continue;
     }
-    if(selection && selection_polygon_type(*selection)) {
+    if(analytic_selection(selection)) {
+      // Constant work per already-admitted row; no new traversal, sampling
+      // quota, source read or scratch allocation.
+      row.perimeter=analytic_perimeter(selection,shape,target.calibration());
+    }else if(selection && selection_polygon_type(*selection)) {
       selection->validate(shape.x,shape.y);
       // Keep the original aggregate 0.01-pixel path-sampling quota unchanged.
       // The added metric has a separate aggregate segment-work stage bound.
@@ -196,7 +232,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       if(polygon_work>limits.max_measurement_work)invalid("Measurement batch exceeds its geometry work limit");
       const auto bytes=add(8192,mul(add(controls,std::max(controls,selection->points.size())),16));
       within(add(add(4096,mul(count,1024)),bytes),limits.max_working_bytes);
-      row.polygon_length=imagej_calibrated_polygon_length(*selection,target.calibration(),
+      row.perimeter=imagej_calibrated_polygon_length(*selection,target.calibration(),
           selection_polygon_integer_coordinates(*selection),bytes);
       polygon_peak=std::max(polygon_peak,bytes);
     }
@@ -400,7 +436,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     const bool extended=!options.path.empty() || options.samples_per_segment!=0;
     if(extended){MetadataArray path;for(const auto& p:options.path)path.push_back(metadata_array({p[0],p[1]}));
       requested["path"]=metadata_array(std::move(path));requested["samples_per_segment"]=std::uint64_t(options.samples_per_segment);}
-    bool geometry=false,points=false,annotated=false,polygon_metrics=false,fitted_metrics=false;
+    bool geometry=false,points=false,annotated=false,polygon_metrics=false,fitted_metrics=false,analytic_metrics=false;
     if(measurement) {
       requested["measurement"]=options.measurement==TargetMeasurementMode::RoiManager?"roi_manager":"selection";
       MetadataArray rows;for(const auto& row:measurements.rows) {
@@ -410,13 +446,20 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
           points=true;item["point_index"]=std::uint64_t(*row.point_index);
           item["point"]=metadata_array({row.point[0],row.point[1]});
         }
-        if(row.polygon_length) {
-          polygon_metrics=true;
+        if(row.perimeter) {
           const auto* selection=measurement_selection(target,row);
-          const auto found=selection->attributes.find(polygon_type_attribute);
-          item["polygon_type"]=found==selection->attributes.end()?selection->kind:std::get<std::string>(found->second);
-          item["integer_coordinates"]=selection_polygon_integer_coordinates(*selection);
-          if(selection->attributes.count(spline_fit_attribute)){fitted_metrics=true;item["spline_fit"]=true;}
+          if(analytic_selection(selection)) {
+            analytic_metrics=true;const auto extent=analytic_extent(selection,dataset.shape());
+            item["analytic_type"]=selection?selection->kind:std::string("whole_image");
+            item["analytic_extent"]=metadata_array({std::uint64_t(extent[0]),std::uint64_t(extent[1])});
+            item["perimeter_in_pixels"]=!selection;
+          }else {
+            polygon_metrics=true;
+            const auto found=selection->attributes.find(polygon_type_attribute);
+            item["polygon_type"]=found==selection->attributes.end()?selection->kind:std::get<std::string>(found->second);
+            item["integer_coordinates"]=selection_polygon_integer_coordinates(*selection);
+            if(selection->attributes.count(spline_fit_attribute)){fitted_metrics=true;item["spline_fit"]=true;}
+          }
         }
         if(row.counter){annotated=true;item["counter"]=std::uint64_t(*row.counter);}
         if(row.counter_count)item["counter_count"]=std::uint64_t(*row.counter_count);
@@ -429,9 +472,10 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
         requested["geometry_policy"]="calibrated-angle-refresh/irregular-path-v1";}
       if(points)requested["point_policy"]="float32-relative/rounded-pixel/expanded-rows-v1";
       if(annotated)requested["annotation_policy"]="scientific-czt/counters-v1";
+      if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -463,8 +507,9 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
       if(image)detail::validate_analysis_source(*image);
       for(const auto ordinal:group.rows) {
         stage.checkpoint(completed);const auto& plan=state.measurements.rows[ordinal];auto& row=out.planes[ordinal];
-        row.position=plan.position;row.roi_index=plan.roi;row.perimeter=plan.polygon_length;
+        row.position=plan.position;row.roi_index=plan.roi;row.perimeter=plan.perimeter;
         const auto* selection=measurement_selection(state.target,plan);
+        row.perimeter_in_pixels=row.perimeter.has_value() && !selection;
         if(plan.point_index) {
           row.point_index=plan.point_index;row.bounds=point_bounds(plan.point,shape);
           row.point_counter=plan.counter;row.point_counter_count=plan.counter_count;
@@ -484,7 +529,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
         }else if(selection && selection->kind=="polyline") {
           auto measured=detail::calibrated_polyline_measurement_with_table(*image,state.spatial,state.intensity,state.lookup,
               selection->points,state.options.interpolate,state.limits.max_working_bytes,state.limits.max_measurement_work,true);
-          row.statistics=std::move(measured.statistics);row.length=plan.polygon_length?*plan.polygon_length:measured.length;row.bounds=measured.bounds;
+          row.statistics=std::move(measured.statistics);row.length=plan.perimeter?*plan.perimeter:measured.length;row.bounds=measured.bounds;
         }else if(selection && selection->kind=="line") {
           const auto line=measurement_line(*selection,shape);
           auto measured=detail::calibrated_line_measurement_with_table(*image,state.spatial,state.intensity,state.lookup,

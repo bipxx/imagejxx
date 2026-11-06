@@ -780,7 +780,7 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
 
 
 Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::string& directory,int profile) {
-  require(profile>=0 && profile<=21,"Unknown subtype measurement profile");
+  require(profile>=0 && profile<=27,"Unknown subtype measurement profile");
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
   require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh subtype measurement fixture required");std::filesystem::create_directories(dir);
   Selection source(profile==0 || profile==5?"polyline":profile==3?"polygon":"freehand",{{3,3},{13,3},{13,13},{3,13}});
@@ -788,7 +788,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
   if(profile==1 || profile==2)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   if(profile==1)source=with_selection_polygon_coordinates(source,true);
   if(profile==5 || profile==6){source.points={{3,3}};source=with_selection_polygon_type(source,profile==5?SelectionPolygonType::Polyline:SelectionPolygonType::Freehand);}
-  if(profile>=7) {
+  if(profile>=7 && profile<=21) {
     const auto p=profile-7;
     source=Selection(p==0 || p==7?"polygon":p==3 || p==6?"polyline":"freehand",{{3,3},{13,3},{13,13},{3,13}});
     if(p<=3)source.points.resize(3);
@@ -797,18 +797,25 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(p==3 || p==6)source=with_selection_polygon_type(source,SelectionPolygonType::Freeline);
     if(p==4)source=with_selection_polygon_coordinates(source,true);
   }
-  if(profile>=15) {
+  if(profile>=15 && profile<=21) {
     source=Selection(profile==17?"polyline":profile==18 || profile==21?"freehand":"polygon",{{3,3},{13,3},{13,13}});
     if(profile==15 || profile==19)source.points={{3.2,4.7},{13.8,3.1},{19.4,14.2},{11.1,20.6},{4.3,13.8}};
     if(profile==16)source.points={{3,3},{203,3},{403,203}};
     if(profile==20)source.points={{3,3},{13,3},{13,13},{3,13}};
     if(profile==21)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   }
+  const bool analytic=profile>=22,wholeImage=profile==27;
+  if(analytic) {
+    source=Selection(profile==23 || profile==25 || profile==26?"ellipse":"rectangle",{{3,3},{13,11}});
+    if(profile==24 || profile==25)source.points={{3.2,4.7},{13.4,13.0}};
+    if(profile==26)source.points={{12.3,12.9},{12.5,13.7}};
+  }
   SpatialCalibration spatial;spatial.spacing={2,.5,1};spatial.unit="um";DatasetReadObserver reads;
   Image pixels(40,40,1,PixelType::UInt8);for(int y=0;y<40;++y)for(int x=0;x<40;++x)pixels.at(x,y)=x+2*y;
-  DocumentData data{Dataset::from_planes({1,1,1,40,40,1},{pixels},spatial).observe_reads(reads)};data.selection=source;
+  DocumentData data{Dataset::from_planes({1,1,1,40,40,1},{pixels},spatial).observe_reads(reads)};if(!wholeImage)data.selection=source;
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);
-  w.updateSettings({{"measurements",{"ROI","Area","Length","Perim.","Unit"}},{"measurement_precision",6}},false);
+  const Json configuredColumns=analytic?Json::array({"ROI","Area","Length","Perim.","Perim. unit","Unit"}):Json::array({"ROI","Area","Length","Perim.","Unit"});
+  w.updateSettings({{"measurements",configuredColumns},{"measurement_precision",6}},false);
   Json last,events=Json::array(),controls=Json::array(),report;std::atomic<bool> entered{false},release{false};
   HeadlessInputSession session(w);bool expectedError=false;
   try {
@@ -816,12 +823,12 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     auto click=[&](const Json& item,const std::string& name){const auto control=item;require(control.at("enabled").get<bool>(),"Subtype measurement control disabled");controls.push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
     auto acknowledge=[&](){expectedError=true;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();};
     for(int i=0;i<3;++i)frame();
-    if(profile>=7) {
+    if(profile>=7 && profile<=21) {
       for(const auto& key:{"menu.Edit","menu.Edit.Selection","menu.action.show_fit_spline"})click(last.at("host_controls").at(key),key);
       click(last.at("dialog").at("controls").at("apply"),"fit.apply");w.wait();frame();
       source=*owner->snapshot().data().selection;
       require(bool(selection_spline_fit(source)) && owner->undo_steps()==1,"Fit menu did not preserve editable fitted source/history");
-      if(profile>=15) {
+      if(profile>=15 && profile<=21) {
         const bool removing=profile==18 || profile==19 || profile==21;
         const std::string action=removing?"menu.action.remove_spline_fit":"menu.action.show_fit_spline";
         for(const auto& key:std::vector<std::string>{"menu.Edit","menu.Edit.Selection",action})click(last.at("host_controls").at(key),key);
@@ -840,13 +847,15 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     const auto original=owner->snapshot();const auto beforeUndo=owner->undo_steps();const auto beforeReads=reads.counts().plane_reads;
     for(const auto& key:{"menu.Analyze","menu.action.measure"})click(last.at("host_controls").at(key),key);
     w.wait();frame();require(w.results.size()==1 && !w.busy(),"Subtype Measure did not publish one row");
-    const auto rows=w.results;const double length=imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
+    const auto rows=w.results;const double analyticLengths[]={48.,42.01120851869869,53.,46.295306614080765,4.288751483104749,160.};
+    const double length=analytic?analyticLengths[profile-22]:imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
     const auto& value=rows[0].at("Perim.");
     require(std::isnan(length)?value==Json("nan"):(value.is_number() && std::abs(value.get<double>()-length)<1e-11),"Subtype Measure perimeter differs from constructor metric");
+    if(analytic)require(rows[0].at("Perim. unit")==Json(wholeImage?"pixel":"um"),"Analytic perimeter unit lost");
     if(source.kind=="polyline")require(rows[0].at("Length").get<double>()==length,"Freeline Length lost smoothing");
     if(profile==5 || profile==6)require(rows[0].at("Area")==0,"Native retained degenerate geometry measured the whole image");
     const auto columns=last.at("results_columns");
-    require(columns==Json::array({"ROI","Area","Length","Perim.","Unit"}),"Configured perimeter column not consumed");
+    require(columns==configuredColumns,"Configured perimeter column not consumed");
     require(owner->snapshot().shares_data(original) && owner->undo_steps()==beforeUndo,"Read-only subtype Measure changed source/history");
     const auto measuredReads=reads.counts().plane_reads-beforeReads;require(measuredReads==1,"Subtype Measure repeated provider acquisition");
     w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});
@@ -858,17 +867,17 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     start();w.cancel();release=true;w.wait();
     require(w.results==rows && !w.busy() && session.fixtureApplication().job_scheduler()->usage().reserved_bytes==reserved && w.renderMemoryInfo().at("working_bytes")==working,"Cancelled subtype Measure changed results or retained reservations");
     if(!w.error().empty())acknowledge();
-    if(profile==1 || profile==9 || profile==15) {
-      start();owner->select(profile==1?with_selection_polygon_coordinates(source,false):remove_spline_fit(source,40,40));release=true;w.wait();
+    if(profile==1 || profile==9 || profile==15 || profile==22) {
+      start();owner->select(profile==22?Selection("rectangle",{{0,0},{2,2}}):profile==1?with_selection_polygon_coordinates(source,false):remove_spline_fit(source,40,40));release=true;w.wait();
       require(!w.error().empty() && w.results==rows,"Changed constructor profile was not rejected as stale");
       acknowledge();owner->select(source);frame();
     }
     session.fixtureWorkerGate({});
     w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});session.close();
     Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"measured.ijx").u8string());
-    require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(source) && reopened.results==rows,"Workspace lost constructor state or perimeter result");
+    require(reopened.nativeSnapshot().data().selection==original.data().selection && reopened.results==rows,"Workspace lost constructor state or perimeter result");
     require(reopened.nativeSnapshot().data().dataset.plane({})->pixels==pixels.pixels,"Subtype Measure changed stored pixels");
-    report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1},{"fitted",source.attributes.count(spline_fit_attribute)!=0},{"lifecycle",profile>=15},{"stale_fit_checked",profile==9 || profile==15},{"fit_undo_steps",beforeUndo},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
+    report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",wholeImage?Json(nullptr):selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1 || profile==22},{"fitted",source.attributes.count(spline_fit_attribute)!=0},{"lifecycle",profile>=15 && profile<=21},{"stale_fit_checked",profile==9 || profile==15},{"fit_undo_steps",beforeUndo},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& e){release=true;w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",e.what()},{"rendered",last},{"error",w.error()},{"events",events},{"controls",controls}});throw;}
 }

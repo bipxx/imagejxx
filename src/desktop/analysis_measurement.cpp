@@ -85,7 +85,10 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       values["ROI"]=source.data().selection->kind;
       values["Bounds"]=row.bounds?Json(*row.bounds):Json();
     }
-    if(row.perimeter)values["Perim."]=scalar(*row.perimeter);
+    if(row.perimeter) {
+      values["Perim."]=scalar(*row.perimeter);
+      values["Perim. unit"]=row.perimeter_in_pixels?std::string("pixel"):result.spatial.unit;
+    }
     if(row.length)values["Length"]=scalar(*row.length);
     if(row.angle_degrees)values["Angle"]=scalar(*row.angle_degrees);
     if(row.point_index) {

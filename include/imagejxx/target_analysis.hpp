@@ -51,13 +51,17 @@ struct TargetAnalysisPlane {
   // Present only when this parent uses more than one distinct counter.
   std::optional<std::size_t> point_counter_count;
   std::optional<double> length, angle_degrees;
-  // Qualified ordinary polygon perimeter (also the open-path length); not a
-  // generic mask/path/analytic/spline perimeter. Float TRACED may be NaN.
+  // Qualified polygon/fitted, line and rectangle/ellipse perimeter. Other
+  // analytic/mask/path variants remain absent. Float TRACED may be NaN.
   std::optional<double> perimeter;
   std::optional<std::array<double,3>> midpoint_world;
+  // With perimeter present: true means unscaled image pixels (Analyzer's
+  // no-ROI fallback); false uses TargetAnalysisResult::spatial.unit.
+  bool perimeter_in_pixels=false;
 };
 // Detached results retain no source/provider or application. Distances are
-// Euclidean lengths in the captured spatial affine, not screen coordinates.
+// Profile/calibrated lengths use the captured spatial affine; flagged whole-image
+// perimeters use unscaled pixels.
 struct TargetAnalysisResult {
   std::vector<TargetAnalysisPlane> planes;
   std::vector<double> profile_distances;

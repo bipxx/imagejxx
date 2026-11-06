@@ -357,7 +357,7 @@ const std::vector<SettingDefinition> &Settings::schema() {
        "Measurements",
        "Results columns",
        "Choose visible/exported columns; an empty list shows every available "
-       "column.",
+       "column. Perim. unit distinguishes whole-image pixels from ROI calibration.",
        SettingKind::StringList,
        std::vector<std::string>{},
        0,
@@ -378,6 +378,7 @@ const std::vector<SettingDefinition> &Settings::schema() {
         "Bounds",
         "Length",
         "Perim.",
+        "Perim. unit",
         "Angle",
         "label",
         "x",

@@ -27,6 +27,32 @@ struct Source final:PlaneSource {
 }
 int main(){
   {
+    // Original Roi/OvalRoi/Analyzer observations,2/.5 um; run this maintained
+    // native consumer before expensive Python module links.
+    const char* kinds[]={"rectangle","ellipse","rectangle","ellipse","ellipse","whole_image"};
+    const double expected[]={48.,42.01120851869869,53.,46.295306614080765,4.288751483104749,160.};
+    SpatialCalibration spatial;spatial.spacing={2,.5,1};spatial.unit="um";
+    for(int i=0;i<6;++i) {
+      DatasetReadObserver reads;
+      DocumentData data{Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},spatial).observe_reads(reads)};
+      if(i<5)data.selection=Selection(kinds[i],i==4?std::vector<std::array<double,2>>{{12.3,12.9},{12.5,13.7}}:i>=2?std::vector<std::array<double,2>>{{3.2,4.7},{13.4,13.0}}:std::vector<std::array<double,2>>{{3,3},{13,11}});
+      auto owner=std::make_shared<Document>(std::move(data));Application application;application.adopt(owner);
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;
+      const auto before=reads.counts().plane_reads;const auto command=resolve_target_analysis(application.resolve_target(),options);
+      check(reads.counts().plane_reads==before && command.record().at("version")==MetadataValue(std::int64_t(9)));
+      owner->select(Selection("rectangle",{{0,0},{1,1}}));const auto frozen=owner->snapshot();
+      const auto result=execute_target_analysis(command);const auto& row=result.planes.front();
+      check(row.perimeter && std::abs(*row.perimeter-expected[i])<1e-11);
+      check(row.perimeter_in_pixels==(i==5) && row.length==std::nullopt);
+      check(reads.counts().plane_reads==before+1 && owner->snapshot().shares_data(frozen) && owner->undo_steps()==0);
+    }
+    DatasetReadObserver reads;auto huge=spatial;huge.spacing={1e308,1,1};
+    DocumentData data{Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},huge).observe_reads(reads)};
+    data.selection=Selection("rectangle",{{3,3},{13,11}});auto owner=std::make_shared<Document>(std::move(data));Application application;application.adopt(owner);
+    TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;
+    const auto before=reads.counts().plane_reads;refuses<std::invalid_argument>([&]{resolve_target_analysis(application.resolve_target(),options);});check(reads.counts().plane_reads==before);
+  }
+  {
     // Actual original Fit Spline command rows, shape1, Float constructor, 2/.5 um.
     const SelectionPolygonType types[]={SelectionPolygonType::Polygon,SelectionPolygonType::Freehand,SelectionPolygonType::Traced,SelectionPolygonType::Freeline};
     const double expected[]={52.65164241897764,41.50618389325088,0,20.89065609122347};
@@ -157,7 +183,7 @@ int main(){
     check(rows.planes[0].roi_index==1 && rows.planes[1].roi_index==0);
     check(rows.planes[0].statistics->mean==2.5 && rows.planes[1].statistics->mean==.5);
     check(rows.planes[0].length && rows.planes[0].midpoint_world==measured.midpoint_world);
-    check(rows.record.at("version")==MetadataValue(std::int64_t(3)));
+    check(rows.record.at("version")==MetadataValue(std::int64_t(9)));
     const auto irregular=imagej_calibrated_polyline_measurement(*source->read_plane({0,0,0}),
         SpatialCalibration{},ImageJIntensityCalibration::uncalibrated(),{{0,0},{2,0},{2,1}});
     check(irregular.statistics.pixel_count==2 && irregular.statistics.mean==1.5 && irregular.length==3);

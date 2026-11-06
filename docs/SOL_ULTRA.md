@@ -20,7 +20,9 @@ PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
 verified in both Windows hosts. Scientific TIFF reslice/export now preserves
 world/time transforms. Vertex Convex Hull has scoped API/both-Windows-host
 evidence. Bounding Rectangle now has scoped API/both-host checks too; next
-is T04a.2 M3 rectangle/ellipse area-selection perimeter. Fit Spline -> Measure,
+is T04a.2 M3 calibrated area centroid columns. Rectangle/ellipse and whole-image
+perimeter have scoped API/both-host CSV/workspace evidence with explicit units.
+Fit Spline -> Measure,
 refit/straighten/remove and segmented explicit counts have scoped evidence;
 private Float32 processing history preserves native Double editable controls.
 Task scratch and SDK consumers are retired; reuse the qualified fitted matrix. T15 remembered

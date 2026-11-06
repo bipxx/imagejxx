@@ -24,7 +24,9 @@ Measure now preserves constructor precision and publishes calibrated Length/
 Perim. with both-host CSV/workspace checks. Initial Fit Spline -> Measure now
 has scoped subtype/constructor/short-control and both-host integration. Refit,
 straighten/remove and segmented explicit counts now have scoped lifecycle and
-both-host evidence. Next: rectangle/ellipse area-selection perimeter in M3.
+both-host evidence. Rectangle/ellipse and whole-image perimeter now have scoped
+API/both-host CSV/workspace evidence with explicit perimeter units. Next: M3
+calibrated area centroid columns.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -146,7 +148,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T15: remembered Interpolate options. | Three native Settings keys drive both dialogs and omitted action values. Accepted options save before capture/launch; Cancel/stale/invalid/point no-op preserve preferences.613 distinct Python IDs pass; Windows/Linux native settings/preferences and both Windows UI hosts pass. [Receipt](parity/reviews/interpolation-settings-20261105.json). |
 | Delivered scoped workflow | T04a.2 M3/T06: current-plane subtype-sensitive Measure. | Constructor precision persists through bare ROI/session/rebind/editing; captured Length/Perim., result columns/CSV/workspace and cancellation work in both Windows hosts.3662distinct Python IDs pass,180captured reference rows,14physical flows; Windows/Linux native andtwoWindowsSDKclients pass. [Evidence](parity/reviews/subtype-measurement-20261106.json). |
 | Delivered scoped workflow | T04a.2 M3/T06: fitted Measure and lifecycle. | Initial-fit evidence remains valid; versioned private Float32 basis now preserves refit/straighten history without changing native Double edit controls.840distinct affected Python IDs pass,14new physical lifecycle flows,2worker-refusal checks, Windows/Linux native and2WindowsSDKclients. [Evidence](parity/reviews/spline-lifecycle-20261106.json). |
-| Active next | T04a.2 M3: rectangle/ellipse area-selection perimeter. | Reuse captured area Measure, frozen optional perimeter and existing columns/CSV/workspace. Qualify original geometry/calibration semantics before a bounded analytic helper; remaining shape, mask/path and constructor variants retain their owners. |
+| Delivered scoped workflow | T04a.2 M3: rectangle/ellipse and whole-image perimeter. |171 pinned observations;806 distinct installed Python cases, six new physical profiles per Windows host, native Windows/Linux controls and installed Windows C++ client pass. ROI lengths use calibrated integer extents; no-ROI perimeter stays in pixels with explicit Perim. unit. [Evidence](parity/reviews/analytic-perimeter-20261106.json). Fractional-area, other shape/mask/path and constructor variants retain owners. |
+| Active next | T04a.2 M3: calibrated area centroid columns. | Reuse captured area membership/statistics and existing Measure/manager columns, CSV/workspace. Observe original X/Y pixel-center/calibration meanings before a fused coordinate accumulator; center-of-mass, Feret and other shape/options remain M3 owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -971,19 +974,35 @@ actual failing geometry/contract in an existing narrow native control when it
 can expose the failure; a scalar-only check would miss resampling differences.
 Any saved link time is an unmeasured opportunity to evaluate in the next task.
 
-**Active next: T04a.2 M3 rectangle/ellipse area-selection perimeter.**
+Rectangle/ellipse perimeter is scoped delivered through captured Measure and
+both Windows hosts, including manager/global calibration, frozen geometry,
+Perim. unit selection, CSV/workspace, stale/cancel and installed C++ use.
+[Receipt](parity/reviews/analytic-perimeter-20261106.json). All task scratch is
+retired; active compiler/runtime/installed products remain. Native-first checks
+caught a provenance-variable compilation error before Python linking. The full
+budget remains unverified because214 subtrees are inaccessible; no automatic
+guard or whole-editor completion is claimed.
 
-1. Inspect maintained area Measure callers and pinned Rectangle/Oval length
-   branches. Freeze pixel extents, calibration/affine meaning, degenerate behavior,
-   source/profile requirements and actual API signatures before editing.
-2. Reuse the existing captured row plan, optional perimeter, columns/CSV/workspace
-   and accepted geometry/calibration primitives. Deliver usable rectangle/ellipse
-   Measure first; do not make rounded/rotated/mask/path variants prerequisites.
-   Add only the bounded owning analytic helper needed by this real consumer.
-3. Check proven numeric geometry in an existing native control before Python
-   links where practical, then affected installed-client and both-host workflows.
-   Reuse unchanged polygon/fitted evidence; keep consumers through final review,
-   retire scratch and update the queue/waste decision before the successor.
+**Active next: T04a.2 M3 calibrated area centroid columns.**
+
+1. Inspect captured area pixel membership and original Analyzer X/Y branches.
+   Freeze pixel-center, calibration-origin, anisotropy, outside/empty selection,
+   whole-image and manager-row behavior in the existing task record. Observe
+   original values for these cases before choosing output units/coordinates;
+   qualify native affine extensions separately from original ImageJ behavior.
+2. Reuse the owning admitted area traversal to accumulate coordinate sums with
+   its existing statistics; avoid a second provider read, raster copy or geometry
+   engine. Add typed captured result fields only where missing and expose the
+   readonly Python fields plus existing Measure X/Y column choices. Keep source
+   navigation/selection/history untouched. Whole/rectangle/ellipse/polygon and
+   existing grouped manager rows are required consumers; line/point conventions,
+   center-of-mass, Feret and other descriptors retain their M3 owners.
+3. Native numeric/control assertions precede matching module links. Check
+   effective/global-bypass calibration, empty populations, cancellation, bounded
+   admission and frozen sources; then actual both-host configured columns,
+   precision/CSV/workspace and changed installed-client contracts. Reuse valid
+   unchanged perimeter/spline references, retire terminal scratch, record the
+   waste decision and update the queue before the successor.
 
 Other analytic/mask/native-path perimeters, wider scientific/saved-row/constructor
 variants, T07 external annotation projection precision, T09 operation-intent
