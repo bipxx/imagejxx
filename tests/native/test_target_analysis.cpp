@@ -29,6 +29,78 @@ struct Source final:PlaneSource {
 }
 int main(){
   {
+    // Pinned original ImageJ observations: ordinary fits, constructor branches,
+    // empty processor reset versus retained zero-height mask and one-pixel ties.
+    const double nan=std::numeric_limits<double>::quiet_NaN();
+    struct EllipseCase {const char* id;const char* kind;std::vector<std::array<double,2>> points;bool fitted,traced;std::array<double,3> axes;std::array<double,2> center;};
+    const std::vector<EllipseCase> cases={
+      {"shape0-type0-cal0","whole_image",{},false,false,{45.13516668141449,45.13516668141449,0.0},{nan,nan}},
+      {"shape1-type0-cal0","rectangle",{{3.0,3.0},{13.0,11.0}},false,false,{11.283791670353622,9.027033336282898,0.0},{nan,nan}},
+      {"shape2-type0-cal0","ellipse",{{3.0,3.0},{13.0,11.0}},false,false,{10.299606058404963,7.91169394256132,0.0},{nan,nan}},
+      {"shape3-type0-cal0","polygon",{{3.0,3.0},{13.0,3.0},{9.0,11.0}},false,false,{7.855171788226362,6.483573263889882,160.61047496058015},{nan,nan}},
+      {"shape4-type0-cal0","polygon",{{3.0,3.0},{13.0,3.0},{13.0,7.0},{8.0,7.0},{8.0,11.0},{3.0,11.0}},false,false,{10.914536113038471,6.999323827684189,29.12642477130444},{nan,nan}},
+      {"shape5-type0-cal0","rectangle",{{3.2,4.7},{13.399999999999999,13.0}},false,false,{12.412170837388985,10.15541250331826,0.0},{nan,nan}},
+      {"shape6-type0-cal0","ellipse",{{3.2,4.7},{13.399999999999999,13.0}},false,false,{10.932218240412775,9.200870474964098,0.0},{nan,nan}},
+      {"shape7-type0-cal0","rectangle",{{-2.7,-1.2},{2.3999999999999995,3.2}},false,false,{4.513516668141449,4.513516668141449,0.0},{nan,nan}},
+      {"shape8-type0-cal0","rectangle",{{60.0,60.0},{64.0,64.0}},false,false,{0.0,0.0,0.0},{nan,nan}},
+      {"shape9-type0-cal0","ellipse",{{60.0,60.0},{64.0,64.0}},false,false,{0.0,0.0,0.0},{nan,nan}},
+      {"shape10-type0-cal0","rectangle",{{3.0,3.0},{4.0,4.0}},false,false,{1.1283791670353622,1.1283791670353622,0.0},{nan,nan}},
+      {"shape11-type0-cal0","rectangle",{{3.0,3.0},{4.0,17.0}},false,false,{15.79730833849507,1.1283791670353622,90.0},{nan,nan}},
+      {"shape12-type0-cal0","polygon",{{3.0,3.0},{4.0,3.0},{5.0,3.0}},false,false,{nan,nan,0.0},{nan,nan}},
+      {"shape13-type0-cal0","polygon",{{3.0,3.0},{13.0,3.0},{13.0,13.0},{3.0,13.0}},true,false,{13.727325035155397,13.727325035155397,0.0},{nan,nan}},
+      {"shape14-type0-cal0","freehand",{{3.200000047683716,4.699999809265137},{13.800000190734863,3.0999999046325684},{9.399999618530273,14.199999809265137}},false,true,{9.112088199735224,7.685195031635977,73.21130419733625},{nan,nan}},
+      {"extra0-type0-shiftfalse-nanfalse-implicitfalse","whole_image",{},false,false,{45.13516668141449,45.13516668141449,0.0},{20.0,20.0}},
+      {"extra1-type0-shiftfalse-nanfalse-implicitfalse","rectangle",{{60.0,60.0},{64.0,64.0}},false,false,{0.0,0.0,0.0},{0.0,0.0}},
+      {"extra2-type0-shiftfalse-nanfalse-implicitfalse","ellipse",{{60.0,60.0},{64.0,64.0}},false,false,{0.0,0.0,0.0},{0.0,0.0}},
+      {"extra3-type0-shiftfalse-nanfalse-implicitfalse","polygon",{{60.0,60.0},{70.0,60.0},{65.0,68.0}},false,false,{0.0,0.0,0.0},{0.0,0.0}},
+      {"extra4-type0-shiftfalse-nanfalse-implicitfalse","polygon",{{3.0,3.0},{4.0,3.0},{5.0,3.0}},false,false,{nan,nan,0.0},{3.5,3.5}},
+      {"extra5-type0-shiftfalse-nanfalse-implicitfalse","polygon",{{3.0,3.0},{13.0,3.0},{9.0,11.0}},false,false,{7.855171788226362,6.483573263889882,160.61047496058015},{8.3,5.6}},
+      {"extra6-type0-shiftfalse-nanfalse-implicitfalse","ellipse",{{3.0,3.0},{4.0,4.0}},false,false,{1.1283791670955126,1.1283791670955126,0.0},{3.5,3.5}},
+      {"extra7-type0-shiftfalse-nanfalse-implicitfalse","polygon",{{3.0999999046325684,3.0999999046325684},{3.200000047683716,3.0999999046325684},{3.1500000953674316,3.200000047683716}},false,false,{nan,nan,0.0},{3.5,3.5}},
+      {"extra8-type0-shiftfalse-nanfalse-implicitfalse","rectangle",{{3.0,3.0},{4.0,17.0}},false,false,{15.79730833849507,1.1283791670353622,90.0},{3.5,10.0}}
+    };
+    for(const auto& value:cases)for(bool implicit:{false,true}) {
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)}).observe_reads(reads));
+      if(std::string(value.kind)!="whole_image") {
+        Selection s(value.kind,value.points);if(value.traced)s=with_selection_polygon_type(s,SelectionPolygonType::Traced);if(value.fitted)s=fit_spline_selection(s,40,40);owner->select(s);
+      }
+      Application app;app.adopt(owner);TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;check(!options.ellipse);
+      options.ellipse=!implicit;options.shape_descriptors=implicit;
+      const auto command=resolve_target_analysis(app.resolve_target(),options);check(reads.counts().plane_reads==0 && command.record().at("version")==MetadataValue(std::int64_t(15)));
+      owner->select(Selection("rectangle",{{0,0},{1,1}}));const auto snapshot=owner->snapshot();const auto result=execute_target_analysis(command);const auto& row=result.planes.front();
+      auto same=[&](double a,double b){if(!(std::isnan(b)?std::isnan(a):std::abs(a-b)<1e-10)){std::cerr<<value.id<<" implicit="<<implicit<<" actual="<<a<<" expected="<<b<<std::endl;check(false);}};
+      if(!implicit){check(row.ellipse_major && row.ellipse_minor && row.ellipse_angle_degrees);same(*row.ellipse_major,value.axes[0]);same(*row.ellipse_minor,value.axes[1]);same(*row.ellipse_angle_degrees,value.axes[2]);check(!row.circularity);}
+      else check(!row.ellipse_major && !row.ellipse_minor && !row.ellipse_angle_degrees && row.circularity);
+      check(bool(row.centroid_world));if(!std::isnan(value.center[0])){same((*row.centroid_world)[0],value.center[0]);same((*row.centroid_world)[1],value.center[1]);}
+      check(reads.counts().plane_reads==1 && owner->snapshot().shares_data(snapshot) && owner->undo_steps()==0);
+      TargetAnalysisLimits limits;limits.max_measurement_work=1;refuses<std::invalid_argument>([&]{resolve_target_analysis(command.target(),options,limits);});check(reads.counts().plane_reads==1);
+      auto control=ExecutionControl{};control.checkpoint=[] {throw OperationCancelled();};refuses<OperationCancelled>([&]{execute_target_analysis(command,control);});check(reads.counts().plane_reads==1);
+    }
+    for(const auto* kind:{"rectangle","ellipse","polygon"}) {
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)}).observe_reads(reads));
+      owner->select(Selection(kind,std::string(kind)=="polygon"?std::vector<std::array<double,2>>{{0,0},{1e100,0},{0,10}}:std::vector<std::array<double,2>>{{0,0},{1e100,10}}));Application app;app.adopt(owner);
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.ellipse=true;
+      refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target(),options);});check(reads.counts().plane_reads==0);
+    }
+    {
+      // BBox native coordinates remain wider than the legacy ellipse frame.
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)}).observe_reads(reads));owner->select(Selection("rectangle",{{0,0},{1e100,10}}));Application app;app.adopt(owner);
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.bounding_rectangle=true;
+      const auto row=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();
+      check(*row.bounding_x==0 && *row.bounding_y==0 && *row.bounding_width==40 && *row.bounding_height==10 && reads.counts().plane_reads==1);
+      options.ellipse=true;refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target(),options);});check(reads.counts().plane_reads==1);
+    }
+    {
+      DatasetReadObserver reads;SpatialCalibration spatial;spatial.spacing={2,.5,3};spatial.origin={7,-4,9};spatial.direction={1,1,0,0,1,0,.5,0,1};
+      auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},spatial).observe_reads(reads));owner->select(Selection("polygon",{{3,3},{13,3},{9,11}}));Application app;app.adopt(owner);
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.ellipse=true;options.bounding_rectangle=true;options.feret=true;options.shape_descriptors=true;
+      const auto row=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();
+      check(*row.ellipse_major==0 && *row.ellipse_minor==0 && std::abs(*row.ellipse_angle_degrees-160.61047496058015)<1e-10);
+      const auto center=spatial.voxel_to_world({8.3,5.6,0});for(int a=0;a<3;++a)check(std::abs((*row.centroid_world)[a]-center[a])<1e-12);
+      check(row.bounding_x && row.feret && row.circularity && reads.counts().plane_reads==1);
+    }
+  }
+  {
     struct RectangleCase {const char* kind;std::vector<std::array<double,2>> points;bool fitted,traced,invert;std::array<double,2> spacing,origin;std::array<double,4> expected;};
     const std::vector<RectangleCase> cases={
       {"whole_image",{},false,false,false,{1,1},{-0,-0},{0,0,40,40}},
@@ -206,7 +278,7 @@ int main(){
       if(i==7)selection=fit_spline_selection(Selection("polygon",{{3,3},{13,3},{13,13},{3,13}}),40,40);
       DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},spatial).observe_reads(reads));owner->select(selection);Application app;app.adopt(owner);
       TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.shape_descriptors=true;
-      const auto before=reads.counts().plane_reads;const auto command=resolve_target_analysis(app.resolve_target(),options);check(command.record().at("version")==MetadataValue(std::int64_t(12)) && reads.counts().plane_reads==before);
+      const auto before=reads.counts().plane_reads;const auto command=resolve_target_analysis(app.resolve_target(),options);check(command.record().at("version")==MetadataValue(std::int64_t(15)) && reads.counts().plane_reads==before);
       owner->select(Selection("rectangle",{{0,0},{1,1}}));const auto frozen=owner->snapshot();const auto result=execute_target_analysis(command);const auto& row=result.planes.front();
       check(row.circularity && row.aspect_ratio && row.roundness && row.solidity);
       check(std::abs(*row.circularity-expected[i][0])<1e-11);

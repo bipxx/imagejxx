@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Accepted product baseline: `87703ce`; ELLIPSE remains reference-only WIP.
+Updated 2026-11-06. Accepted product baseline: `87703ce`; ELLIPSE has scoped API/both-host coverage; Limit to threshold is next. Full release remains open.
 
 This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
 
@@ -44,7 +44,7 @@ Every checked entry below has **I: delivered, V: scoped, UI: Windows C++ and Pyt
 
 - [x] Captured Flatten/display/PDF recording, rebind/Run and recovery subset (`G079 G082 G085`). [Scope and limitations](parity/reviews/T04a2-export-replay-20261105.json).
 
-- [ ] **Active ELLIPSE Major/Minor/Angle** (`G009 G066 G068 G071`). I: not implemented; V: 225 existing original rows reused plus 108 additional observed cases; UI: pending; R: open. Reference preparation is not delivered API/UI coverage.
+- [x] Explicit Major/Minor/Angle and implicit Shape fitted-center composition for qualified whole/ordinary/fitted area and manager rows (`G009 G066 G068 G071`), preserving non-area Angle and wide BBox. [Scope and limitations](parity/reviews/ellipse-measurements-20261106.json).
 
 ## Cross-cutting exits still open
 
@@ -402,7 +402,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Owner:** T15 + owning feature task. **Recorded family state:** `in_progress`. [Contract and evidence index](parity/inventory.json).
 
-**Accepted subsets:** Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors. Use their receipts above; full-family coverage remains open.
+**Accepted subsets:** Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
 - [ ] Visible/exported result columns, decimal formatting and profile sampling defaults are consumed. Complete selected measurement computation, threshold limits, redirect images and configurable plot axes/presentation remain.
 ### G010 Resource settings
@@ -2458,7 +2458,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ### G066 Image/ROI measurements
 
-- [ ] Finish active ELLIPSE Major/Minor/Angle and fitted-center composition, including implicit Shape descriptors with X/Y on empty/outside selections.225 existing and108 additional original observations are reference preparation only.
+- [x] Qualified ELLIPSE Major/Minor/Angle and implicit Shape fitted-center composition, including empty/outside selections:333original observations,68exact Windows host pairs, installed API/SDK and affected Windows/Linux native checks. Wider variants and release gates remain open; see the scoped receipt above.
 
 - [ ] Complete full `G066` scope and supported release exits.
 
@@ -2466,7 +2466,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Owner:** T04 / T09. **Recorded family state:** `open`. [Contract and evidence index](parity/inventory.json).
 
-**Accepted subsets:** Everyday PGM/rectangle/Gaussian preview-Apply/Undo-Redo/Measure-CSV/save-reopen; Editable spline initial/refit/straighten/remove and scoped Measure lifecycle; Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors. Use their receipts above; full-family coverage remains open.
+**Accepted subsets:** Everyday PGM/rectangle/Gaussian preview-Apply/Undo-Redo/Measure-CSV/save-reopen; Editable spline initial/refit/straighten/remove and scoped Measure lifecycle; Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
 - [ ] Set Measurements controls, calibrated centroid/shape/Feret statistics, threshold-limited/redirected intensity and precision/labels
 ### G067 Particle analysis
@@ -2486,7 +2486,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Owner:** T05. **Recorded family state:** `in_progress`. [Contract and evidence index](parity/inventory.json).
 
-**Accepted subsets:** Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors. Use their receipts above; full-family coverage remains open.
+**Accepted subsets:** Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
 - [ ] Spacing/origin/direction/time calibration is exposed natively and in Python. Intensity/global calibration and all derived-image preservation rules remain.
 ### G069 Histogram
@@ -2515,7 +2515,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Owner:** T04 / T09. **Recorded family state:** `open`. [Contract and evidence index](parity/inventory.json).
 
-**Accepted subsets:** Everyday PGM/rectangle/Gaussian preview-Apply/Undo-Redo/Measure-CSV/save-reopen; Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors. Use their receipts above; full-family coverage remains open.
+**Accepted subsets:** Everyday PGM/rectangle/Gaussian preview-Apply/Undo-Redo/Measure-CSV/save-reopen; Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
 - [ ] Table/CSV import, sorting/filtering, editing/copy, configurable columns and summaries
 ### G072 Annotation utilities
@@ -2800,8 +2800,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Reconcile stale family/child labels against exact scoped receipts without rewriting historical outcomes or treating partial references as full certification.
 - [ ] Keep missing reference paths and producer/reader mappings with T00; recover only from a new plausible source and never recreate retired build generations.
 - [ ] Keep every deferred gap with its T00–T15 owner; queue changes do not close unfinished formats, point/manager, analysis, Fiji or platform variants.
-- [ ] Keep cleanup claims evidence-based: current ellipse reference scratch is retired;214 inaccessible storage subtrees leave complete local budget unverified. A checklist or instruction file is not an automatic filesystem guard.
+- [ ] Keep cleanup claims evidence-based: all6ellipse task scratch groups are retired with verified retained evidence;214 inaccessible storage subtrees leave complete local budget unverified. A checklist or instruction file is not an automatic filesystem guard.
 
 ## Next update
 
-After ELLIPSE delivery, replace its reference-only row with actual API/UI/output scope and receipt, preserve unsampled variants, update affected G009/G066/G068/G071 residuals, and keep platform/release items open until their own evidence closes them.
+Next, update affected G009/G066/G068/G071 rows as Limit to threshold gains actual API/UI/output evidence. Preserve redirected-intensity and unsampled variants with their owners; platform/release items stay open until their own evidence closes them.

@@ -1,0 +1,210 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 ELLIPSE measurement option",
+  "implemented": true,
+  "verified": true,
+  "integrated": true,
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "scope": "Defaultfalse ellipse and3readonly fields through native/Python and existing both-host settings/results/CSV/workspace; implicitShape fitted centers corrected, nonareaAngle and wideBBox preserved. Shared rawframe and one borrowed-mask fit; strict FitEllipse unchanged.",
+  "public_contract": {
+    "APIs": "Append TargetAnalysisOptions.ellipse=false; readonly optional<double> ellipse_major/ellipse_minor/ellipse_angle_degrees. Explicit request only whole/ordinary/fitted area/manager; generic AREA and unsupported rows refuse before reads. Shape descriptors imply same fitted center but do not expose3newfields unless ellipse flagtrue.",
+    "units_affine": "Preserve exact legacyMajor/Minor: raw fitted pixel axes times spacingX only when abs(sx-sy)/sx<.01, else0 (NaN still propagates). Angle is unscaled imageXY degrees, unaffected by spatial origin/direction. Fitted center uses existing full captured affine at planeZ. No world-principal-axis or geometric-object claim; existing pure FitEllipse selection API owns native geometry.",
+    "required_scope_correction": "Shape descriptors also invokes EF in original, so update its incorrect empty-mask geometric-centroid publication using observed original consumer, including outsidepolygon. Requested or implicit EF commands diagnostic15 with explicit ellipse policy and fitted-center centroid policy. Update current product version assertions, preserve historical fixtures/receipts/expectations.",
+    "sharing": "Split raw processor-frame preparation from world rectangle in target_analysis.cpp. Admit/capture once for RECT/ELLIPSE/SHAPE; validate polygon once in owning planner, removing repeated private-helper guard from prior task. AreaShapeGeometry becomes hull/feret scalars only; no moment/frame scans there. Only actual SHAPE/Feret requests use hull prep.",
+    "execution": "New AreaEllipseSummary borrows current mask and shared raw frame/mask-present state; reuse unchanged moment_ellipse_axes math including angle, analytic no-mask rectangle and empty cases. Compute once for Shape and/orEllipse, reuse for4descriptors and3newcolumns; set fitted centroid, leave weighted center unchanged. Avoid unused geometric-centroid sums in existing stats call when fitted center will replace it.",
+    "resources": "One bounded raw Float32minmax scan/constantbox; one full-mask moments traversal only when mask exists and both processor dimensions nonzero. No second mask/provider read/retained geometry buffer. Charge aggregate frame+ellipse+shape+polygon work before preparation/source reads, preserve finite/narrowing guards and strict FitEllipse nonempty/singular behavior.",
+    "UIAngle": "Major/Minor explicit choices request ellipse. Angle-only requests it for whole/ordinary/fitted area and all-area manager rows; keep existing non-area Angle route. Mixed unqualified manager variants remain explicit owner, preserve existing Angle behavior rather than reject by accidental option inference.",
+    "decision": "Proceed with batched core/header/private-helper/binding/settings/UI/probe and native controls after reference retention. Put existing bug/composition and boundary assertions in native control before module links; no generic registry/engine/runner or repeated base observer."
+  },
+  "checks": {
+    "current_python_collected_id_union": 3986,
+    "current_python_passed_id_union": 3985,
+    "optional_hidden_opengl_skipped": 1,
+    "reused_unchanged_strict_transform_passed": 321,
+    "distinct_id_union": 4307,
+    "passed_id_union": 4306,
+    "original_rows": 333,
+    "original_rows_reused": 225,
+    "additional_original_rows": 108,
+    "new_case_ids": 351,
+    "matching_host_pairs": 68,
+    "new_physical_profiles_per_windows_host": 9,
+    "final_corrective_python_cases": 411,
+    "native": "Final Windows analysis011/Linux analysis014 pass; unchanged strict-transform/settings controls005/010 pass, installed Windows target_analysis_api014 passes;9installed byte identities and actual module origins checked.",
+    "reuse": "python010green unaffected results plus corrected/current013411IDs; shared frame domain correction limited BBox-only wide coordinates, now existing/native installed consumer passes.321strict ellipse/hull/rectangle Python rows from Shape005 reused; strict numerical API/math untouched.",
+    "limits": "Linux installed SDK/Python/UI, macOS/final release and retiredG016/17gesture references remain unqualified/unavailable, not passed.214unknown storage subtrees prevent total budget claim."
+  },
+  "remaining": "Limit to threshold next; redirected intensity, unsampled constructors/nonordinary/mask/path/line/point/replay and wider platform/release variants retain M3/T06/T14 owners. RetiredG016/17gesture references unavailable, not recreated/repinned/passed.",
+  "cleanup": "retirement002/013/016:all6owned groups and scratch parent absent;3lossless reference/final capture archives live verified; full failed010logs/XML/receipts and compiler/SDK identities/import retained. Active cache/runtime/app/SDK remain.",
+  "storage": {
+    "before_known_bytes": 7430302229,
+    "pre_retirement_known_bytes": 7438173696,
+    "after_known_bytes": 7433844834,
+    "growth_lower_bound_bytes": 7871467,
+    "allocation_bound_bytes": 268435456,
+    "physical_free_after_bytes": 220543901696,
+    "unknown_subtrees": 214,
+    "budget_verified": false
+  },
+  "cost": {
+    "windows_build_commands": 20,
+    "windows_build_seconds": 242.312,
+    "native_module_build_commands": 2,
+    "native_module_build_seconds": 84.054,
+    "failed_compilations": 1,
+    "failed_installed_campaigns": 1,
+    "late_probe_relink_rounds": 1,
+    "retention_invocation_failures": 1,
+    "python_seconds": 27.127,
+    "linux_build_seconds": 38.536,
+    "sdk_command_seconds": 27.009
+  },
+  "waste_review": {
+    "decision": "Fix now: one shared fitted summary/frame and remove repeated planner/private rectangle validation and discarded centroid sums; skip hull for ellipse-only. Preserve consumer-specific Float32 domains. Reuse green unaffected campaign results and existing harness/cache/runtime; no newrunner/ledger/controller.",
+    "observed": "Missed positive1e100BBox consumer caused corrective core/consumer link. New optional assertion needed explicit bool; late UI expected-perimeter/collision review caused desktop relink.2installed test assertions mismatched real guard/JSONnan contracts. Retention absolute CLI path retry and empty-directory snapshot refusal corrected before deletion. Costs actual above; no saved-time/speed claim.",
+    "defer": "Broader threshold/redirect/nonordinary/replay/platform variants retain M3/T06/T14 owners. No speculative optimization from control compile time; no full audit.",
+    "next": "Limit to threshold is sole detailed ready successor; inspect its actual caller/threshold population contract before batching. Canonical coverage affectedG009/G066/G068/G071 updated; no full-family closure."
+  },
+  "failures_and_corrections": [
+    "Native005 optional-bool assertion compile corrected006 before first _native links.",
+    "New profile64 triangle perimeter/collision review caused desktop-only008relink before UI checks.",
+    "Python010:2assertion errors and wideBBox-only Float32 regression; scoped core correction/native011 passed before012links,411affected installed013checks passed.",
+    "Retention empty-directory snapshot refusal and absolute CLI path failure corrected before016live verification/deletion; diagnostics retained."
+  ],
+  "sources": [
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 8163,
+      "sha256": "9c345e09569ceded5d72974b1c9905a39ce2bbfd14f06afe579aac4947799644"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 8177,
+      "sha256": "b5739d146fcfa73a939f9b0683b946579302a7eb2e3a06d61cd0e4f66342c53f"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 111426,
+      "sha256": "eb142272f6b8b66bb83fb5e7ce3245a2e98f86b984fa24611b964e952cc5f0f4"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 930143,
+      "sha256": "d03be57cec0ea912afc877f698a1bc1ee3617d852a3f79fb9062f70f91a683ba"
+    },
+    {
+      "path": "src/native/selection_shape_detail.hpp",
+      "bytes": 1083,
+      "sha256": "da4b20304b0067d364ed9318a8ae3a8ffb7020d427948b006de6da53b625a5b8"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 67612,
+      "sha256": "6351a456246f42508b7186077ab4ed88fe2fc967cc266b76b7b555be6957ff02"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 27965,
+      "sha256": "7ddc53e2aca20624652858284ad4999759d08069af5660af82e5a9e67f4d888f"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 50142,
+      "sha256": "598a8e376f8b13d4088475567d86768cfa1c26acc713910c9b789e379b24238d"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 8899,
+      "sha256": "13ffab9ccda09988e577d5f9b4bf5233a17d6c38af20006a76fee8036d2892fe"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38288,
+      "sha256": "bbac4a5616235ce586128619589c3a1320878510dde0e77a0d75b6697d18baa2"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 55394,
+      "sha256": "c737e503a599e295165d5b9f1af945ddb743d267e26a5855df547817a6d4af6c"
+    },
+    {
+      "path": "tests/python/test_shape_descriptors.py",
+      "bytes": 8833,
+      "sha256": "0607ab191805a9e56071c0b51949de72b38c0ca5a7685f3e840b03d0941dce6e"
+    },
+    {
+      "path": "tests/python/test_subtype_measurements.py",
+      "bytes": 12031,
+      "sha256": "c65e7231fd1c390412dc318dd3934e7c34772bb52b2fe9af01aae81c8b36aa6a"
+    },
+    {
+      "path": "tests/python/test_ellipse_measurements.py",
+      "bytes": 10072,
+      "sha256": "3644e196efd0f39043c00c2b62078ce06fd74c1221c75dd0c80ec947433f7e99"
+    },
+    {
+      "path": "tests/reference/ObserveEllipseMeasurements.java",
+      "bytes": 3945,
+      "sha256": "8302977cbdb3c1c0b723ea5c429acf2cf19d6ba35ad64dbd8a234e9ea5d2183f"
+    },
+    {
+      "path": "tests/fixtures/ellipse-measurements-extra-imagej154r.json",
+      "bytes": 50084,
+      "sha256": "21d7cd18644ab70f34446260cbb458eb172f121e713da29a01decc78ddd3072d"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp\\manual-workflow-verification\\ellipse-measurements-20261106\\entry.json",
+      "bytes": 50464,
+      "sha256": "16e20ee17b0e2788feab322b7bfa287931954b15e3b620e999ebb670e2e5f190"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\ellipse-measurements-20261106\\results017.json",
+      "bytes": 2733,
+      "sha256": "9be61a4a350158cf9e429621b0bc585e622bab59a600aa6ace27f12af37ec5cb"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\ellipse-measurements-20261106\\host-comparison013.json",
+      "bytes": 11601,
+      "sha256": "46f913b42e3fedb987a2c5e58b502c4194d4cd66c89ddd30af64be98fde34f0c"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\ellipse-measurements-20261106\\installed-identities012.json",
+      "bytes": 3588,
+      "sha256": "1f43c8c7c0311c028e70292aa656419b1b298604616390806bb973ede7041ae6"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\ellipse-measurements-20261106\\python010.xml",
+      "bytes": 661151,
+      "sha256": "0e10452d9710b96668af25e46aa845380bcdaaf16427fe40d0effeaf943486fd"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\ellipse-measurements-20261106\\python013.xml",
+      "bytes": 65884,
+      "sha256": "586f05f0ca852fac28d9d8a266e6ef4b5d0ad3f905b9efd84d0892778f6404c8"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\ellipse-measurements-20261106\\retirement016.json",
+      "bytes": 3901,
+      "sha256": "033a938a19e33ea7687e3b5d4dfb7a8bb43f26c84df08d04e7ca48b611da86be"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\ellipse-measurements-20261106\\linux-identities014.json",
+      "bytes": 440,
+      "sha256": "668728098b23fd99c123e22ee47e44815044dff04776b925bb68306d78493a09"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\ellipse-measurements-20261106\\sdk-identities014.json",
+      "bytes": 336,
+      "sha256": "516d29fc788d943beac561448ab7cde442e73d2fb9ff59bf88fa1d45cb928dfc"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\shape-descriptors-20261106\\python005.xml",
+      "bytes": 382710,
+      "sha256": "9fda11bbd3521c4a4ed0cd428d10d38d80de87fd32cccc6292879942bb1ef9a7"
+    }
+  ]
+}

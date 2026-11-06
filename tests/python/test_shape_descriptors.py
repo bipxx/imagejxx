@@ -30,7 +30,7 @@ def test_original_four_descriptor_columns_and_frozen_options(case):
     app=ij.Application();app.adopt(owner)
     options=ij.TargetAnalysisOptions();options.measurement=ij.TargetMeasurementMode.SELECTION;options.shape_descriptors=True
     before=reads.counts().plane_reads;command=ij.resolve_target_analysis(app.resolve_target(),options)
-    assert reads.counts().plane_reads==before and command.record["version"]==12
+    assert reads.counts().plane_reads==before and command.record["version"]==15
     assert command.record["options"]["shape_descriptor_policy"]=="rounded-hull/legacy-ellipse/area-options-v1"
     exposed=command.options;exposed.shape_descriptors=False
     owner.select(ij.Selection("rectangle",[[0,0],[1,1]]));snapshot,undo=owner.snapshot(),owner.undo_steps

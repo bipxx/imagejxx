@@ -423,14 +423,14 @@ std::array<double,5> ellipse_feret(const Selection& s,const SpatialCalibration& 
 }
 AreaShapeEstimate estimate_area_shape_geometry(const Selection* source,int width,int height,const SelectionEditLimits& limits,const SpatialCalibration* feret,bool descriptors) {
   if(feret)feret_basis(*feret);
-  if(!source)return {4096,(descriptors?std::size_t(width)*height:0)+(feret?32:0)};
+  if(!source)return {4096,feret?std::size_t(32):0};
   const auto& s=*source;
   if(s.kind!="rectangle" && s.kind!="ellipse" && s.kind!="polygon" && s.kind!="freehand")
     throw std::invalid_argument("Shape descriptors require ordinary area geometry");
   auto bytes=admit_selection_geometry(s,width,height,limits,{});
   for(const auto& point:s.points)for(double coordinate:point)if(std::abs(coordinate)>std::numeric_limits<float>::max())
     throw std::invalid_argument("Shape descriptor coordinate exceeds Float32 range");
-  std::size_t count=s.kind=="rectangle"?4:s.points.size(),work=descriptors?std::size_t(width)*height:0;
+  std::size_t count=s.kind=="rectangle"?4:s.points.size(),work=0;
   if(s.kind=="ellipse" && !descriptors)count=0;
   if(s.kind=="ellipse" && descriptors) {
     const auto path=fit_rectangle_path(s);auto roi=ImageJRoiLimits{};roi.max_vertices=limits.max_vertices;roi.max_mask_pixels=limits.max_xy_pixels;
@@ -456,7 +456,7 @@ AreaShapeEstimate estimate_area_shape_geometry(const Selection* source,int width
 }
 AreaShapeGeometry prepare_area_shape_geometry(const Selection* source,int width,int height,const SelectionEditLimits& limits,const SpatialCalibration* feret,bool descriptors) {
   AreaShapeGeometry out;
-  if(!source){out.rectangle=true;out.box_extent={double(width),double(height)};out.hull_area=double(width)*height;
+  if(!source){out.hull_area=double(width)*height;
     if(feret)out.feret=hull_feret({{0,0},{0,double(height)},{double(width),double(height)},{double(width),0}},SpatialCalibration{});
     return out;}
   if(feret && source->kind=="ellipse") {
@@ -464,12 +464,7 @@ AreaShapeGeometry prepare_area_shape_geometry(const Selection* source,int width,
     for(double value:*out.feret)if(!std::isfinite(value))throw std::invalid_argument("Feret ellipse result must be finite");
     if(!descriptors)return out;
   }
-  const auto& s=*source;out.origin=moment_origin(s,width,height);out.rectangle=s.kind=="rectangle";
-  if(s.kind=="rectangle" || s.kind=="ellipse") {
-    const double x=std::trunc(std::min(s.points[0][0],s.points[1][0])),y=std::trunc(std::min(s.points[0][1],s.points[1][1]));
-    out.box_extent={std::max(0.,std::min(double(width),x+std::ceil(std::abs(s.points[1][0]-s.points[0][0])))-std::max(0.,x)),std::max(0.,std::min(double(height),y+std::ceil(std::abs(s.points[1][1]-s.points[0][1])))-std::max(0.,y))};
-    out.empty_box=out.box_extent[0]==0 || out.box_extent[1]==0;
-  }
+  const auto& s=*source;
   auto vertices=fit_rectangle_vertices(s,width,height,limits);
   if(vertices.empty())return out;
   auto hull=ordered_hull(std::move(vertices),true,true);
@@ -481,12 +476,20 @@ AreaShapeGeometry prepare_area_shape_geometry(const Selection* source,int width,
   const auto signed_area=area<0x80000000u?std::int64_t(area):std::int64_t(area)-0x100000000LL;
   out.hull_area=std::abs(double(signed_area)/2);return out;
 }
-std::array<double,2> area_shape_ellipse_axes(const Image* mask,int width,int height,const AreaShapeGeometry& geometry) {
-  if(geometry.empty_box)return {0,0};
-  if(geometry.rectangle){const double a=2*geometry.box_extent[0]/1.772453851,b=2*geometry.box_extent[1]/1.772453851;return {std::max(a,b),std::min(a,b)};}
-  if(!mask)throw std::invalid_argument("Shape ellipse summary requires its admitted area mask");
-  if(mask->width!=width || mask->height!=height)throw std::invalid_argument("Shape ellipse mask differs from admitted extent");
-  const auto axes=moment_ellipse_axes(mask_moments(*mask,width,true,geometry.origin));return {axes[0],axes[1]};
+AreaEllipseSummary area_ellipse_summary(const Image* mask,int width,int height,const std::array<int,4>& frame,bool mask_present) {
+  AreaEllipseSummary out;
+  if(!mask_present) {
+    const double a=2*double(frame[2])/1.772453851,b=2*double(frame[3])/1.772453851;
+    out.axes={std::max(a,b),std::min(a,b),b>a?1.57079632679489661923:0.};
+    out.center={frame[0]+.5*frame[2],frame[1]+.5*frame[3]};return out;
+  }
+  if(!mask || mask->width!=width || mask->height!=height)
+    throw std::invalid_argument("Ellipse summary requires its admitted area mask");
+  const auto m=frame[2] && frame[3]?mask_moments(*mask,width,true,{frame[0],frame[1]}):AreaMoments{};
+  out.axes=moment_ellipse_axes(m);
+  out.center=m.count?std::array<double,2>{m.sx/double(m.count)+.5,m.sy/double(m.count)+.5}:
+      std::array<double,2>{frame[0]+.5,frame[1]+.5};
+  return out;
 }
 }
 std::size_t estimate_convex_hull_selection(const Selection &source,int width,int height,

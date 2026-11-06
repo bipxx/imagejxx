@@ -384,6 +384,8 @@ const std::vector<SettingDefinition> &Settings::schema() {
         "Perim.",
         "Perim. unit",
         "Angle",
+        "Major",
+        "Minor",
         "X",
         "Y",
         "XM",

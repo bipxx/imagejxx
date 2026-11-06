@@ -20,7 +20,8 @@ PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
 verified in both Windows hosts. Scientific TIFF reslice/export now preserves
 world/time transforms. Vertex Convex Hull has scoped API/both-Windows-host
 evidence. Bounding Rectangle now has scoped API/both-host checks too; next
-is T04a.2 M3 ELLIPSE measurements (Major/Minor/Angle). The explicit shape, Feret
+is T04a.2 M3 Limit to threshold measurements. ELLIPSE Major/Minor/Angle now has
+scoped API/both-host evidence, including fitted centers and preserved line Angle. The explicit shape, Feret
 and processor rectangle options are scoped integrated in both hosts, including
 subtype units and full native rectangle vectors. Calibrated
 geometric centroids and weighted center of mass have scoped original/API/

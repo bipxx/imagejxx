@@ -27,6 +27,8 @@ struct TargetAnalysisOptions {
   bool feret = false;
   // Explicit processor-ROI BX/BY/Width/Height; independent of tight Bounds.
   bool bounding_rectangle = false;
+  // Explicit legacy fitted area axes/orientation; Shape descriptors shares the fit.
+  bool ellipse = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -65,13 +67,17 @@ struct TargetAnalysisPlane {
   // no-ROI fallback); false uses TargetAnalysisResult::spatial.unit.
   bool perimeter_in_pixels=false;
   // Area-only geometric centroid: mean pixel centers (x+.5,y+.5), captured
-  // plane z, transformed by spatial. Empty membership has NaN components.
+  // plane z, transformed by spatial. Empty membership has NaN components unless
+  // Shape descriptors/ellipse requests the legacy processor fitted center.
   std::optional<std::array<double,3>> centroid_world;
   // Area-only intensity-weighted summary, at captured plane z. NaN/Inf moment
   // components propagate through nonzero spatial axes, not geometry APIs.
   std::optional<std::array<double,3>> center_of_mass_world;
   // Present together for an explicit shape_descriptors request.
   std::optional<double> circularity,aspect_ratio,roundness,solidity;
+  // Explicit ellipse only. Axes follow legacy near-square spacing policy; angle
+  // is image XY degrees, independent of spatial direction and origin.
+  std::optional<double> ellipse_major,ellipse_minor,ellipse_angle_degrees;
   // Present together only for feret. Angle uses the local calibrated image plane.
   std::optional<double> feret,min_feret,feret_angle,feret_x,feret_y;
   // Analyzer whole-image fallback uses pixels; generic endpoints are raw image

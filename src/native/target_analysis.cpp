@@ -36,17 +36,21 @@ double profile_length(const SpatialCalibration& spatial,const std::array<double,
   if(!std::isfinite(length))invalid("Analysis profile physical length must be finite");
   return length;
 }
-struct MeasurementRectangle {
+struct MeasurementFrame {
   std::array<int,4> pixels{};
+  bool mask_present=false;
+};
+struct MeasurementRectangle {
   std::array<double,3> origin{},horizontal{},vertical{};
   double width=0,height=0;
 };
-MeasurementRectangle measurement_rectangle(const Selection* selection,int width,int height,
-    const SpatialCalibration& spatial,int z) {
+MeasurementFrame measurement_frame(const Selection* selection,int width,int height,bool fitted_center) {
   double left=0,top=0,right=width,bottom=height;
+  bool masked=selection && selection->kind!="rectangle";
   if(selection) {
-    selection->validate(width,height);
     if(selection->kind=="rectangle" || selection->kind=="ellipse") {
+      if(fitted_center)for(const auto& point:selection->points)for(double coordinate:point)
+        if(std::abs(coordinate)>std::numeric_limits<float>::max())invalid("Processor frame coordinate exceeds Float32 range");
       left=std::trunc(std::min(selection->points[0][0],selection->points[1][0]));
       top=std::trunc(std::min(selection->points[0][1],selection->points[1][1]));
       right=left+std::ceil(std::abs(selection->points[1][0]-selection->points[0][0]));
@@ -68,11 +72,14 @@ MeasurementRectangle measurement_rectangle(const Selection* selection,int width,
   // image. An in-canvas zero-height polygon keeps its origin and other extent.
   if(left<0 || top<0 || right>width || bottom>height) {
     left=std::max(0.,left);top=std::max(0.,top);right=std::min(double(width),right);bottom=std::min(double(height),bottom);
-    if(right<=left || bottom<=top)left=top=right=bottom=0;
+    if(right<=left || bottom<=top){left=top=right=bottom=0;masked=false;}
   }
-  MeasurementRectangle out;out.pixels={int(left),int(top),int(right-left),int(bottom-top)};
-  out.origin=spatial.voxel_to_world({left,top,double(z)});
-  const double w=right-left,h=bottom-top;
+  return {{int(left),int(top),int(right-left),int(bottom-top)},masked};
+}
+MeasurementRectangle measurement_rectangle(const MeasurementFrame& frame,const SpatialCalibration& spatial,int z) {
+  const auto& b=frame.pixels;MeasurementRectangle out;
+  out.origin=spatial.voxel_to_world({double(b[0]),double(b[1]),double(z)});
+  const double w=b[2],h=b[3];
   for(int axis=0;axis<3;++axis) {
     out.horizontal[axis]=spatial.direction[axis*3]*(w*spatial.spacing[0]);
     out.vertical[axis]=spatial.direction[axis*3+1]*(h*spatial.spacing[1]);
@@ -169,6 +176,7 @@ struct MeasurementRowPlan {
   std::optional<std::size_t> counter_count;
   std::optional<double> perimeter;
   std::optional<detail::AreaShapeGeometry> shape_geometry;
+  std::optional<MeasurementFrame> frame;
   std::optional<MeasurementRectangle> rectangle;
 };
 struct MeasurementGroup {PlanePosition position;std::vector<std::size_t> rows;bool pixels=false;};
@@ -234,7 +242,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   std::size_t count=0;
   for(std::size_t n=0;n<parent_count;++n) {
     const auto* selection=measurement_selection(target,parent(n));
-    if((options.shape_descriptors || options.feret || options.bounding_rectangle) && selection && selection->kind!="rectangle" && selection->kind!="ellipse" && selection->kind!="polygon" && selection->kind!="freehand")
+    if((options.shape_descriptors || options.feret || options.bounding_rectangle || options.ellipse) && selection && selection->kind!="rectangle" && selection->kind!="ellipse" && selection->kind!="polygon" && selection->kind!="freehand")
       invalid("Area geometry options currently require ordinary area rows");
     const auto rows=point_selection(selection)?selection->points.size():1;
     if(!rows)invalid("Point measurement requires a nonempty point selection");
@@ -255,7 +263,9 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
     const auto ordinal=plan.groups.size();groups.emplace(key,ordinal);plan.groups.push_back({position,{}});return ordinal;
   };
   TargetAnalysisEstimate out;out.row_count=count;out.plane_pixels=base.plane_pixels;out.plane_bytes=base.plane_bytes;
-  bool has_area=false,has_mask=false,has_points=false;std::size_t raster_peak=0,line_peak=0,path_peak=0,path_work=0,polygon_peak=0,polygon_work=0,shape_peak=0,shape_work=0,rectangle_work=0;
+  bool has_area=false,has_mask=false,has_points=false;std::size_t raster_peak=0,line_peak=0,path_peak=0,path_work=0,polygon_peak=0,polygon_work=0,shape_peak=0,shape_work=0,rectangle_work=0,ellipse_work=0;
+  const bool fitted_center=options.ellipse || options.shape_descriptors;
+  const bool frame_needed=options.bounding_rectangle || fitted_center;
   for(std::size_t n=0;n<parent_count;++n) {
     auto row=parent(n);
     const auto* selection=measurement_selection(target,row);
@@ -281,12 +291,13 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       }
       continue;
     }
+    if(frame_needed && selection)selection->validate(shape.x,shape.y);
     if(analytic_selection(selection)) {
       // Constant work per already-admitted row; no new traversal, sampling
       // quota, source read or scratch allocation.
       row.perimeter=analytic_perimeter(selection,shape,target.calibration());
     }else if(selection && selection_polygon_type(*selection)) {
-      selection->validate(shape.x,shape.y);
+      if(!frame_needed)selection->validate(shape.x,shape.y);
       // Keep the original aggregate 0.01-pixel path-sampling quota unchanged.
       // The added metric has a separate aggregate segment-work stage bound.
       const auto controls=detail::spline_control_count(*selection);
@@ -299,6 +310,20 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
           selection_polygon_integer_coordinates(*selection),bytes);
       polygon_peak=std::max(polygon_peak,bytes);
     }
+    if(frame_needed) {
+      const auto work=selection && (selection->kind=="polygon" || selection->kind=="freehand")?selection->points.size():0;
+      rectangle_work=add(rectangle_work,add(16,work));
+      if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>limits.max_measurement_work)
+        invalid("Processor frame exceeds aggregate geometry work limit");
+      row.frame=measurement_frame(selection,shape.x,shape.y,fitted_center);
+      if(fitted_center) {
+        const auto& b=row.frame->pixels;
+        ellipse_work=add(ellipse_work,row.frame->mask_present && b[2] && b[3]?base.plane_pixels:16);
+        if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>limits.max_measurement_work)
+          invalid("Ellipse exceeds aggregate geometry work limit");
+      }
+      if(options.bounding_rectangle)row.rectangle=measurement_rectangle(*row.frame,target.calibration(),row.position.z);
+    }
     if(options.shape_descriptors || options.feret) {
       if(options.shape_descriptors && !row.perimeter)invalid("Shape descriptors require a qualified perimeter");
       SelectionEditLimits geometry_limits;geometry_limits.max_xy_pixels=limits.max_pixels;
@@ -307,16 +332,10 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       const auto* feret=options.feret?&target.calibration():nullptr;
       const auto geometry=detail::estimate_area_shape_geometry(selection,shape.x,shape.y,geometry_limits,feret,options.shape_descriptors);
       shape_work=add(shape_work,geometry.work_units);
-      if(add(shape_work,polygon_work)>limits.max_measurement_work)invalid("Shape/Feret options exceed aggregate geometry work limit");
+      if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>limits.max_measurement_work)invalid("Shape/Feret options exceed aggregate geometry work limit");
       within(add(prefix,geometry.working_bytes),limits.max_working_bytes);
       shape_peak=std::max(shape_peak,geometry.working_bytes);
       row.shape_geometry=detail::prepare_area_shape_geometry(selection,shape.x,shape.y,geometry_limits,feret,options.shape_descriptors);
-    }
-    if(options.bounding_rectangle) {
-      const auto work=selection && (selection->kind=="polygon" || selection->kind=="freehand")?selection->points.size():0;
-      rectangle_work=add(rectangle_work,add(16,work));
-      if(add(rectangle_work,add(shape_work,polygon_work))>limits.max_measurement_work)invalid("Rectangle exceeds aggregate geometry work limit");
-      row.rectangle=measurement_rectangle(selection,shape.x,shape.y,target.calibration(),row.position.z);
     }
     const auto group=group_for(row.position);
     plan.groups[group].rows.push_back(plan.rows.size());plan.rows.push_back(row);
@@ -398,7 +417,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
       invalid("Target analysis requires finite-policy scalar storage");
     target.calibration().validate();return estimate_measurement(target,options,limits,retained);
   }
-  if(options.shape_descriptors || options.feret || options.bounding_rectangle)invalid("Area geometry options require explicit selection or manager measurement");
+  if(options.shape_descriptors || options.feret || options.bounding_rectangle || options.ellipse)invalid("Area geometry options require explicit selection or manager measurement");
   if(options.line && !options.path.empty())invalid("Analysis accepts line or path, not both");
   if(!options.path.empty() && (options.path.size()<2 || options.path.size()>4096))invalid("Analysis path requires 2..4096 vertices");
   if(!options.statistics && !segment_count(options))invalid("Analysis requires statistics or a profile");
@@ -524,11 +543,12 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(options.shape_descriptors)requested["shape_descriptor_policy"]="rounded-hull/legacy-ellipse/area-options-v1";
       if(options.feret)requested["feret_policy"]="float-hull/analytic-oval/pixel-fallback/local-plane-v1";
       if(options.bounding_rectangle)requested["rectangle_policy"]="processor-roi/local-axes/full-affine-v1";
+      if(options.ellipse || options.shape_descriptors)requested["ellipse_policy"]="processor-frame/legacy-moments/near-square-spacing/image-angle-v1";
       requested["measurement"]=options.measurement==TargetMeasurementMode::RoiManager?"roi_manager":"selection";
       MetadataArray rows;for(const auto& row:measurements.rows) {
         MetadataObject item{{"position",metadata_array({row.position.t,row.position.c,row.position.z})}};
         if(row.roi)item["roi_index"]=std::uint64_t(*row.roi);
-        if(row.rectangle){const auto& b=row.rectangle->pixels;item["processor_rectangle"]=metadata_array({b[0],b[1],b[2],b[3]});}
+        if(row.frame){const auto& b=row.frame->pixels;item["processor_rectangle"]=metadata_array({b[0],b[1],b[2],b[3]});}
         if(row.point_index) {
           points=true;item["point_index"]=std::uint64_t(*row.point_index);
           item["point"]=metadata_array({row.point[0],row.point[1]});
@@ -562,13 +582,13 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(points)requested["point_policy"]="float32-relative/rounded-pixel/expanded-rows-v1";
       if(annotated)requested["annotation_policy"]="scientific-czt/counters-v1";
       if(area_centroids) {
-        requested["area_centroid_policy"]="geometric-pixel-centers/captured-affine-v1";
+        requested["area_centroid_policy"]=options.ellipse || options.shape_descriptors?"ellipse-fitted-center/captured-affine-v1":"geometric-pixel-centers/captured-affine-v1";
         requested["center_of_mass_policy"]="typed-row-order/byte-float-minvalue/nonzero-affine-v1";
       }
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.bounding_rectangle?14:options.feret?13:options.shape_descriptors?12:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -633,8 +653,9 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
         } else {
           auto mask=selection?std::optional<Image>{selection->mask(shape.x,shape.y)}:std::optional<Image>{};
           std::optional<std::array<double,2>> centroid,center_of_mass;
+          const bool fit_center=state.options.ellipse || state.options.shape_descriptors;
           row.statistics=detail::calibrated_statistics_with_table(*image,state.spatial,state.intensity,state.lookup,
-              mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true,&centroid,&center_of_mass);
+              mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true,fit_center?nullptr:&centroid,&center_of_mass);
           if(plan.rectangle) {
             const auto& b=*plan.rectangle;
             row.bounding_x=b.origin[0];row.bounding_y=b.origin[1];row.bounding_width=b.width;row.bounding_height=b.height;
@@ -645,10 +666,19 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
             row.feret=f[0];row.min_feret=f[1];row.feret_angle=f[2];row.feret_x=f[3];row.feret_y=f[4];
             row.feret_in_pixels=!selection;row.feret_coordinates_scaled=selection && selection->kind=="ellipse";
           }
-          if(state.options.shape_descriptors) {
-            const auto axes=detail::area_shape_ellipse_axes(mask?&*mask:nullptr,shape.x,shape.y,*plan.shape_geometry);
+          double major=0,minor=0;
+          if(fit_center) {
+            const auto fitted=detail::area_ellipse_summary(mask?&*mask:nullptr,shape.x,shape.y,plan.frame->pixels,plan.frame->mask_present);
+            centroid=fitted.center;
             const double scale=std::abs(state.spatial.spacing[0]-state.spatial.spacing[1])/state.spatial.spacing[0]<.01?state.spatial.spacing[0]:0.;
-            const double major=axes[0]*scale,minor=axes[1]*scale,area=row.statistics->area,perimeter=*row.perimeter;
+            major=fitted.axes[0]*scale;minor=fitted.axes[1]*scale;
+            if(state.options.ellipse) {
+              row.ellipse_major=major;row.ellipse_minor=minor;
+              row.ellipse_angle_degrees=fitted.axes[2]*180/3.14159265358979323846;
+            }
+          }
+          if(state.options.shape_descriptors) {
+            const double area=row.statistics->area,perimeter=*row.perimeter;
             double circularity=perimeter==0?0.:4.*3.14159265358979323846*(area/(perimeter*perimeter));
             if(circularity>1)circularity=1;
             row.circularity=circularity;row.aspect_ratio=major/minor;

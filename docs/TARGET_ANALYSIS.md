@@ -499,7 +499,9 @@ mode requests the four readonly optional outputs `circularity`, `aspect_ratio`,
 freehand and fitted area rows are supported; other kinds refuse before reads.
 The existing Measurements choices Circ./AR/Round/Solidity request this option
 when selected. Empty/default choices keep scalar behavior. Requested commands
-use diagnostic version12 and `shape_descriptor_policy`. Circ. alone clamps at
+use diagnostic version15, `shape_descriptor_policy` and the shared `ellipse_policy`.
+The implicit fit also supplies the captured fitted centroid, including processor
+reset/empty-mask behavior; it does not expose explicit ellipse fields. Circ. alone clamps at
 one; legacy near-square-pixel ellipse scaling and rounded int32 hull-area rules
 are preserved, including NaN/Inf and solidity above one. Geometric/density counts
 stay distinct. One admitted area mask is borrowed for the existing ellipse
@@ -514,7 +516,8 @@ optional `feret`, `min_feret`, `feret_angle`, `feret_x`, `feret_y` together. It
 also defaults false, supports ordinary/fitted area and rejects unsupported kinds
 or generic AREA/profile mode before provider reads. Selecting any canonical
 Feret/MinFeret/FeretAngle/FeretX/FeretY or companion unit column requests it in
-both hosts. Requested diagnostic version13 includes `feret_policy`.
+both hosts. Feret-only diagnostic version13 includes `feret_policy`; a combined
+Shape/ELLIPSE request uses version15.
 
 Generic hull coordinates retain ImageJ Float32/tie ordering and raw image
 FeretX/Y. Ellipses instead use OvalRoi's analytic integer-box axes and
@@ -539,8 +542,37 @@ readonly optional `bounding_x`, `bounding_y`, `bounding_width`, `bounding_height
 and full `bounding_origin_world`, `bounding_horizontal_world`,
 `bounding_vertical_world` summaries. It defaults false. Selecting BX/BY/Width/
 Height requests the set through existing settings/Measure in both hosts; the
-requested diagnostic version14 includes `rectangle_policy` and frozen per-row
+BBox-only diagnostic version14 includes `rectangle_policy`; combined
+Shape/ELLIPSE uses version15. Both include frozen per-row
 `processor_rectangle` provenance.
+
+`TargetAnalysisOptions.ellipse=True` in SELECTION/ROI_MANAGER requests readonly
+optional `ellipse_major`, `ellipse_minor`, `ellipse_angle_degrees`. It defaults
+false. Whole-image, ordinary rectangle/ellipse/polygon/freehand and fitted area
+rows are supported; generic AREA/profile and unsupported rows refuse before
+provider reads. Selecting Major or Minor requests the set; Angle alone does so
+only for whole/ordinary area or all-area manager selections. Existing line and
+angle orientation remains on `angle_degrees`. Mixed manager Angle-only variants
+retain their previous behavior; explicit Major/Minor requires qualified rows.
+
+Axes preserve the legacy pixel-moment fit, multiplied by spacing X only when
+`abs(spacingX-spacingY)/spacingX < .01`; otherwise the multiplier is zero,
+including normal IEEE NaN propagation. Orientation is image XY degrees, independent
+of spatial origin/direction. These are not world principal axes. The fitted
+center uses the full captured affine at row Z. No-mask rectangles use their
+processor extent/center; clipped no-overlap resets to zero, while retained empty
+masks use processor origin plus half a pixel and NaN axes/zero angle. Density
+exclusions do not change this geometric fit or its center.
+
+Requested or implicit Shape fits use diagnostic version15 with `ellipse_policy`
+and `area_centroid_policy="ellipse-fitted-center/captured-affine-v1"`. One shared
+processor frame and one borrowed-mask moment pass serve combined requests;
+ELLIPSE-only skips hull/contour preparation. The legacy Float32 restriction is
+specific to the fitted-center consumer: BBox-only native coordinates still clip
+before integer conversion. The strict editable Fit Ellipse command is unchanged.
+Scoped original/API/both-Windows-host and installed Windows SDK checks pass;
+see the [ellipse receipt](parity/reviews/ellipse-measurements-20261106.json).
+Linux UI/installed SDK and macOS/final release gates remain open.
 
 This is the clipped ImageProcessor ROI rectangle, independent of tight mask
 `bounds` and density exclusions. An in-canvas collinear polygon retains origin
@@ -559,7 +591,7 @@ Unsupported kinds/generic AREA requests refuse before reads, and scalar defaults
 and old Bounds keep their meaning. [Scoped rectangle evidence](parity/reviews/rectangle-measurements-20261106.json)
 covers960 original rows (60 all-NaN density cases),59matching Windows host pairs,
 grouped/global/frozen/cancel/stale/CSV/workspace behavior and the changed installed
-Windows C++ client. ELLIPSE output columns, threshold/redirect and remaining
+Windows C++ client. Threshold/redirect and remaining
 variants stay open.
 
 
@@ -567,7 +599,7 @@ variants stay open.
 | --- | --- |
 | `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Point properties/vertex alignment are scoped delivered; interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
-| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set; the five Feret columns and companion units request the explicit Feret set. BX/BY/Width/Height request the independent processor rectangle set. ELLIPSE, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
+| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set; the five Feret columns and companion units request the explicit Feret set. BX/BY/Width/Height request the independent processor rectangle set. Major/Minor/Angle request the explicit ellipse set; Angle-only preserves non-area behavior. Threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
 | `reflex_angle` | Boolean false by default; shared Preferences control/API/persistence, captured once per measurement. True selects 360 minus the refreshed calibrated angle. |

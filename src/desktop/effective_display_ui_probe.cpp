@@ -781,7 +781,7 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
 
 
 Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::string& directory,int profile) {
-  require(profile>=0 && profile<=58,"Unknown subtype measurement profile");
+  require(profile>=0 && profile<=67,"Unknown subtype measurement profile");
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
   require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh subtype measurement fixture required");std::filesystem::create_directories(dir);
   Selection source(profile==0 || profile==5?"polyline":profile==3?"polygon":"freehand",{{3,3},{13,3},{13,13},{3,13}});
@@ -789,7 +789,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
   if(profile==1 || profile==2)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   if(profile==1)source=with_selection_polygon_coordinates(source,true);
   if(profile==5 || profile==6){source.points={{3,3}};source=with_selection_polygon_type(source,profile==5?SelectionPolygonType::Polyline:SelectionPolygonType::Freehand);}
-  if((profile>=7 && profile<=21) || profile==43 || profile==49 || profile==54) {
+  if((profile>=7 && profile<=21) || profile==43 || profile==49 || profile==54 || profile==66) {
     const auto p=profile-7;
     source=Selection(p==0 || p==7?"polygon":p==3 || p==6?"polyline":"freehand",{{3,3},{13,3},{13,13},{3,13}});
     if(p<=3)source.points.resize(3);
@@ -805,7 +805,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(profile==20)source.points={{3,3},{13,3},{13,13},{3,13}};
     if(profile==21)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   }
-  const bool rectangleProfile=profile>=51,feretProfile=profile>=44 && profile<=50,descriptorProfile=profile>=37 && profile<=43,massProfile=profile>=32 && profile<=36,analytic=profile>=22 && profile<=27,centroidProfile=profile>=28 && profile<=31,wholeImage=profile==27 || profile==29 || profile==41 || profile==47 || profile==55 || massProfile;
+  const bool ellipseProfile=profile>=59 && profile<=66,rectangleProfile=profile>=51 && profile<=58,feretProfile=profile>=44 && profile<=50,descriptorProfile=profile>=37 && profile<=43,massProfile=profile>=32 && profile<=36,analytic=profile>=22 && profile<=27,centroidProfile=profile>=28 && profile<=31,wholeImage=profile==27 || profile==29 || profile==41 || profile==47 || profile==55 || profile==63 || massProfile;
   if(analytic) {
     source=Selection(profile==23 || profile==25 || profile==26?"ellipse":"rectangle",{{3,3},{13,11}});
     if(profile==24 || profile==25)source.points={{3.2,4.7},{13.4,13.0}};
@@ -834,6 +834,13 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(profile==57)source.points={{3,3},{4,3},{5,3}};
     if(profile==58)source.points={{3,3},{13,3},{9,11}};
   }
+  if(ellipseProfile) {
+    source=Selection(profile==60?"ellipse":profile==61 || profile==64 || profile==65 || profile==66?"polygon":"rectangle",{{3,3},{13,11}});
+    if(profile==61)source.points={{3,3},{13,3},{9,11}};
+    if(profile==64)source.points={{60,60},{70,60},{65,68}};
+    if(profile==65)source.points={{3,3},{4,3},{5,3}};
+    if(profile==66)source.points={{3,3},{13,3},{13,13},{3,13}};
+  }
   SpatialCalibration spatial;spatial.spacing=(descriptorProfile && profile!=40) || (feretProfile && profile!=45 && profile!=47 && profile!=48)?std::array<double,3>{1,1,1}:std::array<double,3>{2,.5,1};spatial.unit="um";
   if(rectangleProfile) {
     spatial.spacing=profile==53 || profile==54 || profile==57?std::array<double,3>{1,1,1}:std::array<double,3>{2,.5,1};
@@ -841,6 +848,8 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(profile==55){spatial.origin={0,19.5,0};spatial.direction[4]=-1;}
     if(profile==58){spatial.origin={-14.5,-1.75,0};spatial.direction[4]=-1;}
   }
+  if(profile==67){source=Selection("line",{{3,3},{13,11}});spatial.spacing={1,1,1};}
+  if(ellipseProfile)spatial.spacing=profile==62?std::array<double,3>{2,.5,1}:std::array<double,3>{1,1,1};
   if(centroidProfile || massProfile)spatial.origin={-6.5,.75,0};
   if(profile==31){spatial.origin[1]=-.75;spatial.direction={1,0,0,0,-1,0,0,0,1};}
   DatasetReadObserver reads;
@@ -849,10 +858,12 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
   for(int y=0;y<height;++y)for(int x=0;x<width;++x)pixels.at(x,y)=!massProfile?x+2*y:profile==32?x+2*y+1:profile==35?2*(x%2)-1:profile==36?x%2:0;
   DocumentData data{Dataset::from_planes({1,1,1,height,width,1},{pixels},spatial).observe_reads(reads)};if(!wholeImage)data.selection=source;
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);
-  if(profile==43 || profile==49 || profile==54)w.document()->setView({{"zoom",1.}});
-  Json configuredColumns=rectangleProfile?Json::array({"ROI","Area","BX","BY","Width","Height","Unit"}):feretProfile?Json::array({"ROI","Area","Feret","MinFeret","FeretAngle","FeretX","FeretY","Feret unit","Feret coordinate unit","Unit"}):descriptorProfile?Json::array({"ROI","Area","Circ.","AR","Round","Solidity","Unit"}):massProfile?Json::array({"ROI","Area","X","Y","XM","YM","Unit"}):analytic || centroidProfile?Json::array({"ROI","Area","Length","Perim.","Perim. unit","X","Y","Unit"}):Json::array({"ROI","Area","Length","Perim.","Unit"});
+  if(profile==43 || profile==49 || profile==54 || profile==66)w.document()->setView({{"zoom",1.}});
+  Json configuredColumns=ellipseProfile?Json::array({"ROI","Area","Major","Minor","Angle","X","Y","Unit"}):rectangleProfile?Json::array({"ROI","Area","BX","BY","Width","Height","Unit"}):feretProfile?Json::array({"ROI","Area","Feret","MinFeret","FeretAngle","FeretX","FeretY","Feret unit","Feret coordinate unit","Unit"}):descriptorProfile?Json::array({"ROI","Area","Circ.","AR","Round","Solidity","Unit"}):massProfile?Json::array({"ROI","Area","X","Y","XM","YM","Unit"}):analytic || centroidProfile?Json::array({"ROI","Area","Length","Perim.","Perim. unit","X","Y","Unit"}):Json::array({"ROI","Area","Length","Perim.","Unit"});
   if(profile==44)for(const auto* column:{"Circ.","AR","Round","Solidity"})configuredColumns.push_back(column);
   if(profile==51)for(const auto* column:{"Circ.","AR","Round","Solidity","Feret","MinFeret","FeretAngle","FeretX","FeretY"})configuredColumns.push_back(column);
+  if(profile==59)for(const auto* column:{"Circ.","AR","Round","Solidity","Feret","BX","BY","Width","Height"})configuredColumns.push_back(column);
+  if(profile==61 || profile==67)configuredColumns=Json::array({"Angle","X","Y"});
   w.updateSettings({{"measurements",configuredColumns},{"measurement_precision",6}},false);
   Json last,events=Json::array(),controls=Json::array(),report;std::atomic<bool> entered{false},release{false};
   HeadlessInputSession session(w);bool expectedError=false;
@@ -862,7 +873,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     auto click=[&](const Json& item,const std::string& name){const auto control=item;require(control.at("enabled").get<bool>(),"Subtype measurement control disabled");controls.push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame(Json::array({{{"type","position"},{"space","screen"},{"point",{1,1}}}}));};
     auto acknowledge=[&](){expectedError=true;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();};
     for(int i=0;i<3;++i)frame();
-    if((profile>=7 && profile<=21) || profile==43 || profile==49 || profile==54) {
+    if((profile>=7 && profile<=21) || profile==43 || profile==49 || profile==54 || profile==66) {
       for(const auto& key:{"menu.Edit","menu.Edit.Selection","menu.action.show_fit_spline"})click(last.at("host_controls").at(key),key);
       click(last.at("dialog").at("controls").at("apply"),"fit.apply");w.wait();frame();
       source=*owner->snapshot().data().selection;
@@ -890,7 +901,8 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     const double descriptorLengths[]={36.,28.36166778425462,32.48528137423857,48.,160.,12.566370614359172,37.65685424949238};
     const double feretLengths[]={36,42.011208518698687,40,160,17.155005932418995,37.656854249492383,0};
     const double rectangleLengths[]={48,46.295306614080765,22,37.656854249492383,160,17.155005932418995,0,41.593382550672679};
-    const double length=rectangleProfile?rectangleLengths[profile-51]:feretProfile?feretLengths[profile-44]:descriptorProfile?descriptorLengths[profile-37]:analytic?analyticLengths[profile-22]:wholeImage?2.*(width+height):profile==30?20.:profile==31?48.:imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
+    const double ellipseLengths[]={36,28.36166778425462,28.94427190999916,48,160,28.867962264113206,0,37.65685424949238};
+    const double length=profile==67?12.806248474865697:ellipseProfile?ellipseLengths[profile-59]:rectangleProfile?rectangleLengths[profile-51]:feretProfile?feretLengths[profile-44]:descriptorProfile?descriptorLengths[profile-37]:analytic?analyticLengths[profile-22]:wholeImage?2.*(width+height):profile==30?20.:profile==31?48.:imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
     const auto& value=rows[0].at("Perim.");
     require(std::isnan(length)?value==Json("nan"):(value.is_number() && std::abs(value.get<double>()-length)<1e-11),"Subtype Measure perimeter differs from constructor metric");
     if(analytic || centroidProfile)require(rows[0].at("Perim. unit")==Json(wholeImage?"pixel":"um"),"Analytic perimeter unit lost");
@@ -925,13 +937,23 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
       const char* names[]={"Circ.","AR","Round","Solidity"};
       for(int i=0;i<4;++i){const auto& value=rows[0].at(names[i]);const auto e=expected[profile-37][i];require(std::isfinite(e)?value.is_number() && std::abs(value.get<double>()-e)<1e-10:value==Json(std::isnan(e)?"nan":"inf"),"Shape descriptor differs from original option");}
     }
+    if(ellipseProfile) {
+      const double nan=std::numeric_limits<double>::quiet_NaN();
+      const double expected[][3]={{11.283791670353622,9.027033336282898,0},{10.299606058404963,7.91169394256132,0},{7.855171788226362,6.483573263889882,160.61047496058015},{0,0,0},{45.13516668141449,45.13516668141449,0},{0,0,0},{nan,nan,0},{13.727325035155397,13.727325035155397,0}};
+      const char* names[]={"Major","Minor","Angle"};
+      for(int i=0;i<3;++i){const auto& value=rows[0].at(names[i]);const auto v=expected[profile-59][i];require(std::isnan(v)?value==Json("nan"):value.is_number() && std::abs(value.get<double>()-v)<1e-10,"Ellipse differs from original fitted statistics");}
+      if(profile==64)require(rows[0].at("X")==0 && rows[0].at("Y")==0,"Outside fitted center lost processor reset");
+      if(profile==65)require(rows[0].at("X")==3.5 && rows[0].at("Y")==3.5,"Empty fitted center lost local origin");
+      if(profile==59)require(rows[0].contains("Circ.") && rows[0].contains("Feret") && rows[0].contains("BX"),"Ellipse composition lost existing options");
+    }
+    if(profile==67)require(!rows[0].contains("Major") && std::abs(rows[0].at("Angle").get<double>()+38.659808254090095)<1e-10,"Angle-only line request lost existing line orientation");
     if(source.kind=="polyline")require(rows[0].at("Length").get<double>()==length,"Freeline Length lost smoothing");
     if(profile==5 || profile==6)require(rows[0].at("Area")==0,"Native retained degenerate geometry measured the whole image");
     const auto columns=last.at("results_columns");
     require(columns==configuredColumns,"Configured perimeter column not consumed");
     require(owner->snapshot().shares_data(original) && owner->undo_steps()==beforeUndo,"Read-only subtype Measure changed source/history");
     const auto measuredReads=reads.counts().plane_reads-beforeReads;require(measuredReads==1,"Subtype Measure repeated provider acquisition");
-    if(profile==0)for(const auto& refusalColumns:std::array<Json,3>{Json::array({"Circ.","AR","Round","Solidity"}),Json::array({"Feret","MinFeret","FeretAngle","FeretX","FeretY"}),Json::array({"BX","BY","Width","Height"})}) {
+    if(profile==0)for(const auto& refusalColumns:std::array<Json,4>{Json::array({"Major","Minor","Angle"}),Json::array({"Circ.","AR","Round","Solidity"}),Json::array({"Feret","MinFeret","FeretAngle","FeretX","FeretY"}),Json::array({"BX","BY","Width","Height"})}) {
       const auto beforeRefusal=reads.counts().plane_reads;
       w.updateSettings({{"measurements",refusalColumns}},false);frame();expectedError=true;
       for(const auto& key:{"menu.Analyze","menu.action.measure"})click(last.at("host_controls").at(key),key);
@@ -939,7 +961,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
       acknowledge();w.updateSettings({{"measurements",configuredColumns}},false);frame();
     }
     w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});
-    std::ifstream csv(dir/"measure.csv");std::string heading;std::getline(csv,heading);require(heading.find(rectangleProfile?"BX":feretProfile?"Feret":descriptorProfile?"Circ.":massProfile?"XM":"Perim.")!=std::string::npos && (!massProfile || heading.find("YM")!=std::string::npos),"CSV omitted configured measurement");csv.close();
+    std::ifstream csv(dir/"measure.csv");std::string heading;std::getline(csv,heading);require(heading.find(profile==67?"Angle":ellipseProfile?(profile==61?"Angle":"Major"):rectangleProfile?"BX":feretProfile?"Feret":descriptorProfile?"Circ.":massProfile?"XM":"Perim.")!=std::string::npos && (!massProfile || heading.find("YM")!=std::string::npos),"CSV omitted configured measurement");csv.close();
     auto gate=[&](const JobContext& c){entered=true;while(!release.load()){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}};
     auto start=[&](){entered=false;release=false;session.fixtureWorkerGate(gate);w.action("measure");const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered.load() && std::chrono::steady_clock::now()<deadline)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered.load(),"Subtype worker gate did not enter");};
     const auto reserved=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
@@ -947,8 +969,8 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     start();w.cancel();release=true;w.wait();
     require(w.results==rows && !w.busy() && session.fixtureApplication().job_scheduler()->usage().reserved_bytes==reserved && w.renderMemoryInfo().at("working_bytes")==working,"Cancelled subtype Measure changed results or retained reservations");
     if(!w.error().empty())acknowledge();
-    if(profile==1 || profile==9 || profile==15 || profile==22 || profile==37 || profile==44 || profile==51) {
-      start();owner->select(profile==22 || profile==37 || profile==44 || profile==51?Selection("rectangle",{{0,0},{2,2}}):profile==1?with_selection_polygon_coordinates(source,false):remove_spline_fit(source,40,40));release=true;w.wait();
+    if(profile==1 || profile==9 || profile==15 || profile==22 || profile==37 || profile==44 || profile==51 || profile==59) {
+      start();owner->select(profile==22 || profile==37 || profile==44 || profile==51 || profile==59?Selection("rectangle",{{0,0},{2,2}}):profile==1?with_selection_polygon_coordinates(source,false):remove_spline_fit(source,40,40));release=true;w.wait();
       require(!w.error().empty() && w.results==rows,"Changed constructor profile was not rejected as stale");
       acknowledge();owner->select(source);frame();
     }
@@ -957,7 +979,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"measured.ijx").u8string());
     require(reopened.nativeSnapshot().data().selection==original.data().selection && reopened.results==rows,"Workspace lost constructor state or perimeter result");
     require(reopened.nativeSnapshot().data().dataset.plane({})->pixels==pixels.pixels,"Subtype Measure changed stored pixels");
-    report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",wholeImage?Json(nullptr):selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1 || profile==22 || profile==37 || profile==44 || profile==51},{"descriptor_refusal_checked",profile==0},{"feret_refusal_checked",profile==0},{"rectangle_refusal_checked",profile==0},{"fitted",source.attributes.count(spline_fit_attribute)!=0},{"lifecycle",profile>=15 && profile<=21},{"stale_fit_checked",profile==9 || profile==15},{"fit_undo_steps",beforeUndo},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
+    report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",wholeImage?Json(nullptr):selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1 || profile==22 || profile==37 || profile==44 || profile==51 || profile==59},{"descriptor_refusal_checked",profile==0},{"feret_refusal_checked",profile==0},{"rectangle_refusal_checked",profile==0},{"ellipse_refusal_checked",profile==0},{"fitted",source.attributes.count(spline_fit_attribute)!=0},{"lifecycle",profile>=15 && profile<=21},{"stale_fit_checked",profile==9 || profile==15},{"fit_undo_steps",beforeUndo},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& e){release=true;w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",e.what()},{"rendered",last},{"error",w.error()},{"events",events},{"controls",controls}});throw;}
 }

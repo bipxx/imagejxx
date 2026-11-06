@@ -4297,6 +4297,17 @@ struct Window::Impl {
     options.shape_descriptors=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Circ." || column=="AR" || column=="Round" || column=="Solidity";});
     options.feret=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Feret" || column=="MinFeret" || column=="FeretAngle" || column=="FeretX" || column=="FeretY" || column=="Feret unit" || column=="Feret coordinate unit";});
     options.bounding_rectangle=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="BX" || column=="BY" || column=="Width" || column=="Height";});
+    options.ellipse=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Major" || column=="Minor";});
+    if(!options.ellipse && std::find(columns.begin(),columns.end(),"Angle")!=columns.end()) {
+      const auto ordinary=[](const Selection* s){return !s || s->kind=="rectangle" || s->kind=="ellipse" || s->kind=="polygon" || s->kind=="freehand";};
+      const auto& data=target.source().data();
+      bool area=true;
+      if(manager) {
+        if(indices.empty())for(const auto& roi:data.rois)area=area && ordinary(&roi.selection);
+        else for(const auto index:indices)area=area && ordinary(&data.rois.at(index).selection);
+      }else area=ordinary(target.roi_policy()==RoiPolicy::ActiveSelection && data.selection?&*data.selection:nullptr);
+      options.ellipse=area;
+    }
     const auto command=resolve_target_analysis(target,options,limits);
     const auto rows=captured_measurement_row_bytes(command);
     const auto workspace=RenderMemory::add(command.estimate().working_bytes,rows);

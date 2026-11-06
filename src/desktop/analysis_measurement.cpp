@@ -108,6 +108,10 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
     }
     if(row.length)values["Length"]=scalar(*row.length);
     if(row.angle_degrees)values["Angle"]=scalar(*row.angle_degrees);
+    if(row.ellipse_major) {
+      values["Major"]=scalar(*row.ellipse_major);values["Minor"]=scalar(*row.ellipse_minor);
+      values["Angle"]=scalar(*row.ellipse_angle_degrees);
+    }
     if(row.point_index) {
       if(!row.point_world)throw std::invalid_argument("Point measurement requires captured coordinates");
       values["Point index"]=*row.point_index;
