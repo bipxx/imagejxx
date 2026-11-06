@@ -70,6 +70,25 @@ int main() {
     check(warnings.empty() && migrated.text("foreground") == "#ff0000" &&
               migrated.text("background") == "#0033aa",
           "Legacy named and short colors preserve their original meaning");
+    check(settings.number("selection_interpolation_interval") == 1. &&
+              !settings.boolean("selection_interpolation_smooth") &&
+              !settings.boolean("selection_interpolation_adjust_to_match"),
+          "Interpolation defaults");
+    for (double interval : {-2., -.01, .01, 2.}) {
+      settings.set("selection_interpolation_interval", interval);
+      check(settings.number("selection_interpolation_interval") == interval,
+            "Signed interpolation interval retained");
+    }
+    settings.set("selection_interpolation_interval", std::int64_t(-3));
+    check(settings.number("selection_interpolation_interval") == -3., "Number normalization");
+    for (double interval : {0., -.009, .009, std::numeric_limits<double>::infinity(),
+                            std::numeric_limits<double>::quiet_NaN()})
+      rejects([&] { settings.set("selection_interpolation_interval", interval); });
+    rejects([&] { settings.set("selection_interpolation_interval", true); });
+    rejects([&] { settings.set("selection_interpolation_smooth", std::int64_t(1)); });
+    rejects([&] { settings.set("selection_interpolation_adjust_to_match", std::int64_t(0)); });
+    settings.reset("Selection");
+    check(settings.number("selection_interpolation_interval") == 1., "Selection reset");
     Image image = fill(Image(3, 3), 20);
     image.at(0, 0) = image.at(1, 1) = 10;
     image.at(2, 2) = 11;

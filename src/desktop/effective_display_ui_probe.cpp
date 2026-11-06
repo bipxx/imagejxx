@@ -710,27 +710,47 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
     auto key=[&](const char* name){for(bool down:{true,false}){frame(Json::array({{{"type","key"},{"name",name},{"down",down}}}));frame();}};
     auto menu=[&](){for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection","menu.action.show_interpolate_selection"})click(last.at("host_controls").at(name),name);};
     for(int i=0;i<3;++i)frame();const auto original=owner->snapshot();
-    menu();click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
+    const auto preferencesBefore=w.preferencesJson();
+    menu();click(last.at("dialog").at("controls").at("smooth"),"dialog.smooth.cancel");
+    click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
+    require(w.preferencesJson()==preferencesBefore,"Interpolate Cancel wrote preferences");
     require(owner->snapshot().shares_data(original) && owner->undo_steps()==0 && w.workflow.empty(),"Interpolate cancel changed state");
     menu();owner->select(Selection("point",{{1,1}}));expectedError=true;
     click(last.at("dialog").at("controls").at("apply"),"dialog.apply.stale");require(!w.error().empty() && w.workflow.empty() && owner->undo_steps()==0,"Stale Interpolate published output");
+    require(w.preferencesJson()==preferencesBefore,"Stale Interpolate wrote preferences");
     frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");owner->select(controls);frame();
+    for(const char* invalid:{"0","true","\"2.7\""}) {
+      menu();click(last.at("dialog").at("controls").at("interval"),"dialog.interval.invalid");
+      frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",true}}}));key("A");
+      frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",false}}}));
+      frame(Json::array({{{"type","text"},{"value",invalid}}}));key("Tab");expectedError=true;
+      click(last.at("dialog").at("controls").at("apply"),"dialog.apply.invalid");
+      require(!w.error().empty() && w.preferencesJson()==preferencesBefore && !w.busy(),"Invalid Interpolate draft persisted or launched");
+      frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok.invalid");expectedError=false;frame();
+      click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel.invalid");
+    }
     menu();
     if(configured) {
       click(last.at("dialog").at("controls").at("interval"),"dialog.interval");
       frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",true}}}));key("A");
       frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",false}}}));
-      frame(Json::array({{{"type","text"},{"value","2.7"}}}));key("Tab");
+      frame(Json::array({{{"type","text"},{"value",opened?"-2.7":"2.7"}}}));key("Tab");
       click(last.at("dialog").at("controls").at("smooth"),"dialog.smooth");
       click(last.at("dialog").at("controls").at("adjust_to_match"),"dialog.adjust_to_match");
-      require(std::abs(std::stod(last.at("dialog").at("text").at("interval").get<std::string>())-2.7)<1e-6 && last.at("dialog").at("values").at("smooth").get<bool>() && last.at("dialog").at("values").at("adjust_to_match").get<bool>(),"Physical interpolation options not consumed");
+      require(std::abs(std::stod(last.at("dialog").at("text").at("interval").get<std::string>())-(opened?-2.7:2.7))<1e-6 && last.at("dialog").at("values").at("smooth").get<bool>() && last.at("dialog").at("values").at("adjust_to_match").get<bool>(),"Physical interpolation options not consumed");
     }
     click(last.at("dialog").at("controls").at("apply"),"dialog.apply");w.wait();frame();
     const auto result=*owner->snapshot().data().selection;
-    const std::size_t count=configured?(opened?12:8):(opened?31:41);
-    const std::array<double,2> expected=configured?(opened?std::array<double,2>{10.7147855758667,3}:std::array<double,2>{10.913954734802246,8.827909469604492}):std::array<double,2>{6,3};
+    const std::size_t count=configured?(opened?11:8):(opened?31:41);
+    const std::array<double,2> expected=configured?(opened?std::array<double,2>{11.100000381469727,3}:std::array<double,2>{10.913954734802246,8.827909469604492}):std::array<double,2>{6,3};
     require(result.points.size()==count && owner->undo_steps()==1 && w.workflow.size()==1,"Interpolation output/history missing");
     for(int a=0;a<2;++a)require(std::abs(result.points[3][a]-expected[a])<1e-5,"Interpolate differs from pinned sample3");
+    const auto accepted=w.preferencesJson();
+    menu();require(last.at("dialog").at("values").at("interval").get<double>()==(configured?(opened?-2.7:2.7):1.) &&
+        last.at("dialog").at("values").at("smooth").get<bool>()==configured &&
+        last.at("dialog").at("values").at("adjust_to_match").get<bool>()==configured,"Reopened Interpolate lost accepted options");
+    click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel.accepted");
+    require(w.preferencesJson()==accepted,"Cancel after Apply changed remembered options");
     const auto record=w.workflow.front();w.action("undo");require(owner->snapshot().data().selection==std::optional<Selection>(controls),"Interpolation Undo lost source");
     w.action("redo");require(owner->snapshot().data().selection==std::optional<Selection>(result),"Interpolation Redo lost samples");
     w.action("edit_selection");frame();const auto canvas=last.at("ordinary_canvas");
@@ -774,10 +794,13 @@ Json interpolationRepeatUiCase(Window& w,const std::string& context,const std::s
     click(last.at("dialog").at("controls").at("apply"),"dialog.apply.stale_zoom");require(!w.error().empty() && w.workflow.empty() && owner->undo_steps()==0,"Zoom-stale dialog published");
     frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
     w.document()->setView({{"zoom",zoom}});frame();
-    auto apply=[&](){menu();click(last.at("dialog").at("controls").at("smooth"),"dialog.smooth");click(last.at("dialog").at("controls").at("apply"),"dialog.apply");w.wait();frame();};
+    auto apply=[&](){menu();if(!last.at("dialog").at("values").at("smooth").get<bool>())click(last.at("dialog").at("controls").at("smooth"),"dialog.smooth");click(last.at("dialog").at("controls").at("apply"),"dialog.apply");w.wait();frame();};
     apply();const auto first=*owner->snapshot().data().selection;require(first.points.size()==(opened?43u:32u),"First repeat sample count differs from pinned command");
     w.action("move_selection",{{"dx",1.},{"dy",2.}});frame();const auto moved=*owner->snapshot().data().selection;
     require(selection_polygon_type(moved)==selection_polygon_type(first) && owner->undo_steps()==1,"Transient move lost subtype/history");
+    require(w.settings().boolean("selection_interpolation_smooth"),"Accepted Smooth was not remembered");
+    menu();require(last.at("dialog").at("values").at("smooth").get<bool>(),"Reopened dialog did not consume remembered Smooth");
+    click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel.remembered");
     apply();const auto second=*owner->snapshot().data().selection;
     const std::size_t count=opened?(highZoom?42:41):(highZoom?32:30);
     const auto type=selection_polygon_type(second);
@@ -819,6 +842,7 @@ Json interpolationPointNoopUiCase(Window& w,const std::string& context,const std
     }
     w.action("interpolate_selection",{{"interval",0},{"smooth",true},{"adjust_to_match",true}});
     const auto usage=session.fixtureApplication().job_scheduler()->usage();
+    require(w.settings().number("selection_interpolation_interval")==1. && !w.settings().boolean("selection_interpolation_smooth") && !w.settings().boolean("selection_interpolation_adjust_to_match"),"Point no-op wrote interpolation settings");
     require(owner->snapshot().shares_data(original) && owner->undo_steps()==0 && w.workflow.empty(),"Point no-op changed document/history/recording");
     require(reads.counts().plane_reads==initialReads && usage.reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Point no-op read samples/retained worker storage");
     Json report={{"state","observed"},{"context",context},{"multiple",multiple},{"selection",selectionJson(points)},{"same_data",true},{"undo_steps",owner->undo_steps()},{"record_count",w.workflow.size()},{"additional_plane_reads",reads.counts().plane_reads-initialReads},{"events",events},{"controls",controls}};

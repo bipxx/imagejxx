@@ -84,7 +84,7 @@ def test_physical_workflow_in_python_host(tmp_path, opened, configured):
     report = json.loads(editor._interpolation_ui_case(str(directory), opened, configured))
     assert report == json.loads((directory / "case.json").read_bytes())
     kind = "polyline" if opened else "freehand"
-    case = next(c for c in REFERENCE["cases"] if c["id"] == f"shape0-{kind}-{'2.7-true-true' if configured else '1.0-false-false'}-false")
+    case = next(c for c in REFERENCE["cases"] if c["id"] == f"shape0-{kind}-{('2.7-true-false' if opened else '2.7-true-true') if configured else '1.0-false-false'}-false")
     np.testing.assert_allclose(report["samples"], case["samples"], atol=1e-5, rtol=1e-7)
     assert report["context"] == "imgui_python" and report["state"] == "observed"
     assert report["record"]["version"] == 4

@@ -36,6 +36,8 @@ SettingValue validate(const SettingDefinition &d, SettingValue value) {
     auto number = std::get<double>(value);
     if (!std::isfinite(number) || number < d.minimum || number > d.maximum)
       invalid("value must be finite and within the supported range");
+    if (d.name == "selection_interpolation_interval" && std::abs(number) < .01)
+      invalid("interval magnitude must be at least 0.01 pixels");
   } else if (d.kind == SettingKind::Text) {
     if (!std::holds_alternative<std::string>(value))
       invalid("expected text");
@@ -183,6 +185,16 @@ const std::vector<SettingDefinition> &Settings::schema() {
       {"selection_enlargement_units", "Selection", "Enlargement default units",
        "Calibrated distances use the X spacing, including when X and Y spacing differ.",
        SettingKind::Choice, std::string("calibrated"), 0, 0, {"pixels", "calibrated"}},
+      {"selection_interpolation_interval", "Selection", "Interpolate interval (pixels)",
+       "Last accepted signed interval; magnitude must be at least 0.01 pixels.",
+       SettingKind::Number, 1., -std::numeric_limits<double>::max(),
+       std::numeric_limits<double>::max()},
+      {"selection_interpolation_smooth", "Selection", "Interpolate smoothing",
+       "Last accepted smoothing option for freehand contours.",
+       SettingKind::Boolean, false},
+      {"selection_interpolation_adjust_to_match", "Selection", "Interpolate adjustment",
+       "Last accepted option to adjust the interval to match the contour.",
+       SettingKind::Boolean, false},
       {"wand_tolerance", "Selection", "Wand tolerance",
        "Maximum intensity difference from the seed pixel.", SettingKind::Number,
        0., 0, std::numeric_limits<double>::max()},

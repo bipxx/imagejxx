@@ -18,7 +18,9 @@ for changed compiler inputs or a demonstrated verification dependency.
 Native snapshot capture and queued ownership are scoped integrated in both
 Windows hosts; Python controls and changed installed clients on Windows/Linux pass.
 Repeated interpolation, subtype/zoom and degenerate geometry now have scoped
-API/both-host evidence. Next: T15 remembered Interpolate options.
+API/both-host evidence. Remembered Interpolate options now have scoped native
+settings and both-Windows-host integration. Next: T04a.2 M3/T06 scientific
+subtype-sensitive lengths/perimeters.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -137,7 +139,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T06/G018: compound/curved interpolation profiles. |96 observations (84 preserved plus12 direct single-shape cases);2060 distinct affected Windows Python IDs ultimately pass. Windows/Linux core,installed Windows SDK,16 physical workflows and80 shared lifecycle scenarios pass. Holes/components,mask boundaries and actual Measure/workspace pass. [Receipt](parity/reviews/interpolation-compound-20261105.json). Native even-odd composition deliberately preserves topology where upstream subtraction loses it. |
 | Delivered scoped workflow | T06/G018: point interpolation no-op. | Core/API and actual menus in both Windows hosts preserve annotated point/multipoint state without dialog,job,history,recording or extra pixel reads.344 affected Python cases (14new),4physical point cases,Windows/Linux core andWindows installed SDK pass. [Receipt](parity/reviews/interpolation-point-noop-20261105.json).120two-command reference rows inform remaining source/type/zoom work;only4point rows are claimed equivalent here. |
 | Delivered scoped workflow | T06/G018: repeated-source/type, zoom and degenerate interpolation. |115 comparable actual two-command rows across129observations,including149/150/151sample boundaries;14rows retain explicit native compound/empty policies.1923distinct affected Python IDs ultimately pass;8physical repeat/edit/zoom cases,Windows/Linux native/session andWindows SDK pass. Typed state persists through edits,V5 andV4 rebind/ROI interchange. [Receipt](parity/reviews/interpolation-types-20261105.json). Scientific subtype lengths/perimeters andother parent residuals remain open. |
-| Active next | T15: remembered Interpolate options. | NativeSettings owns signed Interval/Smooth/Adjust defaults;both dialogs consume/persist accepted values,Cancel/stale/invalid remain unchanged,point no-op stays early. Reuse current window/preferences/registry andresult records. |
+| Delivered scoped workflow | T15: remembered Interpolate options. | Three native Settings keys drive both dialogs and omitted action values. Accepted options save before capture/launch; Cancel/stale/invalid/point no-op preserve preferences.613 distinct Python IDs pass; Windows/Linux native settings/preferences and both Windows UI hosts pass. [Receipt](parity/reviews/interpolation-settings-20261105.json). |
+| Active next | T04a.2 M3/T06: scientific subtype-sensitive lengths/perimeters. | Adopt pinned FREELINE/TRACED length semantics in current-plane Measure through existing geometry/analysis owners; qualify calibrated/native and both-host consumers. Other scientific variants keep their owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -848,47 +851,64 @@ retained as identities only. Known measured growth22,214,918B stayed below128MiB
 T02 retains conservative fitted-state extraction/copy work;no observed cap failure
 or measured bottleneck justifies another optimization-only rebuild.
 
-**Active next: T15 remembered Interpolate options.** Complete these defaults
-using the existing native registry/preferences/Window;do not add another settings
-owner,Python defaults table,dialog controller orrecord format.
+**T15 Interpolate settings: scoped delivered.** The native Selection registry
+owns selection_interpolation_interval (finite signed Number, abs >=0.01,
+default1), selection_interpolation_smooth and
+selection_interpolation_adjust_to_match (strict Boolean, defaultfalse).
+Python Preferences inherits the registry; there is no extra defaults owner.
+Dialog and omitted Window action options consume current settings. Explicit
+values override them; validated accepted values persist through updateSettings
+before capture/launch and remain last-used after later refusal/cancellation.
+Cancel, stale review, invalid drafts and point no-op do not write. Core options
+remain1/false/false, magnification stays actual frozen canvas context and old
+resolved-result records remain independent of these defaults.
 
-| Setting key | Type/default | Consumed contract and easiest path |
-| --- | --- | --- |
-| selection_interpolation_interval | Number /1.0 | NativeSettings finite signed double,abs>=0.01;retain the sign used by Adjust. Reuse Number integer normalization andadd the one key-specific magnitude check. |
-| selection_interpolation_smooth | Boolean /false | Strict bool;default the existing checkbox from current Settings. |
-| selection_interpolation_adjust_to_match | Boolean /false | Strict bool;default the existing checkbox independently of interval sign. |
+[Evidence](parity/reviews/interpolation-settings-20261105.json):613 distinct
+installed Python IDs pass, including35 new settings cases; Windows/Linux native
+settings/preferences, both Windows physical hosts and80 fit/interpolation
+lifecycle cases pass. Eight final ordinary/repeat host report pairs match.
+Signed Interval+Adjust, invalid number/bool/string drafts, reopening, preference
+reload/reset/migration/unknown extras, save failure before launch and retained
+accepted options after cancellation are covered. Eight unrelated paired-history
+capture readers remain unavailable/skipped and one optional OpenGL check skipped;
+these do not qualify those routes or close T15 overall.
 
-1. Add definitions in src/native/settings.cpp's Selection group. Native
-   PreferencesDocument/PreferencesState save/load/migration owns persistence.
-   Python ui/persistence.py already derives defaults from Settings().to_dict();
-   verify that inheritance rather than copying keys. Preserve unknown extras.
-2. The modeless dialog andmissing Window action values consume current settings;
-   explicit values override them. Validate idle source,zoom andall options before
-   accepting Apply. Persist accepted values through Window.updateSettings before
-   capture/job launch,so a save failure cannot leave a running job behind.
-   Accepted valid values remain last-used if later processing refuses/cancels;
-   Cancel,stale dialog,invalid values andpoint no-op do not write preferences.
-   Core API defaults remain1/false/false;canvas magnification is never remembered.
-3. Inspect actual pending text/checkbox values andexisting preference save failure
-   behavior before editing. Repeat probes currently click Smooth unconditionally:
-   set an explicit desired value from observed state before compiling,otherwise
-   the second remembered dialog toggles it off. Keep captured option copies and
-   resolved NativePathV4 result/rebind records;old records do not read new defaults.
-4. Verify both physical hosts Apply/reopen,Cancel/stale/invalid/non-number/bool,
-   signed interval plus Adjust,preference reload/reset/migration/unknown extras,
-   save failure before launch,point no-op andworker cancellation. Use existing
-   settings/native/Python checks andchanged installed consumers;keep required
-   references live,retire scratch andreview actual waste before the successor.
+Waste/cleanup: the first Python attempt omitted the history origin envelope;
+four precondition failures were corrected with current installed pins and only
+those four headless IDs reran. No unchanged campaign restarted. Final review
+found missing signed/invalid physical cases and unchanged-value cancellation
+assertions: one focused desktop rebuild added meaningful existing cases; core
+and Linux results were reused. At the next boundary enumerate every finite
+acceptance route and environment-selected producer input before compilation.
+Seven small evidence groups, including the failed attempt, were live-hash
+archived; Windows scratch and host-local Linux preferences products are retired.
+Known storage7,396,916,972 -> measured checkpoint7,403,435,735 ->
+7,401,113,226 B after retirement before prose;6,518,763 B measured growth stayed
+under128MiB.214 unknown subtrees keep the complete budget unverified.
 
-Next ready scientific residual: T04a.2 M3/T06 adoption of FREELINE/TRACED
-length/perimeter semantics in current-plane Measure. Pinned PolygonRoi.getLength
-uses smoothed/traced branches;new state is currently qualified for interpolation,
-editing andinterchange,not all Analyzer results. At entry inspect the maintained
-analysis/geometry owners,freeze actual API/options andobserve those branches;
-reuse captured read-only jobs instead of a parallel measurement engine.
-Saved-row/scientific variants,constructor profiles,T09 operation-intent macros
-andT14 Linux installed-client/remaining platform releases stay open. T00 owns
-retired G016/17gesture references;none was recreated,repinned orcounted passed.
+**Active next: T04a.2 M3/T06 current-plane subtype lengths/perimeters.**
+
+1. Inspect maintained analysis/geometry owners and actual Measure route; freeze
+   signatures, consumed measurement/calibration options and unresolved IDs in
+   the task record. Reuse selection_polygon_type, captured read-only jobs and
+   existing result publication; do not add a measurement engine or type owner.
+2. Observe pinned PolygonRoi.getLength FREELINE/TRACED branches over a finite
+   matrix: ordinary versus typed contours, open endpoints/closed seams, short
+   and degenerate geometry, unit and anisotropic calibrated spacing. Preserve
+   historical fixtures; add observations through existing reference tools.
+3. Batch native length/perimeter and affected analysis/binding/UI changes only
+   after that matrix exposes actual dependencies. Keep current area membership,
+   numerical/data/history contracts, admission and cancellation guarantees.
+4. Verify affected C++/Python APIs and actual both-host current-plane Measure
+   output; select installed-client/lifecycle checks from changed contracts.
+   Reuse unchanged interpolation/rebind evidence, retire scratch and review
+   waste before selecting the next concrete residual.
+
+Saved-row/scientific variants, constructor profiles, T09 operation-intent macros
+and T14 Linux installed-client/remaining platform releases stay open. T00 owns
+retired G016/17gesture references; none was recreated, repinned or counted passed.
+T02 retains fitted-state extraction/copy work on the next core touch or measured
+large-control consumer; no optimization-only rebuild is justified yet.
 
 ### Reduce overhead at the existing task boundaries
 

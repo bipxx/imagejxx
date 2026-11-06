@@ -7841,7 +7841,10 @@ void Window::action(const std::string &name, const Json &p) {
     const double canvasZoom=impl->panes.size()>activeIndex()?double(impl->panes[activeIndex()].zoom):1.;
     if(show) {
       const auto id=source.id();const auto revisions=source.revisions();const PlanePosition position{source.display().t,source.display().c,source.display().crosshair[2]};
-      impl->ask("Interpolate",{{"interval",1.},{"smooth",false},{"adjust_to_match",false}},
+      const auto defaults=settings();
+      impl->ask("Interpolate",{{"interval",defaults.number("selection_interpolation_interval")},
+          {"smooth",defaults.boolean("selection_interpolation_smooth")},
+          {"adjust_to_match",defaults.boolean("selection_interpolation_adjust_to_match")}},
           [this,id,revisions,position,canvasZoom](Json choice) {
             const auto current=nativeSnapshot(id);
             if(controller_->active_document_id()!=id || !current.revisions().matches(revisions,Change::Data) || current.display().orthogonal || current.display().t!=position.t || current.display().c!=position.c || current.display().crosshair[2]!=position.z || impl->panes.size()<=activeIndex() || double(impl->panes[activeIndex()].zoom)!=canvasZoom)throw RevisionConflict();
@@ -7851,11 +7854,19 @@ void Window::action(const std::string &name, const Json &p) {
             {{"name","adjust_to_match"},{"label","Adjust interval to match"},{"kind","bool"}}}),"selection_interpolation");
       return;
     }
+    const auto defaults=settings();
     SelectionInterpolationOptions options;options.magnification=canvasZoom;
+    options.interval=defaults.number("selection_interpolation_interval");
     if(p.contains("interval")){if(!p.at("interval").is_number())throw std::invalid_argument("Interval must be numeric");options.interval=p.at("interval").get<double>();}
     for(const char* field:{"smooth","adjust_to_match"})if(p.contains(field) && !p.at(field).is_boolean())throw std::invalid_argument("Interpolation switches must be Boolean");
-    options.smooth=p.value("smooth",false);options.adjust_to_match=p.value("adjust_to_match",false);
-    if(!std::isfinite(options.interval) || std::abs(options.interval)<.01)throw std::invalid_argument("Interpolation interval magnitude must be at least0.01 pixels");
+    options.smooth=p.value("smooth",defaults.boolean("selection_interpolation_smooth"));
+    options.adjust_to_match=p.value("adjust_to_match",defaults.boolean("selection_interpolation_adjust_to_match"));
+    if(!std::isfinite(canvasZoom) || canvasZoom<=0)throw std::invalid_argument("Interpolation magnification must be finite and positive");
+    // Registry validation and atomic persistence precede capture or worker launch.
+    // A later processing refusal/cancellation keeps these accepted last-used values.
+    updateSettings({{"selection_interpolation_interval",options.interval},
+        {"selection_interpolation_smooth",options.smooth},
+        {"selection_interpolation_adjust_to_match",options.adjust_to_match}});
     const auto cap=impl->selectionCreationLimits();const auto total=cap.max_working_bytes;
     const auto plan=controller_->prepare_snapshot_capture(total/8,source.id());const auto allowance=RenderMemory::mul(plan.bytes(),4);
     if(allowance>=total)throw std::length_error("Interpolation source capture exceeds processing budget");

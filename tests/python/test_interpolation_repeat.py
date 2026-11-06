@@ -260,6 +260,8 @@ def test_physical_repeat_after_edit_zoom_workspace_and_rebind(tmp_path, opened, 
     from imagejxx import _desktop
     editor = _desktop.Editor(str(tmp_path / "preferences.json")); directory = tmp_path / "repeat-ui"
     report = json.loads(editor._interpolation_repeat_ui_case(str(directory), opened, high_zoom))
+    reloaded = _desktop.Editor(str(tmp_path / "preferences.json"))
+    assert json.loads(reloaded.settings())["selection_interpolation_smooth"] is True
     assert report == json.loads((directory / "case.json").read_bytes())
     kind = "polyline" if opened else "freehand"
     case = next(c for c in REFERENCE["cases"] if c["kind"] == kind and c["magnification"] == (12 if high_zoom else 0)

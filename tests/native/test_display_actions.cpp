@@ -387,6 +387,8 @@ void circleJobs(const std::filesystem::path& root) {
     const auto label=std::string("interpolation-repeat-")+(opened?"open-":"area-")+(highZoom?"high":"low");
     Window repeated((root/(label+"-preferences.json")).u8string());
     imagejxx::desktop::interpolationRepeatUiCase(repeated,"imgui_cpp",(root/label).u8string(),opened,highZoom);
+    Window reloaded((root/(label+"-preferences.json")).u8string());
+    check(reloaded.settings().boolean("selection_interpolation_smooth"),"Native host preference reload lost Smooth");
   }
   for(bool multiple:{false,true}) {
     const auto label=std::string("interpolation-point-noop-")+(multiple?"multiple":"single");
@@ -409,7 +411,7 @@ void circleJobs(const std::filesystem::path& root) {
     if(compound)source->select(Selection::from_path({0,3,3,1,13,3,1,13,13,1,3,13,4,0,6,6,1,10,6,1,10,10,1,6,10,4}));
     if(maskProfile){Image pixels(16,16,1,PixelType::UInt8);for(int y=3;y<13;++y)for(int x=3;x<13;++x)if(!(x>=6 && x<10 && y>=6 && y<10))pixels.at(x,y)=1;source->select(Selection::from_mask(pixels));}
     Window w((dir/"preferences.json").u8string());w.addVirtualDocument(source);w.recording=true;
-    w.updateSettings({{"processing_memory_mb",32}},false);
+    w.updateSettings({{"processing_memory_mb",32},{"processing_workers",1}},false);
     if(mode==8){w.addVirtualDocument(std::make_shared<Document>(Dataset::from_stack({image})));w.setActiveIndex(0);}
     HeadlessInputSession session(w);auto scheduler=session.fixtureApplication().job_scheduler();scheduler->set_limits({1,64*1048576,64});
     const auto before=source->snapshot();const auto count=reads.counts().plane_reads;
@@ -417,10 +419,19 @@ void circleJobs(const std::filesystem::path& root) {
     if(mode==1){blocker=scheduler->submit([gate](const JobContext& c){gate->hold(c);});gate->await();}
     if(mode==2)session.fixtureWorkerGate([gate](const JobContext& c){gate->hold(c);});
     if(mode==9) {
-      scheduler->set_limits({1,65536,64});refuses([&]{w.action(fitAction);});
+      if(interpolation) {
+        // Atomic preference persistence must fail before capture or job launch.
+        std::filesystem::create_directory(dir/"preferences.json");
+        const auto preferences=w.preferencesJson();
+        bool failed=false;try{w.action(fitAction,{{"interval",-2.7},{"smooth",true},{"adjust_to_match",true}});}catch(const std::exception&){failed=true;}
+        check(failed && w.preferencesJson()==preferences,"Failed interpolation save changed settings");
+      } else {scheduler->set_limits({1,65536,64});refuses([&]{w.action(fitAction);});}
       check(!w.busy() && source->snapshot().shares_data(before) && w.workflow.empty() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Circle resource refusal retained source/output/resources");continue;
     }
-    w.action(fitAction);check(w.busy() && source->undo_steps()==0 && w.workflow.empty(),"Area circle must return before publication");
+    const bool remembered=interpolation && mode!=0;
+    w.action(fitAction,remembered?Json{{"interval",-2.7},{"smooth",true},{"adjust_to_match",true}}:Json::object());
+    if(interpolation)check(w.settings().number("selection_interpolation_interval")== (remembered?-2.7:1.),"Accepted interpolation settings missing before worker completion");
+    check(w.busy() && source->undo_steps()==0 && w.workflow.empty(),"Area circle must return before publication");
     const auto id=w.jobInfo()->id;
     if(mode==1) {
       check(w.jobInfo()->state==JobState::Queued && w.renderMemoryInfo().at("working_bytes").get<std::size_t>()>0,"Queued fit must retain capture without publication");
@@ -437,6 +448,7 @@ void circleJobs(const std::filesystem::path& root) {
       if(mode==8)w.setActiveIndex(1);
       w.wait();
     }
+    if(remembered)check(w.settings().number("selection_interpolation_interval")==-2.7 && w.settings().boolean("selection_interpolation_smooth") && w.settings().boolean("selection_interpolation_adjust_to_match"),"Terminal refused/cancelled interpolation lost accepted settings");
     check(reads.counts().plane_reads==count && !w.busy() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Terminal fit read samples or retained worker/capture storage");
     if(mode==0)check(w.error().empty() && ((compound || maskProfile)?(source->snapshot().data().selection->is_path() && source->snapshot().data().selection->mask(16,16).at(4,4)!=0 && source->snapshot().data().selection->mask(16,16).at(8,8)==0):interpolation?(source->snapshot().data().selection->kind=="freehand" && source->snapshot().data().selection->points.size()==41 && source->snapshot().data().selection->points[3]==std::array<double,2>{6,3}):spline?(removing?(source->snapshot().data().selection==std::optional<Selection>(splineControls)):(selection_spline_fit(*source->snapshot().data().selection) && selection_spline_fit(*source->snapshot().data().selection)->controls==splineControls)):rectangle?(source->snapshot().data().selection->kind=="rotated_rectangle" && source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{8,8},{8,3},{13,8}}):ellipse?(source->snapshot().data().selection->kind=="rotated_ellipse" && source->snapshot().data().selection->points[0]==std::array<double,2>{8,8}):source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{2,2},{13,13}}) && source->undo_steps()==1 && w.workflow.size()==1,"Area circle did not publish exactly once");
     else check(source->undo_steps()==0 && w.workflow.empty(),"Rejected circle published history/recording");
