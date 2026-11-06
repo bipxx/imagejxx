@@ -781,7 +781,7 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
 
 
 Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::string& directory,int profile) {
-  require(profile>=0 && profile<=43,"Unknown subtype measurement profile");
+  require(profile>=0 && profile<=50,"Unknown subtype measurement profile");
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
   require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh subtype measurement fixture required");std::filesystem::create_directories(dir);
   Selection source(profile==0 || profile==5?"polyline":profile==3?"polygon":"freehand",{{3,3},{13,3},{13,13},{3,13}});
@@ -789,7 +789,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
   if(profile==1 || profile==2)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   if(profile==1)source=with_selection_polygon_coordinates(source,true);
   if(profile==5 || profile==6){source.points={{3,3}};source=with_selection_polygon_type(source,profile==5?SelectionPolygonType::Polyline:SelectionPolygonType::Freehand);}
-  if((profile>=7 && profile<=21) || profile==43) {
+  if((profile>=7 && profile<=21) || profile==43 || profile==49) {
     const auto p=profile-7;
     source=Selection(p==0 || p==7?"polygon":p==3 || p==6?"polyline":"freehand",{{3,3},{13,3},{13,13},{3,13}});
     if(p<=3)source.points.resize(3);
@@ -805,7 +805,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(profile==20)source.points={{3,3},{13,3},{13,13},{3,13}};
     if(profile==21)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   }
-  const bool descriptorProfile=profile>=37,massProfile=profile>=32 && profile<=36,analytic=profile>=22 && profile<=27,centroidProfile=profile>=28 && profile<=31,wholeImage=profile==27 || profile==29 || profile==41 || massProfile;
+  const bool feretProfile=profile>=44,descriptorProfile=profile>=37 && profile<=43,massProfile=profile>=32 && profile<=36,analytic=profile>=22 && profile<=27,centroidProfile=profile>=28 && profile<=31,wholeImage=profile==27 || profile==29 || profile==41 || profile==47 || massProfile;
   if(analytic) {
     source=Selection(profile==23 || profile==25 || profile==26?"ellipse":"rectangle",{{3,3},{13,11}});
     if(profile==24 || profile==25)source.points={{3.2,4.7},{13.4,13.0}};
@@ -818,7 +818,14 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(profile==42)source.points={{60,60},{64,64}};
     if(profile==43)source.points={{3,3},{13,3},{13,13},{3,13}};
   }
-  SpatialCalibration spatial;spatial.spacing=descriptorProfile && profile!=40?std::array<double,3>{1,1,1}:std::array<double,3>{2,.5,1};spatial.unit="um";
+  if(feretProfile) {
+    source=Selection(profile==45 || profile==48?"ellipse":profile==49 || profile==50?"polygon":"rectangle",{{3,3},{13,11}});
+    if(profile==46)source.points={{3.2,4.7},{13.4,13.0}};
+    if(profile==48)source.points={{60,60},{64,64}};
+    if(profile==49)source.points={{3,3},{13,3},{13,13},{3,13}};
+    if(profile==50)source.points={{3,3},{4,3},{5,3}};
+  }
+  SpatialCalibration spatial;spatial.spacing=(descriptorProfile && profile!=40) || (feretProfile && profile!=45 && profile!=47 && profile!=48)?std::array<double,3>{1,1,1}:std::array<double,3>{2,.5,1};spatial.unit="um";
   if(centroidProfile || massProfile)spatial.origin={-6.5,.75,0};
   if(profile==31){spatial.origin[1]=-.75;spatial.direction={1,0,0,0,-1,0,0,0,1};}
   DatasetReadObserver reads;
@@ -827,8 +834,9 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
   for(int y=0;y<height;++y)for(int x=0;x<width;++x)pixels.at(x,y)=!massProfile?x+2*y:profile==32?x+2*y+1:profile==35?2*(x%2)-1:profile==36?x%2:0;
   DocumentData data{Dataset::from_planes({1,1,1,height,width,1},{pixels},spatial).observe_reads(reads)};if(!wholeImage)data.selection=source;
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);
-  if(profile==43)w.document()->setView({{"zoom",1.}});
-  const Json configuredColumns=descriptorProfile?Json::array({"ROI","Area","Circ.","AR","Round","Solidity","Unit"}):massProfile?Json::array({"ROI","Area","X","Y","XM","YM","Unit"}):analytic || centroidProfile?Json::array({"ROI","Area","Length","Perim.","Perim. unit","X","Y","Unit"}):Json::array({"ROI","Area","Length","Perim.","Unit"});
+  if(profile==43 || profile==49)w.document()->setView({{"zoom",1.}});
+  Json configuredColumns=feretProfile?Json::array({"ROI","Area","Feret","MinFeret","FeretAngle","FeretX","FeretY","Feret unit","Feret coordinate unit","Unit"}):descriptorProfile?Json::array({"ROI","Area","Circ.","AR","Round","Solidity","Unit"}):massProfile?Json::array({"ROI","Area","X","Y","XM","YM","Unit"}):analytic || centroidProfile?Json::array({"ROI","Area","Length","Perim.","Perim. unit","X","Y","Unit"}):Json::array({"ROI","Area","Length","Perim.","Unit"});
+  if(profile==44)for(const auto* column:{"Circ.","AR","Round","Solidity"})configuredColumns.push_back(column);
   w.updateSettings({{"measurements",configuredColumns},{"measurement_precision",6}},false);
   Json last,events=Json::array(),controls=Json::array(),report;std::atomic<bool> entered{false},release{false};
   HeadlessInputSession session(w);bool expectedError=false;
@@ -838,7 +846,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     auto click=[&](const Json& item,const std::string& name){const auto control=item;require(control.at("enabled").get<bool>(),"Subtype measurement control disabled");controls.push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame(Json::array({{{"type","position"},{"space","screen"},{"point",{1,1}}}}));};
     auto acknowledge=[&](){expectedError=true;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();};
     for(int i=0;i<3;++i)frame();
-    if((profile>=7 && profile<=21) || profile==43) {
+    if((profile>=7 && profile<=21) || profile==43 || profile==49) {
       for(const auto& key:{"menu.Edit","menu.Edit.Selection","menu.action.show_fit_spline"})click(last.at("host_controls").at(key),key);
       click(last.at("dialog").at("controls").at("apply"),"fit.apply");w.wait();frame();
       source=*owner->snapshot().data().selection;
@@ -864,7 +872,8 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     w.wait();frame();require(w.results.size()==1 && !w.busy(),"Subtype Measure did not publish one row");
     const auto rows=w.results;const double analyticLengths[]={48.,42.01120851869869,53.,46.295306614080765,4.288751483104749,160.};
     const double descriptorLengths[]={36.,28.36166778425462,32.48528137423857,48.,160.,12.566370614359172,37.65685424949238};
-    const double length=descriptorProfile?descriptorLengths[profile-37]:analytic?analyticLengths[profile-22]:wholeImage?2.*(width+height):profile==30?20.:profile==31?48.:imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
+    const double feretLengths[]={36,42.011208518698687,40,160,17.155005932418995,37.656854249492383,0};
+    const double length=feretProfile?feretLengths[profile-44]:descriptorProfile?descriptorLengths[profile-37]:analytic?analyticLengths[profile-22]:wholeImage?2.*(width+height):profile==30?20.:profile==31?48.:imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
     const auto& value=rows[0].at("Perim.");
     require(std::isnan(length)?value==Json("nan"):(value.is_number() && std::abs(value.get<double>()-length)<1e-11),"Subtype Measure perimeter differs from constructor metric");
     if(analytic || centroidProfile)require(rows[0].at("Perim. unit")==Json(wholeImage?"pixel":"um"),"Analytic perimeter unit lost");
@@ -880,6 +889,13 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
       else if(profile==34)require(rows[0].at("XM")==1.5 && rows[0].at("YM")==2.25,"Float zero moment lost min-value perturbation");
       else require(rows[0].at("XM")=="inf" && rows[0].at("YM")=="nan","Cancelling moment lost independent Inf/NaN coordinates");
     }
+    if(feretProfile) {
+      const double expected[][5]={{12.806248474865697,8,141.34019174590992,3,3},{20,4,0,6,3.5},{13.150285140452567,8.3000001907348633,140.86387018601474,3.2000000476837158,4.6999998092651367},{56.568542494923804,40,135,0,0},{8,2,0,120,31},{14.139979053786409,13.742882792372066,45.000006148107872,3.0764639377593994,13.074938774108887},{2,0,0,3,3}};
+      const char* names[]={"Feret","MinFeret","FeretAngle","FeretX","FeretY"};
+      for(int i=0;i<5;++i)require(rows[0].at(names[i]).is_number() && std::abs(rows[0].at(names[i]).get<double>()-expected[profile-44][i])<1e-10,"Feret differs from original five-column option");
+      require(rows[0].at("Feret unit")==Json(wholeImage?"pixel":"um") && rows[0].at("Feret coordinate unit")==Json(source.kind=="ellipse"?"um":"pixel"),"Feret subtype units lost");
+      if(profile==44)require(rows[0].contains("Circ.") && rows[0].contains("Solidity"),"Combined Feret/shape request lost descriptor columns");
+    }
     if(descriptorProfile) {
       const double nan=std::numeric_limits<double>::quiet_NaN(),inf=std::numeric_limits<double>::infinity();
       const double expected[][4]={{.7757018897752576,1.25,.8000000000852909,1},{.9998303296042818,1.3018205877502111,.7681550049290482,.9696969696969697},{.7144763353520187,1.559370073701773,.6412845910439401,.8571428571428571},{.4363323129985824,nan,inf,1},{.7853981633974483,1,1.0000000001066136,1},{0,nan,nan,0},{1,1,1,.9548387096774194}};
@@ -892,15 +908,15 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     require(columns==configuredColumns,"Configured perimeter column not consumed");
     require(owner->snapshot().shares_data(original) && owner->undo_steps()==beforeUndo,"Read-only subtype Measure changed source/history");
     const auto measuredReads=reads.counts().plane_reads-beforeReads;require(measuredReads==1,"Subtype Measure repeated provider acquisition");
-    if(profile==0) {
+    if(profile==0)for(const auto& refusalColumns:std::array<Json,2>{Json::array({"Circ.","AR","Round","Solidity"}),Json::array({"Feret","MinFeret","FeretAngle","FeretX","FeretY"})}) {
       const auto beforeRefusal=reads.counts().plane_reads;
-      w.updateSettings({{"measurements",{"Circ.","AR","Round","Solidity"}}},false);frame();expectedError=true;
+      w.updateSettings({{"measurements",refusalColumns}},false);frame();expectedError=true;
       for(const auto& key:{"menu.Analyze","menu.action.measure"})click(last.at("host_controls").at(key),key);
       w.wait();require(!w.error().empty() && w.results==rows && reads.counts().plane_reads==beforeRefusal && owner->snapshot().shares_data(original) && owner->undo_steps()==beforeUndo,"Unsupported shape option changed scalar result/source or acquired pixels");
       acknowledge();w.updateSettings({{"measurements",configuredColumns}},false);frame();
     }
     w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});
-    std::ifstream csv(dir/"measure.csv");std::string heading;std::getline(csv,heading);require(heading.find(descriptorProfile?"Circ.":massProfile?"XM":"Perim.")!=std::string::npos && (!massProfile || heading.find("YM")!=std::string::npos),"CSV omitted configured measurement");csv.close();
+    std::ifstream csv(dir/"measure.csv");std::string heading;std::getline(csv,heading);require(heading.find(feretProfile?"Feret":descriptorProfile?"Circ.":massProfile?"XM":"Perim.")!=std::string::npos && (!massProfile || heading.find("YM")!=std::string::npos),"CSV omitted configured measurement");csv.close();
     auto gate=[&](const JobContext& c){entered=true;while(!release.load()){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}};
     auto start=[&](){entered=false;release=false;session.fixtureWorkerGate(gate);w.action("measure");const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered.load() && std::chrono::steady_clock::now()<deadline)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered.load(),"Subtype worker gate did not enter");};
     const auto reserved=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
@@ -908,8 +924,8 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     start();w.cancel();release=true;w.wait();
     require(w.results==rows && !w.busy() && session.fixtureApplication().job_scheduler()->usage().reserved_bytes==reserved && w.renderMemoryInfo().at("working_bytes")==working,"Cancelled subtype Measure changed results or retained reservations");
     if(!w.error().empty())acknowledge();
-    if(profile==1 || profile==9 || profile==15 || profile==22 || profile==37) {
-      start();owner->select(profile==22 || profile==37?Selection("rectangle",{{0,0},{2,2}}):profile==1?with_selection_polygon_coordinates(source,false):remove_spline_fit(source,40,40));release=true;w.wait();
+    if(profile==1 || profile==9 || profile==15 || profile==22 || profile==37 || profile==44) {
+      start();owner->select(profile==22 || profile==37 || profile==44?Selection("rectangle",{{0,0},{2,2}}):profile==1?with_selection_polygon_coordinates(source,false):remove_spline_fit(source,40,40));release=true;w.wait();
       require(!w.error().empty() && w.results==rows,"Changed constructor profile was not rejected as stale");
       acknowledge();owner->select(source);frame();
     }
@@ -918,7 +934,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"measured.ijx").u8string());
     require(reopened.nativeSnapshot().data().selection==original.data().selection && reopened.results==rows,"Workspace lost constructor state or perimeter result");
     require(reopened.nativeSnapshot().data().dataset.plane({})->pixels==pixels.pixels,"Subtype Measure changed stored pixels");
-    report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",wholeImage?Json(nullptr):selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1 || profile==22 || profile==37},{"descriptor_refusal_checked",profile==0},{"fitted",source.attributes.count(spline_fit_attribute)!=0},{"lifecycle",profile>=15 && profile<=21},{"stale_fit_checked",profile==9 || profile==15},{"fit_undo_steps",beforeUndo},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
+    report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",wholeImage?Json(nullptr):selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1 || profile==22 || profile==37 || profile==44},{"descriptor_refusal_checked",profile==0},{"feret_refusal_checked",profile==0},{"fitted",source.attributes.count(spline_fit_attribute)!=0},{"lifecycle",profile>=15 && profile<=21},{"stale_fit_checked",profile==9 || profile==15},{"fit_undo_steps",beforeUndo},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& e){release=true;w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",e.what()},{"rendered",last},{"error",w.error()},{"events",events},{"controls",controls}});throw;}
 }

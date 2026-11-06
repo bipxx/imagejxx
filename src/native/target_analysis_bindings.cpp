@@ -15,7 +15,8 @@ void bind_target_analysis(py::module_& m) {
     .def_readwrite("path",&TargetAnalysisOptions::path).def_readwrite("samples_per_segment",&TargetAnalysisOptions::samples_per_segment)
     .def_readwrite("measurement",&TargetAnalysisOptions::measurement).def_readwrite("roi_indices",&TargetAnalysisOptions::roi_indices)
     .def_readwrite("reflex_angle",&TargetAnalysisOptions::reflex_angle)
-    .def_readwrite("shape_descriptors",&TargetAnalysisOptions::shape_descriptors);
+    .def_readwrite("shape_descriptors",&TargetAnalysisOptions::shape_descriptors)
+    .def_readwrite("feret",&TargetAnalysisOptions::feret);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
     .def_readwrite("max_working_bytes",&TargetAnalysisLimits::max_working_bytes)
@@ -55,6 +56,13 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("aspect_ratio",&TargetAnalysisPlane::aspect_ratio)
     .def_readonly("roundness",&TargetAnalysisPlane::roundness)
     .def_readonly("solidity",&TargetAnalysisPlane::solidity)
+    .def_readonly("feret",&TargetAnalysisPlane::feret)
+    .def_readonly("min_feret",&TargetAnalysisPlane::min_feret)
+    .def_readonly("feret_angle",&TargetAnalysisPlane::feret_angle)
+    .def_readonly("feret_x",&TargetAnalysisPlane::feret_x)
+    .def_readonly("feret_y",&TargetAnalysisPlane::feret_y)
+    .def_readonly("feret_in_pixels",&TargetAnalysisPlane::feret_in_pixels)
+    .def_readonly("feret_coordinates_scaled",&TargetAnalysisPlane::feret_coordinates_scaled)
     .def_property_readonly("statistics",[](const TargetAnalysisPlane& v)->py::object{
       if(v.statistics)return bindings::calibrated_statistics_python(*v.statistics);
       return py::none();})

@@ -189,8 +189,8 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   std::size_t count=0;
   for(std::size_t n=0;n<parent_count;++n) {
     const auto* selection=measurement_selection(target,parent(n));
-    if(options.shape_descriptors && selection && selection->kind!="rectangle" && selection->kind!="ellipse" && selection->kind!="polygon" && selection->kind!="freehand")
-      invalid("Shape descriptors currently require ordinary area rows");
+    if((options.shape_descriptors || options.feret) && selection && selection->kind!="rectangle" && selection->kind!="ellipse" && selection->kind!="polygon" && selection->kind!="freehand")
+      invalid("Shape/Feret options currently require ordinary area rows");
     const auto rows=point_selection(selection)?selection->points.size():1;
     if(!rows)invalid("Point measurement requires a nonempty point selection");
     count=add(count,rows);if(count>limits.max_measurement_rows)invalid("Measurement exceeds its expanded row limit");
@@ -254,17 +254,18 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
           selection_polygon_integer_coordinates(*selection),bytes);
       polygon_peak=std::max(polygon_peak,bytes);
     }
-    if(options.shape_descriptors) {
-      if(!row.perimeter)invalid("Shape descriptors require a qualified perimeter");
+    if(options.shape_descriptors || options.feret) {
+      if(options.shape_descriptors && !row.perimeter)invalid("Shape descriptors require a qualified perimeter");
       SelectionEditLimits geometry_limits;geometry_limits.max_xy_pixels=limits.max_pixels;
       const auto prefix=add(base.working_bytes,add(out.geometry_bytes,add(4096,mul(count,1024))));within(prefix,limits.max_working_bytes);
       geometry_limits.max_working_bytes=limits.max_working_bytes-prefix;
-      const auto geometry=detail::estimate_area_shape_geometry(selection,shape.x,shape.y,geometry_limits);
+      const auto* feret=options.feret?&target.calibration():nullptr;
+      const auto geometry=detail::estimate_area_shape_geometry(selection,shape.x,shape.y,geometry_limits,feret,options.shape_descriptors);
       shape_work=add(shape_work,geometry.work_units);
-      if(add(shape_work,polygon_work)>limits.max_measurement_work)invalid("Shape descriptors exceed aggregate geometry work limit");
+      if(add(shape_work,polygon_work)>limits.max_measurement_work)invalid("Shape/Feret options exceed aggregate geometry work limit");
       within(add(prefix,geometry.working_bytes),limits.max_working_bytes);
       shape_peak=std::max(shape_peak,geometry.working_bytes);
-      row.shape_geometry=detail::prepare_area_shape_geometry(selection,shape.x,shape.y,geometry_limits);
+      row.shape_geometry=detail::prepare_area_shape_geometry(selection,shape.x,shape.y,geometry_limits,feret,options.shape_descriptors);
     }
     const auto group=group_for(row.position);
     plan.groups[group].rows.push_back(plan.rows.size());plan.rows.push_back(row);
@@ -346,7 +347,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
       invalid("Target analysis requires finite-policy scalar storage");
     target.calibration().validate();return estimate_measurement(target,options,limits,retained);
   }
-  if(options.shape_descriptors)invalid("Shape descriptors require explicit selection or manager measurement");
+  if(options.shape_descriptors || options.feret)invalid("Shape/Feret options require explicit selection or manager measurement");
   if(options.line && !options.path.empty())invalid("Analysis accepts line or path, not both");
   if(!options.path.empty() && (options.path.size()<2 || options.path.size()>4096))invalid("Analysis path requires 2..4096 vertices");
   if(!options.statistics && !segment_count(options))invalid("Analysis requires statistics or a profile");
@@ -470,6 +471,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     bool geometry=false,points=false,annotated=false,polygon_metrics=false,fitted_metrics=false,analytic_metrics=false,area_centroids=false;
     if(measurement) {
       if(options.shape_descriptors)requested["shape_descriptor_policy"]="rounded-hull/legacy-ellipse/area-options-v1";
+      if(options.feret)requested["feret_policy"]="float-hull/analytic-oval/pixel-fallback/local-plane-v1";
       requested["measurement"]=options.measurement==TargetMeasurementMode::RoiManager?"roi_manager":"selection";
       MetadataArray rows;for(const auto& row:measurements.rows) {
         MetadataObject item{{"position",metadata_array({row.position.t,row.position.c,row.position.z})}};
@@ -513,7 +515,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.shape_descriptors?12:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.feret?13:options.shape_descriptors?12:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -580,7 +582,12 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           std::optional<std::array<double,2>> centroid,center_of_mass;
           row.statistics=detail::calibrated_statistics_with_table(*image,state.spatial,state.intensity,state.lookup,
               mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true,&centroid,&center_of_mass);
-          if(plan.shape_geometry) {
+          if(plan.shape_geometry && plan.shape_geometry->feret) {
+            const auto& f=*plan.shape_geometry->feret;
+            row.feret=f[0];row.min_feret=f[1];row.feret_angle=f[2];row.feret_x=f[3];row.feret_y=f[4];
+            row.feret_in_pixels=!selection;row.feret_coordinates_scaled=selection && selection->kind=="ellipse";
+          }
+          if(state.options.shape_descriptors) {
             const auto axes=detail::area_shape_ellipse_axes(mask?&*mask:nullptr,shape.x,shape.y,*plan.shape_geometry);
             const double scale=std::abs(state.spatial.spacing[0]-state.spatial.spacing[1])/state.spatial.spacing[0]<.01?state.spatial.spacing[0]:0.;
             const double major=axes[0]*scale,minor=axes[1]*scale,area=row.statistics->area,perimeter=*row.perimeter;

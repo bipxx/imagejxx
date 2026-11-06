@@ -1,0 +1,468 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 Feret measurements option",
+  "implemented": true,
+  "verified": true,
+  "integrated": true,
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "scope": "One explicit opt-in supplies Feret/MinFeret/FeretAngle/FeretX/FeretY for ordinary/fitted area, whole fallback and grouped manager rows. Existing settings/unit columns, both ImGui hosts, precision/CSV/workspace, cancellation/stale/frozen/history/read paths integrated; no new controller/mask/hull copy.",
+  "public_contract": "Defaultfalse feret request; readonly optional feret/min_feret/feret_angle/feret_x/feret_y and explicit feret_in_pixels/feret_coordinates_scaled. Requested diagnostic13/feret_policy. Generic Float32 hull/raw endpoints, analytic integer-box ellipse/scaled endpoints, detached whole fallback pixels; native intrinsic affine-plane extension. Matched clients required for appended public DTO layout.",
+  "checks": {
+    "python_current_distinct": 2658,
+    "python_current_passed": 2657,
+    "python_current_skipped": 1,
+    "skip": "Optional unchanged hidden OpenGL settings context; IMAGEJXX_RENDER_TESTS=1 not selected.",
+    "reused_unchanged_passed": 321,
+    "distinct_id_union": 2979,
+    "passed_id_union": 2978,
+    "original_rows": 675,
+    "new_physical_profiles_per_windows_host": 7,
+    "matching_host_pairs": 51,
+    "unsupported_feret_ui_refusal_pairs": 1,
+    "native": "Windows/Linux native analysis/transform/settings pass, Windows native host aggregator and two Windows installed C++ clients pass. Installed extensions/pure/app/SDK byte comparisons and loaded origins verified.",
+    "limits": "Linux installed SDK/Python/UI, macOS and final full release gates not qualified by this increment."
+  },
+  "remaining": "Bounding rectangle BX/BY/Width/Height next. ELLIPSE output columns, threshold/redirect, unsampled constructor/nonordinary/mask/path/line/point/replay/platform variants retain M3/T06/T14 owners; G016/17gesture inputs unavailable, not recreated or claimed passed.",
+  "cleanup": "All6owned scratch groups and parent absent; retirement002/004/008. Three reference/final host capture archives live verified before deletion; SDK/compiler identity-only. Failure-free run logs and necessary records retained outside scratch; active cache/runtime/app/SDK preserved.",
+  "storage": {
+    "before_known_bytes": 7423234954,
+    "checkpoint_known_bytes": 7433843594,
+    "after_known_bytes": 7426666826,
+    "measured_known_growth_bytes": 10608640,
+    "physical_free_after_bytes": 224234315776,
+    "allocation_bound_bytes": 268435456,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "snapshots": [
+      ".tmp/manual-workflow-verification/feret-entry-20261106.json",
+      ".tmp/manual-workflow-verification/feret-preretirement-20261106.json",
+      ".tmp/manual-workflow-verification/feret-final-20261106.json"
+    ],
+    "scope": "Complete normalized owned-root survey includes214inaccessible subtrees; known bytes/growth are measured lower bounds, not complete budget compliance."
+  },
+  "cost": {
+    "windows_build_commands": 13,
+    "windows_build_seconds": 123.241,
+    "native_module_build_commands": 1,
+    "native_module_build_seconds": 43.174,
+    "linux_build_seconds": 18.891,
+    "python_seconds": 10.967,
+    "sdk_command_seconds": 13.855,
+    "failed_compilations": 0,
+    "failed_checks": 0,
+    "numeric_guard_corrective_core_control_build_seconds": 3.182
+  },
+  "waste_review": {
+    "decision": "Fix now via original subtype overrides and actual unit consumers, one shared hull, Feret-only analytic ellipse fast path and bounded pre-read quadratic work.",
+    "observed": "675original observations prevented generic-hull/coordinate-unit mismatch. Native finite-endpoint guard required3.182s narrow core/control rebuild before links. One _native build43.174s and no failed compilation/test/reconfiguration.321unchanged strict-transform tests reused;51shared profiles verified without a new harness. Empty compiler scratch and terminal captures/SDK retired.",
+    "hypotheses": "No broad speed or avoided-time claim. Further caliper acceleration requires a concrete large-geometry consumer and numerical/tie-equivalence evidence; retain max-work admission under M3.",
+    "deferred_owner": "M3 owns remaining measurement variants and observed user need for large-geometry throughput; T14 platform/release gates unchanged.",
+    "queue_feedback": "Replace active Feret spec with ready Bounding rectangle four-column spec and preserve existing remaining owners; no repeated milestone row/extra progress ledger."
+  },
+  "failures_and_corrections": [
+    "Original675table outputs exposed OvalRoi scaled analytic endpoints and unattached whole-image pixel fallback before native implementation; no generic hull substitution.",
+    "Native final source review added finite ellipse-endpoint output guard before expensive Python links; narrow core/control rebuild3.182s. No failed compilation/test, one _native build, no SDK reconfiguration.",
+    "Two source-edit EOL assertions failed before writes; corrected from observed mixed-line endings. Scoped evidence lookup normalized Windows separators. These were script corrections, not failed product checks."
+  ],
+  "sources": [
+    {
+      "path": "tests/reference/ObserveFeretMeasurements.java",
+      "bytes": 4506,
+      "sha256": "ec9f623b3bbe0d6af63327106898550d29782232f888568e4e90065a4554f703"
+    },
+    {
+      "path": "tests/fixtures/feret-measurements-imagej154r.json",
+      "bytes": 679374,
+      "sha256": "c4724629139fa4127b4e2cb4eb37cfd8a3f5ec8da402cd7db51449bfee933c0e"
+    },
+    {
+      "path": "src/native/selection_shape_detail.hpp",
+      "bytes": 1021,
+      "sha256": "510fc7bd0aea483f36c9e472e737be602244b90cc933d9a461c1173142464b2b"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 68098,
+      "sha256": "1c4b2d45e57b0a10b963ee46c9070c7e85553713806e78be144682e6ce8459bb"
+    },
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 7278,
+      "sha256": "cf5b47bfd2d39ac9d1088f26aa2691dcb90998eaf860104578c7d7ab5137f284"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 44286,
+      "sha256": "154a418341557aa0083d392c62da72facd6f048b0cc28c9a3cd16983961e3dd2"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 7973,
+      "sha256": "017901d5007756052faaf67a77d7e722211c83a0fe5be8f8620fd589eba20d25"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 27862,
+      "sha256": "638105c2418c622f63de22b672ffe87eab9ae011c8f7b93a826a3b7dae14afe8"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 929141,
+      "sha256": "9b032647a5414359ccde9523946fab2016650943ecb7bb83da48d3aa80eb9e05"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 7783,
+      "sha256": "7c35bb72e5aee2ed90b7cad284eb49c58df3bd6c9321921af070a6ff009e1bac"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 106603,
+      "sha256": "b93439d56a30b05c8bb4996fadf9c5994679e8044142b645ddeecdccfbe21b6f"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 35663,
+      "sha256": "c6fcc624d2c6a85252e0125f2903acb9afc2a0be1c766278a0993fe20b35bf3c"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38288,
+      "sha256": "f2954b44a3cfc0e5a9c638d1f2b353c909a302c596e7be18a2f9aca7d2421f6b"
+    },
+    {
+      "path": "tests/python/test_feret_measurements.py",
+      "bytes": 8578,
+      "sha256": "64dba45ae952d38fd6a2eb671b93e6cb1b098ad91fc73bacdb74ea1d1bc76805"
+    },
+    {
+      "path": "docs/TARGET_ANALYSIS.md",
+      "bytes": 42785,
+      "sha256": "64d77fda0f5750b7b140a382603fb51f968b71b840aa175eb72f5258f314ab00"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 144145,
+      "sha256": "60a1a117292d630120feabedb3475c08df0e8632f42c2d2d7dceb7e5d08d0623"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 7865,
+      "sha256": "ded9aecb0ca1832faf397f2faafea27c865c92a55091a06b582274987c998024"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 7870,
+      "sha256": "084644e3e4edcd05d09e6ee7f85e16e5692e439872e3346f87892d12dbfe3388"
+    },
+    {
+      "path": "tests/python/test_subtype_measurements.py",
+      "bytes": 11953,
+      "sha256": "6ba4b8ab2d748fb3a8c6796aa8556f3943cde78eb28f346dd72dfd57686938dd"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/entry.json",
+      "bytes": 48617,
+      "sha256": "3c3fbbbbb245778f3ebf95c4210969b20cb7ae9e5d3ecd48704606abfde9e99b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/python006.xml",
+      "bytes": 443279,
+      "sha256": "db5fa5c86d3a487a45aa3dbf66088420f3c71fad6e0cc8dceedf64b4c857dd0b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/python006-counts.json",
+      "bytes": 97,
+      "sha256": "6c235d2ad5981d3e29da0ecdf5a030120fe0093847dfad7b3c3e7139d58937bb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/review007.json",
+      "bytes": 27899,
+      "sha256": "644ec5e63ccc5df90d0607b0ef6e7c49d1dbdf8d5152ce1475a10709f724214d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/evidence-union008.json",
+      "bytes": 712,
+      "sha256": "253104c8d6a0a597816866a4b56f432ba00782fbfe728d7b67f5ffd1c23f4421"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/installed-identities006.json",
+      "bytes": 3588,
+      "sha256": "5415d603245d1d0c4b107aac434f98f1f350933e19630d1e71c99ef57f2ef2e6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/sdk-import007.txt",
+      "bytes": 200,
+      "sha256": "1891069ab62f559670f76cb0860b4cfbdb1c07133f27bc4f883d7cac48153894"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/scratch-identities008.json",
+      "bytes": 507525,
+      "sha256": "7b51cd862a023f8d36a76c3efecb21f1715d8ae24fd1d21d838584682fe567f6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/retirement002.json",
+      "bytes": 1030,
+      "sha256": "3a7587bf23ec2990f0a07fff18d7ee6575cf7542f57e67082b9b5cc6b6f6debd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/retirement004.json",
+      "bytes": 1104,
+      "sha256": "80ce303f4645b6d12305a30223a8ca28931e51ce6ed33690aae80cad88bdceee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/retirement008.json",
+      "bytes": 2899,
+      "sha256": "bd507f70f94949d8a89929d3486f74ab17bd63901b4f1ef04d102e357dd1ff3f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/reference002.zip",
+      "bytes": 24259,
+      "sha256": "6f26497e2f411001fade848fe9d0d686d3177f40477ee988883154b8d8fd0717"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/reference002.manifest.json",
+      "bytes": 2557,
+      "sha256": "866425851913d24cddc2e4f47f1b390c76955a890913beeb3b60ef182e5b550e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/reference002.verify.json",
+      "bytes": 1441,
+      "sha256": "70be5e50719ac0b7cf98192ac9dc862f4cbb51a89f836c5c3c191965737ef93e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/python006008.zip",
+      "bytes": 291946,
+      "sha256": "02eb06e29baf0e208d88e95e12ec3d59bbd298b702f53a0b367e013b505eee93"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/python006008.manifest.json",
+      "bytes": 122572,
+      "sha256": "c2088e82703b52211274fc13f86a0d39e4b3d045f3854a8f6d9ffd9ebb45e380"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/python006008.verify.json",
+      "bytes": 1455,
+      "sha256": "61bca94aaefd580eef0f8116992456baaf0793e93f1368662d9668b10678fbb9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/native006008.zip",
+      "bytes": 450898,
+      "sha256": "fbbadcafa8203bbac65fa8ea103cbdf6fcae391517c1a519fd4fd05b5c988d9a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/native006008.manifest.json",
+      "bytes": 181836,
+      "sha256": "cbfff10ef4370e264584c3867d9c70493846e3704eca7ec3510dd48affc0bdb8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/native006008.verify.json",
+      "bytes": 1457,
+      "sha256": "791174f64dbb28bc22ed792fe76a1189f17cf9e4964209f3ee7165a1b5b9125f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/linux-observed005.json",
+      "bytes": 275,
+      "sha256": "bfba045db897623b1b4975c953c474fe94c8a00b4f7bedca164919ef2b627841"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/linux-identities005.json",
+      "bytes": 885,
+      "sha256": "a4246f83fa79a533cd8a70abe1cddfc5d0054b0bfb8cac754f7d4344068871a2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/_desktop005.process.json",
+      "bytes": 2852,
+      "sha256": "e90d13e44f281342d652a9a9927079f92a69158dddd887e5e9dfe8e423008b97"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/_native005.process.json",
+      "bytes": 2031,
+      "sha256": "e366723e2b4833a4d2b88678bcc9abb945b1d59cfa5ab79fff214b2ac28f318c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_app005.process.json",
+      "bytes": 2851,
+      "sha256": "484c2407bd4bae89e5dd109780435b6e7ccd50a96b8ef27c2c6415eb01ffc5e7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_core003.process.json",
+      "bytes": 2040,
+      "sha256": "c7c8c269ae7346f19bfe50c9416517a38d42360ce6c02386c13e0598c3447e22"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_core004.process.json",
+      "bytes": 2038,
+      "sha256": "cdcdc011e296ebb68666efc2b2ac5550e30b0e083461ca6f3cc6344ea368fdb6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_core005.process.json",
+      "bytes": 2037,
+      "sha256": "c8aa1cb8c14e48919545f4b875e058a9ed2f7cb18ac8a5290bdddc84c1a34b96"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_desktop005.process.json",
+      "bytes": 2861,
+      "sha256": "0dbf53eb635293f80f9d9c424da7416e0663d36e273e6debb20072e0cecc141f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_display_actions_tests005.process.json",
+      "bytes": 2873,
+      "sha256": "b220b71f12439845aa0b9cd1a356548d8705f4ede564f37cef40d1f913f334f0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_selection_transform_tests005.process.json",
+      "bytes": 2060,
+      "sha256": "014f98e76fe7109aecf5b541c56556a3146e4f9fd11ec8fd7c74b995c09f5358"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_settings_tests005.process.json",
+      "bytes": 2049,
+      "sha256": "49981e02cd444553688b5347ccd59c110fdfc4943d75c41870d04321f685ef6e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_target_analysis_tests003.process.json",
+      "bytes": 2054,
+      "sha256": "47b1fd5a934ea02e44c5a8b98ed914a88765ec3193ff2f2fe0677158d3b3c77a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_target_analysis_tests004.process.json",
+      "bytes": 2053,
+      "sha256": "3259441f6db92ef6cf87316449dcf3d52cd9685386e5642ff7875fb2fd7da69f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/imagejxx_target_analysis_tests005.process.json",
+      "bytes": 2056,
+      "sha256": "fbe02616af9e8a195cdc54d2e6b9ffbd3f9d2188d56d9ff1754668c53ed96290"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/install-desktop006.process.json",
+      "bytes": 2120,
+      "sha256": "91b004c1c3086c32a919e53113876211f1810664ec009a07538f6aceb0f4f42a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/install-development006.process.json",
+      "bytes": 2124,
+      "sha256": "abe1a1c87085172c307a684b37d670f9cdb7b369f2ebe292d16f40b6877d8231"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/install-Unspecified006.process.json",
+      "bytes": 2130,
+      "sha256": "4d3f072f0aa8b93cdae7612ae378a38e3861ef60598b46b183824f6712a9c8f9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/linux-build005.process.json",
+      "bytes": 1650,
+      "sha256": "0aa498713dfe33e9c3ad24e0812d07ec6ae1c58e93fdda1a586988dfcbd57b3d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/linux-imagejxx_selection_transform_tests005.process.json",
+      "bytes": 1496,
+      "sha256": "70403dfc46fb35e742251876ea7480bacbe8996692eaa184813ec4ef24a86674"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/linux-imagejxx_settings_tests005.process.json",
+      "bytes": 1484,
+      "sha256": "188d0c04692258ac45faad018256242ee446965283c6b934b2dbcbedf2c57dc3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/linux-imagejxx_target_analysis_tests005.process.json",
+      "bytes": 1491,
+      "sha256": "95ad6a982619afd08ef9fbd7cb1f9b8dd238de8e8676efd077faeb35c38fdbc2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/linux-owner005.process.json",
+      "bytes": 4859,
+      "sha256": "a44a4c2a5d7cc676e3ebc8e69ca56f7bcce51e65d7e522e3809b7fa9ec4e580f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/native-host006.process.json",
+      "bytes": 1958,
+      "sha256": "0e3ec3f879ce7c53a4d1530340a403a34103924cd204e65135551c7a047be8a3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/native003.process.json",
+      "bytes": 1833,
+      "sha256": "325321806c51ef7b8da44bddd89987bdac49dd9a62bf0e0f9ca6aa140026a2de"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/native004.process.json",
+      "bytes": 1833,
+      "sha256": "c15362e17a879066495307a3d5f995888a87339fc3c18f27c3aa14b7806123a6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/python006.process.json",
+      "bytes": 2868,
+      "sha256": "dfbcb1c39e12800a658ca29c313d1f4dc4d18aabea603d0f1722d5e111ede2c7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/reference-compile001.process.json",
+      "bytes": 2268,
+      "sha256": "4cecaf81b99cd4133b7709062e09d25a92cdb60dbce3b4a0a58ac4712816be7f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/reference-run001.process.json",
+      "bytes": 2137,
+      "sha256": "94adf3569af4985ba8c0bea64301e158377992ac419603decb6b14c338d862cd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/run-imagejxx_selection_transform_tests005.process.json",
+      "bytes": 1842,
+      "sha256": "afba319d2df2a4c6d49eebc4ac66df944aff680d0252a6b93434239eb9f1d3e7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/run-imagejxx_settings_tests005.process.json",
+      "bytes": 1819,
+      "sha256": "3eeff9c08a4a6c7c1394cb1aa9f6122428ce91403be1da548d5e469acc75f1ec"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/run-imagejxx_target_analysis_tests005.process.json",
+      "bytes": 1833,
+      "sha256": "9750411dc76f069d41a2ac22c0436ce76dc7a9b0cacca02b53c17d95783f1d54"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/sdk-build007.process.json",
+      "bytes": 2129,
+      "sha256": "1eb847bca0b75a8e3aa99dee459549c54ff65bb0dce5f54499c6e30b6bd61e37"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/sdk-carrier007.process.json",
+      "bytes": 2024,
+      "sha256": "2009f8d4980a673a7c671c7cac530b23787330627d41429991f2d643b1fcd2cc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/sdk-configure007.process.json",
+      "bytes": 2409,
+      "sha256": "ed1bb3b2cc38801d7bda12701f16e14029589f9a487a81fdd0ba1df4597fa6aa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/sdk-selection_transform_api007.process.json",
+      "bytes": 1926,
+      "sha256": "c9c90119cb6250cb59df9f74c52c7c855269ce8dc9ff3e328f54413d26ad91c0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-measurements-20261106/sdk-target_analysis_api007.process.json",
+      "bytes": 1919,
+      "sha256": "d8833af743599e371c7f56af6b0b0bfe66c7012fd66a5518c0edb449950ee000"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-entry-20261106.json",
+      "bytes": 66573,
+      "sha256": "5e736778d905fe68ac9b9ab1687955e8fd6cafec5fc5daf900419fcc7a9bc5a5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-preretirement-20261106.json",
+      "bytes": 66573,
+      "sha256": "7d9cf7d9096e5552d1671d5ce2fd356d3164ab3d32f007da7ce3c83e746e5f79"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/feret-final-20261106.json",
+      "bytes": 66573,
+      "sha256": "75efc68d2f602e5069ac4226f86188746d9cd82523d52420633b32f7bdfb5a44"
+    }
+  ]
+}

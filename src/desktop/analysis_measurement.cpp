@@ -89,6 +89,12 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       values["Perim."]=scalar(*row.perimeter);
       values["Perim. unit"]=row.perimeter_in_pixels?std::string("pixel"):result.spatial.unit;
     }
+    if(row.feret) {
+      values["Feret"]=scalar(*row.feret);values["MinFeret"]=scalar(*row.min_feret);
+      values["FeretAngle"]=scalar(*row.feret_angle);values["FeretX"]=scalar(*row.feret_x);values["FeretY"]=scalar(*row.feret_y);
+      values["Feret unit"]=row.feret_in_pixels?std::string("pixel"):result.spatial.unit;
+      values["Feret coordinate unit"]=row.feret_coordinates_scaled?result.spatial.unit:std::string("pixel");
+    }
     if(row.circularity) {
       values["Circ."]=scalar(*row.circularity);values["AR"]=scalar(*row.aspect_ratio);
       values["Round"]=scalar(*row.roundness);values["Solidity"]=scalar(*row.solidity);

@@ -359,16 +359,80 @@ std::array<double,3> circle_from_points(std::vector<Point>& points) {
 }
 }
 namespace detail {
-AreaShapeEstimate estimate_area_shape_geometry(const Selection* source,int width,int height,const SelectionEditLimits& limits) {
-  if(!source)return {4096,std::size_t(width)*height};
+namespace {
+// Intrinsic orthonormal image-plane basis; world origin/rotation do not change
+// caliper widths. Shear and non-unit direction columns remain physical.
+std::array<double,3> feret_basis(const SpatialCalibration& spatial) {
+  spatial.validate();const auto& d=spatial.direction;
+  const std::array<double,3> x{d[0]*spatial.spacing[0],d[3]*spatial.spacing[0],d[6]*spatial.spacing[0]},y{d[1]*spatial.spacing[1],d[4]*spatial.spacing[1],d[7]*spatial.spacing[1]};
+  const double h=std::hypot(x[0],x[1],x[2]);
+  const double shear=(x[0]*y[0]+x[1]*y[1]+x[2]*y[2])/h;
+  const double v=std::hypot(x[1]*y[2]-x[2]*y[1],x[2]*y[0]-x[0]*y[2],x[0]*y[1]-x[1]*y[0])/h;
+  if(!(h>0) || !(v>0) || !std::isfinite(h) || !std::isfinite(shear) || !std::isfinite(v))throw std::invalid_argument("Feret plane metric must be finite and nonsingular");
+  return {h,shear,v};
+}
+std::array<double,5> hull_feret(const std::vector<Point>& hull,const SpatialCalibration& spatial) {
+  const auto basis=feret_basis(spatial);const double pw=basis[0],shear=basis[1],ph=basis[2];
+  if(hull.empty()){const auto n=std::numeric_limits<double>::quiet_NaN();return {n,n,n,n,n};}
+  std::size_t p1=0,p2=0;double square=0;
+  for(std::size_t i=0;i<hull.size();++i)for(std::size_t j=i+1;j<hull.size();++j) {
+    kernel_checkpoint_periodic();
+    // Java subtracts float array entries before promoting/scaling the pair.
+    const double dx=float(float(hull[i][0])-float(hull[j][0])),dy=float(float(hull[i][1])-float(hull[j][1]));
+    const double x=dx*pw+dy*shear,y=dy*ph,value=x*x+y*y;
+    if(!std::isfinite(value))throw std::invalid_argument("Feret diameter exceeds finite metric range");
+    if(value>square){square=value;p1=i;p2=j;}
+  }
+  if(hull[p1][0]>hull[p2][0])std::swap(p1,p2);
+  const double dx=hull[p2][0]-hull[p1][0],dy=hull[p2][1]-hull[p1][1];
+  double angle=(180./3.14159265358979323846)*std::atan2(-dy*ph,dx*pw+dy*shear);if(angle<0)angle+=180;
+  double minimum=std::numeric_limits<double>::max();auto previous=hull.back();
+  for(const auto& point:hull) {
+    const double ex=point[0]-previous[0],ey=point[1]-previous[1];
+    const double length=std::sqrt((ex*pw+ey*shear)*(ex*pw+ey*shear)+(ey*ph)*(ey*ph));
+    if(!std::isfinite(length))throw std::invalid_argument("Feret edge exceeds finite metric range");
+    // Keep ImageJ operation order for the orthogonal profile; collapsed hull
+    // normals are NaN and leave maxDist at zero, as in the original.
+    double xn=ey*ph,yn=-ex*pw;const double factor=1/length;
+    xn*=factor*pw;yn*=factor*ph;
+    double largest=0;for(const auto& other:hull){kernel_checkpoint_periodic();const double distance=(other[0]-point[0])*xn+(other[1]-point[1])*yn;if(distance>largest)largest=distance;}
+    minimum=std::min(minimum,largest);previous=point;
+  }
+  return {std::sqrt(square),minimum,angle,hull[p1][0],hull[p1][1]};
+}
+std::array<double,5> ellipse_feret(const Selection& s,const SpatialCalibration& spatial) {
+  const double x=std::trunc(std::min(s.points[0][0],s.points[1][0])),y=std::trunc(std::min(s.points[0][1],s.points[1][1]));
+  const double w=std::ceil(std::abs(s.points[1][0]-s.points[0][0])),h=std::ceil(std::abs(s.points[1][1]-s.points[0][1]));
+  const auto basis=feret_basis(spatial);const double a=w*basis[0],b=h*basis[1],c=h*basis[2];
+  if(!std::isfinite(a) || !std::isfinite(b) || !std::isfinite(c))throw std::invalid_argument("Feret ellipse exceeds finite metric range");
+  if(b==0) {
+    const bool vertical=c>a;
+    return {vertical?c:a,vertical?a:c,vertical?90.:0.,(x+(vertical?.5*w:0))*spatial.spacing[0],(y+(vertical?h:.5*h))*spatial.spacing[1]};
+  }
+  // Singular values of the transformed analytic ellipse, scaled to avoid
+  // squaring large finite axes. Endpoints retain legacy scaled-image units.
+  const double scale=std::max({a,std::abs(b),c}),aa=a/scale,bb=b/scale,cc=c/scale;
+  const double xx=aa*aa+bb*bb,yy=cc*cc,xy=bb*cc;
+  const double eigen=(xx+yy+std::hypot(xx-yy,2*xy))/2;
+  const double major=scale*std::sqrt(eigen),minor=scale*std::abs(aa*cc)/std::sqrt(eigen);
+  double angle=.5*std::atan2(2*xy,xx-yy),vx=std::cos(angle),vy=std::sin(angle);
+  const double py=major*vy/basis[2],px=(major*vx-py*basis[1])/basis[0];
+  angle=-angle*180./3.14159265358979323846;if(angle<0)angle+=180;
+  return {major,minor,angle,(x+w/2-px/2)*spatial.spacing[0],(y+h/2-py/2)*spatial.spacing[1]};
+}
+}
+AreaShapeEstimate estimate_area_shape_geometry(const Selection* source,int width,int height,const SelectionEditLimits& limits,const SpatialCalibration* feret,bool descriptors) {
+  if(feret)feret_basis(*feret);
+  if(!source)return {4096,(descriptors?std::size_t(width)*height:0)+(feret?32:0)};
   const auto& s=*source;
   if(s.kind!="rectangle" && s.kind!="ellipse" && s.kind!="polygon" && s.kind!="freehand")
     throw std::invalid_argument("Shape descriptors require ordinary area geometry");
   auto bytes=admit_selection_geometry(s,width,height,limits,{});
   for(const auto& point:s.points)for(double coordinate:point)if(std::abs(coordinate)>std::numeric_limits<float>::max())
     throw std::invalid_argument("Shape descriptor coordinate exceeds Float32 range");
-  std::size_t count=s.kind=="rectangle"?4:s.points.size(),work=std::size_t(width)*height;
-  if(s.kind=="ellipse") {
+  std::size_t count=s.kind=="rectangle"?4:s.points.size(),work=descriptors?std::size_t(width)*height:0;
+  if(s.kind=="ellipse" && !descriptors)count=0;
+  if(s.kind=="ellipse" && descriptors) {
     const auto path=fit_rectangle_path(s);auto roi=ImageJRoiLimits{};roi.max_vertices=limits.max_vertices;roi.max_mask_pixels=limits.max_xy_pixels;
     const auto plan=plan_imagej_shape_outline(path,width,height,roi,limits.max_working_bytes-bytes);
     const auto extra=plan.packed_bytes+plan.temporary_bytes;
@@ -378,11 +442,28 @@ AreaShapeEstimate estimate_area_shape_geometry(const Selection* source,int width
   if(count>limits.max_vertices || count>(limits.max_working_bytes-bytes)/128)
     throw std::length_error("Shape hull exceeds geometry limits");
   std::size_t levels=0;for(auto n=count;n>1;n=(n+1)/2)++levels;
-  return {bytes+count*128,work+count*(4*levels+8)};
+  work+=count*(4*levels+8);
+  if(feret) {
+    if(s.kind=="ellipse")work+=32;
+    else {
+      if(count && count>std::numeric_limits<std::size_t>::max()/count/2)throw std::length_error("Feret caliper work overflows");
+      const auto extra=count*count+count*(count-1)/2;
+      if(extra>std::numeric_limits<std::size_t>::max()-work)throw std::length_error("Feret caliper work overflows");
+      work+=extra;
+    }
+  }
+  return {bytes+count*128,work};
 }
-AreaShapeGeometry prepare_area_shape_geometry(const Selection* source,int width,int height,const SelectionEditLimits& limits) {
+AreaShapeGeometry prepare_area_shape_geometry(const Selection* source,int width,int height,const SelectionEditLimits& limits,const SpatialCalibration* feret,bool descriptors) {
   AreaShapeGeometry out;
-  if(!source){out.rectangle=true;out.box_extent={double(width),double(height)};out.hull_area=double(width)*height;return out;}
+  if(!source){out.rectangle=true;out.box_extent={double(width),double(height)};out.hull_area=double(width)*height;
+    if(feret)out.feret=hull_feret({{0,0},{0,double(height)},{double(width),double(height)},{double(width),0}},SpatialCalibration{});
+    return out;}
+  if(feret && source->kind=="ellipse") {
+    out.feret=ellipse_feret(*source,*feret);
+    for(double value:*out.feret)if(!std::isfinite(value))throw std::invalid_argument("Feret ellipse result must be finite");
+    if(!descriptors)return out;
+  }
   const auto& s=*source;out.origin=moment_origin(s,width,height);out.rectangle=s.kind=="rectangle";
   if(s.kind=="rectangle" || s.kind=="ellipse") {
     const double x=std::trunc(std::min(s.points[0][0],s.points[1][0])),y=std::trunc(std::min(s.points[0][1],s.points[1][1]));
@@ -392,6 +473,8 @@ AreaShapeGeometry prepare_area_shape_geometry(const Selection* source,int width,
   auto vertices=fit_rectangle_vertices(s,width,height,limits);
   if(vertices.empty())return out;
   auto hull=ordered_hull(std::move(vertices),true,true);
+  if(feret && s.kind!="ellipse")out.feret=hull_feret(hull,*feret);
+  if(!descriptors)return out;
   std::uint32_t area=0;
   auto rounded=[](double v){return std::uint32_t(std::int64_t(std::clamp(std::floor(double(float(v))+.5),double(std::numeric_limits<std::int32_t>::min()),double(std::numeric_limits<std::int32_t>::max()))));};
   for(std::size_t i=0;i<hull.size();++i){kernel_checkpoint_periodic();const auto& a=hull[i];const auto& b=hull[(i+hull.size()-1)%hull.size()];area+=(rounded(a[0])+rounded(b[0]))*(rounded(a[1])-rounded(b[1]));}

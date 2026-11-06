@@ -29,6 +29,73 @@ struct Source final:PlaneSource {
 }
 int main(){
   {
+    struct FeretCase {const char* kind;std::vector<std::array<double,2>> points;bool fitted,traced;std::array<double,2> spacing;std::array<double,5> expected;};
+    const std::vector<FeretCase> cases={
+      {"whole_image",{},false,false,{1,1},{56.568542494923804,40,135,0,0}},
+      {"whole_image",{},false,false,{2,0.5},{56.568542494923804,40,135,0,0}},
+      {"rectangle",{{3,3},{13,11}},false,false,{1,1},{12.806248474865697,8,141.34019174590992,3,3}},
+      {"rectangle",{{3,3},{13,11}},false,false,{2,0.5},{20.396078054371138,4,168.69006752597977,3,3}},
+      {"ellipse",{{3,3},{13,11}},false,false,{1,1},{10,8,0,3,7}},
+      {"ellipse",{{3,3},{13,11}},false,false,{2,0.5},{20,4,0,6,3.5}},
+      {"polygon",{{3,3},{13,3},{9,11}},false,false,{1,1},{10,8,126.86989764584402,3,3}},
+      {"polygon",{{3,3},{13,3},{9,11}},false,false,{2,0.5},{20,4,0,3,3}},
+      {"polygon",{{3,3},{13,3},{13,7},{8,7},{8,11},{3,11}},false,false,{1,1},{12.806248474865697,8,38.659808254090095,3,11}},
+      {"polygon",{{3,3},{13,3},{13,7},{8,7},{8,11},{3,11}},false,false,{2,0.5},{20.396078054371138,4,11.309932474020215,3,11}},
+      {"rectangle",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,{1,1},{13.150285140452567,8.3000001907348633,140.86387018601474,3.2000000476837158,4.6999998092651367}},
+      {"rectangle",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,{2,0.5},{20.81784055149777,4.1500000953674316,168.50115063998516,3.2000000476837158,4.6999998092651367}},
+      {"ellipse",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,{1,1},{11,9,0,3,8.5}},
+      {"ellipse",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,{2,0.5},{22,4.5,0,6,4.25}},
+      {"rectangle",{{-2.7000000000000002,-1.2},{2.3999999999999995,3.2000000000000002}},false,false,{1,1},{6.7357259987491149,4.4000000953674316,139.21417870338706,-2.7000000476837158,-1.2000000476837158}},
+      {"rectangle",{{-2.7000000000000002,-1.2},{2.3999999999999995,3.2000000000000002}},false,false,{2,0.5},{10.43455872443937,2.2000000476837158,167.82854186669013,-2.7000000476837158,-1.2000000476837158}},
+      {"rectangle",{{60,60},{64,64}},false,false,{1,1},{5.6568542494923806,4,135,60,60}},
+      {"rectangle",{{60,60},{64,64}},false,false,{2,0.5},{8.2462112512353212,2,165.96375653207352,60,60}},
+      {"ellipse",{{60,60},{64,64}},false,false,{1,1},{4,4,0,60,62}},
+      {"ellipse",{{60,60},{64,64}},false,false,{2,0.5},{8,2,0,120,31}},
+      {"rectangle",{{3,3},{4,4}},false,false,{1,1},{1.4142135623730951,1,135,3,3}},
+      {"rectangle",{{3,3},{4,4}},false,false,{2,0.5},{2.0615528128088303,0.5,165.96375653207352,3,3}},
+      {"rectangle",{{3,3},{4,17}},false,false,{1,1},{14.035668847618199,1,94.08561677997487,3,3}},
+      {"rectangle",{{3,3},{4,17}},false,false,{2,0.5},{7.2801098892805181,2,105.94539590092285,3,3}},
+      {"polygon",{{3,3},{4,3},{5,3}},false,false,{1,1},{2,0,0,3,3}},
+      {"polygon",{{3,3},{4,3},{5,3}},false,false,{2,0.5},{4,0,0,3,3}},
+      {"polygon",{{3,3},{13,3},{13,13},{3,13}},true,false,{1,1},{14.139979053786409,13.742882792372066,45.000006148107872,3.0764639377593994,13.074938774108887}},
+      {"polygon",{{3,3},{13,3},{13,13},{3,13}},true,false,{2,0.5},{27.487765367547677,6.8715723147404244,179.88599433003395,1.1302516460418701,7.8330926895141602}},
+      {"freehand",{{3.2000000476837158,4.6999998092651367},{13.800000190734863,3.0999999046325684},{9.3999996185302734,14.199999809265137}},false,true,{1,1},{11.940268569175016,9.264448738517812,68.376802837290896,9.3999996185302734,14.200000762939453}},
+      {"freehand",{{3.2000000476837158,4.6999998092651367},{13.800000190734863,3.0999999046325684},{9.3999996185302734,14.199999809265137}},false,true,{2,0.5},{21.215089730480507,5.214213754450487,2.1610793304011708,3.2000000476837158,4.6999998092651367}}
+    };
+    for(const auto& value:cases) {
+      SpatialCalibration spatial;spatial.spacing={value.spacing[0],value.spacing[1],1};spatial.origin={-14.5,3.5,0};spatial.unit="um";
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},spatial).observe_reads(reads));
+      const bool whole=std::string(value.kind)=="whole_image";
+      if(!whole){Selection selection(value.kind,value.points);if(value.traced)selection=with_selection_polygon_type(selection,SelectionPolygonType::Traced);if(value.fitted)selection=fit_spline_selection(selection,40,40);owner->select(selection);}
+      Application app;app.adopt(owner);TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.feret=true;
+      const auto command=resolve_target_analysis(app.resolve_target(),options);check(reads.counts().plane_reads==0 && command.options().feret);
+      check(command.record().at("version")==MetadataValue(std::int64_t(13)));
+      owner->select(Selection("rectangle",{{0,0},{1,1}}));const auto frozen=owner->snapshot();const auto result=execute_target_analysis(command);const auto& row=result.planes.front();
+      check(row.feret && row.min_feret && row.feret_angle && row.feret_x && row.feret_y);
+      const std::array<double,5> actual{*row.feret,*row.min_feret,*row.feret_angle,*row.feret_x,*row.feret_y};
+      for(std::size_t i=0;i<5;++i){if(std::abs(actual[i]-value.expected[i])>1e-10)std::cerr<<value.kind<<" Feret column "<<i<<" got "<<actual[i]<<" expected "<<value.expected[i]<<std::endl;check(std::abs(actual[i]-value.expected[i])<1e-10);}
+      check(row.feret_in_pixels==whole && row.feret_coordinates_scaled==(std::string(value.kind)=="ellipse"));
+      check(!row.circularity && reads.counts().plane_reads==1 && owner->snapshot().shares_data(frozen) && owner->undo_steps()==0);
+      TargetAnalysisLimits limits;limits.max_measurement_work=1;refuses<std::invalid_argument>([&]{resolve_target_analysis(command.target(),options,limits);});check(reads.counts().plane_reads==1);
+      options.shape_descriptors=true;const auto combined=execute_target_analysis(resolve_target_analysis(command.target(),options));
+      check(combined.planes.front().feret==row.feret && combined.planes.front().circularity.has_value());
+    }
+    for(const char* kind:{"rectangle","ellipse"}) {
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_stack({Image(40,40,1,PixelType::UInt8)}).observe_reads(reads));owner->select(Selection(kind,{{0,0},{1e100,10}}));Application app;app.adopt(owner);
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.feret=true;
+      refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target(),options);});check(reads.counts().plane_reads==0);
+    }
+    for(const char* kind:{"rectangle","ellipse"}) {
+      SpatialCalibration spatial;spatial.direction={1,1,0,0,1,0,0,0,1};
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},spatial).observe_reads(reads));owner->select(Selection(kind,{{3,3},{13,11}}));Application app;app.adopt(owner);
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.feret=true;
+      const auto result=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options));const auto& row=result.planes.front();
+      if(std::string(kind)=="rectangle"){check(std::abs(*row.feret-std::sqrt(388.))<1e-11);check(std::abs(*row.min_feret-std::sqrt(50.))<1e-11);}
+      else {check(std::abs((*row.feret)*(*row.min_feret)-80.)<1e-10);check(*row.feret>10 && *row.min_feret>0);}
+      check(reads.counts().plane_reads==1);
+    }
+  }
+  {
     for(const char* kind:{"rectangle","ellipse"}) {
       DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_stack({Image(40,40,1,PixelType::UInt8)}).observe_reads(reads));
       owner->select(Selection(kind,{{0,0},{1e100,10}}));Application app;app.adopt(owner);TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.shape_descriptors=true;

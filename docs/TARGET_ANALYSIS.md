@@ -507,15 +507,41 @@ moment pass, without another mask allocation or provider read. No pixels/source
 handles survive in descriptor results.
 [Scoped shape evidence](parity/reviews/shape-descriptors-20261106.json).
 [Scoped centroid evidence](parity/reviews/area-centroid-20261106.json) and
-[weighted evidence](parity/reviews/center-of-mass-20261106.json). Feret, RECT/ELLIPSE columns,
-threshold/redirect and remaining variants stay open.
+[weighted evidence](parity/reviews/center-of-mass-20261106.json).
+
+`TargetAnalysisOptions.feret=True` in SELECTION/ROI_MANAGER requests readonly
+optional `feret`, `min_feret`, `feret_angle`, `feret_x`, `feret_y` together. It
+also defaults false, supports ordinary/fitted area and rejects unsupported kinds
+or generic AREA/profile mode before provider reads. Selecting any canonical
+Feret/MinFeret/FeretAngle/FeretX/FeretY or companion unit column requests it in
+both hosts. Requested diagnostic version13 includes `feret_policy`.
+
+Generic hull coordinates retain ImageJ Float32/tie ordering and raw image
+FeretX/Y. Ellipses instead use OvalRoi's analytic integer-box axes and
+spacing-scaled image endpoints: `feret_coordinates_scaled=True` identifies
+that convention. Origin and coordinate inversion do not affect either legacy
+endpoint convention. Analyzer's no-ROI fallback leaves both lengths in pixels,
+identified by `feret_in_pixels=True`; selected rows use the captured spatial
+unit. Existing UI/CSV companion columns expose these units. Native nonorthogonal
+calibration uses an orthonormal local image-plane basis for physical widths and
+angle; the ellipse uses its transformed analytic axes. This affine extension is
+separate from original Java evidence. Angles are degrees relative to local image
+X with the original inverted-image-Y convention, independent of world origin.
+
+Quadratic caliper work and peak geometry are admitted before preparation/source
+reads. Combined descriptor/Feret requests reuse one actual hull; Feret-only
+ellipses skip hull/moment work. Detached results retain scalar summaries only.
+Original675 cases,51matching Windows host pairs, grouped/global/frozen/read/cancel/
+stale/CSV/workspace checks and installed C++ consumers have scoped evidence in
+[the Feret receipt](parity/reviews/feret-measurements-20261106.json).
+RECT/ELLIPSE output columns, threshold/redirect and remaining variants stay open.
 
 
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
 | `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Point properties/vertex alignment are scoped delivered; interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
-| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set. Feret, RECT/ELLIPSE, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
+| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set; the five Feret columns and companion units request the explicit Feret set. RECT/ELLIPSE, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
 | `reflex_angle` | Boolean false by default; shared Preferences control/API/persistence, captured once per measurement. True selects 360 minus the refreshed calibrated angle. |

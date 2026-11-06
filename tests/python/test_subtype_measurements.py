@@ -216,7 +216,7 @@ def test_physical_subtype_measure_csv_and_workspace(tmp_path, profile):
     report = json.loads(editor._subtype_measurement_ui_case(str(directory), profile))
     assert report == json.loads((directory / "case.json").read_bytes())
     if profile == 0:
-        assert report["descriptor_refusal_checked"]
+        assert report["descriptor_refusal_checked"] and report["feret_refusal_checked"]
     assert report["context"] == "imgui_python"
     assert report["columns"] == ["ROI", "Area", "Length", "Perim.", "Unit"]
     assert report["cancel_preserved"] and report["workspace_preserved"]

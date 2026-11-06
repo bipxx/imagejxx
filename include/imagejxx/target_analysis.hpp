@@ -23,6 +23,8 @@ struct TargetAnalysisOptions {
   bool reflex_angle = false;
   // Explicit ordinary-area Circ./AR/Round./Solidity request; old scalar defaults stay unchanged.
   bool shape_descriptors = false;
+  // Explicit ordinary-area five-column Feret request; frozen during preparation.
+  bool feret = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -68,6 +70,11 @@ struct TargetAnalysisPlane {
   std::optional<std::array<double,3>> center_of_mass_world;
   // Present together for an explicit shape_descriptors request.
   std::optional<double> circularity,aspect_ratio,roundness,solidity;
+  // Present together only for feret. Angle uses the local calibrated image plane.
+  std::optional<double> feret,min_feret,feret_angle,feret_x,feret_y;
+  // Analyzer whole-image fallback uses pixels; generic endpoints are raw image
+  // coordinates, while OvalRoi endpoints use spacing-scaled image coordinates.
+  bool feret_in_pixels=false,feret_coordinates_scaled=false;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image
