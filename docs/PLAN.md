@@ -10,7 +10,8 @@ workflow coverage. Fit Circle and Fit Ellipse now have scoped API/both-host
 evidence. Minimum-area Fit Rectangle and editable spline fitting/removal now
 have scoped API/both-host evidence; ordinary-source selection interpolation now
 has the same scoped coverage. Compound/curved interpolation now preserves
-components and holes with scoped API/both-host checks.
+components and holes with scoped API/both-host checks. Point interpolation now
+preserves annotations through an actual no-op in both hosts.
 Local cleanup retired scratch and compiler
 intermediates; preserve existing configured caches/products and rebuild only
 for changed compiler inputs or a demonstrated verification dependency.
@@ -133,7 +134,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T06/G018: editable spline fitting/removal. |56 pinned observations (2 refusals);71 focused spline cases and2209 distinct affected Windows Python IDs ultimately pass. Windows/Linux core, installed Windows SDK, both physical hosts and50 shared fit lifecycle scenarios pass. [Receipt](parity/reviews/selection-spline-20261105.json). Constructor/attachment/magnification variants, intent macros and remaining platform qualification stay open. |
 | Delivered scoped workflow | T06/G018: ordinary-source selection interpolation. |194 actual-command observations:188 matching sample arrays,4 upstream invalid-interval refusals and2 explicit native one-vertex-area refusals.206 focused and2425 distinct affected Windows Python IDs ultimately pass;Windows/Linux core,installed Windows SDK,both physical hosts and60 shared lifecycle scenarios pass. [Receipt](parity/reviews/selection-interpolation-20261105.json). No full-source or family closure. |
 | Delivered scoped workflow | T06/G018: compound/curved interpolation profiles. |96 observations (84 preserved plus12 direct single-shape cases);2060 distinct affected Windows Python IDs ultimately pass. Windows/Linux core,installed Windows SDK,16 physical workflows and80 shared lifecycle scenarios pass. Holes/components,mask boundaries and actual Measure/workspace pass. [Receipt](parity/reviews/interpolation-compound-20261105.json). Native even-odd composition deliberately preserves topology where upstream subtraction loses it. |
-| Active next | T06/G018: repeated-source/type, zoom and degenerate interpolation semantics. | Observe actual two-command outputs and attached zoom context first;preserve meaningful type/provenance across edit,workspace and replay. Close point no-op and degenerate-area behavior without weakening history or geometry contracts. |
+| Delivered scoped workflow | T06/G018: point interpolation no-op. | Core/API and actual menus in both Windows hosts preserve annotated point/multipoint state without dialog,job,history,recording or extra pixel reads.344 affected Python cases (14new),4physical point cases,Windows/Linux core andWindows installed SDK pass. [Receipt](parity/reviews/interpolation-point-noop-20261105.json).120two-command reference rows inform remaining source/type/zoom work;only4point rows are claimed equivalent here. |
+| Active next | T06/G018: repeated-source/type, zoom and degenerate interpolation semantics. | Reuse120actual two-command observations and attached zoom context;preserve meaningful type/provenance across edit,workspace and replay. Degenerate-area representation remains required. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -817,8 +819,11 @@ transactions and V5/NativePathV4 persistence/rebind routes. Freeze the actual
 representation contract before editing; no cosmetic provenance flag that does
 not change repeated-command behavior.
 
-1. Observe two successive actual commands for polygon/freehand, FREELINE/TRACED,
-   single/compound ShapeRoi, point/multipoint and near-degenerate areas. Capture
+1. Reuse the120 accepted actual two-command observations in
+   tests/fixtures/interpolation-repeat-imagej154r.json;the original observer
+   supplies a real ImageCanvas to ImagePlus for the zoom branch. Only4point rows
+   have product-equivalence checks so far. Cover polygon/freehand,FREELINE/TRACED,
+   single/compound ShapeRoi and near-degenerate areas. Capture
    kind, controls, sampled arrays, masks, signed interval/Smooth/Adjust and
    attached ImagePlus magnification below/at/above the actual type threshold.
    Read Selection.interpolate plus Roi/PolygonRoi subtype and display context
@@ -829,8 +834,8 @@ not change repeated-command behavior.
    program validators, V5 workspace, Python getters and both host call sites.
    If changing a public layout/schema is necessary, specify compatibility and
    legacy refusal before editing, then rebuild affected installed consumers.
-   Retain point annotations for a no-op and explicitly decide whether no-op
-   creates history/recording; test the existing transaction policy. Represent
+   Point no-op is scoped delivered below,without history/recording. Preserve
+   that early return and its metadata/cap/cancellation checks. Represent
    degenerate outputs honestly or retain a documented required gap.
 3. Reuse the current sampler, captured worker and dialogs. Verify repeated
    Apply after actual edits, option combinations and zoom/type transitions,
@@ -840,6 +845,24 @@ not change repeated-command behavior.
    runtime paths, focused regressions and changed installed-client checks;
    preserve failed diagnostics, retain SDK scratch through final review, then
    retire terminal groups serially and measure storage before the successor.
+
+Point no-op scoped increment: point/multipoint return before interval validation
+and before UI dialog/capture/jobs. Existing native admission,source freeze and
+cancellation remain;annotations/styles survive.344 affected Python cases
+(14new),4physical point cases, Windows/Linux core andWindows installed SDK pass.
+[Receipt](parity/reviews/interpolation-point-noop-20261105.json). This does not
+close the active repeated-source/type,zoom and degenerate representation exit.
+
+Waste/cleanup: inspect exposed mutability before assertions (Python points are
+readonly detached copies). The independent report reader initially assumed
+nested attributes;selectionJson flattens metadata. Corrected only that reader;
+no green build/test campaign repeated. One coherent Windows batch andone Linux
+batch passed. Measured known growth4,917,009B stayed within128MiB additional
+allowance;214 inaccessible subtrees keep complete budget unverified. Three
+necessary capture/reference groups live-hash archived,emptycompilerTEMP removed,
+SDKconsumer identity-only;all owned scratch retired before further work.
+Next entry reuses the120rows andsettles actual subtype/codec/interchange state
+before another shared build,no cosmetic metadata flag.
 
 Next ready successor: T15 last-used Interval/Smooth/Adjust settings for the same
 dialog, using existing settings registry/persistence and explicit option values

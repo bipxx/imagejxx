@@ -152,5 +152,15 @@ int main(){try{
   const auto pathHistogram=accumulate_dataset_histogram(pathHistogramData,pathHistogramRequest,pathHistogramLimits);
   check(pathHistogram.visited_count==84 && pathHistogramReads.counts().plane_reads==1,"Path histogram lost area/hole membership or single plane capture");
   std::cout<<"PASS Native path histogram admission,exact/short caps and single provider read\n";
+  auto pointNoop=with_point_annotations(Selection("multipoint",{{4.5,6.25},{13,14}}),{PointAnnotation{7,PlanePosition{0,0,1}},PointAnnotation{2,{}}});
+  const auto originalPoints=pointNoop;SelectionInterpolationOptions ignoredPointOptions;ignoredPointOptions.interval=0;
+  SelectionEditLimits pointNoopLimits;pointNoopLimits.max_working_bytes=estimate_interpolated_selection(pointNoop,16,16,ignoredPointOptions);
+  check(interpolate_selection(pointNoop,16,16,ignoredPointOptions,pointNoopLimits)==originalPoints,"Point no-op changed annotations/geometry");
+  --pointNoopLimits.max_working_bytes;int pointNoopCalls=0;ExecutionControl pointNoopControl;pointNoopControl.checkpoint=[&]{++pointNoopCalls;};
+  refuses([&]{interpolate_selection(pointNoop,16,16,ignoredPointOptions,pointNoopLimits,pointNoopControl);});
+  check(pointNoopCalls==0,"Short point no-op cap reached callbacks");++pointNoopLimits.max_working_bytes;
+  pointNoopControl.checkpoint=[&]{pointNoop=Selection("rectangle",{{1,1},{4,4}});};
+  check(interpolate_selection(pointNoop,16,16,ignoredPointOptions,pointNoopLimits,pointNoopControl)==originalPoints,"Point no-op callback redirected source");
+  std::cout<<"PASS Point interpolation no-op preserves annotations,exact/short caps and frozen callbacks\n";
   return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

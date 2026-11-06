@@ -757,6 +757,37 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
 }
 
 
+Json interpolationPointNoopUiCase(Window& w,const std::string& context,const std::string& directory,bool multiple) {
+  const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
+  require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh point no-op fixture required");
+  std::filesystem::create_directories(dir);
+  Selection points(multiple?"multipoint":"point",multiple?std::vector<std::array<double,2>>{{4.5,6.25},{13,17}}:std::vector<std::array<double,2>>{{4.5,6.25}});
+  points=with_point_annotations(points,std::vector<PointAnnotation>(points.points.size(),PointAnnotation{7,PlanePosition{0,0,1}}));
+  DatasetReadObserver reads;
+  DocumentData data{Dataset::from_stack({Image(40,40,1,PixelType::UInt8),Image(40,40,1,PixelType::UInt8)}).observe_reads(reads)};
+  data.selection=points;auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);w.recording=true;
+  HeadlessInputSession session(w);Json last,events=Json::array(),controls=Json::array();
+  try {
+    auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);require(w.error().empty(),"Point no-op frame failed");};
+    auto click=[&](const std::string& name){
+      const auto control=last.at("host_controls").at(name);require(control.at("enabled").get<bool>(),"Point interpolation menu disabled");controls.push_back({{"name",name},{"control",control}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+      for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+    };
+    for(int i=0;i<3;++i)frame();const auto original=owner->snapshot();const auto initialReads=reads.counts().plane_reads;
+    for(int attempt=0;attempt<2;++attempt) {
+      for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection","menu.action.show_interpolate_selection"})click(name);
+      require(!last.at("dialog").value("open",false) && !w.busy(),"Point no-op opened dialog/job");
+    }
+    w.action("interpolate_selection",{{"interval",0},{"smooth",true},{"adjust_to_match",true}});
+    const auto usage=session.fixtureApplication().job_scheduler()->usage();
+    require(owner->snapshot().shares_data(original) && owner->undo_steps()==0 && w.workflow.empty(),"Point no-op changed document/history/recording");
+    require(reads.counts().plane_reads==initialReads && usage.reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Point no-op read samples/retained worker storage");
+    Json report={{"state","observed"},{"context",context},{"multiple",multiple},{"selection",selectionJson(points)},{"same_data",true},{"undo_steps",owner->undo_steps()},{"record_count",w.workflow.size()},{"additional_plane_reads",reads.counts().plane_reads-initialReads},{"events",events},{"controls",controls}};
+    writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",controls}});throw;}
+}
+
 Json interpolationComponentsUiCase(Window& w,const std::string& context,const std::string& directory,int profile,bool configured) {
   require(profile>=0 && profile<=3,"Unknown interpolation source profile");
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));

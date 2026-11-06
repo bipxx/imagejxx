@@ -772,12 +772,22 @@ CompoundInterpolationPlan compound_interpolation_plan(const Selection& source,in
 }
 std::size_t estimate_interpolated_selection(const Selection& source,int width,int height,
     const SelectionInterpolationOptions& options,const SelectionEditLimits& limits) {
+  if(source.kind=="point" || source.kind=="multipoint")
+    return detail::admit_selection_geometry(source,width,height,limits,{});
   return compound_interpolation_source(source)?compound_interpolation_plan(source,width,height,options,limits,{}).bytes:
       interpolation_plan(source,width,height,options,limits,{}).bytes;
 }
 Selection interpolate_selection(const Selection& source,int width,int height,
     const SelectionInterpolationOptions& options,const SelectionEditLimits& limits,const ExecutionControl& control) {
   const auto frozen_options=options;const auto frozen_limits=limits;const auto frozen_control=control;
+  // ImageJ returns POINT before options/dialog processing. Preserve all point
+  // metadata, but retain native admission, frozen input and cancellation.
+  if(source.kind=="point" || source.kind=="multipoint") {
+    detail::admit_selection_geometry(source,width,height,frozen_limits,frozen_control);
+    Selection result=source;
+    ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);
+    kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
+  }
   if(compound_interpolation_source(source)) {
     auto plan=compound_interpolation_plan(source,width,height,frozen_options,frozen_limits,frozen_control);
     ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();

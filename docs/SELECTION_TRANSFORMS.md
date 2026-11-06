@@ -298,8 +298,19 @@ raw pixels pass; shared native-path histogram/analysis admission accounts for
 retained geometry and bounded mask scratch before provider access.
 
 Next T06 work is repeated-command source/type and zoom/degenerate semantics.
-Point no-op, native source/output-type provenance for repeated commands, high-
-zoom context, degenerate-area representation and scientific/saved-row consumers
+Point/multipoint interpolation is now an explicit no-op. Both hosts return
+before opening a dialog or capturing/starting a job,without document/history/
+recording changes or extra provider reads after initial display. Direct native/
+Python calls preserve all metadata and ignore interval values for these sources,
+while retaining configured byte/vertex admission,frozen inputs and cancellation.
+[Point evidence](parity/reviews/interpolation-point-noop-20261105.json):
+4actual two-command identity observations,14new/344affected Python cases,
+4physical both-host cases, Windows/Linux core andWindows installed SDK pass.
+The120-row repeat/zoom reference carrier also records116other cases;those are
+reference evidence for remaining work,not verified product equivalence.
+
+Native source/output-type provenance for repeated commands, high-zoom context,
+degenerate-area representation and scientific/saved-row consumers
 remain open. T15 owns last-used GUI options; T09 operation-intent macros and
 T14 Linux installed-client/remaining platform UI/release qualification remain.
 Historical reference gates stay unavailable rather than passed or repinned.

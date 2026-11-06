@@ -1938,7 +1938,8 @@ struct Window::Impl {
     if(action=="show_interpolate_selection" || action=="interpolate_selection") {
       const auto captured=source->nativeSnapshot();const auto& selected=captured.data().selection;
       if(!selected || captured.display().orthogonal || owner.busy() || owner.controller_->active_document_id()!=source->id)return false;
-      return selected->kind=="polygon" || selected->kind=="polyline" || selected->kind=="freehand" || selected->kind=="line" || selected->kind=="rectangle" ||
+      return selected->kind=="point" || selected->kind=="multipoint" ||
+          selected->kind=="polygon" || selected->kind=="polyline" || selected->kind=="freehand" || selected->kind=="line" || selected->kind=="rectangle" ||
           selected->is_path() || selected->is_mask() || selected->is_rounded_box() || selected->kind=="ellipse" || selected->kind=="rotated_ellipse" || selected->kind=="rotated_rectangle";
     }
     if(action=="show_fit_spline" || action=="fit_spline_selection" || action=="remove_spline_fit") {
@@ -7831,6 +7832,7 @@ void Window::action(const std::string &name, const Json &p) {
     if(busy() || source.id()!=controller_->active_document_id() || source.display().orthogonal || !source.data().selection)
       throw std::invalid_argument("Interpolate requires the idle active XY selection");
     const auto& selected=*source.data().selection;
+    if(selected.kind=="point" || selected.kind=="multipoint")return;
     if(selected.kind!="polygon" && selected.kind!="polyline" && selected.kind!="freehand" && selected.kind!="line" && selected.kind!="rectangle" &&
         !selected.is_path() && !selected.is_mask() && !selected.is_rounded_box() && selected.kind!="ellipse" && selected.kind!="rotated_ellipse" && selected.kind!="rotated_rectangle")
       throw std::invalid_argument("Interpolate requires supported continuous or mask geometry");

@@ -908,7 +908,8 @@
           "docs/parity/reviews/selection-fit-rectangle-20261105.json",
           "docs/parity/reviews/selection-spline-20261105.json",
           "docs/parity/reviews/selection-interpolation-20261105.json",
-          "docs/parity/reviews/interpolation-compound-20261105.json"
+          "docs/parity/reviews/interpolation-compound-20261105.json",
+          "docs/parity/reviews/interpolation-point-noop-20261105.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
@@ -978,7 +979,10 @@
           "tests/fixtures/selection-interpolation-imagej154r.json",
           "tests/python/test_interpolation_compound.py",
           "tests/reference/ObserveInterpolationComponents.java",
-          "tests/fixtures/interpolation-components-imagej154r.json"
+          "tests/fixtures/interpolation-components-imagej154r.json",
+          "tests/python/test_interpolation_repeat.py",
+          "tests/reference/ObserveInterpolationRepeat.java",
+          "tests/fixtures/interpolation-repeat-imagej154r.json"
         ]
       },
       "id": "G018",
