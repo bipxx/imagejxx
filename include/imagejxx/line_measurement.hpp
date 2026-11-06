@@ -2,6 +2,18 @@
 #include <imagejxx/calibrated_analysis.hpp>
 
 namespace imagejxx {
+struct Selection;
+// PolygonRoi.getLength for ordinary polygon/freehand/polyline subtypes, including
+// FREELINE smoothing, automatic traced polygons and explicit TRACED_ROI.
+// Constructor precision is explicit: integer coordinates must be integral Int32;
+// Float32-relative coordinates are the default. A float TRACED_ROI returns NaN,
+// as upstream does when its integer coordinate array is absent. No source reads.
+// Working bound is 8192 + 16*vertex_count bytes, excluding borrowed input and RSS.
+// The spatial affine transforms segment vectors; traced correction uses axis
+// lengths. Origin is irrelevant. 1..4096 vertices; other ROI kinds are refused.
+double imagej_calibrated_polygon_length(const Selection&,const SpatialCalibration&,
+    bool integer_coordinates=false,std::size_t max_working_bytes=128ULL*1024*1024);
+
 struct ImageJLineMeasurement {
   ImageJScalarStatistics statistics;
   double length = 0, angle_degrees = 0;

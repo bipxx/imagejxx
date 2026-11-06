@@ -5,6 +5,7 @@
 #include <imagejxx/selection_transform.hpp>
 #include <imagejxx/selection_spline.hpp>
 #include <imagejxx/selection_interpolation.hpp>
+#include <imagejxx/line_measurement.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <utility>
@@ -88,6 +89,10 @@ void bind_selection_creation(py::module_ &m) {
       .value("POLYGON",SelectionPolygonType::Polygon).value("FREEHAND",SelectionPolygonType::Freehand)
       .value("TRACED",SelectionPolygonType::Traced).value("POLYLINE",SelectionPolygonType::Polyline)
       .value("FREELINE",SelectionPolygonType::Freeline);
+  m.def("imagej_calibrated_polygon_length", &imagej_calibrated_polygon_length,
+      py::arg("selection"),py::arg("spatial"),py::kw_only(),
+      py::arg("integer_coordinates").noconvert()=false,
+      py::arg("max_working_bytes")=128ULL*1024*1024);
   m.def("selection_polygon_type",&selection_polygon_type,py::arg("selection"));
   m.def("with_selection_polygon_type",&with_selection_polygon_type,py::arg("selection"),py::arg("type"));
   py::class_<SelectionInterpolationOptions>(m,"SelectionInterpolationOptions")

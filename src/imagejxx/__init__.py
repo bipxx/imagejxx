@@ -1777,6 +1777,7 @@ from ._native import (
     imagej_calibrated_statistics as imagej_calibrated_statistics,
     imagej_calibrated_line_measurement as imagej_calibrated_line_measurement,
     imagej_calibrated_polyline_measurement as imagej_calibrated_polyline_measurement,
+    imagej_calibrated_polygon_length as imagej_calibrated_polygon_length,
     imagej_calibrated_irregular_profile as imagej_calibrated_irregular_profile,
     imagej_calibrated_angle as imagej_calibrated_angle,
     imagej_line_bounds as imagej_line_bounds,

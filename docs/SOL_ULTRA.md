@@ -20,7 +20,9 @@ PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
 verified in both Windows hosts. Scientific TIFF reslice/export now preserves
 world/time transforms. Vertex Convex Hull has scoped API/both-Windows-host
 evidence. Bounding Rectangle now has scoped API/both-host checks too; next
-is T04a.2 M3/T06 subtype-sensitive scientific length/perimeter. T15 remembered
+is T04a.2 M3/T06 subtype-sensitive scientific length/perimeter. Its explicit-
+constructor metric API is qualified; constructor-state/captured Measure and
+both-host integration remain active. T15 remembered
 Interpolate options have scoped native settings and both-host integration.
 Repeated-source/type,zoom anddegenerate
 geometry now have scoped129-observation API/both-host evidence. Point no-op is scoped delivered;

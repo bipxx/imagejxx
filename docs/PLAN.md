@@ -140,7 +140,7 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T06/G018: point interpolation no-op. | Core/API and actual menus in both Windows hosts preserve annotated point/multipoint state without dialog,job,history,recording or extra pixel reads.344 affected Python cases (14new),4physical point cases,Windows/Linux core andWindows installed SDK pass. [Receipt](parity/reviews/interpolation-point-noop-20261105.json).120two-command reference rows inform remaining source/type/zoom work;only4point rows are claimed equivalent here. |
 | Delivered scoped workflow | T06/G018: repeated-source/type, zoom and degenerate interpolation. |115 comparable actual two-command rows across129observations,including149/150/151sample boundaries;14rows retain explicit native compound/empty policies.1923distinct affected Python IDs ultimately pass;8physical repeat/edit/zoom cases,Windows/Linux native/session andWindows SDK pass. Typed state persists through edits,V5 andV4 rebind/ROI interchange. [Receipt](parity/reviews/interpolation-types-20261105.json). Scientific subtype lengths/perimeters andother parent residuals remain open. |
 | Delivered scoped workflow | T15: remembered Interpolate options. | Three native Settings keys drive both dialogs and omitted action values. Accepted options save before capture/launch; Cancel/stale/invalid/point no-op preserve preferences.613 distinct Python IDs pass; Windows/Linux native settings/preferences and both Windows UI hosts pass. [Receipt](parity/reviews/interpolation-settings-20261105.json). |
-| Active next | T04a.2 M3/T06: scientific subtype-sensitive lengths/perimeters. | Adopt pinned FREELINE/TRACED length semantics in current-plane Measure through existing geometry/analysis owners; qualify calibrated/native and both-host consumers. Other scientific variants keep their owners. |
+| Active | T04a.2 M3/T06: scientific subtype-sensitive lengths/perimeters. | Constructor-explicit metric API matches180observations;195focused/642distinct Python IDs andWindows/Linuxnative/WindowsSDK pass. Retain constructor precision, add captured area perimeter andboth-host Measure integration before closing this task. [Kernel evidence](parity/reviews/subtype-length-api-20261106.json). |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -886,7 +886,32 @@ Known storage7,396,916,972 -> measured checkpoint7,403,435,735 ->
 7,401,113,226 B after retirement before prose;6,518,763 B measured growth stayed
 under128MiB.214 unknown subtrees keep the complete budget unverified.
 
-**Active next: T04a.2 M3/T06 current-plane subtype lengths/perimeters.**
+**Active: T04a.2 M3/T06 current-plane subtype lengths/perimeters.**
+
+Kernel/API checkpoint: imagej_calibrated_polygon_length now exposes explicit
+integer versus Float32-relative constructor precision through C++/Python.
+180 pinned observations match,195 focused cases and642 distinct affected Python
+IDs pass; Windows/Linux native and Windows installed SDK controls pass.
+[Kernel evidence](parity/reviews/subtype-length-api-20261106.json). This does
+not finish the current task: captured Measure still loses the constructor
+profile and area results still lack perimeter publication/both-host coverage.
+The24 zero-extent upstream area cases drop their ROI and measure the whole
+image; keep that observation distinct from the established native retained-empty
+area policy. Do not silently turn an explicit empty native selection into a
+whole-image measurement.
+
+Next ready edit: retain constructor precision through existing polygon/ROI
+owners, then consume the qualified metric in existing captured analysis and
+result presentation. Float TRACED_ROI returns NaN; integer TRACED uses corner
+correction, so subtype alone cannot choose this branch. Inspect import source
+flags, source creation, geometry edits and V5/session/rebind ownership before
+choosing the smallest persistent representation. Keep old records explicit;
+do not guess missing historical precision or add a separate measurement engine.
+The configured SDK consumer at
+.tmp/manual-workflow-verification/subtype-measurement-20261105/scratch/sdk001
+(3,621,762 B at checkpoint) stays active for this task's pending source/allocation
+review and changed-contract checks; /root owns retirement after those finish.
+Terminal reference/Python scratch is retired with failure diagnostics retained.
 
 1. Inspect maintained analysis/geometry owners and actual Measure route; freeze
    signatures, consumed measurement/calibration options and unresolved IDs in

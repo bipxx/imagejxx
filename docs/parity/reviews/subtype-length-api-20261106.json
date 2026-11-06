@@ -1,0 +1,195 @@
+{
+  "schema": "imagejxx.scoped-delivery.1",
+  "task": "T04a.2 M3/T06 subtype measurement - explicit constructor metric checkpoint",
+  "base_commit": "e107912c1b6ee12c7a89ef03d047e0ba378cb976",
+  "state": {
+    "implemented": "New imagej_calibrated_polygon_length C++/Python scalar API with explicit integer/Float32-relative constructor choice.",
+    "verified": "180 pinned direct lengths,195focused/642distinctPythonIDs;Windows/LinuxnativeanalysisandWindowsinstalledSDKconsumer pass.",
+    "integrated": "Metric API exports installed and origins/bytes verified. Captured/current-plane Measure,sourceprecision retention,area perimeter field andbothhostUIintegration are still pending in the same active task.",
+    "task_closed": false,
+    "family_closed": false,
+    "release_ready": false,
+    "full_editor_closed": false
+  },
+  "contract": {
+    "signature": "double imagej_calibrated_polygon_length(const Selection&,const SpatialCalibration&,bool integer_coordinates=false,size_t max_working_bytes=128MiB)",
+    "python": "imagej_calibrated_polygon_length(selection,spatial,*,integer_coordinates=False,max_working_bytes=128MiB);strictBoolconstructorflag",
+    "admission": "1..4096 ordinary vertices. Borrowedinput;one relative-coordinate vector,8192+16*nbytes bound. Reject nonfinite/outsideFloat32before narrowing;integer mode requiresintegralInt32coordinates andInt32extent.",
+    "numeric": "PolygonRoi constructor samples:ordinary POLYGON/POLYLINE,FREEROI/FREELINE3point smoothing,explicitTRACED andautomaticrectilinearintegerPOLYGON tracing. Integeraddition has Java Int32 wrap withoutC++signedoverflow.",
+    "precision": "Constructorchoiceexplicit,notinferredfromsubtype. FloatTRACEDreturnsNaN whenupstreamintegerarrayabsent;integerTRACED usesnonadjacentcornercorrection.",
+    "spatial": "Segmentvectorsusecapturedspatialaffine;origindoesnotaffectlength,tracedcorrectionusesphysicalaxislengths. Identitydirection/unit+anisotropicspacing matchreferences;otheraffinesarenativeextensions.",
+    "ownership": "SynchronousscalarbindingholdsGIL andborrowsSelection;no source/provider oropaque metadata copy orPythonprocessingimplementation. Native kernel checkpoints reuseexistingowner.",
+    "compatibility": "Additivefunction/export;no existingstructlayout,defaultmeasurementbehavior,recordformat ordependencychange. UpdatedSDKheader/library installed."
+  },
+  "reference": {
+    "source": {
+      "application": "ImageJ1.54r",
+      "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+      "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+      "observer": "tests/reference/ObserveSubtypeMeasurements.java",
+      "observer_sha256": "4eea1f021fb9bbf01debf03aae4ea5873797fb4b144d23ce8bc2dbd27e21b70a"
+    },
+    "fixture": {
+      "path": "tests/fixtures/subtype-measurements-imagej154r.json",
+      "bytes": 120175,
+      "sha256": "83e16d34db94d50e13db7b57ebee2eec7326af10e67bdaff09f05f752f88233a"
+    },
+    "rows": 180,
+    "shape_count": 9,
+    "type_count": 5,
+    "constructors": 2,
+    "spacings": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        0.5
+      ]
+    ],
+    "direct_scalar_matches": 180,
+    "explicit_float_traced_nan_rows": 18,
+    "whole_image_Analyzer_fallback_rows": 24,
+    "context": "ActualImagePlusgetRoifalse onzero-extentarea cases:Analyzertablemeasuresfull40x40image whiledetachedPolygonRoi lengthis0/NaN. Native retainedemptyareapolicy remains;do notclaimall180Analyzerrows are equivalent to nativeMeasure.",
+    "retained_reference_groups": [
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/reference001-retirement.json",
+        "bytes": 439,
+        "sha256": "89883402f1ab3653d38ec945eff17bf3939b10b44a66eea9f990e0e7c978a7eb"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/reference002-retirement.json",
+        "bytes": 439,
+        "sha256": "2e4ceab8f23329e360f3fe9d7778a9122a3348e4a4b2bab2917cb63ef7c86656"
+      }
+    ]
+  },
+  "verification": {
+    "distinct_python_passed": 642,
+    "focused_metric_cases": 195,
+    "python_attempts": [
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/python001.xml",
+        "bytes": 151828,
+        "sha256": "ad46ac0cae5932786e596bc10d824f9ed251f6d80c6a2b00971ceb680ddb6c2a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/python002.xml",
+        "bytes": 33683,
+        "sha256": "3874864f2fb180da20cb28b342e745624db5b395f631626f20c890977092154b"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/python003.xml",
+        "bytes": 3962,
+        "sha256": "0b8cc502b10feb0f0da92bb86e46ff6a0a1028309f6ea4759522c6493b515c27"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/python004.xml",
+        "bytes": 30315,
+        "sha256": "c8e049f891dbb510ff98e036fa60016e18a298856c27e34c56a75076525b50a5"
+      }
+    ],
+    "failed_attempts": "python001182precallmutabilityerrors;python00224testcontextfailures;preservedasfailed,allcaseIDsrecovered. No numericaltolerances/expectedlengthschanged.",
+    "native": [
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/native-target004.process.json",
+        "bytes": 1831,
+        "sha256": "4cdaa140f325cbe942533c8d6bc71955fc7ee0b68a0617cc23cba25a14f65975"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/linux-native003.process.json",
+        "bytes": 1458,
+        "sha256": "56ca3f465f9ef98ad22957c8f81a913c35eeaa96680229bb595442bf8ba4ea2c"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/sdk-run004.process.json",
+        "bytes": 1921,
+        "sha256": "0e5e5e700628f9acecfc5e27a1f7bb0cd698a2107cc8ec622bb38fbda3e62682"
+      }
+    ],
+    "installed": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/installed-identities004.json",
+      "bytes": 1503,
+      "sha256": "70d9e0a7b7d7fb31b29029a1a40e422b13f8e126d0d6f3a0ef920dae8bccaeae"
+    },
+    "linux_identities": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/linux-identities003.json",
+      "bytes": 679,
+      "sha256": "f9794f38b081557546a97a291dc8ed97f308e7e9a43e9cccd33b70ff37784bed"
+    },
+    "unavailable": "No global retiredG016/gesture suite selected. No LinuxinstalledSDK/Python,newUI,orplatformreleaseclaim fromnativecontrols."
+  },
+  "cleanup": {
+    "terminal_groups": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/kernel-retirement001.json",
+      "bytes": 870,
+      "sha256": "6bfd6937c2dfd30d2f523a1541b27e4fe81ed9aaeb7f1f361bd46ccc4d0595da"
+    },
+    "retained_consumer": {
+      "path": ".tmp/manual-workflow-verification/subtype-measurement-20261105/retained-consumer001.json",
+      "bytes": 16921,
+      "sha256": "500f219b400780c569981f07576bbba09c76db93e2a72e41fa60aeeb8713ce58"
+    },
+    "retained_path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\subtype-measurement-20261105\\scratch\\sdk001",
+    "retained_bytes": 3621762,
+    "owner": "/root",
+    "reason": "Existing configured consumer remains active for this task pendingconstructor/captured/UIpubliccontractsource-allocationreview andrequiredinstalledchecks;retireafterthosefinish.",
+    "caches": "Warmactivecompiler/runtime/SDK remain;noenvironment/wholecachearchive,noLinuxscratchcreated."
+  },
+  "storage": {
+    "entry_known_bytes": 7401207027,
+    "pre_retirement_known_bytes": 7406575143,
+    "after_retirement_before_prose": 7406604394,
+    "measured_peak_growth_bytes": 5397367,
+    "allocation_bound_bytes": 134217728,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_bytes": 251131338752
+  },
+  "waste": {
+    "decision": "Fix now:bind Selection metric in existing complete-type binding owner;construct immutable SpatialCalibration via actual keywords;separate directmetric fromactualAnalyzerROIretention;validateDoublebeforeFloat32narrowing. Reusedsuccessfulcorebuildafterbindingfix andonlyfailed/newfunctionIDsaftertest/guardcorrections. No newcontroller/runner orreferencebaselinechanges.",
+    "cost": "Windowscore4.783+2.659s;bindingattempt4.248failed+36.729+39.615s;nativecontrols3.130+1.197s. Mostfollowupcostwasnativeextensionrelink/compile;do complete actualheader/binding/reference-rowreviewbeforefirstbuild.",
+    "next": "Before next build inspect constructor flags/import/edit/session/rebind andallconsumedbindings/resultrow/probeschemas;reusequalifiedkernel andconfiguredconsumer.",
+    "task_record": ".tmp/manual-workflow-verification/subtype-measurement-20261105/entry.json (active/mutable;notapinnedhistoricalreceipt)"
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/line_measurement.hpp",
+      "bytes": 3779,
+      "sha256": "07966bbfcb7c03bb4ceae530791e526edc6f8822e6c86e17cc018051f0ab43e7"
+    },
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 30189,
+      "sha256": "a7ba77b8c3dfb4c3ce4f937ed5d86ca22464cd8aa2cab07a3272523619e4cdd8"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 28123,
+      "sha256": "e37d7695828babe014de6cdea2232e29ef0603d58e0ec3fab8418fb019fc8d58"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 83585,
+      "sha256": "5ea96d0c86db93cac7a72da9c22d26c266797b4e61196db918119735ccbdeb01"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 14852,
+      "sha256": "dd51ec7e87492274b99e53d60cbc91f1d586af4ede0ceef35433eb7a3f0bf5b7"
+    },
+    {
+      "path": "tests/python/test_subtype_measurements.py",
+      "bytes": 3534,
+      "sha256": "fb4ba4ce8cf7e81c621b6f9f5259977ed95ff35d68a27cb7c1b653cd27ecc0fa"
+    },
+    {
+      "path": "tests/reference/ObserveSubtypeMeasurements.java",
+      "bytes": 3269,
+      "sha256": "4eea1f021fb9bbf01debf03aae4ea5873797fb4b144d23ce8bc2dbd27e21b70a"
+    }
+  ],
+  "remaining_exit": "Current-plane Measure and C++/Python captured analysis report pinned subtype-sensitive length/perimeter in both Windows hosts, preserving pixel/statistics/history and cancellation/resource guarantees.",
+  "next_same_task": "Retainconstructorprecisioninexistingselection/ROIownership,thenwiremetricintosamecapturedanalysisandresultsadapterwithperimeterfieldandbothphysicalMeasurehosts;reuseexistingSDKconsumer. No successor started."
+}

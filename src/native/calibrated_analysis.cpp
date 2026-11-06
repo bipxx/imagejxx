@@ -1,5 +1,6 @@
 #include <imagejxx/calibrated_analysis.hpp>
 #include <imagejxx/line_measurement.hpp>
+#include <imagejxx/selection_interpolation.hpp>
 #include "imagej_intensity_function_value_internal.hpp"
 #include "calibrated_analysis_internal.hpp"
 #include "kernel_control.hpp"
@@ -333,6 +334,85 @@ ImageJPolylineMeasurement imagej_calibrated_polyline_measurement(const Image& im
   shape(im);density.validate_for(im.type,im.channels);const auto plan=polyline_plan(im.width,im.height,im.type,spatial,points,maximum,work);
   pixels(im);auto values=irregular_values(im,density,table(density),plan,interpolate);
   return {profile_statistics(std::move(values),spatial,maximum),plan.estimate.length,plan.estimate.bounds};
+}
+double imagej_calibrated_polygon_length(const Selection& source,const SpatialCalibration& spatial,
+    bool integers,std::size_t maximum) {
+  spatial.validate();
+  const auto type=selection_polygon_type(source);
+  const auto n=source.points.size();
+  if(!type || !n || n>4096)throw std::invalid_argument("Polygon length requires 1..4096 ordinary vertices");
+  cap(add(8192,mul(n,sizeof(std::array<double,2>))),maximum);
+  std::array<double,2> low{std::numeric_limits<double>::max(),std::numeric_limits<double>::max()};
+  for(const auto& point:source.points)for(int a=0;a<2;++a) {
+    kernel_checkpoint_periodic();
+    if(!std::isfinite(point[a]) || (!integers && std::abs(point[a])>std::numeric_limits<float>::max()))
+      throw std::invalid_argument("Invalid polygon constructor coordinates");
+    const double value=integers?point[a]:double(float(point[a]));
+    if(!std::isfinite(value) || (integers && (std::floor(value)!=value ||
+        value<std::numeric_limits<int>::min() || value>std::numeric_limits<int>::max())))
+      throw std::invalid_argument("Invalid polygon constructor coordinates");
+    low[a]=std::min(low[a],value);
+  }
+  std::vector<std::array<double,2>> points;points.reserve(n);
+  for(const auto& point:source.points) {
+    kernel_checkpoint_periodic();std::array<double,2> value{};
+    for(int a=0;a<2;++a) {
+      value[a]=integers?point[a]-low[a]:double(float(float(point[a])-float(low[a])));
+      if(!std::isfinite(value[a]) || (integers && value[a]>std::numeric_limits<int>::max()))
+        throw std::invalid_argument("Polygon constructor extent exceeds its coordinate range");
+    }
+    points.push_back(value);
+  }
+  const auto& d=spatial.direction;
+  auto distance=[&](double dx,double dy) {
+    dx*=spatial.spacing[0];dy*=spatial.spacing[1];
+    const double x=d[0]*dx+d[1]*dy,y=d[3]*dx+d[4]*dy,z=d[6]*dx+d[7]*dy;
+    return std::sqrt(x*x+y*y+z*z);
+  };
+  auto difference=[&](std::size_t a,std::size_t b,int axis) {
+    return integers?points[a][axis]-points[b][axis]:double(float(float(points[a][axis])-float(points[b][axis])));
+  };
+  bool traced=*type==SelectionPolygonType::Traced;
+  if(*type==SelectionPolygonType::Polygon) {
+    traced=true;
+    for(std::size_t i=0;i<n;++i) {
+      kernel_checkpoint_periodic();const auto j=(i+1)%n;
+      if((points[j][0]!=points[i][0] && points[j][1]!=points[i][1]) ||
+          std::floor(points[i][0])!=points[i][0] || std::floor(points[i][1])!=points[i][1])traced=false;
+    }
+  }
+  double length=0;
+  if(traced) {
+    if(!integers && *type==SelectionPolygonType::Traced)return nan;
+    if(n<4)return 0;
+    double sumx=0,sumy=0;std::size_t corners=0;bool corner=false;
+    auto dx=points[0][0]-points[n-1][0],dy=points[0][1]-points[n-1][1];
+    for(std::size_t i=0;i<n;++i) {
+      kernel_checkpoint_periodic();const auto j=(i+1)%n;
+      sumx+=std::abs(dx);sumy+=std::abs(dy);
+      if(std::abs(dx)+std::abs(dy)>1 || !corner){corner=true;++corners;}else corner=false;
+      dx=points[j][0]-points[i][0];dy=points[j][1]-points[i][1];
+    }
+    const double w=distance(1,0),h=distance(0,1);
+    length=sumx*w+sumy*h-double(corners)*(w+h-std::sqrt(w*w+h*h));
+  } else if(n>2 && (*type==SelectionPolygonType::Freehand || *type==SelectionPolygonType::Freeline)) {
+    auto sum3=[&](std::size_t i,int a) {
+      if(!integers)return double(float(float(float(points[i][a])+float(points[i+1][a]))+float(points[i+2][a])));
+      // Match Java Int32 addition without signed C++ overflow.
+      const auto bits=static_cast<std::uint32_t>(static_cast<std::uint64_t>(points[i][a]+points[i+1][a]+points[i+2][a]));
+      return double(bits<=2147483647U?std::int64_t(bits):std::int64_t(bits)-4294967296LL);
+    };
+    length=distance(sum3(0,0)/3-points[0][0],sum3(0,1)/3-points[0][1]);
+    for(std::size_t i=1;i<n-2;++i){kernel_checkpoint_periodic();length+=distance(difference(i+2,i-1,0)/3,difference(i+2,i-1,1)/3);}
+    length+=distance(points[n-1][0]-sum3(n-3,0)/3,points[n-1][1]-sum3(n-3,1)/3);
+    if(*type==SelectionPolygonType::Freehand)length+=distance(difference(n-1,0,0),difference(n-1,0,1));
+  } else {
+    for(std::size_t i=1;i<n;++i){kernel_checkpoint_periodic();length+=distance(difference(i,i-1,0),difference(i,i-1,1));}
+    if(*type==SelectionPolygonType::Polygon || *type==SelectionPolygonType::Freehand)
+      length+=distance(difference(n-1,0,0),difference(n-1,0,1));
+  }
+  if(!std::isfinite(length))throw std::invalid_argument("Polygon physical length must be finite");
+  return length;
 }
 ImageJScalarStatistics imagej_calibrated_statistics(const Image& im,const SpatialCalibration& spatial,
     const ImageJIntensityCalibration& density,const Image* mask,std::size_t maximum) {

@@ -3,6 +3,7 @@
 #include <imagejxx/application.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/selection_edit.hpp>
+#include <imagejxx/selection_interpolation.hpp>
 #include <imagejxx/imagej_roi_projection.hpp>
 #include <imagejxx/roi_manager.hpp>
 #include <imagejxx/planar_annotation_command.hpp>
@@ -24,6 +25,17 @@ struct Source final:PlaneSource {
 };
 }
 int main(){
+  {
+    SpatialCalibration calibration;calibration.spacing={2,.5,1};
+    const Selection path("polyline",{{3,3},{13,3},{13,13},{3,13}});
+    auto free=with_selection_polygon_type(path,SelectionPolygonType::Freeline);
+    check(std::abs(imagej_calibrated_polygon_length(free,calibration)-28.54085916099517)<1e-11);
+    check(imagej_calibrated_polygon_length(path,calibration)==45);
+    const auto traced=with_selection_polygon_type(Selection("freehand",path.points),SelectionPolygonType::Traced);
+    check(std::isnan(imagej_calibrated_polygon_length(traced,calibration)));
+    check(std::abs(imagej_calibrated_polygon_length(traced,calibration,true)-48.24621125123532)<1e-11);
+    refuses<std::invalid_argument>([&]{imagej_calibrated_polygon_length(free,calibration,false,8255);});
+  }
   auto provider=std::make_shared<Source>();auto owner=std::make_shared<Document>(Dataset(provider));
   Application app;app.adopt(owner);
   SpatialCalibration spatial;spatial.spacing={.5,2,3};spatial.unit="um";
