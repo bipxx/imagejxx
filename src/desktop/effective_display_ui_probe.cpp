@@ -757,6 +757,44 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
 }
 
 
+Json interpolationRepeatUiCase(Window& w,const std::string& context,const std::string& directory,bool opened,bool highZoom) {
+  const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
+  require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh repeat fixture required");std::filesystem::create_directories(dir);
+  Selection source(opened?"polyline":"freehand",{{3.2,4.7},{13.8,3.1},{19.4,14.2},{11.1,20.6},{4.3,13.8}});
+  DocumentData data{Dataset::from_stack({Image(40,40,1,PixelType::UInt8)})};data.selection=source;
+  auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);w.recording=true;
+  const double zoom=highZoom?12.:1.;w.document()->setView({{"zoom",zoom}});
+  Json last,events=Json::array(),controls=Json::array();HeadlessInputSession session(w);bool expectedError=false;
+  try {
+    auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);require(expectedError || w.error().empty(),"Repeat frame failed");};
+    auto click=[&](const Json& item,const std::string& name){const auto control=item;require(control.at("enabled").get<bool>(),"Repeat control disabled");controls.push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto menu=[&](){for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection","menu.action.show_interpolate_selection"})click(last.at("host_controls").at(name),name);};
+    for(int i=0;i<3;++i)frame();require(std::abs(last.at("ordinary_zoom").get<double>()-zoom)<1e-6,"Repeat canvas zoom not consumed");
+    menu();w.document()->setView({{"zoom",highZoom?1.:12.}});frame();expectedError=true;
+    click(last.at("dialog").at("controls").at("apply"),"dialog.apply.stale_zoom");require(!w.error().empty() && w.workflow.empty() && owner->undo_steps()==0,"Zoom-stale dialog published");
+    frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
+    w.document()->setView({{"zoom",zoom}});frame();
+    auto apply=[&](){menu();click(last.at("dialog").at("controls").at("smooth"),"dialog.smooth");click(last.at("dialog").at("controls").at("apply"),"dialog.apply");w.wait();frame();};
+    apply();const auto first=*owner->snapshot().data().selection;require(first.points.size()==(opened?43u:32u),"First repeat sample count differs from pinned command");
+    w.action("move_selection",{{"dx",1.},{"dy",2.}});frame();const auto moved=*owner->snapshot().data().selection;
+    require(selection_polygon_type(moved)==selection_polygon_type(first) && owner->undo_steps()==1,"Transient move lost subtype/history");
+    apply();const auto second=*owner->snapshot().data().selection;
+    const std::size_t count=opened?(highZoom?42:41):(highZoom?32:30);
+    const auto type=selection_polygon_type(second);
+    require(second.points.size()==count && type==std::optional<SelectionPolygonType>(opened?(highZoom?SelectionPolygonType::Polyline:SelectionPolygonType::Freeline):(highZoom?SelectionPolygonType::Polygon:SelectionPolygonType::Freehand)),"Repeated subtype/count differs from pinned command");
+    require(owner->undo_steps()==2 && w.workflow.size()==2,"Repeat command history/recording missing");const auto record=w.workflow.back();
+    w.action("undo");require(owner->snapshot().data().selection==std::optional<Selection>(moved),"Repeat Undo lost moved source/subtype");
+    w.action("redo");require(owner->snapshot().data().selection==std::optional<Selection>(second),"Repeat Redo lost subtype");
+    w.action("save_workspace",{{"path",(dir/"repeat.ijx").u8string()}});session.close();
+    Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"repeat.ijx").u8string());require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(second),"Workspace lost repeated subtype");
+    bool refused=false;try{reopened.replaySelectionCreation(metadataObjectFromJson(record));}catch(const std::exception&){refused=true;}require(refused,"Repeat record requires explicit rebind");
+    reopened.document()->select(selectionJson(moved));reopened.replaySelectionCreation(metadataObjectFromJson(record),SelectionCreationRequest{SelectionCreationOperation::Replace,second,SelectionCreationGeometry::NativePathV4});
+    require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(second),"Repeat rebind lost subtype");
+    Json report={{"state","observed"},{"context",context},{"opened",opened},{"magnification",zoom},{"first",selectionJson(first)},{"moved",selectionJson(moved)},{"second",selectionJson(second)},{"translation",{1,2}},{"record",record},{"events",events},{"controls",controls}};
+    writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",controls}});throw;}
+}
+
 Json interpolationPointNoopUiCase(Window& w,const std::string& context,const std::string& directory,bool multiple) {
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
   require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh point no-op fixture required");
@@ -824,7 +862,7 @@ Json interpolationComponentsUiCase(Window& w,const std::string& context,const st
     const auto result=*owner->snapshot().data().selection;const auto points=vertices(result);
     const std::size_t count=profile<2?(configured?58:162):profile==2?(configured?24:64):(configured?27:74);
     const std::array<double,2> expected=profile<2?(configured?std::array<double,2>{9.966925621032715,2}:std::array<double,2>{5,2}):profile==2?(configured?std::array<double,2>{22.589611053466797,18.149965286254883}:std::array<double,2>{26.17453384399414,14.862444877624512}):(configured?std::array<double,2>{7.8226847648620605,9.42914867401123}:std::array<double,2>{3.9983789920806885,12.762760162353516});
-    require(result.is_path() && points.size()==count && owner->undo_steps()==1 && w.workflow.size()==1,"Component output/history missing");
+    require(result.is_path()==(profile<2) && points.size()==count && owner->undo_steps()==1 && w.workflow.size()==1,"Component output/history missing");
     for(int axis=0;axis<2;++axis)require(std::abs(points[3][axis]-expected[axis])<1e-5,"Component result differs from pinned vertex");
     if(profile<2){const auto mask=result.mask(40,40);require(mask.at(4,4)!=0 && mask.at(16,16)==0,"Component profile lost exterior/hole");}
     const auto record=w.workflow.front();w.action("edit_selection");frame();const auto canvas=last.at("ordinary_canvas");
@@ -843,7 +881,11 @@ Json interpolationComponentsUiCase(Window& w,const std::string& context,const st
     reopened.document()->select(selectionJson(source));const auto undo=reopened.nativeDocument()->undo_steps();
     reopened.replaySelectionCreation(metadataObjectFromJson(record),SelectionCreationRequest{SelectionCreationOperation::Replace,result,SelectionCreationGeometry::NativePathV4});
     require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(result) && reopened.nativeDocument()->undo_steps()==undo+1,"Component explicit replay failed");
-    Json report={{"context",context},{"state","observed"},{"profile",profile},{"configured",configured},{"commands",result.path_commands()},{"edited_commands",edited.path_commands()},{"drag_target",dragTarget},{"record",record},{"events",events},{"controls",buttons}};
+    auto projection=[&](const Selection& value){
+      if(value.is_path())return value.path_commands();
+      std::vector<double> out;for(const auto& point:value.points)out.insert(out.end(),{out.empty()?0.:1.,point[0],point[1]});out.push_back(4);return out;
+    };
+    Json report={{"context",context},{"state","observed"},{"profile",profile},{"configured",configured},{"selection",selectionJson(result)},{"commands",projection(result)},{"edited_commands",projection(edited)},{"command_fields","closed contour projection;selection is actual stored kind"},{"drag_target",dragTarget},{"record",record},{"events",events},{"controls",buttons}};
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",buttons}});throw;}
 }

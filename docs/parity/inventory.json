@@ -909,7 +909,8 @@
           "docs/parity/reviews/selection-spline-20261105.json",
           "docs/parity/reviews/selection-interpolation-20261105.json",
           "docs/parity/reviews/interpolation-compound-20261105.json",
-          "docs/parity/reviews/interpolation-point-noop-20261105.json"
+          "docs/parity/reviews/interpolation-point-noop-20261105.json",
+          "docs/parity/reviews/interpolation-types-20261105.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
@@ -938,7 +939,12 @@
           "src/native/imagej_shape_plan.hpp",
           "src/native/imagej_shape.cpp",
           "src/native/dataset_histogram.cpp",
-          "src/native/target_analysis.cpp"
+          "src/native/target_analysis.cpp",
+          "src/native/selection_polygon_type.hpp",
+          "src/native/session.cpp",
+          "src/native/session_metadata.cpp",
+          "src/native/selection_codec.cpp",
+          "src/native/imagej_roi.cpp"
         ],
         "tests": [
           "tests/python/test_selection_enlargement.py",
@@ -982,7 +988,9 @@
           "tests/fixtures/interpolation-components-imagej154r.json",
           "tests/python/test_interpolation_repeat.py",
           "tests/reference/ObserveInterpolationRepeat.java",
-          "tests/fixtures/interpolation-repeat-imagej154r.json"
+          "tests/fixtures/interpolation-repeat-imagej154r.json",
+          "tests/reference/ObserveInterpolationThreshold.java",
+          "tests/fixtures/interpolation-threshold-imagej154r.json"
         ]
       },
       "id": "G018",

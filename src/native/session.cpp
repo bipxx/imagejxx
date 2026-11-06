@@ -1,3 +1,4 @@
+#include <imagejxx/selection_interpolation.hpp>
 #include <imagejxx/session.hpp>
 
 #include "kernel_control.hpp"
@@ -290,8 +291,9 @@ bool has_regions(const DocumentData &data) {
   return false;
 }
 bool has_paths(const DocumentData &data) {
-  if((data.selection && data.selection->is_path()) || (data.previous_selection && data.previous_selection->is_path()))return true;
-  for(const auto &roi:data.rois)if(roi.selection.is_path())return true;
+  const auto requires_v5=[](const Selection& value){return value.is_path() || value.attributes.count(polygon_type_attribute)!=0;};
+  if((data.selection && requires_v5(*data.selection)) || (data.previous_selection && requires_v5(*data.previous_selection)))return true;
+  for(const auto &roi:data.rois)if(requires_v5(roi.selection))return true;
   return false;
 }
 int capture_version(const SessionCapture &capture) {
@@ -925,6 +927,7 @@ std::shared_ptr<Document> decode_v2_document(const Json &item, const Json *marke
   } else if (item.contains("fft_shape") || !field(item, "spectrum_shape").is_null())
     fail("Legacy Fourier shape requires a spectrum");
   if(!allow_regions && has_regions(data))fail("Regional geometry requires session version 4");
+  if(!allow_paths && has_paths(data))fail("Path or polygon subtype requires session version 5");
   validate_wire_state([&] { data.validate(); view.validate(shape); });
   return std::make_shared<Document>(std::move(data), std::move(view));
 }
@@ -1129,7 +1132,7 @@ static DecodedSession decode_session_impl(const std::vector<unsigned char> &byte
   }
   if(version==5 && !std::any_of(result.documents.begin(),result.documents.end(),
       [](const auto &document){return has_paths(document->snapshot().data());}))
-    fail("Session version 5 requires path geometry");
+    fail("Session version 5 requires path geometry or polygon subtype state");
   kernel_checkpoint();
   return result;
 } catch (const Json::exception &error) {
@@ -1162,6 +1165,7 @@ std::vector<unsigned char> upgrade_path_legacy_session(const std::vector<unsigne
 std::string session_legacy_record_json(const DocumentSnapshot &snapshot,
                                        const SessionLimits &limits,bool allow_paths) try {
   const auto &data = snapshot.data();
+  if(!allow_paths && has_paths(data))fail("Path or polygon subtype requires native V5 projection");
   const auto shape = data.dataset.shape();
   if (shape.t != 1 || shape.c != 1 || snapshot.display().t || snapshot.display().c)
     fail("Detached legacy documents cannot represent scientific T/C axes");

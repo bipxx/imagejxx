@@ -383,6 +383,11 @@ void circleJobs(const std::filesystem::path& root) {
     Window interpolation((root/(label+"-preferences.json")).u8string());
     imagejxx::desktop::interpolationWorkflowUiCase(interpolation,"imgui_cpp",(root/label).u8string(),opened,configured);
   }
+  for(bool opened:{false,true})for(bool highZoom:{false,true}) {
+    const auto label=std::string("interpolation-repeat-")+(opened?"open-":"area-")+(highZoom?"high":"low");
+    Window repeated((root/(label+"-preferences.json")).u8string());
+    imagejxx::desktop::interpolationRepeatUiCase(repeated,"imgui_cpp",(root/label).u8string(),opened,highZoom);
+  }
   for(bool multiple:{false,true}) {
     const auto label=std::string("interpolation-point-noop-")+(multiple?"multiple":"single");
     Window pointNoop((root/(label+"-preferences.json")).u8string());

@@ -17,8 +17,9 @@ Fit Circle and Fit Ellipse now have scoped API/both-host checks. Minimum-area
 Fit Rectangle and editable spline fitting/removal have scoped API/both-host checks;
 ordinary-source and compound/curved interpolation now have scoped both-host
 checks. Point interpolation no-op also has scoped both-host checks.
-Repeated-source/type, zoom and degenerate semantics remain active;reuse120
-accepted actual two-command reference rows. This card does not authorize new agents.
+Repeated-source/type,zoom anddegenerate geometry now have scoped129-observation
+andboth-host evidence. T15 remembered Interpolate options is active next;scientific
+subtype lengths/perimeters remain T04a.2 M3/T06 scope. This card does not authorize new agents.
 Analysis residuals
 do not impose a blanket prerequisite. Inspect current worktree and
 actual process handles first. Never restart a job based only on an observation

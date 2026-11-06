@@ -6,11 +6,57 @@
 #include "selection_region_rotation.hpp"
 #include "kernel_control.hpp"
 #include "imagej_shape_plan.hpp"
+#include "selection_polygon_type.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
 
 namespace imagejxx {
+namespace {
+const char* polygon_type_name(SelectionPolygonType type) {
+  switch(type) {
+  case SelectionPolygonType::Polygon:return "polygon";
+  case SelectionPolygonType::Freehand:return "freehand";
+  case SelectionPolygonType::Traced:return "traced";
+  case SelectionPolygonType::Polyline:return "polyline";
+  case SelectionPolygonType::Freeline:return "freeline";
+  }
+  throw std::invalid_argument("Unknown polygon subtype");
+}
+const char* polygon_native_kind(SelectionPolygonType type) {
+  switch(type) {
+  case SelectionPolygonType::Polygon:return "polygon";
+  case SelectionPolygonType::Freehand:case SelectionPolygonType::Traced:return "freehand";
+  case SelectionPolygonType::Polyline:case SelectionPolygonType::Freeline:return "polyline";
+  }
+  throw std::invalid_argument("Unknown polygon subtype");
+}
+}
+std::optional<SelectionPolygonType> detail::polygon_type(const std::string& kind,const MetadataObject& attributes) {
+  const auto found=attributes.find(polygon_type_attribute);
+  if(found==attributes.end()) {
+    if(kind=="polygon")return SelectionPolygonType::Polygon;
+    if(kind=="freehand")return SelectionPolygonType::Freehand;
+    if(kind=="polyline")return SelectionPolygonType::Polyline;
+    return {};
+  }
+  const auto text=std::get_if<std::string>(&found->second);
+  if(!text)throw std::invalid_argument("Polygon subtype requires a string");
+  for(auto type:{SelectionPolygonType::Polygon,SelectionPolygonType::Freehand,SelectionPolygonType::Traced,SelectionPolygonType::Polyline,SelectionPolygonType::Freeline})
+    if(*text==polygon_type_name(type)) {
+      if(kind!=polygon_native_kind(type))throw std::invalid_argument("Polygon subtype differs from native geometry");
+      return type;
+    }
+  throw std::invalid_argument("Unknown polygon subtype");
+}
+std::optional<SelectionPolygonType> selection_polygon_type(const Selection& source) {
+  return detail::polygon_type(source.kind,source.attributes);
+}
+Selection with_selection_polygon_type(const Selection& source,SelectionPolygonType type) {
+  if(source.kind!=polygon_native_kind(type))throw std::invalid_argument("Polygon subtype differs from native geometry");
+  Selection result=source;result.attributes[polygon_type_attribute]=std::string(polygon_type_name(type));
+  result.validate(1,1);return result;
+}
 namespace {
 using Point=std::array<double,2>;
 std::size_t admission(const Selection &source,int width,int height,
@@ -293,7 +339,7 @@ Selection convex_hull_selection(const Selection &source,int width,int height,
   auto hull=ordered_hull(std::move(points),true);
   Selection result("polygon",std::move(hull));result.width=frozen.width;
   result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();
   return result;
 }
@@ -344,7 +390,7 @@ Selection bounding_rectangle_selection(const Selection &source,int width,int hei
   }
   Selection result("rectangle",{{b[0],b[1]},{b[2],b[3]}});result.width=frozen.width;
   result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 std::size_t estimate_fit_circle_selection(const Selection &source,int width,int height,
@@ -366,7 +412,7 @@ Selection fit_circle_selection(const Selection &source,int width,int height,bool
   for(double v:{x,y,d,x+d,y+d})if(!std::isfinite(v) || v<std::numeric_limits<int>::min() || v>std::numeric_limits<int>::max())
     throw std::invalid_argument("Fit Circle exceeds integer output profile");
   Selection result("ellipse",{{x,y},{x+d,y+d}});result.width=frozen.width;result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 std::size_t estimate_fit_ellipse_selection(const Selection& s,int width,int height,const SelectionEditLimits& limits) {
@@ -425,7 +471,7 @@ Selection fit_ellipse_selection(const Selection& source,int width,int height,boo
   }
   const double ux=std::cos(angle)*major/2,uy=-std::sin(angle)*major/2,vx=std::sin(angle)*minor/2,vy=std::cos(angle)*minor/2;
   Selection result("rotated_ellipse",{{cx,cy},{cx+ux,cy+uy},{cx+vx,cy+vy}});result.width=frozen.width;result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 
@@ -473,7 +519,7 @@ Selection fit_rectangle_selection(const Selection& source,int w,int h,bool disca
   const Point u{std::cos(bestAngle)*axis/2,std::sin(bestAngle)*axis/2};
   const double length=std::hypot(u[0],u[1]);const Point v{-u[1]*span/(2*length),u[0]*span/(2*length)};
   Selection result("rotated_rectangle",{center,{center[0]+u[0],center[1]+u[1]},{center[0]+v[0],center[1]+v[1]}});
-  result.width=frozen.width;result.attributes=frozen.attributes;result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
+  result.width=frozen.width;result.attributes=frozen.attributes;result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
   result.validate(w,h);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 
@@ -499,17 +545,20 @@ void interpolation_float_bounds(std::vector<Point>& points) {
 }
 std::size_t prepare_interpolation_points(std::vector<Point>& points,bool open,
     bool normalize,bool smooth,const SelectionInterpolationOptions& options,
-    const SelectionEditLimits& limits,std::size_t& bytes) {
-  if(points.size()<(open?2u:3u))throw std::invalid_argument("Interpolation contour has too few vertices");
+    const SelectionEditLimits& limits,std::size_t& bytes,bool allow_degenerate=false) {
+  if(points.size()<(allow_degenerate?1u:open?2u:3u))throw std::invalid_argument("Interpolation contour has too few vertices");
     for(const auto& p:points)for(double v:p)if(std::abs(v)>1e9)
       throw std::invalid_argument("Interpolation coordinate range");
     if(normalize)interpolation_float_bounds(points);
     else for(auto& p:points)for(auto& v:p)v=float(v);
     if(smooth) {
+      if(points.size()<2)throw std::invalid_argument("Cannot smooth a one-vertex contour");
       for(std::size_t i=1;i+2<points.size();++i)
         for(int a=0;a<2;++a)points[i][a]=float(float(float(points[i-1][a])+float(points[i][a])+float(points[i+1][a]))/3.f);
-      for(int a=0;a<2;++a)points[0][a]=float(float(float(points.back()[a])+float(points[0][a])+float(points[1][a]))/3.f);
-      for(int a=0;a<2;++a)points.back()[a]=float(float(float(points[points.size()-2][a])+float(points.back()[a])+float(points[0][a]))/3.f);
+      if(!open) {
+        for(int a=0;a<2;++a)points[0][a]=float(float(float(points.back()[a])+float(points[0][a])+float(points[1][a]))/3.f);
+        for(int a=0;a<2;++a)points.back()[a]=float(float(float(points[points.size()-2][a])+float(points.back()[a])+float(points[0][a]))/3.f);
+      }
     }
     double length=0;
     for(std::size_t i=1;i<points.size()+std::size_t(!open);++i) {
@@ -531,6 +580,8 @@ InterpolationPlan interpolation_plan(const Selection& source,int width,int heigh
     const ExecutionControl& control) {
   if(!std::isfinite(options.interval) || std::abs(options.interval)<.01)
     throw std::invalid_argument("Interpolation interval magnitude must be at least0.01 pixels");
+  if(!std::isfinite(options.magnification) || options.magnification<=0)
+    throw std::invalid_argument("Interpolation magnification must be finite and positive");
   if(source.kind!="polygon" && source.kind!="polyline" && source.kind!="freehand" &&
       source.kind!="line" && source.kind!="rectangle")
     throw std::invalid_argument("Interpolate requires supported continuous or mask geometry");
@@ -546,7 +597,11 @@ InterpolationPlan interpolation_plan(const Selection& source,int width,int heigh
     validate_selection_spline_fit(source);
     const bool fitted=source.attributes.count(spline_fit_attribute)!=0;
     auto kind=source.kind;
-    if(fitted)kind=selection_spline_fit(source)->controls.kind;
+    if(const auto type=selection_polygon_type(source))kind=polygon_type_name(*type);
+    if(fitted) {
+      const auto controls=selection_spline_fit(source)->controls;
+      kind=controls.kind;if(const auto type=selection_polygon_type(controls))kind=polygon_type_name(*type);
+    }
     std::vector<Point> points;
     if(source.kind=="rectangle") {
       const auto& a=source.points[0];const auto& b=source.points[1];
@@ -556,7 +611,8 @@ InterpolationPlan interpolation_plan(const Selection& source,int width,int heigh
     const bool open=source.kind=="polyline" || source.kind=="line";
     const auto capacity=prepare_interpolation_points(points,open,
         !fitted && source.kind!="line" && source.kind!="rectangle",
-        options.smooth && kind=="freehand",options,limits,bytes);
+        options.smooth && (kind=="freehand" || kind=="traced" || kind=="freeline"),options,limits,bytes,
+        source.attributes.count(polygon_type_attribute)!=0);
     return InterpolationPlan{source,std::move(points),options,std::move(kind),capacity,bytes,open};
   });
 }
@@ -573,10 +629,28 @@ std::optional<Point> interpolation_intersection(Point a,Point b,Point center,dou
   // Retain that endpoint, without extending the contour or changing spacing.
   const double ex=b[0]-center[0],ey=b[1]-center[1];
   const double squared=ex*ex+ey*ey,rr=radius*radius;
-  if(std::abs(squared-rr)<=8*std::numeric_limits<double>::epsilon()*std::max(squared,rr))return b;
+  // Only adjacent representable squared distances are a rounding seam.
+  // A wider band can add an inside-circle endpoint and corrupt Adjust trials.
+  if(squared>=std::nextafter(rr,0.) && squared<=std::nextafter(rr,std::numeric_limits<double>::infinity()))return b;
   return {};
 }
+void interpolation_result_type(Selection& result,const std::string& source_kind,
+    bool open,const SelectionInterpolationOptions& options) {
+  bool polygon=(source_kind=="polygon" && options.interval>1) ||
+      ((source_kind=="rectangle" || source_kind=="ellipse" || source_kind=="freehand") && options.interval>=8);
+  bool polyline=options.interval>=8;
+  if(options.magnification>=12 && result.points.size()<=150)polygon=polyline=true;
+  result.kind=open?"polyline":polygon?"polygon":"freehand";
+  result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);
+  if(open && (!polyline || result.points.size()<2))result.attributes[polygon_type_attribute]=std::string(polyline?"polyline":"freeline");
+  else if(!open && result.points.size()<3)result.attributes[polygon_type_attribute]=result.kind;
+}
 Selection interpolate_planned(InterpolationPlan plan,int width,int height,const SelectionEditLimits& limits,std::size_t* shared_work=nullptr) {
+  if(plan.source.points.size()==1 && plan.source.attributes.count(polygon_type_attribute)) {
+    auto result=std::move(plan.source);result.points={plan.points.front()};
+    interpolation_result_type(result,plan.source_kind,plan.open,plan.options);
+    result.validate(width,height);return result;
+  }
   const double interval=std::abs(plan.options.interval);
   const bool adjust=(plan.options.interval<0)!=plan.options.adjust_to_match;
   double trial_interval=interval,best_interval=0,min_diff=1e9;
@@ -606,14 +680,12 @@ Selection interpolate_planned(InterpolationPlan plan,int width,int height,const 
     } else ++trial;
   }
   if(!plan.open)output.pop_back();
-  if(output.size()<(plan.open?2u:3u))
+  if(output.empty())
     throw std::invalid_argument("Interpolated geometry has too few vertices for a native editable selection");
   interpolation_float_bounds(output);
   Selection result=std::move(plan.source);
-  const bool polygon=(plan.source_kind=="polygon" && plan.options.interval>1) ||
-      ((plan.source_kind=="rectangle" || plan.source_kind=="freehand") && plan.options.interval>=8);
-  result.kind=plan.open?"polyline":polygon?"polygon":"freehand";
-  result.points=std::move(output);result.attributes.erase(spline_fit_attribute);
+  result.points=std::move(output);
+  interpolation_result_type(result,plan.source_kind,plan.open,plan.options);
   result.validate(width,height);return result;
 }
 
@@ -709,6 +781,8 @@ CompoundInterpolationPlan compound_interpolation_plan(const Selection& source,in
     const SelectionInterpolationOptions& options,const SelectionEditLimits& limits,const ExecutionControl& control) {
   if(!std::isfinite(options.interval) || std::abs(options.interval)<.01)
     throw std::invalid_argument("Interpolation interval magnitude must be at least0.01 pixels");
+  if(!std::isfinite(options.magnification) || options.magnification<=0)
+    throw std::invalid_argument("Interpolation magnification must be finite and positive");
   auto bytes=detail::admit_selection_geometry(source,width,height,limits,control);
   interpolation_charge(bytes,1,4096,limits);
   ExecutionScope planning(control);
@@ -755,8 +829,17 @@ CompoundInterpolationPlan compound_interpolation_plan(const Selection& source,in
     std::vector<double> commands;commands.reserve(3*std::min({capacities,limits.max_vertices,std::size_t(65536)})+components);
     std::size_t segments=0;
     for(auto& curve:curves) {
-      const auto sampled=interpolate_planned(std::move(curve),width,height,limits,&work);
+      auto sampled=interpolate_planned(std::move(curve),width,height,limits,&work);
       const auto n=sampled.points.size();
+      if(components==1) {
+        auto result=std::move(sampled);result.width=source.width;result.attributes=source.attributes;
+        const std::string kind=source.kind=="ellipse" || source.kind=="rotated_ellipse"?"ellipse":
+            source.is_rounded_box() || source.kind=="rotated_rectangle"?"rectangle":"shape";
+        interpolation_result_type(result,kind,false,options);
+        if(source.is_rounded_box())result.attributes.erase("corner_diameter");
+        result.validate(width,height);return CompoundInterpolationPlan{std::move(result),bytes};
+      }
+      if(n<3)throw std::invalid_argument("Compound interpolation cannot retain a degenerate component");
       if(segments>=limits.max_vertices || n>limits.max_vertices-segments-1 || segments+n+1>65536)
         throw std::length_error("Compound interpolation aggregate vertex limit");
       segments+=n+1;
@@ -764,7 +847,7 @@ CompoundInterpolationPlan compound_interpolation_plan(const Selection& source,in
       commands.push_back(4);
     }
     auto result=Selection::from_path(commands);result.width=source.width;result.attributes=source.attributes;
-    result.attributes.erase(spline_fit_attribute);if(source.is_rounded_box())result.attributes.erase("corner_diameter");
+    result.attributes.erase(spline_fit_attribute);result.attributes.erase(polygon_type_attribute);if(source.is_rounded_box())result.attributes.erase("corner_diameter");
     result.validate(width,height);return CompoundInterpolationPlan{std::move(result),bytes};
   });
 }

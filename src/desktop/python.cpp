@@ -281,6 +281,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_fit_circle_area_ui_case",[](Window& window,const std::string& directory) {
         return fitCircleWorkflowUiCase(window,"imgui_python",directory,true).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_interpolation_repeat_ui_case",[](Window& window,const std::string& directory,bool opened,bool highZoom) {
+        return interpolationRepeatUiCase(window,"imgui_python",directory,opened,highZoom).dump();
+      },py::arg("directory"),py::arg("opened"),py::arg("high_zoom"),py::call_guard<py::gil_scoped_release>())
       .def("_interpolation_point_noop_ui_case",[](Window& window,const std::string& directory,bool multiple) {
         return interpolationPointNoopUiCase(window,"imgui_python",directory,multiple).dump();
       },py::arg("directory"),py::arg("multiple"),py::call_guard<py::gil_scoped_release>())

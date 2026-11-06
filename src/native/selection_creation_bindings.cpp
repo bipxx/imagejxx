@@ -84,11 +84,18 @@ void bind_selection_creation(py::module_ &m) {
     py::arg("discard_point_metadata")=py::bool_(false),py::arg("limits")=SelectionEditLimits{},
     py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   }
+  py::enum_<SelectionPolygonType>(m,"SelectionPolygonType")
+      .value("POLYGON",SelectionPolygonType::Polygon).value("FREEHAND",SelectionPolygonType::Freehand)
+      .value("TRACED",SelectionPolygonType::Traced).value("POLYLINE",SelectionPolygonType::Polyline)
+      .value("FREELINE",SelectionPolygonType::Freeline);
+  m.def("selection_polygon_type",&selection_polygon_type,py::arg("selection"));
+  m.def("with_selection_polygon_type",&with_selection_polygon_type,py::arg("selection"),py::arg("type"));
   py::class_<SelectionInterpolationOptions>(m,"SelectionInterpolationOptions")
       .def(py::init<>())
       .def_property("interval",[](const SelectionInterpolationOptions& v){return v.interval;},[](SelectionInterpolationOptions& v,py::handle x){if(boolean(x))throw py::type_error("Interpolation interval must not be Boolean");v.interval=py::cast<double>(x);})
       .def_property("smooth",[](const SelectionInterpolationOptions& v){return v.smooth;},[](SelectionInterpolationOptions& v,py::handle x){if(!boolean(x))throw py::type_error("Smooth must be Boolean");v.smooth=py::cast<bool>(x);})
-      .def_property("adjust_to_match",[](const SelectionInterpolationOptions& v){return v.adjust_to_match;},[](SelectionInterpolationOptions& v,py::handle x){if(!boolean(x))throw py::type_error("Adjust must be Boolean");v.adjust_to_match=py::cast<bool>(x);});
+      .def_property("adjust_to_match",[](const SelectionInterpolationOptions& v){return v.adjust_to_match;},[](SelectionInterpolationOptions& v,py::handle x){if(!boolean(x))throw py::type_error("Adjust must be Boolean");v.adjust_to_match=py::cast<bool>(x);})
+      .def_property("magnification",[](const SelectionInterpolationOptions& v){return v.magnification;},[](SelectionInterpolationOptions& v,py::handle x){if(boolean(x))throw py::type_error("Interpolation magnification must not be Boolean");v.magnification=py::cast<double>(x);});
   m.def("estimate_interpolated_selection",[](const Selection& source,py::handle width,py::handle height,SelectionInterpolationOptions options,SelectionEditLimits limits) {
     const auto w=index_value(width),h=index_value(height);detail::admit_selection_geometry(source,w,h,limits,{});const Selection frozen=source;
     py::gil_scoped_release release;return estimate_interpolated_selection(frozen,w,h,options,limits);

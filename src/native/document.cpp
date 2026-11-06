@@ -1,4 +1,5 @@
 #include "selection_spline_detail.hpp"
+#include <imagejxx/selection_interpolation.hpp>
 #include "kernel_control.hpp"
 #include "saved_roi_geometry_internal.hpp"
 #include <algorithm>
@@ -211,6 +212,7 @@ std::optional<SelectionFrame> Selection::box_frame() const {
 }
 void Selection::validate(int w, int h) const {
   validate_metadata(attributes);
+  (void)selection_polygon_type(*this);
   roi_style(*this);
   if ((!is_path() && path_) ||
       (is_path() && (!path_ || !points.empty() || mask_ || maskWidth_ || maskHeight_)))
@@ -261,11 +263,11 @@ void Selection::validate(int w, int h) const {
     if (spanX <= 0 || spanY <= 0)
       throw std::invalid_argument("Selection is empty");
   } else if (kind == "polygon" || kind == "freehand") {
-    if (points.size() < 3)
-      throw std::invalid_argument("Area selection needs three points");
+    if (points.size() < (attributes.count(polygon_type_attribute)?1u:3u))
+      throw std::invalid_argument("Area selection needs three points or explicit polygon subtype state");
   } else if (kind == "line" || kind == "polyline" || kind == "angle") {
-    if (points.size() < 2)
-      throw std::invalid_argument("Line needs two points");
+    if (points.size() < (kind=="polyline" && attributes.count(polygon_type_attribute)?1u:2u))
+      throw std::invalid_argument("Line needs two points or explicit polygon subtype state");
   } else if (kind != "point" && kind != "multipoint")
     throw std::invalid_argument("Unknown selection kind");
   (void)detail::spline_control_count(*this);

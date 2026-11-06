@@ -1,3 +1,4 @@
+#include "selection_polygon_type.hpp"
 #include "imagej_image_internal.hpp"
 #include "imagej_roi_internal.hpp"
 #include "kernel_control.hpp"
@@ -477,6 +478,15 @@ decode_imagej_roi_impl(const Bytes &bytes, const ImageJRoiLimits &l,
     result.roi.selection = imagej_arrow_mask(*result.arrow, stroke, mask_width,
                                              mask_height, bool(options & 2), l);
   }
+  if(type==4 && result.roi.selection.kind=="polyline")
+    result.roi.selection=with_selection_polygon_type(result.roi.selection,SelectionPolygonType::Freeline);
+  else if(type==8 && result.roi.selection.kind=="freehand")
+    result.roi.selection=with_selection_polygon_type(result.roi.selection,SelectionPolygonType::Traced);
+  else if(result.roi.selection.kind=="polyline" && result.roi.selection.points.size()<2)
+    result.roi.selection=with_selection_polygon_type(result.roi.selection,SelectionPolygonType::Polyline);
+  else if((result.roi.selection.kind=="polygon" || result.roi.selection.kind=="freehand") && result.roi.selection.points.size()<3)
+    result.roi.selection=with_selection_polygon_type(result.roi.selection,
+        result.roi.selection.kind=="polygon"?SelectionPolygonType::Polygon:SelectionPolygonType::Freehand);
   result.roi.selection =
       with_roi_style(result.roi.selection, {{"stroke_width", stroke},
                                             {"stroke_color", color(r.u32(40))},
@@ -622,7 +632,7 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
   need(roi.attributes.empty(),
        "Opaque ROI attributes require an explicit interchange mapping");
   for (const auto &[key, value] : s.attributes)
-    need(key == roi_style_attribute,
+    need(key == roi_style_attribute || key == polygon_type_attribute,
          "Opaque selection attributes require an explicit interchange mapping");
   if (auto found = s.attributes.find(roi_style_attribute);
       found != s.attributes.end()) {
@@ -677,6 +687,11 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
     throw std::invalid_argument("Unsupported ImageJ ROI geometry (composite)");
   if (spline)
     type = record.spline->type;
+  const auto polygon_type=selection_polygon_type(s);
+  if(polygon_type==SelectionPolygonType::Freeline)type=4;
+  if(polygon_type==SelectionPolygonType::Traced)type=8;
+  if(s.attributes.count(polygon_type_attribute) && record.source_type)
+    need(*record.source_type==type,"ImageJ source type differs from native polygon subtype");
   need(type != 10 || s.width == 1,
        "ImageJ points do not encode a native processing width");
   if (record.source_type) {
@@ -1020,7 +1035,7 @@ ImageJRoi imagej_roi_standard_projection(ImageJRoi record, int width, int height
   }
   mask.width = selection.width;
   mask.attributes = selection.attributes;
-  mask.attributes.erase("corner_diameter");
+  mask.attributes.erase("corner_diameter");mask.attributes.erase(polygon_type_attribute);
   record.roi.selection = std::move(mask);
   return record;
 }

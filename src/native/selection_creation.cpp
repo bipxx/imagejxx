@@ -1,3 +1,4 @@
+#include "selection_polygon_type.hpp"
 #include <imagejxx/selection_spline.hpp>
 #include <imagejxx/selection_creation.hpp>
 #include <imagejxx/selection_enlargement.hpp>
@@ -194,7 +195,8 @@ void candidate_admission(const Selection &candidate, DatasetShape shape,
       invalid("Selection candidate exceeds vertex limit");
     candidate.validate(shape.x,shape.y);return;
   }
-  if(!paths && candidate.attributes.count(spline_fit_attribute))invalid("Spline state requires explicit NativePathV4 replacement");
+  if(!paths && (candidate.attributes.count(spline_fit_attribute) || candidate.attributes.count(polygon_type_attribute)))
+    invalid("Typed selection state requires explicit NativePathV4 replacement");
   if (candidate.kind != "rectangle" && candidate.kind != "ellipse" &&
       candidate.kind != "polygon" && candidate.kind != "freehand" &&
       candidate.kind != "rounded_rectangle" && !(paths && (candidate.kind=="rotated_ellipse" || candidate.kind=="rotated_rectangle" || candidate.kind=="polyline")))
@@ -719,13 +721,14 @@ Wire inspect_wire(const MetadataValue &value, DatasetShape shape,
     if (kind != "rectangle" && kind != "ellipse" && kind != "polygon" && kind != "freehand" && kind != "rounded_rectangle" && !(paths && (kind=="rotated_ellipse" || kind=="rotated_rectangle" || kind=="polyline")))
       invalid("Unsupported selection creation candidate kind");
     if (((kind == "rectangle" || kind == "ellipse" || kind == "rounded_rectangle") && points.size() != 2) ||
-        ((kind == "polygon" || kind == "freehand") && points.size() < 3) || (kind=="polyline" && points.size()<2) || ((kind=="rotated_ellipse" || kind=="rotated_rectangle") && points.size()!=3))
+        ((kind == "polygon" || kind == "freehand") && points.size() < (paths?1u:3u)) || (kind=="polyline" && points.size()<(paths?1u:2u)) || ((kind=="rotated_ellipse" || kind=="rotated_rectangle") && points.size()!=3))
       invalid("Incomplete selection creation candidate");
     for (int axis = 0; axis < 2; ++axis)
       if (!std::isfinite(high[axis] - low[axis]) || (!paths && high[axis] <= low[axis]))
         invalid("Selection candidate has no complete XY extent");
   }
-  if(!paths && !structured && object.count(spline_fit_attribute))invalid("Spline state requires explicit NativePathV4 replacement");
+  if(!paths && !structured && (object.count(spline_fit_attribute) || object.count(polygon_type_attribute)))
+    invalid("Typed selection state requires explicit NativePathV4 replacement");
   Wire wire{&object, &points, &kind, width};
   wire.stored_width=shape.x;wire.stored_height=shape.y;
   if(structured) {
@@ -734,8 +737,13 @@ Wire inspect_wire(const MetadataValue &value, DatasetShape shape,
     else if(kind=="mask")fields(object,{"kind","points","width","attributes","shape","mask"});
     else fields(object,{"kind","points","width","attributes"});
     wire.attributes=&object_value(object.at("attributes"));
-    if(!paths && wire.attributes->count(spline_fit_attribute))invalid("Spline state requires explicit NativePathV4 replacement");
+    if(!paths && (wire.attributes->count(spline_fit_attribute) || wire.attributes->count(polygon_type_attribute)))
+      invalid("Typed selection state requires explicit NativePathV4 replacement");
   } else if(kind=="region")invalid("Regional selection requires command version 2");
+  const auto& attributes=wire.attributes?*wire.attributes:object;
+  (void)detail::polygon_type(kind,attributes);
+  if(candidate && (((kind=="polygon" || kind=="freehand") && points.size()<3) || (kind=="polyline" && points.size()<2)) && !attributes.count(polygon_type_attribute))
+    invalid("Degenerate polygon geometry requires explicit subtype state");
   if (kind=="path") {
     wire.path=&array_value(object.at("path"));wire.path_segments=limits.max_path_segments;
     if(!limits.max_path_segments || !limits.max_path_command_scalars || wire.path->empty() ||

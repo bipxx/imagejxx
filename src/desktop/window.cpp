@@ -7838,19 +7838,20 @@ void Window::action(const std::string &name, const Json &p) {
       throw std::invalid_argument("Interpolate requires supported continuous or mask geometry");
     for(const auto& field:p.items())if(field.key()!="document_id" && (show || (field.key()!="interval" && field.key()!="smooth" && field.key()!="adjust_to_match")))
       throw std::invalid_argument("Unknown interpolation option");
+    const double canvasZoom=impl->panes.size()>activeIndex()?double(impl->panes[activeIndex()].zoom):1.;
     if(show) {
       const auto id=source.id();const auto revisions=source.revisions();const PlanePosition position{source.display().t,source.display().c,source.display().crosshair[2]};
       impl->ask("Interpolate",{{"interval",1.},{"smooth",false},{"adjust_to_match",false}},
-          [this,id,revisions,position](Json choice) {
+          [this,id,revisions,position,canvasZoom](Json choice) {
             const auto current=nativeSnapshot(id);
-            if(controller_->active_document_id()!=id || !current.revisions().matches(revisions,Change::Data) || current.display().orthogonal || current.display().t!=position.t || current.display().c!=position.c || current.display().crosshair[2]!=position.z)throw RevisionConflict();
+            if(controller_->active_document_id()!=id || !current.revisions().matches(revisions,Change::Data) || current.display().orthogonal || current.display().t!=position.t || current.display().c!=position.c || current.display().crosshair[2]!=position.z || impl->panes.size()<=activeIndex() || double(impl->panes[activeIndex()].zoom)!=canvasZoom)throw RevisionConflict();
             choice["document_id"]=id;action("interpolate_selection",choice);
           },Json::array({{{"name","interval"},{"label","Interval (pixels)"},{"kind","float"}},
             {{"name","smooth"},{"label","Smooth freehand contours"},{"kind","bool"}},
             {{"name","adjust_to_match"},{"label","Adjust interval to match"},{"kind","bool"}}}),"selection_interpolation");
       return;
     }
-    SelectionInterpolationOptions options;
+    SelectionInterpolationOptions options;options.magnification=canvasZoom;
     if(p.contains("interval")){if(!p.at("interval").is_number())throw std::invalid_argument("Interval must be numeric");options.interval=p.at("interval").get<double>();}
     for(const char* field:{"smooth","adjust_to_match"})if(p.contains(field) && !p.at(field).is_boolean())throw std::invalid_argument("Interpolation switches must be Boolean");
     options.smooth=p.value("smooth",false);options.adjust_to_match=p.value("adjust_to_match",false);

@@ -162,5 +162,42 @@ int main(){try{
   pointNoopControl.checkpoint=[&]{pointNoop=Selection("rectangle",{{1,1},{4,4}});};
   check(interpolate_selection(pointNoop,16,16,ignoredPointOptions,pointNoopLimits,pointNoopControl)==originalPoints,"Point no-op callback redirected source");
   std::cout<<"PASS Point interpolation no-op preserves annotations,exact/short caps and frozen callbacks\n";
+  Selection openControls("polyline",{{3.2,4.7},{13.8,3.1},{19.4,14.2},{11.1,20.6},{4.3,13.8}});
+  const auto freeline=with_selection_polygon_type(openControls,SelectionPolygonType::Freeline);
+  SelectionInterpolationOptions repeatOptions;repeatOptions.smooth=true;
+  const auto firstRepeat=interpolate_selection(openControls,40,40,repeatOptions);
+  const auto secondRepeat=interpolate_selection(firstRepeat,40,40,repeatOptions);
+  check(firstRepeat.points.size()==43 && secondRepeat.points.size()==41 &&
+      selection_polygon_type(secondRepeat)==SelectionPolygonType::Freeline,"Repeated open smoothing lost FREELINE semantics");
+  repeatOptions.magnification=12;
+  const auto highRepeat=interpolate_selection(openControls,40,40,repeatOptions);
+  check(highRepeat.points.size()==43 && selection_polygon_type(highRepeat)==SelectionPolygonType::Polyline &&
+      interpolate_selection(highRepeat,40,40,repeatOptions).points.size()==42,"High zoom subtype/result threshold failed");
+  const auto editedFreeline=SelectionEditor(freeline,40,40).moved_vertex(1,{14,4});
+  check(selection_polygon_type(editedFreeline)==SelectionPolygonType::Freeline,"Actual edit lost polygon subtype");
+  auto subtypeOwner=std::make_shared<Document>(Dataset::from_stack({Image(40,40,1,PixelType::UInt8)}));
+  refuses([&]{resolve_selection_creation_command(subtypeOwner->snapshot(),{SelectionCreationOperation::Replace,editedFreeline});});
+  const auto subtypeCommand=resolve_selection_creation_command(subtypeOwner->snapshot(),
+      {SelectionCreationOperation::Replace,editedFreeline,SelectionCreationGeometry::NativePathV4});
+  validate_selection_creation_command_record(subtypeCommand.record());
+  repeatOptions.magnification=1;SelectionEditLimits repeatLimits;repeatLimits.max_working_bytes=estimate_interpolated_selection(openControls,40,40,repeatOptions);
+  const auto expectedRepeat=interpolate_selection(openControls,40,40,repeatOptions,repeatLimits);
+  ExecutionControl repeatControl;repeatControl.checkpoint=[&]{repeatOptions.magnification=12;};
+  check(interpolate_selection(openControls,40,40,repeatOptions,repeatLimits,repeatControl)==expectedRepeat,"Callback redirected frozen interpolation zoom");
+  SelectionInterpolationOptions degenerateOptions;degenerateOptions.interval=100;degenerateOptions.adjust_to_match=true;
+  const auto degenerateArea=interpolate_selection(Selection("polygon",{{2,2},{8,2},{14,2}}),40,40,degenerateOptions);
+  check(degenerateArea.kind=="polygon" && degenerateArea.points.size()==1 &&
+      degenerateArea.attributes.count(polygon_type_attribute) && SelectionEditor(degenerateArea,40,40).handles().size()==1,"Degenerate area lost editable identity");
+  check(interpolate_selection(degenerateArea,40,40,degenerateOptions)==degenerateArea,"Repeated one-vertex area lost typed identity");
+  SelectionInterpolationOptions shortLineOptions;shortLineOptions.interval=8;
+  const auto shortLineFirst=interpolate_selection(Selection("line",{{3.2,4.7},{13.8,3.1}}),40,40,shortLineOptions);
+  const auto oneVertexLine=interpolate_selection(shortLineFirst,40,40,shortLineOptions);
+  check(oneVertexLine.kind=="polyline" && oneVertexLine.points.size()==1 &&
+      selection_polygon_type(oneVertexLine)==SelectionPolygonType::Polyline &&
+      interpolate_selection(oneVertexLine,40,40,shortLineOptions)==oneVertexLine,"One-vertex polyline lost repeated editable identity");
+  const auto oneVertexCommand=resolve_selection_creation_command(subtypeOwner->snapshot(),
+      {SelectionCreationOperation::Replace,oneVertexLine,SelectionCreationGeometry::NativePathV4});
+  validate_selection_creation_command_record(oneVertexCommand.record());
+  std::cout<<"PASS Polygon subtype,repeat smoothing,zoom,edits,V4 refusal/acceptance,frozen context anddegenerate area/open geometry\n";
   return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

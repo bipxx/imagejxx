@@ -33,6 +33,10 @@ reuse the shared bounded area mask planner. Admission charges retained geometry
 and passes the remaining parent byte budget before source access. Actual
 Measure/Area, workspace reopen and unchanged pixels have
 [scoped checks](parity/reviews/interpolation-compound-20261105.json).
+Explicit typed degenerate areas also have empty membership. Actual current-plane
+Measure emits Area 0 while preserving selection/pixels;see the
+[type evidence](parity/reviews/interpolation-types-20261105.json). Scientific
+FREELINE/TRACED length/perimeter variants remain T04a.2 M3/T06 scope.
 An unmatched positioned plane has an empty population. All acquired
 samples are validated even outside the ROI. Profile values use explicit frozen
 coordinates independently of area membership; profile-only targets do not

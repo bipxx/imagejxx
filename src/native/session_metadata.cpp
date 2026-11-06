@@ -1,3 +1,4 @@
+#include <imagejxx/selection_interpolation.hpp>
 #include "session_metadata.hpp"
 #include "selection_codec.hpp"
 #include <algorithm>
@@ -537,10 +538,12 @@ Selection selection_from_json(const Json &value) {
     result.attributes.erase("shape");
     result.attributes.erase("mask");
   }
+  if(result.attributes.count(polygon_type_attribute))result.validate(1,1);
   return result;
 }
 
 Json selection_to_json(const Selection &value) {
+  if(value.attributes.count(polygon_type_attribute))value.validate(1,1);
   if(value.is_path())throw std::invalid_argument("Path selection requires the native V5 session codec");
   if(value.is_region())return detail::selection_codec::encode_selection(value,true);
   Json result = to_json(value.attributes);

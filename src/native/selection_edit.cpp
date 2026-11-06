@@ -1,3 +1,4 @@
+#include "selection_polygon_type.hpp"
 #include "kernel_control.hpp"
 #include "selection_region_rotation.hpp"
 #include "selection_spline_detail.hpp"
@@ -867,7 +868,8 @@ Selection SelectionEditor::box_geometry(std::array<double, 2> center,
 }
 Selection SelectionEditor::properties(double width,
                                       const MetadataObject &patch) const {
-  if(patch.count(spline_fit_attribute))throw std::invalid_argument("Edit spline state through knot/fit/remove operations");
+  if(patch.count(spline_fit_attribute) || patch.count(polygon_type_attribute))
+    throw std::invalid_argument("Edit typed selection state through its explicit operations");
   Selection result = selection_;
   result.width = width;
   for (const auto &entry : patch)
@@ -1300,7 +1302,7 @@ SelectionRegion SelectionEditor::enlarged_region_impl(double pixels,const Select
   if(!any)return finish(source); // ImageJ preserves the ROI if shrinking erases it.
   if(!preserve_full_geometry) {
     auto result=Selection::from_packed_mask(source_width,source_height,std::move(packed));
-    result.width=source.width;result.attributes=source.attributes;result.attributes.erase("corner_diameter");
+    result.width=source.width;result.attributes=source.attributes;result.attributes.erase("corner_diameter");result.attributes.erase(polygon_type_attribute);
     return finish(std::move(result));
   }
   std::array<int,2> origin{static_cast<int>(plan.left),static_cast<int>(plan.top)};
@@ -1321,7 +1323,7 @@ SelectionRegion SelectionEditor::enlarged_region_impl(double pixels,const Select
   auto result=preserve_full_geometry && cells==static_cast<std::size_t>(right-left)*(bottom-top)
       ? Selection("rectangle",{{double(left),double(top)},{double(right),double(bottom)}},source.width)
       : Selection::from_packed_mask(plan.width,plan.height,std::move(packed));
-  result.width=source.width;result.attributes=source.attributes;result.attributes.erase("corner_diameter");
+  result.width=source.width;result.attributes=source.attributes;result.attributes.erase("corner_diameter");result.attributes.erase(polygon_type_attribute);
   result.validate(plan.width,plan.height);
   return finish(std::move(result),origin,plan.width,plan.height);
 }
@@ -1448,7 +1450,7 @@ Selection SelectionRegion::project(int width,int height,const SelectionEditLimit
     }
   }
   stage.finish();auto result=Selection::from_packed_mask(width,height,std::move(packed));
-  result.width=frozen.selection_.width;result.attributes=frozen.selection_.attributes;
+  result.width=frozen.selection_.width;result.attributes=frozen.selection_.attributes;result.attributes.erase(polygon_type_attribute);
   return finish(std::move(result));
 }
 SelectionRegion SelectionEditor::enlarged_region(double pixels,const SelectionEditLimits &limits,

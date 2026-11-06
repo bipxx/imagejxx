@@ -29,7 +29,10 @@ History, workspace and explicit replay preserve typed state in both hosts. See
 **Edit → Selection → Interpolate...** resamples supported ordinary/fitted and
 compound/curved selections with pixel interval, Smooth and Adjust controls.
 Native paths preserve separate components and holes; masks use actual boundaries.
-Point/multipoint inputs return unchanged without a dialog or history entry. See
+Point/multipoint inputs return unchanged without a dialog or history entry.
+Repeated commands preserve meaningful subtypes;the frozen canvas zoom controls
+the small-result polygon/polyline transition. Degenerate results retain their
+area/open identity. See
 [source profiles, history policy and remaining gaps](SELECTION_TRANSFORMS.md#selection-interpolation).
 
 ## Brightness/Contrast

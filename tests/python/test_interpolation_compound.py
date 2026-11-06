@@ -17,6 +17,8 @@ def path(commands):
 
 
 def contours(value):
+    if not value.is_path:
+        return [value.points]
     result = []; current = []
     commands = value.path.commands; at = 0
     while at < len(commands):
@@ -130,7 +132,7 @@ def test_rotated_native_frame_profiles(kind):
         attributes["corner_diameter"] = 6
     original = original.with_attributes(attributes)
     result = ij.interpolate_selection(original, 40, 40)
-    assert result.is_path and len(contours(result)) == 1 and result.path.contains([20, 20])
+    assert not result.is_path and len(contours(result)) == 1 and result.mask((40, 40))[20, 20]
     assert result.attributes == {"opaque": [True, "retained"]}
 
 

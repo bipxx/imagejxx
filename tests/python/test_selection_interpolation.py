@@ -17,15 +17,18 @@ def test_actual_command_samples(case):
     before = source.to_dict()
     options = ij.SelectionInterpolationOptions()
     options.interval = case["interval"]; options.smooth = case["smooth"]; options.adjust_to_match = case["adjust"]
-    # Upstream can publish one-vertex area objects. Native editable areas require
-    # three vertices; retain this explicit, independently owned fidelity gap.
-    if case["error"] or len(case["samples"]) < (2 if case["kind"] in ("line", "polyline") else 3):
+    # Explicit subtype state now retains upstream one/two-vertex areas.
+    if case["error"] or (case["kind"] in ("line", "polyline") and len(case["samples"]) < 2):
         with pytest.raises((ValueError, RuntimeError)):
             ij.interpolate_selection(source, 128, 128, options)
     else:
         result = ij.interpolate_selection(source, 128, 128, options)
         np.testing.assert_allclose(result.points, case["samples"], atol=1e-5, rtol=1e-7)
         assert result.kind == ("polyline" if case["kind"] in ("line", "polyline") else "polygon" if case["type"] == 2 else "freehand")
+        assert ij.selection_polygon_type(result) == {
+            2: ij.SelectionPolygonType.POLYGON, 3: ij.SelectionPolygonType.FREEHAND,
+            6: ij.SelectionPolygonType.POLYLINE, 7: ij.SelectionPolygonType.FREELINE,
+        }[case["type"]]
         assert ij.selection_spline_fit(result) is None
     assert source.to_dict() == before
 

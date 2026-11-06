@@ -1,3 +1,4 @@
+#include "selection_polygon_type.hpp"
 #include "selection_codec.hpp"
 #include <imagejxx/selection_spline.hpp>
 #include "session_metadata.hpp"
@@ -71,6 +72,8 @@ std::optional<int> optional_index(const Json &value) {
 }
 } // namespace
 Json encode_selection(const Selection &value,bool allow_regions,bool allow_paths) {
+  if(value.attributes.count(polygon_type_attribute) && !allow_paths)fail("Polygon subtype requires session version 5");
+  (void)selection_polygon_type(value);
   if(value.is_path() && !allow_paths)fail("Path geometry requires an explicit codec version");
   if(value.is_path())value.validate(1,1);
   if(value.is_region() && !allow_regions)fail("Regional geometry requires an explicit codec version");
@@ -103,6 +106,9 @@ Selection decode_selection(const Json &value, const SessionLimits &limits,bool a
   for (const auto &point : points) result.points.push_back(numbers<2>(point));
   result.width = number(value.at("width"));
   result.attributes = scalar::object_from_json(value.at("attributes"));
+  if(result.attributes.count(polygon_type_attribute) && !allow_paths)fail("Polygon subtype requires session version 5");
+  (void)selection_polygon_type(result);
+  if(result.attributes.count(polygon_type_attribute))result.validate(1,1);
   if(kind=="path") {
     if(!result.points.empty())fail("Path selection must not contain vector points");
     const auto &path=value.at("path");

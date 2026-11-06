@@ -20,8 +20,8 @@ PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
 verified in both Windows hosts. Scientific TIFF reslice/export now preserves
 world/time transforms. Vertex Convex Hull has scoped API/both-Windows-host
 evidence. Bounding Rectangle now has scoped API/both-host checks too; next
-is T06/G018 repeated-source/type, zoom and degenerate interpolation semantics
-using120accepted two-command reference rows. Point no-op is scoped delivered;
+is T15 remembered Interpolate options. Repeated-source/type,zoom anddegenerate
+geometry now have scoped129-observation API/both-host evidence. Point no-op is scoped delivered;
 compound/curved and ordinary-source interpolation,
 editable spline fitting/removal, Fit Circle,
 Fit Ellipse and minimum-area Fit Rectangle have scoped API and both-host checks. The analysis details below retain residual

@@ -1,0 +1,1508 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T06/G018 repeated interpolation subtype,zoom anddegenerate geometry",
+  "base_commit": "5fff4c791b1bc643280393addf4e45ff7eadcb51",
+  "command_candidate": {
+    "id": "R-37408c0285cb8a890e98cd6b",
+    "upstream_property": "selection08",
+    "invocation": "ij.plugin.Selection(interpolate)",
+    "runtime_actions": [
+      "show_interpolate_selection",
+      "interpolate_selection"
+    ],
+    "catalog": "Static candidate/eligibility/runtime reconciliation fields are not whole-feature completion claims."
+  },
+  "state": {
+    "implemented": "Meaningful polygon subtype state, frozen magnification, single-contour ordinary outputs and explicit degenerate area/open geometry, shared C++/Python APIs andexisting UI/job owners.",
+    "verified": "1923distinct affected Python IDs ultimately green.115comparable two-command rows among129total observations;190earlier ordinary sample/type matches+4upstreamintervalrefusals. Windows/Linux native/session andWindows installed SDK pass.",
+    "integrated": "8physical repeat-after-edit/zoom/stale-dialog/localhistory/workspace/rebind cases acrossbothWindowsImGui hosts;older80native lifecyclescenarios pass. ActualPythonMeasureArea0 andrawpixel preservation pass.",
+    "family_closed": false,
+    "release_ready": false,
+    "full_editor_closed": false
+  },
+  "contract": {
+    "header": "include/imagejxx/selection_interpolation.hpp",
+    "api": [
+      "SelectionInterpolationOptions(interval,smooth,adjust_to_match,magnification=1) additive frozencontext field;requiresrecompileconsumers",
+      "SelectionPolygonType enum Polygon,Freehand,Traced,Polyline,Freeline",
+      "selection_polygon_type(selection) inferscanonicalkind orvalidatestyped metadata",
+      "with_selection_polygon_type(selection,type) returnsvalidatedcopy;matchingnativekindonly",
+      "Existingestimate_interpolated_selection/interpolate_selection signaturesunchanged"
+    ],
+    "state_key": "imagejxx.polygon_type",
+    "grammar": "String polygon/freehand/traced/polyline/freeline,matching native polygon/freehand/polyline kind. Getter infers untagged canonical kinds. Explicit setter returns validated state; automatic normal outputs omit redundant tags.",
+    "meaning": "FREELINE smoothing retains open endpoints;TRACED source transitions differ fromFREEHAND. SingleShapeRoi/analytic initial Smooth rules retained;ordinary output participates in repeat commands.",
+    "zoom": "Finitepositive magnification,default1detached. Actual hostPanezoom captured;dialogzoomchange refusesstaleApply;acceptedworker keepsfrozencontext. >=12x and<=150samples producespolygon/polyline.",
+    "degenerate": "Explicitstate admits1/2vertexareas and1vertexpolylines withhandles andempty membership;untypedincompletegeometry stillrefuses. A one-vertex source takes theactual earlyreturn rather than Adjust trials. SourceStyle/metadata andpoint-noop retained.",
+    "numeric_fix": "Fallback only for adjacent representable squared distances aroundradiusSquared. Previous8epsilonband admitted4/11ULPinside endpoints,addedvertices andcorruptedAdjust. Earlier1ULP cases andallobservation/tolerancebytes retained.",
+    "persistence": "CurrentNativeV5 detectsactive/previous/savedstate;NativePathV4 candidateANDwire carryit;older current session/creationprofiles refuse newstate. Nativeflat DTOs remainvalidated adapters. ImageJROI file4/8 mapFREELINE/TRACED anddegenerate records preservekind.",
+    "compatibility": "Selectionlayoutunchanged;SelectionInterpolationOptions addsdoublemagnification. RebuildC++clients;current matching native/desktopbindings,pureexports,SDKheaders/library installed. No newdependency/plugin/controller/renderer/runtime orformatversion.",
+    "scientific_scope": "Area membership andactualdegenerateArea0qualified. FREELINE/TRACEDscientificlength/perimeter,otherconstructor/savedrow/scientific variants remainT04a.2 M3/T06;notallAnalyzerparity.",
+    "recording": "Resolved-resultNativePathV4 with explicitrebind,notImageJ operation-intent macros. Existing transient ordinarygestures remain;repeatcommands each retainhistory."
+  },
+  "reference": {
+    "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "observers": [
+      {
+        "path": "tests/reference/ObserveInterpolationRepeat.java",
+        "bytes": 5157,
+        "sha256": "11e8bbe4aa1e156644c89b9bf394bd3580488b6c268de0fc3ff67f0b6a311012"
+      },
+      {
+        "path": "tests/reference/ObserveInterpolationThreshold.java",
+        "bytes": 623,
+        "sha256": "7c8087fbd2fb6204238df70b81ce5f55736c3e12a3d6caf7a5c5e8494a58a7ff"
+      }
+    ],
+    "fixtures": [
+      {
+        "path": "tests/fixtures/interpolation-repeat-imagej154r.json",
+        "bytes": 878233,
+        "sha256": "8324940924ee40e2dee39cc4fda19e32e082692bfe9c887bbf3b6486d80cd0fe"
+      },
+      {
+        "path": "tests/fixtures/interpolation-threshold-imagej154r.json",
+        "bytes": 187456,
+        "sha256": "b9d65b936a6d58b43ddde42cc8e35486317c00f2ef1ccd051c4f778b54795194"
+      }
+    ],
+    "threshold_acceptance": {
+      "state": "accepted_actual_command_observations",
+      "cases": 9,
+      "first_sample_counts": [
+        151,
+        150,
+        149,
+        151,
+        150,
+        149,
+        151,
+        150,
+        149
+      ],
+      "fixture_sha256": "b9d65b936a6d58b43ddde42cc8e35486317c00f2ef1ccd051c4f778b54795194",
+      "old120unchanged": true
+    },
+    "scope": "129rows:115comparable (111direct ordinary/singleShape/dense+4POINT) match2steps;closed-area masks exact. Openlines compare arrays/types/endpoints,notRoi.getMask.12actualcompoundcommandrows documentupstream subtractloss/errors,qualified separately through96componentprofiles andnative repeatedhole/islandtest;2tinyNULLrows directlytest deliberate nativeemptyarea policy. No all129identicalcommandclaim.",
+    "tolerances": "Absolute1e-5,relative1e-7unchanged;membershipexact.194ordinary/96component/120repeat fixturebytesunchanged.190validordinarysample/type comparisonsnowinclude2formerlyrefusedareas.",
+    "threshold": "Actual149/150/151firstsamples at11.99/12/16zoom verifyboth sides andequality;bothsuccessive arrays/types compared."
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/selection_interpolation.hpp",
+      "bytes": 1163,
+      "sha256": "12594d99504ca87d3157c85551d1120397f835a45ca437d7429d97fa9ada9464"
+    },
+    {
+      "path": "src/native/selection_polygon_type.hpp",
+      "bytes": 267,
+      "sha256": "e6bf397b5c5cd370e1d2a0be4fbfa1f77520ce15c82d06d22587ea1f5e9059d0"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 56637,
+      "sha256": "d17f42e42eed55b0af7144390b7561efc365a7bc791d58792c9ad40b892496ec"
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 61167,
+      "sha256": "b01c70bdde26fc64e05c2dfd9d5552ba5cd5ad3eabbc6c7f53f7e98f04fdc071"
+    },
+    {
+      "path": "src/native/selection_creation.cpp",
+      "bytes": 89039,
+      "sha256": "dd02664a68d075b6dbb1beb32078e2b270f5bbc53a60a74b18540a57b058250e"
+    },
+    {
+      "path": "src/native/selection_codec.cpp",
+      "bytes": 9166,
+      "sha256": "84a1c4598506033d0df9f1731fff48245bc2fd9a58d1ee673c895248ca25b6c2"
+    },
+    {
+      "path": "src/native/imagej_roi.cpp",
+      "bytes": 49868,
+      "sha256": "a9e4d83431cb6ad309af985733bcd8943a840e7f574aa8b3c4f5ea4318fd90c2"
+    },
+    {
+      "path": "src/native/imagej_spline.cpp",
+      "bytes": 26453,
+      "sha256": "0f159eca29aae8eedfd6d98ed5bc02b709b46caeeac1bbbdc9a39a8b28270ddc"
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 78254,
+      "sha256": "feabc6fb42e2ed059e72957b7bd50f479c45f665015b812df4d3429ed5a286e6"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 27827,
+      "sha256": "f1167d9a79663bc24b7de70c6e29a854aeed93a411be02a6289f9694f19e9e16"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 83510,
+      "sha256": "d2f815fa4c76c99a47d930d908e76d4dd2abee03dfe8ee058a4b19be7a2180ca"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 927831,
+      "sha256": "f49d61dc5f62e44fb29f7deef7e9bbc92229af2da128e917a48b7c202ff02428"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 86712,
+      "sha256": "89daac86167e8324b18114fc04bf19b1abf663fec025aa25b30770daba374900"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 1814,
+      "sha256": "5e5014192ba9732f3dca0eea1d57e786a69afbe9402e3f6593d954b380ad5ae7"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 66830,
+      "sha256": "82819ac4edb653eb125cb5e1e66b54cd3a3ac31e4833a2a5b7500b792a9d25cb"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 35664,
+      "sha256": "13ed494ca6dafbe7fa202c7a27c6c9f08fc161fcd578ea8681eb2ad53d327ba9"
+    },
+    {
+      "path": "tests/native/test_selection_transform.cpp",
+      "bytes": 20591,
+      "sha256": "195e74a8d0064f4634db50b480b18c49d5d24cbffc5cf4986065cb5d99b57bd3"
+    },
+    {
+      "path": "tests/python/test_interpolation_repeat.py",
+      "bytes": 15951,
+      "sha256": "363ed0e6925b9efce63b2148b9fffcc031ba877f978bbd3d43e61e50e141b483"
+    },
+    {
+      "path": "tests/python/test_selection_interpolation.py",
+      "bytes": 7015,
+      "sha256": "d6fcb9127458866a8fada6b0c023e9210083b0931ce841b3d4464c8f36096738"
+    },
+    {
+      "path": "tests/python/test_interpolation_compound.py",
+      "bytes": 11601,
+      "sha256": "a1dd70ff56bc217477d3dabfb24ea97648ab6bb2aa357fe456b38a32587c648c"
+    },
+    {
+      "path": "src/native/session.cpp",
+      "bytes": 66805,
+      "sha256": "e3e4923a3feca3114712212008cd5eb37eedc3cf3d7dbc13dda463e17d564d28"
+    },
+    {
+      "path": "src/native/session_metadata.cpp",
+      "bytes": 42087,
+      "sha256": "553e3903a8b1909af552efcf74225d1138e08e039f93f237fe0f6bf31f34dac4"
+    },
+    {
+      "path": "tests/reference/ObserveInterpolationThreshold.java",
+      "bytes": 623,
+      "sha256": "7c8087fbd2fb6204238df70b81ce5f55736c3e12a3d6caf7a5c5e8494a58a7ff"
+    },
+    {
+      "path": "tests/fixtures/interpolation-threshold-imagej154r.json",
+      "bytes": 187456,
+      "sha256": "b9d65b936a6d58b43ddde42cc8e35486317c00f2ef1ccd051c4f778b54795194"
+    }
+  ],
+  "verification": {
+    "readers": {
+      "state": "passed",
+      "distinct_python_ids_passed": 1923,
+      "all_failed_ids_recovered": true,
+      "xml_attempts": [
+        {
+          "name": "type-geometry003.xml",
+          "cases": 1441,
+          "failed": 0
+        },
+        {
+          "name": "type-legacy006.xml",
+          "cases": 194,
+          "failed": 0
+        },
+        {
+          "name": "type-measure007.xml",
+          "cases": 1,
+          "failed": 0
+        },
+        {
+          "name": "type-policy004.xml",
+          "cases": 3,
+          "failed": 0
+        },
+        {
+          "name": "type-python002.xml",
+          "cases": 468,
+          "failed": 9
+        },
+        {
+          "name": "type-python003.xml",
+          "cases": 469,
+          "failed": 0
+        },
+        {
+          "name": "type-threshold005.xml",
+          "cases": 9,
+          "failed": 0
+        }
+      ],
+      "physical_repeat_cases": [
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-python003/pytest/test_physical_repeat_after_edi3/repeat-ui/case.json",
+          "sha256": "dc423588724e2a92f28c75d422597fe4db9215c9aacdef5d07f609ec2dc671d0",
+          "context": "imgui_python",
+          "opened": true,
+          "magnification": 12.0,
+          "first_points": 43,
+          "second_points": 42
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-python003/pytest/test_physical_repeat_after_edi2/repeat-ui/case.json",
+          "sha256": "97199bc0840af9f8e7192feb8a83980e47152ae73631b7354b7951e8683f1dc3",
+          "context": "imgui_python",
+          "opened": false,
+          "magnification": 12.0,
+          "first_points": 32,
+          "second_points": 32
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-python003/pytest/test_physical_repeat_after_edi1/repeat-ui/case.json",
+          "sha256": "c25fe6f124ca2bd72b693d918f13a149b2938e1731ae1f6c7b924c34355b8277",
+          "context": "imgui_python",
+          "opened": true,
+          "magnification": 1.0,
+          "first_points": 43,
+          "second_points": 41
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-python003/pytest/test_physical_repeat_after_edi0/repeat-ui/case.json",
+          "sha256": "9e99b45ca406c438cb1362477d6155a31c7ee86664663b4cf29700b79d54a98b",
+          "context": "imgui_python",
+          "opened": false,
+          "magnification": 1.0,
+          "first_points": 32,
+          "second_points": 30
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-native003/ui/interpolation-repeat-area-high/case.json",
+          "sha256": "7f9ac563d9cb492497114071e188bd38cb138b5d710cbfb01908d88bebc67056",
+          "context": "imgui_cpp",
+          "opened": false,
+          "magnification": 12.0,
+          "first_points": 32,
+          "second_points": 32
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-native003/ui/interpolation-repeat-area-low/case.json",
+          "sha256": "e8c28a2c175a220b585d10a91f2af0e17b20495032e4fa6a6d8c1375d9b9dd96",
+          "context": "imgui_cpp",
+          "opened": false,
+          "magnification": 1.0,
+          "first_points": 32,
+          "second_points": 30
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-native003/ui/interpolation-repeat-open-high/case.json",
+          "sha256": "156efb24c45492e6bcdcf58b3606c5d9df42e4a8bac3724c8c14141e6d45ba7c",
+          "context": "imgui_cpp",
+          "opened": true,
+          "magnification": 12.0,
+          "first_points": 43,
+          "second_points": 42
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-native003/ui/interpolation-repeat-open-low/case.json",
+          "sha256": "24eccdffe1c0c5fccaf5adcc16d569fce5a132a54ddeba7534fe2b5dc3796986",
+          "context": "imgui_cpp",
+          "opened": true,
+          "magnification": 1.0,
+          "first_points": 43,
+          "second_points": 41
+        }
+      ],
+      "processes": [
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-_desktop002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-_desktop003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-_native002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-_native003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_app002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_app003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_core002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_core003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_desktop002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_desktop003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_display_actions_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_display_actions_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_imagej_roi_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_imagej_roi_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_creation_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_creation_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_edit_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_edit_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_transform_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_transform_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_session_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_session_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-geometry003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-app002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-app003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-pure002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-pure003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-python002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-python003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-sdk002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-sdk003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-legacy006.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-build002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-build003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_imagej_roi_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_imagej_roi_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_creation_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_creation_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_edit_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_edit_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_transform_tests002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_transform_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-owner002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-owner003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-session002.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-session003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-measure007.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-imagejxx_imagej_roi_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-imagejxx_selection_creation_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-imagejxx_selection_edit_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-imagejxx_selection_transform_tests003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-session003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-ui003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-policy004.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python002-pack.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python002-verify.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python002.process.json",
+          "exit_code": 1
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-reference-compile005.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-reference-observe005.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-sdk-build003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-sdk-configure003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-sdk-profile003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-sdk-run003.process.json",
+          "exit_code": 0
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-threshold005.process.json",
+          "exit_code": 0
+        }
+      ],
+      "reference_scope": "115comparable2commandrows (111ordinary/direct+4POINT) across129totalobservations;14nativepolicyrowsdistinct (12upstreamcompoundloss/errors,2tinyNULL).194ordinarysourcecasesnow190sample/type matches+4upstreamintervalrefusals;96componentprofilesunchanged.",
+      "availability": "Capturepaths liveuntilverifiedretirement;afterthat archives/manifests only. Linuxsuccessfulsessionproductsidentity-onlyretired."
+    },
+    "windows_native": "Changedtransform/edit/creation/ROI,fullnativeSessiongroupandmaintainednativephysicaldriverpass.",
+    "linux_native": "Samechangedcore/transform/edit/creation/ROI/session pass inexistingLinuxcache;filesystem/sessionproducts hostlocal. LinuxSDK/UI notqualified.",
+    "sdk": "Onecurrent Windows installed selection_transform_api consumer;enum,newoptionslayout,repeat,zoom,typededits,V4,resource/freeze anddegenerate contracts pass. Retainedthroughfinalreviewthenidentity-onlyretired.",
+    "installed": [
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+        "component": "Unspecified",
+        "sha256": "c19ac477f4a56623fd29c8bcc4580ddef12b56258d9f821457e04d866726be9a"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+        "component": "Unspecified",
+        "sha256": "9b246fe139d1b50ee58d26d69e47126e48d5931d7a3c6294f19171d6c9844795"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+        "component": "processing-python",
+        "sha256": "d2f815fa4c76c99a47d930d908e76d4dd2abee03dfe8ee058a4b19be7a2180ca"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+        "component": "desktop",
+        "sha256": "a9b98e0b933dca8daac1e8748e5fcc73a18d4a5195e606e1c9ba407489aae4fd"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\include\\imagejxx\\selection_transform.hpp",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\include\\imagejxx\\selection_transform.hpp",
+        "component": "development",
+        "sha256": "6641a7fe2c5449a60397c9f808cf9831aab92f7419d5572c7e56b68d04a2b49c"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx_core.lib",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "component": "development",
+        "sha256": "01227aa10a86e013feb3df1fcd1fc8304cbf7d665228c40c6da57431eb6b783c"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\include\\imagejxx\\selection_spline.hpp",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\include\\imagejxx\\selection_spline.hpp",
+        "component": "development",
+        "sha256": "ebff09bd1b7b60cd8514e4a66c12e48d5e6b219d6c07a394cc624062e39f10f7"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\include\\imagejxx\\selection_interpolation.hpp",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\include\\imagejxx\\selection_interpolation.hpp",
+        "component": "development",
+        "sha256": "12594d99504ca87d3157c85551d1120397f835a45ca437d7429d97fa9ada9464"
+      }
+    ],
+    "linux": {
+      "files": [
+        {
+          "path": "/mnt/c/Users/HEQ/Projects/imagejxx/src/native/selection_transform.cpp",
+          "bytes": 56637,
+          "sha256": "d17f42e42eed55b0af7144390b7561efc365a7bc791d58792c9ad40b892496ec"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/CMakeFiles/imagejxx_core.dir/src/native/selection_transform.cpp.o",
+          "bytes": 224976,
+          "sha256": "f367aa92dc57ab0fcf91860e28a3c143635e8561460d2c6676b9cc5049bb1e4f"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/imagejxx_selection_transform_tests",
+          "bytes": 3266336,
+          "sha256": "828f94ef3326108dcb9ba0119a7984706f505ae1a0b895b05ea8b961f811fbc9"
+        }
+      ]
+    },
+    "process_receipts": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-_desktop002.process.json",
+        "bytes": 2855,
+        "sha256": "ccf085954c98a10046bcaa3c7c554d1e95b94ca1e36e1a5bd4147ac8af8f374d",
+        "exit_code": 0,
+        "elapsed_seconds": 10.93609179998748
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-_desktop003.process.json",
+        "bytes": 2855,
+        "sha256": "35338d5e2d178859d99cebea27c9cba99f445b40d1b5e0be6700378edc7a8f83",
+        "exit_code": 0,
+        "elapsed_seconds": 6.4669774998910725
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-_native002.process.json",
+        "bytes": 2031,
+        "sha256": "f7948ffb879d3bd930edf59af9132f69676d21007db9da095941a45aa3f42df3",
+        "exit_code": 0,
+        "elapsed_seconds": 34.6048340999987
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-_native003.process.json",
+        "bytes": 2029,
+        "sha256": "16ae3fd90f44fcb4ee978da94213e15e6891d49305af39643ef802d61861eee1",
+        "exit_code": 0,
+        "elapsed_seconds": 40.24307940015569
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_app002.process.json",
+        "bytes": 2851,
+        "sha256": "1afe1f24f6ae8aa1c959b4ebb9c9a0872600a68cfdd605f9ba29bb3de7ba71c0",
+        "exit_code": 0,
+        "elapsed_seconds": 9.093460600124672
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_app003.process.json",
+        "bytes": 2856,
+        "sha256": "6d0bfd6cb3fd9eab797d590fcaf06e3d9c469e605cadb5712da1c6ef7b13e9d3",
+        "exit_code": 0,
+        "elapsed_seconds": 2.36619560001418
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_core002.process.json",
+        "bytes": 2037,
+        "sha256": "45984021ef466f3e92e0c16a620667ec4fcf0df1abded9c3f6c4fbb05ff6c967",
+        "exit_code": 0,
+        "elapsed_seconds": 22.46046630013734
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_core003.process.json",
+        "bytes": 2036,
+        "sha256": "d5e19d9fdcf2e39a9de6c65e49c62ead33930e7c2da9b20c4ec5d18c67093133",
+        "exit_code": 0,
+        "elapsed_seconds": 27.694444000022486
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_desktop002.process.json",
+        "bytes": 2864,
+        "sha256": "da522a75a3a771952e105db596b1afd79d1a944572f03739f6c73cf4b4862fcc",
+        "exit_code": 0,
+        "elapsed_seconds": 28.270784600172192
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_desktop003.process.json",
+        "bytes": 2853,
+        "sha256": "4fb5ec0c676a0a22a12d908f45f8206a580c20e5d60792e53d2882c7ea645cbb",
+        "exit_code": 0,
+        "elapsed_seconds": 34.29812699998729
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_display_actions_tests002.process.json",
+        "bytes": 2874,
+        "sha256": "6431893a0c62b5793e1b86298940cfaeb0674dd06c3b6de8c062660f72183388",
+        "exit_code": 0,
+        "elapsed_seconds": 6.964891399955377
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_display_actions_tests003.process.json",
+        "bytes": 2876,
+        "sha256": "379eb355eca378f00b065686ae03701df11eb68d6b0aee19e5925e3a5ccb9068",
+        "exit_code": 0,
+        "elapsed_seconds": 1.7571549001149833
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_imagej_roi_tests002.process.json",
+        "bytes": 2049,
+        "sha256": "e47f7a7a07b09eb20c6f7b96224d274bb2ceeb9999886a6983617da95c04f9f6",
+        "exit_code": 0,
+        "elapsed_seconds": 0.7777124000713229
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_imagej_roi_tests003.process.json",
+        "bytes": 2046,
+        "sha256": "662a62ec7ae01fa163c17c133bcbf7d00e722c9a037d3b73758f6d011113d3f6",
+        "exit_code": 0,
+        "elapsed_seconds": 0.6491958000697196
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_creation_tests002.process.json",
+        "bytes": 2059,
+        "sha256": "2d5d30c16bea530ec27eb7908e7509c8642a5c9b08b88b1360b700a6008b0b63",
+        "exit_code": 0,
+        "elapsed_seconds": 0.8051251000724733
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_creation_tests003.process.json",
+        "bytes": 2056,
+        "sha256": "07d1611a70cfc77bf74101aca99f17e4921db5211ef17462bcebb832acbf63f5",
+        "exit_code": 0,
+        "elapsed_seconds": 0.6517411000095308
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_edit_tests002.process.json",
+        "bytes": 2055,
+        "sha256": "e6fde4562796ee7788230197a25e0af9e1d8847faaa14773df27311ea9b87bb8",
+        "exit_code": 0,
+        "elapsed_seconds": 0.7553626999724656
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_edit_tests003.process.json",
+        "bytes": 2052,
+        "sha256": "c5c0a743b00afd57b59eec8a0c6430499c21877982ad72c3c08cccb7ad12b0a1",
+        "exit_code": 0,
+        "elapsed_seconds": 0.7793519999831915
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_transform_tests002.process.json",
+        "bytes": 2060,
+        "sha256": "213ba0668a6c1106fac68dcd4a1d07450a026cbf0235656eb5896558f4d27268",
+        "exit_code": 0,
+        "elapsed_seconds": 3.0127834000159055
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_selection_transform_tests003.process.json",
+        "bytes": 2058,
+        "sha256": "7a72b4f4f7614a679fbc0f5b954f86046ac0b19e4f3fc25e7b066cd8a09e1a5a",
+        "exit_code": 0,
+        "elapsed_seconds": 2.5821281000971794
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_session_tests002.process.json",
+        "bytes": 2048,
+        "sha256": "83f58373e848061079e9fefb788fc09844266c8c0aa6d53c390b39923f998b11",
+        "exit_code": 0,
+        "elapsed_seconds": 3.5234024000819772
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-build-imagejxx_session_tests003.process.json",
+        "bytes": 2041,
+        "sha256": "596f5194fba17d87ad9be000979c3633c6db835aa04c1eeba59a7b595e48e14a",
+        "exit_code": 0,
+        "elapsed_seconds": 0.677980599924922
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-geometry003-pack.process.json",
+        "bytes": 2526,
+        "sha256": "d8af931ddd855a57655063be198b022e2b0233a7156ce8b8591500515cc5e204",
+        "exit_code": 0,
+        "elapsed_seconds": 0.22076860000379384
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-geometry003-verify.process.json",
+        "bytes": 2400,
+        "sha256": "eb73cf1ddc2a3263f1eef33aa711275bf67b833745036b63e4dbf8bc75b3bcc9",
+        "exit_code": 0,
+        "elapsed_seconds": 0.12789170001633465
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-geometry003.process.json",
+        "bytes": 2598,
+        "sha256": "fa19092460c4d0127d9740c35536a6912dbe9a70539459d8b14024d8c1e175e9",
+        "exit_code": 0,
+        "elapsed_seconds": 3.6043481999076903
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-app002.process.json",
+        "bytes": 2121,
+        "sha256": "72eedea291ffda9762e42d4b07d99f18c0f5a00e8011467c422baf0335c7701e",
+        "exit_code": 0,
+        "elapsed_seconds": 0.16833899985067546
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-app003.process.json",
+        "bytes": 2116,
+        "sha256": "344692f97775bfc2b0dd0d6e0d6280d47eecc17616ce987ea56e5e350bad27eb",
+        "exit_code": 0,
+        "elapsed_seconds": 0.1397267000284046
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-pure002.process.json",
+        "bytes": 2140,
+        "sha256": "331e6886dcb6f6dff44347191ada94fac802e61d78960f715b5564620f9dec18",
+        "exit_code": 0,
+        "elapsed_seconds": 0.11496039992198348
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-pure003.process.json",
+        "bytes": 2139,
+        "sha256": "94c498a89ff04ff7f9d1ddf76b1ae8dc6a597c323ae9a6dc2f30d1732691744b",
+        "exit_code": 0,
+        "elapsed_seconds": 0.08948079985566437
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-python002.process.json",
+        "bytes": 2134,
+        "sha256": "f8f267441c834b77815b8a22f5e6466d943618802020840d59a2918a4c731b6a",
+        "exit_code": 0,
+        "elapsed_seconds": 0.21763149998150766
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-python003.process.json",
+        "bytes": 2128,
+        "sha256": "2380c1705736926c14f97c8ba7a32ea956131ba85da252128e0f61353009a469",
+        "exit_code": 0,
+        "elapsed_seconds": 0.18952700006775558
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-sdk002.process.json",
+        "bytes": 2124,
+        "sha256": "11c525538b0f98344dc4aec83f39149384523023d0f57249625a2218d821b268",
+        "exit_code": 0,
+        "elapsed_seconds": 0.24261080008000135
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-install-sdk003.process.json",
+        "bytes": 2118,
+        "sha256": "f4e5b883067cbd319da02b227ec7f13bf9a8b6d3f64b52bc3222c951e3689ebb",
+        "exit_code": 0,
+        "elapsed_seconds": 0.24059659987688065
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-legacy006.process.json",
+        "bytes": 2369,
+        "sha256": "870666489ca56d6a8991898e3a133839630baded3941df13ebe76c8edb04562b",
+        "exit_code": 0,
+        "elapsed_seconds": 1.007034500129521
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-build002.process.json",
+        "bytes": 1702,
+        "sha256": "b2c297b6082d96a5a3477acfc4d19afe14db5264fb9c06058080f56b7fe0d39e",
+        "exit_code": 0,
+        "elapsed_seconds": 42.501741873
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-build003.process.json",
+        "bytes": 1709,
+        "sha256": "ab1e7e309671f57a94baf17753cc6383fa4afee2af307a0c90048d400b1bc900",
+        "exit_code": 0,
+        "elapsed_seconds": 37.273810284999996
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_imagej_roi_tests002.process.json",
+        "bytes": 1454,
+        "sha256": "ad68a3d88042d1d3319151de2178aee8c9ffb9e4b54f6edc9334a51bcab86b01",
+        "exit_code": 0,
+        "elapsed_seconds": 0.09854145300000283
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_imagej_roi_tests003.process.json",
+        "bytes": 1453,
+        "sha256": "e60a08612f5070ab02c57b746852202ed9247ec06c56d5b6aa11a872ec30fba1",
+        "exit_code": 0,
+        "elapsed_seconds": 0.11415336800000375
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_creation_tests002.process.json",
+        "bytes": 1462,
+        "sha256": "879e415756ca09540cc2edc90ca39b8d9acf7ade547e7222ae3b56aad2fc5634",
+        "exit_code": 0,
+        "elapsed_seconds": 0.07556009800000396
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_creation_tests003.process.json",
+        "bytes": 1460,
+        "sha256": "d7c760177204ac453458a565ae2a21fce57fa8e82693060a9cbd852d3ab7e11a",
+        "exit_code": 0,
+        "elapsed_seconds": 0.10507709399999499
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_edit_tests002.process.json",
+        "bytes": 1458,
+        "sha256": "f94dc6b4cf51e1833e5b3b40ded8aed5ea542f58fc75b052284f8a5912b72926",
+        "exit_code": 0,
+        "elapsed_seconds": 0.06669735500000229
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_edit_tests003.process.json",
+        "bytes": 1457,
+        "sha256": "66052807d8c573aa5cdc5b5b7d7935a5b3eda57b08a69d6ff566ee597024653a",
+        "exit_code": 0,
+        "elapsed_seconds": 0.07741470200001288
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_transform_tests002.process.json",
+        "bytes": 1462,
+        "sha256": "7fb610c94a6a7f5458506cfc6b051ee9768551a592fe22060f3a08082d111dbb",
+        "exit_code": 0,
+        "elapsed_seconds": 0.07681243500000079
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-imagejxx_selection_transform_tests003.process.json",
+        "bytes": 1461,
+        "sha256": "ef9db462e675e8058dc5912429c4468a3c2b2d21a0bb5fa8de0b3eeed48f4250",
+        "exit_code": 0,
+        "elapsed_seconds": 0.08122750399999745
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-owner002.process.json",
+        "bytes": 5483,
+        "sha256": "3c1edf5287ef5569ec4593d6d45718033d2543641bc136586a497858337cba4d",
+        "exit_code": 0,
+        "elapsed_seconds": 48.6801012000069
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-owner003.process.json",
+        "bytes": 6216,
+        "sha256": "41a4f4a8f05be1d3da3bc826abdf82b17031533f0ac24020234e7b6494199a65",
+        "exit_code": 0,
+        "elapsed_seconds": 40.983819500077516
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-session002.process.json",
+        "bytes": 1547,
+        "sha256": "1ee9bce62863ab8494bca2d0c1f8b2d412bb4ebff78cbbb12a9ad999151df16b",
+        "exit_code": 0,
+        "elapsed_seconds": 0.08148567700000342
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-session003.process.json",
+        "bytes": 1546,
+        "sha256": "63ad3ec98a78493168c55499e0bce158736c977dfdc766c53cf386efc283ed79",
+        "exit_code": 0,
+        "elapsed_seconds": 0.10173251599999844
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-measure007.process.json",
+        "bytes": 2400,
+        "sha256": "61e93934a0d819b2f2b4bb6648a5a76352f53e341b13c41d221aa1e91df0d256",
+        "exit_code": 0,
+        "elapsed_seconds": 0.7781783000100404
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-imagejxx_imagej_roi_tests003.process.json",
+        "bytes": 1822,
+        "sha256": "8d7f78c2e546050b4f609b7a64284d3b5c66cd545e572001027f45117ba3e98c",
+        "exit_code": 0,
+        "elapsed_seconds": 0.07202659989707172
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-imagejxx_selection_creation_tests003.process.json",
+        "bytes": 1842,
+        "sha256": "ffe904f79bfc43c694a1959559a691b5bb4583bad2d0170b21dda701b4e9d25d",
+        "exit_code": 0,
+        "elapsed_seconds": 0.061998399905860424
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-imagejxx_selection_edit_tests003.process.json",
+        "bytes": 1832,
+        "sha256": "1367bc9e6c264513c99b9b821f7167aa9610f88455dd24334ed4255aef51e96e",
+        "exit_code": 0,
+        "elapsed_seconds": 0.07229630020447075
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-imagejxx_selection_transform_tests003.process.json",
+        "bytes": 1842,
+        "sha256": "4ce8864d29714b195108ab8c7ce89167cc77430fc08979a4c4a4a4316daac97c",
+        "exit_code": 0,
+        "elapsed_seconds": 0.07831960008479655
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-session003.process.json",
+        "bytes": 1961,
+        "sha256": "f80670a4d85533f3e2e8b8a966405fe27f030f73ee0fd83d37b752d71457fe10",
+        "exit_code": 0,
+        "elapsed_seconds": 0.10631239996291697
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native-ui003.process.json",
+        "bytes": 1967,
+        "sha256": "c98ce6d64169c86bae101126570daf3a6e4ee7ce8df8ab4729f8fd67e118c96d",
+        "exit_code": 0,
+        "elapsed_seconds": 5.27618239982985
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native003-pack.process.json",
+        "bytes": 2516,
+        "sha256": "9c1ddbf6ee0678b16ca27d014de97ce7fcaa42a89e155c63426b2587d87873af",
+        "exit_code": 0,
+        "elapsed_seconds": 0.5114041999913752
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native003-verify.process.json",
+        "bytes": 2394,
+        "sha256": "9532ba34284308af8994e7fca595d018158866346c8c2f9304805259ac675d3f",
+        "exit_code": 0,
+        "elapsed_seconds": 0.26237699994817376
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-policy004.process.json",
+        "bytes": 2508,
+        "sha256": "0530c07e30f8ad82f6b95c10daa8fbc678f4f0893e31aa65a13aca3633f893e5",
+        "exit_code": 0,
+        "elapsed_seconds": 0.8587283999659121
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python002-pack.process.json",
+        "bytes": 2515,
+        "sha256": "d3aa70c99308d293697b101d6e3f0fc9149ee1e1011f12ead1c3a8267a4923af",
+        "exit_code": 0,
+        "elapsed_seconds": 0.32372090010903776
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python002-verify.process.json",
+        "bytes": 2395,
+        "sha256": "7f406f688d30fb65e37e2f660246cbfa7d87cbe9020b79ffeaaef7f7026a8305",
+        "exit_code": 0,
+        "elapsed_seconds": 0.19146310002543032
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python002.process.json",
+        "bytes": 2439,
+        "sha256": "bacad5b9a713bc8914ff48aa035cf79fadfcb7662b106dc3d8ff58854ee5bb2b",
+        "exit_code": 1,
+        "elapsed_seconds": 3.824872200144455
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python003-pack.process.json",
+        "bytes": 2516,
+        "sha256": "e462fc1f6d8224dd8374d2877bc760dd3517401efa45999eaa1efa4fcbd43225",
+        "exit_code": 0,
+        "elapsed_seconds": 0.2567676999606192
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python003-verify.process.json",
+        "bytes": 2394,
+        "sha256": "c90662b94aa356c0847d8d745e34b33ea0cbe5bdf6bcaef045cff1d99e236bc6",
+        "exit_code": 0,
+        "elapsed_seconds": 0.18147720000706613
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python003.process.json",
+        "bytes": 2435,
+        "sha256": "9d7ec41e766a2e662ae888ee28e0c826bd8de6df7e504692665049278773ee57",
+        "exit_code": 0,
+        "elapsed_seconds": 3.701256300089881
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-reference-compile005.process.json",
+        "bytes": 2293,
+        "sha256": "d91c9212aad46740fbcd1aab5ae38b424c53067390979b41ff648d0c517808c3",
+        "exit_code": 0,
+        "elapsed_seconds": 0.6524672999512404
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-reference-observe005.process.json",
+        "bytes": 2164,
+        "sha256": "fd1891c6a771e6dda7f35f368cb12c078e00da8c9158443ea6af4f8eaa0257f1",
+        "exit_code": 0,
+        "elapsed_seconds": 1.896148899802938
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-reference005-pack.process.json",
+        "bytes": 2532,
+        "sha256": "bcf216ac692e0741e8d2a3cf274e2d734e3ce88d1956736af2dbc6f0c21be747",
+        "exit_code": 0,
+        "elapsed_seconds": 0.15788299986161292
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-reference005-verify.process.json",
+        "bytes": 2406,
+        "sha256": "b8fb584777f70a276a008af631da2f3b63068f7aadfe9485a0d451d4f25be0ef",
+        "exit_code": 0,
+        "elapsed_seconds": 0.13204629998654127
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-sdk-build003.process.json",
+        "bytes": 2110,
+        "sha256": "4f45663befc6f0973be582198eab0efeb32dd1088147758c9d4204d22d6024d3",
+        "exit_code": 0,
+        "elapsed_seconds": 2.835774399805814
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-sdk-configure003.process.json",
+        "bytes": 2423,
+        "sha256": "6f2c490c7e13267bf15d92cce60c384c3ea9b6d7d72d699fa94206f293d62f1e",
+        "exit_code": 0,
+        "elapsed_seconds": 4.137530900072306
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-sdk-profile003.process.json",
+        "bytes": 2078,
+        "sha256": "cd0f08f86abc3fe42466988b6029de8eb3cf909607df71a1bde8c646e1ab393e",
+        "exit_code": 0,
+        "elapsed_seconds": 0.13323960010893643
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-sdk-run003.process.json",
+        "bytes": 1942,
+        "sha256": "9621121e18a5183472a062696c9159c032f54c09ed84faeeac768eb729317b04",
+        "exit_code": 0,
+        "elapsed_seconds": 0.06137720006518066
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-threshold005.process.json",
+        "bytes": 3524,
+        "sha256": "c09dab0df108cbac92d094d9a9d9c6c7ff4e383a6407821f0e49affde9bdbcbf",
+        "exit_code": 0,
+        "elapsed_seconds": 1.111336600035429
+      }
+    ],
+    "failed_attempt": "type-python002:459/468pass,9fail. Sharedactualfix then469green,3newnativepolicy,9boundary,1Measure nodesgreen;194existingnodes gainedenumassertions andpassed. AllfailedIDs recovered.7sharedgeometrymodules1441green.",
+    "build_seconds_by_windows_batch": {
+      "002": 121.2049148005899,
+      "003": 118.16637600027025
+    },
+    "unavailable": "KnownG016retiredbuildreference and17legacygestureinputs remain unavailable,not selectedorpassed.",
+    "static_closeout": {
+      "state": "passed",
+      "scope": [
+        "99family statuses/requirements unchanged;G018evidence appended only",
+        "4protected files and3historical guide hashes unchanged",
+        "194/96/120fixtures andoriginalrepeatobserver unchanged",
+        "currentreceipt source/evidence hashes",
+        "newlocaldocument links/anchors andwhitespace"
+      ],
+      "unavailable": "Globalcheck_plan.py notrerun:knownretiredG016checkpointmissing;notpass,notrepinned.17gestureinputsnotselected.",
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-static-closeout009.json",
+        "sha256": "a05ae32891ee7e2da28200e865bdadbb0d6abb59fe56cf49e5e213bbd4dbff49"
+      }
+    }
+  },
+  "retention": {
+    "scratch_absent": true,
+    "archives": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-geometry003.zip",
+        "bytes": 48904,
+        "sha256": "add4719d9c7392042756f1d1275307a3b69320850ca3978ad9bbdb29589a039e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native003.zip",
+        "bytes": 152452,
+        "sha256": "8e656d66397c69baee8bea8de2893c8caf4a7c0aafff873ff734712b4233e020"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python002.zip",
+        "bytes": 86907,
+        "sha256": "12724121c1b4d2fb5936832e64a8fe336859f92a07a3c9d834ef0f42cddc747e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python003.zip",
+        "bytes": 86925,
+        "sha256": "f0c3f9ee5bd84dcb0863d2b0447c6f70d5d08d1b338ccaf8a9c4c9c963f1fce2"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-reference005.zip",
+        "bytes": 37437,
+        "sha256": "dae11d0a0faf74ecb4cecc618a5a6201906a19d59ee5f615826f76717b96e06a"
+      }
+    ],
+    "retirements": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-geometry003-retirement.json",
+        "bytes": 447,
+        "sha256": "76dc072f6583948a37561873acbc7921d462236254219750613b362b798b7be5",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-geometry003",
+          "source_bytes": 153714,
+          "source_files": 18,
+          "source_snapshot_sha256": "1b29c51faa324f3549c5893bbaec84ece2e7d1de6571e828213e616d9412d2ae",
+          "archive_bytes": 48904,
+          "archive_sha256": "add4719d9c7392042756f1d1275307a3b69320850ca3978ad9bbdb29589a039e",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-legacy006-retirement.json",
+        "bytes": 238,
+        "sha256": "b278a3ae011413424abdb649ec61fd53237e728031f883e5c31f34169e29d9d1",
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-legacy006",
+          "source_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-measure007-retirement.json",
+        "bytes": 239,
+        "sha256": "d07741a8f180a97ee2c47cb8d72f5310a61849816ad11b4cbcddebe99712736b",
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-measure007",
+          "source_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-native003-retirement.json",
+        "bytes": 447,
+        "sha256": "df692f18afd306d9b273a8d60e3325033ae54e127779d810831f0e4be4eba43a",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-native003",
+          "source_bytes": 730111,
+          "source_files": 105,
+          "source_snapshot_sha256": "6f84721f2b891db72fab83532fca9a24bf9a2eb89841c70690c45a3937be7668",
+          "archive_bytes": 152452,
+          "archive_sha256": "8e656d66397c69baee8bea8de2893c8caf4a7c0aafff873ff734712b4233e020",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-policy004-retirement.json",
+        "bytes": 238,
+        "sha256": "ac9bbbfe03ace405edab56a6d92f81f2e6f3c09b0ccb8d3ef65cfe1958cd5e2a",
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-policy004",
+          "source_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python002-retirement.json",
+        "bytes": 445,
+        "sha256": "761b15e85a4a5c673ef901e10b8514b39fe76849a792a3166682cc3fb0569a3c",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-python002",
+          "source_bytes": 480628,
+          "source_files": 35,
+          "source_snapshot_sha256": "14138aa778eeb4d3ad82674d408833db078c6a62606d5c7a685228d775ba6329",
+          "archive_bytes": 86907,
+          "archive_sha256": "12724121c1b4d2fb5936832e64a8fe336859f92a07a3c9d834ef0f42cddc747e",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-python003-retirement.json",
+        "bytes": 445,
+        "sha256": "4e57d79faf05f64a876febf5d9fefdc6dc13d2cf6f91ce29f9a9929cf6212b37",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-python003",
+          "source_bytes": 480651,
+          "source_files": 35,
+          "source_snapshot_sha256": "8d90552ecdbd234eb5b4a748b95ec52ea2d879d990a9dc6cf15cda31d45d5622",
+          "archive_bytes": 86925,
+          "archive_sha256": "f0c3f9ee5bd84dcb0863d2b0447c6f70d5d08d1b338ccaf8a9c4c9c963f1fce2",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-reference005-retirement.json",
+        "bytes": 447,
+        "sha256": "86b85d882626fa9225b85b6da58a92523928f47cb03396dfe3d82de0fd9f3805",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-reference005",
+          "source_bytes": 195754,
+          "source_files": 4,
+          "source_snapshot_sha256": "d61e98553bb7dfd22184249c62f49c059d3d54087580dd5371d83e7db6d24688",
+          "archive_bytes": 37437,
+          "archive_sha256": "dae11d0a0faf74ecb4cecc618a5a6201906a19d59ee5f615826f76717b96e06a",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-sdk003-retirement.json",
+        "bytes": 323,
+        "sha256": "fee38340229bf7e09c3b45f1ddc8f36e1bd687c94bbd8edb09d7bcd004baf430",
+        "result": {
+          "state": "hashed_owned_consumer_tree_removed_without_archive",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-sdk003",
+          "source_bytes": 3225224,
+          "source_snapshot_sha256": "3fe93e294956f89dc20391b9c54ebe69711a892f18d62a5ac9e08baac0389844",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-threshold005-retirement.json",
+        "bytes": 241,
+        "sha256": "3f279bb1e1c68f7ad55794b318a18fe7cb2b3985186655efd8ead3843750979d",
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-threshold005",
+          "source_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-verify002-retirement.json",
+        "bytes": 209,
+        "sha256": "063eca6eba4501605de3d549a7d06ca3d7e2c03bdbb4e37e9fec3f2f4b5284d3",
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-verify002",
+          "source_bytes": 0,
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-verify003-retirement.json",
+        "bytes": 238,
+        "sha256": "0c9eac6f5869f5931496885883fe8eb433ef039e054052bebedc6af44038cb0a",
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/scratch/type-verify003",
+          "source_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      }
+    ],
+    "linux_retirements": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-session002-hashes.json",
+        "bytes": 986,
+        "sha256": "83cc1ae1ee99ec6bca90057cb30806534f99001ac9ee15732040e31c73478cd9"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-retirement002.json",
+        "bytes": 274,
+        "sha256": "dd6620546565d9fdb63944b45c4498f5e5d0737f9c0ac3b26f62e4205f2f3f1e"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-session003-hashes.json",
+        "bytes": 986,
+        "sha256": "c0f7e02f2afdaf490b3a42c68ba54ef275889fc54ed42e1bf23cfd0c1e2d94a2"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-retirement003.json",
+        "bytes": 274,
+        "sha256": "22fefbfb3a8f3fc2eb9205f54606ef5df5c06eacbd3d6ab1e49dd351dd8e5144"
+      }
+    ],
+    "availability": "Originalcapture/SDK/sessiontestscratch paths retired;capturearchives/manifests retainnecessaryevidence. WindowsSDKconsumer/LinuxdeterministicSessionproducts identitiesonly;activecaches/runtime/SDKnotarchived.",
+    "evidence": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-entry005.json",
+        "bytes": 20092,
+        "sha256": "ebe542979decb5936809672603669c31ad30e73b623a2c895b003304b55d7e44"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-final-readers008.json",
+        "bytes": 14956,
+        "sha256": "0320a0812bbacafa1d5c71a7970c318a713cc15799301dfffaaede9bddf9f042"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-installed-identities003.json",
+        "bytes": 3025,
+        "sha256": "60e3541bfb2399fc88c2216c83b74061f7d6ced1d61295eab1bbb9c148ac2d09"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-linux-identities003.json",
+        "bytes": 730,
+        "sha256": "58e37e28418416a2a85e939f8b2d7a3a53fc0847cb144cd15125bc855bd1f2a7"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-repeat-20261105/type-threshold-acceptance005.json",
+        "bytes": 312,
+        "sha256": "44aaf1aa1b32009c4b188b1d5725bb0e9c10a785df41ccac031ca837f9bcc32d"
+      }
+    ]
+  },
+  "storage": {
+    "entry_known_bytes": 7378654123,
+    "measured_checkpoint_peak_known_bytes": 7400869041,
+    "after_retirement_known_bytes": 7396765700,
+    "measured_known_growth_bytes": 22214918,
+    "planned_additional_bound_bytes": 134217728,
+    "unknown_subtrees": 214,
+    "complete_budget_verified": false,
+    "physical_free_after_retirement_bytes": 258164875264,
+    "scope": "Complete normalized projectcache/tmp,publicreviews,dependency/runtime,retiredbuildandLinuxroots;unknownsizesnotzero. Checkpointpeakisnotcontinuouspeakmonitoring orRSS. Finalmeasurementbeforeprose/receipt.",
+    "measurements": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-type-entry-20261105.json",
+        "bytes": 66573,
+        "sha256": "81f3af699932f8364a68ee7b103a777859042675827db923392e87937a309d8b"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-type-build-entry-20261105.json",
+        "bytes": 66573,
+        "sha256": "f4d749d663183ecfbd477e7b98d7be037d967cb318bd9ac25ea79bfe444b8b80"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-type-consumer-entry-20261105.json",
+        "bytes": 66573,
+        "sha256": "74fc2f56a792071bb3ca70bf2fac6c968e2e33237f0c70b8bcebed2d89fb3946"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-type-retry-entry-20261105.json",
+        "bytes": 66573,
+        "sha256": "b663a29ad1f50d0fe21f4cb722e35e45ed79b0e90242666cd39dd0fea114136a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-type-consumer-retry-20261105.json",
+        "bytes": 66573,
+        "sha256": "58efac0c5089985e4a1a65bfa9df2c18c7f25c5fb8ef0a6dc2897cd92c3e406f"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-type-pre-retirement-20261105.json",
+        "bytes": 66573,
+        "sha256": "b1ca661f2bee49361571b40089b627b5ab6e7a8d759bc3c43050d41488a628dc"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-type-final-20261105.json",
+        "bytes": 66574,
+        "sha256": "b7cd992f23cb31811ace4dd87b35e7fddf8ec5e29221295c0d883ead1e556d3f"
+      }
+    ]
+  },
+  "waste_review": {
+    "delivered": "Scoped repeated interpolation/type/zoom/degenerate editing workflow with C++/Python state and both Windows hosts; G018 and full editor remain open.",
+    "verified": "1923 distinct Python IDs ultimately green;115 comparable 2command reference rows among129 total,190 earlier ordinary sample/type matches+4refusals,96componentprofiles;8bothhostrepeat/edit/zoom cases,Windows/Linux native/session andWindows SDK. ActualPythonMeasureArea0 passes.",
+    "waste_observed": "First468checks had9failures:6onevertexopen minima already present in finite120matrix;3 numerical regressions exposed overwideold8epsilon endpoint guard. NativeSession version gate caught beforebuild. No compiler failures.",
+    "disposition": "Fix minpoint/type/earlyreturn/wire/ROI together; narrow seam toadjacent doubles without newmathlib orweakened references. Nextsimilarentry must enumerate perstep minima/type transitions overall consumedrows. T02defer conservative fittedstate extraction/localcopy untilnextcoretouch ormeasured largecontrol cost; no observed cap failure.",
+    "cleanup": "All phase scratch absent. Five capture groups includingfailed002 losslessly archived/live-source verified; six empty groups removed;WindowsSDKconsumeridentity-only;twoLinuxhostlocalsessionrootsidentity-only. Warm cache/runtime/SDK retained.",
+    "plan_feedback": "NextT15threeSettingskeys withno Python duplicate defaults;explicitdesiredcheckboxstateinprobes,persist accepted valid Apply beforelaunch. ScientificFREELINE/TRACED length/perimeter ownerT04a.2 M3/T06;otherconstructor/savedrow/science/T09intent/T14platform remain.",
+    "storage": "Entry7378654123B;measuredcheckpointpeak7400869041B;afterretirement7396765700Bbeforeprose. Known growth22214918B under128MiB additionalallowance.214unknownsubtrees/fullbudgetunverified;physical258164875264B."
+  },
+  "next": "T15three nativeSettings keys andacceptedApply persistence,thenexistingT04a.2 M3/T06scientificsubtypeconsumer qualification;broaderT00-T15planunchanged.",
+  "claims_excluded": [
+    "FullG018/ImageJ/Fijicompletion",
+    "All129native/upstreamoutputsidentical",
+    "AllAnalyzermetricparity",
+    "Allplatform/releasequalification",
+    "Overallcompletionpercentage",
+    "Speed superiority orwholeprocess/RSSbound"
+  ]
+}

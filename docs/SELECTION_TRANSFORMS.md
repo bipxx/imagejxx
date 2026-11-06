@@ -250,8 +250,9 @@ actual upstream signed dispatch; magnitude must be finite and at least0.01.
 Supported native profiles: polygon, freehand area, polyline, straight line,
 axis-aligned rectangle and supported fitted samples. Output is ordinary editable
 freehand/polygon or open polyline, with generic width/attributes retained and
-stale spline state removed. Native open geometry uses polyline; it does not
-preserve all upstream FREELINE/TRACED source provenance for repeated commands.
+stale spline state removed. Native open geometry uses polyline plus validated
+FREELINE state where needed;TRACED inputs retain their distinct command semantics.
+The repeated-type contract below supersedes the earlier provenance gap.
 Spacing uses circle/chord intersections, not accumulated spline arc length.
 Smooth updates native freehand points in order; Adjust runs the bounded upstream
 interval trials. Native source/Float32 profiles and endpoint rounding are tested
@@ -266,19 +267,21 @@ restores the edited result. Pixels/calibration are preserved. No new third-party
 runtime dependency, controller, renderer or environment is introduced.
 
 [Scoped evidence](parity/reviews/selection-interpolation-20261105.json):
-194 observations contain188 matching sample arrays,4 upstream interval refusals
-and2 explicit native refusals where upstream publishes only one area vertex.
+The earlier checkpoint recorded188matching arrays,4upstream interval refusals
+and2native one-vertex-area refusals. The current type increment below closes
+those2representation gaps without changing the194observed rows.
 206 focused and2425 distinct affected Windows Python IDs ultimately pass;
 Windows/Linux core,installed Windows SDK and both physical hosts pass,including
 60 shared lifecycle scenarios. Those counts do not prove all-source parity.
 
 Compound/curved profiles now accept native path, mask/region, ellipse/rounded
-and rotated frame sources. Output is an editable even-odd path preserving each
-component and hole. Existing bounded de Casteljau flattening retains subpaths;
+and rotated frame sources. Multiple contours produce an editable even-odd path
+preserving components/holes;single contours now become ordinary typed geometry. Existing bounded de Casteljau flattening retains subpaths;
 mask tracing follows pixel-cell boundaries, keeps diagonal islands separate and
 preserves intrinsic off-canvas region origins. Limits apply across components,
 including retained inputs, output buffers, trial work and live cancellation.
-Empty masks and under-three-vertex components refuse atomically.
+Empty masks anddegenerate multi-component pieces refuse atomically;single
+degenerate ordinary outputs use the explicit state below.
 
 Single native ShapeRoi profiles use actual direct-command sampling and ignore
 Smooth; analytic ellipse/rounded profiles also ignore Smooth. Multi-component
@@ -297,7 +300,8 @@ V5 workspace and explicit NativePathV4 rebind. Actual Measure/Area and unchanged
 raw pixels pass; shared native-path histogram/analysis admission accounts for
 retained geometry and bounded mask scratch before provider access.
 
-Next T06 work is repeated-command source/type and zoom/degenerate semantics.
+Repeated-command source/type,zoom anddegenerate geometry now have the scoped
+implementation below.
 Point/multipoint interpolation is now an explicit no-op. Both hosts return
 before opening a dialog or capturing/starting a job,without document/history/
 recording changes or extra provider reads after initial display. Direct native/
@@ -309,8 +313,53 @@ while retaining configured byte/vertex admission,frozen inputs and cancellation.
 The120-row repeat/zoom reference carrier also records116other cases;those are
 reference evidence for remaining work,not verified product equivalence.
 
-Native source/output-type provenance for repeated commands, high-zoom context,
-degenerate-area representation and scientific/saved-row consumers
-remain open. T15 owns last-used GUI options; T09 operation-intent macros and
-T14 Linux installed-client/remaining platform UI/release qualification remain.
-Historical reference gates stay unavailable rather than passed or repinned.
+## Repeated types, zoom and degenerate geometry
+
+`SelectionPolygonType` exposes POLYGON, FREEHAND, TRACED, POLYLINE and FREELINE.
+`selection_polygon_type(selection)` infers an ordinary kind or validates the
+reserved `imagejxx.polygon_type` string. `with_selection_polygon_type(selection,
+type)` returns a validated copy with explicit state. The subtype must match its
+native polygon/freehand/polyline kind; enum values are not ImageJ ROI file codes.
+
+The sampler consumes this state. FREELINE smoothing preserves open endpoints;
+TRACED smoothing and output transitions differ from FREEHAND. A single native
+ShapeRoi initially ignores Smooth, then its ordinary output participates in
+subsequent commands. Multiple contours keep the native even-odd composition
+that preserves components where upstream subtraction loses them.
+
+`SelectionInterpolationOptions` adds `magnification=1` for detached calls.
+The desktop freezes actual canvas zoom. Changing zoom while a dialog is open
+refuses stale Apply; submitted work keeps its captured context. At magnification
+>=12 and <=150 output samples, the result becomes polygon/polyline. Otherwise,
+source and signed-interval rules select its type. The public options layout
+changed: rebuild C++ clients and use matching installed bindings, headers and
+library.
+
+Explicit state admits one/two-vertex areas and one-vertex polylines without
+retyping them as points. They retain editable handles and empty membership;
+untyped incomplete geometry still refuses. Native V5 detects state in active,
+previous and saved selections. NativePathV4 resolved creation/rebind carries it.
+Current older session/creation profiles refuse state they cannot represent.
+ImageJ ROI codecs map FREELINE/TRACED to file types 4/8 and retain degenerate
+polygon/polyline records. Automatic normal outputs omit redundant subtype tags.
+
+[Scoped evidence](parity/reviews/interpolation-types-20261105.json) includes
+129 two-command observations with exact 149/150/151-sample boundaries.
+115 rows have matching samples/types, with exact area masks. The other 14 rows
+document upstream compound loss/errors or tiny null outputs; native compound
+preservation and explicit empty-area policies are qualified separately.
+All 190 valid earlier ordinary sample/type rows now match; four interval
+refusals remain. The original 194/96/120 observation files are unchanged.
+
+1,923 distinct affected Python checks ultimately pass. Eight physical workflows
+cover both Windows hosts, repeated Apply after an edit, zoom, local command
+history, workspace reopen and explicit rebind. Windows/Linux native/session
+checks and the Windows installed SDK pass; the existing 80 native lifecycle
+scenarios pass. Actual Python Measure emits Area 0 for a degenerate area and
+preserves the selection and raw pixels.
+
+Scientific FREELINE/TRACED length/perimeter variants remain with T04a.2 M3/T06;
+this state contract does not qualify all Analyzer consumers. Other constructors,
+saved-row/scientific options, remembered GUI values, T09 operation-intent macros
+and T14 Linux installed-client/remaining platform UI/release checks remain open.
+Historical reference gates remain unavailable, without repinning expectations.
