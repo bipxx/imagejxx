@@ -476,11 +476,25 @@ ROI Manager workflow-parity claim.
 
 ### Measurement consumer handoff
 
+Area Measure exposes `TargetAnalysisPlane::centroid_world` (readonly in Python):
+mean included pixel centers `(x+.5,y+.5)` at the captured plane Z, transformed by
+captured spatial calibration. Empty membership has NaN components. Geometric
+membership is independent of density-table filtering or intensity weighting.
+Whole-image and supported area/manager rows publish X/Y and centroid_x/y/z using
+the existing settings, precision, CSV and workspace paths.99 original cases
+qualify sampled scalar types, constructors, origins/reflection and outside ROIs;
+native affine/slice behavior is an extension, not an ImageJ world-coordinate
+claim. Commands containing area rows now carry diagnostic version10 and the
+`area_centroid_policy`; non-area provenance retains its previous meaning.
+[Scoped evidence](parity/reviews/area-centroid-20261106.json). Weighted center of
+mass, other descriptors, threshold/redirect and remaining variants stay open.
+
+
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
 | `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Point properties/vertex alignment are scoped delivered; interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
-| `measurements` | Selects existing output columns. It is not a substitute for missing centroid/Feret/shape, threshold-limited or redirected-intensity calculations. Add required computations/options with their owning consumer and references. |
+| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted center of mass, Feret/other shape, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
 | `reflex_angle` | Boolean false by default; shared Preferences control/API/persistence, captured once per measurement. True selects 360 minus the refreshed calibrated angle. |

@@ -780,7 +780,7 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
 
 
 Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::string& directory,int profile) {
-  require(profile>=0 && profile<=27,"Unknown subtype measurement profile");
+  require(profile>=0 && profile<=31,"Unknown subtype measurement profile");
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
   require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh subtype measurement fixture required");std::filesystem::create_directories(dir);
   Selection source(profile==0 || profile==5?"polyline":profile==3?"polygon":"freehand",{{3,3},{13,3},{13,13},{3,13}});
@@ -804,17 +804,21 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(profile==20)source.points={{3,3},{13,3},{13,13},{3,13}};
     if(profile==21)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   }
-  const bool analytic=profile>=22,wholeImage=profile==27;
+  const bool analytic=profile>=22 && profile<=27,centroidProfile=profile>=28,wholeImage=profile==27 || profile==29;
   if(analytic) {
     source=Selection(profile==23 || profile==25 || profile==26?"ellipse":"rectangle",{{3,3},{13,11}});
     if(profile==24 || profile==25)source.points={{3.2,4.7},{13.4,13.0}};
     if(profile==26)source.points={{12.3,12.9},{12.5,13.7}};
   }
-  SpatialCalibration spatial;spatial.spacing={2,.5,1};spatial.unit="um";DatasetReadObserver reads;
+  if(centroidProfile)source=profile==28?Selection("polygon",{{3,3},{13,3},{9,11}}):profile==30?Selection("rectangle",{{60,60},{64,64}}):Selection("rectangle",{{3,3},{13,11}});
+  SpatialCalibration spatial;spatial.spacing={2,.5,1};spatial.unit="um";
+  if(centroidProfile)spatial.origin={-6.5,.75,0};
+  if(profile==31){spatial.origin[1]=-.75;spatial.direction={1,0,0,0,-1,0,0,0,1};}
+  DatasetReadObserver reads;
   Image pixels(40,40,1,PixelType::UInt8);for(int y=0;y<40;++y)for(int x=0;x<40;++x)pixels.at(x,y)=x+2*y;
   DocumentData data{Dataset::from_planes({1,1,1,40,40,1},{pixels},spatial).observe_reads(reads)};if(!wholeImage)data.selection=source;
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);
-  const Json configuredColumns=analytic?Json::array({"ROI","Area","Length","Perim.","Perim. unit","Unit"}):Json::array({"ROI","Area","Length","Perim.","Unit"});
+  const Json configuredColumns=analytic || centroidProfile?Json::array({"ROI","Area","Length","Perim.","Perim. unit","X","Y","Unit"}):Json::array({"ROI","Area","Length","Perim.","Unit"});
   w.updateSettings({{"measurements",configuredColumns},{"measurement_precision",6}},false);
   Json last,events=Json::array(),controls=Json::array(),report;std::atomic<bool> entered{false},release{false};
   HeadlessInputSession session(w);bool expectedError=false;
@@ -848,10 +852,15 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     for(const auto& key:{"menu.Analyze","menu.action.measure"})click(last.at("host_controls").at(key),key);
     w.wait();frame();require(w.results.size()==1 && !w.busy(),"Subtype Measure did not publish one row");
     const auto rows=w.results;const double analyticLengths[]={48.,42.01120851869869,53.,46.295306614080765,4.288751483104749,160.};
-    const double length=analytic?analyticLengths[profile-22]:imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
+    const double length=analytic?analyticLengths[profile-22]:wholeImage?160.:profile==30?20.:profile==31?48.:imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
     const auto& value=rows[0].at("Perim.");
     require(std::isnan(length)?value==Json("nan"):(value.is_number() && std::abs(value.get<double>()-length)<1e-11),"Subtype Measure perimeter differs from constructor metric");
-    if(analytic)require(rows[0].at("Perim. unit")==Json(wholeImage?"pixel":"um"),"Analytic perimeter unit lost");
+    if(analytic || centroidProfile)require(rows[0].at("Perim. unit")==Json(wholeImage?"pixel":"um"),"Analytic perimeter unit lost");
+    if(centroidProfile) {
+      if(profile==30)require(rows[0].at("X")=="nan" && rows[0].at("Y")=="nan","Empty area centroid lost numerical meaning");
+      else {const double x=profile==28?10.1:profile==29?33.5:9.5,y=profile==28?3.55:profile==29?10.75:-4.25;
+        require(std::abs(rows[0].at("X").get<double>()-x)<1e-12 && std::abs(rows[0].at("Y").get<double>()-y)<1e-12,"Calibrated area centroid differs from original values");}
+    }
     if(source.kind=="polyline")require(rows[0].at("Length").get<double>()==length,"Freeline Length lost smoothing");
     if(profile==5 || profile==6)require(rows[0].at("Area")==0,"Native retained degenerate geometry measured the whole image");
     const auto columns=last.at("results_columns");

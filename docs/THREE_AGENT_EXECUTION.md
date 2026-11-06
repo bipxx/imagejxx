@@ -26,8 +26,9 @@ Fit Spline -> Measure and fitted lifecycle now have scoped both-host evidence,
 with private Float32 processing history and native Double editable controls.
 Rectangle/ellipse and whole-image perimeter now have scoped API/both-host
 CSV/workspace evidence with explicit units. Task scratch and SDK consumers are
-retired. Next: calibrated area centroid columns through existing captured
-analysis/results. This card authorizes no agents.
+retired. Calibrated geometric centroids now have scoped original/API/both-host
+CSV/workspace evidence. Next: intensity-weighted center of mass through existing
+captured analysis/results. This card authorizes no agents.
 Analysis residuals
 do not impose a blanket prerequisite. Inspect current worktree and
 actual process handles first. Never restart a job based only on an observation

@@ -58,6 +58,9 @@ struct TargetAnalysisPlane {
   // With perimeter present: true means unscaled image pixels (Analyzer's
   // no-ROI fallback); false uses TargetAnalysisResult::spatial.unit.
   bool perimeter_in_pixels=false;
+  // Area-only geometric centroid: mean pixel centers (x+.5,y+.5), captured
+  // plane z, transformed by spatial. Empty membership has NaN components.
+  std::optional<std::array<double,3>> centroid_world;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image

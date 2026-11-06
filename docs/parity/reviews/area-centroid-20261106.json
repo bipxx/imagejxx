@@ -1,0 +1,392 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 calibrated area centroid columns",
+  "implemented": true,
+  "verified": true,
+  "integrated": true,
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "scope": "Captured geometric area centroid_world optional readonly result; fused coordinate sums in existing statistics membership traversal, source-independent density counts; calibrated X/Y and centroid aliases in existing settings/CSV/workspace. Diagnostic area provenance10; non-area meaning retained. Public DTO requires matching C++ client rebuild.",
+  "checks": "996distinct installed Windows Python IDs;99original Analyzer shape/type/origin/reflection rows and exact memberships match;4new physical centroid profiles per Windows host and32matching shared host pairs; native Windows analysis/settings/UI, installed Windows target-analysis client and Linux native analysis/settings.",
+  "remaining": "Full M3/T06/editor/release scope remains open. Intensity-weighted center of mass next; Feret/other descriptors, threshold/redirect, manager/replay, unsampled constructor/mask/scientific variants and supported-platform release gates retain owners. G016/17gesture refs unavailable, not passed or rebuilt.",
+  "cleanup": "retirement011.json proves five exact owned scratch groups and parent absent. Three reference/host groups live-hash archived; SDK/compiler identity-only, failed diagnostics outside scratch retained. Linux used no disposable scratch. Warm cache/runtime/installed products preserved.",
+  "storage": {
+    "before_bytes": 7414707970,
+    "measured_checkpoint_bytes": 7420762615,
+    "after_bytes": 7416579112,
+    "measured_growth_bytes": 6054645,
+    "physical_free_after_bytes": 232923848704,
+    "allocation_bound_bytes": 268435456,
+    "unknown_subtrees": 214,
+    "budget_verified": false
+  },
+  "cost": {
+    "windows_build_commands": 11,
+    "windows_build_command_seconds": 97.395,
+    "native_module_build_seconds": 33.45,
+    "linux_build_seconds": 13.066,
+    "python_seconds": 6.253,
+    "sdk_command_seconds": 7.96
+  },
+  "failures": [
+    "native003/005: stale closed freehand area version assertion; new numeric controls passed, source-kind classification corrected",
+    "native-build004: diagnostic single-argument macro failed on template/initializer commas; variadic forwarding fixed",
+    "source_eol_correction012: local newline insertion lapse and initial overbroad CRLF assertion, exact-boundary corrective check recorded",
+    "document replacement uniqueness assertion stopped before write; corrected exact context, no product rerun"
+  ],
+  "source_eol_correction": {
+    "lapse": "Insertion helper introduced three bare-LF boundaries inside the local CRLF settings choice region when matching tokens without newlines; final diff review found them.",
+    "corrective_observation": "Original file is mixed; an initial all-CRLF assertion failed before writing. Checked exact HEAD Angle/centroid_y lines instead, restored only three introduced local boundaries, and verified normalized before/after bytes exactly equal. No original region globally normalized.",
+    "compiled_source_sha256_before_correction": "a5998282f9b9a247fadfa4f4ff00115cc4fb7fe0666c7c7bb954548d1b39d11e",
+    "current_source_sha256": "e593e9d3d1f7c5deeba33bb772c731667ff78cb2b284216e887ab14bd103a85a",
+    "decision": "Reuse matching checks for identical consumed C++ tokens/line count/settings; no product rebuild for newline-only correction. Source byte pins will record current bytes explicitly. Before next source write inspect surrounding newline convention even for token-only matches."
+  },
+  "sources": [
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 33484,
+      "sha256": "ff282efd5c1ab763c7c8e16797b65d0d0defeb5098abf49c2425b59aadf0bd63"
+    },
+    {
+      "path": "src/native/calibrated_analysis_internal.hpp",
+      "bytes": 1853,
+      "sha256": "50c902e04d44320f42056a8f0020ebdb656468f9b88ee8d52ddb08c86496262a"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 40099,
+      "sha256": "5fdd83f9069b8c885ee70899e483ab55981b65bb22d5651e684a850515f7d6d1"
+    },
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 6321,
+      "sha256": "03c98f1edbc4a6606039507effd794a62c9dda57b1b36f34004e42469c505598"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 7017,
+      "sha256": "552bb39241f680f115382b6a7b66302d74667cda600aab7acddf54493bdb5c31"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 6988,
+      "sha256": "64030073467297dab8590c11af670bbc9e36f7328525a6bdb3b1f66b01fecca7"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 100506,
+      "sha256": "2338dabf3956f3e2a647c505c139bb600cad801247b1618f56080d61ede55002"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 22817,
+      "sha256": "8996069b0db6af89c9bcf527353ab77a41eaf8056c5994c4ccef9e7f4716d294"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38288,
+      "sha256": "c958da97fefd4e9475e51103dc4c935f755a814c14f9ff4a31fc28baf09079ce"
+    },
+    {
+      "path": "tests/python/test_area_centroid.py",
+      "bytes": 5832,
+      "sha256": "740374ff0b8dcd3b95387c7c1ddafebdde504f2315228fae252ba895f5e7d91f"
+    },
+    {
+      "path": "tests/reference/ObserveAreaCentroid.java",
+      "bytes": 3706,
+      "sha256": "adecbe8cb48f777efc0ca332f0eaab46a8faea9a2a085dd9daba525e17534d74"
+    },
+    {
+      "path": "tests/fixtures/area-centroid-imagej154r.json",
+      "bytes": 322163,
+      "sha256": "68c296c7f578a69173774de97b61b69328338af186ea60243ae062416b177bec"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 143740,
+      "sha256": "be825a48f3a1822d339eb5deff1f14a6ab54c657862215a1e2f1e7288e644732"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 7693,
+      "sha256": "aa758eaab7517a688a12347a3355b7cd95dd12ae8049adc41e8fc36ca6110f9e"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 7678,
+      "sha256": "44efb4861732e207906e5af76d3000b9e9d0644a89a6923ed75def756b25c946"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 27603,
+      "sha256": "e593e9d3d1f7c5deeba33bb772c731667ff78cb2b284216e887ab14bd103a85a"
+    },
+    {
+      "path": "tests/python/test_subtype_measurements.py",
+      "bytes": 11844,
+      "sha256": "0a842015a444aa9c1694668515eb4b6b2a5880c3b7abe4a5f305405ad35ba6d9"
+    },
+    {
+      "path": "tests/python/test_fitted_measurements.py",
+      "bytes": 5881,
+      "sha256": "52c939f112329ae0d615455923341aa56f8eb134cd0aaacf6d5b66c9b3277bd2"
+    },
+    {
+      "path": "tests/python/test_target_measurements.py",
+      "bytes": 8163,
+      "sha256": "1aad839a4c3e17a980d5ca1367856f3db929a2be211a2410fbeac1ebe1f9cb0b"
+    },
+    {
+      "path": "tests/python/test_analytic_perimeter.py",
+      "bytes": 5235,
+      "sha256": "fd55c7b7376ea5ddbfa702e1c3dc42a1445968e10f1321d011f2497406207748"
+    },
+    {
+      "path": "docs/TARGET_ANALYSIS.md",
+      "bytes": 39264,
+      "sha256": "47b466afec22f26f206d93be0370a14fc72825960c4d59b13224e288b3b0e118"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/entry.json",
+      "bytes": 24379,
+      "sha256": "3dde181b8b2807b879c7f046785c4dada122c382a2830bd024d2129d2442d8cc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/python008.xml",
+      "bytes": 156576,
+      "sha256": "c90455e7e5edba8a2e435c3fa39c0e940224915e887544abb9dd33da8b358548"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/installed-identities008.json",
+      "bytes": 3391,
+      "sha256": "c9cd4ea2da4db20e6217c72f0c09849e430048ec161f4668a1882ca3b222b059"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/review010.json",
+      "bytes": 1049,
+      "sha256": "9b8e2685f849ca3d7cdc3c34ba91280645a3a035dd2c3aa0155061253a1145f2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/retirement011.json",
+      "bytes": 955,
+      "sha256": "f5936124f39ead7fe217ffae2228497a9ec4eace661800808f8ce1aa35f6d3fe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/scratch-identities011.json",
+      "bytes": 397545,
+      "sha256": "cda116e2c26ba374a64c71498bad2080573fc00f49c7f78429d0f33b170708b8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-prebuild-20261106.json",
+      "bytes": 66573,
+      "sha256": "7b7d67cf0ec5913cc7e18b739bbb7c07bbd8d142321c99c5e45e24950d9825eb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-preretirement-20261106.json",
+      "bytes": 66573,
+      "sha256": "ca222114a7734d2d94cbd1fcc0ccbfcbb4a4c84547d2125c5532ea5f77681999"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-final-20261106.json",
+      "bytes": 66574,
+      "sha256": "9a334ec716c4392f27cebb6faaf4e6f03bb3bd7c719a1d9f8b9cad4c50d2ed05"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/build-_desktop007.process.json",
+      "bytes": 2850,
+      "sha256": "5f1daa543581251cbb91a58cf424e33701ef903a9b12fb712e9e83acabc2be52"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/build-_native007.process.json",
+      "bytes": 2030,
+      "sha256": "cbeca0ce533603f865555d26441f12bdb34c7a46e03537f4a9310e0306ce547c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/build-imagejxx_app007.process.json",
+      "bytes": 2854,
+      "sha256": "6bc3f2a89f0d63790f6a7aeb0f00eae5b3b14da3c4511715bf211e5d01524f52"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/build-imagejxx_core003.process.json",
+      "bytes": 2037,
+      "sha256": "7471fd6e926e7f5fe8bc8e53e80f79175d77163391fa24c5b6c36e39f97fe4fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/build-imagejxx_desktop007.process.json",
+      "bytes": 2863,
+      "sha256": "cd9c43b7c49def52479762cbdb53c6589bf1e44f8d5f206427d89f2a25f3ccc4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/build-imagejxx_display_actions_tests007.process.json",
+      "bytes": 2878,
+      "sha256": "18e88ca711b4b77415a5ce4612d3f590e5225f158dafb32f1ea7d7c82288462d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/build-imagejxx_settings_tests007.process.json",
+      "bytes": 2044,
+      "sha256": "214481fe80605e4fda1098443e7af9f580bdd2af2d8f1d7880a5f75cb1f32db4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/build-imagejxx_target_analysis_tests003.process.json",
+      "bytes": 2055,
+      "sha256": "b7a000351d6f1bce2b80fd4b7f85ead6196427f7138f544139c01571f7621231"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/compile001.process.json",
+      "bytes": 2195,
+      "sha256": "f33f62e3a58af1b24332fa55e0db859a3cc9f71da91f5422b301b6fc8b3ea266"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/imagejxx_display_actions_tests008.process.json",
+      "bytes": 1953,
+      "sha256": "4fb321443abd8cf48da7ec9b10283459ac574243f3d87bdf81d08d08326ceab8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/imagejxx_settings_tests008.process.json",
+      "bytes": 1818,
+      "sha256": "5d2b62d82d473c43a12a5722914dd1e76e21044dc285fc1ba45071e1a87e802e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/install-desktop008.process.json",
+      "bytes": 2118,
+      "sha256": "d1c37973de029c1ee28f763e9579703b9173a5cb10b38097f7b103d9a07b79bb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/install-development008.process.json",
+      "bytes": 2124,
+      "sha256": "fe682ce364bd901c6b4e7936de48b579551fdc5c0049f52547af94b3c2ef28a2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/install-Unspecified008.process.json",
+      "bytes": 2133,
+      "sha256": "bcd32ce72757445bb8d19c5315f5bde6d6c69d8d97045c5e4833c3baf05c1fc8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/linux-analysis007.process.json",
+      "bytes": 1489,
+      "sha256": "2d6e1f2e9d12d17715fdbc44337c7ece6f89b8405adf3911f8946970dfb64587"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/linux-build007.process.json",
+      "bytes": 1597,
+      "sha256": "704d6febfa883a3889b5f81ddbc56f50dbea687fedc971771f6c572fa6428b7d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/linux-owner007.process.json",
+      "bytes": 4478,
+      "sha256": "d885e808604e5f6945bb4e3e41b3b75c0a5d7ea2e5f22f95009da1e85e17f335"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/linux-settings007.process.json",
+      "bytes": 1481,
+      "sha256": "b38e5f1c259d8c70359320b2e51ec2aba4f87774746b39fc908ac8aaa32c149d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/membership002.process.json",
+      "bytes": 2579,
+      "sha256": "55070a0a223333240dd235b00afc8d984dc284b960a8aa11d2d96626c7bd8c3e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/native-build004.process.json",
+      "bytes": 2052,
+      "sha256": "c73525881a5ca66f95e8a642a76a323c0e693315ccbdeb27bc8ad5391c178393"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/native-build005.process.json",
+      "bytes": 2054,
+      "sha256": "077ed1812219a5942e1ed2170fbe649cc8814dff197c51e17cea946e3637958a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/native-build006.process.json",
+      "bytes": 2055,
+      "sha256": "7b441b458d8935a91a10325e2e7eddd0007b13246c3b6c01cfb26afd1e579ba4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/native003.process.json",
+      "bytes": 1848,
+      "sha256": "0d59f0d09491894ed3f33e166fbe411ca166209eaf84c4a60ec3741b7b8a92dc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/native005.process.json",
+      "bytes": 1852,
+      "sha256": "ba9780f4cb049428a97ef4d9d4bf9b00e0f4f70d943cfa011c71ade4ed8513b8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/native006.process.json",
+      "bytes": 1833,
+      "sha256": "8f526e0e15cacaa150017640537f13e9b94e6839599600298cbc336f16ecd145"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/observe001.process.json",
+      "bytes": 2147,
+      "sha256": "2e1afbb44a040dc4d5a287c8d2b52e3e7e693fbf6136a882495e551cd677559c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/python008.process.json",
+      "bytes": 2718,
+      "sha256": "213950c7d8b820dac9257eceab42077a445a1bb1ed6bf7c12f48fc540de89fa7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/sdk-build009.process.json",
+      "bytes": 2090,
+      "sha256": "da1d3d17274af2e6383f713cc16caf4e8e0b8a41845e7dc52480904be559778f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/sdk-carrier009.process.json",
+      "bytes": 2017,
+      "sha256": "86eed7e8684c4a4e35adb25c64ccc8c7e8dd0039f947e73b274e81f770e4c29e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/sdk-configure009.process.json",
+      "bytes": 2398,
+      "sha256": "c7ade0d9a58fa1008f32a0731322d198614e254647a03f5e8d32ea4fa92a9866"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/sdk-run009.process.json",
+      "bytes": 1908,
+      "sha256": "dc330216fb0a534f25dd6f0990c72d23b4396413792a5f06f2c83d4649308213"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/native008-retained010.zip",
+      "bytes": 380508,
+      "sha256": "caca4fc62a694d5a32c2d183df4215555a1498af068284cdfcc931aed922769b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/python008-retained010.zip",
+      "bytes": 214184,
+      "sha256": "77ca4064106f372f7dd55f9dbcc0cd63a6b46d5ebb514671fefb7019b2efe5cb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/reference001-retained010.zip",
+      "bytes": 9316,
+      "sha256": "5d514de067db8dcc2a9873dc915791f69b14830657d055b1d1dad7fe578fc4b5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/native008-verify010.json",
+      "bytes": 1431,
+      "sha256": "e5ce1be12bb4e72a6f323f38ed8103a587c58513f0909209609b96989c397c9f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/python008-verify010.json",
+      "bytes": 1429,
+      "sha256": "168b03c05f087aecbf1df7c405248bcb080965fcd500d9f036fcda1130e5fbfb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/area-centroid-20261106/reference001-verify010.json",
+      "bytes": 1443,
+      "sha256": "56a2af284f5a448fa7bbdefd8fd87b3456048197c0666547c0a45eee8be8f254"
+    }
+  ],
+  "task_record": ".tmp/manual-workflow-verification/area-centroid-20261106/entry.json",
+  "next": "T04a.2 M3 intensity-weighted center of mass",
+  "limits": [
+    "99sampled original geometric area cases; no every-constructor/family claim",
+    "Native affine/slice behavior is an extension, not ImageJ world-coordinate parity",
+    "Linux UI/installed SDK and macOS release qualification remain open",
+    "Retired G016/gesture inputs unavailable; no reconstruction/repin"
+  ]
+}

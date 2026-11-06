@@ -121,7 +121,7 @@ def test_captured_constructor_metric_and_original_statistics(case):
     else:
         assert row.statistics["area"] == row.statistics["pixel_count"] == 0
         assert math.isnan(row.statistics["mean"])
-    assert command.record["version"] == 7
+    assert command.record["version"] == (7 if case["type"] in (6, 7) else 10)
     assert command.record["options"]["rows"][0]["integer_coordinates"] == case["integer"]
     assert reads.counts().plane_reads == before+1
     assert owner.snapshot().shares_data(original) and owner.undo_steps == 0

@@ -98,6 +98,10 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       values["X"]=(*row.point_world)[0];values["Y"]=(*row.point_world)[1];
       values["centroid_x"]=(*row.point_world)[0];values["centroid_y"]=(*row.point_world)[1];
       values["centroid_z"]=(*row.point_world)[2];
+    }else if(row.centroid_world) {
+      values["X"]=scalar((*row.centroid_world)[0]);values["Y"]=scalar((*row.centroid_world)[1]);
+      values["centroid_x"]=scalar((*row.centroid_world)[0]);values["centroid_y"]=scalar((*row.centroid_world)[1]);
+      values["centroid_z"]=scalar((*row.centroid_world)[2]);
     }else if(row.midpoint_world) {
       values["X"]=(*row.midpoint_world)[0];values["Y"]=(*row.midpoint_world)[1];
       values["centroid_x"]=(*row.midpoint_world)[0];values["centroid_y"]=(*row.midpoint_world)[1];

@@ -25,8 +25,8 @@ Perim. with both-host CSV/workspace checks. Initial Fit Spline -> Measure now
 has scoped subtype/constructor/short-control and both-host integration. Refit,
 straighten/remove and segmented explicit counts now have scoped lifecycle and
 both-host evidence. Rectangle/ellipse and whole-image perimeter now have scoped
-API/both-host CSV/workspace evidence with explicit perimeter units. Next: M3
-calibrated area centroid columns.
+API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated area centroids are scoped integrated too. Next: M3
+intensity-weighted center-of-mass columns.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -149,7 +149,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T04a.2 M3/T06: current-plane subtype-sensitive Measure. | Constructor precision persists through bare ROI/session/rebind/editing; captured Length/Perim., result columns/CSV/workspace and cancellation work in both Windows hosts.3662distinct Python IDs pass,180captured reference rows,14physical flows; Windows/Linux native andtwoWindowsSDKclients pass. [Evidence](parity/reviews/subtype-measurement-20261106.json). |
 | Delivered scoped workflow | T04a.2 M3/T06: fitted Measure and lifecycle. | Initial-fit evidence remains valid; versioned private Float32 basis now preserves refit/straighten history without changing native Double edit controls.840distinct affected Python IDs pass,14new physical lifecycle flows,2worker-refusal checks, Windows/Linux native and2WindowsSDKclients. [Evidence](parity/reviews/spline-lifecycle-20261106.json). |
 | Delivered scoped workflow | T04a.2 M3: rectangle/ellipse and whole-image perimeter. |171 pinned observations;806 distinct installed Python cases, six new physical profiles per Windows host, native Windows/Linux controls and installed Windows C++ client pass. ROI lengths use calibrated integer extents; no-ROI perimeter stays in pixels with explicit Perim. unit. [Evidence](parity/reviews/analytic-perimeter-20261106.json). Fractional-area, other shape/mask/path and constructor variants retain owners. |
-| Active next | T04a.2 M3: calibrated area centroid columns. | Reuse captured area membership/statistics and existing Measure/manager columns, CSV/workspace. Observe original X/Y pixel-center/calibration meanings before a fused coordinate accumulator; center-of-mass, Feret and other shape/options remain M3 owners. |
+| Delivered scoped workflow | T04a.2 M3: calibrated area centroids. |99 original shape/type/calibration observations match;996 affected installed Python IDs, four new physical profiles per Windows host, native Windows/Linux analysis/settings and installed Windows C++ client pass. Geometric pixel-center X/Y, origins/reflection/empty populations and captured affine/slice work through existing settings/CSV/workspace. [Evidence](parity/reviews/area-centroid-20261106.json). |
+| Active next | T04a.2 M3: intensity-weighted center of mass. | Observe original XM/YM denominator/density/zero/nonfinite behavior, then reuse the admitted area traversal and existing settings/CSV/workspace. Keep geometric X/Y distinct; Feret, threshold/redirect and other shape/options retain M3 owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -983,26 +984,38 @@ caught a provenance-variable compilation error before Python linking. The full
 budget remains unverified because214 subtrees are inaccessible; no automatic
 guard or whole-editor completion is claimed.
 
-**Active next: T04a.2 M3 calibrated area centroid columns.**
+Geometric area centroid X/Y is scoped delivered:99 original observations and
+exact memberships match;996 affected installed Python cases, four new physical
+profiles per Windows host, native Windows/Linux controls and installed Windows
+C++ client pass. Existing area traversal accumulates coordinates without another
+provider read or mask copy. Density-filtered counts remain separate. All task
+scratch is retired after verified retention; active products remain.
+[Receipt](parity/reviews/area-centroid-20261106.json). Native-first diagnosis found
+one stale closed-area version assertion; the maintained control now prints its
+failed source line. Before changing assertions, inspect the actual selection kind
+at its constructor, including when it borrows points from an open path.
 
-1. Inspect captured area pixel membership and original Analyzer X/Y branches.
-   Freeze pixel-center, calibration-origin, anisotropy, outside/empty selection,
-   whole-image and manager-row behavior in the existing task record. Observe
-   original values for these cases before choosing output units/coordinates;
-   qualify native affine extensions separately from original ImageJ behavior.
-2. Reuse the owning admitted area traversal to accumulate coordinate sums with
-   its existing statistics; avoid a second provider read, raster copy or geometry
-   engine. Add typed captured result fields only where missing and expose the
-   readonly Python fields plus existing Measure X/Y column choices. Keep source
-   navigation/selection/history untouched. Whole/rectangle/ellipse/polygon and
-   existing grouped manager rows are required consumers; line/point conventions,
-   center-of-mass, Feret and other descriptors retain their M3 owners.
-3. Native numeric/control assertions precede matching module links. Check
-   effective/global-bypass calibration, empty populations, cancellation, bounded
-   admission and frozen sources; then actual both-host configured columns,
-   precision/CSV/workspace and changed installed-client contracts. Reuse valid
-   unchanged perimeter/spline references, retire terminal scratch, record the
-   waste decision and update the queue before the successor.
+**Active next: T04a.2 M3 intensity-weighted center of mass.**
+
+1. Inspect original Byte/Short/Float moment and Analyzer XM/YM branches, and the
+   actual captured area caller. Freeze geometric versus weighted membership,
+   signed/density-table/float arithmetic, zero/cancelling denominators, NaN/Inf,
+   empty/outside selections, pixel centers and calibration origins/reflection.
+   Record original observations and public return/exception/timing contracts
+   before editing; keep finite-source admission unchanged.
+2. Reuse the existing admitted area traversal and captured intensity table to
+   accumulate only the required weighted sums. Preserve geometric X/Y and its
+   count; do not derive XM/YM from centroid or area. Add typed captured readonly
+   result fields and existing settings/results XM/YM choices, precision/CSV and
+   workspace support. Whole/rectangle/ellipse/polygon and grouped manager rows,
+   frozen source/calibration, stale/cancel and cap guarantees are required; no
+   second source acquisition, mask copy or generic moments framework.
+3. Put proven numeric/zero/negative-density cases in the existing native control
+   before matching binding links. Check installed C++/Python clients, original
+   references and actual both-host columns/CSV/reopen. Reuse unchanged centroid/
+   perimeter evidence; retain failure diagnostics, retire terminal scratch and
+   update the queue/waste decision. Threshold/redirect, Feret/other descriptors,
+   line/point variants and remaining platform gates retain their current owners.
 
 Other analytic/mask/native-path perimeters, wider scientific/saved-row/constructor
 variants, T07 external annotation projection precision, T09 operation-intent

@@ -436,7 +436,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     const bool extended=!options.path.empty() || options.samples_per_segment!=0;
     if(extended){MetadataArray path;for(const auto& p:options.path)path.push_back(metadata_array({p[0],p[1]}));
       requested["path"]=metadata_array(std::move(path));requested["samples_per_segment"]=std::uint64_t(options.samples_per_segment);}
-    bool geometry=false,points=false,annotated=false,polygon_metrics=false,fitted_metrics=false,analytic_metrics=false;
+    bool geometry=false,points=false,annotated=false,polygon_metrics=false,fitted_metrics=false,analytic_metrics=false,area_centroids=false;
     if(measurement) {
       requested["measurement"]=options.measurement==TargetMeasurementMode::RoiManager?"roi_manager":"selection";
       MetadataArray rows;for(const auto& row:measurements.rows) {
@@ -446,6 +446,8 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
           points=true;item["point_index"]=std::uint64_t(*row.point_index);
           item["point"]=metadata_array({row.point[0],row.point[1]});
         }
+        const auto* captured_selection=measurement_selection(target,row);
+        if(!row.point_index && (!captured_selection || (captured_selection->kind!="line" && captured_selection->kind!="polyline" && captured_selection->kind!="angle")))area_centroids=true;
         if(row.perimeter) {
           const auto* selection=measurement_selection(target,row);
           if(analytic_selection(selection)) {
@@ -472,10 +474,11 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
         requested["geometry_policy"]="calibrated-angle-refresh/irregular-path-v1";}
       if(points)requested["point_policy"]="float32-relative/rounded-pixel/expanded-rows-v1";
       if(annotated)requested["annotation_policy"]="scientific-czt/counters-v1";
+      if(area_centroids)requested["area_centroid_policy"]="geometric-pixel-centers/captured-affine-v1";
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(area_centroids?10:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -539,8 +542,14 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           row.bounds=imagej_line_bounds(line);
         } else {
           auto mask=selection?std::optional<Image>{selection->mask(shape.x,shape.y)}:std::optional<Image>{};
+          std::optional<std::array<double,2>> centroid;
           row.statistics=detail::calibrated_statistics_with_table(*image,state.spatial,state.intensity,state.lookup,
-              mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true);
+              mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true,&centroid);
+          if(centroid) {
+            if(std::isfinite((*centroid)[0]) && std::isfinite((*centroid)[1]))
+              row.centroid_world=state.spatial.voxel_to_world({(*centroid)[0],(*centroid)[1],double(row.position.z)});
+            else {const auto nan=std::numeric_limits<double>::quiet_NaN();row.centroid_world=std::array<double,3>{nan,nan,nan};}
+          }
         }
         kernel_checkpoint();execution_progress(++completed,state.measurements.rows.size());
       }
