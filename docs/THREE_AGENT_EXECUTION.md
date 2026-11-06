@@ -28,9 +28,9 @@ Rectangle/ellipse and whole-image perimeter now have scoped API/both-host
 CSV/workspace evidence with explicit units. Task scratch and SDK consumers are
 retired. Calibrated geometric centroids now have scoped original/API/both-host
 CSV/workspace evidence; weighted XM/YM now has the same scoped integration.
-The explicit Shape descriptors and five-column Feret options have scoped
-both-host integration, including subtype units. Next: Bounding rectangle
-measurements (BX/BY/Width/Height) through existing captured analysis/results.
+The explicit shape, Feret and processor rectangle options have scoped both-host
+integration, including subtype units and full native rectangle vectors. Next:
+ELLIPSE measurements (Major/Minor/Angle) through existing captured results.
 This card authorizes no agents.
 Analysis residuals
 do not impose a blanket prerequisite. Inspect current worktree and

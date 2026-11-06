@@ -36,6 +36,50 @@ double profile_length(const SpatialCalibration& spatial,const std::array<double,
   if(!std::isfinite(length))invalid("Analysis profile physical length must be finite");
   return length;
 }
+struct MeasurementRectangle {
+  std::array<int,4> pixels{};
+  std::array<double,3> origin{},horizontal{},vertical{};
+  double width=0,height=0;
+};
+MeasurementRectangle measurement_rectangle(const Selection* selection,int width,int height,
+    const SpatialCalibration& spatial,int z) {
+  double left=0,top=0,right=width,bottom=height;
+  if(selection) {
+    selection->validate(width,height);
+    if(selection->kind=="rectangle" || selection->kind=="ellipse") {
+      left=std::trunc(std::min(selection->points[0][0],selection->points[1][0]));
+      top=std::trunc(std::min(selection->points[0][1],selection->points[1][1]));
+      right=left+std::ceil(std::abs(selection->points[1][0]-selection->points[0][0]));
+      bottom=top+std::ceil(std::abs(selection->points[1][1]-selection->points[0][1]));
+    }else {
+      std::array<double,2> low{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()},high{-std::numeric_limits<float>::max(),-std::numeric_limits<float>::max()};
+      for(const auto& point:selection->points) {
+        kernel_checkpoint_periodic();
+        for(int axis=0;axis<2;++axis) {
+          if(std::abs(point[axis])>std::numeric_limits<float>::max())invalid("Rectangle coordinate exceeds Float32 range");
+          const double value=float(point[axis]);low[axis]=std::min(low[axis],value);high[axis]=std::max(high[axis],value);
+        }
+      }
+      for(int axis=0;axis<2;++axis)if(high[axis]-low[axis]>std::numeric_limits<float>::max())invalid("Rectangle coordinate span exceeds Float32 range");
+      left=std::floor(low[0]);top=std::floor(low[1]);right=std::ceil(high[0]);bottom=std::ceil(high[1]);
+    }
+  }
+  // ImageProcessor clips only when the original integer rectangle exceeds the
+  // image. An in-canvas zero-height polygon keeps its origin and other extent.
+  if(left<0 || top<0 || right>width || bottom>height) {
+    left=std::max(0.,left);top=std::max(0.,top);right=std::min(double(width),right);bottom=std::min(double(height),bottom);
+    if(right<=left || bottom<=top)left=top=right=bottom=0;
+  }
+  MeasurementRectangle out;out.pixels={int(left),int(top),int(right-left),int(bottom-top)};
+  out.origin=spatial.voxel_to_world({left,top,double(z)});
+  const double w=right-left,h=bottom-top;
+  for(int axis=0;axis<3;++axis) {
+    out.horizontal[axis]=spatial.direction[axis*3]*(w*spatial.spacing[0]);
+    out.vertical[axis]=spatial.direction[axis*3+1]*(h*spatial.spacing[1]);
+    if(!std::isfinite(out.horizontal[axis]) || !std::isfinite(out.vertical[axis]))invalid("Rectangle calibrated edges must be finite");
+  }
+  out.width=profile_length(spatial,{0,0,w,0});out.height=profile_length(spatial,{0,0,0,h});return out;
+}
 std::array<double,3> moment_world(const SpatialCalibration& spatial,const std::array<double,3>& point) {
   if(std::all_of(point.begin(),point.end(),[](double v){return std::isfinite(v);}))return spatial.voxel_to_world(point);
   // These are IEEE numerical summaries, not valid geometry coordinates. Keep
@@ -125,6 +169,7 @@ struct MeasurementRowPlan {
   std::optional<std::size_t> counter_count;
   std::optional<double> perimeter;
   std::optional<detail::AreaShapeGeometry> shape_geometry;
+  std::optional<MeasurementRectangle> rectangle;
 };
 struct MeasurementGroup {PlanePosition position;std::vector<std::size_t> rows;bool pixels=false;};
 struct MeasurementPlan {std::vector<MeasurementRowPlan> rows;std::vector<MeasurementGroup> groups;};
@@ -189,8 +234,8 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   std::size_t count=0;
   for(std::size_t n=0;n<parent_count;++n) {
     const auto* selection=measurement_selection(target,parent(n));
-    if((options.shape_descriptors || options.feret) && selection && selection->kind!="rectangle" && selection->kind!="ellipse" && selection->kind!="polygon" && selection->kind!="freehand")
-      invalid("Shape/Feret options currently require ordinary area rows");
+    if((options.shape_descriptors || options.feret || options.bounding_rectangle) && selection && selection->kind!="rectangle" && selection->kind!="ellipse" && selection->kind!="polygon" && selection->kind!="freehand")
+      invalid("Area geometry options currently require ordinary area rows");
     const auto rows=point_selection(selection)?selection->points.size():1;
     if(!rows)invalid("Point measurement requires a nonempty point selection");
     count=add(count,rows);if(count>limits.max_measurement_rows)invalid("Measurement exceeds its expanded row limit");
@@ -210,7 +255,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
     const auto ordinal=plan.groups.size();groups.emplace(key,ordinal);plan.groups.push_back({position,{}});return ordinal;
   };
   TargetAnalysisEstimate out;out.row_count=count;out.plane_pixels=base.plane_pixels;out.plane_bytes=base.plane_bytes;
-  bool has_area=false,has_mask=false,has_points=false;std::size_t raster_peak=0,line_peak=0,path_peak=0,path_work=0,polygon_peak=0,polygon_work=0,shape_peak=0,shape_work=0;
+  bool has_area=false,has_mask=false,has_points=false;std::size_t raster_peak=0,line_peak=0,path_peak=0,path_work=0,polygon_peak=0,polygon_work=0,shape_peak=0,shape_work=0,rectangle_work=0;
   for(std::size_t n=0;n<parent_count;++n) {
     auto row=parent(n);
     const auto* selection=measurement_selection(target,row);
@@ -266,6 +311,12 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       within(add(prefix,geometry.working_bytes),limits.max_working_bytes);
       shape_peak=std::max(shape_peak,geometry.working_bytes);
       row.shape_geometry=detail::prepare_area_shape_geometry(selection,shape.x,shape.y,geometry_limits,feret,options.shape_descriptors);
+    }
+    if(options.bounding_rectangle) {
+      const auto work=selection && (selection->kind=="polygon" || selection->kind=="freehand")?selection->points.size():0;
+      rectangle_work=add(rectangle_work,add(16,work));
+      if(add(rectangle_work,add(shape_work,polygon_work))>limits.max_measurement_work)invalid("Rectangle exceeds aggregate geometry work limit");
+      row.rectangle=measurement_rectangle(selection,shape.x,shape.y,target.calibration(),row.position.z);
     }
     const auto group=group_for(row.position);
     plan.groups[group].rows.push_back(plan.rows.size());plan.rows.push_back(row);
@@ -347,7 +398,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
       invalid("Target analysis requires finite-policy scalar storage");
     target.calibration().validate();return estimate_measurement(target,options,limits,retained);
   }
-  if(options.shape_descriptors || options.feret)invalid("Shape/Feret options require explicit selection or manager measurement");
+  if(options.shape_descriptors || options.feret || options.bounding_rectangle)invalid("Area geometry options require explicit selection or manager measurement");
   if(options.line && !options.path.empty())invalid("Analysis accepts line or path, not both");
   if(!options.path.empty() && (options.path.size()<2 || options.path.size()>4096))invalid("Analysis path requires 2..4096 vertices");
   if(!options.statistics && !segment_count(options))invalid("Analysis requires statistics or a profile");
@@ -472,10 +523,12 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     if(measurement) {
       if(options.shape_descriptors)requested["shape_descriptor_policy"]="rounded-hull/legacy-ellipse/area-options-v1";
       if(options.feret)requested["feret_policy"]="float-hull/analytic-oval/pixel-fallback/local-plane-v1";
+      if(options.bounding_rectangle)requested["rectangle_policy"]="processor-roi/local-axes/full-affine-v1";
       requested["measurement"]=options.measurement==TargetMeasurementMode::RoiManager?"roi_manager":"selection";
       MetadataArray rows;for(const auto& row:measurements.rows) {
         MetadataObject item{{"position",metadata_array({row.position.t,row.position.c,row.position.z})}};
         if(row.roi)item["roi_index"]=std::uint64_t(*row.roi);
+        if(row.rectangle){const auto& b=row.rectangle->pixels;item["processor_rectangle"]=metadata_array({b[0],b[1],b[2],b[3]});}
         if(row.point_index) {
           points=true;item["point_index"]=std::uint64_t(*row.point_index);
           item["point"]=metadata_array({row.point[0],row.point[1]});
@@ -515,7 +568,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.feret?13:options.shape_descriptors?12:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.bounding_rectangle?14:options.feret?13:options.shape_descriptors?12:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -582,6 +635,11 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           std::optional<std::array<double,2>> centroid,center_of_mass;
           row.statistics=detail::calibrated_statistics_with_table(*image,state.spatial,state.intensity,state.lookup,
               mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true,&centroid,&center_of_mass);
+          if(plan.rectangle) {
+            const auto& b=*plan.rectangle;
+            row.bounding_x=b.origin[0];row.bounding_y=b.origin[1];row.bounding_width=b.width;row.bounding_height=b.height;
+            row.bounding_origin_world=b.origin;row.bounding_horizontal_world=b.horizontal;row.bounding_vertical_world=b.vertical;
+          }
           if(plan.shape_geometry && plan.shape_geometry->feret) {
             const auto& f=*plan.shape_geometry->feret;
             row.feret=f[0];row.min_feret=f[1];row.feret_angle=f[2];row.feret_x=f[3];row.feret_y=f[4];

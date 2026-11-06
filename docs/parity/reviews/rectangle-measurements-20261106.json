@@ -1,0 +1,397 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 Bounding rectangle measurement option",
+  "implemented": true,
+  "verified": true,
+  "integrated": true,
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "scope": "Defaultfalse bounding_rectangle supplies readonly BX/BY/Width/Height and full3Dworld origin/edges through captured whole/ordinary/fitted area and manager APIs. Existing settings/Measure, both Windows hosts, precision/CSV/workspace/cancel/stale/history/read guarantees integrated; tight Bounds preserved.",
+  "public_contract": "Defaultfalse bounding_rectangle; readonly optional bounding_x/y/width/height and full bounding_origin_world/horizontal_world/vertical_world. Clipped processor ROI independent of tight Bounds/density; preserve in-canvas zero-height, reset entire clipped no-overlap rectangle. Full calibration for whole-image box; native wide finite boxes clip before int conversion. Full3Dorigin/edges retained; scalar width/height image-axis norms. Requested diagnostic14/rectangle_policy and per-row processor_rectangle provenance. Matching SDK required for appended public DTO layout.",
+  "checks": {
+    "python_current_distinct": 3635,
+    "python_current_passed": 3634,
+    "python_current_skipped": 1,
+    "skip": "Optional unchanged hidden OpenGL settings context; IMAGEJXX_RENDER_TESTS=1 not selected.",
+    "reused_unchanged_strict_transform_passed": 321,
+    "distinct_id_union": 3956,
+    "passed_id_union": 3955,
+    "original_rows": 960,
+    "original_all_nan_density_rows": 60,
+    "new_case_ids": 977,
+    "new_physical_profiles_per_windows_host": 8,
+    "matching_host_pairs": 59,
+    "unsupported_rectangle_ui_refusal_pairs": 1,
+    "native": "Affected Windows/Linux analysis/settings controls pass;60pinned native rectangle cases plus3Daffine/pre-read/freeze/composition. Windows host aggregator and changed Windows target_analysis_api installed client pass.9installed byte pairs and actual module origins verified. Unchanged selection_transform client/native evidence reused from Feret task.",
+    "limits": "Linux installed SDK/Python/UI, macOS and full final release gates not qualified by this increment."
+  },
+  "remaining": "ELLIPSE Major/Minor/Angle next, reuse225existing complete original rows (all three fields confirmed now). Threshold/redirect, unsampled constructor/nonordinary/mask/path/line/point/replay/platform variants stay M3/T06/T14; retired G016/17gesture refs unavailable, not passed/recreated/repinned. Full editor/M3/release remains open.",
+  "cleanup": "All5task scratch groups and parent absent; retirement002/006. Three original/final capture archives live verified before retirement; compiler/SDK identity-only, necessary logs/import/receipts retained. Active compiler/runtime/app/SDK preserved. No Linux scratch.",
+  "storage": {
+    "before_known_bytes": 7426770981,
+    "checkpoint_known_bytes": 7436183318,
+    "after_known_bytes": 7430087467,
+    "measured_known_growth_bytes": 9412337,
+    "physical_free_after_bytes": 221308071936,
+    "allocation_bound_bytes": 268435456,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "snapshots": [
+      ".tmp/manual-workflow-verification/rectangle-entry-20261106.json",
+      ".tmp/manual-workflow-verification/rectangle-preretirement-20261106.json",
+      ".tmp/manual-workflow-verification/rectangle-final-20261106.json"
+    ],
+    "scope": "Complete normalized owned-root survey;214inaccessible subtrees remain unknown. Known bytes/growth are lower bounds, not complete budget compliance."
+  },
+  "cost": {
+    "windows_build_commands": 8,
+    "windows_build_seconds": 131.021,
+    "native_module_build_commands": 1,
+    "native_module_build_seconds": 50.26,
+    "analysis_control_build_seconds": 16.483,
+    "linux_build_seconds": 18.395,
+    "python_seconds": 17.307,
+    "sdk_command_seconds": 20.956,
+    "failed_compilations": 0,
+    "failed_checks": 0,
+    "corrective_builds": 0
+  },
+  "waste_review": {
+    "decision": "Fix now by separating processor ROI semantics from tight bounds, constant scalar preparation/no new geometry vector, existing profile/calibration/output owners and one pre-link source batch. Reuse unchanged strict-transform/control/client evidence; no corrective builds or SDK reconfiguration.",
+    "observed": "One _native build50.260s; native analysis control compile16.483s; source/consumer changes batched before links, all checks green first run. New scalar helper repeats polygon structural validation already performed by planner; extra traversal exists, but its runtime effect is unmeasured.",
+    "deferred_owner": "M3 ELLIPSE owns sharing already-admitted rectangle/moment preparation and removing repeated polygon validation at the actual owning boundary if needed; preserve finite/narrowing/admission guarantees and batch with its required core/binding work, not a standalone relink campaign. No proven performance regression or failing consumer justifies late requalification here.",
+    "hypotheses": "No speed-superiority or avoided-time claim; native-case table size may contribute to16.483s control compilation, but no causal measurement establishes that. Do not rewrite tests or add instrumentation on this hypothesis.",
+    "queue_feedback": "Active row/spec now ELLIPSE three-column option.225existingoriginalMajor/Minor/Angle rows available, so original producer is selected only for concrete missing cases; existing remaining owners retained."
+  },
+  "failures_and_corrections": [],
+  "sources": [
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 7745,
+      "sha256": "5d11126acaf22581e5ec19d088ce19f945cbf10171920e6fd0b6fb18a9bc772d"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 48168,
+      "sha256": "9c71dd0c0b27e0a7bfd00c2eb254d0290daaf97257e937945d084888eb8b16a4"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 8608,
+      "sha256": "52ecf043ea06f81e554f7cdaa5f0ec5a7fd12429c55dbefe7ae6377f4d64f04c"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 27929,
+      "sha256": "65e1431371c7eaeed31788603f12484bc06e93cee3c9823dce7c29b46d59e1bb"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 929323,
+      "sha256": "bb366471f71d0f41aa66d62f5f02637cf1979d8fa990082a1c0dfcfdb296c143"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 7992,
+      "sha256": "ad5eee646b57f3860d0088a1d8e4935a605a19ac5a28c384a7500349a5f50e06"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 108741,
+      "sha256": "d7e2d8372790f8009ca23cb1a94f8c3e70d1bc75d6553db7693ad77701e570a3"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 46500,
+      "sha256": "7949922a729fcb3e892754d4629fc01cc4cc7ac4212f31b4324babc68d5c0556"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38288,
+      "sha256": "6cba9294319138c602a6a6d523e7722f14589116bfb830419be2ae349e55b9bc"
+    },
+    {
+      "path": "tests/python/test_rectangle_measurements.py",
+      "bytes": 10315,
+      "sha256": "d168663bdbe403a9830d0d91f3fba80f57483512aae9b8f9a80db4f3d18e24cd"
+    },
+    {
+      "path": "tests/reference/ObserveRectangleMeasurements.java",
+      "bytes": 4311,
+      "sha256": "a4cd5fa91ea63cd81c91c3fb05496fc1ce957d482cc3265bb34ed825a4047225"
+    },
+    {
+      "path": "tests/fixtures/rectangle-measurements-imagej154r.json",
+      "bytes": 334774,
+      "sha256": "e26b790ec70f4699d9aaaabd2a1cb6c4bda1991679d9cd43d76d3d06b5173618"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 144312,
+      "sha256": "b6bf45c10d0f28857b1617ed6a70dd3a17a813426dcce3f3bd52a2cd15b74330"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 7884,
+      "sha256": "10dafac55bb3696de0e464752d54989bf381341e14671261e08f4fb36a870236"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 7880,
+      "sha256": "dc188f56042b7eb6c4933602bae4bd83ecc80ebc54585410f17d566e41c4d2aa"
+    },
+    {
+      "path": "docs/TARGET_ANALYSIS.md",
+      "bytes": 44680,
+      "sha256": "4def59fa76ab55d7cf3db8242b03d5d36cbafec620ef1c904a71499346566c7a"
+    },
+    {
+      "path": "tests/python/test_subtype_measurements.py",
+      "bytes": 11993,
+      "sha256": "b6ee54e52fc4554c238c0b20acc557354d70921fd1a9186c92cca4acbf841821"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/entry.json",
+      "bytes": 34487,
+      "sha256": "3e35fe8c7f018d7f379c9e7873649c1923d727823814644874873e497fbf7e3e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/python004.xml",
+      "bytes": 601849,
+      "sha256": "87d9a34d8f51260db19bc766781dcc194f35914ad41c7c69254b649066569961"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/python004-counts.json",
+      "bytes": 90,
+      "sha256": "9122a4f5d591fc842aae6e6cf6f0b520539fe1dc8b168abce1501f081b7e842a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/review005.json",
+      "bytes": 32315,
+      "sha256": "f53e4aa37951a4b40fd153a61d6b8b9ba97bfcbe506463388c6480523eec3b4c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/installed-identities004.json",
+      "bytes": 3523,
+      "sha256": "7d9d02f4dd97c7cbe788c6ff71601a41da9456c877fa6a700e6439d732ef0303"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/sdk-import005.txt",
+      "bytes": 200,
+      "sha256": "1891069ab62f559670f76cb0860b4cfbdb1c07133f27bc4f883d7cac48153894"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/scratch-identities006.json",
+      "bytes": 528375,
+      "sha256": "fd1bb7d402db774cf145a7d77463fc51fbddce2042c34637978c91ce258170b1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/retirement002.json",
+      "bytes": 949,
+      "sha256": "b8e68d5eb01d2f9c608c503d7e412bec4d9b34715361247e71841d031ee74649"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/retirement006.json",
+      "bytes": 2878,
+      "sha256": "b9259af51d53b714f2ced5f45f1ef50d7004d308c372c4da7897c526f5af9340"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/linux-observed004.json",
+      "bytes": 275,
+      "sha256": "c0ae639c482f95661d4efd3787bd17e89d78a58cb2b34082132c7d3584f1353a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/linux-identities004.json",
+      "bytes": 657,
+      "sha256": "f3d40072fbe0e5299694a6dbe9d1fa7dcd615f14c50a41c9433c615675acc30c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/reference002.zip",
+      "bytes": 17660,
+      "sha256": "06c2b989da16d484a41e11fc00e16427109878c7dbd2927491cf2889a2e736f8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/reference002.manifest.json",
+      "bytes": 2589,
+      "sha256": "a507132d8dc1c1c9aa02e534a98373d34a8df3c549ebeaedf1278011a370552f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/reference002.verify.json",
+      "bytes": 1465,
+      "sha256": "fd474b05308a99f8db4b6c5e4bb74d5aad2b1bacd5664becf97c1d29c6a521ce"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/python004006.zip",
+      "bytes": 327075,
+      "sha256": "c2a573b5d76bb5ee046bee96680134d42aa888a3f44391e12f9b2e489af83aaa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/python004006.manifest.json",
+      "bytes": 140518,
+      "sha256": "f9675e9bbe42e4d5e1b23b08c8f198bec571d385d1f548507f0c8a47721cc43c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/python004006.verify.json",
+      "bytes": 1480,
+      "sha256": "eee5e62b310b0f40c94bece7c7971a0e7bbad40e734448b64a8ee0045ebc0dc1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/native004006.zip",
+      "bytes": 483177,
+      "sha256": "9ac95e5ffcf8a1cba22272b48562905d0c1f8badc9f8abed42998e83c64030b2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/native004006.manifest.json",
+      "bytes": 196195,
+      "sha256": "d03478b9b8b15844e72743a1558f45ff6a000f13c3175e69e5144f646172bcc0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/native004006.verify.json",
+      "bytes": 1481,
+      "sha256": "e8dbde478672e07d41b37c4b984b8c4dbc0c27be7ac51d1b67c34b02ac50cfc2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/_desktop003.process.json",
+      "bytes": 2849,
+      "sha256": "52e234526fb0bfb6fe9421385445674514b858c256d2960a6dd4353da55a4764"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/_native003.process.json",
+      "bytes": 2033,
+      "sha256": "a1c116503e90cb077ff61befe558e89d95768ac4556cddde2b10a4ad7836cd2c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/imagejxx_app003.process.json",
+      "bytes": 2856,
+      "sha256": "c29d6ef122cdf14e06d84e8424e65d0c936c07704401ef328b237daf8888c829"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/imagejxx_core003.process.json",
+      "bytes": 2038,
+      "sha256": "914eeb3988bfd07ca54efa58c01d1b80922b7f6a0056f8e6bd7ea10d8aa51c30"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/imagejxx_desktop003.process.json",
+      "bytes": 2857,
+      "sha256": "a4c720c7458efe9ed618edb41834d5548c31b9af38b22cc7f3e7769de139922a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/imagejxx_display_actions_tests003.process.json",
+      "bytes": 2878,
+      "sha256": "908bd71138deba42d59e213122523b48f9c649820836b842b07906ac4f94ab8c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/imagejxx_settings_tests003.process.json",
+      "bytes": 2048,
+      "sha256": "fef67477e0bbc31297010871a0f74f1c134ec954697fa2ba9c13ac3c53fbf9e0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/imagejxx_target_analysis_tests003.process.json",
+      "bytes": 2055,
+      "sha256": "d93f6fe80b720aa1ea72fa05b28eb0138354e040b9c6c3e24b1ba5da49713c1b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/install-desktop004.process.json",
+      "bytes": 2114,
+      "sha256": "9a1723cda2abfd76424feeae0b716b6569cd62aa338a4412f4607f730892f6e0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/install-development004.process.json",
+      "bytes": 2121,
+      "sha256": "b2867182bf09ae0ad5060b039989858a2dcf83b572d65ea44e86c4a3291ece43"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/install-Unspecified004.process.json",
+      "bytes": 2126,
+      "sha256": "5c37ac23912e8ad0c1b0aae582fdfc78d9ae7dbeec1b389bcd2669987a1eb401"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/linux-build004.process.json",
+      "bytes": 1600,
+      "sha256": "07d43f88b883729bb5ab94d0a8a87ec209b34f16a217883b65617972776dbc1e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/linux-imagejxx_settings_tests004.process.json",
+      "bytes": 1483,
+      "sha256": "8a90883d5991c1e30224d5949d5f78a2a307cb0ac03d0a3a16a6d40eb56ade0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/linux-imagejxx_target_analysis_tests004.process.json",
+      "bytes": 1489,
+      "sha256": "6af1ced467086acb76590dc2f2218d237ded134300f026f4ad3242449cc47aca"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/linux-owner004.process.json",
+      "bytes": 4384,
+      "sha256": "a61c0441e981beed4503a5c65d819061d56c30b3e6d66a879a02478a83ddb6e9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/native-host004.process.json",
+      "bytes": 1961,
+      "sha256": "57ba96d8db23acbd6725f81a8be6d6e7f1ac081e39617be5e1a0542a79211d58"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/python004.process.json",
+      "bytes": 2924,
+      "sha256": "fb3638545e7dec6304ab1159c2bea0ff7d5d22a7270b68f2eaf1a4cb4d425e3f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/reference-compile001.process.json",
+      "bytes": 2276,
+      "sha256": "b5a92944425d6c2d9ff64479bd15f775b40d145e3285ae08c86fc131f2f51492"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/reference-run001.process.json",
+      "bytes": 2144,
+      "sha256": "087f0f7ee057b7f45d39483aa8b4ad087d743f721291b0304b3a68c34d3901d2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/run-imagejxx_settings_tests003.process.json",
+      "bytes": 1818,
+      "sha256": "7c7676f0abc699bbfad55deefe4b738469eb8f56c56403fb255e606e645ca4ea"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/run-imagejxx_target_analysis_tests003.process.json",
+      "bytes": 1830,
+      "sha256": "d017e4d032fd660e6dde8d022c76d5416c08baed38978ba7f460034e74985b10"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/sdk-build005.process.json",
+      "bytes": 2102,
+      "sha256": "ed60820a4e6f165202c03524503ef8b46eafabfd792359442e0d621c66cd7e0f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/sdk-carrier005.process.json",
+      "bytes": 2026,
+      "sha256": "f4f63281ed2bec104753b838d2a23d5db258e10c5362eb8b34212cdc07d497bc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/sdk-configure005.process.json",
+      "bytes": 2415,
+      "sha256": "01e968a8beda67723abbff10fb6792b6de642cca5c5b05d4e64ffd9dc01f1659"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-measurements-20261106/sdk-target_analysis_api005.process.json",
+      "bytes": 1927,
+      "sha256": "a0ebf1a5b078a565272fed9a2dc291bf685ddef7889f3ba8702232f308c7b832"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-entry-20261106.json",
+      "bytes": 66573,
+      "sha256": "a78e9a987405002f6314db224b811c00fff10be362e0e60f852fbf8324d7b7c7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-preretirement-20261106.json",
+      "bytes": 66573,
+      "sha256": "16c0dc154c02142104cd40352053f03a2a5aae3f20c926891033645fe1e06799"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/rectangle-final-20261106.json",
+      "bytes": 66574,
+      "sha256": "0e9b518ebe6ab806fbf9894c15d6e6b280e66f217b5b22803605c8f5a6a9a603"
+    }
+  ]
+}

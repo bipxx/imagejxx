@@ -4296,6 +4296,7 @@ struct Window::Impl {
     const auto& columns=preferenceState.settings.strings("measurements");
     options.shape_descriptors=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Circ." || column=="AR" || column=="Round" || column=="Solidity";});
     options.feret=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Feret" || column=="MinFeret" || column=="FeretAngle" || column=="FeretX" || column=="FeretY" || column=="Feret unit" || column=="Feret coordinate unit";});
+    options.bounding_rectangle=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="BX" || column=="BY" || column=="Width" || column=="Height";});
     const auto command=resolve_target_analysis(target,options,limits);
     const auto rows=captured_measurement_row_bytes(command);
     const auto workspace=RenderMemory::add(command.estimate().working_bytes,rows);

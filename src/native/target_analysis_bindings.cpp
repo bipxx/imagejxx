@@ -16,7 +16,8 @@ void bind_target_analysis(py::module_& m) {
     .def_readwrite("measurement",&TargetAnalysisOptions::measurement).def_readwrite("roi_indices",&TargetAnalysisOptions::roi_indices)
     .def_readwrite("reflex_angle",&TargetAnalysisOptions::reflex_angle)
     .def_readwrite("shape_descriptors",&TargetAnalysisOptions::shape_descriptors)
-    .def_readwrite("feret",&TargetAnalysisOptions::feret);
+    .def_readwrite("feret",&TargetAnalysisOptions::feret)
+    .def_readwrite("bounding_rectangle",&TargetAnalysisOptions::bounding_rectangle);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
     .def_readwrite("max_working_bytes",&TargetAnalysisLimits::max_working_bytes)
@@ -63,6 +64,13 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("feret_y",&TargetAnalysisPlane::feret_y)
     .def_readonly("feret_in_pixels",&TargetAnalysisPlane::feret_in_pixels)
     .def_readonly("feret_coordinates_scaled",&TargetAnalysisPlane::feret_coordinates_scaled)
+    .def_readonly("bounding_x",&TargetAnalysisPlane::bounding_x)
+    .def_readonly("bounding_y",&TargetAnalysisPlane::bounding_y)
+    .def_readonly("bounding_width",&TargetAnalysisPlane::bounding_width)
+    .def_readonly("bounding_height",&TargetAnalysisPlane::bounding_height)
+    .def_readonly("bounding_origin_world",&TargetAnalysisPlane::bounding_origin_world)
+    .def_readonly("bounding_horizontal_world",&TargetAnalysisPlane::bounding_horizontal_world)
+    .def_readonly("bounding_vertical_world",&TargetAnalysisPlane::bounding_vertical_world)
     .def_property_readonly("statistics",[](const TargetAnalysisPlane& v)->py::object{
       if(v.statistics)return bindings::calibrated_statistics_python(*v.statistics);
       return py::none();})

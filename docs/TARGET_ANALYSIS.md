@@ -534,14 +534,40 @@ ellipses skip hull/moment work. Detached results retain scalar summaries only.
 Original675 cases,51matching Windows host pairs, grouped/global/frozen/read/cancel/
 stale/CSV/workspace checks and installed C++ consumers have scoped evidence in
 [the Feret receipt](parity/reviews/feret-measurements-20261106.json).
-RECT/ELLIPSE output columns, threshold/redirect and remaining variants stay open.
+`TargetAnalysisOptions.bounding_rectangle=True` in SELECTION/ROI_MANAGER requests
+readonly optional `bounding_x`, `bounding_y`, `bounding_width`, `bounding_height`
+and full `bounding_origin_world`, `bounding_horizontal_world`,
+`bounding_vertical_world` summaries. It defaults false. Selecting BX/BY/Width/
+Height requests the set through existing settings/Measure in both hosts; the
+requested diagnostic version14 includes `rectangle_policy` and frozen per-row
+`processor_rectangle` provenance.
+
+This is the clipped ImageProcessor ROI rectangle, independent of tight mask
+`bounds` and density exclusions. An in-canvas collinear polygon retains origin
+and nonzero width with zero height; clipped no-overlap geometry resets the entire
+processor rectangle to zero. Empty results still transform that processor origin.
+Whole-image dimensions use calibration, including reflected origins; they do not
+inherit Feret's pixel fallback. Constructor Float32 min/max and integer box rules
+are retained. Native finite wide boxes clip before bounded integer conversion.
+
+BX/BY are the first two components of the captured world corner at row Z;
+Width/Height are calibrated image-axis edge lengths, including shear/3D. The
+full origin/edge vectors remain available instead of inventing a world-axis box.
+Preparation borrows metadata in constant box work or one admitted Float32 min/max
+scan, without allocating another geometry vector/mask or acquiring source pixels.
+Unsupported kinds/generic AREA requests refuse before reads, and scalar defaults
+and old Bounds keep their meaning. [Scoped rectangle evidence](parity/reviews/rectangle-measurements-20261106.json)
+covers960 original rows (60 all-NaN density cases),59matching Windows host pairs,
+grouped/global/frozen/cancel/stale/CSV/workspace behavior and the changed installed
+Windows C++ client. ELLIPSE output columns, threshold/redirect and remaining
+variants stay open.
 
 
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
 | `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Point properties/vertex alignment are scoped delivered; interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
-| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set; the five Feret columns and companion units request the explicit Feret set. RECT/ELLIPSE, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
+| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set; the five Feret columns and companion units request the explicit Feret set. BX/BY/Width/Height request the independent processor rectangle set. ELLIPSE, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
 | `reflex_angle` | Boolean false by default; shared Preferences control/API/persistence, captured once per measurement. True selects 360 minus the refreshed calibrated angle. |

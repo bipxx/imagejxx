@@ -89,6 +89,10 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       values["Perim."]=scalar(*row.perimeter);
       values["Perim. unit"]=row.perimeter_in_pixels?std::string("pixel"):result.spatial.unit;
     }
+    if(row.bounding_x) {
+      values["BX"]=scalar(*row.bounding_x);values["BY"]=scalar(*row.bounding_y);
+      values["Width"]=scalar(*row.bounding_width);values["Height"]=scalar(*row.bounding_height);
+    }
     if(row.feret) {
       values["Feret"]=scalar(*row.feret);values["MinFeret"]=scalar(*row.min_feret);
       values["FeretAngle"]=scalar(*row.feret_angle);values["FeretX"]=scalar(*row.feret_x);values["FeretY"]=scalar(*row.feret_y);

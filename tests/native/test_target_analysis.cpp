@@ -29,6 +29,98 @@ struct Source final:PlaneSource {
 }
 int main(){
   {
+    struct RectangleCase {const char* kind;std::vector<std::array<double,2>> points;bool fitted,traced,invert;std::array<double,2> spacing,origin;std::array<double,4> expected;};
+    const std::vector<RectangleCase> cases={
+      {"whole_image",{},false,false,false,{1,1},{-0,-0},{0,0,40,40}},
+      {"whole_image",{},false,false,false,{2,0.5},{-0,-0},{0,0,80,20}},
+      {"whole_image",{},false,false,true,{2,0.5},{-14.5,-1.75},{-14.5,-1.75,80,20}},
+      {"whole_image",{},false,false,true,{2,0.5},{-0,19.5},{0,19.5,80,20}},
+      {"rectangle",{{3,3},{13,11}},false,false,false,{1,1},{-0,-0},{3,3,10,8}},
+      {"rectangle",{{3,3},{13,11}},false,false,false,{2,0.5},{-0,-0},{6,1.5,20,4}},
+      {"rectangle",{{3,3},{13,11}},false,false,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.25,20,4}},
+      {"rectangle",{{3,3},{13,11}},false,false,true,{2,0.5},{-0,19.5},{6,18,20,4}},
+      {"ellipse",{{3,3},{13,11}},false,false,false,{1,1},{-0,-0},{3,3,10,8}},
+      {"ellipse",{{3,3},{13,11}},false,false,false,{2,0.5},{-0,-0},{6,1.5,20,4}},
+      {"ellipse",{{3,3},{13,11}},false,false,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.25,20,4}},
+      {"ellipse",{{3,3},{13,11}},false,false,true,{2,0.5},{-0,19.5},{6,18,20,4}},
+      {"polygon",{{3,3},{13,3},{9,11}},false,false,false,{1,1},{-0,-0},{3,3,10,8}},
+      {"polygon",{{3,3},{13,3},{9,11}},false,false,false,{2,0.5},{-0,-0},{6,1.5,20,4}},
+      {"polygon",{{3,3},{13,3},{9,11}},false,false,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.25,20,4}},
+      {"polygon",{{3,3},{13,3},{9,11}},false,false,true,{2,0.5},{-0,19.5},{6,18,20,4}},
+      {"polygon",{{3,3},{13,3},{13,7},{8,7},{8,11},{3,11}},false,false,false,{1,1},{-0,-0},{3,3,10,8}},
+      {"polygon",{{3,3},{13,3},{13,7},{8,7},{8,11},{3,11}},false,false,false,{2,0.5},{-0,-0},{6,1.5,20,4}},
+      {"polygon",{{3,3},{13,3},{13,7},{8,7},{8,11},{3,11}},false,false,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.25,20,4}},
+      {"polygon",{{3,3},{13,3},{13,7},{8,7},{8,11},{3,11}},false,false,true,{2,0.5},{-0,19.5},{6,18,20,4}},
+      {"rectangle",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,false,{1,1},{-0,-0},{3,4,11,9}},
+      {"rectangle",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,false,{2,0.5},{-0,-0},{6,2,22,4.5}},
+      {"rectangle",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.75,22,4.5}},
+      {"rectangle",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,true,{2,0.5},{-0,19.5},{6,17.5,22,4.5}},
+      {"ellipse",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,false,{1,1},{-0,-0},{3,4,11,9}},
+      {"ellipse",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,false,{2,0.5},{-0,-0},{6,2,22,4.5}},
+      {"ellipse",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.75,22,4.5}},
+      {"ellipse",{{3.2000000000000002,4.7000000000000002},{13.399999999999999,13}},false,false,true,{2,0.5},{-0,19.5},{6,17.5,22,4.5}},
+      {"rectangle",{{-2.7000000000000002,-1.2},{2.3999999999999995,3.2000000000000002}},false,false,false,{1,1},{-0,-0},{0,0,4,4}},
+      {"rectangle",{{-2.7000000000000002,-1.2},{2.3999999999999995,3.2000000000000002}},false,false,false,{2,0.5},{-0,-0},{0,0,8,2}},
+      {"rectangle",{{-2.7000000000000002,-1.2},{2.3999999999999995,3.2000000000000002}},false,false,true,{2,0.5},{-14.5,-1.75},{-14.5,-1.75,8,2}},
+      {"rectangle",{{-2.7000000000000002,-1.2},{2.3999999999999995,3.2000000000000002}},false,false,true,{2,0.5},{-0,19.5},{0,19.5,8,2}},
+      {"rectangle",{{60,60},{64,64}},false,false,false,{1,1},{-0,-0},{0,0,0,0}},
+      {"rectangle",{{60,60},{64,64}},false,false,false,{2,0.5},{-0,-0},{0,0,0,0}},
+      {"rectangle",{{60,60},{64,64}},false,false,true,{2,0.5},{-14.5,-1.75},{-14.5,-1.75,0,0}},
+      {"rectangle",{{60,60},{64,64}},false,false,true,{2,0.5},{-0,19.5},{0,19.5,0,0}},
+      {"ellipse",{{60,60},{64,64}},false,false,false,{1,1},{-0,-0},{0,0,0,0}},
+      {"ellipse",{{60,60},{64,64}},false,false,false,{2,0.5},{-0,-0},{0,0,0,0}},
+      {"ellipse",{{60,60},{64,64}},false,false,true,{2,0.5},{-14.5,-1.75},{-14.5,-1.75,0,0}},
+      {"ellipse",{{60,60},{64,64}},false,false,true,{2,0.5},{-0,19.5},{0,19.5,0,0}},
+      {"rectangle",{{3,3},{4,4}},false,false,false,{1,1},{-0,-0},{3,3,1,1}},
+      {"rectangle",{{3,3},{4,4}},false,false,false,{2,0.5},{-0,-0},{6,1.5,2,0.5}},
+      {"rectangle",{{3,3},{4,4}},false,false,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.25,2,0.5}},
+      {"rectangle",{{3,3},{4,4}},false,false,true,{2,0.5},{-0,19.5},{6,18,2,0.5}},
+      {"rectangle",{{3,3},{4,17}},false,false,false,{1,1},{-0,-0},{3,3,1,14}},
+      {"rectangle",{{3,3},{4,17}},false,false,false,{2,0.5},{-0,-0},{6,1.5,2,7}},
+      {"rectangle",{{3,3},{4,17}},false,false,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.25,2,7}},
+      {"rectangle",{{3,3},{4,17}},false,false,true,{2,0.5},{-0,19.5},{6,18,2,7}},
+      {"polygon",{{3,3},{4,3},{5,3}},false,false,false,{1,1},{-0,-0},{3,3,2,0}},
+      {"polygon",{{3,3},{4,3},{5,3}},false,false,false,{2,0.5},{-0,-0},{6,1.5,4,0}},
+      {"polygon",{{3,3},{4,3},{5,3}},false,false,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.25,4,0}},
+      {"polygon",{{3,3},{4,3},{5,3}},false,false,true,{2,0.5},{-0,19.5},{6,18,4,0}},
+      {"polygon",{{3,3},{13,3},{13,13},{3,13}},true,false,false,{1,1},{-0,-0},{1,1,14,14}},
+      {"polygon",{{3,3},{13,3},{13,13},{3,13}},true,false,false,{2,0.5},{-0,-0},{2,0.5,28,7}},
+      {"polygon",{{3,3},{13,3},{13,13},{3,13}},true,false,true,{2,0.5},{-14.5,-1.75},{-12.5,-2.25,28,7}},
+      {"polygon",{{3,3},{13,3},{13,13},{3,13}},true,false,true,{2,0.5},{-0,19.5},{2,19,28,7}},
+      {"freehand",{{3.2000000476837158,4.6999998092651367},{13.800000190734863,3.0999999046325684},{9.3999996185302734,14.199999809265137}},false,true,false,{1,1},{-0,-0},{3,3,11,12}},
+      {"freehand",{{3.2000000476837158,4.6999998092651367},{13.800000190734863,3.0999999046325684},{9.3999996185302734,14.199999809265137}},false,true,false,{2,0.5},{-0,-0},{6,1.5,22,6}},
+      {"freehand",{{3.2000000476837158,4.6999998092651367},{13.800000190734863,3.0999999046325684},{9.3999996185302734,14.199999809265137}},false,true,true,{2,0.5},{-14.5,-1.75},{-8.5,-3.25,22,6}},
+      {"freehand",{{3.2000000476837158,4.6999998092651367},{13.800000190734863,3.0999999046325684},{9.3999996185302734,14.199999809265137}},false,true,true,{2,0.5},{-0,19.5},{6,18,22,6}}
+    };
+    for(const auto& value:cases) {
+      SpatialCalibration spatial;spatial.spacing={value.spacing[0],value.spacing[1],1};spatial.origin={value.origin[0],value.origin[1],0};if(value.invert)spatial.direction[4]=-1;
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},spatial).observe_reads(reads));
+      if(std::string(value.kind)!="whole_image"){Selection selection(value.kind,value.points);if(value.traced)selection=with_selection_polygon_type(selection,SelectionPolygonType::Traced);if(value.fitted)selection=fit_spline_selection(selection,40,40);owner->select(selection);}
+      Application app;app.adopt(owner);TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;check(!options.bounding_rectangle);options.bounding_rectangle=true;
+      const auto command=resolve_target_analysis(app.resolve_target(),options);check(reads.counts().plane_reads==0 && command.options().bounding_rectangle);
+      check(command.record().at("version")==MetadataValue(std::int64_t(14)));
+      owner->select(Selection("rectangle",{{0,0},{1,1}}));const auto frozen=owner->snapshot();const auto result=execute_target_analysis(command);const auto& row=result.planes.front();
+      check(row.bounding_x && row.bounding_y && row.bounding_width && row.bounding_height && row.bounding_origin_world && row.bounding_horizontal_world && row.bounding_vertical_world);
+      const std::array<double,4> actual{*row.bounding_x,*row.bounding_y,*row.bounding_width,*row.bounding_height};
+      for(std::size_t i=0;i<4;++i){if(std::abs(actual[i]-value.expected[i])>1e-11)std::cerr<<value.kind<<" rectangle column "<<i<<" got "<<actual[i]<<" expected "<<value.expected[i]<<std::endl;check(std::abs(actual[i]-value.expected[i])<1e-11);}
+      if(std::string(value.kind)=="polygon" && value.points.size()==3 && value.points[0][1]==value.points[1][1] && value.points[0][1]==value.points[2][1])check(!row.bounds && *row.bounding_width>0 && *row.bounding_height==0);
+      check(!row.feret && !row.circularity && reads.counts().plane_reads==1 && owner->snapshot().shares_data(frozen) && owner->undo_steps()==0);
+      TargetAnalysisLimits limits;limits.max_measurement_work=1;refuses<std::invalid_argument>([&]{resolve_target_analysis(command.target(),options,limits);});check(reads.counts().plane_reads==1);
+      options.shape_descriptors=true;options.feret=true;const auto combined=execute_target_analysis(resolve_target_analysis(command.target(),options));check(combined.planes.front().bounding_x==row.bounding_x && combined.planes.front().feret && combined.planes.front().circularity);
+    }
+    {
+      SpatialCalibration spatial;spatial.spacing={2,.5,3};spatial.origin={7,-4,9};spatial.direction={1,1,0,0,1,0,.5,0,1};
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,2,40,40,1},{Image(40,40,1,PixelType::UInt8),Image(40,40,1,PixelType::UInt8)},spatial).observe_reads(reads));owner->select(Selection("rectangle",{{3,3},{13,11}}));auto display=owner->snapshot().display();display.crosshair[2]=1;owner->set_display(display);Application app;app.adopt(owner);
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.bounding_rectangle=true;const auto result=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options));const auto& row=result.planes.front();
+      check(*row.bounding_origin_world==std::array<double,3>{14.5,-2.5,15} && *row.bounding_horizontal_world==std::array<double,3>{20,0,10} && *row.bounding_vertical_world==std::array<double,3>{4,4,0});
+      check(std::abs(*row.bounding_width-std::sqrt(500.))<1e-11 && std::abs(*row.bounding_height-std::sqrt(32.))<1e-11 && row.position.z==1 && reads.counts().plane_reads==1);
+    }
+    {
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_stack({Image(40,40,1,PixelType::UInt8)}).observe_reads(reads));owner->select(Selection("polygon",{{0,0},{1e100,0},{0,10}}));Application app;app.adopt(owner);TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.bounding_rectangle=true;
+      refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target(),options);});check(reads.counts().plane_reads==0);
+    }
+  }
+  {
     struct FeretCase {const char* kind;std::vector<std::array<double,2>> points;bool fitted,traced;std::array<double,2> spacing;std::array<double,5> expected;};
     const std::vector<FeretCase> cases={
       {"whole_image",{},false,false,{1,1},{56.568542494923804,40,135,0,0}},

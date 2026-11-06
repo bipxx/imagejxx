@@ -25,6 +25,8 @@ struct TargetAnalysisOptions {
   bool shape_descriptors = false;
   // Explicit ordinary-area five-column Feret request; frozen during preparation.
   bool feret = false;
+  // Explicit processor-ROI BX/BY/Width/Height; independent of tight Bounds.
+  bool bounding_rectangle = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -75,6 +77,11 @@ struct TargetAnalysisPlane {
   // Analyzer whole-image fallback uses pixels; generic endpoints are raw image
   // coordinates, while OvalRoi endpoints use spacing-scaled image coordinates.
   bool feret_in_pixels=false,feret_coordinates_scaled=false;
+  // Present together for bounding_rectangle. Origin is the processor ROI corner
+  // at captured plane Z; edge lengths follow image axes, including shear/3D.
+  std::optional<double> bounding_x,bounding_y,bounding_width,bounding_height;
+  std::optional<std::array<double,3>> bounding_origin_world,
+      bounding_horizontal_world,bounding_vertical_world;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image

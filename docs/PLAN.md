@@ -27,8 +27,9 @@ straighten/remove and segmented explicit counts now have scoped lifecycle and
 both-host evidence. Rectangle/ellipse and whole-image perimeter now have scoped
 API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
-The explicit Shape descriptors and five-column Feret options now have scoped
-integration. Next: the M3 Bounding rectangle measurement option (four columns).
+The explicit Shape descriptors, five-column Feret and four-column Bounding
+rectangle measurement options now have scoped integration. Next: M3 ELLIPSE
+measurement columns (Major/Minor/Angle).
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -150,8 +151,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T15: remembered Interpolate options. | Three native Settings keys drive both dialogs and omitted action values. Accepted options save before capture/launch; Cancel/stale/invalid/point no-op preserve preferences.613 distinct Python IDs pass; Windows/Linux native settings/preferences and both Windows UI hosts pass. [Receipt](parity/reviews/interpolation-settings-20261105.json). |
 | Delivered scoped workflow | T04a.2 M3/T06: current-plane subtype-sensitive Measure. | Constructor precision persists through bare ROI/session/rebind/editing; captured Length/Perim., result columns/CSV/workspace and cancellation work in both Windows hosts.3662distinct Python IDs pass,180captured reference rows,14physical flows; Windows/Linux native andtwoWindowsSDKclients pass. [Evidence](parity/reviews/subtype-measurement-20261106.json). |
 | Delivered scoped workflow | T04a.2 M3/T06: fitted Measure and lifecycle. | Initial-fit evidence remains valid; versioned private Float32 basis now preserves refit/straighten history without changing native Double edit controls.840distinct affected Python IDs pass,14new physical lifecycle flows,2worker-refusal checks, Windows/Linux native and2WindowsSDKclients. [Evidence](parity/reviews/spline-lifecycle-20261106.json). |
-| Current integrated scope | T04a.2 M3: captured area results. | Perimeter/units, X/Y, XM/YM, explicit Circ./AR/Round/Solidity and five-column Feret use existing settings/CSV/workspace. Current2657Pythonchecks pass/one optional hidden-OpenGL skip;321unchanged strict-transform checks retain prior evidence.675original Feret rows and51matching host pairs; native Windows/Linux and two installed Windows C++ clients pass. [Latest evidence](parity/reviews/feret-measurements-20261106.json), [shape](parity/reviews/shape-descriptors-20261106.json), [weighted](parity/reviews/center-of-mass-20261106.json), [centroid](parity/reviews/area-centroid-20261106.json), [perimeter](parity/reviews/analytic-perimeter-20261106.json). Parent M3 remains open. |
-| Active next | T04a.2 M3: Bounding rectangle measurement option. | Deliver BX/BY/Width/Height together through captured area/manager APIs, settings and both-host CSV/workspace; observe stats.roiX/Y/Width/Height calibration/clipping before reusing current Bounds. ELLIPSE columns, threshold/redirect and other variants retain M3 owners. |
+| Current integrated scope | T04a.2 M3: captured area results. | Perimeter/units, X/Y, XM/YM, explicit shape/Feret and BX/BY/Width/Height use existing settings/CSV/workspace. Current3634Pythonchecks pass/one optional OpenGL skip;321unchanged strict-transform checks retain prior evidence.960original rectangle rows and59matching host pairs; affected native Windows/Linux and changed installed Windows analysis client pass. [Latest evidence](parity/reviews/rectangle-measurements-20261106.json), [Feret](parity/reviews/feret-measurements-20261106.json), [shape](parity/reviews/shape-descriptors-20261106.json), [weighted](parity/reviews/center-of-mass-20261106.json), [centroid](parity/reviews/area-centroid-20261106.json), [perimeter](parity/reviews/analytic-perimeter-20261106.json). Parent M3 remains open. |
+| Active next | T04a.2 M3: ELLIPSE measurement option. | Deliver Major/Minor/Angle through captured area/manager APIs, settings and both-host CSV/workspace. Reuse225existing original ellipse rows and accepted borrowed-mask math; observe only missing inputs. Threshold/redirect and other variants retain M3 owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -977,51 +978,53 @@ can expose the failure; a scalar-only check would miss resampling differences.
 Any saved link time is an unmeasured opportunity to evaluate in the next task.
 
 **Current M3 area-result scope:** perimeter/units, geometric X/Y, weighted XM/YM,
-explicit Circ./AR/Round/Solidity and Feret/MinFeret/FeretAngle/FeretX/FeretY work
-through captured ordinary/fitted area and manager Measure, existing settings and
-both Windows hosts/CSV/workspace. Both option flags defaultfalse and preserve
-scalar behavior. Combined requests share the admitted hull; Feret-only ellipses
-use analytic axes without contour/moment work. Whole-image Feret lengths stay
-in pixels; OvalRoi endpoints use scaled image coordinates while generic hull
-endpoints stay raw. Explicit flags/columns expose those subtype units.
-[Latest receipt](parity/reviews/feret-measurements-20261106.json).675original rows,
-2657current Python passes/one optional OpenGL skip and321reused unchanged strict-
-transform passes have exact-ID evidence.51host pairs, Windows/Linux native
-controls and two Windows installed SDK clients pass. All6scratch groups are
-retired; three live-verified archives retain necessary reference/final captures.
-One _native build took43.174s; native endpoint review required3.182s narrow
-core/control work before links. No failed compile/test or late SDK configure
-retry. Complete budget stays unverified from214inaccessible subtrees; no whole
-editor, speed-superiority or release closure follows from these scoped checks.
+explicit shape/Feret and BX/BY/Width/Height work through captured ordinary/fitted
+area and manager Measure, existing settings and both Windows hosts/CSV/workspace.
+All added options defaultfalse. Processor rectangle semantics stay independent
+of tight Bounds, density population and Feret's whole-image pixel fallback.
+Full native affine rectangle origin/edges are retained without another mask or
+geometry buffer. [Latest receipt](parity/reviews/rectangle-measurements-20261106.json)
+has960original rows,3634current Python passes/one optional OpenGL skip and321
+reused unchanged strict-transform passes.59host pairs, affected Windows/Linux
+native controls and the installed Windows analysis client pass; unchanged
+selection-transform clients retain prior evidence. One `_native` build,
+no failed compile/test or corrective consumer reconfiguration was needed.
+Task cleanup and measured costs are recorded in the receipt. Complete budget
+remains unverified from214inaccessible subtrees. These scoped checks do not close
+M3, the full editor or supported-platform release gates.
 
-**Active next: T04a.2 M3 Bounding rectangle measurement option.**
+**Active next: T04a.2 M3 ELLIPSE measurement option.**
 
-1. Freeze Analyze.SetMeasurements RECT / Analyze.Measure BX/BY/Width/Height
-   for whole and ordinary/fitted area and manager rows. Inspect Analyzer's
-   stats.roiX/Y/Width/Height and statistics producer; observe constructor precision,
-   clipping, empty/outside/degenerate geometry, spacings/origins/inverted Y and
-   density exclusion. The current tight integer `bounds` is not proof of the
-   original calibrated rectangle. Freeze the native affine representation before
-   editing. Use the pinned original reference tree; do not rerun Feret evidence.
-2. Reuse captured selection/statistics/mask admission and the current centroid/
-   calibration/output owners. Add one defaultfalse explicit rectangle request
-   and four named readonly outputs/column choices together. Preserve existing
-   Bounds and scalar defaults; admit any necessary metadata geometry before reads.
-   No additional mask copy, provider read, registry/controller or dependency on
-   unfinished ELLIPSE/threshold/redirect variants. Cover grouped manager/global
-   bypass, precision and actual Measure control in both hosts.
-3. Put pinned numeric and negative/pre-read controls in the maintained native
-   analysis control before binding links. Batch core/header/binding/UI/probe
-   edits and compile once per affected platform in its active cache. Verify
-   installed origins/bytes and C++ clients, existing option composition, frozen
-   state/history, cancel/stale/read limits, CSV/workspace and both hosts. Retain
-   and retire terminal captures serially under the existing task record; update
-   this row/next successor after actual checks and waste review.
+1. Freeze Analyze.SetMeasurements ELLIPSE / Analyze.Measure Major/Minor/Angle
+   for whole and ordinary/fitted area and manager rows. Reuse225existing original
+   Major/Minor/Angle rows in shape-descriptors-imagej154r.json; observe only missing
+   origin/density/single/empty/constructor cases. Inspect ImageStatistics.fitEllipse
+   and EllipseFitter: one-percent square-pixel scale rule, angle/ties, empty and
+   one-pixel behavior, and ellipse-induced centroid updates must not be inferred
+   from Circ./AR/Round alone. Define native affine/units policy before editing.
+2. Reuse accepted moment_ellipse_axes and existing borrowed-mask statistics path;
+   expose the angle already computed by that owner. Add one defaultfalse request
+   and three named readonly outputs/column choices together. Skip hull/contour
+   work when only ELLIPSE is requested, share actual moment work when combined
+   with Shape descriptors, and preserve the strict Fit Ellipse selection command.
+   Share already-admitted processor frames/validation where needed: the current
+   rectangle helper repeats polygon validation already performed by its planner.
+   M3 owns consolidating that boundary with this required preparation change,
+   without weakening admission or a separate relink campaign.
+   No new mask/provider read, geometry edit/history, controller or registry.
+   Include existing RECT/Feret/centroid composition, grouped manager/global bypass,
+   precision and actual Measure controls in both hosts.
+3. Put proven axis/angle/degenerate and pre-read boundary controls in the maintained
+   native analysis control before module links. Batch related source changes;
+   compile once in each affected active cache, verify installed origins/bytes and
+   changed clients, both hosts/cancel/stale/frozen/history/CSV/workspace. Reuse
+   unchanged reference/numerical evidence; retire terminal groups after final
+   review and record measured costs/waste in the existing task record before
+   updating this row/next successor.
 
-Feret is scoped integrated with explicit subtype units and native affine metric;
-its675 original cases and current51host pairs do not close unsampled constructor,
-nonordinary/mask/path/line/point/replay/platform variants. They retain M3/T06/T14
-owners. ELLIPSE output columns and threshold/redirect remain open M3 requirements.
+BBox/Feret/shape increments do not close unsampled constructor, nonordinary/mask/
+path/line/point/replay/platform variants. M3/T06/T14 retain those owners;
+threshold/redirect and all other required M3 columns/options remain open.
 
 Other analytic/mask/native-path perimeters, wider scientific/saved-row/constructor
 variants, T07 external annotation projection precision, T09 operation-intent
