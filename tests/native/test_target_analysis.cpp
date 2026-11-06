@@ -4,6 +4,7 @@
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/selection_edit.hpp>
 #include <imagejxx/selection_interpolation.hpp>
+#include <imagejxx/selection_spline.hpp>
 #include <imagejxx/imagej_roi_projection.hpp>
 #include <imagejxx/roi_manager.hpp>
 #include <imagejxx/planar_annotation_command.hpp>
@@ -25,6 +26,25 @@ struct Source final:PlaneSource {
 };
 }
 int main(){
+  {
+    // Actual original Fit Spline command rows, shape1, Float constructor, 2/.5 um.
+    const SelectionPolygonType types[]={SelectionPolygonType::Polygon,SelectionPolygonType::Freehand,SelectionPolygonType::Traced,SelectionPolygonType::Freeline};
+    const double expected[]={52.65164241897764,41.50618389325088,0,20.89065609122347};
+    SpatialCalibration calibration;calibration.spacing={2,.5,1};
+    for(int i=0;i<4;++i) {
+      auto source=with_selection_polygon_type(Selection(i==0?"polygon":i==3?"polyline":"freehand",{{3,3},{13,3},{13,13}}),types[i]);
+      const auto fitted=fit_spline_selection(source,40,40);
+      check(selection_spline_fit(fitted).has_value());
+      check(std::abs(imagej_calibrated_polygon_length(fitted,calibration)-expected[i])<1e-6);
+      DocumentData data{Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},calibration)};
+      data.selection=fitted;auto document=std::make_shared<Document>(std::move(data));Application application;application.adopt(document);
+      TargetAnalysisOptions settings;settings.measurement=TargetMeasurementMode::Selection;
+      const auto command=resolve_target_analysis(application.resolve_target(),settings);
+      document->select(source);const auto result=execute_target_analysis(command);
+      check(result.planes.front().perimeter && std::abs(*result.planes.front().perimeter-expected[i])<1e-6);
+      check(command.record().at("version")==MetadataValue(std::int64_t(8)));
+    }
+  }
   {
     SpatialCalibration calibration;calibration.spacing={2,.5,1};
     const Selection path("polyline",{{3,3},{13,3},{13,13},{3,13}});

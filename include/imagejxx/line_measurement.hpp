@@ -11,7 +11,10 @@ struct Selection;
 // Working bound is 8192 + 16*vertex_count bytes, excluding borrowed input and RSS.
 // The spatial affine transforms segment vectors; traced correction uses axis
 // lengths. Origin is irrelevant. 1..65536 vertices (SelectionEditLimits default);
-// other ROI kinds are refused.
+// other ROI kinds are refused. Retained editor spline fits use original branch
+// precedence: traced/smoothed controls before sample segment sums. Their bound
+// is 8192 + 16*(controls + max(controls,samples)); constructor precision is then
+// determined by retained fitted state, not the ordinary-constructor argument.
 double imagej_calibrated_polygon_length(const Selection&,const SpatialCalibration&,
     bool integer_coordinates=false,std::size_t max_working_bytes=128ULL*1024*1024);
 

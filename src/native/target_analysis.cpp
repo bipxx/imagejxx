@@ -6,6 +6,7 @@
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/selection_interpolation.hpp>
 #include <imagejxx/selection_spline.hpp>
+#include "selection_spline_detail.hpp"
 #include <cmath>
 #include <algorithm>
 #include <map>
@@ -185,14 +186,15 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       }
       continue;
     }
-    if(selection && selection_polygon_type(*selection) && !selection->attributes.count(spline_fit_attribute)) {
+    if(selection && selection_polygon_type(*selection)) {
       selection->validate(shape.x,shape.y);
       // Keep the original aggregate 0.01-pixel path-sampling quota unchanged.
       // The added metric has a separate aggregate segment-work stage bound.
-      const auto metric_work=selection->kind=="polyline"?std::max<std::size_t>(1,selection->points.size()-1):selection->points.size();
+      const auto controls=detail::spline_control_count(*selection);
+      const auto metric_work=add(controls,selection->kind=="polyline"?std::max<std::size_t>(1,selection->points.size()-1):selection->points.size());
       polygon_work=add(polygon_work,metric_work);
       if(polygon_work>limits.max_measurement_work)invalid("Measurement batch exceeds its geometry work limit");
-      const auto bytes=add(8192,mul(selection->points.size(),16));
+      const auto bytes=add(8192,mul(add(controls,std::max(controls,selection->points.size())),16));
       within(add(add(4096,mul(count,1024)),bytes),limits.max_working_bytes);
       row.polygon_length=imagej_calibrated_polygon_length(*selection,target.calibration(),
           selection_polygon_integer_coordinates(*selection),bytes);
@@ -398,7 +400,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     const bool extended=!options.path.empty() || options.samples_per_segment!=0;
     if(extended){MetadataArray path;for(const auto& p:options.path)path.push_back(metadata_array({p[0],p[1]}));
       requested["path"]=metadata_array(std::move(path));requested["samples_per_segment"]=std::uint64_t(options.samples_per_segment);}
-    bool geometry=false,points=false,annotated=false,polygon_metrics=false;
+    bool geometry=false,points=false,annotated=false,polygon_metrics=false,fitted_metrics=false;
     if(measurement) {
       requested["measurement"]=options.measurement==TargetMeasurementMode::RoiManager?"roi_manager":"selection";
       MetadataArray rows;for(const auto& row:measurements.rows) {
@@ -414,6 +416,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
           const auto found=selection->attributes.find(polygon_type_attribute);
           item["polygon_type"]=found==selection->attributes.end()?selection->kind:std::get<std::string>(found->second);
           item["integer_coordinates"]=selection_polygon_integer_coordinates(*selection);
+          if(selection->attributes.count(spline_fit_attribute)){fitted_metrics=true;item["spline_fit"]=true;}
         }
         if(row.counter){annotated=true;item["counter"]=std::uint64_t(*row.counter);}
         if(row.counter_count)item["counter_count"]=std::uint64_t(*row.counter_count);
@@ -426,9 +429,9 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
         requested["geometry_policy"]="calibrated-angle-refresh/irregular-path-v1";}
       if(points)requested["point_policy"]="float32-relative/rounded-pixel/expanded-rows-v1";
       if(annotated)requested["annotation_policy"]="scientific-czt/counters-v1";
-      if(polygon_metrics)requested["polygon_metric_policy"]="constructor-length-v1/retained-empty-area";
+      if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},

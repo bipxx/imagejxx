@@ -3,6 +3,7 @@
 #include "selection_region_rotation.hpp"
 #include "selection_spline_detail.hpp"
 #include <imagejxx/selection_spline.hpp>
+#include <imagejxx/line_measurement.hpp>
 #include <algorithm>
 #include <cmath>
 #include <imagejxx/imagej_roi.hpp>
@@ -119,12 +120,12 @@ double processing_length(const std::vector<P>& points,unsigned type,bool integer
 } // namespace
 namespace {
 Selection sample_spline(const ImageJSpline &s,const ImageJRoiLimits &limits,
-    const SplineFitOptions& options,std::size_t resolved_points=0,std::size_t* used_points=nullptr) {
+    const SplineFitOptions& options,std::size_t resolved_points=0,std::size_t* used_points=nullptr,bool editor_controls=false) {
   const auto n = s.control_points.size();
   const bool closed = s.type == 0 || s.type == 7 || s.type == 8;
   check(closed || s.type == 4 || s.type == 5 || s.type == 9,
         "Unsupported ImageJ spline wire type");
-  check(n >= (closed ? 3 : 2) && (s.type != 9 || n == 3),
+  check(n >= (closed ? (editor_controls ? 1 : 3) : 2) && (s.type != 9 || n == 3),
         "Invalid ImageJ spline control count");
   check(n <= limits.max_vertices && n <= limits.max_bytes / 32 &&
             n <= limits.max_path_work / 32,
@@ -269,42 +270,54 @@ void spline_options(const SplineFitOptions& value) {
   check(!value.evaluation_points || value.magnification==1,"Explicit spline count and zoom-derived evaluation are mutually exclusive");
 }
 unsigned spline_type(const Selection& source) {
-  if(source.kind=="polygon")return 0;
-  if(source.kind=="polyline")return 5;
-  if(source.kind=="freehand")return 7;
-  throw std::invalid_argument("Fit Spline requires polygon,polyline or freehand controls");
+  const auto type=selection_polygon_type(source);
+  check(bool(type),"Fit Spline requires polygon,polyline or freehand controls");
+  switch(*type) {
+  case SelectionPolygonType::Polygon:return 0;
+  case SelectionPolygonType::Freehand:return 7;
+  case SelectionPolygonType::Traced:return 8;
+  case SelectionPolygonType::Polyline:return 5;
+  case SelectionPolygonType::Freeline:return 4;
+  }
+  throw std::invalid_argument("Unknown spline control subtype");
 }
 Selection trim_spline_controls(Selection controls,std::optional<double> original_length = {}) {
-  if(controls.kind!="freehand" || controls.points.size()<=3)return controls;
+  const auto type=selection_polygon_type(controls);
+  const bool open=type==SelectionPolygonType::Freeline;
+  if((type!=SelectionPolygonType::Freehand && type!=SelectionPolygonType::Traced && !open) || controls.points.size()<=3)return controls;
+  const bool integers=selection_polygon_integer_coordinates(controls);
   const auto n=controls.points.size();std::vector<P> relative,absolute;relative.reserve(n);absolute.reserve(n);
   P base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
   for(const auto& p:controls.points)for(int a=0;a<2;++a)base[a]=std::min(base[a],float(p[a]));
   for(const auto& p:controls.points){P q{float(p[0])-base[0],float(p[1])-base[1]};relative.push_back(q);absolute.push_back({q[0]+base[0],q[1]+base[1]});}
-  const double length=(original_length?*original_length:processing_length(relative,7,false));
+  const double length=original_length?*original_length:imagej_calibrated_polygon_length(controls,SpatialCalibration{},integers);
   const double exponent=length==0?5:std::exp(std::log(length/700)*.88),threshold=44-40.1/(1+exponent);
-  auto smoothed=absolute;
-  for(std::size_t i=1;i+1<n;++i)for(int a=0;a<2;++a){float total=0;for(int k=-1;k<=1;++k)total+=absolute[std::size_t(std::ptrdiff_t(i)+k)][a];smoothed[i][a]=total/3;}
+  const auto& input=integers?relative:absolute;
+  auto smoothed=input;
+  for(std::size_t i=1;i+1<n;++i)for(int a=0;a<2;++a){float total=0;for(int k=-1;k<=1;++k)total+=input[std::size_t(std::ptrdiff_t(i)+k)][a];smoothed[i][a]=integers?float(std::floor(double(total/3)+.5)):total/3;}
   auto blurred=smoothed;std::vector<float> curvature(n);
   for(std::size_t i=0;i<n;++i) {
     kernel_checkpoint_periodic();
     for(int a=0;a<2;++a){double sum=0;for(int k=-2;k<=2;++k)sum+=smoothed[std::size_t(std::clamp(std::ptrdiff_t(i)+k,std::ptrdiff_t(0),std::ptrdiff_t(n-1)))][a];blurred[i][a]=float(sum/5);}
     const float dx=smoothed[i][0]-blurred[i][0],dy=smoothed[i][1]-blurred[i][1];curvature[i]=float(std::sqrt(double(float(dx*dx+dy*dy))));
   }
-  std::vector<std::array<double,2>> knots;knots.reserve(n);knots.push_back({blurred[0][0],blurred[0][1]});
-  const float dx=blurred[1][0]-blurred[0][0],dy=blurred[1][1]-blurred[0][1];double accumulated=std::sqrt(double(float(dx*dx+dy*dy)));
-  for(std::size_t i=1;i+1<n;++i){kernel_checkpoint_periodic();accumulated+=std::hypot(double(blurred[i+1][0])-blurred[i][0],double(blurred[i+1][1])-blurred[i][1])+1+double(float(curvature[i]*2));if(accumulated>=threshold){knots.push_back({blurred[i+1][0],blurred[i+1][1]});accumulated=0;}}
-  check(knots.size()>=3,"Trimmed spline has fewer than three controls");controls.kind="polygon";controls.attributes.erase(polygon_type_attribute);controls.attributes.erase(polygon_integer_coordinates_attribute);controls.points=std::move(knots);return controls;
-}
-double spline_control_length(const Selection& controls) {
-  std::vector<P> relative;relative.reserve(controls.points.size());P base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
-  for(const auto& p:controls.points)for(int a=0;a<2;++a)base[a]=std::min(base[a],float(p[a]));
-  for(const auto& p:controls.points)relative.push_back({float(p[0])-base[0],float(p[1])-base[1]});
-  return processing_length(relative,spline_type(controls),false);
+  const auto& filtered=integers?smoothed:blurred;
+  auto absolute_point=[&](std::size_t i){return std::array<double,2>{double(filtered[i][0])+(integers?base[0]:0),double(filtered[i][1])+(integers?base[1]:0)};};
+  std::vector<std::array<double,2>> knots;knots.reserve(n);knots.push_back(absolute_point(0));
+  const float dx=filtered[1][0]-filtered[0][0],dy=filtered[1][1]-filtered[0][1];double accumulated=std::sqrt(double(float(dx*dx+dy*dy)));
+  for(std::size_t i=1;i+1<n;++i){kernel_checkpoint_periodic();accumulated+=std::hypot(double(filtered[i+1][0])-filtered[i][0],double(filtered[i+1][1])-filtered[i][1])+1+double(float(curvature[i]*2));if(accumulated>=threshold){knots.push_back(absolute_point(i+1));accumulated=0;}}
+  if(open && accumulated>0)knots.push_back(absolute_point(n-1));
+  controls.kind=open?"polyline":"polygon";controls.attributes.erase(polygon_type_attribute);controls.attributes.erase(polygon_integer_coordinates_attribute);controls.points=std::move(knots);
+  if(integers)controls=with_selection_polygon_coordinates(controls,true);
+  else if(controls.points.size()<3)controls=with_selection_polygon_type(controls,open?SelectionPolygonType::Polyline:SelectionPolygonType::Polygon);
+  return controls;
 }
 Selection spline_command_controls(const Selection& source,Selection controls,bool fitted) {
-  if(fitted && controls.kind=="freehand" && source.points.size()>3) {
-    const double original_length=spline_control_length(controls);
-    Selection curve("freehand",source.points,source.width);curve.attributes=std::move(controls.attributes);
+  const auto type=selection_polygon_type(controls);
+  const bool unsegmented=type==SelectionPolygonType::Freehand || type==SelectionPolygonType::Traced || type==SelectionPolygonType::Freeline;
+  if(fitted && unsegmented && source.points.size()>3) {
+    const double original_length=imagej_calibrated_polygon_length(source,SpatialCalibration{});
+    Selection curve(controls.kind,source.points,source.width);curve.attributes=std::move(controls.attributes);
     return trim_spline_controls(std::move(curve),original_length);
   }
   return trim_spline_controls(std::move(controls));
@@ -327,20 +340,20 @@ SplinePlan spline_plan(const Selection& source,int w,int h,const SplineFitOption
   ExecutionScope planning(control);
   return detail::without_execution_callbacks([&] {
     auto retained=selection_spline_fit(source);Selection controls=retained?retained->controls:source;
-    (void)spline_type(controls);const auto n=preprocess && retained && controls.kind=="freehand"?std::max(controls.points.size(),source.points.size()):controls.points.size();
+    (void)spline_type(controls);const auto n=preprocess && retained?std::max(controls.points.size(),source.points.size()):controls.points.size();
     check(n<=65536 && n<=limits.max_vertices,"Spline control limit exceeded");
     check(bytes<=limits.max_working_bytes && limits.max_working_bytes-bytes>=16384 && n<=(limits.max_working_bytes-bytes-16384)/1024,"Spline control workspace limit");
     bytes+=16384+n*1024;
     ImageJRoiLimits roi;roi.max_vertices=std::min(limits.max_vertices,std::size_t(65536));roi.max_bytes=std::min(roi.max_bytes,n*32+(limits.max_working_bytes-bytes)/8);
     if(preprocess)controls=spline_command_controls(source,std::move(controls),bool(retained));
     std::size_t resolved=0;
-    if(preprocess && retained && retained->controls.kind!="freehand" && !spline_traced_polygon(retained->controls) && !options.evaluation_points) {
+    if(preprocess && retained && (spline_type(retained->controls)==0 || spline_type(retained->controls)==5) && !spline_traced_polygon(retained->controls) && !options.evaluation_points) {
       const auto length=spline_curve_length(source);
       const double requested=options.mode==SplineFitMode::Straighten?std::floor(length*2)+1:std::max(100.,std::floor(std::floor(length/2)*std::min(1.,options.magnification)));
       check(std::isfinite(requested) && requested>=2 && requested<=roi.max_vertices,"Spline captured evaluation limit");resolved=std::size_t(requested);
     }
     std::size_t sampling_points=0;
-    const auto sampled=sample_spline({controls.points,static_cast<unsigned char>(spline_type(controls)),false},roi,options,resolved,&sampling_points);
+    const auto sampled=sample_spline({controls.points,static_cast<unsigned char>(spline_type(controls)),selection_polygon_integer_coordinates(controls)},roi,options,resolved,&sampling_points,true);
     check(sampled.points.size()<=(limits.max_working_bytes-bytes)/256,"Spline sample workspace limit");
     const std::size_t peak_samples=std::max(sampled.points.size(),sampling_points);
     check(peak_samples<=(limits.max_working_bytes-bytes)/256,"Spline preliminary workspace limit");
@@ -365,7 +378,7 @@ std::optional<SplineView> inspect_spline(const Selection& source) {
   check(*kind=="polygon" || *kind=="polyline" || *kind=="freehand","Invalid spline control kind");
   SplineFitOptions options;check(*mode=="fit" || *mode=="straighten","Unknown spline state mode");options.mode=*mode=="fit"?SplineFitMode::Fit:SplineFitMode::Straighten;options.evaluation_points=spline_integer(record.at("evaluation_points"));options.magnification=spline_number(record.at("magnification"));spline_options(options);
   const auto sampling_points=spline_integer(record.at("sampling_points"));check(sampling_points>=2 && sampling_points<=65536,"Spline resolved evaluation count");
-  const auto& points=spline_container<MetadataArray>(record.at("controls"));check(points.size()>=(*kind=="polyline"?2u:3u) && points.size()<=65536,"Invalid spline control count");
+  const auto& points=spline_container<MetadataArray>(record.at("controls"));check(points.size()>=(*kind=="polyline"?2u:1u) && points.size()<=65536,"Invalid spline control count");
   for(const auto& value:points){const auto& p=spline_container<MetadataArray>(value);check(p.size()==2,"Invalid spline control coordinate");check(std::abs(spline_number(p[0]))<=1e9 && std::abs(spline_number(p[1]))<=1e9,"Spline control coordinate range");}
   check(source.kind==(*kind=="polyline"?"polyline":"polygon") && source.points.size()>=2 && source.points.size()<=65536,"Spline sample kind/count mismatch");
   if(options.mode==SplineFitMode::Fit)check(source.points.size()==sampling_points && (!options.evaluation_points || sampling_points==options.evaluation_points),"Spline sample count differs from options/context");
@@ -374,6 +387,13 @@ std::optional<SplineView> inspect_spline(const Selection& source) {
 }
 std::size_t detail::spline_control_count(const Selection& source) {
   const auto view=inspect_spline(source);return view?view->controls->size():0;
+}
+Selection detail::spline_length_controls(const Selection& source) {
+  const auto view=inspect_spline(source);check(bool(view),"Selection has no retained spline fit");
+  Selection controls(*view->kind);controls.points.reserve(view->controls->size());
+  for(const auto& value:*view->controls){kernel_checkpoint_periodic();const auto& p=spline_container<MetadataArray>(value);controls.points.push_back({spline_number(p[0]),spline_number(p[1])});}
+  if(const auto type=source.attributes.find(polygon_type_attribute);type!=source.attributes.end())controls.attributes[polygon_type_attribute]=type->second;
+  (void)selection_polygon_type(controls);return controls;
 }
 std::optional<SelectionSplineFit> selection_spline_fit(const Selection& source) {
   const auto view=inspect_spline(source);if(!view)return {};
@@ -384,7 +404,7 @@ std::optional<SelectionSplineFit> selection_spline_fit(const Selection& source) 
 void validate_selection_spline_fit(const Selection& source) {
   const auto state=selection_spline_fit(source);if(!state)return;
   detail::without_execution_callbacks([&] {
-    const auto expected=sample_spline({state->controls.points,static_cast<unsigned char>(spline_type(state->controls)),false},{},state->options,state->sampling_points);
+    const auto expected=sample_spline({state->controls.points,static_cast<unsigned char>(spline_type(state->controls)),false},{},state->options,state->sampling_points,nullptr,true);
     check(source.kind==expected.kind && source.points.size()==expected.points.size(),"Spline samples differ from retained controls/options");
     for(std::size_t i=0;i<source.points.size();++i)for(int a=0;a<2;++a){const float v=float(expected.points[i][a]);const double tolerance=std::max(1e-6,2*std::abs(double(std::nextafter(v,std::numeric_limits<float>::infinity()))-v));check(std::abs(source.points[i][a]-expected.points[i][a])<=tolerance,"Spline samples differ from retained controls/options");}
     return 0;
@@ -398,9 +418,9 @@ Selection fit_spline_impl(const Selection& source,int w,int h,const SplineFitOpt
   const auto frozen_limits=limits;const auto frozen_options=options;const auto frozen_control=control;
   auto plan=spline_plan(source,w,h,frozen_options,frozen_limits,frozen_control,preprocess);
   ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
-  auto result=sample_spline({plan.controls.points,static_cast<unsigned char>(spline_type(plan.controls)),false},plan.roi,plan.options,plan.sampling_points);
+  auto result=sample_spline({plan.controls.points,static_cast<unsigned char>(spline_type(plan.controls)),selection_polygon_integer_coordinates(plan.controls)},plan.roi,plan.options,plan.sampling_points,nullptr,true);
+  plan.controls.attributes.erase(polygon_integer_coordinates_attribute); // Fitting enables Float32 controls.
   result.width=plan.controls.width;result.attributes=plan.controls.attributes;
-  result.attributes.erase(polygon_integer_coordinates_attribute); // New sampled geometry uses Float32 controls.
   result.attributes[spline_fit_attribute]=spline_record(plan.controls,plan.options,plan.sampling_points);
   result.validate(w,h);validate_selection_spline_fit(result);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }

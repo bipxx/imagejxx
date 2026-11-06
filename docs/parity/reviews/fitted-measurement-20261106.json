@@ -1,0 +1,279 @@
+{
+  "schema": "imagejxx.scoped-workflow-review.001",
+  "task": "T04a.2 M3/T06 initial fitted-source Measure",
+  "base_commit": "210edcb7b15653cf159091e947ee625ca4f53a14",
+  "state": {
+    "implemented": true,
+    "scoped_verified": true,
+    "both_Windows_hosts_integrated": true,
+    "scoped_increment_closed": true,
+    "parent_M3_T06_closed": false,
+    "family_closed": false,
+    "release_ready": false,
+    "full_editor_closed": false
+  },
+  "contract": {
+    "processing": "Existing C++ spline solver and polygon metric; subtype/constructor command preprocessing, editor-only legal short controls, minimal retained-control metric scratch. No new engine/controller/state version. Lower-level ROI wire short-control refusal preserved.",
+    "metric": "Original traced controls, then Freehand/Freeline smoothing where applicable, otherwise fitted sample segments, using Float32 bases relative to the spline bounds. Finite/Float32-range validation precedes sample narrowing.",
+    "working_bytes": "8192 +16*(control_count +max(control_count,sample_count)), excluding borrowed input, output copies and process RSS; captured planning separately bounds aggregate metric work before provider acquisition.",
+    "captured": "Optional Perim./Length frozen before reads; fitted provenance8, ordinary7 and earlier unaffected contracts retained. No public signature/layout change in this increment.",
+    "UI": "Actual Fit dialog/Analyze Measure, six-decimal CSV, workspace reopen, one provider acquisition per group, source/history preservation, worker cancellation and stale-fit refusal in both Windows hosts."
+  },
+  "references": {
+    "fixture": {
+      "path": "tests/fixtures/fitted-measurements-imagej154r.json",
+      "bytes": 1032120,
+      "sha256": "a0d40927f7d80f438487badb63446651dab6ac13e04d62467e4858ebabe8555e"
+    },
+    "observer": {
+      "path": "tests/reference/ObserveFittedMeasurements.java",
+      "bytes": 4125,
+      "sha256": "06f4c5b831542403ea065d3ade968f5270ad3474cb31a83115e8f1b82216add3"
+    },
+    "original_rows": 200,
+    "qualified_actual_command_rows": 100,
+    "separate_explicit_count_rows": 100,
+    "limitation": "Explicit fitSpline(7) observations use a different original API and do not establish equivalence to public editor preprocessing. Refit/straighten/remove and wider constructor/scientific/saved-row variants remain with M3/T06.",
+    "tolerances": "Controls/samples abs1e-5 rel1e-7; scalar metrics abs1e-7 rel1e-7. Existing fixtures and tolerances unchanged."
+  },
+  "verification": {
+    "unique_installed_Windows_Python_IDs_ultimately_passed": 2785,
+    "new_fitted_physical_flows": 16,
+    "total_subtype_physical_flows": 30,
+    "paired_host_readers": 15,
+    "paired_rows_columns_selections_CSV_identical": true,
+    "installed_Windows_SDK_clients": [
+      "target_analysis_api",
+      "selection_transform_api"
+    ],
+    "native_platforms": "Affected analysis/geometry/ROI/session controls on Windows and Linux; Linux installed SDK/Python UI/macOS release not claimed.",
+    "recovered_failures": [
+      "8 short Float trimmed-control cases lacked explicit type state; fixed without relaxing ordinary selection guard.",
+      "1 UI probe input omitted the explicit two-point polygon tag; fixture corrected, only failed ID reran.",
+      "3 targeted malformed sample assertions exposed missing finite/range validation in a control-first branch; fixed before narrowing.",
+      "Nested Linux retirement016 failed at parse time before any deletion; corrected code syntax/transport and re-observed ownership gates in017, without rerunning product verification."
+    ],
+    "unavailable": "Retired G016 and17gesture references remain unavailable and were not recreated, repinned, selected or counted passing.",
+    "evidence": [
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/checks-summary015.json",
+        "bytes": 591,
+        "sha256": "0b0aa19b34dda96ec95025171206278c770074d4e4064858ee567ab9517c8d66"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/both-host-readers013.json",
+        "bytes": 6339,
+        "sha256": "896c8781ee65ad08dceccb107b60cebfcd1e78d11045852272977d55b1ad1789"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/installed-identities014.json",
+        "bytes": 3391,
+        "sha256": "7281c0ea61df41de4001d0f72df07ac8d1497c150121c692df4392d5a09cce9a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/python006.xml",
+        "bytes": 29949,
+        "sha256": "ec9133daf8fcb3b0ed1492b97068df235d3fa8246d9e947a3a5977a4db6486a6"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/python008.xml",
+        "bytes": 374396,
+        "sha256": "4e217c69b1e97681d49e909fbf16ec3e46f6428938bd1bf7d2c5ee35f589b9f1"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/python010.xml",
+        "bytes": 386,
+        "sha256": "87c51b6a66be57f54373aff9f08a04ccbe6934b52eef779fad6ae6ea66aad3b9"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/malformed011.xml",
+        "bytes": 1714,
+        "sha256": "3bc40c61053e38c111ae71a33d5dcd380469d2c87d45e4933771e25f734c5ecd"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/python014.xml",
+        "bytes": 18657,
+        "sha256": "0de767244f0432ad1aea7f92074afb611321036af9388b39c511ed7c3aa53157"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/sdk-target_analysis_api014.process.json",
+        "bytes": 1920,
+        "sha256": "5a189a2be20c9a3d80ecd219146ef08051c2bb4522c97d5bc05d3ee87a5eb44f"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/sdk-selection_transform_api014.process.json",
+        "bytes": 1926,
+        "sha256": "9d4adf540d010001927d0849a5361f11d646cf562a32eb570dc76614515b15c1"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/native-analysis006.process.json",
+        "bytes": 1833,
+        "sha256": "bbe920a5714a7009cf9ac7737436a391338995b366191101db960ecba551c4a8"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/native-ui010.process.json",
+        "bytes": 1962,
+        "sha256": "6ecfa6d433072a0879267f2bf35a5807681978cc151a9587dd1ca6c9a02a55f6"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/native-session010.process.json",
+        "bytes": 1954,
+        "sha256": "958a739da3c293c00b557b2dad4f44ef24de3d9c663fbd54f7661379af545833"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/native-imagejxx_selection_transform_tests010.process.json",
+        "bytes": 1839,
+        "sha256": "228710cf67343b81f608324e3bafd26bac14a1fa05bebbfdcc758555e63489fd"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/native-imagejxx_selection_edit_tests010.process.json",
+        "bytes": 1831,
+        "sha256": "7eef4f66cabef74407ea26a7733de68509723ecb7456a27cec4ffc3b8627900f"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/native-imagejxx_selection_creation_tests010.process.json",
+        "bytes": 1838,
+        "sha256": "ab87526129aab34886233745cda8fc0c1874ad6323c9d13c4a3f2b2415d80e06"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/native-imagejxx_imagej_roi_tests010.process.json",
+        "bytes": 1821,
+        "sha256": "aedf47b9403dcec5965bcf4a3039f8acec7302c50153b6b783fce776bad7eb4a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/linux-owner008.process.json",
+        "bytes": 3875,
+        "sha256": "ec0bd084a3739df1f3015236092ce403a75f3ec6c46d30d9e5d284958e66eade"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/linux-owner012.process.json",
+        "bytes": 3615,
+        "sha256": "26e80a09052d98e1fa60e08d3e068e65c4f479c9d2064de049dcdf34b4d80d37"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/windows-retirement016.json",
+        "bytes": 3241,
+        "sha256": "7f79765ec46c19ffa92d65b97260851b5cbfe85158cef50afe8aa9dca5987d02"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/linux-retirement016.json",
+        "bytes": 331,
+        "sha256": "404fa7e4a809d8485802706cf26d04edfe08397a1b28e437a9ecd04f5ba9a707"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/linux-retirement-inner016.process.json",
+        "bytes": 3915,
+        "sha256": "e952fd0b6a96ca4d3d64a8016d307ac84ca215d707ff020046982c1996d2b465"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/linux-retirement-inner017.process.json",
+        "bytes": 3924,
+        "sha256": "35093d9800ac17a0ca91f955006d9874057d11ccb690174d6e84dbecbb7fa6af"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/linux-retirement-owner017.process.json",
+        "bytes": 5726,
+        "sha256": "940144c0902c648278d641c6a42e91a09be3f37a394b48b23ee72849126e21f2"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/build-cost017.json",
+        "bytes": 4383,
+        "sha256": "c84430b5dca4104082b659117af9af93840f3f176c560fb2782139307f6d611c"
+      }
+    ]
+  },
+  "cleanup": {
+    "Windows_scratch_absent": true,
+    "Linux_hostlocal_session_absent": true,
+    "losslessly_verified_capture_groups": 5,
+    "SDK_consumer_retired_bytes": 4989922,
+    "SDK_and_Linux_session_retention": "Identity hashes only; no cache, environment or dependency SDK archive.",
+    "warm_cache_runtime_installed_products_preserved": true,
+    "diagnostics_preserved": true
+  },
+  "storage": {
+    "entry_known_bytes": 7406663786,
+    "peak_checkpoint_known_bytes": 7415560108,
+    "final_before_prose_known_bytes": 7409649324,
+    "known_peak_growth_bytes": 8896322,
+    "known_final_growth_bytes": 2985538,
+    "allocation_bound_bytes": 134217728,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_bytes": 244072771584
+  },
+  "waste": {
+    "observed": "Late branch review required an additional core/final-link batch.25 Windows build attempts totaled186.981s,0 compiler failures; _native links across3passes totaled100.809s. Linux2builds totaled32.197s. Command sums are not wall-clock/speed claims.",
+    "fix": "Validate each new branch before narrowing/early return, including control-first paths. Qualify negative public consumers before first expensive final links. Explicit short-control state/fixture tags corrected.",
+    "reuse": "157 initial green/2624 later green checks, valid paired UI and Linux geometry/session evidence retained; no unchanged full campaign rerun, new runner, registry, framework or cache/runtime generation.",
+    "deferred": "T02 repeated fitted-state reconstruction needs a measured consumer. M3/T06 owns fitted lifecycle/direct-count variants; T07 owns wider/short-fit external projection; T09 macros and T14 supported-platform release remain."
+  },
+  "task_record": {
+    "path": ".tmp/manual-workflow-verification/fitted-measurement-20261106/entry.json",
+    "bytes": 38416,
+    "sha256": "3a3641a1a58ca57ff7de44486f65998910b89a874f4863bff2f640874ccba1bd"
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/line_measurement.hpp",
+      "bytes": 4102,
+      "sha256": "88cf25dc99dc78ff90946aea27083b544e723c3d427ef31ab8067d88481e44be"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 97069,
+      "sha256": "2c7549e2954073b5564cb8c19fd0c1253d28513239c1c65e79426f7860d4dd3f"
+    },
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 32846,
+      "sha256": "fdcdad9763c924e36ba744a0a5b753742e3404d3188b7c6cd7b4007f982e857f"
+    },
+    {
+      "path": "src/native/imagej_spline.cpp",
+      "bytes": 28301,
+      "sha256": "d169fc85e0b702a146f5922f0310addf9d659d615a5aabeeef4f077ec3ff48d1"
+    },
+    {
+      "path": "src/native/selection_spline_detail.hpp",
+      "bytes": 757,
+      "sha256": "b89588b71a20d9e028c4782ac39afceb10b5eac9a352b367bf38b66cc16a65fc"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 58371,
+      "sha256": "8932993c11e479651cb666bc9eebc9577a684b2aeab8739d03aceb55a99246ff"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 36691,
+      "sha256": "636c54f42d11146d1ef0bb8798422f6932341d89516f4fe7c0280a02c1345ce0"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 37282,
+      "sha256": "a932965374dd9102277e158015aa9638204dd3dbb0c6fba6d6562ee0fcb8485b"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 17354,
+      "sha256": "fff3367f5f60c76a02cc2fb5aaaf92af80ddb9bdbef31e5216802a8596ecf7df"
+    },
+    {
+      "path": "tests/python/test_fitted_measurements.py",
+      "bytes": 5842,
+      "sha256": "46104cabb6e248db6d8b3883fd437e4d931e53e866b790ce0e08ac4d7d78859b"
+    },
+    {
+      "path": "tests/reference/ObserveFittedMeasurements.java",
+      "bytes": 4125,
+      "sha256": "06f4c5b831542403ea065d3ade968f5270ad3474cb31a83115e8f1b82216add3"
+    },
+    {
+      "path": "tests/fixtures/fitted-measurements-imagej154r.json",
+      "bytes": 1032120,
+      "sha256": "a0d40927f7d80f438487badb63446651dab6ac13e04d62467e4858ebabe8555e"
+    }
+  ],
+  "next_ready": "T04a.2 M3/T06 fitted-source lifecycle and command variants through existing fit/state/analysis owners."
+}

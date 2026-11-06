@@ -22,7 +22,10 @@ andboth-host evidence. T15 remembered Interpolate options now have scoped
 native settings and both-host integration; T04a.2 M3/T06 scientific subtype
 lengths/perimeters has scoped constructor-state/captured Measure and both-host
 CSV/workspace integration. Its SDK consumer is retired after final review.
-Next: fitted-source measurement qualification through existing fit/analysis owners. This card does not authorize new agents.
+Initial Fit Spline -> Measure now has scoped subtype/constructor/short-control
+and both-host integration; its scratch and SDK consumer are retired. Next:
+fitted-source lifecycle/refit/straighten/remove and explicit-count qualification
+through existing fit/analysis owners. This card does not authorize new agents.
 Analysis residuals
 do not impose a blanket prerequisite. Inspect current worktree and
 actual process handles first. Never restart a job based only on an observation

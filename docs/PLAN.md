@@ -21,8 +21,9 @@ Repeated interpolation, subtype/zoom and degenerate geometry now have scoped
 API/both-host evidence. Remembered Interpolate options now have scoped native
 settings and both-Windows-host integration. Subtype-sensitive current-plane
 Measure now preserves constructor precision and publishes calibrated Length/
-Perim. with both-host CSV/workspace checks. Next: fitted-source measurement
-qualification within T04a.2 M3/T06.
+Perim. with both-host CSV/workspace checks. Initial Fit Spline -> Measure now
+has scoped subtype/constructor/short-control and both-host integration. Next:
+fitted-source lifecycle and command variants within T04a.2 M3/T06.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -143,7 +144,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T06/G018: repeated-source/type, zoom and degenerate interpolation. |115 comparable actual two-command rows across129observations,including149/150/151sample boundaries;14rows retain explicit native compound/empty policies.1923distinct affected Python IDs ultimately pass;8physical repeat/edit/zoom cases,Windows/Linux native/session andWindows SDK pass. Typed state persists through edits,V5 andV4 rebind/ROI interchange. [Receipt](parity/reviews/interpolation-types-20261105.json). Scientific subtype lengths/perimeters andother parent residuals remain open. |
 | Delivered scoped workflow | T15: remembered Interpolate options. | Three native Settings keys drive both dialogs and omitted action values. Accepted options save before capture/launch; Cancel/stale/invalid/point no-op preserve preferences.613 distinct Python IDs pass; Windows/Linux native settings/preferences and both Windows UI hosts pass. [Receipt](parity/reviews/interpolation-settings-20261105.json). |
 | Delivered scoped workflow | T04a.2 M3/T06: current-plane subtype-sensitive Measure. | Constructor precision persists through bare ROI/session/rebind/editing; captured Length/Perim., result columns/CSV/workspace and cancellation work in both Windows hosts.3662distinct Python IDs pass,180captured reference rows,14physical flows; Windows/Linux native andtwoWindowsSDKclients pass. [Evidence](parity/reviews/subtype-measurement-20261106.json). |
-| Active next | T04a.2 M3/T06: fitted-source measurement qualification. | Observe original Fit Spline -> Measure for retained controls/samples/type/precision before changing existing fit/analysis owners; reuse current perimeter field and frozen row publication. Other scientific/shape variants retain their owners. |
+| Delivered scoped workflow | T04a.2 M3/T06: initial fitted-source Measure. | All100 actual-command reference rows now match controls/samples/metrics; subtype/constructor preprocessing and legal short editor controls work.2785distinct Python IDs ultimately pass,16new fit/Measure physical flows across both Windows hosts, Windows/Linux native and2WindowsSDKclients pass. [Evidence](parity/reviews/fitted-measurement-20261106.json). |
+| Active next | T04a.2 M3/T06: fitted-source lifecycle and command variants. | Qualify new subtype/constructor refit, straighten/remove and explicit-count consumers using existing retained fit/state/analysis owners. Reuse initial-fit evidence; no new engine/controller. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -939,24 +941,42 @@ peak growth stayed below128MiB.214 unknown subtrees keep the full budget unverif
 Warm caches/runtime/SDKs remain. Do not recreate the retired SDK consumer merely
 to repeat this green checkpoint.
 
-**Active next: T04a.2 M3/T06 fitted-source measurement qualification.**
+**Scoped delivered: initial Fit Spline -> Measure.**
 
-1. Initial constructor -> Fit Spline -> Measure qualification now has
-   [200 original observations](../tests/fixtures/fitted-measurements-imagej154r.json)
-   from the pinned ImageJ source. Of100 actual-command cases, the installed API
-   refuses28 and matches controls/samples in48; all72 successful captured rows
-   lack Perim. These are observed remaining gaps, not passing product tests.
-2. Correct existing fit preprocessing for subtype/constructor precision and
-   observed legal short control sets. Preserve the existing spline solver and
-   old fixtures. Then extend the existing metric using traced controls first,
-   smoothed Freehand/Freeline controls where applicable, otherwise spline sample
-   segments. Reuse optional perimeter, captured frozen rows, settings/CSV/session
-   and existing fit state; add no engine/controller. Check relative Float32 origin
-   rounding and affected state/edit assertions before the coherent build.
-3. Batch affected numerical/state/binding/UI changes once, then run meaningful
-   native/Python/installed-client and both-host checks. Reuse the qualified
-   ordinary-source matrix; keep necessary consumers through final review,
-   retire terminal scratch and review waste before its successor.
+[Evidence](parity/reviews/fitted-measurement-20261106.json) now qualifies all100
+actual-command rows from the200 original observations. Subtype/constructor-aware
+preprocessing and legal short editor control sets preserve controls/samples;
+traced and smoothed control metrics take precedence over spline sample segments.
+The existing captured row plan publishes calibrated Length/Perim., with fitted
+provenance8 and unchanged ordinary contracts.2785 distinct installed Python IDs
+ultimately pass;16 new fitted physical flows across both Windows hosts preserve
+CSV/workspace, history, cancellation and stale-fit refusal. Windows/Linux native
+and two Windows installed SDK clients pass. The separate100 explicit-count
+observations are reference evidence, not public command coverage.
+
+All task scratch and the SDK consumer are retired after review. Captures and
+failure diagnostics are retained with verified hashes. Known storage grew from
+7,406,663,786 to a measured checkpoint7,415,560,108 B, then7,409,649,324 B after
+retirement before prose;214 unknown subtrees keep full budget unverified.
+A final API review caught missing finite/range checks in a new control-first
+branch; three targeted red checks then passed after the guard fix. Reuse green
+campaigns for unchanged inputs. Inspect each new consumer branch before narrowing
+or early return before the next first build. A nested cleanup quoting failure
+occurred before execution; syntax-checked transport corrected only that action.
+
+**Active next: T04a.2 M3/T06 fitted-source lifecycle and command variants.**
+
+1. Inspect actual consumers and observe subtype/constructor refit, straighten,
+   remove and explicit-count compositions. Distinguish editor preprocessing from
+   the original direct fitSpline(count) method; do not equate their outputs.
+2. Freeze actual missing state/numerics before editing. Reuse retained v1 fit
+   state, existing spline solver and captured metrics/results. Check legal short
+   controls, Float32 bases, cancellation and working bounds in all new branches;
+   include malformed inputs before the first expensive links.
+3. Batch required changes, select affected lifecycle/installed-client/both-host
+   checks, and reuse the qualified initial-fit matrix. Preserve old fixtures,
+   retain consumers through final review, retire scratch and review waste before
+   advancing. No new measurement engine, registry or qualification framework.
 
 Analytic/mask/native-path perimeters, wider scientific/saved-row/constructor
 variants, T07 external annotation projection precision, T09 operation-intent

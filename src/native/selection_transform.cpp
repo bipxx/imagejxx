@@ -49,7 +49,9 @@ std::optional<SelectionPolygonType> detail::polygon_type(const std::string& kind
   if(!text)throw std::invalid_argument("Polygon subtype requires a string");
   for(auto type:{SelectionPolygonType::Polygon,SelectionPolygonType::Freehand,SelectionPolygonType::Traced,SelectionPolygonType::Polyline,SelectionPolygonType::Freeline})
     if(*text==polygon_type_name(type)) {
-      if(kind!=polygon_native_kind(type))throw std::invalid_argument("Polygon subtype differs from native geometry");
+      const bool fitted_area=kind=="polygon" && attributes.count(spline_fit_attribute) &&
+          (type==SelectionPolygonType::Freehand || type==SelectionPolygonType::Traced);
+      if(kind!=polygon_native_kind(type) && !fitted_area)throw std::invalid_argument("Polygon subtype differs from native geometry");
       return type;
     }
   throw std::invalid_argument("Unknown polygon subtype");
