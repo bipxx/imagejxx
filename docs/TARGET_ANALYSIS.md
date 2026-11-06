@@ -895,3 +895,41 @@ second job/controller. Lookups are decoded once per preparation rather than per
 plane. Existing caches/runtimes/SDKs and profile carriers are reused; disposable
 consumer build trees are retired after their identities and necessary
 diagnostics are retained. [PLAN](PLAN.md) owns the next tasks.
+
+## Numeric presentation and copied/exported results (M3; scoped)
+
+`measurement_scientific` is a Boolean shared Settings key, default `false`.
+Both ImGui hosts expose it as **Scientific notation**. With it disabled,
+`measurement_precision` keeps its existing default -1 and range -1..15:
+-1 emits the previous full-precision JSON spelling; nonnegative values retain
+fixed decimal formatting for floating cells. Existing saved preferences are
+compatible. Raw results/provenance remain unchanged.
+
+With scientific notation enabled, precision -1 uses three decimal places;
+1..9 use that many fractional mantissa digits; values above9 use9. Precision0
+follows the original zero-place policy: ordinary HALF_UP rounding except nonzero
+magnitudes below1 or above999999999999, which use three-place scientific output.
+Exponents use uppercase E without a plus sign or redundant leading zeroes.
+The original Float.MAX_VALUE special text is `3.4e38`; signed zero and observed
+subnormal decimal stopping intervals are preserved. The scientific path uses a
+locale-independent decimal separator. Native integer IDs/counts/indices retain
+exact literals, including 64-bit limits. Nonfinite measurement strings remain
+`nan`, `inf`, `-inf`; other strings, booleans/null/compound JSON retain their prior
+handling. A single-null CSV row remains an empty unquoted line. These native JSON
+kind rules do not implement the full Java ResultsTable AUTO/per-column state.
+
+The Results toolbar's **Copy CSV** and **Save CSV** share one serializer, and
+both use the same numeric formatter as the table. Only selected columns are
+copied/exported, with existing CSV escaping and ordering. Formatting does not
+reread image pixels, mutate numerical values/history or invalidate an unchanged
+running measurement; it is applied at render/copy/export time. Saved preferences
+and workspace rows preserve this behavior on reopen. C++ Settings and Python
+Settings/Editor updates use the shared schema; no processing result ABI changes.
+
+[Scoped evidence](parity/reviews/result-format-20261106.json) records 1,950 original
+format observations, actual input/copy callback/current/manager/redirect workflows
+in both Windows hosts, affected installed Python and native controls, corrections
+and safe scratch retirement. The tests capture Copy CSV through an owned ImGui
+clipboard sink and restore the backend; OS clipboard interoperability and wider
+platform/accessibility/keyboard qualification remain open, alongside labels and
+AUTO/per-column formatting. Full M3/family/release completion is not asserted.

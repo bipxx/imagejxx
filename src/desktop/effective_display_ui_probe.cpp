@@ -1345,4 +1345,98 @@ Json redirectMeasurementUiCase(Window& w,const std::string& context,const std::s
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",controls}});throw;}
 }
 
+Json resultFormattingUiCase(Window& w,const std::string& context,const std::string& fresh_directory,const std::string& reference_path) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
+  require(!fs::exists(dir) && w.documents().empty(),"Fresh result-format fixture required");fs::create_directories(dir);
+  Json report={{"context",context},{"events",Json::array()},{"controls",Json::array()}};Json last;
+  std::atomic<bool> entered=false,release=false;
+  try {
+    require(fs::file_size(fs::u8path(reference_path))<2*1024*1024,"Formatting reference bound");
+    std::ifstream input(fs::u8path(reference_path));Json reference;input>>reference;
+    require(reference.at("cases").size()==1950,"Original formatting case count changed");
+    auto bytes=[&](const fs::path& path){const auto b=readBytes(path.u8string());return std::string(b.begin(),b.end());};
+    for(int precision=0;precision<=9;++precision) {
+      w.updateSettings({{"measurement_scientific",true},{"measurement_precision",precision},{"measurements",Json::array({"value"})}},false);
+      w.results=Json::array();std::string expected="\"value\"\n";
+      for(const auto& item:reference.at("cases"))if(item.at("precision")==precision) {
+        const auto bits=std::stoull(item.at("bits").get<std::string>(),nullptr,16);double value;std::memcpy(&value,&bits,sizeof(value));
+        Json cell;std::string text;
+        if(std::isfinite(value)){cell=value;text=item.at("scientific").get<std::string>();}
+        else {text=std::isnan(value)?"nan":value>0?"inf":"-inf";cell=text;}
+        w.results.push_back({{"value",cell}});expected+="\""+text+"\"\n";
+      }
+      const auto rows=w.results;const auto file=dir/("original-"+std::to_string(precision)+".csv");
+      w.action("save_results",{{"path",file.u8string()}});
+      require(bytes(file)==expected,"Original scientific formatting differs");require(w.results==rows,"Formatting changed raw rows");
+    }
+    report["original_cases_passed"]=1950;w.clearResults();
+    DatasetReadObserver reads,otherReads;Image pixels(4,1,1,PixelType::UInt8);pixels.pixels={0,1,1,4};
+    auto source=std::make_shared<imagejxx::Document>(Dataset::from_stack({pixels}).observe_reads(reads));
+    auto edit=source->begin_edit();edit.set_rois({Roi{"left",Selection("rectangle",{{0,0},{2,1}}),{},{},{},{}},Roi{"right",Selection("rectangle",{{2,0},{4,1}}),{},{},{},{}}});source->commit(edit);
+    pixels.pixels={8,16,32,64};auto other=std::make_shared<imagejxx::Document>(Dataset::from_stack({pixels}).observe_reads(otherReads));
+    w.addNativeDocument(source);w.addNativeDocument(other);w.setActiveIndex(0);
+    const auto before=source->snapshot(),otherBefore=other->snapshot();const auto undo=source->undo_steps();
+    const Json columns=Json::array({"mean","count"});w.updateSettings({{"measurement_scientific",false},{"measurement_precision",3},{"measurements",columns}},false);
+    HeadlessInputSession session(w);auto frame=[&](const Json& events=Json::array()) {require(report["events"].size()<256,"Formatting frame bound");last=session.frame(events);report["events"].push_back(events);};
+    auto click=[&](const Json& control,const std::string& name) {
+      require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"Formatting control unavailable");report["controls"].push_back({{"name",name},{"control",control}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+      for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+    };
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};
+    auto widget=[&](const std::string& name){click(last.at("preferences_panel").at("widget_controls").at(name),"preferences."+name);};
+    auto text=[&](const std::string& value){
+      for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}})}}}));
+      frame(Json::array({{{"type","text"},{"value",value}}}));
+      for(bool down:{true,false})frame(Json::array({{{"type","key"},{"name","Enter"},{"down",down}}}));frame();
+    };
+    auto search=[&](const std::string& value){widget("search");text(value);};
+    frame();frame();frame();const auto preferencesPath=last.at("preferences_path").get<std::string>();
+    control("menu.Analyze");control("menu.action.measure");w.wait();frame();require(w.error().empty() && w.results.size()==1,"Current formatting measure failed");
+    const auto rows=w.results;const auto acquired=reads.counts().plane_reads;
+    w.action("save_results",{{"path",(dir/"ordinary.csv").u8string()}});
+    require(bytes(dir/"ordinary.csv")=="\"mean\",\"count\"\n\"1.500\",\"4\"\n","Old ordinary formatting changed");
+    control("menu.Edit");control("menu.Edit.Preferences");search("Scientific notation");
+    click(last.at("preferences_panel").at("fields").at("measurement_scientific").at("control"),"preferences.scientific");
+    require(last.at("preferences_panel").at("draft").at("measurement_scientific")==true && !w.settings().boolean("measurement_scientific"),"Scientific draft applied early");
+    widget("apply");require(w.settings().boolean("measurement_scientific"),"Scientific Apply failed");
+    search("Decimal places");auto precision=[&](int n){const auto field=last.at("preferences_panel").at("fields").at("measurement_precision");click(field,"preferences.precision");text(std::to_string(n));};
+    precision(2);widget("revert");require(last.at("preferences_panel").at("draft").at("measurement_precision")==3,"Precision Revert failed");
+    precision(2);widget("apply");require(w.settings().integer("measurement_precision")==2,"Precision Apply failed");
+    widget("defaults");require(last.at("preferences_panel").at("draft").at("measurement_scientific")==false && last.at("preferences_panel").at("draft").at("measurement_precision")==-1,"Presentation Defaults failed");
+    widget("revert");widget("close_button");frame();
+    require(w.results==rows && reads.counts().plane_reads==acquired,"Presentation change reread or modified results");
+    w.action("save_results",{{"path",(dir/"scientific.csv").u8string()}});
+    require(bytes(dir/"scientific.csv")=="\"mean\",\"count\"\n\"1.50E0\",\"4\"\n","Scientific CSV mismatch");
+    std::string copied;
+    {
+      auto& platform=ImGui::GetPlatformIO();
+      struct RestoreClipboard {
+        ImGuiPlatformIO& platform;decltype(platform.Platform_SetClipboardTextFn) setter;void* userdata;
+        ~RestoreClipboard(){platform.Platform_SetClipboardTextFn=setter;platform.Platform_ClipboardUserData=userdata;}
+      } restore{platform,platform.Platform_SetClipboardTextFn,platform.Platform_ClipboardUserData};
+      platform.Platform_ClipboardUserData=&copied;
+      platform.Platform_SetClipboardTextFn=[](ImGuiContext* ctx,const char* text){static_cast<std::string*>(ctx->PlatformIO.Platform_ClipboardUserData)->assign(text?text:"");};
+      control("results.copy_csv");require(copied==bytes(dir/"scientific.csv"),"Copied and saved scientific CSV differ");
+    }
+    report["copied_csv"]=copied;report["copy_matches_csv"]=true;
+    bool rendered=false;for(const auto& cell:last.at("results_table").at("cells"))if(cell.at("name")=="mean" && cell.at("row")==0){require(cell.at("text")=="1.50E0","Table/CSV differ");rendered=true;}require(rendered,"Scientific result cell not observed");
+    report["results_table"]=last.at("results_table");report["current_rows"]=rows;
+    w.action("measure_rois");w.wait();frame();require(w.error().empty() && w.results.size()==3,"Manager formatting measure failed");report["manager_rows"]=w.results;
+    control("menu.Analyze");control("menu.measurement_redirect");control("measurement_redirect."+std::to_string(other->id));
+    control("menu.Analyze");control("menu.action.measure");w.wait();frame();require(w.error().empty() && w.results.size()==4,"Redirect formatting measure failed");
+    const auto waitUntil=[&]{const auto end=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered && std::chrono::steady_clock::now()<end)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered,"Formatting worker gate timeout");};
+    session.fixtureWorkerGate([&](const JobContext& c){entered=true;while(!release){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}});
+    w.action("measure");waitUntil();w.updateSettings({{"measurement_scientific",false},{"measurement_precision",4}},false);release=true;w.wait();frame();require(w.error().empty() && w.results.size()==5,"Presentation-only change invalidated running measurement");session.fixtureWorkerGate({});
+    w.updateSettings({{"measurement_scientific",true},{"measurement_precision",2}},true);
+    w.action("save_results",{{"path",(dir/"all.csv").u8string()}});report["rows"]=w.results;report["csv"]=bytes(dir/"all.csv");
+    require(source->snapshot().shares_data(before) && other->snapshot().shares_data(otherBefore) && source->undo_steps()==undo && other->undo_steps()==0,"Formatting changed source/history");
+    w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});session.close();
+    Window reopened(preferencesPath);require(reopened.settings().boolean("measurement_scientific") && reopened.settings().integer("measurement_precision")==2,"Saved presentation lost");
+    reopened.openFile((dir/"measured.ijx").u8string());require(reopened.results==report["rows"],"Workspace lost raw rows");reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(bytes(dir/"reopened.csv")==report.at("csv"),"Reopened CSV differs");
+    report["state"]="observed";report["workspace_preserved"]=report["presentation_only_while_running"]=report["source_unchanged"]=true;
+    require(report.dump().size()<8*1024*1024,"Formatting report bound");writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
+}
+
 }

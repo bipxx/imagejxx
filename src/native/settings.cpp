@@ -352,6 +352,9 @@ const std::vector<SettingDefinition> &Settings::schema() {
       {"measurement_limit_to_threshold", "Measurements", "Limit to threshold",
        "Use the captured manual threshold for applicable measurement rows; absent thresholds are unrestricted.",
        SettingKind::Boolean, false},
+      {"measurement_scientific", "Measurements", "Scientific notation",
+       "Format floating result cells/CSV using ImageJ scientific notation; precision -1 uses 3, above 9 uses 9. Raw values and integer IDs stay unchanged.",
+       SettingKind::Boolean, false},
       {"measurement_precision", "Measurements", "Decimal places",
        "Minus one preserves full precision; other values format the results "
        "view and CSV. Native results retain full precision.",

@@ -114,6 +114,8 @@
 #include <imgui_internal.h>
 #include <imgui_stdlib.h>
 #include <iomanip>
+#include <locale>
+#include "../native/floating_charconv.hpp"
 #include <limits>
 #include <map>
 #include <mutex>
@@ -833,6 +835,58 @@ std::string resultText(const Json &value, const Settings &settings) {
   if (value.is_string())
     return string(value);
   auto precision = settings.integer("measurement_precision");
+  if (value.is_number_float() && settings.boolean("measurement_scientific")) {
+    const auto number=value.get<double>();
+    if(!std::isfinite(number))return value.dump();
+    // ResultsTable.d2s: negative precision requests scientific; -0 retains
+    // automatic small/large fallback. Preserve native integer IDs separately.
+    if(number==static_cast<double>(std::numeric_limits<float>::max()))return "3.4e38";
+    const int digits=precision<0?3:std::min(9,static_cast<int>(precision));
+    const bool scientific=digits>0 || (number!=0 && std::abs(number)<1) || std::abs(number)>999999999999.;
+    std::ostringstream text;text.imbue(std::locale::classic());
+    if(scientific) {
+      const int places=digits?digits:3;
+      text<<std::uppercase<<std::scientific<<std::setprecision(places)<<number;
+      auto result=text.str();
+      // Subnormals have fewer significant round-trip digits than the requested
+      // precision. Preserve that decimal value (at least two digits), rather
+      // than exposing binary noise absent from the original displayed number.
+      if(number!=0 && std::abs(number)<std::numeric_limits<double>::min()) {
+        std::uint64_t magnitude;std::memcpy(&magnitude,&number,sizeof(number));magnitude&=0x7fffffffffffffffULL;
+        const int decade=static_cast<int>(std::floor(std::log10(std::abs(number))));
+        for(int p=0;p<places;++p) {
+          std::ostringstream candidate;candidate.imbue(std::locale::classic());
+          candidate<<std::scientific<<std::setprecision(p)<<number;
+          auto shortest=candidate.str();const auto at=shortest.find('e');
+          const int exponent=std::stoi(shortest.substr(at+1));
+          // A carried decade may use a single significant digit followed by
+          // the mandatory fractional zero. Otherwise retain at least two.
+          if(p==0 && exponent<=decade)continue;
+          double restored=0;const auto parsed=imagejxx::detail::floating_from_chars(shortest.data(),shortest.data()+shortest.size(),restored);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=shortest.data()+shortest.size() || restored!=number)continue;
+          if((magnitude&(magnitude-1))==0) {
+            // Original power-of-two stopping interval is a quarter subnormal
+            // ULP. Scale the candidate into ULP units without underflowing a
+            // decimal 1e-324 intermediate. Only short round-trips reach here.
+            double mantissa=0;const auto mantissaEnd=shortest.data()+at;
+            const auto converted=imagejxx::detail::floating_from_chars(shortest.data(),mantissaEnd,mantissa);
+            if(converted.ec!=std::errc{})continue;
+            const auto decimalUlp=std::scalbn(1e-300,1000)*std::scalbn(1e-24,74);
+            const auto units=std::abs(mantissa)*std::pow(10.,exponent+324)*decimalUlp;
+            if(std::abs(units-static_cast<double>(magnitude))>=.25)continue;
+          }
+          shortest.insert(at,(p==0?".":"")+std::string(places-p,'0'));
+          shortest[shortest.find('e')]='E';result=std::move(shortest);break;
+        }
+      }
+      const auto exponent=result.find('E');
+      // Java exponent has no plus or redundant leading zeroes.
+      return result.substr(0,exponent+1)+std::to_string(std::stoi(result.substr(exponent+1)));
+    }
+    // Original fixed zero places uses HALF_UP; other scientific precisions
+    // retain the stream's IEEE round-to-nearest representation.
+    text<<std::fixed<<std::setprecision(0)<<std::round(number);return text.str();
+  }
   if (value.is_number_float() && precision >= 0) {
     std::ostringstream text;
     text << std::fixed << std::setprecision(static_cast<int>(precision))
@@ -840,6 +894,36 @@ std::string resultText(const Json &value, const Settings &settings) {
     return text.str();
   }
   return value.dump();
+}
+std::string resultCsv(const Json& rows,const Settings& current) {
+  auto columns = resultColumns(rows, current);
+  auto escape = [](std::string s) {
+    std::string out = "\"";
+    for (char c : s) {
+      if (c == '\"')
+        out += '\"';
+      out += c;
+    }
+    return out + '\"';
+  };
+  std::ostringstream data;
+  for (size_t k = 0; k < columns.size(); ++k) {
+    if (k)
+      data << ',';
+    data << escape(columns[k]);
+  }
+  data << '\n';
+  for (const auto &r : rows) {
+    for (size_t k = 0; k < columns.size(); ++k) {
+      if (k)
+        data << ',';
+      const auto &v = get(r, columns[k].c_str());
+      if (!v.is_null())
+        data << escape(resultText(v, current));
+    }
+    data << '\n';
+  }
+  return data.str();
 }
 } // namespace
 struct Window::Impl {
@@ -9088,35 +9172,7 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (name == "save_results") {
-    auto current = settings();
-    auto columns = resultColumns(results, current);
-    auto escape = [](std::string s) {
-      std::string out = "\"";
-      for (char c : s) {
-        if (c == '\"')
-          out += '\"';
-        out += c;
-      }
-      return out + '\"';
-    };
-    std::ostringstream data;
-    for (size_t k = 0; k < columns.size(); ++k) {
-      if (k)
-        data << ',';
-      data << escape(columns[k]);
-    }
-    data << '\n';
-    for (const auto &r : results) {
-      for (size_t k = 0; k < columns.size(); ++k) {
-        if (k)
-          data << ',';
-        const auto &v = get(r, columns[k].c_str());
-        if (!v.is_null())
-          data << escape(resultText(v, current));
-      }
-      data << '\n';
-    }
-    auto text = data.str();
+    const auto text = resultCsv(results, settings());
     writeBytes(string(get(p, "path")), {text.begin(), text.end()});
     return;
   }
@@ -11823,6 +11879,13 @@ void Window::Impl::resultTable() {
         "Save measurements", true,
         [this](std::string p) { owner.action("save_results", {{"path", p}}); },
         "results.csv");
+  ImGui::SameLine();
+  ImGui::BeginDisabled(owner.results.empty());
+  const bool copy = ImGui::Button("Copy CSV");
+  observed("copy_csv");
+  if (copy)
+    ImGui::SetClipboardText(resultCsv(owner.results, preferenceState.settings).c_str());
+  ImGui::EndDisabled();
   ImGui::SameLine();
   const bool clear = ImGui::Button("Clear");
   observed("clear");

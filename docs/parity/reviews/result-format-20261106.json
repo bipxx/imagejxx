@@ -1,0 +1,376 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 scientific notation and numeric presentation",
+  "implemented": true,
+  "verified": "Scoped: 63 distinct installed Windows Python passes and one optional OpenGL skip; 1,950 original formatting observations in both Windows consumers; affected Windows/Linux native settings controls.",
+  "integrated": "Windows standalone C++ and optional Python Dear ImGui: actual preferences, results table, Copy CSV and Save CSV.",
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_complete": false,
+  "requirements": [
+    "G009",
+    "G066",
+    "G071"
+  ],
+  "scope": "Default-off scientific presentation and precision over native floating result cells. Actual Apply/Revert/Defaults, raw row/history preservation, current/manager/redirect measurement, table/copied/exported CSV and preferences/workspace reopen. No new runtime/code/data/font/model dependency; original ImageJ/JDK only produce test observations.",
+  "contract": {
+    "setting": "measurement_scientific: bool = false; C++ Settings, Python Settings and both UI hosts consume the shared schema. Existing measurement_precision integer default -1 and range [-1,15] remain unchanged.",
+    "scientific_mapping": "Precision -1 maps to3; values above9 map to9. Precision0 follows original automatic small/large fallback and HALF_UP. Positive1..9 select scientific mantissa decimal places. Float.MAX_VALUE retains special3.4e38; exponents use uppercase E without plus/leading zeroes, signed zero and classic decimal separator. Observed subnormal decimal and power-of-two stopping intervals are preserved.",
+    "compatibility": "Disabled mode preserves prior fixed/full-precision text. Raw values remain numeric and history unchanged. Native integer IDs/counts/indices retain exact literals, including 64-bit limits; strings/bools/null/compound JSON retain prior behavior. Nonfinite measurement strings remain nan/inf/-inf. A single-null CSV row remains an unquoted empty line. Full Java ResultsTable all-double AUTO/per-column state is outside this accepted scope.",
+    "copy": "Copy CSV and Save CSV use one private resultCsv serializer; both use the same resultText formatter as the visible table. Actual Copy CSV input/callback is verified with an owned sink restored before context close. OS clipboard interoperability remains unqualified.",
+    "timing_ownership": "Presentation-only settings do not invalidate an unchanged running measurement or reread pixels. Numerical/source/consumed-setting guards remain unchanged. Const result formatting adds no image buffer/traversal or public processing ABI."
+  },
+  "original_reference": {
+    "fixture": "tests/fixtures/result-format-imagej154r.json",
+    "sha256": "04438d36e1efe943775fc99b80d4ed1b4ecdda1173aeee5173ffcf5564716a3e",
+    "observations": 1950,
+    "producer": "tests/reference/ObserveResultFormatting.java",
+    "source_archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "source_version": "ImageJ1.54r, commit62db90a269cccc1ac79f658e4602043214ed055b",
+    "coverage": "Precision0..9 and exact double bits; scientific/ordinary/AUTO/explicit-column observations; zero/sign/nonfinite/ties/near-decade/Float.MAX/double extremes/signed small subnormals/all subnormal powers of two. Ordinary/AUTO observations preserve reference gaps; they do not establish blanket parity."
+  },
+  "checks": {
+    "junit_counts": {
+      "python019.xml": {
+        "tests": 9,
+        "passed": 2,
+        "failed": 7,
+        "skipped": 0
+      },
+      "python021.xml": {
+        "tests": 62,
+        "passed": 61,
+        "failed": 0,
+        "skipped": 1
+      },
+      "python030.xml": {
+        "tests": 12,
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "distinct_python_passed": 63,
+    "optional_skip": 1,
+    "unresolved_failures": 0,
+    "reuse": "03012affectedcases supersede corresponding019/021nodes; unaffectedcore/settings/numerics retain exactpriorchecks. ChangedCSVserializerjustifies1950consumerrows rerun, notunchangedpixelcampaign.",
+    "native": "027format1950+Copy/current/manager/redirect/prefs/workspace;031wideResults,020strictsettingsnames,006WindowsSettings,016LinuxSettings",
+    "host_pair": "host-pair032.json",
+    "ownership_review": "SharedresultText exactfunctionbytesunchanged025. Copy/Saveuseone resultCsv serializer overconstrows/settings. Copycallbackconsumesborrowedtext synchronously; onebounded-resultsCSVbuffer, existing Save allocation behavior; no imagebuffer/scan/job/history/APIABI change. TestclipboardbackendrestoreRAII precedescontextclose. IntegerIDs/nonfinite/literalnullsemantics preserved.",
+    "decision": "Fullcurrentplanneddecimal/scientific/table/copied/exportedCSV exit nowimplemented/verifiedscoped. Retire3remainingterminalgroups, updatescopedAPI/coverage/queue andpublish. AUTO/per-columnstate/labels/OSclipboard/platformrelease remainopen."
+  },
+  "failures_and_corrections": [
+    "004c failed because the new probe was inserted before the preceding function close at a mixed-EOL boundary. Original bytes and correct namespace placement were restored before005 compiled successfully.",
+    "006 exposed the smallest-subnormal decimal mismatch. 009 expanded observations disproved a simple shortest-roundtrip policy at carried decades and powers of two. An independently derived policy then passed1,950 original observations in013/027 and both Python host checks.",
+    "019 had seven null-reader assertion failures: the existing single-null CSV line parses as[], rather than an empty-string field. The reader assertion was corrected and021 passed without rebuilding the product.",
+    "Task entry omitted the planned copied-CSV verb. Final review caught this before acceptance;025 added a shared serializer and actual Copy CSV control.027/030/031 passed the complete planned consumer workflow.",
+    "027 scratch allocation initially failed before process launch because prior cleanup had removed its parent. The explicit owned parent was recreated before running. An inline prototype record write shadowed a Path variable; its observed zero-mismatch result was recorded without repeating the prototype."
+  ],
+  "cleanup": {
+    "all_owned_groups_retired": 12,
+    "necessary_verified_archives": 12,
+    "observer_compiler_products": "Identity only; no whole compiler-cache/runtime archives.",
+    "entry_known_bytes": 7459804258,
+    "pre_final_retirement_known_bytes": 7466849179,
+    "final_known_bytes_before_docs": 7466434953,
+    "inaccessible_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_bytes": 152005967872,
+    "receipts": [
+      "early-retirement014.json",
+      "retirement023.json",
+      "retirement033.json"
+    ],
+    "storage_snapshots": [
+      "result-format-entry001.json",
+      "result-format-preretirement032.json",
+      "result-format-final034.json"
+    ],
+    "active_products": "Sole active Windows/Linux compiler caches and existing runtime/app/SDK prefixes preserved."
+  },
+  "waste_review": {
+    "fix_now": "Completed the missing Copy CSV consumer before acceptance; Copy/Save now share one serializer. Corrected probe placement, subnormal policy and test-reader assertions with retained diagnostics. Retired all terminal scratch and bounded necessary captures.",
+    "defer": "T02/M3: before the next required numeric-formatter fix, isolate the existing private formatter into an existing focused results/measurement source. Corrective Window.cpp compiles measured29.859/33.884s. Do not invalidate the current green batch for cleanup alone. Historical SDK-prefix curation remains withT02.",
+    "no_action": "No additional image buffers/scans, processing controllers, registries, checked-in runners or compiler/runtime generations. No Java runtime dependency. Active compiler products are retained; observer compiler products are identity-only.",
+    "lapses": "Mixed-EOL probe placement and omitted copied-CSV exit were corrected before acceptance. Scratch parent creation and prototype record-write corrections occurred without duplicate product runs. Instruction edits alone are not cited as evidence of compliance."
+  },
+  "metrics": {
+    "product_build_commands": 20,
+    "elapsed_seconds_sum": 237.51793758219293,
+    "failed_build_commands": 1,
+    "commands": [
+      {
+        "receipt": "build004a.process.json",
+        "seconds": 3.9421037000138313,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build004b.process.json",
+        "seconds": 2.03090380015783,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build004c.process.json",
+        "seconds": 3.673022599890828,
+        "exit_code": 1
+      },
+      {
+        "receipt": "build005a.process.json",
+        "seconds": 31.243183800019324,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build005b.process.json",
+        "seconds": 5.878470800118521,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build008a.process.json",
+        "seconds": 29.85852240002714,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build008b.process.json",
+        "seconds": 1.5788806001655757,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build012a.process.json",
+        "seconds": 33.88415990001522,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build012b.process.json",
+        "seconds": 1.8097248999401927,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build015a.process.json",
+        "seconds": 38.25905329990201,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build015b.process.json",
+        "seconds": 12.450157399987802,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build015c.process.json",
+        "seconds": 7.861016600159928,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build015d.process.json",
+        "seconds": 5.601841100025922,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build015e.process.json",
+        "seconds": 2.3729342001024634,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build026a.process.json",
+        "seconds": 34.15007500001229,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build026b.process.json",
+        "seconds": 1.6506183999590576,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build028a.process.json",
+        "seconds": 6.416208799928427,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build028b.process.json",
+        "seconds": 2.9476103999186307,
+        "exit_code": 0
+      },
+      {
+        "receipt": "build028c.process.json",
+        "seconds": 1.6524995998479426,
+        "exit_code": 0
+      },
+      {
+        "receipt": "linux-build016.process.json",
+        "seconds": 10.256950282000002,
+        "exit_code": 0
+      }
+    ],
+    "interpretation": "Actual command-time sums include corrective compiles/relinks; they are not critical-path duration, processing speed or overall completion."
+  },
+  "source_sha256": {
+    "src/native/settings.cpp": "b841b943ec826254ee645d24609317d9f56a7ee7f4eec391d4586ca117626ba8",
+    "src/desktop/window.cpp": "58c3dba48c63f557bd17becfc16c246538704978e86cb6162c3c288de62a1e9d",
+    "src/desktop/effective_display_ui_probe.cpp": "b36f403d43fb47e021a0b9885cb2acbecc42bb26214173e6b176f225fad74fc4",
+    "src/desktop/effective_display_ui_probe.hpp": "42ede600ade46cd4b15840808d322ce4ab7e192d56030680b3f9d6764dc68ce3",
+    "tests/native/test_display_actions.cpp": "ca478fcc92f48d43f51ac19e6811f3637988c0ec88ecd5a245ae46910f918589",
+    "tests/native/test_settings.cpp": "9bc60f54afe01dd751fef44201aaaf98962ce6475bd16c75df47967d7f6e04e5",
+    "tests/python/test_result_format.py": "cd86f0529789d11ec6cfd1a0d276cb00bf2b85edde58710172845cb1b3b69cc7",
+    "tests/reference/ObserveResultFormatting.java": "32ff6f22c75a5cd8ae5f8922a4364737cc66398bef50aa98f5a326f7fb3377d2",
+    "tests/fixtures/result-format-imagej154r.json": "04438d36e1efe943775fc99b80d4ed1b4ecdda1173aeee5173ffcf5564716a3e",
+    "src/desktop/python.cpp": "e8bf3b5ab51b924264a2c5ba5383784751b4e25bc710bb9eff1fc4bfc65e1edf"
+  },
+  "local_task_record": ".tmp/manual-workflow-verification/result-format-20261106/entry.json",
+  "evidence_pins": {
+    ".tmp/manual-workflow-verification/result-format-20261106/native006-retention014.zip": {
+      "bytes": 587,
+      "sha256": "14213003873b3f02bc7bc943c02d58052062a56e251ccdf3523a1dc80a656676"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native009-retention014.zip": {
+      "bytes": 725,
+      "sha256": "d7442fdfe4c02d3a9aac25f879794f12753b17958a1607e5cd19fd06b1e1f898"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native013-retention023.zip": {
+      "bytes": 12655,
+      "sha256": "c68a19fd87841dcaa13869aa1038a37ca962856a4f3557450b09071bb3f5818a"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native020-retention023.zip": {
+      "bytes": 13967,
+      "sha256": "2a11a451a09c963e51c0ed63859a4b92cfedfdcc454c8f11e12ac0e42be40847"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native027-retention033.zip": {
+      "bytes": 12741,
+      "sha256": "cd7b1961b3e00f05624931a27f06158e7d4cc213dffc522306796333c4391207"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native031-retention033.zip": {
+      "bytes": 12699,
+      "sha256": "ef7467f46c5646435cfee4e73336acd115c1ed7fee51b5922703dd6e2d99245a"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/python019-retention023.zip": {
+      "bytes": 19818,
+      "sha256": "48e20176ac26c4637e1662d8a7b0e9302e3b4272dacba9606fae1bd2cf2e335c"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/python021-retention023.zip": {
+      "bytes": 32638,
+      "sha256": "e41a7dbc1ceff3a4c50a9c979ac5208de556c90fff5e51aae5c376444f51f487"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/python030-retention033.zip": {
+      "bytes": 26937,
+      "sha256": "47d4774d307d3ad4cff4334b79e793ff6404e712c8a76f0c191840fb3e1aa182"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/reference002-retention014.zip": {
+      "bytes": 4314,
+      "sha256": "a911ad50d60c084c8fc021c57cfb879c292f0badd94de255e153800dc250a8b8"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/reference007-retention014.zip": {
+      "bytes": 12730,
+      "sha256": "258579f89e109648bfe5d420fa4088d369244db2422f6305c2134b5d36881e05"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/reference011-retention014.zip": {
+      "bytes": 26674,
+      "sha256": "4f2172968b47c1ab9b4ef328fe500492eb93e9cb03622f8962edf67e572924ed"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/host-pair032.json": {
+      "bytes": 657,
+      "sha256": "efb4afdb67db92360aca6cb0d3857911764fb5cb7b04b95c1fb43f3686a95ec3"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/installed-identities029.json": {
+      "bytes": 3589,
+      "sha256": "94741854e8a1f68ef8787cb58732644ce142ea070a18d0eb26b1084c666b43f0"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/python019.xml": {
+      "bytes": 5954,
+      "sha256": "a124f93a79ce3c08ea49e3842b93d0632ca92e75bbf7c462ed425e819254ade9"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/python021.xml": {
+      "bytes": 8763,
+      "sha256": "70a25d73363258c4ecdf41ec1238fc47e0852582f922b2428d085d516241f44f"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/python030.xml": {
+      "bytes": 2001,
+      "sha256": "9ad8d0eb0623195a4c3aecdf6cb8c76bc5c3fd49b9b1bc197da3f72316f60dbe"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/early-retirement014.json": {
+      "bytes": 576,
+      "sha256": "7deb8dd4586324d76abee213e5deeae29ead6225823ed2e3f35bb87c0ad9d90b"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/retirement023.json": {
+      "bytes": 557,
+      "sha256": "db0a997809a8bee6c8a62765583955694d4bccaf896e4666a61dc4f3fcfc8839"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/retirement033.json": {
+      "bytes": 430,
+      "sha256": "a59f87e69bab0a397ea52ea1e8fbe8ab08dc6e6c82fb00c5b4b4ab1a0e9e4ce2"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native006-retention014.manifest.json": {
+      "bytes": 2397,
+      "sha256": "504345cea683b2f17a1ed6a85410bddc9cbe1f4f255e2c3acbd174085a5c9d47"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native009-retention014.manifest.json": {
+      "bytes": 2400,
+      "sha256": "8bb5c99949263829e8480fcdfdd3ecfd4afe8a1ece8d67fa09a475a0470c3c5d"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native013-retention023.manifest.json": {
+      "bytes": 8074,
+      "sha256": "de8d594acefe7a64e65b8bd1b10c8028753729562375c88fc4761dca515d26ae"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native020-retention023.manifest.json": {
+      "bytes": 3127,
+      "sha256": "858acaeee5ed5a034f0154bc325b9665c5c24824ac1a40f7dc30843926667192"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native027-retention033.manifest.json": {
+      "bytes": 8075,
+      "sha256": "cd6db221ec97e46e3fd6c550d17602d6cf4ede0b226fe163333a4792fb2f95ae"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/native031-retention033.manifest.json": {
+      "bytes": 2438,
+      "sha256": "7e4b77538b18133beaabeb75181d9c2faccc79eb31810a1b38f2633617cef7ba"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/python019-retention023.manifest.json": {
+      "bytes": 18499,
+      "sha256": "4452c93136357f2ae95be83d8f2df3017f311f18770e10e125414723e7f7dafb"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/python021-retention023.manifest.json": {
+      "bytes": 32462,
+      "sha256": "54f480351dd2f32bf1b4a640a0b245f2877cd7f91af154cd0d7c8c3ace728bf1"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/python030-retention033.manifest.json": {
+      "bytes": 25961,
+      "sha256": "34ca3e4a9de6ed059c0b28950a8b134348dcd61a6c297c8fb5e819d28c5a0b7a"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/reference002-retention014.manifest.json": {
+      "bytes": 1767,
+      "sha256": "0e638f61e9d430ca9b1543dd6fe6b2ad51a2235f916ff2de597867fa949e1ef7"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/reference007-retention014.manifest.json": {
+      "bytes": 1769,
+      "sha256": "fd990366dad817cea567bb664494c63eb1ab2536843ed8384fd70adf5a859a8c"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/reference011-retention014.manifest.json": {
+      "bytes": 1769,
+      "sha256": "24c707068557bfcb55c91d25d127c557151e11395296f7c71972e5771130211d"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/reference002-compiler-identity014.json": {
+      "bytes": 900,
+      "sha256": "5b5707819e2190afd6ef210871d81bf4b604f864e6a299082b211b626d27e3e2"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/reference007-compiler-identity014.json": {
+      "bytes": 899,
+      "sha256": "ace99da63647e7fb116d0d2b6656cfdd9c90ebeb9384087c27dcfae703d936d4"
+    },
+    ".tmp/manual-workflow-verification/result-format-20261106/reference011-compiler-identity014.json": {
+      "bytes": 899,
+      "sha256": "cd92dc89fa3874b4068229fdfb115197acb6039b63bb77ae04f43c0ad493f6b0"
+    }
+  },
+  "remaining": [
+    "M3 Display label (next ready), remaining Analyzer options and full M3 reconciliation",
+    "Java ResultsTable AUTO/per-column precision and column-state semantics beyond native JSON-kind presentation",
+    "OS clipboard interoperability, accessibility/keyboard and Linux/macOS UI/platform qualification",
+    "Full table editing/import/filtering/summaries/replay and wider constructors/types",
+    "Full commercial inventory, equivalent-output performance and supported-platform release",
+    "Full99-family ImageJ/Fiji editor goal"
+  ],
+  "local_task_record_sha256": "93efd3463344c0eec348dd9256102c36508eea25f7a7da2c51ab966043a46f2d",
+  "document_sha256": {
+    "docs/PLAN.md": "0d5c01404fb383f8c73a925d2199c728e33a64fef4724ee6df0e091711015781",
+    "docs/COVERAGE_CHECKLIST.md": "278987ba5330bf0f6c31c9c0f80d66d3afd746d3151b6f6a65294dfe1d79c5b3",
+    "docs/TARGET_ANALYSIS.md": "ee2c7621f588602aae277ed6196cfc103d7d362a939d12711843f4343dc64148",
+    "docs/SOL_ULTRA.md": "01098038d09697aee29fc864071f18293c1f2e2c2978d2081255b7c3e7761706",
+    "docs/THREE_AGENT_EXECUTION.md": "29bb467b7cb4606279441bd29cfc671e3145242960502269a33a57a911f2ad3c"
+  }
+}

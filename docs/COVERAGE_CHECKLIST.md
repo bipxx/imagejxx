@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Skew/Kurt now has scoped API/native/installed-client and both-Windows-host evidence; all eight owned scratch groups are retired. Next ready is scientific notation/numeric presentation. [Exact scope](parity/reviews/moment-measurements-20261106.json); full ImageJ/Fiji and release scope remain open.
+Updated 2026-11-06. Scientific notation and numeric presentation now have scoped table/Copy CSV/Save CSV and persistence coverage in both Windows hosts. All 12 owned task scratch groups are retired. Next ready: Display label. [Exact scope](parity/reviews/result-format-20261106.json); full ImageJ/Fiji and release scope remain open.
 
 This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
 
@@ -33,7 +33,29 @@ option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
 
-## Current increment: Skew/Kurt (T04a.2 M3)
+## Numeric presentation and Copy CSV
+
+Scope: T04a.2 M3 / G009 G066 G071; settings owner T15, table owner T04/T09, wider UI/platform owner T12/T14. [Delivery receipt](parity/reviews/result-format-20261106.json) preserves exact inputs, corrections, scoped reuse and cleanup. This accepts one usable workflow; full M3 and full table families stay open.
+
+| Aspect | Observed state | Scope / remaining exit |
+|---|---|---|
+| I | Delivered, scoped | Shared native Settings key `measurement_scientific=false`; existing precision/defaults retained, one table/Copy CSV/Save CSV formatting route. Raw results and history stay unchanged. |
+| V | Passed, scoped | 1,950 original formatting observations; 63 distinct affected/reused installed Windows Python passes and one optional OpenGL skip; affected Windows/Linux native settings controls and Windows wide Results/strict settings consumers. Exact current/source-installed bytes checked. |
+| UI | Windows C++ and Python ImGui | Actual preferences, precision, Apply/Revert/Defaults, current/manager/redirect, table, Copy CSV callback, Save CSV and preferences/workspace reopen. Clipboard test uses an owned sink and restores its backend. |
+| R | Open | Java AUTO/per-column state, labels, OS clipboard interoperability, wider platforms, accessibility/keyboard and full release remain unqualified/open. |
+
+- [x] Default-off scientific preference and native/Python shared schema; preserve old fixed/full-precision output and compatible saved settings when disabled.
+- [x] Scientific precision -1 maps3, positive values clamp9, precision0 keeps original automatic small/large fallback and HALF_UP; exponent spelling, signed zero, Float.MAX_VALUE special text and observed signed subnormal/power-of-two boundaries follow original observations.
+- [x] Keep raw floating values and exact integer IDs/counts/indices, booleans, null, strings/nonfinite and compound JSON semantics. Preserve the single-null unquoted empty CSV line.
+- [x] Use one serializer for Copy CSV and Save CSV and one numeric formatter for those outputs and the visible table; preserve selected-column ordering and escaping.
+- [x] Exercise actual Copy CSV input/callback in both hosts and verify copied text equals saved text; use a restored test-owned backend to preserve the user's OS clipboard.
+- [x] Actual scientific/precision controls, Apply/Revert/Defaults, current/manager/redirect results and saved preferences/workspace pass. Changing presentation during a running measurement preserves publication without extra image reads/history.
+- [x] Verify current source/built/installed artifacts and loaded Python origins; reuse unaffected core/settings/numerical checks explicitly rather than restarting pixel reference campaigns.
+- [x] Retain/hash-verify necessary captures and diagnostics, retire all 12 owned scratch groups and preserve reusable active compiler/runtime/SDK products. [Receipts](parity/reviews/result-format-20261106.json); complete budget is unverified because214 inaccessible subtrees remain unknown.
+- [ ] Complete Java ResultsTable AUTO/per-column precision/column state beyond native JSON-kind presentation (M3/T09); scientific scope above does not close it.
+- [ ] Complete Display label (next ready M3/T08/T15), remaining Analyzer options and OS clipboard/platform/accessibility/keyboard qualification (T12/T14).
+
+## Skew/Kurt scoped coverage (T04a.2 M3)
 
 This increment is accepted only for the scope in its [delivery receipt](parity/reviews/moment-measurements-20261106.json). Owners: T04a.2 M3 for measurements, T15 for consumed settings, T00 for wider platform/release qualification. Root completed all eight owned scratch retirements. [Existing task record](../.tmp/manual-workflow-verification/moments-20261106/entry.json) contains the contract, source identities and checks. Local receipts are workspace evidence; the linked delivery receipt preserves their identities and limitations.
 
@@ -57,7 +79,7 @@ Detailed behavior within the current scope:
 - [x] Rebuild affected bindings and verify installed module/header/library identities and Windows/Linux C++ consumers after the public struct changes.
 - [x] Required evidence retained/hash-verified, all eight owned scratch groups retired, active caches/runtime/installed SDKs preserved. Known bytes before/after retirement: 7,473,446,484 / 7,459,706,257, before final docs. [Exact receipts](parity/reviews/moment-measurements-20261106.json). Complete budget remains unverified: 214 inaccessible subtrees are unknown.
 - [x] Reconcile [API contract](TARGET_ANALYSIS.md), PLAN, coverage and [scoped receipt](parity/reviews/moment-measurements-20261106.json); preserve numerical failures/corrections and remaining platform/variant limits.
-- [ ] Finish residual M3 options, including numeric presentation and labels, under their existing owners; this increment does not close them.
+- [ ] Finish residual M3 options, including labels and full AUTO/per-column formatting state, under their existing owners; the separately accepted numeric presentation workflow does not close M3.
 
 ## Accepted scoped workflows
 
@@ -100,6 +122,8 @@ Every checked entry below has **I: delivered, V: scoped, UI: Windows C++ and Pyt
 - [x] Captured %Area API and actual column choice/Measure/manager/redirect/table/CSV/workspace, independent of density and LIMIT; ordinary and six Float32 overflow observations, both Windows hosts and Windows/Linux native/installed C++ checks (`G009 G066 G068 G071`). I: delivered; V: scoped with explicit unchanged-input reuse; UI: both Windows hosts; R: open. [Evidence and remaining limits](parity/reviews/area-fraction-measurements-20261106.json).
 
 - [x] Default-off Skew/Kurt captured API, typed ordered moments and actual independent column choices/table/CSV/preferences/workspace, 28 affected Windows host pairs and Windows/Linux native/installed C++ clients (`G009 G066 G068 G071`). I: delivered; V: scoped; UI: Windows C++/Python ImGui; R: open. [Exact evidence and limitations](parity/reviews/moment-measurements-20261106.json).
+
+- [x] Scientific notation, preserved ordinary defaults, precision, table/Copy CSV/Save CSV, current/manager/redirect and preferences/workspace in both Windows hosts (`G009 G066 G071`). I: delivered; V: scoped; UI: both Windows ImGui hosts with owned clipboard callback; R: open. [Evidence](parity/reviews/result-format-20261106.json).
 
 ## Cross-cutting exits still open
 
@@ -451,7 +475,9 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Remaining configuration groups, real DPI/keyboard-only/assistive access and macOS/Linux installed-platform checks remain required; no family or milestone is complete.
 ### G009 Measurement/plot defaults
 
-**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#current-increment-skewkurt-t04a2-m3). Full-family exits below stay open.
+**Numeric presentation accepted subset:** [Table, Copy CSV, Save CSV, controls and exact limits](#numeric-presentation-and-copy-csv). Full-family exits remain open.
+
+**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#skewkurt-scoped-coverage-t04a2-m3). Full-family exits below stay open.
 
 **Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
@@ -465,7 +491,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subsets:** Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
-- [ ] Complete remaining measurement options, numeric presentation/scientific notation, labels and configurable plot axes/profile sampling. Scoped LIMIT, redirect, %Area and Skew/Kurt have the linked evidence; wider types/positions/cross-plane/replay and platform variants remain with their owners.
+- [ ] Complete remaining measurement options, labels, full AUTO/per-column precision and configurable plot axes/profile sampling. [Scientific presentation and copied/exported results](parity/reviews/result-format-20261106.json) are scoped delivered; LIMIT/redirect/%Area/Skew/Kurt retain their own evidence. Wider types/positions/cross-plane/replay and platforms remain with their owners.
 ### G010 Resource settings
 
 - [ ] Complete full `G010` scope and supported release exits.
@@ -2519,7 +2545,9 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ### G066 Image/ROI measurements
 
-**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#current-increment-skewkurt-t04a2-m3). Full-family exits below stay open.
+**Numeric presentation accepted subset:** [Table, Copy CSV, Save CSV, controls and exact limits](#numeric-presentation-and-copy-csv). Full-family exits remain open.
+
+**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#skewkurt-scoped-coverage-t04a2-m3). Full-family exits below stay open.
 
 **Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
@@ -2569,7 +2597,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Circularity limits, exclude-edge/include-hole policies, summary, outlines/masks/ROI outputs, measurement choices and stack/C/T processing
 ### G068 Scale and calibration
 
-**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#current-increment-skewkurt-t04a2-m3). Full-family exits below stay open.
+**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#skewkurt-scoped-coverage-t04a2-m3). Full-family exits below stay open.
 
 **Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
@@ -2604,7 +2632,9 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Thick-line and rectangular averages, configurable interpolation/sampling, live profiles, Z/T profiles and fixed plot axes
 ### G071 Results and tables
 
-**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#current-increment-skewkurt-t04a2-m3). Full-family exits below stay open.
+**Numeric presentation accepted subset:** [Table, Copy CSV, Save CSV, controls and exact limits](#numeric-presentation-and-copy-csv). Full-family exits remain open.
+
+**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#skewkurt-scoped-coverage-t04a2-m3). Full-family exits below stay open.
 
 - [x] Scoped %Area column control, table/CSV and saved preferences/workspace in both Windows hosts; default empty-list behavior and unknown saved names preserved. [Evidence](parity/reviews/area-fraction-measurements-20261106.json). Full table editing/import/filtering/summaries and release scope remain open.
 
@@ -2912,10 +2942,10 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Reconcile stale family/child labels against exact scoped receipts without rewriting historical outcomes or treating partial references as full certification.
 - [ ] Keep missing reference paths and producer/reader mappings with T00; recover only from a new plausible source and never recreate retired build generations.
 - [ ] Keep every deferred gap with its T00–T15 owner; queue changes do not close unfinished formats, point/manager, analysis, Fiji or platform variants.
-- [ ] Keep cleanup claims evidence-based: the latest [moment closeout](parity/reviews/moment-measurements-20261106.json) records all eight owned groups retired and four verified necessary archives; 214 inaccessible storage subtrees leave complete local budget unverified. Historical earlier cleanup receipts retain their own scope. Reconcile the current task receipt at every closeout; instruction text is not an automatic filesystem guard.
+- [ ] Keep cleanup claims evidence-based: the latest [numeric-presentation closeout](parity/reviews/result-format-20261106.json) records all12 owned groups retired with verified necessary captures;214 inaccessible storage subtrees leave the complete local budget unverified. Historical receipts keep their own scope. Reconcile actual task receipts at every closeout; instruction text is not an automatic filesystem guard.
 
 ## Next update
 
-Next ready: scientific notation and numeric presentation, as detailed in PLAN. Freeze original formatting/precision behavior, extend the existing shared table/CSV formatter and settings consumer, preserve raw accepted values/defaults, and qualify actual controls/persistence in both hosts. Labels and wider M3/T06/T14 variants retain their existing owners; full M3 remains open.
+Next ready: Display label, as detailed in PLAN. Freeze the source/redirect title, ROI name and slice-label policy against original observations; reuse captured metadata and current/manager positions. Include actual preferences, table, **Copy CSV and Save CSV**, persistence and consumed stale/ownership guards. AUTO/per-column formatting and wider M3/T06/T08/T14 variants retain their existing owners; full M3 remains open.
 
-At every subsequent task closeout, update the existing behavior and residual rows, I/V/UI/R states, exact input/platform evidence, unavailable checks and cleanup outcome. Keep PLAN as the execution queue and this file as the single coverage view.
+At every task closeout, update existing behavior/residual rows, I/V/UI/R states, exact input/platform evidence, unavailable checks and cleanup outcomes. Keep PLAN as the execution queue and this file as the single coverage view.

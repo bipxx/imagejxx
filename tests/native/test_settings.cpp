@@ -25,6 +25,11 @@ int main() {
   try {
     Settings settings;
     std::set<std::string> names;
+    check(!settings.boolean("measurement_scientific"),"Scientific format must default off");
+    settings.set("measurement_scientific",true);
+    rejects([&]{settings.set("measurement_scientific",std::int64_t(1));});
+    check(settings.boolean("measurement_scientific"),"Invalid presentation patch changed settings");
+    settings.set("measurement_scientific",false);
     for(const auto& d:Settings::schema())if(d.name=="measurements") {
       const std::set<std::string> choices(d.choices.begin(),d.choices.end());
       for(const auto* column:{"Mode","IntDen","RawIntDen","Value unit","T","C","Z","sum","integrated_density"})

@@ -478,6 +478,10 @@ void circleJobs(const std::filesystem::path& root) {
 }
 } // namespace
 int main(int argc,char **argv){try{
+  if(argc==4 && std::string(argv[2])=="--result-format") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"format-preferences.json").u8string());
+    imagejxx::desktop::resultFormattingUiCase(w,"imgui_cpp",argv[1],argv[3]);return 0;
+  }
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture root required");std::filesystem::create_directories(root);
   metadata(root);ieee(root);menu(root);exportJobs(root);exportAcceptedPathsAndMenu(root);everydayEditing(root);scientificNavigation(root);convexHullWorkflow(root);circleJobs(root);
