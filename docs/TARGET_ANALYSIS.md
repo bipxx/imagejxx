@@ -707,6 +707,17 @@ them explicitly for new measurements. The existing Results columns control also
 offers redirect provenance and Coordinate unit. Table/CSV preserve separate
 statistics, coordinate, perimeter and Feret units.
 
+Captured scalar Measure rows also expose `Mode`, `IntDen` and `RawIntDen`.
+Mode uses `mode_value`; IntDen preserves the computed `integrated_density`
+(including point semantics); RawIntDen is `pixel_count * raw_mean`, following
+ImageJ `umean`, including its calibrated UInt16 behavior. The existing `sum`
+and `integrated_density` keys remain available. Results columns offers these
+three labels and `Value unit`, `T`, `C`, `Z`; an empty preference still shows
+all available keys, and unknown saved names remain usable. Nonfinite values
+retain their existing string representation and CSV precision is unchanged.
+[Scoped column/UI verification](parity/reviews/statistic-columns-20261106.json) covers both Windows hosts;
+%Area, moments and wider platform/geometry variants remain open.
+
 [Scoped verification](parity/reviews/redirect-measurements-20261106.json) includes
 549original cases/588rows, independent Global/bypass/closure guards, two native
 actual-sample-pose admission boundaries, both Windows host outputs, CSV/workspace,

@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Redirected intensity now has scoped native/Python/both-Windows-host coverage alongside LIMIT and ELLIPSE. Existing statistic outputs/column choices are next; full ImageJ/Fiji and release scope remain open.
+Updated 2026-11-06. Mode/IntDen/RawIntDen and unit/position column choices now have scoped both-Windows-host coverage alongside redirected intensity, LIMIT and ELLIPSE. Area fraction (%Area) is next; full ImageJ/Fiji and release scope remain open.
 
 This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
 
@@ -9,7 +9,7 @@ This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains
 - I = implemented; V = verified for stated inputs/platforms; UI = integrated in stated hosts; R = release-ready. Keep these four aspects separate.
 - A checked scoped workflow below means its accepted receipt supports I/V/UI for that bounded workflow. It does not close the family, imply a fresh run today, or approve a release.
 - Leave a family/child checkbox open until its complete required scope and supported release gates have evidence. `Partial`, `unverified`, `unavailable` and `not applicable` are different states.
-- At every task closeout, update the affected existing scope row and residual items, link the exact receipt, state remaining platforms/variants, and update current WIP. Reconcile stale inventory labels when warranted; preserve historical failures, fingerprints and expectations.
+- At every task closeout, update the affected existing scope row and residual items, link the exact receipt, state remaining platforms/variants, and update current WIP. For each newly checked item, identify delivered behavior, verification inputs/platforms, both-host integration where applicable, and remaining release obligations in the linked receipt; preserve failures and unavailable checks. If verification is pending, leave the acceptance item open and describe the implemented subset. Reconcile stale inventory labels when warranted; preserve historical failures, fingerprints and expectations.
 - Test totals and family counts are evidence/coverage indexes, not an overall completion percentage. Retired build references are unavailable, not passing checks. No general speed advantage follows from scoped checks.
 
 ## Find a coverage area
@@ -2493,7 +2493,16 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [x] Scoped Limit to threshold API/settings/Measure/manager, per-column populations, MinThr/MaxThr and both-host CSV/workspace; see the accepted receipt above. This does not close the full family.
 - [x] Scoped redirected intensity through two-owner capture, actual selector/Measure/manager/CSV/workspace; see the accepted receipt above.
-- [ ] Complete existing statistic output/choice gaps (Mode/IntDen/RawIntDen, Value unit/T/C/Z selection), remaining distribution/moment options and unsampled measurement/constructor/positioned/cross-plane threshold/replay/platform variants under M3/T06/T14. Preserve default-off native extensions and reference limits.
+**Delivered scoped: existing statistic columns (M3).** I: delivered; V: scoped original values and affected checks; UI: both Windows ImGui hosts; R: open. [Exact evidence and limitations](parity/reviews/statistic-columns-20261106.json). These items do not close G066 or G071.
+
+- [x] Expose Mode using accepted `mode_value`; qualify supported scalar, density, empty and nonfinite populations against existing original observations.
+- [x] Expose IntDen using the already computed `integrated_density`; preserve point semantics rather than recomputing from final displayed Area.
+- [x] Expose RawIntDen using `pixel_count * raw_mean`, preserving the accepted ImageJ `umean` contract, including calibrated UInt16 behavior; do not substitute the existing calibrated `sum`.
+- [x] Qualify area, line, point, ordered manager and redirected rows; preserve source geometry and sampling calibration/position ownership.
+- [x] Reuse applicable frozen LIMIT/redirect observations; add reference cases only for an identified missing consumed behavior. Record unavailable inputs separately from passing checks.
+- [x] Complete the [column selection, table, CSV and persistence exit](#g071-results-and-tables) in both Windows ImGui hosts; link scoped evidence here before accepting the increment.
+- [ ] Next: complete %Area with original processor-specific numerator/denominator, threshold-independent-of-LIMIT semantics, captured settings/owner guards, actual controls, CSV and persistence under M3.
+- [ ] Keep remaining skewness/kurtosis and unsampled constructor/positioned/cross-plane threshold/replay/platform variants assigned to M3/T06/T14. Preserve default-off native extensions and reference limits.
 
 - [x] Qualified ELLIPSE Major/Minor/Angle and implicit Shape fitted-center composition, including empty/outside selections:333original observations,68exact Windows host pairs, installed API/SDK and affected Windows/Linux native checks. Wider variants and release gates remain open; see the scoped receipt above.
 
@@ -2549,6 +2558,15 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [ ] Thick-line and rectangular averages, configurable interpolation/sampling, live profiles, Z/T profiles and fixed plot axes
 ### G071 Results and tables
+
+**Delivered scoped column workflow (M3; Windows captured-row domain):** [Receipt](parity/reviews/statistic-columns-20261106.json). Existing unknown saved choices and empty-list defaults remain compatible; broader table features and release gates remain open.
+
+- [x] Freeze actual table/CSV lookup and alias behavior before editing; preserve `sum`, `integrated_density`, default empty-list behavior and unknown saved choices.
+- [x] Provide individual Results columns choices for Mode, IntDen, RawIntDen, Value unit, T, C and Z, using accepted values from [G066](#g066-imageroi-measurements).
+- [x] Verify actual preferences controls change the visible table and exported CSV consistently, including selected subsets, units, precision and nonfinite formatting.
+- [x] Verify saved preferences/workspace reopen retains the choices and row provenance; legacy saved settings remain usable.
+- [x] Verify standalone C++ and optional Python ImGui routes, affected installed modules and changed API contracts where applicable; reuse unchanged numerical and renderer evidence.
+- [x] Close the scoped increment only with exact receipts, remaining platform/variant limits, terminal scratch retirement and the PLAN waste review. Full table editing/import/filtering/summary scope below remains open.
 
 **Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
@@ -2845,8 +2863,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Reconcile stale family/child labels against exact scoped receipts without rewriting historical outcomes or treating partial references as full certification.
 - [ ] Keep missing reference paths and producer/reader mappings with T00; recover only from a new plausible source and never recreate retired build generations.
 - [ ] Keep every deferred gap with its T00–T15 owner; queue changes do not close unfinished formats, point/manager, analysis, Fiji or platform variants.
-- [ ] Keep cleanup claims evidence-based: all6ellipse task scratch groups are retired with verified retained evidence;214 inaccessible storage subtrees leave complete local budget unverified. A checklist or instruction file is not an automatic filesystem guard.
+- [ ] Keep cleanup claims evidence-based: the latest [statistic-column closeout](parity/reviews/statistic-columns-20261106.json) records all3owned scratch groups retired with verified retained evidence;214 inaccessible storage subtrees leave complete local budget unverified. Reconcile the current task receipt at every closeout; this is historical evidence, not a fresh storage measurement or an automatic filesystem guard.
 
 ## Next update
 
-Next, expose the accepted statistic values through complete measurement-column choices: Mode/IntDen/RawIntDen and existing Value unit/T/C/Z. Reuse the native mode_value/integrated_density/raw_mean contracts and frozen original rows; freeze alias/default compatibility before editing. Update affected evidence and residual entries at closeout; wider M3/T06/T14 scope remains open.
+Next, complete the independent %Area measurement workflow. Observe raw nonzero/threshold numerator and ROI denominator per processor, separately from LIMIT and density; qualify captured API/settings, both host controls, CSV and reopen. Keep moments and wider M3/T06/T14 variants assigned to their owners. Update the affected entries and exact scoped receipt at closeout.

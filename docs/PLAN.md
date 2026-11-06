@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Next ready: M3 existing-statistic outputs/column choices; redirected intensity has scoped delivered evidence.
+Next ready: M3 area-fraction (%Area) measurement; existing-statistic outputs/column choices and redirected intensity have scoped delivered evidence.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -155,7 +155,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T04a.2 M3/T06: current-plane subtype-sensitive Measure. | Constructor precision persists through bare ROI/session/rebind/editing; captured Length/Perim., result columns/CSV/workspace and cancellation work in both Windows hosts.3662distinct Python IDs pass,180captured reference rows,14physical flows; Windows/Linux native andtwoWindowsSDKclients pass. [Evidence](parity/reviews/subtype-measurement-20261106.json). |
 | Delivered scoped workflow | T04a.2 M3/T06: fitted Measure and lifecycle. | Initial-fit evidence remains valid; versioned private Float32 basis now preserves refit/straighten history without changing native Double edit controls.840distinct affected Python IDs pass,14new physical lifecycle flows,2worker-refusal checks, Windows/Linux native and2WindowsSDKclients. [Evidence](parity/reviews/spline-lifecycle-20261106.json). |
 | Current integrated scope | T04a.2 M3: captured area results. | Perimeter/units, X/Y, XM/YM, explicit shape/Feret and BX/BY/Width/Height use existing settings/CSV/workspace. Current3634Pythonchecks pass/one optional OpenGL skip;321unchanged strict-transform checks retain prior evidence.960original rectangle rows and59matching host pairs; affected native Windows/Linux and changed installed Windows analysis client pass. [Latest evidence](parity/reviews/rectangle-measurements-20261106.json), [Feret](parity/reviews/feret-measurements-20261106.json), [shape](parity/reviews/shape-descriptors-20261106.json), [weighted](parity/reviews/center-of-mass-20261106.json), [centroid](parity/reviews/area-centroid-20261106.json), [perimeter](parity/reviews/analytic-perimeter-20261106.json). Parent M3 remains open. |
-| Next ready | T04a.2 M3: existing-statistic outputs/column choices. | Redirected intensity is scoped delivered. Reuse mode_value/integrated_density/raw_mean for Mode/IntDen/RawIntDen, expose existing Value unit/T/C/Z choices and freeze compatibility/defaults. Broader distribution/moment/positioned/replay/platform variants retain M3/T06/T14 owners. |
+| Delivered scoped | T04a.2 M3: existing-statistic outputs/column choices. | Mode/IntDen/RawIntDen and Value unit/T/C/Z choices, actual seven-checkbox Apply/saved preferences, table/CSV/workspace and 28 affected matching Windows host pairs. 1,208 distinct affected/reused Python passes/1optionalGLskip; Windows/Linux settings controls pass. [Receipt](parity/reviews/statistic-columns-20261106.json). Full M3/release scope remains open. |
+| Next ready | T04a.2 M3: area fraction (%Area). | Freeze processor-specific raw population and threshold/LIMIT semantics from the pinned original; implement captured column/controls/CSV/persistence. Skewness/kurtosis and positioned/replay/platform variants retain M3/T06/T14 owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1029,38 +1030,18 @@ subtrees keep complete budget unverified.30Windows/Linux product-build commands
 sum741.199s, including actual corrective builds/relinks. Do not treat that sum
 as critical-path duration, runtime performance or a completion percentage.
 
-**Next ready: T04a.2 M3 existing-statistic outputs/column choices.**
+**Existing statistic columns: scoped delivered.** [Receipt](parity/reviews/statistic-columns-20261106.json) qualifies additive Mode/IntDen/RawIntDen, seven missing choices, actual preferences Apply/restart, table/CSV/workspace and 28 affected matching Windows host pairs. Existing sum/integrated_density/unknown choices and empty-list defaults remain compatible. Reused original 1,146 scalar cases and 62 distinct current installed Python passes/1optionalGLskip give 1,208 scoped passes. Windows/Linux settings controls pass. All three owned scratch groups are retired; three lossless archives verified. Known storage entry7,447,787,168B, pre-retirement7,452,087,111B, final7,450,191,476B before final docs;214 inaccessible subtrees keep budget unverified. Twelve product-build commands sum109.175s, including the avoidable threshold-reader corrective relink. The first UI attempt failed before execution because the pytest parent was missing; a fresh exact parent was observed before retry. Do not repeat unchanged numerical campaigns or treat optional skips as passing.
 
-1. Freeze a user-visible exit: select and export Mode/IntDen/RawIntDen plus the
-   existing Value unit/T/C/Z values through both hosts and persisted column
-   preferences. Keep current sum/integrated_density keys/defaults compatible.
-   Inspect the maintained table/CSV column lookup before choosing an alias route;
-   do not add a second statistics service, controller or generic field registry.
-2. Reuse `ImageJScalarStatistics.mode_value`, `integrated_density`, `raw_mean`
-   and `pixel_count` through `captured_measurement_rows`. Mode uses mode_value;
-   IntDen uses the already-computed integrated_density (point Area is later
-   zeroed); RawIntDen uses pixel_count*raw_mean. The existing raw_mean contract
-   follows ImageJ.umean, including calibrated UInt16 behavior: do not replace it
-   with inferred raw samples or the existing calibrated sum.
-3. Reuse original Mode/IntDen/RawIntDen columns in the597LIMIT and549redirect
-   fixtures. Observe only concrete missing consumer inputs. Cover scalar types,
-   density/NaN/empty, point/line/area/manager and redirected rows where supported;
-   assert their distinct per-column populations before editing formatter output.
-4. Add missing choices in Settings.measurements, preserve unknown saved choices,
-   current labels/precision and additive compatibility. Prefer existing shared
-   table/CSV aliases over duplicate payloads when that maintained route exists.
-   Confirm actual settings, formatter, binding/public-API and save/reopen callers
-   before batching relevant core/header/binding/UI/probe source changes.
-5. Put concrete positive boundaries in the existing narrow controls before any
-   expensive links. Inspect actual normalized return values, dense calibration
-   record cardinality, discarded-but-validated helper outputs and native-versus-
-   JSON nonfinite types. Reuse installed artifacts/green evidence for unchanged
-   inputs; do not restart unrelated strict geometry/renderer campaigns.
-6. Verify actual column selection/table/CSV/workspace in both hosts and only
-   affected API/native/installed consumers. Retain/retire terminal groups under
-   current storage gates, then update this coverage view and brief waste review.
-   Other distribution/moment, positioned/cross-plane threshold, replay and
-   supported-platform requirements retain their M3/T06/T14 owners.
+**Next ready: T04a.2 M3 area-fraction (%Area) measurement.**
+
+1. Freeze the user-visible exit: select %Area in Results columns, Measure/current or manager and redirect where supported, show/export the same value and preserve settings/workspace. Inspect maintained native/Python bindings and real formatter/settings/controls before editing. Keep accepted statistics/defaults and historical fixtures unchanged.
+2. Inspect pinned ImageJ1.54r Analyzer AREA_FRACTION and Byte/Short/Float statistics: numerator is raw nonzero membership without a threshold, raw threshold membership when active; denominator and empty behavior are processor/ROI-sensitive. Observe the actual threshold/LIMIT, density/NaN, clipping and line/point differences before choosing formulas. Do not infer %Area from final Area or limited pixel_count.
+3. Extend the existing original observer through a separately named scoped fixture if current fixtures lack the consumed columns. Verify source/JDK identities and producer/reader paths before running; preserve old 597LIMIT/549redirect expectations. Include zero/nonzero, empty/outside, scalar types, threshold active/inactive and LIMIT on/off, density and manager/redirect positive controls.
+4. Add the smallest additive result/option contract in existing analysis preparation; freeze signatures, optional/default behavior, binding mutability, exception timing, source/sampling threshold consumption and admission before compilation. Retain grouped reads, cancellation, stale/publication guards and history. No new statistics controller, scheduler or field registry.
+5. Batch core/header/binding/settings/UI/probe edits; run narrow numerical/ownership positives before expensive links. New public fields/ownership require affected native regressions and installed C++/Python consumers, exact artifact and pure-source identities. Reuse unchanged geometry/renderer/reference evidence; missing unrelated platform references block only their dependent claims.
+6. Exercise actual %Area column control, table/CSV precision and nonfinite formatting, saved preferences/workspace and both Windows hosts. Retire terminal groups serially under current storage gates, update the canonical checklist and perform the brief waste review before the successor.
+
+Skewness/kurtosis remain owned by M3; they are not prerequisites for independent %Area delivery. Other positioned/cross-plane threshold, constructor, replay and supported-platform variants retain M3/T06/T14 ownership. No family, commercial inventory, performance or release closure follows from this increment.
 
 BBox/Feret/shape increments do not close unsampled constructor, nonordinary/mask/
 path/line/point/replay/platform variants. M3/T06/T14 retain those owners;
@@ -1259,7 +1240,9 @@ task; recording cleanup as future work does not complete it:
    unknown paths remain unknown. Reuse active caches/runtimes/SDKs.
 5. Update the existing task row/next-two queue and at most a few active waste
    entries. Update affected [coverage checklist](COVERAGE_CHECKLIST.md) items and
-   their exact scoped receipt/platform limitations. Keep implementation,
+   their exact scoped receipt/platform limitations. Check off individual behavior
+   exits only when their linked evidence supports them; leave pending verification
+   and wider variants open. Keep implementation,
    verification, UI integration and release readiness separate; no per-task
    checklist copies or family-count completion percentage. Link detailed evidence once. Change dependency/order/validation only
    when the findings justify it; do not append another historical report here.

@@ -84,6 +84,8 @@ def test_original_limit_scalar_fit_histograms_and_bound_columns(case):
             if row.point_world is not None:
                 same(row.point_world[0],expected["X"]);same(row.point_world[1],expected["Y"])
             if row.length is not None:same(row.length,expected["Length"])
+        same(stats["integrated_density"],expected["IntDen"])
+        same(stats["pixel_count"]*stats["raw_mean"],expected["RawIntDen"])
         if case["limit"]:
             same(row.threshold_lower,expected["MinThr"]);same(row.threshold_upper,expected["MaxThr"])
         else:assert row.threshold_lower is row.threshold_upper is None
@@ -171,12 +173,15 @@ def test_physical_threshold_preference_measure_csv_workspace(tmp_path,profile):
     aliases={"mean":"Mean","minimum":"Min","maximum":"Max","median":"Median"}
     for row,expected in zip(report["rows"],case["rows"]):
         for column in report["columns"]:
-            if column=="Unit":continue
+            if column in {"Unit","Value unit","T","C","Z"}:continue
             name=aliases.get(column,column)
             if name not in expected:assert column not in row;continue
             value=expected[name]
             if isinstance(value,str):assert row[column]==value
             else:same(row[column],value)
+    for row in report["rows"]:
+        assert row["T"]==row["C"]==1 and row["Z"]==(2 if profile==85 else 1)
+        assert isinstance(row["Value unit"],str)
     assert report["additional_measure_reads"]==(0 if profile==81 else 1)
     assert report["cancel_preserved"] and report["workspace_preserved"] and report["source_unchanged_by_measure"]
     if profile==68:assert report["threshold_setting_checked"] and report["threshold_stale_checked"] and report["threshold_preference_stale_checked"]
@@ -184,9 +189,11 @@ def test_physical_threshold_preference_measure_csv_workspace(tmp_path,profile):
     if profile==85:assert report["threshold_native_off_grid"] and report["rows"][0]["Z"]==2
     with (directory/"measure.csv").open(newline="",encoding="utf-8") as stream:rows=list(csv.DictReader(stream))
     assert len(rows)==len(case["rows"])
+    for emitted,stored in zip(rows,report["rows"]):
+        for key in ["Value unit","T","C","Z"]:assert emitted[key]==str(stored[key])
     for row,expected in zip(rows,case["rows"]):
         for column in report["columns"]:
-            if column=="Unit":continue
+            if column in {"Unit","Value unit","T","C","Z"}:continue
             name=aliases.get(column,column)
             if name not in expected:assert row[column]=="";continue
             value=expected[name]

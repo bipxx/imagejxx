@@ -25,6 +25,12 @@ int main() {
   try {
     Settings settings;
     std::set<std::string> names;
+    for(const auto& d:Settings::schema())if(d.name=="measurements") {
+      const std::set<std::string> choices(d.choices.begin(),d.choices.end());
+      for(const auto* column:{"Mode","IntDen","RawIntDen","Value unit","T","C","Z","sum","integrated_density"})
+        check(choices.count(column)==1,"Missing measurement column choice");
+      check(choices.size()==d.choices.size(),"Duplicate measurement choices");
+    }
     for (const auto &d : Settings::schema()) {
       check(names.insert(d.name).second, "Setting names must be unique");
       settings.set(d.name, d.default_value);

@@ -885,7 +885,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
   if(profile==59)for(const auto* column:{"Circ.","AR","Round","Solidity","Feret","BX","BY","Width","Height"})configuredColumns.push_back(column);
   if(profile==61 || profile==67)configuredColumns=Json::array({"Angle","X","Y"});
   if(thresholdProfile) {
-    configuredColumns=Json::array({"Area","mean","minimum","maximum","median","X","Y","MinThr","MaxThr","Unit"});
+    configuredColumns=Json::array({"Area","mean","minimum","maximum","median","Mode","IntDen","RawIntDen","Value unit","T","C","Z","X","Y","MinThr","MaxThr","Unit"});
     const int variant=thresholdCase.at("variant").get<int>();
     if(variant==1)for(const auto* name:{"Major","Minor","Angle"})configuredColumns.push_back(name);
     if(variant==2)for(const auto* name:{"Circ.","AR","Round","Solidity"})configuredColumns.push_back(name);
@@ -1013,7 +1013,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(thresholdProfile) {
       require(rows.size()==thresholdCase.at("rows").size(),"Threshold row count differs from original");
       for(std::size_t i=0;i<rows.size();++i)for(const auto& column:configuredColumns) {
-        const auto key=column.get<std::string>();if(key=="Unit")continue;
+        const auto key=column.get<std::string>();if(key=="Unit" || key=="Value unit" || key=="T" || key=="C" || key=="Z")continue;
         const std::string originalKey=key=="mean"?"Mean":key=="minimum"?"Min":key=="maximum"?"Max":key=="median"?"Median":key;
         const auto& expected=thresholdCase.at("rows")[i];
         if(!expected.contains(originalKey)){require(!rows[i].contains(key),"Disabled limit unexpectedly published bound");continue;}
@@ -1253,7 +1253,7 @@ Json redirectMeasurementUiCase(Window& w,const std::string& context,const std::s
     require(refused && w.results.empty() && reads.counts().plane_reads==before,"Unsupported source silently used legacy Measure");
     w.closeDocument(rgb->id,true);w.setActiveIndex(0);w.action("measurement_redirect",{{"document_id",0}});
   }
-  Json columns={"Image","Redirect image","Redirect document","Redirect T","Redirect C","Redirect Z","Area","mean","stddev","minimum","maximum","median","integrated_density","X","Y","MinThr","MaxThr","Unit","Coordinate unit"};
+  Json columns={"Image","Mode","IntDen","RawIntDen","Value unit","T","C","Z","Redirect image","Redirect document","Redirect T","Redirect C","Redirect Z","Area","mean","stddev","minimum","maximum","median","integrated_density","X","Y","MinThr","MaxThr","Unit","Coordinate unit"};
   if(kind<7)for(const auto* c:{"Perim.","Perim. unit","BX","BY","Width","Height","Feret","Feret unit"})columns.push_back(c);
   if(config.at("variant")==1)for(const auto* c:{"Major","Minor","Angle"})columns.push_back(c);
   if(config.at("variant")==2)for(const auto* c:{"Circ.","AR","Round","Solidity"})columns.push_back(c);
@@ -1261,7 +1261,7 @@ Json redirectMeasurementUiCase(Window& w,const std::string& context,const std::s
   w.updateSettings({{"measurements",columns},{"measurement_precision",6},{"measurement_limit_to_threshold",true}},false);
   Json last,events=Json::array(),controls=Json::array(),report;std::atomic<bool> entered{false},release{false};HeadlessInputSession session(w);
   try {
-    auto frame=[&](const Json& input=Json::array()){require(events.size()<256,"Redirect frame bound");last=session.frame(input);events.push_back(input);};
+    auto frame=[&](const Json& input=Json::array()){require(events.size()<384,"Redirect frame bound");last=session.frame(input);events.push_back(input);};
     auto click=[&](const Json& control,const std::string& name){
       require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"Redirect control unavailable");controls.push_back({{"name",name},{"control",control}});
       frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
@@ -1271,11 +1271,37 @@ Json redirectMeasurementUiCase(Window& w,const std::string& context,const std::s
     auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};
     auto choose=[&](std::uint64_t id){control("menu.Analyze");control("menu.measurement_redirect");control(id?"measurement_redirect."+std::to_string(id):"measurement_redirect.none");};
     auto acknowledge=[&](){if(w.error().empty())return;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();require(w.error().empty(),"Redirect error was not acknowledged");};
-    frame();frame();frame();const auto sampled=self?source:redirect;choose(sampled->id);
+    frame();frame();frame();
+    const auto preferencesPath=last.at("preferences_path").get<std::string>();
+    if(profile==0) {
+      control("menu.Edit");control("menu.Edit.Preferences");
+      click(last.at("preferences_panel").at("widget_controls").at("search"),"preferences.search");
+      for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}})}}}));
+      frame(Json::array({{{"type","text"},{"value","Results columns"}}}));
+      for(const auto* name:{"Mode","IntDen","RawIntDen","Value unit","T","C","Z"}) {
+        for(bool selected:{false,true}) {
+          for(int attempt=0;;++attempt) {
+            const auto item=last.at("preferences_panel").at("fields").at("measurements").at("choices").at(name);
+            const auto rect=item.at("rect").get<std::array<float,4>>(),clip=item.at("clip_rect").get<std::array<float,4>>();
+            if(item.at("visible").get<bool>() && rect[1]>=clip[1] && rect[3]<=clip[3]){click(item,std::string("preferences.column.")+name);break;}
+            require(attempt<16,"Cannot expose measurement column choice");
+            frame(Json::array({{{"type","position"},{"space","screen"},{"point",{clip[0]+2,(clip[1]+clip[3])*.5f}}}}));
+            frame(Json::array({{{"type","wheel"},{"x",0},{"y",rect[3]>clip[3]?-3:3}}}));
+          }
+          require(last.at("preferences_panel").at("fields").at("measurements").at("choices").at(name).at("selected")==selected,"Column checkbox did not edit draft");
+        }
+      }
+      click(last.at("preferences_panel").at("widget_controls").at("apply"),"preferences.apply");
+      click(last.at("preferences_panel").at("widget_controls").at("close_button"),"preferences.close");
+      // Checkbox re-selection appends to the ordered preference list.
+      columns=w.settings().strings("measurements");
+    }
+    const auto sampled=self?source:redirect;choose(sampled->id);
     const auto before=source->snapshot(),other=redirect->snapshot();const auto undo=source->undo_steps(),otherUndo=redirect->undo_steps();
     const auto a=sourceReads.counts().plane_reads,b=redirectReads.counts().plane_reads;
     control("menu.Analyze");control(manager?"menu.action.measure_rois":"menu.action.measure");w.wait();frame();require(w.error().empty(),"Redirect Measure failed");
     const auto rows=w.results;require(rows.size()==(manager?3:config.at("rows").size()),"Redirect row count differs");
+    const auto resultsTable=last.at("results_table");
     const auto acquired=sourceReads.counts().plane_reads+redirectReads.counts().plane_reads-a-b;
     require(acquired==(mask?2:1),"Redirect did not share expected plane reads");
     const std::map<std::string,std::string> aliases{{"mean","Mean"},{"minimum","Min"},{"maximum","Max"},{"stddev","StdDev"},{"median","Median"},{"integrated_density","IntDen"}};
@@ -1305,8 +1331,10 @@ Json redirectMeasurementUiCase(Window& w,const std::string& context,const std::s
     w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});
     if(profile==0){choose(0);control("menu.Analyze");control("menu.action.measure");w.wait();frame();require(w.error().empty() && w.results.size()==rows.size()+1 && !w.results.back().contains("Redirect image"),"None selector retained redirect");choose(sampled->id);}
     if(profile==0 || manager){const auto preCloseRows=w.results;start();w.closeDocument(profile==0?sampled->id:source->id,true);release=true;w.wait();require(w.results==preCloseRows,"Closed measurement owner published rows");acknowledge();session.fixtureWorkerGate({});}
-    report={{"state","observed"},{"context",context},{"profile",profile},{"reference",config.at("id")},{"rows",rows},{"columns",columns},{"additional_measure_reads",acquired},{"actual_selector",true},{"unsupported_source_refused",profile==0},{"sampling_document",sampled->id},{"none_checked",profile==0},{"cancel_preserved",true},{"stale_redirect_setting",profile==0},{"stale_redirect_threshold",profile==0},{"stale_global",profile==0},{"stale_redirect_position",profile==8},{"sampling_close_checked",profile==0},{"source_close_checked",manager},{"source_unchanged",true},{"events",events},{"controls",controls}};
-    session.close();Window reopened((dir/"reopened-preferences.json").u8string());reopened.openFile((dir/"measured.ijx").u8string());
+    report={{"state","observed"},{"context",context},{"profile",profile},{"reference",config.at("id")},{"rows",rows},{"columns",columns},{"additional_measure_reads",acquired},{"actual_selector",true},{"statistic_choices_checked",profile==0},{"results_table",resultsTable},{"unsupported_source_refused",profile==0},{"sampling_document",sampled->id},{"none_checked",profile==0},{"cancel_preserved",true},{"stale_redirect_setting",profile==0},{"stale_redirect_threshold",profile==0},{"stale_global",profile==0},{"stale_redirect_position",profile==8},{"sampling_close_checked",profile==0},{"source_close_checked",manager},{"source_unchanged",true},{"events",events},{"controls",controls}};
+    session.close();Window reopened(profile==0?preferencesPath:(dir/"reopened-preferences.json").u8string());
+    if(profile==0)require(Json(reopened.settings().strings("measurements"))==columns,"Saved measurement choices were lost");
+    reopened.openFile((dir/"measured.ijx").u8string());
     require(reopened.results==rows,"Redirect workspace lost rows/provenance");report["workspace_preserved"]=true;
     require(report.dump().size()<8*1024*1024,"Redirect report bound");writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",controls}});throw;}

@@ -35,7 +35,7 @@ preserved line Angle. LIMIT now has scoped API/both-host coverage:597original
 cases,4928distinct Python passes/1optionalGLskip,86hostpairs and affected native/SDK
 checks. Redirect now has scoped API/both-host evidence (549originalcases,
 5173distinct Pythonpasses/1optionalGLskip,96hostpairs andaffected native/SDK).
-Next: M3 existing-statistic outputs/column choices. Follow PLAN and the canonical
+Existing-statistic columns now have [scoped both-host evidence](parity/reviews/statistic-columns-20261106.json). Next: M3 area fraction (%Area). Follow PLAN and the canonical
 coverage checklist; preserve remaining variants and reuse unchanged references.
 This card authorizes no agents.
 Analysis residuals

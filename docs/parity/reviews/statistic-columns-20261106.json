@@ -1,0 +1,250 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 existing-statistic outputs/column choices",
+  "implemented": true,
+  "verified": "scoped",
+  "integrated": "Windows standalone C++ and Python ImGui",
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "requirements": [
+    "G009",
+    "G066",
+    "G068",
+    "G071",
+    "Analyze.SetMeasurements existing scalar columns",
+    "ROIManager.Measure captured scalar columns"
+  ],
+  "scope": "Additive Mode/IntDen/RawIntDen captured-row fields; seven Results columns choices including Value unit/T/C/Z. Shared literal-key table/CSV, actual7checkbox Apply/savedpreferences restart and workspace rows inbothWindows hosts. Existing scalar/area/line/point/manager/redirect/LIMIT cases; no new mathkernel/controller/API/binding.",
+  "contract": {
+    "Mode": "ImageJScalarStatistics.mode_value",
+    "IntDen": "Alreadycomputed integrated_density, preserving point semantics even final Area=0.",
+    "RawIntDen": "double(pixel_count)*raw_mean using accepted ImageJ.umean, including calibrated UInt16 behavior; NOT calibrated sum.",
+    "compatibility": "sum/integrated_density existing keys retained; emptycolumnlist still meansallavailablekeys; unknown savednames retained; same precision and nonfinite strings. Three small scalar payload additions; no dense calibration duplicate or alias registry.",
+    "domain": "Captured UInt8/UInt16/finite canonicalFloat32 scalar rows; wider legacy/RGB/nonfinite-provider variants unqualified."
+  },
+  "checks": {
+    "original_cases": 1146,
+    "original_scope": "597LIMIT+549redirect existing frozen original cases; new IntDen/RawIntDen assertions run002 before settings-only core rebuild. Numerical implementation and fixtures unchanged afterward; reuse is explicit.",
+    "distinct_installed_python": {
+      "passed": 1208,
+      "skipped": 1,
+      "failed_unresolved": 0,
+      "successful_node_ids_sha256": "6a0052ef3df3e10a1a7353a9aaee245767e8333f4118c44f34a6b6d0f79d2097",
+      "current_affected_passes": 62,
+      "reused_unchanged_numeric_passes": 1146,
+      "note": "Schema0131pass plus Python01961pass; profile0positive014 duplicates019 and not counted twice. OneoptionalOpenGLskip isnotpass. Setup013error resolvedby014/019; preservedbelow."
+    },
+    "junit_counts": {
+      "primitive002.xml": {
+        "tests": 1146,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      "python013.xml": {
+        "tests": 2,
+        "errors": 1,
+        "failures": 0,
+        "skipped": 0
+      },
+      "python014.xml": {
+        "tests": 1,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      "python019.xml": {
+        "tests": 62,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 1
+      }
+    },
+    "affected_matching_windows_host_pairs": 28,
+    "host_matrix": "10redirect and18LIMIT; actualredirecttableMode/IntDen/RawIntDencelltextmatches acrosshosts. ProcesslocalRedirectdocument normalizedonlyaftercapturedsamplingowner assertion. Existingnativeaggregatealsoexercisedremaining68subtypeprofiles; no freshPython96profileclaim.",
+    "native": "Windowssettings005; standalonefullactualworkflow018; Linuxsettings016 viaexistingcache andnestedownedhelper.",
+    "installed": "Ninebuilt/source-installed bytepairs017, exactruntime loadedorigins viaexistingbootstrap. No publicABI/ownership/bindingchange; no newSDKconsumer needed. ExistingSDKlibraryupdatedcomponentdevelopment012. Linuxinstalled/UI/macOS notqualified.",
+    "sources": "OriginalImageJfixtures unchanged; no externalretiredgesture/reference gate consumed."
+  },
+  "failures_and_corrections": [
+    {
+      "attempt": "python013",
+      "observed": "Schema passes; UI fails fixture setup before product execution because pytest basetemp parent absent.",
+      "correction": "Fresh exactpython014parent observed existing withpytestchildabsent before retry; profile0passed014 andagain019. No rebuild forsetup."
+    },
+    {
+      "review": "015 before remaininghostcampaign",
+      "observed": "Oldthresholdreferencecomparison assumed allnonreferencekeysabsent, includingnewlyselectedexistingunit/positionmetadata.",
+      "correction": "Separate metadata assertions fromoriginalnumericcolumns inexistingprobe/reader; onefocusedprobecompile/relink, no unchangedcore/reference rebuild."
+    }
+  ],
+  "cleanup": {
+    "receipt": "retirement022.json",
+    "retired_groups": 3,
+    "source_bytes_removed": 3323063,
+    "retained_archive_bytes": 868251,
+    "scratch_parent_absent": true,
+    "retention": "Three losslessarchivespacked/liveverified beforedeletion; exactabsoluteowned/plainlinkchain/unchangedfile-stat snapshots andterminalprocessreceipts observed. Failed013logs/XMLretained outside scratch. Activecompilerproducts/runtimepreserved.",
+    "storage_known_bytes": {
+      "entry": 7447787168,
+      "preretirement": 7452087111,
+      "final_before_document_deltas": 7450191476
+    },
+    "inaccessible_subtrees": 214,
+    "budget_verified": false,
+    "allocation": "256MiBbounded increment; each3scratchgroup<8MiB, no overrun. Fullscope includes.cache/.tmp/reviews/dependencies/runtime/Linux/retiredroots; inaccessibleunknown isnotheadroom."
+  },
+  "waste_review": {
+    "fix_now": "Reuseacceptedstatfields/literalrows, existingprobeAPI/settingscontrols, noWindow/corealgorithm/publicheader/bindingchange. Correctreaderbeforesuite andmissingparentbeforeUIretry.",
+    "measured": "12productbuildcommands109.17545496481392s sum incl corrective relinks; unchangedWindow compiled during firstdesktopbuild although Window source notedited. Command sum isnotwallcriticalpath or performancecomparison.",
+    "defer": "T02 owns demonstratedWindow/headerbuildfanout; no speculativecompilationframework. M3 owns remaining%Area/moments; T06/T14widergeometry/replay/platform.",
+    "no_action": "Reuse1146unchangednumerics afterschemarebuild; no broadstrictgeometry/renderer/SDKreconfigure; preservewarmproducts."
+  },
+  "build_commands": [
+    {
+      "receipt": "build003-owned.json",
+      "elapsed_seconds": 3.4127064999192953
+    },
+    {
+      "receipt": "build004-owned.json",
+      "elapsed_seconds": 1.8915382002014667
+    },
+    {
+      "receipt": "build006-owned.json",
+      "elapsed_seconds": 30.71789290010929
+    },
+    {
+      "receipt": "link007-owned.json",
+      "elapsed_seconds": 34.06649879994802
+    },
+    {
+      "receipt": "link008-owned.json",
+      "elapsed_seconds": 6.448034199886024
+    },
+    {
+      "receipt": "link009-owned.json",
+      "elapsed_seconds": 2.726213599788025
+    },
+    {
+      "receipt": "link010-owned.json",
+      "elapsed_seconds": 1.8776335997972637
+    },
+    {
+      "receipt": "probe015-imagejxx_desktop-owned.json",
+      "elapsed_seconds": 10.665666799992323
+    },
+    {
+      "receipt": "probe015-_desktop-owned.json",
+      "elapsed_seconds": 6.106119999894872
+    },
+    {
+      "receipt": "probe015-imagejxx_app-owned.json",
+      "elapsed_seconds": 2.580518500180915
+    },
+    {
+      "receipt": "probe015-imagejxx_display_actions_tests-owned.json",
+      "elapsed_seconds": 1.7589871000964195
+    },
+    {
+      "receipt": "linux-build016.process.json",
+      "elapsed_seconds": 6.923644765000001
+    }
+  ],
+  "local_task_record": ".tmp/manual-workflow-verification/statistic-columns-20261106/entry.json",
+  "local_evidence_base": ".tmp/manual-workflow-verification/statistic-columns-20261106",
+  "evidence_pins": {
+    "primitive002.xml": {
+      "sha256": "c3d1d782ddf029c349d29ecba7e0aeba3be61fe20be6cc0e55326a76fdc72d8b",
+      "bytes": 247348
+    },
+    "primitive002-owned.json": {
+      "sha256": "6fbf68e0c5d3f1ed7f3e154066cf1c810ce4ac4131c1ba6b6445f8a52cfeb098",
+      "bytes": 2508
+    },
+    "python013.xml": {
+      "sha256": "6459d80c5b0ea6093301d7e16517fd7e51a9e1f0a875a5c6f3a0b68bbc1224c2",
+      "bytes": 1096
+    },
+    "python013-owned.json": {
+      "sha256": "d87363f9c10ef305f976b12b6679ace1aee9e855f6827c815a152e6fa79af7b5",
+      "bytes": 2476
+    },
+    "python014.xml": {
+      "sha256": "c4f076aad6628325415aebf57a2ee0fa4e81888b40f23a478b53c1cc8cd8b714",
+      "bytes": 383
+    },
+    "python014-owned.json": {
+      "sha256": "6ee2cb7f15583af22b3d82b3c67e5d9d895943addd95bbc28ab9dd298234af47",
+      "bytes": 2401
+    },
+    "python019.xml": {
+      "sha256": "0baf3c71e6155653a87bd0b010866c63a3d0bef6584ea6fe4cca53c684c49d19",
+      "bytes": 8606
+    },
+    "python019-owned.json": {
+      "sha256": "b7a8561059f467922d72f916eba640f366dddcd1efc79d80bdd481374e8ab7bc",
+      "bytes": 2600
+    },
+    "native018-owned.json": {
+      "sha256": "307c72950f5e7d64d1b7b4600bc52777161e802db9214ae3056472d519a124ef",
+      "bytes": 1957
+    },
+    "host-pairs020.json": {
+      "sha256": "8511720a283085737e82f459f4a990112819abbfeb2b4a0729624f2c3b8a8b30",
+      "bytes": 19360
+    },
+    "installed-identities017.json": {
+      "sha256": "d00bd955cd4ace6c52ce1d41183d1d53c93d425c6c0464115eecc070e0f3107f",
+      "bytes": 3588
+    },
+    "linux-observed016.json": {
+      "sha256": "6e345b20e4ab206792b3f1e9d15a57feb890df7048e85797edfe7b04c3bf8f4d",
+      "bytes": 206
+    },
+    "linux-identities016.json": {
+      "sha256": "1f103930dd0c98787d81d75e28d5e6e527dffed0a20c2e566c6a17bcea753d21",
+      "bytes": 255
+    },
+    "linux-owner016.process.json": {
+      "sha256": "c7d122323ba14da2dd6828b9ce4a7292ecdbbf630b472837f43e808c2d782dd6",
+      "bytes": 4569
+    },
+    "linux-build016.process.json": {
+      "sha256": "76f872d3a475303b1c3d83b40af52f2736dca3c73ae956c61fefa63d478523c6",
+      "bytes": 1525
+    },
+    "linux-settings016.process.json": {
+      "sha256": "d7357e57c7576ca4784bb9be47547e18371c22887c29715e70bcdb49dbac35b7",
+      "bytes": 1452
+    },
+    "retirement022.json": {
+      "sha256": "6d8cb1bf76ecc717fb6c950ceb2c04b8e1fe95a8d3abe2b4597cb55bb618cb7c",
+      "bytes": 1219
+    },
+    "python014022.zip": {
+      "sha256": "8852da419f7c47ceafd7bd995b4cd0c3eae9a01cc64c5f5a639d97ad852f44c5",
+      "bytes": 9372
+    },
+    "native018022.zip": {
+      "sha256": "d0b5f660a4816ce33c341caea0d44122c5c18565badb33f4d00c38802be21412",
+      "bytes": 676187
+    },
+    "python019022.zip": {
+      "sha256": "47e27990047b2ee17cae727020407f49100f4edeb169c05b399dcf22033c8ab0",
+      "bytes": 182692
+    },
+    "entry.json": {
+      "sha256": "8f247fc2340fb3685d97e2e25687b59b0b8254d802f991a5bf83e4110ce74a23",
+      "bytes": 23616
+    }
+  },
+  "remaining": [
+    "M3 %Area (nextready), skewness/kurtosis",
+    "Wider constructors/positioned/cross-plane threshold/replay",
+    "Full tableediting/import/filtering/summaries",
+    "Supported Linux/macOSUI/installed/platform/release qualification",
+    "Full commercial inventory and comparable performance evidence",
+    "99fullfamily exits remainopen"
+  ]
+}

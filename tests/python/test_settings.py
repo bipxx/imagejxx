@@ -24,6 +24,9 @@ def editor(tmp_path):
 def test_schema_defaults_and_atomic_updates():
     settings = ij.Settings()
     schema = ij.Settings.schema()
+    columns=next(d["choices"] for d in schema if d["name"]=="measurements")
+    assert {"Mode","IntDen","RawIntDen","Value unit","T","C","Z","sum","integrated_density"} <= set(columns)
+    assert len(columns)==len(set(columns))
     assert ij.Settings.schema_version == 1
     assert len({d["name"] for d in schema}) == len(schema)
     assert settings.to_dict() == {d["name"]: d["default"] for d in schema}

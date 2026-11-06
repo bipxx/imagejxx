@@ -75,6 +75,7 @@ def test_original_redirect_columns_and_populations(case):
     assert len(result.planes)==len(case["rows"]) and command.record["version"]==17
     for row,expected in zip(result.planes,case["rows"]):
         for field,column in [("area","Area"),("mean","Mean"),("stddev","StdDev"),("minimum","Min"),("maximum","Max"),("median","Median"),("mode_value","Mode"),("integrated_density","IntDen")]:same(row.statistics[field],expected[column])
+        same(row.statistics["pixel_count"]*row.statistics["raw_mean"],expected["RawIntDen"])
         if row.point_world is not None:coordinates=row.point_world
         elif row.centroid_world is not None:coordinates=row.centroid_world
         elif row.midpoint_world is not None:coordinates=row.midpoint_world
@@ -194,6 +195,16 @@ def test_physical_redirect_selection_measure_csv_workspace(tmp_path,profile):
         assert row["Redirect image"]==("source" if profile==9 else "target")
         assert row["Redirect Z"]==case["source_slice" if profile==9 else "target_slice_after"]
     assert report["actual_selector"] and report["cancel_preserved"] and report["workspace_preserved"] and report["source_unchanged"]
+    assert {"Mode","IntDen","RawIntDen","Value unit","T","C","Z"} <= set(report["columns"])
+    assert report["statistic_choices_checked"] == (profile==0)
+    for row in report["rows"]:
+        assert row["IntDen"]==row["integrated_density"]
+        assert row["T"]==row["C"]==1
+    cells={(c["row"],c["name"]):c["text"] for c in report["results_table"]["cells"]}
+    for n,row in enumerate(report["rows"]):
+        for key in ["Mode","IntDen","RawIntDen"]:
+            value=row[key]
+            assert cells[n,key]==(value if isinstance(value,str) else f"{value:.6f}")
     assert report["additional_measure_reads"]==(2 if profile==6 else 1)
     if profile==0:assert all(report[k] for k in ["none_checked","unsupported_source_refused","stale_redirect_setting","stale_redirect_threshold","stale_global","sampling_close_checked"])
     if profile==7:assert report["source_close_checked"]
