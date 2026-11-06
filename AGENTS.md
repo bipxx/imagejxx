@@ -237,6 +237,12 @@ compliance does not satisfy it.
   Record delivered scope, relevant checks, cleanup and a fix/defer/no-action
   decision. Assign material deferred waste to an owning task and update the
   current queue when the evidence changes priority or dependencies.
+- Maintain the user-requested canonical coverage view in
+  `docs/COVERAGE_CHECKLIST.md` at every task closeout: update affected behavior,
+  residual and evidence/platform entries, preserving separate implementation,
+  verification, UI integration and release states. This single requested view
+  is the exception to the no-additional-checklists rule; do not create task
+  copies, another acceptance runner or a second execution queue.
 - Review unnecessary copies/scans, duplicated logic/guards, new controllers,
   shared-header/build fanout, redundant verification, one-off runners, repeated
   documentation and retained generated data. Distinguish measured effects from

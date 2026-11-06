@@ -1,5 +1,9 @@
 # Reference inventory reconstruction
 
+Use the [coverage checklist](../COVERAGE_CHECKLIST.md) for the current detailed
+family/option residuals and scoped deliveries; [PLAN](../PLAN.md) owns execution
+order. The dated reconstruction records below retain their historical scope.
+
 The pinned reference is `imagej-1.54r-fiji-latest-20261007-1617-win64`.
 The [input pins](reference-pins.json) record exact URLs, SHA256 values, acquisition
 date, ImageJ commit/tag provenance and updater fingerprint source provenance.

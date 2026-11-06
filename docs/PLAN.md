@@ -38,6 +38,9 @@ delivery horizon remain required. Every task includes waste review, verified
 cleanup and a queue update before its successor starts.
 This is the
 authoritative current queue and completion policy.
+The [coverage checklist](COVERAGE_CHECKLIST.md) tracks detailed family/option
+residuals and scoped implementation/verification/UI/release coverage. Update its
+affected entries at task closeout; it is a coverage view, not another queue.
 [Inventory](parity/inventory.json) owns the 99 capability families and their
 remaining requirements; [command inventory](parity/commands.json) and
 [Fiji component inventory](parity/fiji-components.json) supply option/eligibility
@@ -1218,7 +1221,10 @@ task; recording cleanup as future work does not complete it:
    Measure complete non-overlapping storage roots around substantial checks;
    unknown paths remain unknown. Reuse active caches/runtimes/SDKs.
 5. Update the existing task row/next-two queue and at most a few active waste
-   entries. Link detailed evidence once. Change dependency/order/validation only
+   entries. Update affected [coverage checklist](COVERAGE_CHECKLIST.md) items and
+   their exact scoped receipt/platform limitations. Keep implementation,
+   verification, UI integration and release readiness separate; no per-task
+   checklist copies or family-count completion percentage. Link detailed evidence once. Change dependency/order/validation only
    when the findings justify it; do not append another historical report here.
 
 **Feedback must change the next start when warranted.** Before the next task,
