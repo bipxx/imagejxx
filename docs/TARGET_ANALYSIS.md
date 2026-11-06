@@ -595,11 +595,55 @@ Windows C++ client. Threshold/redirect and remaining
 variants stay open.
 
 
+## Limit to threshold measurements
+
+`TargetAnalysisOptions.limit_to_threshold` defaults false. In SELECTION or
+ROI_MANAGER measurement mode it captures the manual threshold property and its
+T/C/Z applicability before pixel reads. Generic AREA/profile requests reject
+this flag. Readonly optional `threshold_lower` and `threshold_upper` correspond
+to MinThr/MaxThr; selecting these output columns alone does not enable LIMIT.
+The Preferences Boolean `measurement_limit_to_threshold` controls editor Measure
+and manager measurements. Table and CSV use the existing precision formatter.
+
+The saved range is raw intensity. Statistics apply ImageJ processor rules:
+Byte clips to0..255 and truncates scalar bounds; Short clips to0..65535 and
+rounds before scalar conversion; Float retains finite bounds. Absent or
+inapplicable ranges leave the row unrestricted and report dtype bounds when
+LIMIT is requested. Density calibration converts the reported bounds and
+intensity summaries without changing raw membership. Per-column populations
+remain distinct: integer raw histograms cover geometric membership, scalar
+statistics/centroids use typed bounds, and ellipse fitting uses processor double
+bounds. Fractional Byte thresholds can therefore produce different scalar and
+fit populations. Short compact histogram sizing uses the processor ROI rectangle,
+including samples outside an oval/polygon mask; its empty extrema follow those
+processor bounds. The default-off native mask API retains its existing full-image
+histogram extension; this does not claim full Java parity for that extension.
+
+Thin lines/polylines use raw interpolated profile samples followed by processor
+quantization and typed statistics when LIMIT is enabled. Points keep their
+coordinates and zero area while filtering their scalar sample. Angles do not
+read pixels and return NaN threshold bounds. A thresholded empty area fit has
+NaN axes, zero angle and processor-origin plus half-pixel center. Existing
+geometric bounding/Feret behavior remains independent of intensity membership.
+
+`ResolvedTargetAnalysis.validate_source(current)` checks the captured target
+and, for LIMIT, the consumed threshold property. Pan/zoom and reapplying an
+equal threshold do not invalidate it; changing the range/applicability does.
+Application owners must also apply their existing global-calibration guard and
+validate the captured LIMIT setting before publication. Detached execution uses
+the frozen range; it does not authorize adopting stale rows. Diagnostic version16
+records the threshold population policy. Admission includes typed profile
+histograms and any threshold-forced fit traversal before provider reads.
+
+Current verification is scoped in [the coverage checklist](COVERAGE_CHECKLIST.md).
+Redirected intensity, other measurement variants and supported-platform release
+qualification remain open.
+
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
 | `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Point properties/vertex alignment are scoped delivered; interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
-| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set; the five Feret columns and companion units request the explicit Feret set. BX/BY/Width/Height request the independent processor rectangle set. Major/Minor/Angle request the explicit ellipse set; Angle-only preserves non-area behavior. Threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
+| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set; the five Feret columns and companion units request the explicit Feret set. BX/BY/Width/Height request the independent processor rectangle set. Major/Minor/Angle request the explicit ellipse set; Angle-only preserves non-area behavior. MinThr/MaxThr expose captured threshold bounds when the separate LIMIT setting is enabled. Redirected intensity remains a separate requirement. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
 | `reflex_angle` | Boolean false by default; shared Preferences control/API/persistence, captured once per measurement. True selects 360 minus the refreshed calibrated angle. |

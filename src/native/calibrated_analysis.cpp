@@ -63,7 +63,10 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     const std::vector<std::uint32_t>* supplied,
     std::optional<std::array<int,4>>* bounds=nullptr,bool source_validated=false,
     std::optional<std::array<double,2>>* centroid=nullptr,
-    std::optional<std::array<double,2>>* center_of_mass=nullptr) {
+    std::optional<std::array<double,2>>* center_of_mass=nullptr,
+    const std::array<double,2>* threshold=nullptr,
+    std::array<double,2>* threshold_summary=nullptr,
+    const std::array<int,4>* processor_roi=nullptr) {
   const auto n=shape(im);spatial.validate();density.validate_for(im.type,im.channels);
   if(mask && (mask->channels!=1 || mask->width!=im.width || mask->height!=im.height || mask->pixels.size()!=n))
     throw std::invalid_argument("Analysis mask must match the source");
@@ -76,6 +79,18 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
   std::vector<std::uint32_t> owned_lut;
   if(!supplied)owned_lut=table(density);
   const auto& lut=supplied?*supplied:owned_lut;ImageJScalarStatistics out;out.histogram.resize(256);
+  std::array<double,2> selected=threshold?*threshold:im.type==PixelType::Float32?
+      std::array<double,2>{-double(std::numeric_limits<float>::max()),double(std::numeric_limits<float>::max())}:
+      std::array<double,2>{0,im.type==PixelType::UInt8?255.:65535.};
+  if(bins)for(auto& v:selected)v=std::trunc(std::clamp(v,double(std::numeric_limits<int>::min()),double(std::numeric_limits<int>::max())));
+  const auto contains=[&](double v){return !threshold || (v>=selected[0] && v<=selected[1]);};
+  if(threshold_summary) {
+    for(int axis=0;axis<2;++axis) {
+      const double raw=selected[axis];const auto formula=detail::imagej_function_calibrated_value(density,raw);
+      (*threshold_summary)[axis]=formula?*formula:density.mode()==ImageJIntensityMode::Signed16?raw-32768:
+          !lut.empty() && raw>=0 && raw<double(lut.size())?value(std::size_t(raw),density,lut):raw;
+    }
+  }
   int x0=im.width,y0=im.height,x1=-1,y1=-1;
   double geometric_count=0,xsum=0,ysum=0,mass=0,mass_x=0,mass_y=0;
   if(center_of_mass)*center_of_mass=std::nullopt;
@@ -85,8 +100,9 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     if(mask && mask->pixels[i]==0)return false;
     // Geometric membership is independent of density-table NaNs or weighting.
     // This predicate is visited once in the owning histogram/member traversal.
-    if(centroid){++geometric_count;xsum+=double(i%im.width);ysum+=double(i/im.width);}
-    if(center_of_mass) {
+    const bool selected_sample=contains(im.pixels[i]);
+    if(centroid && selected_sample){++geometric_count;xsum+=double(i%im.width);ysum+=double(i/im.width);}
+    if(center_of_mass && selected_sample) {
       double weight=im.type==PixelType::Float32?double(float(im.pixels[i])):value(std::size_t(im.pixels[i]),density,lut);
       // Original Byte/Float moments perturb zero weights; Short does not.
       if(im.type!=PixelType::UInt16)weight+=std::numeric_limits<double>::denorm_min();
@@ -101,14 +117,23 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     // ShortStatistics uses its compact histogram path for small ROI bounds.
     // A full-size mask keeps these bounds at the complete source image.
     auto used_bins=bins;
-    if(im.type==PixelType::UInt16 && n<250000) {
+    const auto roi=processor_roi?*processor_roi:std::array<int,4>{0,0,im.width,im.height};
+    const auto histogram_pixels=processor_roi?std::size_t(roi[2])*std::size_t(roi[3]):n;
+    if(im.type==PixelType::UInt16 && histogram_pixels<250000) {
       double source_max=0;
-      for(double v:im.pixels){kernel_checkpoint_periodic();source_max=std::max(source_max,v);}
+      for(int y=roi[1];y<roi[1]+roi[3];++y)for(int x=roi[0];x<roi[0]+roi[2];++x){kernel_checkpoint_periodic();source_max=std::max(source_max,im.pixels[std::size_t(y)*im.width+x]);}
       used_bins=std::max(std::size_t(256),std::size_t(source_max)+1);
     }
     std::vector<std::uint64_t> counts(used_bins);
-    for(std::size_t i=0;i<n;++i){kernel_checkpoint_periodic();if(included(i))++counts[std::size_t(im.pixels[i])];}
-    std::size_t first=0,last=used_bins-1;
+    for(std::size_t i=0;i<n;++i){kernel_checkpoint_periodic();if(included(i)) {
+      const auto bin=std::size_t(im.pixels[i]);
+      if(processor_roi && bin>=counts.size())throw std::invalid_argument("Analysis membership exceeds its admitted processor ROI histogram");
+      ++counts[bin];
+    }}
+    // ShortStatistics scans these endpoints independently, even for an empty
+    // threshold interval: the resulting minimum may exceed the maximum.
+    std::size_t first=threshold?std::size_t(std::max(0.,selected[0])):0;
+    std::size_t last=threshold?std::size_t(std::clamp(selected[1],0.,double(used_bins-1))):used_bins-1;
     while(first<used_bins-1 && counts[first]==0)++first;
     while(last>0 && counts[last]==0)--last;
     if(im.type==PixelType::UInt8) {
@@ -116,7 +141,7 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
       for(std::size_t i=0;i<bins;++i) {
         kernel_checkpoint_periodic();
         const auto count=counts[i];const double v=value(i,density,lut);
-        if(count && !std::isnan(v)) {
+        if(contains(double(i)) && count && !std::isnan(v)) {
           out.pixel_count+=count;sum+=v*double(count);sum2+=(v*v)*double(count);raw_sum+=double(i)*double(count);
           if(count>max_count){max_count=count;out.mode_index=int(i);}
         }
@@ -125,7 +150,7 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     } else {
       const double scale=256.0/(double(last)-double(first)+1);
       std::uint64_t max_count=0;std::size_t raw_mode=0;
-      if(first<=last)for(std::size_t i=first;i<=last;++i) {
+      if(first<=last && selected[1]>=0 && (!threshold || selected[0]<=selected[1]))for(std::size_t i=first;i<=last;++i) {
         kernel_checkpoint_periodic();
         const auto count=counts[i];const double v=value(i,density,lut);
         out.pixel_count+=count;sum+=v*double(count);sum2+=(v*v)*double(count);
@@ -137,13 +162,14 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
       raw_sum=sum; // ImageJ ShortStatistics.umean follows calibrated mean.
     }
     out.minimum=std::numeric_limits<double>::max();out.maximum=-out.minimum;
-    for(std::size_t i=0;i<used_bins;++i){kernel_checkpoint_periodic();if(counts[i]) {
+    for(std::size_t i=0;i<used_bins;++i){kernel_checkpoint_periodic();if(counts[i] && contains(double(i))) {
       const auto v=value(i,density,lut);if(v<out.minimum)out.minimum=v;if(v>out.maximum)out.maximum=v;
     }}
     if(im.type==PixelType::UInt8 && !out.pixel_count)out.minimum=out.maximum=nan;
     if(out.pixel_count) {
-      double accumulated=0;std::size_t i=0;
-      do {kernel_checkpoint_periodic();accumulated+=double(counts[i++]);}while(accumulated<=double(out.pixel_count)/2 && i<used_bins);
+      double accumulated=0;std::size_t i=threshold?std::size_t(std::clamp(selected[0],0.,double(used_bins-1))):0;
+      do {kernel_checkpoint_periodic();accumulated+=double(counts[i++]);}
+      while(accumulated<=double(out.pixel_count)/2 && i<used_bins && (!threshold || double(i)<=selected[1]));
       const auto raw=i-1;
       const auto formula=detail::imagej_function_calibrated_value(density,double(raw));
       out.median=formula?*formula:value(raw,density,lut);
@@ -154,7 +180,7 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     }
   } else {
     std::vector<float> members;members.reserve(n);
-    for(std::size_t i=0;i<n;++i){kernel_checkpoint_periodic();if(included(i))members.push_back(float(im.pixels[i]));}
+    for(std::size_t i=0;i<n;++i){kernel_checkpoint_periodic();if(included(i) && contains(im.pixels[i]))members.push_back(float(im.pixels[i]));}
     out.pixel_count=members.size();
     out.minimum=std::numeric_limits<double>::max();out.maximum=-out.minimum;
     for(float f:members){kernel_checkpoint_periodic();const double v=f;out.minimum=std::min(out.minimum,v);out.maximum=std::max(out.maximum,v);sum+=v;sum2+=v*v;}
@@ -326,6 +352,27 @@ ImageJScalarStatistics profile_statistics(std::vector<double> values,const Spati
   samples.width=int(values.size());samples.pixels=std::move(values);
   return statistics_impl(samples,spatial,ImageJIntensityCalibration::uncalibrated(),nullptr,maximum,nullptr);
 }
+ImageJScalarStatistics limited_profile_statistics(std::vector<double> values,const SpatialCalibration& spatial,
+    PixelType type,const ImageJIntensityCalibration& density,const std::vector<std::uint32_t>* lut,
+    const std::array<double,2>* threshold,std::array<double,2>* summary,std::size_t maximum) {
+  const std::size_t bins=type==PixelType::UInt8?256:type==PixelType::UInt16?65536:0;
+  cap(add(8192,add(mul(values.size(),sizeof(double)+sizeof(float)),mul(bins,sizeof(std::uint64_t)))),maximum);
+  for(auto& v:values) {
+    kernel_checkpoint_periodic();
+    if(!std::isfinite(v) || std::abs(v)>std::numeric_limits<float>::max())
+      throw std::invalid_argument("Limited profile requires finite Float32-representable raw values");
+    const float f=float(v);
+    v=type==PixelType::UInt8?std::trunc(std::clamp(double(f+.5f),0.,255.)):
+        type==PixelType::UInt16?std::trunc(std::clamp(double(f)+.5,0.,65535.)):double(f);
+  }
+  Image samples(1,1,1,type);
+  if(values.empty()) {
+    Image mask(1,1,1,PixelType::UInt8);
+    return statistics_impl(samples,spatial,density,&mask,maximum,lut,nullptr,true,nullptr,nullptr,threshold,summary);
+  }
+  samples.width=int(values.size());samples.pixels=std::move(values);
+  return statistics_impl(samples,spatial,density,nullptr,maximum,lut,nullptr,true,nullptr,nullptr,threshold,summary);
+}
 }
 std::array<int,4> imagej_line_bounds(const std::array<double,4>& p) {
   for(double v:p)if(!std::isfinite(v))throw std::invalid_argument("Line bounds require finite coordinates");
@@ -480,14 +527,16 @@ std::vector<double> imagej_calibrated_line_profile(const Image& im,const ImageJI
 static ImageJLineMeasurement line_measurement_impl(const Image& im,
     const SpatialCalibration& spatial,const ImageJIntensityCalibration& density,
     double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum,
-    const std::vector<std::uint32_t>* supplied,bool source_validated,double voxel_z=0) {
+    const std::vector<std::uint32_t>* supplied,bool source_validated,double voxel_z=0,
+    const std::array<double,2>* threshold=nullptr,std::array<double,2>* threshold_summary=nullptr) {
   shape(im);spatial.validate();density.validate_for(im.type,im.channels);
   const auto count=detail::calibrated_profile_sample_count({x1,y1,x2,y2});
   const auto bins=density.mode()==ImageJIntensityMode::Lookup?
       (im.type==PixelType::UInt8?256:65536):0;
   // The sampled double vector is moved into a Float32-tagged Image; no second
   // double buffer is allocated. Statistics also needs its Float32 median copy.
-  cap(add(8192,add(mul(count,sizeof(double)+sizeof(float)),mul(bins,sizeof(std::uint32_t)))),maximum);
+  const std::size_t typed_bins=threshold_summary?(im.type==PixelType::UInt8?256:im.type==PixelType::UInt16?65536:0):0;
+  cap(add(8192,add(mul(count,sizeof(double)+sizeof(float)),add(mul(bins,sizeof(std::uint32_t)),mul(typed_bins,sizeof(std::uint64_t))))),maximum);
   const double dx=(x2-x1)*spatial.spacing[0],dy=(y2-y1)*spatial.spacing[1];
   const auto& d=spatial.direction;
   ImageJLineMeasurement out;
@@ -497,8 +546,14 @@ static ImageJLineMeasurement line_measurement_impl(const Image& im,
   if(!std::isfinite(out.length) || !std::isfinite(out.angle_degrees) ||
       !std::all_of(out.midpoint_world.begin(),out.midpoint_world.end(),[](double v){return std::isfinite(v);}))
     throw std::invalid_argument("Line measurement geometry must be finite");
-  auto values=profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,supplied,0,source_validated);
-  out.statistics=profile_statistics(std::move(values),spatial,maximum);
+  if(threshold_summary) {
+    const auto raw=ImageJIntensityCalibration::uncalibrated();const std::vector<std::uint32_t> empty;
+    auto values=profile_impl(im,raw,x1,y1,x2,y2,interpolate,maximum,&empty,0,source_validated);
+    out.statistics=limited_profile_statistics(std::move(values),spatial,im.type,density,supplied,threshold,threshold_summary,maximum);
+  }else {
+    auto values=profile_impl(im,density,x1,y1,x2,y2,interpolate,maximum,supplied,0,source_validated);
+    out.statistics=profile_statistics(std::move(values),spatial,maximum);
+  }
   return out;
 }
 ImageJLineMeasurement imagej_calibrated_line_measurement(const Image& im,
@@ -513,9 +568,16 @@ PolylineEstimate estimate_polyline_measurement(int width,int height,PixelType ty
 }
 ImageJPolylineMeasurement calibrated_polyline_measurement_with_table(const Image& im,const SpatialCalibration& spatial,
     const ImageJIntensityCalibration& density,const std::vector<std::uint32_t>& lut,
-    const std::vector<std::array<double,2>>& points,bool interpolate,std::size_t maximum,std::size_t work,bool validated) {
+    const std::vector<std::array<double,2>>& points,bool interpolate,std::size_t maximum,std::size_t work,bool validated,
+    const std::array<double,2>* threshold,std::array<double,2>* threshold_summary) {
   shape(im);density.validate_for(im.type,im.channels);const auto plan=polyline_plan(im.width,im.height,im.type,spatial,points,maximum,work,1);
   if(!validated)pixels(im);
+  if(threshold_summary) {
+    const std::size_t bins=im.type==PixelType::UInt8?256:im.type==PixelType::UInt16?65536:0;
+    cap(add(plan.estimate.working_bytes,mul(bins,sizeof(std::uint64_t))),maximum);
+    const auto raw=ImageJIntensityCalibration::uncalibrated();const std::vector<std::uint32_t> empty;
+    return {limited_profile_statistics(irregular_values(im,raw,empty,plan,interpolate),spatial,im.type,density,&lut,threshold,threshold_summary,maximum),plan.estimate.length,plan.estimate.bounds};
+  }
   return {profile_statistics(irregular_values(im,density,lut,plan,interpolate),spatial,maximum),plan.estimate.length,plan.estimate.bounds};
 }
 std::array<int,4> angle_bounds(const std::array<std::array<double,2>,3>& points) {
@@ -534,14 +596,16 @@ ImageJScalarStatistics calibrated_statistics_with_table(const Image& im,const Sp
     const ImageJIntensityCalibration& density,const std::vector<std::uint32_t>& lut,const Image* mask,std::size_t maximum,
     std::optional<std::array<int,4>>* bounds,bool source_validated,
     std::optional<std::array<double,2>>* centroid,
-    std::optional<std::array<double,2>>* center_of_mass) {
-  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds,source_validated,centroid,center_of_mass);
+    std::optional<std::array<double,2>>* center_of_mass,
+    const std::array<double,2>* threshold,std::array<double,2>* threshold_summary,const std::array<int,4>* processor_roi) {
+  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds,source_validated,centroid,center_of_mass,threshold,threshold_summary,processor_roi);
 }
 ImageJLineMeasurement calibrated_line_measurement_with_table(const Image& im,
     const SpatialCalibration& spatial,const ImageJIntensityCalibration& density,
     const std::vector<std::uint32_t>& lut,const std::array<double,4>& p,bool interpolate,
-    std::size_t maximum,bool source_validated,double voxel_z) {
-  return line_measurement_impl(im,spatial,density,p[0],p[1],p[2],p[3],interpolate,maximum,&lut,source_validated,voxel_z);
+    std::size_t maximum,bool source_validated,double voxel_z,
+    const std::array<double,2>* threshold,std::array<double,2>* threshold_summary) {
+  return line_measurement_impl(im,spatial,density,p[0],p[1],p[2],p[3],interpolate,maximum,&lut,source_validated,voxel_z,threshold,threshold_summary);
 }
 std::vector<double> calibrated_profile_with_table(const Image& im,const ImageJIntensityCalibration& density,
     const std::vector<std::uint32_t>& lut,double x1,double y1,double x2,double y2,bool interpolate,std::size_t maximum,

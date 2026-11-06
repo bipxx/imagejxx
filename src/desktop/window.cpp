@@ -4293,6 +4293,7 @@ struct Window::Impl {
     TargetAnalysisOptions options;options.measurement=manager?TargetMeasurementMode::RoiManager:TargetMeasurementMode::Selection;
     options.roi_indices=indices;
     options.reflex_angle=preferenceState.settings.boolean("reflex_angle");
+    options.limit_to_threshold=preferenceState.settings.boolean("measurement_limit_to_threshold");
     const auto& columns=preferenceState.settings.strings("measurements");
     options.shape_descriptors=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Circ." || column=="AR" || column=="Round" || column=="Solidity";});
     options.feret=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Feret" || column=="MinFeret" || column=="FeretAngle" || column=="FeretX" || column=="FeretY" || column=="Feret unit" || column=="Feret coordinate unit";});
@@ -10402,7 +10403,9 @@ void Window::poll() {
         if(impl->cancelled)throw OperationCancelled();
         const auto& command=*completed.analysis_command;
         const auto current=nativeSnapshot();const auto& captured=command.target().source();
-        controller_->validate_target(command.target());
+        controller_->validate_target(command.target());command.validate_source(current);
+        if(command.options().measurement!=TargetMeasurementMode::Area &&
+            impl->preferenceState.settings.boolean("measurement_limit_to_threshold")!=command.options().limit_to_threshold)throw RevisionConflict();
         if(current.id()!=captured.id() || (command.options().measurement!=TargetMeasurementMode::RoiManager &&
             (current.display().t!=captured.display().t ||
             current.display().c!=captured.display().c ||
@@ -10426,7 +10429,7 @@ void Window::poll() {
         auto* array=OutputPublication::reserve(results,completed.analysis_rows.size(),"Results");
         impl->measurementRowMemory.reserve(impl->measurementRowMemory.size()+1);
         std::string status="Measurement complete";
-        controller_->validate_target(command.target());
+        controller_->validate_target(command.target());command.validate_source(nativeSnapshot());
         static_assert(std::is_nothrow_move_constructible_v<Json>);
         for(auto& row:completed.analysis_rows)array->push_back(std::move(row));
         impl->measurementRowMemory.push_back(std::move(impl->measurementPendingMemory));

@@ -29,6 +29,9 @@ struct TargetAnalysisOptions {
   bool bounding_rectangle = false;
   // Explicit legacy fitted area axes/orientation; Shape descriptors shares the fit.
   bool ellipse = false;
+  // Capture the existing manual-threshold state per resolved row. Absent/off-grid
+  // thresholds are unrestricted; explicit Selection/ROI_MANAGER modes only.
+  bool limit_to_threshold = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -78,6 +81,8 @@ struct TargetAnalysisPlane {
   // Explicit ellipse only. Axes follow legacy near-square spacing policy; angle
   // is image XY degrees, independent of spatial direction and origin.
   std::optional<double> ellipse_major,ellipse_minor,ellipse_angle_degrees;
+  // LIMIT saved typed/density-calibrated bounds (MinThr/MaxThr); angle rows NaN.
+  std::optional<double> threshold_lower,threshold_upper;
   // Present together only for feret. Angle uses the local calibrated image plane.
   std::optional<double> feret,min_feret,feret_angle,feret_x,feret_y;
   // Analyzer whole-image fallback uses pixels; generic endpoints are raw image
@@ -110,6 +115,9 @@ public:
   const ImageJIntensityCalibration& intensity() const;
   // Provenance only, not a replay instruction or a live publication capability.
   const MetadataObject& record() const;
+  // Local source and consumed threshold context. Application owners must also
+  // validate_target for captured global calibration before publication.
+  void validate_source(const DocumentSnapshot& current) const;
 private:
   struct State;
   std::shared_ptr<const State> state_;

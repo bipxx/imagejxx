@@ -31,7 +31,10 @@ CSV/workspace evidence; weighted XM/YM now has the same scoped integration.
 The explicit shape, Feret and processor rectangle options have scoped both-host
 integration, including subtype units and full native rectangle vectors. ELLIPSE
 Major/Minor/Angle now has scoped API/both-host coverage with fitted centers and
-preserved line Angle. Next: Limit to threshold measurements through existing owners.
+preserved line Angle. LIMIT now has scoped API/both-host coverage:597original
+cases,4928distinct Python passes/1optionalGLskip,86hostpairs and affected native/SDK
+checks. Next ready: M3 redirected intensity. Follow PLAN and the canonical
+coverage checklist; preserve remaining variants and reuse unchanged references.
 This card authorizes no agents.
 Analysis residuals
 do not impose a blanket prerequisite. Inspect current worktree and

@@ -179,12 +179,13 @@ std::size_t circle_admission(const Selection &s,int width,int height,
   return bytes;
 }
 struct AreaMoments {std::size_t count=0;double sx=0,sy=0,cxx=0,cyy=0,cxy=0;};
-AreaMoments mask_moments(const Image& mask,int width,bool second,std::array<int,2> origin={0,0}) {
+template<class Member>
+AreaMoments member_moments(int width,int height,bool second,std::array<int,2> origin,Member member) {
   AreaMoments m;double lx=0,ly=0;
-  for(int y=0;y<mask.height;++y) {
+  for(int y=0;y<height;++y) {
     double lineSum=0;std::size_t lineCount=0;
     for(int x=0;x<width;++x) {
-      kernel_checkpoint_periodic();if(mask.pixels[std::size_t(y)*width+x]==0)continue;
+      kernel_checkpoint_periodic();if(!member(std::size_t(y)*width+x))continue;
       ++m.count;m.sx+=x;m.sy+=y;
       if(second){const double local=x-double(origin[0]);lineSum+=local;++lineCount;m.cxx+=local*local;}
     }
@@ -195,6 +196,9 @@ AreaMoments mask_moments(const Image& mask,int width,bool second,std::array<int,
     m.cxx=(m.cxx+.08333333*n)/n-mx*mx;m.cyy=(m.cyy+.08333333*n)/n-my*my;m.cxy=m.cxy/n-mx*my;
   }
   return m;
+}
+AreaMoments mask_moments(const Image& mask,int width,bool second,std::array<int,2> origin={0,0}) {
+  return member_moments(width,mask.height,second,origin,[&](std::size_t i){return mask.pixels[i]!=0;});
 }
 std::array<double,3> moment_ellipse_axes(const AreaMoments& m) {
   if(!m.count){const auto nan=std::numeric_limits<double>::quiet_NaN();return {nan,nan,0};}
@@ -476,16 +480,22 @@ AreaShapeGeometry prepare_area_shape_geometry(const Selection* source,int width,
   const auto signed_area=area<0x80000000u?std::int64_t(area):std::int64_t(area)-0x100000000LL;
   out.hull_area=std::abs(double(signed_area)/2);return out;
 }
-AreaEllipseSummary area_ellipse_summary(const Image* mask,int width,int height,const std::array<int,4>& frame,bool mask_present) {
+AreaEllipseSummary area_ellipse_summary(const Image* mask,int width,int height,const std::array<int,4>& frame,bool mask_present,
+    const Image* threshold_source,const std::array<double,2>* threshold) {
   AreaEllipseSummary out;
-  if(!mask_present) {
+  if(!mask_present && !threshold) {
     const double a=2*double(frame[2])/1.772453851,b=2*double(frame[3])/1.772453851;
     out.axes={std::max(a,b),std::min(a,b),b>a?1.57079632679489661923:0.};
     out.center={frame[0]+.5*frame[2],frame[1]+.5*frame[3]};return out;
   }
-  if(!mask || mask->width!=width || mask->height!=height)
-    throw std::invalid_argument("Ellipse summary requires its admitted area mask");
-  const auto m=frame[2] && frame[3]?mask_moments(*mask,width,true,{frame[0],frame[1]}):AreaMoments{};
+  if((!mask && !threshold) || (mask && (mask->width!=width || mask->height!=height)) ||
+      (threshold && (!threshold_source || threshold_source->width!=width || threshold_source->height!=height)))
+    throw std::invalid_argument("Ellipse summary requires its admitted area mask/threshold source");
+  const auto member=[&](std::size_t i) {
+    if(mask && mask->pixels[i]==0)return false;
+    return !threshold || (threshold_source->pixels[i]>=(*threshold)[0] && threshold_source->pixels[i]<=(*threshold)[1]);
+  };
+  const auto m=frame[2] && frame[3]?member_moments(width,height,true,{frame[0],frame[1]},member):AreaMoments{};
   out.axes=moment_ellipse_axes(m);
   out.center=m.count?std::array<double,2>{m.sx/double(m.count)+.5,m.sy/double(m.count)+.5}:
       std::array<double,2>{frame[0]+.5,frame[1]+.5};

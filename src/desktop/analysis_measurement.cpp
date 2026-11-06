@@ -112,6 +112,9 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       values["Major"]=scalar(*row.ellipse_major);values["Minor"]=scalar(*row.ellipse_minor);
       values["Angle"]=scalar(*row.ellipse_angle_degrees);
     }
+    if(row.threshold_lower) {
+      values["MinThr"]=scalar(*row.threshold_lower);values["MaxThr"]=scalar(*row.threshold_upper);
+    }
     if(row.point_index) {
       if(!row.point_world)throw std::invalid_argument("Point measurement requires captured coordinates");
       values["Point index"]=*row.point_index;

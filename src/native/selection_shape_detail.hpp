@@ -15,5 +15,6 @@ struct AreaEllipseSummary {
   std::array<double,3> axes{}; // major, minor, angle in radians
   std::array<double,2> center{}; // raw image pixel centers
 };
-AreaEllipseSummary area_ellipse_summary(const Image*,int,int,const std::array<int,4>&,bool mask_present);
+AreaEllipseSummary area_ellipse_summary(const Image*,int,int,const std::array<int,4>&,bool mask_present,
+    const Image* threshold_source=nullptr,const std::array<double,2>* threshold=nullptr);
 }

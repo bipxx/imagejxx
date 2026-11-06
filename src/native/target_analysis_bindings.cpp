@@ -18,7 +18,8 @@ void bind_target_analysis(py::module_& m) {
     .def_readwrite("shape_descriptors",&TargetAnalysisOptions::shape_descriptors)
     .def_readwrite("feret",&TargetAnalysisOptions::feret)
     .def_readwrite("bounding_rectangle",&TargetAnalysisOptions::bounding_rectangle)
-    .def_readwrite("ellipse",&TargetAnalysisOptions::ellipse);
+    .def_readwrite("ellipse",&TargetAnalysisOptions::ellipse)
+    .def_readwrite("limit_to_threshold",&TargetAnalysisOptions::limit_to_threshold);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
     .def_readwrite("max_working_bytes",&TargetAnalysisLimits::max_working_bytes)
@@ -75,6 +76,8 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("ellipse_major",&TargetAnalysisPlane::ellipse_major)
     .def_readonly("ellipse_minor",&TargetAnalysisPlane::ellipse_minor)
     .def_readonly("ellipse_angle_degrees",&TargetAnalysisPlane::ellipse_angle_degrees)
+    .def_readonly("threshold_lower",&TargetAnalysisPlane::threshold_lower)
+    .def_readonly("threshold_upper",&TargetAnalysisPlane::threshold_upper)
     .def_property_readonly("statistics",[](const TargetAnalysisPlane& v)->py::object{
       if(v.statistics)return bindings::calibrated_statistics_python(*v.statistics);
       return py::none();})
@@ -93,7 +96,8 @@ void bind_target_analysis(py::module_& m) {
     .def_property_readonly("estimate",[](const ResolvedTargetAnalysis& v){return v.estimate();})
     .def_property_readonly("spatial",[](const ResolvedTargetAnalysis& v){return v.spatial();})
     .def_property_readonly("intensity",[](const ResolvedTargetAnalysis& v){return v.intensity();})
-    .def_property_readonly("record",[](const ResolvedTargetAnalysis& v){return bindings::metadata_python(v.record());});
+    .def_property_readonly("record",[](const ResolvedTargetAnalysis& v){return bindings::metadata_python(v.record());})
+    .def("validate_source",&ResolvedTargetAnalysis::validate_source,py::arg("current"));
   m.def("roi_measurement_target_request",[](const DocumentSnapshot& source,const std::vector<std::size_t>& indices,std::size_t maximum){
     py::gil_scoped_release release;return roi_measurement_target_request(source,indices,maximum);
   },py::arg("source"),py::arg("indices")=std::vector<std::size_t>{},py::arg("max_rows")=100000);

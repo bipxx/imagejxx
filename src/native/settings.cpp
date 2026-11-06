@@ -349,6 +349,9 @@ const std::vector<SettingDefinition> &Settings::schema() {
       {"reflex_angle", "Measurements", "Reflex angles",
        "Report the reflex complement of the calibrated angle between two segments.",
        SettingKind::Boolean, false},
+      {"measurement_limit_to_threshold", "Measurements", "Limit to threshold",
+       "Use the captured manual threshold for applicable measurement rows; absent thresholds are unrestricted.",
+       SettingKind::Boolean, false},
       {"measurement_precision", "Measurements", "Decimal places",
        "Minus one preserves full precision; other values format the results "
        "view and CSV. Native results retain full precision.",
@@ -386,6 +389,8 @@ const std::vector<SettingDefinition> &Settings::schema() {
         "Angle",
         "Major",
         "Minor",
+        "MinThr",
+        "MaxThr",
         "X",
         "Y",
         "XM",

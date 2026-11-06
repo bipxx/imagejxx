@@ -3,6 +3,10 @@
 #include "rendering.hpp"
 #include "window.hpp"
 #include <imagejxx/selection_spline.hpp>
+#include <imagejxx/manual_threshold.hpp>
+#include <cstring>
+#include <iomanip>
+#include <sstream>
 #include <imagejxx/selection_interpolation.hpp>
 #include <imagejxx/line_measurement.hpp>
 #include <imagejxx/imagej_intensity_calibration.hpp>
@@ -781,15 +785,20 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
 
 
 Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::string& directory,int profile) {
-  require(profile>=0 && profile<=67,"Unknown subtype measurement profile");
+  require(profile>=0 && profile<=85,"Unknown subtype measurement profile");
   const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
   require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh subtype measurement fixture required");std::filesystem::create_directories(dir);
+  const bool thresholdProfile=profile>=68;Json thresholdCase;
+  if(thresholdProfile) {
+    const auto cases=Json::parse(R"threshold([{"id":"threshold-shape0-type0-range1-density0-variant0-limittrue","kind":"whole_image","points":[],"type":0,"density":0,"variant":0,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":20.0,"Mean":8.0,"StdDev":1.4509525002200232,"Mode":6.0,"Min":6.0,"Max":10.0,"X":3.9,"Y":2.8,"XM":3.9,"YM":2.925,"Perim.":28.0,"BX":0.0,"BY":0.0,"Width":8.0,"Height":6.0,"Feret":10.0,"IntDen":160.0,"Median":8.0,"RawIntDen":160.0,"FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"MinThr":6.0,"MaxThr":10.0}]},{"id":"threshold-shape1-type0-range2-density0-variant1-limittrue","kind":"rectangle","points":[[1,1],[6,5]],"type":0,"density":0,"variant":1,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[6.4,10.4],"rows":[{"Area":12.0,"Mean":8.0,"StdDev":1.4142135623730951,"Mode":7.0,"Min":6.0,"Max":10.0,"X":3.5,"Y":3.2,"XM":3.5,"YM":3.1145833333333335,"Perim.":18.0,"BX":1.0,"BY":1.0,"Width":5.0,"Height":4.0,"Major":6.032171433086342,"Minor":2.1107482750763165,"Angle":29.62367722443418,"Feret":6.4031242374328485,"IntDen":96.0,"Median":8.0,"RawIntDen":96.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":141.34019174590992,"MinFeret":4.0,"MinThr":6.0,"MaxThr":10.0}]},{"id":"threshold-shape2-type0-range1-density0-variant2-limittrue","kind":"ellipse","points":[[1,1],[6,5]],"type":0,"density":0,"variant":2,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":10.0,"Mean":8.0,"StdDev":1.4907119849998598,"Mode":6.0,"Min":6.0,"Max":10.0,"X":3.5,"Y":3.0,"XM":3.55,"YM":3.1,"Perim.":14.18083389212731,"BX":1.0,"BY":1.0,"Width":5.0,"Height":4.0,"Circ.":0.6248939560026762,"Feret":5.0,"IntDen":80.0,"Median":8.0,"RawIntDen":80.0,"FeretX":1.0,"FeretY":3.0,"FeretAngle":0.0,"MinFeret":4.0,"AR":1.8937283106052025,"Round":0.5280588532155479,"Solidity":0.7142857142857143,"MinThr":6.0,"MaxThr":10.0}]},{"id":"threshold-shape3-type0-range1-density0-variant1-limittrue","kind":"polygon","points":[[1.0,1.0],[7.0,1.0],[3.0,5.0]],"type":0,"density":0,"variant":1,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":10.0,"Mean":7.8,"StdDev":1.3165611772087666,"Mode":8.0,"Min":6.0,"Max":10.0,"X":4.3,"Y":2.5,"XM":4.346153846153847,"YM":2.576923076923077,"Perim.":16.12899020449196,"BX":1.0,"BY":1.0,"Width":6.0,"Height":4.0,"Major":5.306431931824574,"Minor":2.399426886264363,"Angle":25.670095872954917,"Feret":6.0,"IntDen":78.0,"Median":8.0,"RawIntDen":78.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":0.0,"MinFeret":4.0,"MinThr":6.0,"MaxThr":10.0}]},{"id":"threshold-shape4-type0-range1-density0-variant1-limittrue","kind":"polygon","points":[[1.0,1.0],[6.0,1.0],[6.0,5.0],[1.0,5.0]],"type":0,"density":0,"variant":1,"limit":true,"fitted":true,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":14.0,"Mean":8.0,"StdDev":1.5191090506254998,"Mode":6.0,"Min":6.0,"Max":10.0,"X":3.5,"Y":3.0,"XM":3.607142857142857,"YM":3.080357142857143,"Perim.":15.65685424949238,"BX":0.0,"BY":0.0,"Width":7.0,"Height":6.0,"Major":6.806986176549218,"Minor":2.6186851513967366,"Angle":22.24648546954261,"Feret":6.6264184180215215,"IntDen":112.0,"Median":8.0,"RawIntDen":112.0,"FeretX":0.1875985860824585,"FeretY":3.0612988471984863,"FeretAngle":0.22655559144735643,"MinFeret":5.719407751097961,"MinThr":6.0,"MaxThr":10.0}]},{"id":"threshold-shape5-type0-range1-density0-variant1-limittrue","kind":"polygon","points":[[20.0,20.0],[26.0,20.0],[22.0,24.0]],"type":0,"density":0,"variant":1,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":0.0,"Mean":"nan","StdDev":0.0,"Mode":0.0,"Min":"nan","Max":"nan","X":0.5,"Y":0.5,"XM":"nan","YM":"nan","Perim.":16.12899020449196,"BX":0.0,"BY":0.0,"Width":0.0,"Height":0.0,"Major":"nan","Minor":"nan","Angle":0.0,"Feret":6.0,"IntDen":"nan","Median":"nan","RawIntDen":"nan","FeretX":20.0,"FeretY":20.0,"FeretAngle":0.0,"MinFeret":4.0,"MinThr":6.0,"MaxThr":10.0}]},{"id":"threshold-shape0-type0-range0-density0-variant1-limittrue","kind":"whole_image","points":[],"type":0,"density":0,"variant":1,"limit":true,"fitted":false,"threshold_active":false,"requested_range":[-10.0,100.0],"rows":[{"Area":48.0,"Mean":8.5,"StdDev":4.15651244972042,"Mode":6.0,"Min":0.0,"Max":17.0,"X":4.0,"Y":3.0,"XM":4.617647058823529,"YM":3.6862745098039214,"Perim.":28.0,"BX":0.0,"BY":0.0,"Width":8.0,"Height":6.0,"Major":9.027033336282898,"Minor":6.770275002212173,"Angle":0.0,"Feret":10.0,"IntDen":408.0,"Median":9.0,"RawIntDen":408.0,"FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"MinThr":0.0,"MaxThr":255.0}]},{"id":"threshold-shape0-type0-range3-density0-variant1-limittrue","kind":"whole_image","points":[],"type":0,"density":0,"variant":1,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[100.0,110.0],"rows":[{"Area":0.0,"Mean":"nan","StdDev":0.0,"Mode":0.0,"Min":"nan","Max":"nan","X":0.5,"Y":0.5,"XM":"nan","YM":"nan","Perim.":28.0,"BX":0.0,"BY":0.0,"Width":8.0,"Height":6.0,"Major":"nan","Minor":"nan","Angle":0.0,"Feret":10.0,"IntDen":"nan","Median":"nan","RawIntDen":"nan","FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"MinThr":100.0,"MaxThr":110.0}]},{"id":"threshold-shape0-type1-range2-density0-variant0-limittrue","kind":"whole_image","points":[],"type":1,"density":0,"variant":0,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[1644.8000000000002,2672.8],"rows":[{"Area":16.0,"Mean":2184.5,"StdDev":296.7580383634676,"Mode":1799.0,"Min":1799.0,"Max":2570.0,"X":4.0,"Y":3.0,"XM":3.9705882352941178,"YM":3.088235294117647,"Perim.":28.0,"BX":0.0,"BY":0.0,"Width":8.0,"Height":6.0,"Feret":10.0,"IntDen":34952.0,"Median":2313.0,"RawIntDen":34952.0,"FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"MinThr":1645.0,"MaxThr":2673.0}]},{"id":"threshold-shape0-type2-range2-density0-variant1-limittrue","kind":"whole_image","points":[],"type":2,"density":0,"variant":1,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[-0.3999999999999999,0.6000000000000001],"rows":[{"Area":16.0,"Mean":0.125,"StdDev":0.28867513459481287,"Mode":-0.24853515625,"Min":-0.25,"Max":0.5,"X":4.0,"Y":3.0,"XM":3.5,"YM":4.5,"Perim.":28.0,"BX":0.0,"BY":0.0,"Width":8.0,"Height":6.0,"Major":9.677856909016395,"Minor":2.1049942055645756,"Angle":28.76440385457576,"Feret":10.0,"IntDen":2.0,"Median":0.125,"RawIntDen":2.0,"FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"MinThr":-0.3999999999999999,"MaxThr":0.6000000000000001}]},{"id":"threshold-shape7-type0-range1-density0-variant0-limittrue","kind":"line","points":[[1.0,1.0],[6.0,4.0]],"type":0,"density":0,"variant":0,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":3.0,"Mean":8.666666666666666,"StdDev":1.5275252316519468,"Mode":7.0,"Min":7.0,"Max":10.0,"X":3.5,"Y":2.5,"XM":0.0,"YM":0.0,"Perim.":5.830951894845301,"BX":1.0,"BY":1.0,"Width":6.0,"Height":4.0,"Angle":-30.96375653207352,"Feret":5.830951894845301,"IntDen":26.0,"Median":9.0,"RawIntDen":26.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":149.03624346792648,"MinFeret":0.0,"MinThr":6.0,"MaxThr":10.0,"Length":5.830951894845301}]},{"id":"threshold-shape8-type1-range1-density0-variant0-limittrue","kind":"polyline","points":[[1.0,1.0],[6.0,1.0],[6.0,4.0]],"type":1,"density":0,"variant":0,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[1542.0,2570.0],"rows":[{"Area":4.0,"Mean":1991.75,"StdDev":438.9110578086028,"Mode":1542.0,"Min":1542.0,"Max":2570.0,"X":0.0,"Y":0.0,"XM":0.0,"YM":0.0,"Perim.":8.0,"BX":1.0,"BY":1.0,"Width":6.0,"Height":4.0,"Feret":5.830951894845301,"IntDen":7967.0,"Median":2056.0,"RawIntDen":7967.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":149.03624346792648,"MinFeret":2.5724787771376323,"MinThr":1542.0,"MaxThr":2570.0,"Length":8.0}]},{"id":"threshold-shape11-type0-range1-density0-variant0-limittrue","kind":"multipoint","points":[[2.0,2.0],[6.0,4.0]],"type":0,"density":0,"variant":0,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":0.0,"Mean":6.0,"StdDev":0.0,"Mode":6.0,"Min":6.0,"Max":6.0,"X":2.0,"Y":2.0,"XM":2.0,"YM":2.0,"Perim.":0.0,"BX":2.0,"BY":2.0,"Width":1.0,"Height":1.0,"Feret":0.0,"IntDen":6.0,"Median":6.0,"RawIntDen":6.0,"FeretX":2.0,"FeretY":2.0,"FeretAngle":0.0,"MinFeret":0.0,"MinThr":6.0,"MaxThr":10.0},{"Area":0.0,"Mean":"nan","StdDev":0.0,"Mode":0.0,"Min":"nan","Max":"nan","X":6.0,"Y":4.0,"XM":6.0,"YM":4.0,"Perim.":0.0,"BX":6.0,"BY":4.0,"Width":1.0,"Height":1.0,"Feret":0.0,"IntDen":"nan","Median":"nan","RawIntDen":"nan","FeretX":6.0,"FeretY":4.0,"FeretAngle":0.0,"MinFeret":0.0,"MinThr":6.0,"MaxThr":10.0}]},{"id":"threshold-shape9-type0-range1-density0-variant0-limittrue","kind":"angle","points":[[1.0,1.0],[4.0,4.0],[6.0,1.0]],"type":0,"density":0,"variant":0,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":0.0,"Mean":0.0,"StdDev":0.0,"Mode":0.0,"Min":0.0,"Max":0.0,"X":0.0,"Y":0.0,"XM":0.0,"YM":0.0,"Perim.":7.8481919625832735,"BX":1.0,"BY":1.0,"Width":6.0,"Height":4.0,"Angle":78.69006752597979,"Feret":5.0,"IntDen":0.0,"Median":0.0,"RawIntDen":0.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":0.0,"MinFeret":3.0,"MinThr":"nan","MaxThr":"nan"}]},{"id":"threshold-shape0-type0-range1-density3-variant1-limittrue","kind":"whole_image","points":[],"type":0,"density":3,"variant":1,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":16.0,"Mean":8.25,"StdDev":1.5275252316519468,"Mode":6.0,"Min":6.0,"Max":10.0,"X":3.9,"Y":2.8,"XM":"nan","YM":"nan","Perim.":28.0,"BX":0.0,"BY":0.0,"Width":8.0,"Height":6.0,"Major":9.783961223313058,"Minor":2.60270766752695,"Angle":28.396018964837893,"Feret":10.0,"IntDen":132.0,"Median":8.0,"RawIntDen":132.0,"FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"MinThr":6.0,"MaxThr":10.0}]},{"id":"threshold-shape0-type1-range1-density2-variant2-limittrue","kind":"whole_image","points":[],"type":1,"density":2,"variant":2,"limit":true,"fitted":false,"threshold_active":true,"requested_range":[1542.0,2570.0],"rows":[{"Area":20.0,"Mean":"nan","StdDev":0.0,"Mode":"nan","Min":1.7976931348623157e+308,"Max":-1.7976931348623157e+308,"X":3.9,"Y":2.8,"XM":"nan","YM":"nan","Perim.":28.0,"BX":0.0,"BY":0.0,"Width":8.0,"Height":6.0,"Circ.":0.320570678937734,"Feret":10.0,"IntDen":"nan","Median":"nan","RawIntDen":"nan","FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"AR":3.7591471932803033,"Round":0.26601778238095036,"Solidity":1.0,"MinThr":"nan","MaxThr":"nan"}]},{"id":"threshold-shape0-type0-range1-density0-variant0-limitfalse","kind":"whole_image","points":[],"type":0,"density":0,"variant":0,"limit":false,"fitted":false,"threshold_active":true,"requested_range":[6.0,10.0],"rows":[{"Area":48.0,"Mean":8.5,"StdDev":4.15651244972042,"Mode":6.0,"Min":0.0,"Max":17.0,"X":4.0,"Y":3.0,"XM":4.617647058823529,"YM":3.6862745098039214,"Perim.":28.0,"BX":0.0,"BY":0.0,"Width":8.0,"Height":6.0,"Feret":10.0,"IntDen":408.0,"Median":9.0,"RawIntDen":408.0,"FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0}]},{"id":"threshold-shape0-type0-range0-density0-variant0-limittrue","kind":"whole_image","points":[],"type":0,"density":0,"variant":0,"limit":true,"fitted":false,"threshold_active":false,"requested_range":[6,10],"rows":[{"Area":48.0,"Mean":8.5,"StdDev":4.15651244972042,"Mode":6.0,"Min":0.0,"Max":17.0,"X":4.0,"Y":3.0,"XM":4.617647058823529,"YM":3.6862745098039214,"Perim.":28.0,"BX":0.0,"BY":0.0,"Width":8.0,"Height":6.0,"Feret":10.0,"IntDen":408.0,"Median":9.0,"RawIntDen":408.0,"FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"MinThr":0.0,"MaxThr":255.0}]}])threshold");
+    thresholdCase=cases.at(profile-68);
+  }
   Selection source(profile==0 || profile==5?"polyline":profile==3?"polygon":"freehand",{{3,3},{13,3},{13,13},{3,13}});
   if(profile==0)source=with_selection_polygon_type(source,SelectionPolygonType::Freeline);
   if(profile==1 || profile==2)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   if(profile==1)source=with_selection_polygon_coordinates(source,true);
   if(profile==5 || profile==6){source.points={{3,3}};source=with_selection_polygon_type(source,profile==5?SelectionPolygonType::Polyline:SelectionPolygonType::Freehand);}
-  if((profile>=7 && profile<=21) || profile==43 || profile==49 || profile==54 || profile==66) {
+  if((profile>=7 && profile<=21) || profile==43 || profile==49 || profile==54 || profile==66 || profile==72) {
     const auto p=profile-7;
     source=Selection(p==0 || p==7?"polygon":p==3 || p==6?"polyline":"freehand",{{3,3},{13,3},{13,13},{3,13}});
     if(p<=3)source.points.resize(3);
@@ -805,7 +814,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(profile==20)source.points={{3,3},{13,3},{13,13},{3,13}};
     if(profile==21)source=with_selection_polygon_type(source,SelectionPolygonType::Traced);
   }
-  const bool ellipseProfile=profile>=59 && profile<=66,rectangleProfile=profile>=51 && profile<=58,feretProfile=profile>=44 && profile<=50,descriptorProfile=profile>=37 && profile<=43,massProfile=profile>=32 && profile<=36,analytic=profile>=22 && profile<=27,centroidProfile=profile>=28 && profile<=31,wholeImage=profile==27 || profile==29 || profile==41 || profile==47 || profile==55 || profile==63 || massProfile;
+  const bool ellipseProfile=profile>=59 && profile<=66,rectangleProfile=profile>=51 && profile<=58,feretProfile=profile>=44 && profile<=50,descriptorProfile=profile>=37 && profile<=43,massProfile=profile>=32 && profile<=36,analytic=profile>=22 && profile<=27,centroidProfile=profile>=28 && profile<=31,wholeImage=profile==27 || profile==29 || profile==41 || profile==47 || profile==55 || profile==63 || massProfile || (thresholdProfile && thresholdCase.at("kind")=="whole_image");
   if(analytic) {
     source=Selection(profile==23 || profile==25 || profile==26?"ellipse":"rectangle",{{3,3},{13,11}});
     if(profile==24 || profile==25)source.points={{3.2,4.7},{13.4,13.0}};
@@ -841,6 +850,10 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(profile==65)source.points={{3,3},{4,3},{5,3}};
     if(profile==66)source.points={{3,3},{13,3},{13,13},{3,13}};
   }
+  if(thresholdProfile) {
+    const auto kind=thresholdCase.at("kind").get<std::string>();
+    source=kind=="whole_image"?Selection("rectangle",{{0,0},{8,6}}):Selection(kind,thresholdCase.at("points").get<std::vector<std::array<double,2>>>());
+  }
   SpatialCalibration spatial;spatial.spacing=(descriptorProfile && profile!=40) || (feretProfile && profile!=45 && profile!=47 && profile!=48)?std::array<double,3>{1,1,1}:std::array<double,3>{2,.5,1};spatial.unit="um";
   if(rectangleProfile) {
     spatial.spacing=profile==53 || profile==54 || profile==57?std::array<double,3>{1,1,1}:std::array<double,3>{2,.5,1};
@@ -850,30 +863,66 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
   }
   if(profile==67){source=Selection("line",{{3,3},{13,11}});spatial.spacing={1,1,1};}
   if(ellipseProfile)spatial.spacing=profile==62?std::array<double,3>{2,.5,1}:std::array<double,3>{1,1,1};
+  if(thresholdProfile)spatial.spacing={1,1,1};
   if(centroidProfile || massProfile)spatial.origin={-6.5,.75,0};
   if(profile==31){spatial.origin[1]=-.75;spatial.direction={1,0,0,0,-1,0,0,0,1};}
   DatasetReadObserver reads;
-  const int width=massProfile?8:40,height=massProfile?6:40;
-  Image pixels(width,height,1,profile==33?PixelType::UInt16:profile==34 || profile==35?PixelType::Float32:PixelType::UInt8);
+  const int width=massProfile || thresholdProfile?8:40,height=massProfile || thresholdProfile?6:40;
+  const int thresholdType=thresholdProfile?thresholdCase.at("type").get<int>():-1;
+  Image pixels(width,height,1,thresholdType==1?PixelType::UInt16:thresholdType==2?PixelType::Float32:profile==33?PixelType::UInt16:profile==34 || profile==35?PixelType::Float32:PixelType::UInt8);
   for(int y=0;y<height;++y)for(int x=0;x<width;++x)pixels.at(x,y)=!massProfile?x+2*y:profile==32?x+2*y+1:profile==35?2*(x%2)-1:profile==36?x%2:0;
-  DocumentData data{Dataset::from_planes({1,1,1,height,width,1},{pixels},spatial).observe_reads(reads)};if(!wholeImage)data.selection=source;
-  auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);
-  if(profile==43 || profile==49 || profile==54 || profile==66)w.document()->setView({{"zoom",1.}});
+  if(thresholdProfile)for(int y=0;y<height;++y)for(int x=0;x<width;++x){const double v=x+2*y;pixels.at(x,y)=thresholdType==1?257*v:thresholdType==2?double(float(v*.25-2)):v;}
+  const int depth=profile==85?2:1;
+  DocumentData data{Dataset::from_planes({1,1,depth,height,width,1},depth==2?std::vector<Image>{pixels,pixels}:std::vector<Image>{pixels},spatial).observe_reads(reads)};if(!wholeImage)data.selection=source;
+  auto owner=std::make_shared<imagejxx::Document>(std::move(data));
+  if(profile==85){auto display=owner->snapshot().display();display.crosshair[2]=1;set_manual_threshold_state(display,owner->snapshot().data().dataset.shape(),{{6,10},{}});owner->set_display(display);}
+  w.addNativeDocument(owner);
+  if(profile==43 || profile==49 || profile==54 || profile==66 || profile==72)w.document()->setView({{"zoom",1.}});
   Json configuredColumns=ellipseProfile?Json::array({"ROI","Area","Major","Minor","Angle","X","Y","Unit"}):rectangleProfile?Json::array({"ROI","Area","BX","BY","Width","Height","Unit"}):feretProfile?Json::array({"ROI","Area","Feret","MinFeret","FeretAngle","FeretX","FeretY","Feret unit","Feret coordinate unit","Unit"}):descriptorProfile?Json::array({"ROI","Area","Circ.","AR","Round","Solidity","Unit"}):massProfile?Json::array({"ROI","Area","X","Y","XM","YM","Unit"}):analytic || centroidProfile?Json::array({"ROI","Area","Length","Perim.","Perim. unit","X","Y","Unit"}):Json::array({"ROI","Area","Length","Perim.","Unit"});
   if(profile==44)for(const auto* column:{"Circ.","AR","Round","Solidity"})configuredColumns.push_back(column);
   if(profile==51)for(const auto* column:{"Circ.","AR","Round","Solidity","Feret","MinFeret","FeretAngle","FeretX","FeretY"})configuredColumns.push_back(column);
   if(profile==59)for(const auto* column:{"Circ.","AR","Round","Solidity","Feret","BX","BY","Width","Height"})configuredColumns.push_back(column);
   if(profile==61 || profile==67)configuredColumns=Json::array({"Angle","X","Y"});
-  w.updateSettings({{"measurements",configuredColumns},{"measurement_precision",6}},false);
+  if(thresholdProfile) {
+    configuredColumns=Json::array({"Area","mean","minimum","maximum","median","X","Y","MinThr","MaxThr","Unit"});
+    const int variant=thresholdCase.at("variant").get<int>();
+    if(variant==1)for(const auto* name:{"Major","Minor","Angle"})configuredColumns.push_back(name);
+    if(variant==2)for(const auto* name:{"Circ.","AR","Round","Solidity"})configuredColumns.push_back(name);
+    if(profile==70)for(const auto* name:{"Feret","BX","BY","Width","Height"})configuredColumns.push_back(name);
+    if(profile==78 || profile==79)configuredColumns.push_back("Length");
+    if(profile==81)configuredColumns.push_back("Angle");
+  }
+  w.updateSettings({{"measurements",configuredColumns},{"measurement_precision",6},{"measurement_limit_to_threshold",thresholdProfile && profile!=68 && profile!=84}},false);
   Json last,events=Json::array(),controls=Json::array(),report;std::atomic<bool> entered{false},release{false};
   HeadlessInputSession session(w);bool expectedError=false;
   try {
     if(profile==36)session.fixtureApplication().set_global_calibration(GlobalCalibration(spatial,ImageJIntensityCalibration::function(PixelType::UInt8,"straight_line",{-1,2},"OD"),PixelType::UInt8));
+    if(thresholdProfile && thresholdCase.at("density").get<int>()!=0) {
+      const auto type=pixels.type;const int mode=thresholdCase.at("density");
+      std::vector<std::uint32_t> words(type==PixelType::UInt8?256:65536,0x7fc00000u);
+      if(mode==3){for(std::size_t i=0;i<words.size();++i){float value=float(i);std::memcpy(&words[i],&value,sizeof(value));}words[type==PixelType::UInt8?7:7*257]=0x7fc00000u;}
+      session.fixtureApplication().set_global_calibration(GlobalCalibration(spatial,ImageJIntensityCalibration::lookup(type,words,mode==2?"all_nan":"mixed_nan"),type));
+    }
     auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);require(expectedError || w.error().empty(),"Subtype measurement frame failed");};
     auto click=[&](const Json& item,const std::string& name){const auto control=item;require(control.at("enabled").get<bool>(),"Subtype measurement control disabled");controls.push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame(Json::array({{{"type","position"},{"space","screen"},{"point",{1,1}}}}));};
     auto acknowledge=[&](){expectedError=true;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();};
+    auto text=[&](const Json& control,const std::string& name,const std::string& value) {
+      click(control,name);
+      for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}})}}}));
+      frame(Json::array({{{"type","text"},{"value",value}}}));
+      for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Enter"},{"down",down}}})}}}));
+    };
     for(int i=0;i<3;++i)frame();
-    if((profile>=7 && profile<=21) || profile==43 || profile==49 || profile==54 || profile==66) {
+    if(profile==68) {
+      for(const auto* key:{"menu.Edit","menu.Edit.Preferences"})click(last.at("host_controls").at(key),key);
+      text(last.at("preferences_panel").at("widget_controls").at("search"),"preferences.search","Limit to threshold");
+      click(last.at("preferences_panel").at("fields").at("measurement_limit_to_threshold").at("control"),"preferences.measurement_limit_to_threshold");
+      require(last.at("preferences_panel").at("fields").at("measurement_limit_to_threshold").at("draft")==true,"Limit checkbox did not edit draft");
+      click(last.at("preferences_panel").at("widget_controls").at("apply"),"preferences.apply");
+      require(last.at("preferences_panel").at("fields").at("measurement_limit_to_threshold").at("applied")==true,"Limit preference was not applied");
+      click(last.at("preferences_panel").at("widget_controls").at("close_button"),"preferences.close");
+    }
+    if((profile>=7 && profile<=21) || profile==43 || profile==49 || profile==54 || profile==66 || profile==72) {
       for(const auto& key:{"menu.Edit","menu.Edit.Selection","menu.action.show_fit_spline"})click(last.at("host_controls").at(key),key);
       click(last.at("dialog").at("controls").at("apply"),"fit.apply");w.wait();frame();
       source=*owner->snapshot().data().selection;
@@ -894,17 +943,28 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
         require(bool(selection_spline_fit(source))!=removing && owner->undo_steps()==2,"Lifecycle menu lost fit state/history");
       }
     }
+    if(thresholdProfile && thresholdCase.at("threshold_active")==true && profile!=85) {
+      for(const auto* key:{"menu.Process","menu.manual_threshold"})click(last.at("host_controls").at(key),key);
+      const auto number=[](double value){std::ostringstream out;out<<std::setprecision(17)<<value;return out.str();};
+      const auto control=[&](const char* key){auto value=last.at("threshold_panel").at("control_states").at(key);value["point"]=last.at("threshold_panel").at("controls").at(key);return value;};
+      text(control("lower"),"threshold.lower",number(thresholdCase.at("requested_range")[0]));
+      text(control("upper"),"threshold.upper",number(thresholdCase.at("requested_range")[1]));
+      click(control("set"),"threshold.set");
+      require(bool(manual_threshold_state(owner->snapshot().display(),owner->snapshot().data().dataset.shape())),"Actual threshold Set did not publish display state");
+    }
     const auto original=owner->snapshot();const auto beforeUndo=owner->undo_steps();const auto beforeReads=reads.counts().plane_reads;
     for(const auto& key:{"menu.Analyze","menu.action.measure"})click(last.at("host_controls").at(key),key);
-    w.wait();frame();require(w.results.size()==1 && !w.busy(),"Subtype Measure did not publish one row");
+    w.wait();frame();require(w.results.size()==(profile==80?2:1) && !w.busy(),"Subtype Measure did not publish expected rows");
     const auto rows=w.results;const double analyticLengths[]={48.,42.01120851869869,53.,46.295306614080765,4.288751483104749,160.};
     const double descriptorLengths[]={36.,28.36166778425462,32.48528137423857,48.,160.,12.566370614359172,37.65685424949238};
     const double feretLengths[]={36,42.011208518698687,40,160,17.155005932418995,37.656854249492383,0};
     const double rectangleLengths[]={48,46.295306614080765,22,37.656854249492383,160,17.155005932418995,0,41.593382550672679};
     const double ellipseLengths[]={36,28.36166778425462,28.94427190999916,48,160,28.867962264113206,0,37.65685424949238};
-    const double length=profile==67?12.806248474865697:ellipseProfile?ellipseLengths[profile-59]:rectangleProfile?rectangleLengths[profile-51]:feretProfile?feretLengths[profile-44]:descriptorProfile?descriptorLengths[profile-37]:analytic?analyticLengths[profile-22]:wholeImage?2.*(width+height):profile==30?20.:profile==31?48.:imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
-    const auto& value=rows[0].at("Perim.");
-    require(std::isnan(length)?value==Json("nan"):(value.is_number() && std::abs(value.get<double>()-length)<1e-11),"Subtype Measure perimeter differs from constructor metric");
+    const double length=thresholdProfile?thresholdCase.at("rows")[0].value("Perim.",0.):profile==67?12.806248474865697:ellipseProfile?ellipseLengths[profile-59]:rectangleProfile?rectangleLengths[profile-51]:feretProfile?feretLengths[profile-44]:descriptorProfile?descriptorLengths[profile-37]:analytic?analyticLengths[profile-22]:wholeImage?2.*(width+height):profile==30?20.:profile==31?48.:imagej_calibrated_polygon_length(source,spatial,selection_polygon_integer_coordinates(source));
+    if(profile!=80 && profile!=81) {
+      const auto& value=rows[0].at("Perim.");
+      require(std::isnan(length)?value==Json("nan"):(value.is_number() && std::abs(value.get<double>()-length)<1e-11),"Subtype Measure perimeter differs from constructor metric");
+    }
     if(analytic || centroidProfile)require(rows[0].at("Perim. unit")==Json(wholeImage?"pixel":"um"),"Analytic perimeter unit lost");
     if(centroidProfile) {
       if(profile==30)require(rows[0].at("X")=="nan" && rows[0].at("Y")=="nan","Empty area centroid lost numerical meaning");
@@ -949,10 +1009,21 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
     if(profile==67)require(!rows[0].contains("Major") && std::abs(rows[0].at("Angle").get<double>()+38.659808254090095)<1e-10,"Angle-only line request lost existing line orientation");
     if(source.kind=="polyline")require(rows[0].at("Length").get<double>()==length,"Freeline Length lost smoothing");
     if(profile==5 || profile==6)require(rows[0].at("Area")==0,"Native retained degenerate geometry measured the whole image");
+    if(thresholdProfile) {
+      require(rows.size()==thresholdCase.at("rows").size(),"Threshold row count differs from original");
+      for(std::size_t i=0;i<rows.size();++i)for(const auto& column:configuredColumns) {
+        const auto key=column.get<std::string>();if(key=="Unit")continue;
+        const std::string originalKey=key=="mean"?"Mean":key=="minimum"?"Min":key=="maximum"?"Max":key=="median"?"Median":key;
+        const auto& expected=thresholdCase.at("rows")[i];
+        if(!expected.contains(originalKey)){require(!rows[i].contains(key),"Disabled limit unexpectedly published bound");continue;}
+        const auto& value=rows[i].at(key);const auto& wanted=expected.at(originalKey);
+        require(wanted.is_string()?value==wanted:value.is_number() && std::abs(value.get<double>()-wanted.get<double>())<=1e-10*std::max(1.,std::abs(wanted.get<double>())),"Threshold column differs from original Analyzer");
+      }
+    }
     const auto columns=last.at("results_columns");
     require(columns==configuredColumns,"Configured perimeter column not consumed");
     require(owner->snapshot().shares_data(original) && owner->undo_steps()==beforeUndo,"Read-only subtype Measure changed source/history");
-    const auto measuredReads=reads.counts().plane_reads-beforeReads;require(measuredReads==1,"Subtype Measure repeated provider acquisition");
+    const auto measuredReads=reads.counts().plane_reads-beforeReads;require(measuredReads==(profile==81?0:1),"Subtype Measure provider acquisition differs from row kind");
     if(profile==0)for(const auto& refusalColumns:std::array<Json,4>{Json::array({"Major","Minor","Angle"}),Json::array({"Circ.","AR","Round","Solidity"}),Json::array({"Feret","MinFeret","FeretAngle","FeretX","FeretY"}),Json::array({"BX","BY","Width","Height"})}) {
       const auto beforeRefusal=reads.counts().plane_reads;
       w.updateSettings({{"measurements",refusalColumns}},false);frame();expectedError=true;
@@ -961,7 +1032,7 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
       acknowledge();w.updateSettings({{"measurements",configuredColumns}},false);frame();
     }
     w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});
-    std::ifstream csv(dir/"measure.csv");std::string heading;std::getline(csv,heading);require(heading.find(profile==67?"Angle":ellipseProfile?(profile==61?"Angle":"Major"):rectangleProfile?"BX":feretProfile?"Feret":descriptorProfile?"Circ.":massProfile?"XM":"Perim.")!=std::string::npos && (!massProfile || heading.find("YM")!=std::string::npos),"CSV omitted configured measurement");csv.close();
+    std::ifstream csv(dir/"measure.csv");std::string heading;std::getline(csv,heading);require(heading.find(thresholdProfile?"MinThr":profile==67?"Angle":ellipseProfile?(profile==61?"Angle":"Major"):rectangleProfile?"BX":feretProfile?"Feret":descriptorProfile?"Circ.":massProfile?"XM":"Perim.")!=std::string::npos && (!massProfile || heading.find("YM")!=std::string::npos),"CSV omitted configured measurement");csv.close();
     auto gate=[&](const JobContext& c){entered=true;while(!release.load()){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}};
     auto start=[&](){entered=false;release=false;session.fixtureWorkerGate(gate);w.action("measure");const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered.load() && std::chrono::steady_clock::now()<deadline)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered.load(),"Subtype worker gate did not enter");};
     const auto reserved=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
@@ -974,12 +1045,29 @@ Json subtypeMeasurementUiCase(Window& w,const std::string& context,const std::st
       require(!w.error().empty() && w.results==rows,"Changed constructor profile was not rejected as stale");
       acknowledge();owner->select(source);frame();
     }
+    if(profile==68) {
+      start();auto changed=owner->snapshot().display();set_manual_threshold_state(changed,owner->snapshot().data().dataset.shape(),{{1,2},{}});owner->set_display(changed);release=true;w.wait();
+      require(!w.error().empty() && w.results==rows,"Changed threshold context was not rejected as stale");
+      acknowledge();owner->set_display(original.display());frame();
+      start();w.updateSettings({{"measurement_limit_to_threshold",false}},false);release=true;w.wait();
+      require(!w.error().empty() && w.results==rows,"Changed limit preference was not rejected as stale");
+      acknowledge();w.updateSettings({{"measurement_limit_to_threshold",true}},false);frame();
+    }
     session.fixtureWorkerGate({});
     w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});session.close();
     Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"measured.ijx").u8string());
     require(reopened.nativeSnapshot().data().selection==original.data().selection && reopened.results==rows,"Workspace lost constructor state or perimeter result");
     require(reopened.nativeSnapshot().data().dataset.plane({})->pixels==pixels.pixels,"Subtype Measure changed stored pixels");
+    if(thresholdProfile) {
+      const auto restored=reopened.nativeSnapshot();
+      const auto& before=original.display().properties;const auto& after=restored.display().properties;
+      const auto a=before.find(manual_threshold_property),b=after.find(manual_threshold_property);
+      require((a==before.end())==(b==after.end()) && (a==before.end() || metadata_equal(a->second,b->second)),"Workspace lost captured threshold property");
+    }
     report={{"state","observed"},{"context",context},{"profile",profile},{"integer_coordinates",selection_polygon_integer_coordinates(source)},{"selection",wholeImage?Json(nullptr):selectionJson(source)},{"rows",rows},{"columns",columns},{"additional_measure_reads",measuredReads},{"cancel_preserved",true},{"stale_constructor_checked",profile==1 || profile==22 || profile==37 || profile==44 || profile==51 || profile==59},{"descriptor_refusal_checked",profile==0},{"feret_refusal_checked",profile==0},{"rectangle_refusal_checked",profile==0},{"ellipse_refusal_checked",profile==0},{"fitted",source.attributes.count(spline_fit_attribute)!=0},{"lifecycle",profile>=15 && profile<=21},{"stale_fit_checked",profile==9 || profile==15},{"fit_undo_steps",beforeUndo},{"workspace_preserved",true},{"source_unchanged_by_measure",true},{"events",events},{"controls",controls}};
+    report["threshold_setting_checked"]=profile==68;report["threshold_controls_checked"]=thresholdProfile && thresholdCase.at("threshold_active")==true && profile!=85;
+    report["threshold_stale_checked"]=profile==68;report["threshold_preference_stale_checked"]=profile==68;
+    if(thresholdProfile){report["threshold_reference"]=thresholdCase.at("id");report["threshold_limit"]=thresholdCase.at("limit");report["threshold_native_off_grid"]=profile==85;}
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& e){release=true;w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",e.what()},{"rendered",last},{"error",w.error()},{"events",events},{"controls",controls}});throw;}
 }

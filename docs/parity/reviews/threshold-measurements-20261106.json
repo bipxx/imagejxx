@@ -1,0 +1,689 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 Limit to threshold measurements",
+  "implemented": true,
+  "verified": "scoped",
+  "integrated": "Windows C++ standalone and Python ImGui",
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "scope": "Default-off threshold-limited scalar/centroid/weighted/ellipse/Shape, MinThr/MaxThr, captured position/range/context, explicit native/Python options/settings and actual Measure controls/CSV/workspace.597original cases cover477area/120nonarea. Grouped positioned manager/global bypass and off-grid native extension scoped separately.",
+  "public_contract": {
+    "option": "TargetAnalysisOptions.limit_to_threshold=false",
+    "results": [
+      "threshold_lower",
+      "threshold_upper"
+    ],
+    "setting": "measurement_limit_to_threshold=false",
+    "guard": "ResolvedTargetAnalysis.validate_source(current); Application validates global target and UI validates currentsetting.",
+    "diagnostic_version": 16,
+    "population": "Typed scalar bounds; raw processor fit bounds; geometric integer raw histogram; Short compact histogram size uses processor ROI rectangle, not mask or fullimage. Default-off native extensions preserved."
+  },
+  "checks": {
+    "original_cases": 597,
+    "area_cases": 477,
+    "nonarea_cases": 120,
+    "installed_python_distinct": {
+      "passed": 4928,
+      "skipped": 1,
+      "failed": 0,
+      "union_receipt": "python-union022.json",
+      "optional_skip": "hidden OpenGL context, not a pass"
+    },
+    "matching_windows_host_profiles": 86,
+    "new_threshold_host_profiles": 18,
+    "native": "Windows finalanalysis011, strict/settings007; Linux finalanalysis012, strict/settings008; fullWindows host021",
+    "installed_windows_sdk": [
+      "target_analysis_api",
+      "selection_transform_api",
+      "calibrated_analysis"
+    ],
+    "platform_limit": "No Linux/macOS UI or macOS native/install/release qualification."
+  },
+  "remaining": "Redirected intensity next; unsampled constructor/nonordinary/mask/widepath/RGB/replay/manager/platform/performance variants remain with M3/T06/T14. RetiredG016/17gesture references remain unavailable, not repinned/recreated or passing. All99fullfamilies remain open pending their fullcontracts/release gates.",
+  "cleanup": {
+    "all_owned_groups_retired": 11,
+    "current_groups": [
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\threshold-measurements-20261106\\scratch\\python013",
+        "retired_bytes": 252659,
+        "absent": true,
+        "archive": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python013024.zip"
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\threshold-measurements-20261106\\scratch\\python017",
+        "retired_bytes": 196541,
+        "absent": true,
+        "archive": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python017024.zip"
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\threshold-measurements-20261106\\scratch\\python018",
+        "retired_bytes": 753437,
+        "absent": true,
+        "archive": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python018024.zip"
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\threshold-measurements-20261106\\scratch\\native021",
+        "retired_bytes": 1791554,
+        "absent": true,
+        "archive": ".tmp/manual-workflow-verification/threshold-measurements-20261106/native021024.zip"
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\threshold-measurements-20261106\\scratch\\sdk020",
+        "retired_bytes": 6048276,
+        "absent": true,
+        "archive": null
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\threshold-measurements-20261106\\scratch\\compiler-temp007",
+        "retired_bytes": 0,
+        "absent": true
+      }
+    ],
+    "necessary_archives": [
+      {
+        "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/reference004.zip",
+        "bytes": 82119,
+        "sha256": "5572d4f62cc8d1c1f20bc94c0b16b211af955b427111f06e382391057a038ab0"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python013024.zip",
+        "bytes": 36953,
+        "sha256": "82be8412e78b7165bf37939f3e038663fd689292add5c7bb4715e443d95bc013"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python017024.zip",
+        "bytes": 64329,
+        "sha256": "67432d4c5ead310bd7f1530e93339f27d67a992743c71a56b5bf98b92c681684"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python018024.zip",
+        "bytes": 388289,
+        "sha256": "de82ad354a6e4d271c7a2dcf50b71e865ebecf3c16a5dfce65a303fe8f4872c7"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/native021024.zip",
+        "bytes": 577613,
+        "sha256": "c75093d53d855ad65d16e222040133c6a64b49f2455d2e92c79f8be4c7e766a5"
+      }
+    ],
+    "scratch_parent_absent": true,
+    "compiler_cache_runtime": "Preserved recorded active Windows/Linux caches and installedruntime; no generation created. SDK scratch identity-only retired.",
+    "unknown_cleanup": "214inaccessible storage subtrees remain unknown; this receipt does not claim those were cleaned."
+  },
+  "storage": {
+    "entry_known_bytes": 7433943140,
+    "observed_pre_retirement_known_bytes": 7447229950,
+    "final_known_bytes_before_docs_receipt_deltas": 7440747372,
+    "entry_snapshot": "../threshold-entry001.json",
+    "before_retirement_snapshot": "../threshold-preretirement022.json",
+    "after_snapshot": "../threshold-final025.json",
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "allocation_bound_bytes": 268435456,
+    "observed_increment_bytes": 6804232,
+    "not_absolute_peak": true
+  },
+  "cost": {
+    "windows_linux_product_build_commands": 21,
+    "product_build_elapsed_seconds_sum": 290.926,
+    "native_module_build_seconds_sum": 71.851,
+    "reference_command_seconds": 3.374,
+    "python013_seconds": 4.670213,
+    "python017_seconds": 2.734326,
+    "python018_seconds": 17.071151,
+    "native_host021_seconds": 14.512277,
+    "failed_native_root019_seconds": 0.12393,
+    "interpretation": "Observed commands, not a speedup, total criticalpath or full execution-time accounting."
+  },
+  "waste_review": {
+    "fix": "Actual ShortROI histogram/empty extrema corrected with nativepositiveboundary before final relinks; probe temporary lifetime and testpan contract corrected without weakeningassertions; nativeabsentroot retry reusesbinary.",
+    "reuse": "597original rows/603unchanged Python controls and unchanged core/Linux evidence after probe-onlychange; existingownership/retention/probes, no newrunner/controller/registry/cache/runtime.",
+    "cleanup": "4currentpayload groups losslessly archived/liveverified then retired; SDK/tmp identityonly; allscratch absent.",
+    "defer": "Redirected twoowner capture remains nexttask; unsampled variants retainowners. No speculative optimization or broad performanceclaim."
+  },
+  "failures_and_corrections": [
+    {
+      "run": "python010",
+      "failures": 3,
+      "cause": "ShortprocessorROI compact histogram fullimage max incorrectlyused",
+      "resolution": "Core/privatecaller fix, exactnative positive/emptycontrol, coherent affected rebuild/install; finalreference rows pass."
+    },
+    {
+      "run": "python013",
+      "failures": 3,
+      "cause": "pan binding shape and probe dangling reference to temporary reopened snapshot",
+      "resolution": "Test3pairs and ownedlocalsnapshot;19affected cases pass017, remaining regressions pass018; historicalfailure logs retained."
+    },
+    {
+      "run": "native019",
+      "cause": "Precreatedroot refused before tests",
+      "resolution": "Recordlapse, inspectmain, verifyretireemptyroot; samebinary passes021 withabsentroot."
+    }
+  ],
+  "commercial": "No shippeddependency/model/font/asset added. Observer/fixture are project-owned verification material; original reference archive identity retained. FullFiji commercialinventory remains open.",
+  "sources": [
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 8712,
+      "sha256": "9e8fbbcea9a40ead4e8e0c579387a2d5909dcc8afa59204879fafdecc1ba24f3"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 53840,
+      "sha256": "6a283fed5fe9edd9490dd8882a0bf288f4d7fbca0a5f866ff536eb9b58a15a42"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 9221,
+      "sha256": "795d448c88aab7828cbad773cb052312a8a35e7be1fe04ac7d904bd4a7203030"
+    },
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 39172,
+      "sha256": "b6201e1945cdd5bf2d83a7cbb53d6727ba47cba0358c4bcf518646a5b5ad9b78"
+    },
+    {
+      "path": "src/native/calibrated_analysis_internal.hpp",
+      "bytes": 2298,
+      "sha256": "08cade9a893a8a2c8e2b940f0a738a3922f73ea0c8830314eead0f6ac4c35168"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 68302,
+      "sha256": "8421f4d6f5b3bda4611736c745f19b6661fa15836c15627f95f4d05e01576f0a"
+    },
+    {
+      "path": "src/native/selection_shape_detail.hpp",
+      "bytes": 1172,
+      "sha256": "104331c43a44d8a095bd103aaf30a447f542b7cecf7f99a7efb95ccc9ad5425b"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 28235,
+      "sha256": "1c3ea6c92564429dde2067a49c95ffc1e73fffd173f16c4d7a9c83d0b8bb8030"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 930539,
+      "sha256": "dd872205a1bbe65afcdeffbf80bcec46419ea0c9d4bcededba26405bd75b2f18"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 8312,
+      "sha256": "d411b7d92e1f35209d4909bfd32c102c6d770c36de3e2e864bdd58173d6ecd93"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 131015,
+      "sha256": "f783df191ad2213c2b3af331f539f6cbbd47022187a920b857900d8fc861c111"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 72295,
+      "sha256": "310c1d70fae2c37e3add1cbc98a4f8ad23fe92d13e8c055fd4d3408c68f95cba"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38288,
+      "sha256": "49b29c14033434deb4ab97e8708f0a233b80e473365242eea0cfb60abaad2d4f"
+    },
+    {
+      "path": "tests/python/test_threshold_measurements.py",
+      "bytes": 14661,
+      "sha256": "064ad1590fab54bb0400c9c67eca735f5d84929a0be51746dbc134f989187c88"
+    },
+    {
+      "path": "tests/reference/ObserveThresholdMeasurements.java",
+      "bytes": 6972,
+      "sha256": "102f22f2914487695f5302ab6ec08e78c90b5459c87e8f19c729c4be3f7591c5"
+    },
+    {
+      "path": "tests/fixtures/threshold-measurements-imagej154r.json",
+      "bytes": 684924,
+      "sha256": "86e84cf49d1d10c0b8dcec1d49a23c4200c125f21d99fc0dc311e7ad29f41716"
+    },
+    {
+      "path": "docs/TARGET_ANALYSIS.md",
+      "bytes": 49924,
+      "sha256": "bd44315d0e1cd113a875e3e60cac2fd5049b864ac2fab44c6f41ac6e1706659d"
+    },
+    {
+      "path": "docs/COVERAGE_CHECKLIST.md",
+      "bytes": 390146,
+      "sha256": "cfdf86d98d25efa609634a5e67bf93a868170ab9e69ad577a6b2062ab234f802"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 145697,
+      "sha256": "4de7704ffee7d0719e794530b87167c0b0693d3c9e11602fee216f28d289fca1"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 8182,
+      "sha256": "524b574b020aa1963043c9a312107c7b372f1ca2cf33973f382f5666388f84a7"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 8204,
+      "sha256": "d503332e2b4d241c3e84249564906915f7667d5ccbd83e59c57bb81cd0ebb1b5"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python-union022.json",
+      "bytes": 630,
+      "sha256": "8aad2e74e86a91d281b6d4dc2b7f18a63be68f8b2b8474a61982f63a93e89dd2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/host-pairs022.json",
+      "bytes": 45442,
+      "sha256": "867a553417068d8d1ba75bf9a071344b2cfa277b101d2113be1f282368b9219d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/installed-identities016.json",
+      "bytes": 3588,
+      "sha256": "89e3318eaf05da6bb02bd4f2b36bbed60d8183ab1dec2ce27cbc22dc0072eeb2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/retirement024.json",
+      "bytes": 1938,
+      "sha256": "fc717f00f45db6c756ddace169fce2fb2c2bd263610d84b9ce3cfa7d1e1fc093"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/retirement004.json",
+      "bytes": 1007,
+      "sha256": "56544ec351bd6bad8eb7d160c36e6aa0e64b730f6ec7281a0275410c2ad84967"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/retirement011.json",
+      "bytes": 915,
+      "sha256": "f3b69328a16496b18a24a945658e0b9ddbecf75ede5c3398db8a8f9ca36a0fe0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/sdk-import020.txt",
+      "bytes": 200,
+      "sha256": "1891069ab62f559670f76cb0860b4cfbdb1c07133f27bc4f883d7cac48153894"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/sdk-carriers020.json",
+      "bytes": 1143,
+      "sha256": "c6aac9c9622ece1c184f5935257588ffed368611cbf0f14371bc3611cd93302b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python010.log",
+      "bytes": 2802,
+      "sha256": "0510f99789f8ecf1de16eb019b5840f3d183cd03e27eb220c4301127ff1c25d9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python010.xml",
+      "bytes": 14330,
+      "sha256": "2225948b9ea1993d30af0e0fd7a0887e94217cf973d27e49102b26fbce8f1e61"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python013.log",
+      "bytes": 3714,
+      "sha256": "f765580d0b3ec6b1e04811f1939b22bd35126173ca6e4f413c84fc878e7a93c2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python013.xml",
+      "bytes": 125665,
+      "sha256": "7e9f60e4c090e205c6d62245ea6532bfa27d3f07859ee77c3718fd020ed26f31"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python017.xml",
+      "bytes": 3023,
+      "sha256": "18fd276420bca2c8eab71f98a43cbcda10a12e28996d13013832e37d13b9ae50"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python018.xml",
+      "bytes": 703132,
+      "sha256": "58800bd2a72b4795edf7d3571519b6f965d4486ab07657f28fed323dd0f7f438"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/native021.log",
+      "bytes": 681,
+      "sha256": "612a95337f9cc5d710217ba14ab0cd6b5cfc34063f8f97c725e04a3237bdf780"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/retirement-snapshots023.json",
+      "bytes": 697120,
+      "sha256": "84b1ad176df517a92192fd2bd7ad0c639826ea28fff1ab62052443d779f3796f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/_desktop008.process.json",
+      "bytes": 2857,
+      "sha256": "99bc25360597e6f387e9b4347b59d627efae9779430f52c5474b120d5d36d247"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/_desktop012.process.json",
+      "bytes": 2856,
+      "sha256": "5def6ccfbbdd590649d954c6c159722d14cceb00880dbf48596e55f379502e8a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/_desktop015.process.json",
+      "bytes": 2850,
+      "sha256": "eb5fc5f1401ef29c66fd177b22f76814548ee87c36f7ca64743b146ed4b7dfb5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/_native008.process.json",
+      "bytes": 2032,
+      "sha256": "e6110545249153d9e3b9273d23bc6e6a480d62e427ea0607d9667440e21b5d95"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/_native012.process.json",
+      "bytes": 2032,
+      "sha256": "bd2d71617f966497f0aea4e3aa7c8d97939f81c6963d5c19b5f19399a7bbacdb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_app008.process.json",
+      "bytes": 2858,
+      "sha256": "ceeefc6af3c431f932840a446edb16baa6f1755ff9af18af4c8c099596b9aace"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_app012.process.json",
+      "bytes": 2856,
+      "sha256": "2020a4ec8e03d77869003dcea6f77fe0b06d40076ab39e9f7d9a82b04fa0ac34"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_app015.process.json",
+      "bytes": 2851,
+      "sha256": "dd69f39f90fc8ba27c0309f205d41123b1c747d93df8bc2c60cf8cc44fb455b1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_core007.process.json",
+      "bytes": 2037,
+      "sha256": "66b523d455a215d7f2f472aec51c4657c78b35b8c45596db6c8fc4b889d4e65a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_core011.process.json",
+      "bytes": 2038,
+      "sha256": "64969a11771240bd1c4075e1d26a11b059e893cec7467eb4b74a72a1847fab93"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_desktop008.process.json",
+      "bytes": 2864,
+      "sha256": "53365add05f261fff1101dd45b061bf608718f187e9cc5957fc712b3b0dc6faf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_desktop015.process.json",
+      "bytes": 2859,
+      "sha256": "8ced55fcd100fc195a3eab24064b8978ec617fc6f9953a576a71f896e6da6dd7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_display_actions_tests008.process.json",
+      "bytes": 2874,
+      "sha256": "1dee001ccf034350fb56ba9566b43a5eab80972c42fed7139f05c88952dbca94"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_display_actions_tests012.process.json",
+      "bytes": 2874,
+      "sha256": "02c2bf3017039b743402aa23f4c9a239c997f5d7ce080c269d303ed57847b2d1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_display_actions_tests015.process.json",
+      "bytes": 2874,
+      "sha256": "81a76e9deb8808b295727f106f6531c15f388feb542aff8781151a93b161aeb3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_selection_transform_tests007.process.json",
+      "bytes": 2059,
+      "sha256": "3a17e9844bae74e7b32958e4a8f9258219273ac861861e144310fd348c1651c5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_settings_tests007.process.json",
+      "bytes": 2048,
+      "sha256": "1e1c35b8406abef84b0e97ee19c6bb98b4ed1cda9bc4b7e63c56189621435de0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_target_analysis_tests007.process.json",
+      "bytes": 2056,
+      "sha256": "0b10ad66cc85c84dff748ac1dbd161a79b92d3e01567f10df5548b87134f7913"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/imagejxx_target_analysis_tests011.process.json",
+      "bytes": 2055,
+      "sha256": "91ebd1219daf8424f751b482220866edaa97dfe6f64c8ca432df29e066634ce3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/install-desktop009.process.json",
+      "bytes": 2119,
+      "sha256": "eec55dbf91dc468c20e6dbc894ebf0596b4e26e1bdac5fac049cfda721f10e9b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/install-desktop012.process.json",
+      "bytes": 2121,
+      "sha256": "d2f3a80a951069c131358aa2a576f06c2b1859b4d9706d3ce23e5b7432082f5a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/install-desktop016.process.json",
+      "bytes": 2120,
+      "sha256": "3db9e5e258f2049009a9fb2503b12ee1b45f9043023e4d3a2c688b309b20b160"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/install-development009.process.json",
+      "bytes": 2121,
+      "sha256": "73ec0bb580dcc232d8135f4b9de0317ad7be1d88638ee1f80d26e420ebcfa3fe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/install-development012.process.json",
+      "bytes": 2123,
+      "sha256": "f7633006769353b35a839aec11090916f0aed552afe54a37bc2775ab75c5e020"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/install-Unspecified009.process.json",
+      "bytes": 2133,
+      "sha256": "a91552e95b6756a7d2e9e264fa145b2e1087a605384fc54d8f496277f8b65f81"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/install-Unspecified012.process.json",
+      "bytes": 2133,
+      "sha256": "5b67816950d7b995f95b35e2743e052d2365f48e1011054bcaa4350cefef5d45"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/install-Unspecified016.process.json",
+      "bytes": 2131,
+      "sha256": "0b05767e07dc09d66f0ca89faea761366dac8d34938a771159c6099835dde0f9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/linux-build008.process.json",
+      "bytes": 1640,
+      "sha256": "4ce76d615aefa02db6234208f2f6a2f9fe4750263a5886dd023af2f54fa0cc8b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/linux-build012.process.json",
+      "bytes": 1574,
+      "sha256": "8f7b3497dd12ed6557f0715ae1d805ad71765db4f8c232b264075da469728866"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/linux-imagejxx_selection_transform_tests008.process.json",
+      "bytes": 1493,
+      "sha256": "c2368bd12bf6cbf6c85dc391c3f32ce714f5816582cb472419788dac8a037409"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/linux-imagejxx_settings_tests008.process.json",
+      "bytes": 1483,
+      "sha256": "ecfcb76ccca3944e3f3947ec0ab0296a25647c20930bd4dddab35b6f58bac877"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/linux-imagejxx_target_analysis_tests008.process.json",
+      "bytes": 1488,
+      "sha256": "f492cefe394ebaf719784587f5a98dbaa4b036f40ff2603cf1393ac058073e72"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/linux-imagejxx_target_analysis_tests012.process.json",
+      "bytes": 1488,
+      "sha256": "83e9554d3a0c0e488f5cb8c976d751d5f2810cfb51134e103cbd0c33db6fc428"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/linux-owner008.process.json",
+      "bytes": 4327,
+      "sha256": "f58f141ecd87f5810b87cc25d72289551d0ab77c264a607b471e583837c83c73"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/linux-owner012.process.json",
+      "bytes": 4212,
+      "sha256": "55f8fd80c287b41c619de3d4ab08d182aba482a9651202cc85d803777daaf429"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/native019.process.json",
+      "bytes": 2001,
+      "sha256": "9b091c5dee699a1678a8f7df8ad10a8970d5d23143e51f54c12d3e9b9fcf0cf8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/native021.process.json",
+      "bytes": 1995,
+      "sha256": "6379eb425096092bb55bb275119b6f018bf7a885cccb0b4f2d810397dc3acdf2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/native021024.pack.process.json",
+      "bytes": 2511,
+      "sha256": "fee0b2185a6806e0f6f3f0e944db9323c7fb5b9353a29bec5f4a38bf86c52431"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/native021024.verify.process.json",
+      "bytes": 2387,
+      "sha256": "e0f6fa5fd8e5cbde7ce1b9bdb9d5b61aae80a4b02ca49c4d5da8ed57a9cc7e23"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python010.process.json",
+      "bytes": 3194,
+      "sha256": "d626554ddfdfbffc416d3f48e6e69d18aa544607b7b2370ffb58ffb82f0b38df"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python013.process.json",
+      "bytes": 3195,
+      "sha256": "da06c36657c337e52bb931910d3ec7a04e3113e26c0dd01b30be61e65b6f4d99"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python013024.pack.process.json",
+      "bytes": 2514,
+      "sha256": "b11ad83980ecaa6550cf55bab7dba99b36a83cc4cbe45633b8b8770ecb2e34d0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python013024.verify.process.json",
+      "bytes": 2390,
+      "sha256": "edeff13589638a1abb8ea28d04e46d6914b17467dab8faffd8b3b1c30c8003d3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python017.process.json",
+      "bytes": 2529,
+      "sha256": "73e2c65baa3e5460ab3dc033658b539724821fe71431c8dd005fd7673e00702e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python017024.pack.process.json",
+      "bytes": 2513,
+      "sha256": "055a34bd5e697b6ac1fa8cc1e1e85fb8ee602a582d44bb996f7c4cf85ad83e14"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python017024.verify.process.json",
+      "bytes": 2390,
+      "sha256": "5085ad9e7144f8e355d9bb434df0bf89da4c1f0cef36706fd207974cb8fec149"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python018.process.json",
+      "bytes": 3146,
+      "sha256": "e9e61283959b2a968a31cf0221e61e563e789b513197b82f1a0f834777f5e669"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python018024.pack.process.json",
+      "bytes": 2512,
+      "sha256": "03b2d192659fde1aa60de44ef3aca30dff72e84d07bfa1c89ad640789e5d25fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/python018024.verify.process.json",
+      "bytes": 2389,
+      "sha256": "57aa6d4fb56234b0cc16ca032849bac2860a6987e4d7debf3a7055e57514ef3d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/reference-compile001.process.json",
+      "bytes": 2273,
+      "sha256": "470d603e93bbca81aadab1f23774853a36ecb6aab158d955fb1cbb088429be72"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/reference-compile002.process.json",
+      "bytes": 2276,
+      "sha256": "b3ecef41900ce72c3a85dd73f5bb6f8deb94637331ac848cfb077127310b0d00"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/reference-compile003.process.json",
+      "bytes": 2271,
+      "sha256": "ad45d40b7ac8c6d2ff6f4f4dfdc637f6d1c0cf3848d91298ea5541fb5588c4df"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/reference-run001.process.json",
+      "bytes": 2139,
+      "sha256": "df0afe364088b42fe346b37e7488ce3d095d489e4ef271667d915f6d051c6d63"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/reference-run002.process.json",
+      "bytes": 2162,
+      "sha256": "008bda03405b3de12f2c2ef0553bec0183c517bedeb29079d0c5d29732ab874f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/reference-run003.process.json",
+      "bytes": 2162,
+      "sha256": "3bb1653bb04df03c8fc8f2e7207081eb13e85aa78510e32e6900e49983014dd8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/reference004.pack.process.json",
+      "bytes": 2497,
+      "sha256": "2b8a4a65835bb6d55cff7f7cbacc9feffe0d13420d886ba74fd9d3ca6e55f12a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/reference004.verify.process.json",
+      "bytes": 2380,
+      "sha256": "b86335ec92458531072b6b9d18270ff7537513888ec4ba5eb38906060373503c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/run-imagejxx_selection_transform_tests007.process.json",
+      "bytes": 1878,
+      "sha256": "eb23bb5967dfe5076a49078fde2f6f87c5cfaf83b2648d1478824e9b750e0ffb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/run-imagejxx_settings_tests007.process.json",
+      "bytes": 1855,
+      "sha256": "8e53dfbaab8a97da3a884e07e3f5bbfd952b08e347d5158370a510da01c6e2f7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/run-imagejxx_target_analysis_tests007.process.json",
+      "bytes": 1869,
+      "sha256": "a469ac80cc8c9ea2ff30a65f8ac4cac865667082522678a4cf0961bb9d3c91e4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/run-imagejxx_target_analysis_tests011.process.json",
+      "bytes": 1871,
+      "sha256": "7d2fa3755edada6b3d28fd5f6d7a7bafd279d3aeceb51d7e1ccbef31440dfe16"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/sdk-build020.process.json",
+      "bytes": 2160,
+      "sha256": "b9a1bea0d8ee05b4355eb73adce83825bd290596ed9b70d1129fe3050b7017c8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/sdk-calibrated_analysis020.process.json",
+      "bytes": 2148,
+      "sha256": "72412d109167877f467ade75a6ef68fe22dbd21cabd4daaac8dce34262ad4ed5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/sdk-configure020.process.json",
+      "bytes": 2589,
+      "sha256": "6f175faf722bfadb78ada2138890fa36b8eaad199a595b4c8b1bd078f258b5ca"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/sdk-selection_transform_api020.process.json",
+      "bytes": 2016,
+      "sha256": "9ffc79baf4ebc6977f4af6023b8bc433509cc191eaa4dbb9f129f8ee1e30f547"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/sdk-target_analysis_api020.process.json",
+      "bytes": 2007,
+      "sha256": "503fc35ab3b876000b81fe1c53e9444d3f18d4edb231a6da9860b6c5347ca859"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/threshold-measurements-20261106/entry.json",
+      "bytes": 68283,
+      "sha256": "de5958017391d7fe1927c0aad4a7bd8e04148646ee51e01027dc19a445ab74df"
+    }
+  ]
+}

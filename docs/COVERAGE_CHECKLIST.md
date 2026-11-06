@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Accepted product baseline: `87703ce`; ELLIPSE has scoped API/both-host coverage; Limit to threshold is next. Full release remains open.
+Updated 2026-11-06. LIMIT now has scoped native/Python/both-Windows-host coverage alongside ELLIPSE. Redirected intensity is next; full ImageJ/Fiji and release scope remain open.
 
 This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
 
@@ -11,6 +11,27 @@ This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains
 - Leave a family/child checkbox open until its complete required scope and supported release gates have evidence. `Partial`, `unverified`, `unavailable` and `not applicable` are different states.
 - At every task closeout, update the affected existing scope row and residual items, link the exact receipt, state remaining platforms/variants, and update current WIP. Reconcile stale inventory labels when warranted; preserve historical failures, fingerprints and expectations.
 - Test totals and family counts are evidence/coverage indexes, not an overall completion percentage. Retired build references are unavailable, not passing checks. No general speed advantage follows from scoped checks.
+
+## Find a coverage area
+
+| Area | Checklist |
+|---|---|
+| Preferences, defaults and configuration | [Settings](#settings-and-configuration) |
+| Selection tools, geometry and ROI editing | [Selections](#selections-tools-roi-editing-and-interchange) |
+| C/Z/T slicing, reslicing and XY/XZ/YZ viewing | [Stacks and XYZ views](#stacks-slicing-xyz-viewing-and-channels) |
+| Volume rendering and large images | [Volumes](#volume-viewing-and-large-datasets) |
+| Filters, thresholding and segmentation | [Processing](#filtering-processing-thresholding-and-segmentation) |
+| Display, types and image transformations | [Image operations](#display-types-geometry-and-image-operations) |
+| Measurements, calibration and results | [Analysis](#measurements-calibration-tables-and-analysis) |
+| Open/save, formats and export | [Files](#formats-files-scientific-data-and-export) |
+| Both ImGui hosts, automation and Python | [UI and automation](#ui-shell-automation-extensions-and-python-control) |
+| Commercially eligible Fiji functionality | [Fiji workflows](#fiji-viewing-and-commercially-eligible-workflows) |
+| Licensing, lifecycle, platform and release obligations | [Shared exits](#cross-cutting-exits-still-open) |
+
+Each family has its required behavior, owner and remaining work. Registered
+option children additionally list parameters/defaults, dimensions, interfaces
+and residual acceptance obligations. Discover further children through the
+owning task rather than treating the current 85 contracts as exhaustive.
 
 ## Accepted scoped workflows
 
@@ -45,6 +66,8 @@ Every checked entry below has **I: delivered, V: scoped, UI: Windows C++ and Pyt
 - [x] Captured Flatten/display/PDF recording, rebind/Run and recovery subset (`G079 G082 G085`). [Scope and limitations](parity/reviews/T04a2-export-replay-20261105.json).
 
 - [x] Explicit Major/Minor/Angle and implicit Shape fitted-center composition for qualified whole/ordinary/fitted area and manager rows (`G009 G066 G068 G071`), preserving non-area Angle and wide BBox. [Scope and limitations](parity/reviews/ellipse-measurements-20261106.json).
+
+- [x] Default-off Limit to threshold, captured raw ranges/typed scalar versus fitted populations, MinThr/MaxThr, stale context/preferences, manager grouping, actual preferences/threshold controls and CSV/workspace (`G009 G066 G068 G071`). I:delivered; V:597 original cases,4,928 distinct installed Python passes/1 optional OpenGL skip, affected Windows/Linux native and3installed Windows SDK clients; UI:86 matching Windows C++/Python profiles,18new threshold profiles; R:open. Initial test/probe failures and corrections remain recorded. [Scope and limitations](parity/reviews/threshold-measurements-20261106.json).
 
 ## Cross-cutting exits still open
 
@@ -395,6 +418,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Two buffers are reused across iterations; admission is an estimate, not certified global memory or measured latency/cancellation coverage.
 - [ ] Remaining configuration groups, real DPI/keyboard-only/assistive access and macOS/Linux installed-platform checks remain required; no family or milestone is complete.
 ### G009 Measurement/plot defaults
+
+**LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
 
 - [ ] Complete full `G009` scope and supported release exits.
 
@@ -2458,6 +2483,11 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ### G066 Image/ROI measurements
 
+**LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
+
+- [x] Scoped Limit to threshold API/settings/Measure/manager, per-column populations, MinThr/MaxThr and both-host CSV/workspace; see the accepted receipt above. This does not close the full family.
+- [ ] Complete redirected intensity and unsampled measurement/constructor/replay/platform variants under M3/T06/T14; preserve default-off native histogram extensions and explicit original-reference limits.
+
 - [x] Qualified ELLIPSE Major/Minor/Angle and implicit Shape fitted-center composition, including empty/outside selections:333original observations,68exact Windows host pairs, installed API/SDK and affected Windows/Linux native checks. Wider variants and release gates remain open; see the scoped receipt above.
 
 - [ ] Complete full `G066` scope and supported release exits.
@@ -2479,6 +2509,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [ ] Circularity limits, exclude-edge/include-hole policies, summary, outlines/masks/ROI outputs, measurement choices and stack/C/T processing
 ### G068 Scale and calibration
+
+**LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
 
 - [ ] Complete full `G068` scope and supported release exits.
 
@@ -2508,6 +2540,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [ ] Thick-line and rectangular averages, configurable interpolation/sampling, live profiles, Z/T profiles and fixed plot axes
 ### G071 Results and tables
+
+**LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
 
 - [ ] Complete full `G071` scope and supported release exits.
 
@@ -2804,4 +2838,4 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ## Next update
 
-Next, update affected G009/G066/G068/G071 rows as Limit to threshold gains actual API/UI/output evidence. Preserve redirected-intensity and unsampled variants with their owners; platform/release items stay open until their own evidence closes them.
+Next, implement redirected intensity under M3 through existing captured analysis, source ownership and Measure publication. Freeze source/destination identity, calibration/threshold population, matching axes/geometry and close/stale/cancel rules before adding the API. Update this checklist with actual scoped evidence at task closeout; unsampled variants and release gates remain open.

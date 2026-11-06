@@ -1,4 +1,7 @@
 #include <imagejxx/target_analysis.hpp>
+#include <imagejxx/manual_threshold.hpp>
+#include <cstring>
+#include <algorithm>
 #include <imagejxx/line_measurement.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/point_annotations.hpp>
@@ -28,6 +31,112 @@ struct Source final:PlaneSource {
 };
 }
 int main(){
+  {
+    // Concrete failing consumer: Short LIMIT compaction uses the processor
+    // rectangle, even when the input mask is a full-canvas native allocation.
+    Image pixels(8,6,1,PixelType::UInt16);for(int y=0;y<6;++y)for(int x=0;x<8;++x)pixels.at(x,y)=257*(x+2*y);
+    DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,6,8,1},{pixels}).observe_reads(reads));owner->select(Selection("rectangle",{{1,1},{6,5}}));
+    auto display=owner->snapshot().display();set_manual_threshold_state(display,owner->snapshot().data().dataset.shape(),{{25700,28270},{}});owner->set_display(display);Application app;app.adopt(owner);
+    TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.limit_to_threshold=true;
+    const auto row=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();
+    check(row.statistics->histogram16.size()==3342 && row.statistics->pixel_count==0 && row.statistics->minimum==25700 && row.statistics->maximum==3341 && !row.bounding_x && reads.counts().plane_reads==1);
+    options.limit_to_threshold=false;const auto original=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();
+    check(original.statistics->histogram16.size()==4370 && original.statistics->pixel_count==20 && !original.threshold_lower && reads.counts().plane_reads==2);
+  }
+  {
+    // Original LIMIT observations, including byte fractional scalar/ellipse
+    // membership, Short empty extrema and density-independent fitted centers.
+    const double nan=std::numeric_limits<double>::quiet_NaN(),inf=std::numeric_limits<double>::infinity();
+    struct ThresholdCase {const char* id;const char* kind;std::vector<std::array<double,2>> points;int type,density,variant;bool limit,active,fitted;std::array<double,2> range;std::array<double,12> expected;int histogram_count;};
+    const std::vector<ThresholdCase> cases={
+      {"threshold-shape0-type0-range1-density0-variant0-limittrue","whole_image",{},0,0,0,true,true,false,{6.0,10.0},{20.0,8.0,6.0,10.0,8.0,6.0,10.0,3.9,2.8,0.0,0.0,0.0},48},
+      {"threshold-shape0-type0-range1-density0-variant1-limittrue","whole_image",{},0,0,1,true,true,false,{6.0,10.0},{20.0,8.0,6.0,10.0,8.0,6.0,10.0,3.9,2.8,9.783961223313058,2.60270766752695,28.396018964837893},48},
+      {"threshold-shape1-type0-range1-density0-variant0-limittrue","rectangle",{{1.0,1.0},{6.0,5.0}},0,0,0,true,true,false,{6.0,10.0},{12.0,8.0,6.0,10.0,8.0,6.0,10.0,3.5,3.0,0.0,0.0,0.0},20},
+      {"threshold-shape1-type0-range1-density0-variant1-limittrue","rectangle",{{1.0,1.0},{6.0,5.0}},0,0,1,true,true,false,{6.0,10.0},{12.0,8.0,6.0,10.0,8.0,6.0,10.0,3.5,3.0,6.047265563772314,2.526575751584972,31.717474411460998},20},
+      {"threshold-shape2-type0-range1-density0-variant0-limittrue","ellipse",{{1.0,1.0},{6.0,5.0}},0,0,0,true,true,false,{6.0,10.0},{10.0,8.0,6.0,10.0,8.0,6.0,10.0,3.5,3.0,0.0,0.0,0.0},16},
+      {"threshold-shape2-type0-range1-density0-variant1-limittrue","ellipse",{{1.0,1.0},{6.0,5.0}},0,0,1,true,true,false,{6.0,10.0},{10.0,8.0,6.0,10.0,8.0,6.0,10.0,3.5,3.0,4.910366352979232,2.5929624252224253,26.56505117707799},16},
+      {"threshold-shape3-type0-range1-density0-variant0-limittrue","polygon",{{1.0,1.0},{7.0,1.0},{3.0,5.0}},0,0,0,true,true,false,{6.0,10.0},{10.0,7.8,6.0,10.0,8.0,6.0,10.0,4.3,2.5,0.0,0.0,0.0},14},
+      {"threshold-shape3-type0-range1-density0-variant1-limittrue","polygon",{{1.0,1.0},{7.0,1.0},{3.0,5.0}},0,0,1,true,true,false,{6.0,10.0},{10.0,7.8,6.0,10.0,8.0,6.0,10.0,4.3,2.5,5.306431931824574,2.399426886264363,25.670095872954917},14},
+      {"threshold-shape4-type0-range1-density0-variant0-limittrue","polygon",{{1.0,1.0},{6.0,1.0},{6.0,5.0},{1.0,5.0}},0,0,0,true,true,true,{6.0,10.0},{14.0,8.0,6.0,10.0,8.0,6.0,10.0,3.5,3.0,0.0,0.0,0.0},30},
+      {"threshold-shape4-type0-range1-density0-variant1-limittrue","polygon",{{1.0,1.0},{6.0,1.0},{6.0,5.0},{1.0,5.0}},0,0,1,true,true,true,{6.0,10.0},{14.0,8.0,6.0,10.0,8.0,6.0,10.0,3.5,3.0,6.806986176549218,2.6186851513967366,22.24648546954261},30},
+      {"threshold-shape5-type0-range1-density0-variant0-limittrue","polygon",{{20.0,20.0},{26.0,20.0},{22.0,24.0}},0,0,0,true,true,false,{6.0,10.0},{0.0,nan,nan,nan,nan,6.0,10.0,nan,nan,0.0,0.0,0.0},0},
+      {"threshold-shape5-type0-range1-density0-variant1-limittrue","polygon",{{20.0,20.0},{26.0,20.0},{22.0,24.0}},0,0,1,true,true,false,{6.0,10.0},{0.0,nan,nan,nan,nan,6.0,10.0,0.5,0.5,nan,nan,0.0},0},
+      {"threshold-shape6-type0-range1-density0-variant0-limittrue","polygon",{{2.0,2.0},{3.0,2.0},{4.0,2.0}},0,0,0,true,true,false,{6.0,10.0},{0.0,nan,nan,nan,nan,6.0,10.0,nan,nan,0.0,0.0,0.0},0},
+      {"threshold-shape6-type0-range1-density0-variant1-limittrue","polygon",{{2.0,2.0},{3.0,2.0},{4.0,2.0}},0,0,1,true,true,false,{6.0,10.0},{0.0,nan,nan,nan,nan,6.0,10.0,2.5,2.5,nan,nan,0.0},0},
+      {"threshold-shape0-type0-range0-density0-variant1-limittrue","whole_image",{},0,0,1,true,false,false,{-10.0,100.0},{48.0,8.5,0.0,17.0,9.0,0.0,255.0,4.0,3.0,9.027033336282898,6.770275002212173,0.0},48},
+      {"threshold-shape0-type0-range2-density0-variant1-limittrue","whole_image",{},0,0,1,true,true,false,{6.4,10.4},{20.0,8.0,6.0,10.0,8.0,6.0,10.0,4.0,3.0,9.677856909016395,2.1049942055645756,28.76440385457576},48},
+      {"threshold-shape0-type0-range3-density0-variant1-limittrue","whole_image",{},0,0,1,true,true,false,{100.0,110.0},{0.0,nan,nan,nan,nan,100.0,110.0,0.5,0.5,nan,nan,0.0},48},
+      {"threshold-shape0-type1-range0-density0-variant1-limittrue","whole_image",{},1,0,1,true,false,false,{-2570.0,25700.0},{48.0,2184.5,0.0,4369.0,2313.0,0.0,65535.0,4.0,3.0,9.027033336282898,6.770275002212173,0.0},48},
+      {"threshold-shape0-type1-range2-density0-variant1-limittrue","whole_image",{},1,0,1,true,true,false,{1644.8000000000002,2672.8},{16.0,2184.5,1799.0,2570.0,2313.0,1645.0,2673.0,4.0,3.0,9.677856909016395,2.1049942055645756,28.76440385457576},16},
+      {"threshold-shape0-type1-range3-density0-variant1-limittrue","whole_image",{},1,0,1,true,true,false,{25700.0,28270.0},{0.0,nan,25700.0,4369.0,nan,25700.0,28270.0,0.5,0.5,nan,nan,0.0},0},
+      {"threshold-shape0-type2-range0-density0-variant1-limittrue","whole_image",{},2,0,1,true,false,false,{-4.5,23.0},{48.0,0.125,-2.0,2.25,0.125,-3.4028234663852886e+38,3.4028234663852886e+38,4.0,3.0,9.027033336282898,6.770275002212173,0.0},48},
+      {"threshold-shape0-type2-range2-density0-variant1-limittrue","whole_image",{},2,0,1,true,true,false,{-0.3999999999999999,0.6000000000000001},{16.0,0.125,-0.25,0.5,0.125,-0.3999999999999999,0.6000000000000001,4.0,3.0,9.677856909016395,2.1049942055645756,28.76440385457576},16},
+      {"threshold-shape0-type2-range3-density0-variant1-limittrue","whole_image",{},2,0,1,true,true,false,{23.0,25.5},{0.0,nan,1.7976931348623157e+308,-1.7976931348623157e+308,nan,23.0,25.5,0.5,0.5,nan,nan,0.0},0},
+      {"threshold-shape0-type0-range1-density1-variant1-limittrue","whole_image",{},0,1,1,true,true,false,{6.0,10.0},{20.0,2.0,1.0,3.0,2.0,1.0,3.0,3.9,2.8,9.783961223313058,2.60270766752695,28.396018964837893},48},
+      {"threshold-shape0-type0-range1-density2-variant1-limittrue","whole_image",{},0,2,1,true,true,false,{6.0,10.0},{0.0,nan,nan,nan,nan,nan,nan,3.9,2.8,9.783961223313058,2.60270766752695,28.396018964837893},48},
+      {"threshold-shape0-type0-range1-density3-variant1-limittrue","whole_image",{},0,3,1,true,true,false,{6.0,10.0},{16.0,8.25,6.0,10.0,8.0,6.0,10.0,3.9,2.8,9.783961223313058,2.60270766752695,28.396018964837893},48},
+      {"threshold-shape0-type1-range1-density1-variant1-limittrue","whole_image",{},1,1,1,true,true,false,{1542.0,2570.0},{20.0,1026.0,769.0,1283.0,1026.0,769.0,1283.0,3.9,2.8,9.783961223313058,2.60270766752695,28.396018964837893},20},
+      {"threshold-shape0-type1-range1-density2-variant1-limittrue","whole_image",{},1,2,1,true,true,false,{1542.0,2570.0},{20.0,nan,1.7976931348623157e+308,-1.7976931348623157e+308,nan,nan,nan,3.9,2.8,9.783961223313058,2.60270766752695,28.396018964837893},20},
+      {"threshold-shape0-type1-range1-density3-variant1-limittrue","whole_image",{},1,3,1,true,true,false,{1542.0,2570.0},{20.0,nan,1542.0,2570.0,2056.0,1542.0,2570.0,3.9,2.8,9.783961223313058,2.60270766752695,28.396018964837893},20},
+      {"threshold-shape7-type0-range1-density0-variant0-limittrue","line",{{1.0,1.0},{6.0,4.0}},0,0,0,true,true,false,{6.0,10.0},{nan,8.666666666666666,7.0,10.0,9.0,6.0,10.0,3.5,2.5,nan,nan,nan},-1},
+      {"threshold-shape7-type0-range0-density0-variant0-limittrue","line",{{1.0,1.0},{6.0,4.0}},0,0,0,true,false,false,{-10.0,100.0},{nan,8.571428571428571,3.0,14.0,9.0,0.0,255.0,3.5,2.5,nan,nan,nan},-1},
+      {"threshold-shape8-type0-range1-density0-variant0-limittrue","polyline",{{1.0,1.0},{6.0,1.0},{6.0,4.0}},0,0,0,true,true,false,{6.0,10.0},{nan,7.75,6.0,10.0,8.0,6.0,10.0,0.0,0.0,nan,nan,nan},-1},
+      {"threshold-shape8-type0-range0-density0-variant0-limittrue","polyline",{{1.0,1.0},{6.0,1.0},{6.0,4.0}},0,0,0,true,false,false,{-10.0,100.0},{nan,6.875,3.0,12.0,7.0,0.0,255.0,0.0,0.0,nan,nan,nan},-1},
+      {"threshold-shape7-type1-range1-density0-variant0-limittrue","line",{{1.0,1.0},{6.0,4.0}},1,0,0,true,true,false,{1542.0,2570.0},{nan,1949.0,1713.0,2185.0,2185.0,1542.0,2570.0,3.5,2.5,nan,nan,nan},-1},
+      {"threshold-shape7-type1-range0-density0-variant0-limittrue","line",{{1.0,1.0},{6.0,4.0}},1,0,0,true,false,false,{-2570.0,25700.0},{nan,2184.5714285714284,771.0,3598.0,2185.0,0.0,65535.0,3.5,2.5,nan,nan,nan},-1},
+      {"threshold-shape8-type1-range1-density0-variant0-limittrue","polyline",{{1.0,1.0},{6.0,1.0},{6.0,4.0}},1,0,0,true,true,false,{1542.0,2570.0},{nan,1991.75,1542.0,2570.0,2056.0,1542.0,2570.0,0.0,0.0,nan,nan,nan},-1},
+      {"threshold-shape8-type1-range0-density0-variant0-limittrue","polyline",{{1.0,1.0},{6.0,1.0},{6.0,4.0}},1,0,0,true,false,false,{-2570.0,25700.0},{nan,1766.875,771.0,3084.0,1799.0,0.0,65535.0,0.0,0.0,nan,nan,nan},-1},
+      {"threshold-shape7-type2-range1-density0-variant0-limittrue","line",{{1.0,1.0},{6.0,4.0}},2,0,0,true,true,false,{-0.5,0.5},{nan,-0.1041666716337204,-0.3333333432674408,0.125,-0.1041666716337204,-0.5,0.5,3.5,2.5,nan,nan,nan},-1},
+      {"threshold-shape7-type2-range0-density0-variant0-limittrue","line",{{1.0,1.0},{6.0,4.0}},2,0,0,true,false,false,{-4.5,23.0},{nan,0.12499998722757612,-1.25,1.5,0.125,-3.4028234663852886e+38,3.4028234663852886e+38,3.5,2.5,nan,nan,nan},-1},
+      {"threshold-shape8-type2-range1-density0-variant0-limittrue","polyline",{{1.0,1.0},{6.0,1.0},{6.0,4.0}},2,0,0,true,true,false,{-0.5,0.5},{nan,-0.0625,-0.5,0.5,-0.125,-0.5,0.5,0.0,0.0,nan,nan,nan},-1},
+      {"threshold-shape8-type2-range0-density0-variant0-limittrue","polyline",{{1.0,1.0},{6.0,1.0},{6.0,4.0}},2,0,0,true,false,false,{-4.5,23.0},{nan,-0.28125,-1.25,1.0,-0.375,-3.4028234663852886e+38,3.4028234663852886e+38,0.0,0.0,nan,nan,nan},-1},
+      {"threshold-shape9-type0-range1-density0-variant0-limittrue","angle",{{1.0,1.0},{4.0,4.0},{6.0,1.0}},0,0,0,true,true,false,{6.0,10.0},{nan,0.0,0.0,0.0,0.0,nan,nan,0.0,0.0,nan,nan,nan},-1},
+      {"threshold-shape10-type0-range1-density0-variant0-limittrue","point",{{2.0,2.0}},0,0,0,true,true,false,{6.0,10.0},{nan,6.0,6.0,6.0,6.0,6.0,10.0,2.0,2.0,nan,nan,nan},-1},
+      {"threshold-shape11-type0-range1-density0-variant0-limittrue","multipoint",{{2.0,2.0},{6.0,4.0}},0,0,0,true,true,false,{6.0,10.0},{nan,6.0,6.0,6.0,6.0,6.0,10.0,2.0,2.0,nan,nan,nan},-1},
+      {"threshold-shape0-type0-range1-density0-variant0-limitfalse","whole_image",{},0,0,0,false,true,false,{6.0,10.0},{48.0,8.5,0.0,17.0,9.0,nan,nan,4.0,3.0,0.0,0.0,0.0},48}
+    };
+    for(const auto& c:cases) {
+      const auto type=c.type==0?PixelType::UInt8:c.type==1?PixelType::UInt16:PixelType::Float32;
+      Image pixels(8,6,1,type);for(int y=0;y<6;++y)for(int x=0;x<8;++x){const double raw=x+2*y;pixels.at(x,y)=c.type==1?257*raw:c.type==2?double(float(raw*.25-2)):raw;}
+      SpatialCalibration spatial;spatial.unit="um";DatasetReadObserver reads;
+      auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,6,8,1},{pixels},spatial).observe_reads(reads));
+      if(std::string(c.kind)!="whole_image"){Selection s(c.kind,c.points);if(c.fitted)s=fit_spline_selection(s,8,6);owner->select(s);}
+      auto display=owner->snapshot().display();if(c.active){set_manual_threshold_state(display,{1,1,1,6,8,1},{{c.range[0],c.range[1]},{}});owner->set_display(display);}
+      Application app;app.adopt(owner);
+      if(c.density) {
+        auto density=ImageJIntensityCalibration::uncalibrated();
+        if(c.density==1)density=ImageJIntensityCalibration::function(type,"straight_line",{-2,.5},"linear");
+        else {
+          std::vector<std::uint32_t> words(c.type==0?256:65536,0x7fc00000u);
+          if(c.density==3){for(std::size_t i=0;i<words.size();++i){float value=float(i);std::memcpy(&words[i],&value,sizeof(value));}words[c.type==0?7:7*257]=0x7fc00000u;}
+          density=ImageJIntensityCalibration::lookup(type,words,c.density==2?"all_nan":"mixed_nan");
+        }
+        app.set_global_calibration(GlobalCalibration(spatial,density,type));
+      }
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;check(!options.limit_to_threshold);options.limit_to_threshold=c.limit;options.ellipse=c.variant==1;options.shape_descriptors=c.variant==2;
+      const auto command=resolve_target_analysis(app.resolve_target(),options);check(reads.counts().plane_reads==0);command.validate_source(owner->snapshot());
+      if(c.limit)check(command.record().at("version")==MetadataValue(std::int64_t(16)));
+      options.limit_to_threshold=!c.limit;const auto snapshot=owner->snapshot();const auto result=execute_target_analysis(command);const auto& row=result.planes.front();check(bool(row.statistics));const auto& s=*row.statistics;
+      auto same=[&](double a,double b){const bool ok=std::isnan(b)?std::isnan(a):std::isinf(b)?a==b:std::abs(a-b)<=1e-10*std::max(1.,std::abs(b));if(!ok){std::cerr<<c.id<<" actual="<<a<<" expected="<<b<<std::endl;check(false);}};
+      if(!std::isnan(c.expected[0]))same(double(s.pixel_count),c.expected[0]);same(s.mean,c.expected[1]);same(s.minimum,c.expected[2]);same(s.maximum,c.expected[3]);same(s.median,c.expected[4]);
+      if(c.limit){check(row.threshold_lower && row.threshold_upper);same(*row.threshold_lower,c.expected[5]);same(*row.threshold_upper,c.expected[6]);}else check(!row.threshold_lower && !row.threshold_upper);
+      if(row.centroid_world){same((*row.centroid_world)[0],c.expected[7]);same((*row.centroid_world)[1],c.expected[8]);}
+      if(c.variant==1){check(row.ellipse_major && row.ellipse_minor && row.ellipse_angle_degrees);same(*row.ellipse_major,c.expected[9]);same(*row.ellipse_minor,c.expected[10]);same(*row.ellipse_angle_degrees,c.expected[11]);}
+      if(c.histogram_count>=0){std::uint64_t total=0;for(auto v:s.histogram)total+=v;check(total==std::uint64_t(c.histogram_count));}
+      check(owner->snapshot().shares_data(snapshot) && owner->undo_steps()==0 && reads.counts().plane_reads==(std::string(c.kind)=="angle"?0:1));
+      const auto before=reads.counts().plane_reads;
+      refuses<std::invalid_argument>([&]{execute_target_analysis(command,{},command.estimate().working_bytes-1);});check(reads.counts().plane_reads==before);
+      auto token=std::make_shared<CancellationToken>();token->cancel();ExecutionControl control;control.cancellation=token;refuses<OperationCancelled>([&]{execute_target_analysis(command,control);});check(reads.counts().plane_reads==before);
+      auto changed=owner->snapshot().display();set_manual_threshold_state(changed,{1,1,1,6,8,1},{{1,2},{}});owner->set_display(changed);
+      if(c.limit)refuses<RevisionConflict>([&]{command.validate_source(owner->snapshot());});else command.validate_source(owner->snapshot());
+    }
+    {
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,6,8,1},{Image(8,6,1,PixelType::UInt8)}).observe_reads(reads));owner->select(Selection("rectangle",{{0,0},{1e100,10}}));
+      auto display=owner->snapshot().display();set_manual_threshold_state(display,{1,1,1,6,8,1},{{0,0},{}});owner->set_display(display);Application app;app.adopt(owner);
+      TargetAnalysisOptions options;options.limit_to_threshold=true;refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target(),options);});check(reads.counts().plane_reads==0);
+      options.measurement=TargetMeasurementMode::Selection;options.bounding_rectangle=true;const auto row=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();check(*row.bounding_width==8 && *row.bounding_height==6 && row.statistics->pixel_count==48 && *row.threshold_lower==0 && reads.counts().plane_reads==1);
+    }
+  }
   {
     // Pinned original ImageJ observations: ordinary fits, constructor branches,
     // empty processor reset versus retained zero-height mask and one-pixel ties.
