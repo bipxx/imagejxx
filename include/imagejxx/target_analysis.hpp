@@ -32,6 +32,9 @@ struct TargetAnalysisOptions {
   // Capture the existing manual-threshold state per resolved row. Absent/off-grid
   // thresholds are unrestricted; explicit Selection/ROI_MANAGER modes only.
   bool limit_to_threshold = false;
+  // Optional whole-plane/current-plane immutable sampling source. Source ROI,
+  // row identity and source-specific geometry remain with the primary target.
+  std::optional<ResolvedTarget> redirect;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -66,8 +69,10 @@ struct TargetAnalysisPlane {
   // analytic/mask/path variants remain absent. Float TRACED may be NaN.
   std::optional<double> perimeter;
   std::optional<std::array<double,3>> midpoint_world;
-  // With perimeter present: true means unscaled image pixels (Analyzer's
-  // no-ROI fallback); false uses TargetAnalysisResult::spatial.unit.
+  // True means unscaled image pixels (Analyzer's no-ROI fallback).
+  // Otherwise lines use result.spatial; redirected area perimeter/Feret and
+  // point/midpoint coordinates use the primary calibration retained in
+  // result.record["spatial"]. No redirect uses result.spatial throughout.
   bool perimeter_in_pixels=false;
   // Area-only geometric centroid: mean pixel centers (x+.5,y+.5), captured
   // plane z, transformed by spatial. Empty membership has NaN components unless
@@ -93,6 +98,8 @@ struct TargetAnalysisPlane {
   std::optional<double> bounding_x,bounding_y,bounding_width,bounding_height;
   std::optional<std::array<double,3>> bounding_origin_world,
       bounding_horizontal_world,bounding_vertical_world;
+  // Actual immutable redirect read position; source row position stays above.
+  std::optional<PlanePosition> sampling_position;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image
@@ -118,6 +125,9 @@ public:
   // Local source and consumed threshold context. Application owners must also
   // validate_target for captured global calibration before publication.
   void validate_source(const DocumentSnapshot& current) const;
+  // Validate the second owner locally; application owners must additionally
+  // validate_target(*options().redirect), including its global context/closure.
+  void validate_redirect(const DocumentSnapshot& current) const;
 private:
   struct State;
   std::shared_ptr<const State> state_;

@@ -39,6 +39,10 @@ std::size_t captured_measurement_row_bytes(const ResolvedTargetAnalysis& command
   const auto& source=command.target().source();
   auto text=RenderMemory::add(source.data().metadata.title.size(),command.spatial().unit.size());
   text=RenderMemory::add(text,command.intensity().value_unit().size());
+  if(command.options().redirect) {
+    text=RenderMemory::add(text,command.options().redirect->source().data().metadata.title.size());
+    text=RenderMemory::add(text,command.target().calibration().unit.size());
+  }
   // Map/value/key holders plus owned strings and formatting slack. No sampled
   // array is retained by a measurement row. Getter/externally injected rows are
   // outside this managed frontend allocation.
@@ -77,6 +81,15 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       {"mean",scalar(s.mean)},{"stddev",scalar(s.stddev)},{"median",scalar(s.median)},
       {"sum",scalar(s.mean*double(s.pixel_count))},{"integrated_density",scalar(s.integrated_density)},
       {"Area",scalar(s.area)},{"Unit",result.spatial.unit},{"Value unit",command.intensity().value_unit()}};
+    if(command.options().redirect) {
+      const auto& redirect=*command.options().redirect;
+      if(!row.sampling_position)throw std::invalid_argument("Redirect measurement requires captured sampling position");
+      const auto p=*row.sampling_position;
+      values["Redirect image"]=redirect.source().data().metadata.title;
+      values["Redirect document"]=redirect.document_id();
+      values["Redirect T"]=p.t+1;values["Redirect C"]=p.c+1;values["Redirect Z"]=p.z+1;
+      values["Coordinate unit"]=(row.point_world || row.midpoint_world || (row.angle_degrees && !row.ellipse_angle_degrees))?command.target().calibration().unit:result.spatial.unit;
+    }
     if(row.roi_index) {
       const auto& roi=source.data().rois[*row.roi_index];values["ROI"]=roi.name;
       values["ROI index"]=*row.roi_index;values["ROI kind"]=roi.selection.kind;
@@ -87,7 +100,7 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
     }
     if(row.perimeter) {
       values["Perim."]=scalar(*row.perimeter);
-      values["Perim. unit"]=row.perimeter_in_pixels?std::string("pixel"):result.spatial.unit;
+      values["Perim. unit"]=row.perimeter_in_pixels?std::string("pixel"):row.length?result.spatial.unit:command.target().calibration().unit;
     }
     if(row.bounding_x) {
       values["BX"]=scalar(*row.bounding_x);values["BY"]=scalar(*row.bounding_y);
@@ -96,8 +109,8 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
     if(row.feret) {
       values["Feret"]=scalar(*row.feret);values["MinFeret"]=scalar(*row.min_feret);
       values["FeretAngle"]=scalar(*row.feret_angle);values["FeretX"]=scalar(*row.feret_x);values["FeretY"]=scalar(*row.feret_y);
-      values["Feret unit"]=row.feret_in_pixels?std::string("pixel"):result.spatial.unit;
-      values["Feret coordinate unit"]=row.feret_coordinates_scaled?result.spatial.unit:std::string("pixel");
+      values["Feret unit"]=row.feret_in_pixels?std::string("pixel"):command.target().calibration().unit;
+      values["Feret coordinate unit"]=row.feret_coordinates_scaled?command.target().calibration().unit:std::string("pixel");
     }
     if(row.circularity) {
       values["Circ."]=scalar(*row.circularity);values["AR"]=scalar(*row.aspect_ratio);

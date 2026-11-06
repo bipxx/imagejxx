@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. LIMIT now has scoped native/Python/both-Windows-host coverage alongside ELLIPSE. Redirected intensity is next; full ImageJ/Fiji and release scope remain open.
+Updated 2026-11-06. Redirected intensity now has scoped native/Python/both-Windows-host coverage alongside LIMIT and ELLIPSE. Existing statistic outputs/column choices are next; full ImageJ/Fiji and release scope remain open.
 
 This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
 
@@ -68,6 +68,8 @@ Every checked entry below has **I: delivered, V: scoped, UI: Windows C++ and Pyt
 - [x] Explicit Major/Minor/Angle and implicit Shape fitted-center composition for qualified whole/ordinary/fitted area and manager rows (`G009 G066 G068 G071`), preserving non-area Angle and wide BBox. [Scope and limitations](parity/reviews/ellipse-measurements-20261106.json).
 
 - [x] Default-off Limit to threshold, captured raw ranges/typed scalar versus fitted populations, MinThr/MaxThr, stale context/preferences, manager grouping, actual preferences/threshold controls and CSV/workspace (`G009 G066 G068 G071`). I:delivered; V:597 original cases,4,928 distinct installed Python passes/1 optional OpenGL skip, affected Windows/Linux native and3installed Windows SDK clients; UI:86 matching Windows C++/Python profiles,18new threshold profiles; R:open. Initial test/probe failures and corrections remain recorded. [Scope and limitations](parity/reviews/threshold-measurements-20261106.json).
+
+- [x] Default-None redirected intensity through captured two-owner API, actual Analyze source selector/Measure/manager, mixed calibration/threshold/geometry, stack mapping, scalar/point/line, mask-source, CSV/workspace and stale/close/cancel guards (`G009 G066 G068 G071`). I:delivered; V:549 original cases/588 rows,5,173 distinct installed Python passes/1optionalGLskip with scoped reuse, affected Windows/Linux native and installed Windows SDK client; UI:96 matching Windows host pairs (10new redirect profiles); R:open. Positioned/cross-plane threshold/replay/RGB/wider platform variants remain unqualified. [Scope, failures and reuse](parity/reviews/redirect-measurements-20261106.json).
 
 ## Cross-cutting exits still open
 
@@ -418,6 +420,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Two buffers are reused across iterations; admission is an estimate, not certified global memory or measured latency/cancellation coverage.
 - [ ] Remaining configuration groups, real DPI/keyboard-only/assistive access and macOS/Linux installed-platform checks remain required; no family or milestone is complete.
 ### G009 Measurement/plot defaults
+
+**Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
 **LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
 
@@ -2483,10 +2487,13 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ### G066 Image/ROI measurements
 
+**Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
+
 **LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
 
 - [x] Scoped Limit to threshold API/settings/Measure/manager, per-column populations, MinThr/MaxThr and both-host CSV/workspace; see the accepted receipt above. This does not close the full family.
-- [ ] Complete redirected intensity and unsampled measurement/constructor/replay/platform variants under M3/T06/T14; preserve default-off native histogram extensions and explicit original-reference limits.
+- [x] Scoped redirected intensity through two-owner capture, actual selector/Measure/manager/CSV/workspace; see the accepted receipt above.
+- [ ] Complete existing statistic output/choice gaps (Mode/IntDen/RawIntDen, Value unit/T/C/Z selection), remaining distribution/moment options and unsampled measurement/constructor/positioned/cross-plane threshold/replay/platform variants under M3/T06/T14. Preserve default-off native extensions and reference limits.
 
 - [x] Qualified ELLIPSE Major/Minor/Angle and implicit Shape fitted-center composition, including empty/outside selections:333original observations,68exact Windows host pairs, installed API/SDK and affected Windows/Linux native checks. Wider variants and release gates remain open; see the scoped receipt above.
 
@@ -2509,6 +2516,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [ ] Circularity limits, exclude-edge/include-hole policies, summary, outlines/masks/ROI outputs, measurement choices and stack/C/T processing
 ### G068 Scale and calibration
+
+**Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
 **LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
 
@@ -2540,6 +2549,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [ ] Thick-line and rectangular averages, configurable interpolation/sampling, live profiles, Z/T profiles and fixed plot axes
 ### G071 Results and tables
+
+**Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
 **LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
 
@@ -2838,4 +2849,4 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ## Next update
 
-Next, implement redirected intensity under M3 through existing captured analysis, source ownership and Measure publication. Freeze source/destination identity, calibration/threshold population, matching axes/geometry and close/stale/cancel rules before adding the API. Update this checklist with actual scoped evidence at task closeout; unsampled variants and release gates remain open.
+Next, expose the accepted statistic values through complete measurement-column choices: Mode/IntDen/RawIntDen and existing Value unit/T/C/Z. Reuse the native mode_value/integrated_density/raw_mean contracts and frozen original rows; freeze alias/default compatibility before editing. Update affected evidence and residual entries at closeout; wider M3/T06/T14 scope remains open.

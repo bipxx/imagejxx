@@ -19,7 +19,8 @@ void bind_target_analysis(py::module_& m) {
     .def_readwrite("feret",&TargetAnalysisOptions::feret)
     .def_readwrite("bounding_rectangle",&TargetAnalysisOptions::bounding_rectangle)
     .def_readwrite("ellipse",&TargetAnalysisOptions::ellipse)
-    .def_readwrite("limit_to_threshold",&TargetAnalysisOptions::limit_to_threshold);
+    .def_readwrite("limit_to_threshold",&TargetAnalysisOptions::limit_to_threshold)
+    .def_readwrite("redirect",&TargetAnalysisOptions::redirect);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
     .def_readwrite("max_working_bytes",&TargetAnalysisLimits::max_working_bytes)
@@ -43,6 +44,7 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("row_count",&TargetAnalysisEstimate::row_count);
   py::class_<TargetAnalysisPlane>(m,"TargetAnalysisPlane")
     .def_readonly("position",&TargetAnalysisPlane::position)
+    .def_readonly("sampling_position",&TargetAnalysisPlane::sampling_position)
     .def_readonly("bounds",&TargetAnalysisPlane::bounds)
     .def_readonly("roi_index",&TargetAnalysisPlane::roi_index)
     .def_readonly("point_index",&TargetAnalysisPlane::point_index)
@@ -97,7 +99,8 @@ void bind_target_analysis(py::module_& m) {
     .def_property_readonly("spatial",[](const ResolvedTargetAnalysis& v){return v.spatial();})
     .def_property_readonly("intensity",[](const ResolvedTargetAnalysis& v){return v.intensity();})
     .def_property_readonly("record",[](const ResolvedTargetAnalysis& v){return bindings::metadata_python(v.record());})
-    .def("validate_source",&ResolvedTargetAnalysis::validate_source,py::arg("current"));
+    .def("validate_source",&ResolvedTargetAnalysis::validate_source,py::arg("current"))
+    .def("validate_redirect",&ResolvedTargetAnalysis::validate_redirect,py::arg("current"));
   m.def("roi_measurement_target_request",[](const DocumentSnapshot& source,const std::vector<std::size_t>& indices,std::size_t maximum){
     py::gil_scoped_release release;return roi_measurement_target_request(source,indices,maximum);
   },py::arg("source"),py::arg("indices")=std::vector<std::size_t>{},py::arg("max_rows")=100000);

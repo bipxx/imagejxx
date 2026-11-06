@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Next ready: M3 redirected intensity; Limit to threshold has scoped delivered evidence.
+Next ready: M3 existing-statistic outputs/column choices; redirected intensity has scoped delivered evidence.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -155,7 +155,7 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T04a.2 M3/T06: current-plane subtype-sensitive Measure. | Constructor precision persists through bare ROI/session/rebind/editing; captured Length/Perim., result columns/CSV/workspace and cancellation work in both Windows hosts.3662distinct Python IDs pass,180captured reference rows,14physical flows; Windows/Linux native andtwoWindowsSDKclients pass. [Evidence](parity/reviews/subtype-measurement-20261106.json). |
 | Delivered scoped workflow | T04a.2 M3/T06: fitted Measure and lifecycle. | Initial-fit evidence remains valid; versioned private Float32 basis now preserves refit/straighten history without changing native Double edit controls.840distinct affected Python IDs pass,14new physical lifecycle flows,2worker-refusal checks, Windows/Linux native and2WindowsSDKclients. [Evidence](parity/reviews/spline-lifecycle-20261106.json). |
 | Current integrated scope | T04a.2 M3: captured area results. | Perimeter/units, X/Y, XM/YM, explicit shape/Feret and BX/BY/Width/Height use existing settings/CSV/workspace. Current3634Pythonchecks pass/one optional OpenGL skip;321unchanged strict-transform checks retain prior evidence.960original rectangle rows and59matching host pairs; affected native Windows/Linux and changed installed Windows analysis client pass. [Latest evidence](parity/reviews/rectangle-measurements-20261106.json), [Feret](parity/reviews/feret-measurements-20261106.json), [shape](parity/reviews/shape-descriptors-20261106.json), [weighted](parity/reviews/center-of-mass-20261106.json), [centroid](parity/reviews/area-centroid-20261106.json), [perimeter](parity/reviews/analytic-perimeter-20261106.json). Parent M3 remains open. |
-| Next ready | T04a.2 M3: redirected intensity. | LIMIT is scoped delivered. Freeze two-source capture, geometry/intensity/threshold ownership and both-owner stale/close guards, then extend the existing API/settings/Measure routes. Other variants retain M3 owners. |
+| Next ready | T04a.2 M3: existing-statistic outputs/column choices. | Redirected intensity is scoped delivered. Reuse mode_value/integrated_density/raw_mean for Mode/IntDen/RawIntDen, expose existing Value unit/T/C/Z choices and freeze compatibility/defaults. Broader distribution/moment/positioned/replay/platform variants retain M3/T06/T14 owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1009,36 +1009,62 @@ Known entry7,433,943,140 B; observed pre-retirement7,447,229,950 B;
 final7,440,747,372 B before final documentation/receipt deltas.214unknown storage
 subtrees keep complete budget unverified. [Scoped receipt](parity/reviews/threshold-measurements-20261106.json).
 
-**Next ready: T04a.2 M3 redirected intensity.** One coherent increment only.
+**Scoped delivered: T04a.2 M3 redirected intensity.**
 
-1. Inspect existing `resolve_target_analysis(target, options, limits)`, captured
-   `ResolvedTargetAnalysis::validate_source(current)`, Window measurement options
-   and READY publication. They currently capture one source and no redirect ID.
-   Freeze a concrete two-document API/ownership contract in the existing next
-   task record before editing; do not invent a second measurement controller.
-2. Observe original Analyzer redirect behavior with exact source/destination
-   sizes, scalar types, ROI, C/Z/T positions, density/global calibration and LIMIT.
-   Establish which document owns threshold membership and geometry versus
-   intensity. Reuse existing fixtures only for unchanged consumed populations.
-3. Extend existing immutable preparation to retain the redirect source identity
-   and required planes/calibration, admit combined retained/provider work before
-   reads, preserve row ordering/grouped reads and detached result semantics.
-   Reject unsupported dimensions/types/axes before reads; no silent resampling.
-4. Add default-none source selection through the existing Measurements/Preferences
-   route in both hosts; capture it at request time. Validate both owners, source
-   closure/data/context changes and current selection setting before atomic
-   publication. Default-none must preserve all current LIMIT/scalar behavior.
-5. Put positive boundary/exception/ownership controls in the existing native
-   analysis tests before one coherent core/binding/UI build. Verify affected
-   installed API/SDK, both actual hosts, CSV/workspace and cancellation/stale/close
-   behavior. Do not restart unrelated original/renderer campaigns.
-6. Retain/hash necessary evidence and retire each terminal group under current
-   ownership rules; update this checklist/queue and record the brief measured
-   waste review. This scoped increment does not close every M3 variant.
+Default-None two-owner capture reaches native/Python and both Windows ImGui
+hosts through Analyze > Redirect measurements, Measure/manager, explicit source
+provenance/units and CSV/workspace.549original cases/588rows are frozen.
+5,173distinct installed Python checks pass with one optional OpenGL skip;
+321unchanged strict-selection cases are separately reused.96matching host pairs
+include10redirect profiles with documented narrow reuse after the final line-pose
+fix. Affected Windows/Linux native controls and the installed Windows C++ client
+pass. Missing references, wider platforms and full M3/family releases remain open.
+[Scoped evidence, failures and reuse](parity/reviews/redirect-measurements-20261106.json).
+
+All10owned scratch groups are retired with6verified necessary archives;
+SDK/compiler scratch retains identities only and active caches/runtime stay warm.
+Known entry7,440,861,292 B; observed pre-retirement7,453,099,943 B;
+final7,447,657,747 B before final documentation/receipt deltas.214inaccessible
+subtrees keep complete budget unverified.30Windows/Linux product-build commands
+sum741.199s, including actual corrective builds/relinks. Do not treat that sum
+as critical-path duration, runtime performance or a completion percentage.
+
+**Next ready: T04a.2 M3 existing-statistic outputs/column choices.**
+
+1. Freeze a user-visible exit: select and export Mode/IntDen/RawIntDen plus the
+   existing Value unit/T/C/Z values through both hosts and persisted column
+   preferences. Keep current sum/integrated_density keys/defaults compatible.
+   Inspect the maintained table/CSV column lookup before choosing an alias route;
+   do not add a second statistics service, controller or generic field registry.
+2. Reuse `ImageJScalarStatistics.mode_value`, `integrated_density`, `raw_mean`
+   and `pixel_count` through `captured_measurement_rows`. Mode uses mode_value;
+   IntDen uses the already-computed integrated_density (point Area is later
+   zeroed); RawIntDen uses pixel_count*raw_mean. The existing raw_mean contract
+   follows ImageJ.umean, including calibrated UInt16 behavior: do not replace it
+   with inferred raw samples or the existing calibrated sum.
+3. Reuse original Mode/IntDen/RawIntDen columns in the597LIMIT and549redirect
+   fixtures. Observe only concrete missing consumer inputs. Cover scalar types,
+   density/NaN/empty, point/line/area/manager and redirected rows where supported;
+   assert their distinct per-column populations before editing formatter output.
+4. Add missing choices in Settings.measurements, preserve unknown saved choices,
+   current labels/precision and additive compatibility. Prefer existing shared
+   table/CSV aliases over duplicate payloads when that maintained route exists.
+   Confirm actual settings, formatter, binding/public-API and save/reopen callers
+   before batching relevant core/header/binding/UI/probe source changes.
+5. Put concrete positive boundaries in the existing narrow controls before any
+   expensive links. Inspect actual normalized return values, dense calibration
+   record cardinality, discarded-but-validated helper outputs and native-versus-
+   JSON nonfinite types. Reuse installed artifacts/green evidence for unchanged
+   inputs; do not restart unrelated strict geometry/renderer campaigns.
+6. Verify actual column selection/table/CSV/workspace in both hosts and only
+   affected API/native/installed consumers. Retain/retire terminal groups under
+   current storage gates, then update this coverage view and brief waste review.
+   Other distribution/moment, positioned/cross-plane threshold, replay and
+   supported-platform requirements retain their M3/T06/T14 owners.
 
 BBox/Feret/shape increments do not close unsampled constructor, nonordinary/mask/
 path/line/point/replay/platform variants. M3/T06/T14 retain those owners;
-redirect and all other unsampled required M3 columns/options remain open; LIMIT has the scoped evidence above.
+unsampled required M3 columns/options and wider redirect variants remain open; LIMIT/redirect have the scoped evidence above.
 
 Other analytic/mask/native-path perimeters, wider scientific/saved-row/constructor
 variants, T07 external annotation projection precision, T09 operation-intent

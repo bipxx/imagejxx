@@ -1,0 +1,962 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 redirected intensity measurements",
+  "implemented": true,
+  "verified": "scoped",
+  "integrated": "Windows standalone C++ and Python ImGui",
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "scope": "DefaultNone captured samplingtarget through native/Python/core/sharedAnalyze selector, eligibleMeasure/manager rows, actualbothhosts/CSV/workspace andtwoowner data/calibration/threshold/selector/close/cancel guards.549originalcases/588rows qualify supportedscalar area/line/point/statistic/fit/BBox/Feret/Shape populations; preserve sourcegeometry versus sampledcalibration/threshold/position. SpecialmasknamedUInt8source usesfullplanenonzero membership. No mutatingImageJsideeffects copied.",
+  "requirements": [
+    "G009",
+    "G066",
+    "G068",
+    "G071",
+    "Analyze.SetMeasurements.RedirectTo",
+    "Analyze.Measure capturedredirect",
+    "ROIManager.Measure capturedredirect"
+  ],
+  "public_contract": {
+    "option": "TargetAnalysisOptions.redirect=std::nullopt/None; optionalResolvedTarget, singlecurrentwholeplane/Planes; normalizedpositionidentity checked, notrequestenum. EqualXYfiniteUInt8/UInt16/Float32 sampling, unsupportedsource refusesbeforelegacyfallbackwhenredirectselected.",
+    "result": "ReadonlyoptionalTargetAnalysisPlane.sampling_position; primaryposition/ROIorderretained. statistics/spatial/intensity are sampled; primarycalibration remainsinresult.record.spatial forsourcegeometry. No provider/application retainedinresults.",
+    "guard": "ResolvedTargetAnalysis.validate_redirect(current) plusvalidate_source(current); Application.validate_target forbothowners/global/bypass/closure beforepublication. Currentselector ID andprimarynavigationguard remain. Sourceunusedthreshold/redirectunrelatedselection/panzoom donot invalidate; mappedthreshold/currentpose whereconsumed do.",
+    "ui": "Analyze > Redirect measurements:None/open-documentchoices; action measurement_redirect(document_id),0None. SessionlocalIDs notpersisted/rebound; workspace rows/provenance retained.",
+    "position": "Equalflatteneddepth mapsCfastestthenZthenT; unequaldepth captures samplingcurrentpose. ActualsampleZ enterslinehelper/admission; sourcecalibrationstillownsreportedmidpoint. Positioned/crossplane variants outside qualifiedmatrix remainopen.",
+    "diagnostic_version": 17,
+    "metadata": "Onecanonicalintensityrecord; no duplicate lookup payload or genericregistry/controller."
+  },
+  "checks": {
+    "original_cases": 549,
+    "original_rows": 588,
+    "installed_python_distinct": {
+      "passed": 5173,
+      "skipped": 1,
+      "failed": 0,
+      "total": 5174,
+      "receipt": "python-union035.json",
+      "qualification": "Currentrun/scopedreuseunion;1optionalhiddenOpenGLskipisnotpass."
+    },
+    "separately_reused_strict_selection_cases": 321,
+    "new_redirect_cases": 566,
+    "matching_windows_host_pairs": 96,
+    "new_redirect_host_pairs": 10,
+    "host_reuse": "native025ordinaryinputs retained after narrowlineposefix; profile3 hasSourceZ0=SamplingZ0 andfiniteextraadmission, other95nonline/defaultNone pathsunchanged. Python033rerunsactualprofile3/42linecases/2newboundaries. Ownprocess-localRedirectdocument IDsnormalizedonlyafterexactcapturedownerassertions.",
+    "native": "Windowsanalysis029andsettings009; Linuxanalysis031/settings011; nativeWindowsfullhost025; unchangedstrictsource/control/client from82cc2d5reused.",
+    "installed_windows_sdk": "target_analysis_api viaexistingSDK026configuredconsumer finalbuild/run034; exactimportedSDKarchive/includepaths and9source/installedidentities verified.",
+    "comment_equivalence": "Headerfull-linecontractcommentscorrected; exactnoncommentbytesidenticaltocompileddeclarations. ExistingMSBuildlink-onlypropertyevaluatedbefore030;all54compiledobjectstatsunchanged,4producthasheschanged, finalinstalledbehaviorchecks pass.",
+    "platform_limit": "No freshLinuxinstalledSDK/UI/macOSreleasequalification."
+  },
+  "remaining": "NextM3existing-statistic outputs/columnchoices:Mode/IntDen/RawIntDen/Valueunit/T/C/Z. Otherdistribution/moment, constructors/nonordinary/wide/RGB/Float64, positioned/cross-plane threshold/counter/manager/replay/platform/accessibility/performance variants retainM3/T06/T14/T15owners. Nativeextension2actualsampleposeboundarycases arenotJavafidelity. G016/17gesture references unavailable; not recreated/repinned/passed. All99fullfamilies andfullcommercialinventory remainopen.",
+  "cleanup": {
+    "all_owned_groups_retired": 10,
+    "current_groups": [
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\redirect-measurements-20261106\\scratch\\python020",
+        "retired_bytes": 383863,
+        "absent": true,
+        "archive": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python020037.zip"
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\redirect-measurements-20261106\\scratch\\python022",
+        "retired_bytes": 292300,
+        "absent": true,
+        "archive": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python022037.zip"
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\redirect-measurements-20261106\\scratch\\python024",
+        "retired_bytes": 895083,
+        "absent": true,
+        "archive": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python024037.zip"
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\redirect-measurements-20261106\\scratch\\python033",
+        "retired_bytes": 9167,
+        "absent": true,
+        "archive": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python033037.zip"
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\redirect-measurements-20261106\\scratch\\native025",
+        "retired_bytes": 2175409,
+        "absent": true,
+        "archive": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native025037.zip"
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\redirect-measurements-20261106\\scratch\\sdk026",
+        "retired_bytes": 4436828,
+        "absent": true,
+        "archive": null
+      },
+      {
+        "target": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\redirect-measurements-20261106\\scratch\\compiler-temp007",
+        "retired_bytes": 0,
+        "absent": true
+      }
+    ],
+    "necessary_archives": [
+      {
+        "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/reference004.zip",
+        "bytes": 23543,
+        "sha256": "a43ad49f77ebfe6edd23b08df763bc7a45cad52b1f7c5cdb387ee837dcab93a6"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python020037.zip",
+        "bytes": 77990,
+        "sha256": "27bde9c87621cc958023050652bdcb93d52c79a0939add27f715994d0a5dd0e4"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python022037.zip",
+        "bytes": 38565,
+        "sha256": "ff90791d2802e33e1800bae5505c3ec4123a3c149c218d3801673941b21c0ff7"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python024037.zip",
+        "bytes": 432850,
+        "sha256": "2f3320ba3e2c148de85cbddf2bec9f7d3fdfa19ae0971992296535f5141c1036"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python033037.zip",
+        "bytes": 4823,
+        "sha256": "47a3d12bfc6ba1dee65d155c188060882f6c256aea17467a8072cb817f45c96c"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native025037.zip",
+        "bytes": 651132,
+        "sha256": "8ffc0579aa80fcef24d1e28742c7c2ee403c4bc44ee1c7f2a77f0720c5578bc1"
+      }
+    ],
+    "scratch_parent_absent": true,
+    "active_products": "RecordedWindows/Linuxcompiler caches andinstalledruntime/SDK preserved; SDK/compiler scratchidentity-only, no wholecache/environment/archive ornewgeneration.",
+    "unknown": "214inaccessible storage subtrees remainunknown; this doesnotclaimcleaningthem orcompletebudgetcompliance."
+  },
+  "storage": {
+    "entry_known_bytes": 7440861292,
+    "observed_pre_retirement_known_bytes": 7453099943,
+    "final_known_bytes_before_docs_receipt_deltas": 7447657747,
+    "net_observed_increment_bytes": 6796455,
+    "entry_snapshot": "../redirect-entry001.json",
+    "before_retirement_snapshot": "../redirect-preretirement035.json",
+    "after_snapshot": "../redirect-final038.json",
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "allocation_bound_bytes": 268435456,
+    "capture_group_bounds_bytes": 8388608,
+    "sdk_bound_bytes": 16777216,
+    "not_absolute_peak": true
+  },
+  "cost": {
+    "product_builds": [
+      {
+        "receipt": "_desktop010.process.json",
+        "seconds": 25.972546000033617,
+        "exit_code": 0
+      },
+      {
+        "receipt": "_desktop013.process.json",
+        "seconds": 10.303804100025445,
+        "exit_code": 0
+      },
+      {
+        "receipt": "_desktop017.process.json",
+        "seconds": 6.87472049985081,
+        "exit_code": 0
+      },
+      {
+        "receipt": "_desktop030.process.json",
+        "seconds": 6.147849699947983,
+        "exit_code": 0
+      },
+      {
+        "receipt": "_native010.process.json",
+        "seconds": 97.80318189994432,
+        "exit_code": 0
+      },
+      {
+        "receipt": "_native017.process.json",
+        "seconds": 35.629971199901775,
+        "exit_code": 0
+      },
+      {
+        "receipt": "_native030.process.json",
+        "seconds": 32.266627199947834,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_app010.process.json",
+        "seconds": 14.896054100012407,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_app013.process.json",
+        "seconds": 5.404870399972424,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_app017.process.json",
+        "seconds": 3.2521533998660743,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_app030.process.json",
+        "seconds": 2.3604427999816835,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_core007.process.json",
+        "seconds": 7.813338600099087,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_core009.process.json",
+        "seconds": 6.172726800199598,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_core016.process.json",
+        "seconds": 4.775292499922216,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_core029.process.json",
+        "seconds": 4.434065599925816,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_desktop010.process.json",
+        "seconds": 104.46140800020657,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_desktop013.process.json",
+        "seconds": 60.204967400059104,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_display_actions_tests010.process.json",
+        "seconds": 9.372217500116676,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_display_actions_tests013.process.json",
+        "seconds": 3.5046275998465717,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_display_actions_tests017.process.json",
+        "seconds": 2.407612399896607,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_display_actions_tests030.process.json",
+        "seconds": 1.6785416000057012,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_settings_tests009.process.json",
+        "seconds": 0.9573230999521911,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_target_analysis_tests007.process.json",
+        "seconds": 59.943218200001866,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_target_analysis_tests009.process.json",
+        "seconds": 33.66778690018691,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_target_analysis_tests016.process.json",
+        "seconds": 34.981702000135556,
+        "exit_code": 0
+      },
+      {
+        "receipt": "imagejxx_target_analysis_tests029.process.json",
+        "seconds": 22.874858499970287,
+        "exit_code": 0
+      },
+      {
+        "receipt": "linux-build011.process.json",
+        "seconds": 64.792008308,
+        "exit_code": 0
+      },
+      {
+        "receipt": "linux-build018.process.json",
+        "seconds": 22.17726303500001,
+        "exit_code": 0
+      },
+      {
+        "receipt": "linux-build031.process.json",
+        "seconds": 17.837673602000002,
+        "exit_code": 0
+      },
+      {
+        "receipt": "native-build008.process.json",
+        "seconds": 38.23030779999681,
+        "exit_code": 0
+      }
+    ],
+    "product_build_commands": 30,
+    "product_build_seconds_sum": 741.199160745006,
+    "native_module_build_seconds_sum": 165.69978029979393,
+    "sdk_configure_seconds": 6.397754000034183,
+    "sdk_build_seconds_sum": 59.116287499899045,
+    "interpretation": "Observedcommands, not criticalpath total, elapsedwallpeak, productruntime speedup or sourcefidelitypercentage."
+  },
+  "waste_review": {
+    "fix": "Actualnormalizedscopeguard, unsupportedsourcefallback, duplicatecalibrationrecord and wrongsampledlineZ/lateadmission corrected; dense/positive/domain consumers addedbeforefinalrelinks. ReadernativevsJSONnonfinitecontract correctedwithoutchangingproduct.",
+    "reuse": "Oneoriginal549producer, sameSDK026config/carrierthroughlatefix,521unchangedredirectpasses/4607baselinepasses/1skip acrosslinefix,321strictkernelcases separate,96hostcomparisonsnarrowreused. No genericrunner/cache/controller/registry orwholecampaignforreaderfix.",
+    "defer": "T02owns measuredcompilefanout (native/desktop command costs), notspeculativeframework/refactor. M3ownsremainingcolumn/options/workflows; no siblingproductexecution.",
+    "cleanup": "All10ownedgroups retired withlivehashverifiedarchives andidentity-onlySDK/compilerretention, activeproducts warm.",
+    "notes": "../compilexx/docs/notes/imagejxx-plan-inefficiencies.md updatedproseonly; notpartofrootcommit."
+  },
+  "failures_and_corrections": [
+    {
+      "runs": [
+        "native007",
+        "native008"
+      ],
+      "cause": "RequestCurrentPlane guardcompared normalizedRanges result; firstuncaughtexceptionabortedwithoutlog.",
+      "resolution": "Existingnative main exceptiondiagnosticreturnsfailure, inspectactualresolvernormalform, validateonecurrentposition/wholeplane; native009pass."
+    },
+    {
+      "run": "dispatchreview012",
+      "cause": "Unsupportedprimarysource legacyfallbackcouldignoreselectedredirect.",
+      "resolution": "ExplicitfiniteScalar/capturedselection refusal plusexactRGBno-read/no-rowprobe; desktop013andactualprofile0pass."
+    },
+    {
+      "run": "python015",
+      "tests": 13,
+      "passed": 10,
+      "failed": 3,
+      "cause": "Duplicatecanonicalsamplingcalibration provenance tableexceededestimatedmetadata; no providerread.",
+      "resolution": "Remove duplicate, keepcanonicalfield/refusal; pinnedByte/Shortdensecontrols passnative016; installed020newcasespass exceptreaders."
+    },
+    {
+      "run": "python020",
+      "tests": 560,
+      "passed": 558,
+      "failed": 2,
+      "cause": "PythonreaderusednativeNaNhelperonJSONnan/infstrings; all10C++physicalprobesfinished.",
+      "resolution": "Inspectactualretainedstringsbeforeedit, correctreaderbranch, rerun2failures+4requiredtwoownercontrols022."
+    },
+    {
+      "run": "python028",
+      "tests": 2,
+      "failed": 2,
+      "cause": "LinehelperusingprimaryZ under sampledcalibration; wrongvalidplane rejection/lateoverflowvalidation.",
+      "resolution": "ActualsampleZargument andmappedmidpointpreflight; native029/Linux031/SDK034+45installedlinechecks033pass. Otherconsumedinputs reused."
+    }
+  ],
+  "commercial": "No new shippeddependency/model/font/runtimeasset orcopiedFiji plugin. Project-ownedobserver/fixtures areverificationmaterialusingexistingreviewedImageJ154rarchive/JDK. FullFiji eligibility/exclusion inventory stillopen.",
+  "sources": [
+    {
+      "path": "docs/COVERAGE_CHECKLIST.md",
+      "bytes": 391961,
+      "sha256": "93d7da28b2626b7eb5f4cb0afe855dd8156ff2172e266abd06a3a9c57fd48b06"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 147610,
+      "sha256": "2d26336198866d748204368508de31be73522e146d664711b3aabd097ef64ea6"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 8372,
+      "sha256": "cca74fb43810beff058468f0eb3f0f536ef11fd9d133ace1fb05aebf059f077a"
+    },
+    {
+      "path": "docs/TARGET_ANALYSIS.md",
+      "bytes": 54665,
+      "sha256": "ead93badff0a188f011a8d0597e1b73f6f5d0320e6444bbca9e2d23fdac8d9ab"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 8364,
+      "sha256": "f3b797ebd428bd195e09e229681bb99e70fd4443cb41a727950538012a62a22f"
+    },
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 9421,
+      "sha256": "14c80846a3079dee30a8d707d6943ea4839cbd28f16c8f3432fd7fa71c2ba5e5"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 9270,
+      "sha256": "d258951e101c3832688d76f1799b13d3d47a2dfba3df1d6ebd51ffbc24a30a87"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 151932,
+      "sha256": "5a2ea67873b5dfa25690e38d31c1a5ec5c18dd2ffdfe0827698c7a75e38bffb4"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 1995,
+      "sha256": "734567db510cc4d3cf18662fd6edda5910cee9c4832ac0d943615ef1a22af42e"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 67404,
+      "sha256": "f0f848fb5d8fdd19a73f3764760aaae163472e1e4680779edf9e9a839dce93bc"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 933153,
+      "sha256": "a1a51af7054b3e6b99bfeb8c7777fc4849b40e070626b20d03ad54151a608440"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 28389,
+      "sha256": "81ab8b00f7dce41b9a31cf685da6ca3ebd676e93d3db1a0e7b2ad287bfdd8727"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 61124,
+      "sha256": "e5503222907c8da2956ba4a559150e6530aca7cb10dd418ccfb57bbfbb3f89e6"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 9456,
+      "sha256": "fd97706f33604611c72b25bd5f12af2e0347bc802447e52ba73844d89c0782e9"
+    },
+    {
+      "path": "tests/fixtures/redirect-measurements-imagej154r.json",
+      "bytes": 746317,
+      "sha256": "61ec52bf362c3c4e52ca2033cb64337517de37a7ef95c99166a47e04e8eb19df"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38586,
+      "sha256": "f92b36ae69c95eedf4751112654e57642c6a7f72992f9e70e237175f440ae6f7"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 79688,
+      "sha256": "237a8a10fabbc6b61bf704dbf4d655d74e0dabbee79b009bf129da7163a9879d"
+    },
+    {
+      "path": "tests/python/test_redirect_measurements.py",
+      "bytes": 15009,
+      "sha256": "4ed2331e5e507aab8b53c14d79a4cbd4feef03978afb89e3ce1e5a8e2219fb7b"
+    },
+    {
+      "path": "tests/reference/ObserveRedirectMeasurements.java",
+      "bytes": 6281,
+      "sha256": "a0ffd3f701f830b8c4f4e4835058bda880c519f8e69582cf29e136426a4919b8"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python-union035.json",
+      "bytes": 1299,
+      "sha256": "95d9b50af888ca51a90f8f98e4ab57f2c6a60d91d35b60b765cfce687974abc0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/host-pairs035.json",
+      "bytes": 65199,
+      "sha256": "1cadd25514bc9fe95e06158f6e06bdfc6c16b0570bcc69cbbb9d2e1df6abda76"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/cost035.json",
+      "bytes": 4267,
+      "sha256": "24135f0afee879429908d4538d9bd0bfcd7b95e9b78d4a2a0f86d0882685100a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/installed-identities032.json",
+      "bytes": 3588,
+      "sha256": "0accba040cd17d2a789006d13c65435c82b9f24e9608012938eee017d4451b73"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/retirement037.json",
+      "bytes": 2391,
+      "sha256": "afcb1522470a5b732de3771107e3fe3b8ffbed81601bbff25e65ec3477a26957"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/reference-retirement004.json",
+      "bytes": 582,
+      "sha256": "24bb10a3adc8b89596b27c8ca13eb4f2c4ff13f148d00057696343ee47a0cfa1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/failed-python-retirement016.json",
+      "bytes": 230,
+      "sha256": "aef86a4fde0e7705cbd6d03d003171d752bee9e912b50077cb83496bcc1bbba8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/failed-boundary-retirement029.json",
+      "bytes": 230,
+      "sha256": "fffa83fe68daa557d4bf0b074dee037c73027fb630d35e5cadf2469e447ff8c1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/retirement-snapshots036.json",
+      "bytes": 708688,
+      "sha256": "c79152792100a11b19afa4becdf6de21cd0bf2a1e78706885785fffc3e27bbad"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/sdk-import026.txt",
+      "bytes": 200,
+      "sha256": "1891069ab62f559670f76cb0860b4cfbdb1c07133f27bc4f883d7cac48153894"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/sdk-carrier026.json",
+      "bytes": 181,
+      "sha256": "bcd3d4e0f13a9e2e7be3320138843fe78f385cb669c3597fe9bbfd19a2480e46"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/link-target-properties030.json",
+      "bytes": 1280,
+      "sha256": "6b1f892d5fb4955d31be2c85b5b85a44a222f013962cccb2884870544d6d096c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python015.log",
+      "bytes": 3780,
+      "sha256": "edd429941dd40c5f35b1cf72d1bdcdf61fafc36270f71420f79ba12317d11d25"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python015.xml",
+      "bytes": 5175,
+      "sha256": "f8f653efcc0d1fbe1fb08f5b9f5d514d872a6d0d6532ae60a530037da52113dd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python020.log",
+      "bytes": 2979,
+      "sha256": "43b002214330cd001d58f1b606aea55267a948ff4ddad7c6cd3861c2d5e3964d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python020.xml",
+      "bytes": 128379,
+      "sha256": "931693e5d4e53c782373fdec0577b9f5d66914d0b5235423a3250745693be53a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python022.xml",
+      "bytes": 1091,
+      "sha256": "d90f5be8eda0b693dbf7f077e5df0136db76120f471b266919d74f5709d1d9e6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python024.xml",
+      "bytes": 784632,
+      "sha256": "9018eb885389d5e53c633efdded13c9aa0e9cd45ab520b057aa2262a77064690"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python028.log",
+      "bytes": 2012,
+      "sha256": "3509bf0081a0e0a61fcf1676bd3233d36fda18091cc9f71882bb2e88ee308abd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python028.xml",
+      "bytes": 1288,
+      "sha256": "c01e6d6dda8fe916d6f225ba83ec0375f53cc26b07f03adafadde7450a26b3b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python033.xml",
+      "bytes": 10193,
+      "sha256": "9bcbef5c515c2f0c349f8792b8d5502aa1c37025a7deaba48d021c5dad73d532"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native025.log",
+      "bytes": 681,
+      "sha256": "612a95337f9cc5d710217ba14ab0cd6b5cfc34063f8f97c725e04a3237bdf780"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/_desktop010.process.json",
+      "bytes": 2855,
+      "sha256": "4eaf7f245c1da76b6515c243cb65f5ce287823944d5e077e5887beb7422cc60a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/_desktop013.process.json",
+      "bytes": 2855,
+      "sha256": "6aa7bdf61dd902fb8cd0e66d151730b7306c3e1eb3e1edcd9e9da9d6507a139a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/_desktop017.process.json",
+      "bytes": 2854,
+      "sha256": "3c12fdf3f47e67b90f097b10e52a1145c4fa96cd2afd450712834667a285e0f6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/_desktop030.process.json",
+      "bytes": 2887,
+      "sha256": "989d2251b4c01373513a176f61abca8c3fec4bb78d2090cd8041dca2767bc56e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/_native010.process.json",
+      "bytes": 2033,
+      "sha256": "21b9c76847c5ae3b353e800438ab220ee7f387b706b81374b6390d40e3cb55ea"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/_native017.process.json",
+      "bytes": 2029,
+      "sha256": "1b2d85bc2bf9d4b6401389ed559bd29fdfc3ae173e88cb27455346edf675fc0c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/_native030.process.json",
+      "bytes": 2064,
+      "sha256": "f5b4bf82fcd4ba2c04e1075768574bd3e50333d1a6827ba6890c0ccf22115735"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_app010.process.json",
+      "bytes": 2857,
+      "sha256": "6d33e40cb3bad31775049163c800a3716fc341163deb747e52ed952ce43ff292"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_app013.process.json",
+      "bytes": 2858,
+      "sha256": "4a5c3e8946c638edb783ed6dcaded483b6aff8574583e1da7842fed54a3f33d6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_app017.process.json",
+      "bytes": 2859,
+      "sha256": "38f13e877c1f9f8706c16f25030580f2f3d53e40b8530e993a196b99768d3d49"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_app030.process.json",
+      "bytes": 2891,
+      "sha256": "7b563320c17b76092474194a9c3dc8ca86e9a56e3856f7a84b1c10e7a0a41e44"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_core007.process.json",
+      "bytes": 2035,
+      "sha256": "9f3b06f90aeb59c8fd965931029ad9746585703d2e29bea48b838ac732801286"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_core009.process.json",
+      "bytes": 2037,
+      "sha256": "7b0cff1cb1b1e41577002a5b9807983f9b48df986960f2feb6857ab03a62f66b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_core016.process.json",
+      "bytes": 2038,
+      "sha256": "8b6fe8e3985bb5ef87ec1e802ea8398259efa00967a0a3d3d15f8309c5b7a602"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_core029.process.json",
+      "bytes": 2037,
+      "sha256": "08a5f71e93c3d552f524f5993ef002387e224144f6fcf1d77b16e1e48ad2ac62"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_desktop010.process.json",
+      "bytes": 2861,
+      "sha256": "9c1de4f1c3cf180fde8c9aa56956424e809ba2300a9ed2fd258006dab2dfbaab"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_desktop013.process.json",
+      "bytes": 2859,
+      "sha256": "21d7cdfa9770d1fb32eee3131d8ca7b7625904b18e3b02a5d7a413970f9eb06d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_display_actions_tests010.process.json",
+      "bytes": 2877,
+      "sha256": "9bfdbbc7f7b2b20ec4df196a8f7e55e911560d6099d1ff4e4b66fc75a40d156b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_display_actions_tests013.process.json",
+      "bytes": 2875,
+      "sha256": "064099a5b0cf1e9e43d91bfd191a97804ba03d57a98f370b859b0f0c42d33207"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_display_actions_tests017.process.json",
+      "bytes": 2875,
+      "sha256": "129eb4b22f61be7d89a59797f160d63d46cb7691ddcca91d560f61985108e37d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_display_actions_tests030.process.json",
+      "bytes": 2909,
+      "sha256": "87f4f20f5fa9214886b085e3e9a7ce317316c1d63cf88cb8d44c6f852189b333"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_settings_tests-run009.process.json",
+      "bytes": 1855,
+      "sha256": "fc22066b98cf02638aeffebde4a92ef30a8a4adc84d0c900567e7c8de1b6a4e4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_settings_tests009.process.json",
+      "bytes": 2045,
+      "sha256": "ca88813482a10bf413b6b6e038be66cbcb860f653a9cf9ba6d0c1feafe26b147"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_target_analysis_tests-run007.process.json",
+      "bytes": 1888,
+      "sha256": "2e36673462cd3c03d4c15923599c57a2a3941a343293769261a09ce311807cf0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_target_analysis_tests-run009.process.json",
+      "bytes": 1871,
+      "sha256": "44d29be7e568d50c62ef9ca579aefbe986015daf4a70db75f0bcd334184ae671"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_target_analysis_tests007.process.json",
+      "bytes": 2056,
+      "sha256": "71b966be35d4561b498679e74c9051997a630a6adc471be65d96cad38cb57266"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_target_analysis_tests009.process.json",
+      "bytes": 2055,
+      "sha256": "8726242d0601c7b3e3caeaf0bf283a41341904ce586ba2ef946aa8ed82927cd6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_target_analysis_tests016.process.json",
+      "bytes": 2054,
+      "sha256": "b59abe9961c7100898e8aca16af3e952948fc9c9ab5091515482d8c1ee2c0d21"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/imagejxx_target_analysis_tests029.process.json",
+      "bytes": 2055,
+      "sha256": "00a07d0dff7c6496d9d4d2972dbdbdb4af97fdfa635daadd4ddb70034b108a65"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-desktop014.process.json",
+      "bytes": 2118,
+      "sha256": "f94e162afffc711d1ae98b47607f7f609f9654a4ad0ecdc496a75dd7bc1d7a0f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-desktop019.process.json",
+      "bytes": 2118,
+      "sha256": "a8ec94f628bd25f89bd4d822ff92138e42abb9a229ad7344ed636ffeff77fc12"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-desktop032.process.json",
+      "bytes": 2117,
+      "sha256": "2621ca2d6dafa53863178a7d166c8ee8724d5963f6e8a78c2a1235196eb9c3a4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-development014.process.json",
+      "bytes": 2123,
+      "sha256": "044a9dc777f7d6b62c99ec2f11a34611f92afea1230ad8565e5493850d3f83bd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-development019.process.json",
+      "bytes": 2124,
+      "sha256": "6b3073a13f0453c551509fbbddb6f53fbf6133f370e8ba1581e47939df2383ed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-development023.process.json",
+      "bytes": 2122,
+      "sha256": "e6fe2ad30648eefdc1ec3d934343484302237fc8b32713cbabe56db53002ec14"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-development032.process.json",
+      "bytes": 2122,
+      "sha256": "50d09d00255be65f49efd7aabcd083cff4bd126dc3c73596a999102b05a9c1ca"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-Unspecified014.process.json",
+      "bytes": 2123,
+      "sha256": "bda5342721a7827b6f29bebdd0cc050ba237cdd7787a5455edaa67efb7bff168"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-Unspecified019.process.json",
+      "bytes": 2132,
+      "sha256": "65f08297a4bcd68ed92d4644fd06347a8acd38aa13eac0e867801be98cea8065"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/install-Unspecified032.process.json",
+      "bytes": 2133,
+      "sha256": "16229a645bb66e599574c52da953f8ba44e33626912ff6cdf99121a08c407d14"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-analysis011.process.json",
+      "bytes": 1489,
+      "sha256": "42388949640a7a6ac459a2c5cca0d06ef910496df212bc2e4ff2173fb5848620"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-analysis018.process.json",
+      "bytes": 1489,
+      "sha256": "9aeba010e8c4bc2a3d7da88d29d0c3fbc27e0e38543e18692d773f1963531a3b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-analysis031.process.json",
+      "bytes": 1489,
+      "sha256": "3f80b7e49c95329914ead16081c27b69229cbf9332218cfcf97491a16dea9f87"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-build011.process.json",
+      "bytes": 1597,
+      "sha256": "7b949cdebebb212800fb64dca2d19e4b92ed76de39b0b655aa530023994ea6bb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-build018.process.json",
+      "bytes": 1572,
+      "sha256": "7e87451a6b2ca7505f157c9c41be84d190577e082ce0850f4b068fe3d7155110"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-build031.process.json",
+      "bytes": 1574,
+      "sha256": "70d54c24c7457d608b4826cab7055574b9dea262f94d2288e5c48a7e66041eac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-owner011.process.json",
+      "bytes": 4753,
+      "sha256": "5eb20fc82b5c25129bc26b8a4ed2ebcc042904a0e742aa71e1d1258bc16e0494"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-owner018.process.json",
+      "bytes": 4144,
+      "sha256": "16a07726d027c7df20762a9509df4e845cac0bfb94671871d823eb0eebf6dfa8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-owner031.process.json",
+      "bytes": 4896,
+      "sha256": "c47b2277ac8ba73c76b71f6b790111367fcfa0c132a0d96e47a49aa70dc2e07a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/linux-settings011.process.json",
+      "bytes": 1480,
+      "sha256": "8b4a08ca44acca77064cd7893c9867eb48d981ad64b561beefbcc62c2939007a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native-build008.process.json",
+      "bytes": 2094,
+      "sha256": "35142c9171e68040150f8f45f53d0b7d297b2836fa2eb2be973aebaba1806de8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native-run008.process.json",
+      "bytes": 1869,
+      "sha256": "1f4f68996cddc8b1beb1e91af341d60d8bb17769c2a811da7dae713188c3bda9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native-run016.process.json",
+      "bytes": 1869,
+      "sha256": "7c5b099600b6f964ce9e5f797ec5788841b2d3f2eaf5efde2b26f23d5c7ee2ff"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native-run029.process.json",
+      "bytes": 1871,
+      "sha256": "10134a5cd8d755cfb921e69005a1a85d527b11d748f3e93df00a683fe62720ee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native025.process.json",
+      "bytes": 1999,
+      "sha256": "190f22811aaf088bd9f871ee30259e03c8897617716200e96f9d363deebabd22"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native025037.pack.process.json",
+      "bytes": 2506,
+      "sha256": "04fdf3a6a897f7cddd5a0befe8c3bc6620f04c55d71308a3ef247e1f6aedcb42"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/native025037.verify.process.json",
+      "bytes": 2385,
+      "sha256": "fbb888c6941fb72358c99d987d7e5b290fab1fb13172d7e2d7906282ac0ef348"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python015.process.json",
+      "bytes": 2350,
+      "sha256": "63e69ac1d1445565f7c6eb605bd5298a6ad6fce97cd757f5565910ac2521ccad"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python020.process.json",
+      "bytes": 2350,
+      "sha256": "bb491f53844d8878125e916e78b0186350d95f3869419bf91c6aa7a5a5e2ec69"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python020037.pack.process.json",
+      "bytes": 2505,
+      "sha256": "613214ad4421003bb9d285fe415d1ff46e067924cc2fd109211c25dff3923716"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python020037.verify.process.json",
+      "bytes": 2385,
+      "sha256": "500b40b28870a259da3f03eea79e9f3d862b032da4958d1ffaeedff4f6e7c319"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python022.process.json",
+      "bytes": 2721,
+      "sha256": "27a6f4146cf848fbb2d8a366023035e05bf5d16bec92c643e51a5b1de13fb81e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python022037.pack.process.json",
+      "bytes": 2507,
+      "sha256": "510d795d81f5bf9992f7fa6ee2b69e8fc47e3b4d2b7caddf1f6bf0ea9bdf0f65"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python022037.verify.process.json",
+      "bytes": 2383,
+      "sha256": "5f8e51b715a83bf5311e1fd8a36b770840b28f80a2c75c757fe6a835feea93f5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python024.process.json",
+      "bytes": 3039,
+      "sha256": "96c9526893522420b45213895e0bfc72cd38bff94358a1994bb3ba321979a733"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python024037.pack.process.json",
+      "bytes": 2503,
+      "sha256": "be204b57f534b510c188af4abeac2214d023e8f750e0e98e2eb44032f45480c5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python024037.verify.process.json",
+      "bytes": 2384,
+      "sha256": "fdfbe25d6a159ed5078e6a76c0cb64032f1f8d5e9bbd360df668cc88461faa07"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python028.process.json",
+      "bytes": 2393,
+      "sha256": "ea474bb374e2b785787870fcb290804da4511ce62d551cb8a2e0736d65b95455"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python033.process.json",
+      "bytes": 10649,
+      "sha256": "e883d5815334ba19f8c19adef4ccd033f95b228752feebcff82d4515102793f8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python033037.pack.process.json",
+      "bytes": 2506,
+      "sha256": "710734cdbfa33d1215b461d98c339b345d087d533dc7a8fd57d91a6b1253b1b8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/python033037.verify.process.json",
+      "bytes": 2384,
+      "sha256": "1263c1a2b8cbddf64336f3bac9d870a06b6ea5e0da5714c1506d997ee84eb1a2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/reference-compile001.process.json",
+      "bytes": 2187,
+      "sha256": "ac9bcd6a03dda558b2f099be57d189ba50bcab78d51c86a3c38a708814a52f76"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/reference-observe001.process.json",
+      "bytes": 2138,
+      "sha256": "bd3204adc98f1ec9e5fadadd6af501a599c15217a2d4372ebd0da432f402d3a1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/reference004.pack.process.json",
+      "bytes": 2506,
+      "sha256": "b889e8037c97276467535516376d2002b4965f9fe3f43ac2f72e0f50d0f6e874"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/reference004.verify.process.json",
+      "bytes": 2387,
+      "sha256": "3d8003072fa0046af7919e895c39888e58b9872c31141befb6aea9214bcc80e4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/sdk-build026.process.json",
+      "bytes": 2185,
+      "sha256": "9c54825a9ec11f1bac13cf881d50ca09e1d89dd41d56919d85597023325f5a4e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/sdk-build034.process.json",
+      "bytes": 2183,
+      "sha256": "14575415c208f42ae002e2aa815864c5f3309951278fe2087357012c72193fbe"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/sdk-configure026.process.json",
+      "bytes": 2497,
+      "sha256": "9d301460ca6b65012f375b211be8cea5a582941129df1858b7332de13f47eec5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/sdk-run026.process.json",
+      "bytes": 2007,
+      "sha256": "de99fdd4b9669baea84de561e88a9f019e9231edc59c842379040701cdad4305"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/sdk-run034.process.json",
+      "bytes": 2007,
+      "sha256": "9c3cc7a92c8d759d000321a51cd4968f9a26875737a5789ee3301ddf40b3909d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/redirect-measurements-20261106/entry.json",
+      "bytes": 95922,
+      "sha256": "4d03c9f3528feca77fe914f1cd2bb9568cebaa8645e613a7bdb8158f26938aaa"
+    }
+  ]
+}

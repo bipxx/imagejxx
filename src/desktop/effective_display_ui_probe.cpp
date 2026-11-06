@@ -14,6 +14,7 @@
 #include <imagejxx/point_presentation.hpp>
 #include <algorithm>
 #include <fstream>
+#include <map>
 #include <cmath>
 #include <limits>
 #include <stdexcept>
@@ -1207,6 +1208,108 @@ Json interpolationComponentsUiCase(Window& w,const std::string& context,const st
     Json report={{"context",context},{"state","observed"},{"profile",profile},{"configured",configured},{"selection",selectionJson(result)},{"commands",projection(result)},{"edited_commands",projection(edited)},{"command_fields","closed contour projection;selection is actual stored kind"},{"drag_target",dragTarget},{"record",record},{"events",events},{"controls",buttons}};
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",buttons}});throw;}
+}
+
+Json redirectMeasurementUiCase(Window& w,const std::string& context,const std::string& directory,int profile) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(directory));
+  require(profile>=0 && profile<10 && !fs::exists(dir) && w.documents().empty(),"Fresh redirect fixture required");fs::create_directories(dir);
+  const auto cases=Json::parse(R"redirect([{"id":"redirect-populations-shape1-type0-threshold3-variant1-limittrue-spatial3-density3-depth1x1-mode0","shape":1,"type":0,"threshold_case":3,"variant":1,"limit":true,"spatial":3,"density":3,"source_depth":1,"target_depth":1,"mode":0,"source_slice":1,"target_slice_before":1,"target_slice_after":1,"roi_owner_after":"source","rows":[{"Area":6.25,"Mean":15.75,"StdDev":0.565194165260439,"Mode":15.0,"Min":15.0,"Max":16.5,"X":1.125,"Y":4.375,"XM":1.0119047619047619,"YM":4.3769841269841265,"Perim.":44.0,"BX":-0.5,"BY":1.875,"Width":2.5,"Height":5.0,"Major":0.0,"Minor":0.0,"Angle":68.64530502131946,"Feret":15.620499351813308,"IntDen":98.4375,"Median":15.75,"RawIntDen":430.0,"Slice":1.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":129.80557109226518,"MinFeret":10.0,"MinThr":15.0,"MaxThr":16.5}]},{"id":"redirect-populations-shape2-type1-threshold2-variant2-limittrue-spatial3-density3-depth1x1-mode0","shape":2,"type":1,"threshold_case":2,"variant":2,"limit":true,"spatial":3,"density":3,"source_depth":1,"target_depth":1,"mode":0,"source_slice":1,"target_slice_before":1,"target_slice_after":1,"roi_owner_after":"source","rows":[{"Area":4.375,"Mean":2795.285714285714,"StdDev":110.39752304847285,"Mode":2767.75,"Min":2639.25,"Max":2960.5,"X":1.0357142857142856,"Y":4.642857142857143,"XM":1.0427505493943885,"YM":4.662793223284101,"Perim.":34.628955940751425,"BX":-0.5,"BY":1.875,"Width":2.5,"Height":5.0,"Circ.":0.04584681028532769,"Feret":12.0,"IntDen":12229.375,"Median":2767.75,"RawIntDen":19567.0,"Slice":1.0,"FeretX":7.0,"FeretY":15.0,"FeretAngle":90.0,"MinFeret":10.0,"AR":"nan","Round":"inf","Solidity":0.5,"MinThr":2600.75,"MaxThr":2986.25}]},{"id":"redirect-populations-shape3-type2-threshold3-variant1-limittrue-spatial3-density3-depth1x1-mode0","shape":3,"type":2,"threshold_case":3,"variant":1,"limit":true,"spatial":3,"density":3,"source_depth":1,"target_depth":1,"mode":0,"source_slice":1,"target_slice_before":1,"target_slice_after":1,"roi_owner_after":"source","rows":[{"Area":4.375,"Mean":8.857142857142858,"StdDev":0.4295623464921123,"Mode":8.75048828125,"Min":8.25,"Max":9.5,"X":1.1071428571428572,"Y":4.107142857142857,"XM":1.120967741935484,"YM":4.092741935483871,"Perim.":39.07131574252948,"BX":-0.5,"BY":1.875,"Width":3.0,"Height":5.0,"Major":0.0,"Minor":0.0,"Angle":60.128218581764834,"Feret":14.422205101855956,"IntDen":38.75,"Median":8.75,"RawIntDen":62.0,"Slice":1.0,"FeretX":3.0,"FeretY":5.0,"FeretAngle":56.309932474020215,"MinFeret":9.984603532054125,"MinThr":8.1,"MaxThr":9.6}]},{"id":"redirect-populations-shape7-type0-threshold3-variant0-limittrue-spatial3-density3-depth1x1-mode0","shape":7,"type":0,"threshold_case":3,"variant":0,"limit":true,"spatial":3,"density":3,"source_depth":1,"target_depth":1,"mode":0,"source_slice":1,"target_slice_before":1,"target_slice_after":1,"roi_owner_after":"target","rows":[{"Area":1.875,"Mean":15.75,"StdDev":0.75,"Mode":15.0,"Min":15.0,"Max":16.5,"X":6.0,"Y":4.5,"XM":0.0,"YM":0.0,"Perim.":4.5069390943299865,"BX":1.0,"BY":0.0,"Width":12.0,"Height":12.0,"Angle":-56.309932474020215,"Feret":4.5069390943299865,"IntDen":29.53125,"Median":15.75,"RawIntDen":129.0,"Slice":1.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":123.69006752597979,"MinFeret":4.440892098500626e-16,"MinThr":15.0,"MaxThr":16.5,"Length":4.5069390943299865}]},{"id":"redirect-populations-shape11-type1-threshold3-variant0-limittrue-spatial3-density3-depth1x1-mode0","shape":11,"type":1,"threshold_case":3,"variant":0,"limit":true,"spatial":3,"density":3,"source_depth":1,"target_depth":1,"mode":0,"source_slice":1,"target_slice_before":1,"target_slice_after":1,"roi_owner_after":"source","rows":[{"Area":0.0,"Mean":"nan","StdDev":0.0,"Mode":5.0,"Min":1.7976931348623157e+308,"Max":-1.7976931348623157e+308,"X":3.0,"Y":3.0,"XM":2.0,"YM":2.0,"Perim.":0.0,"BX":0.0,"BY":3.125,"Width":0.5,"Height":1.25,"Feret":0.0,"IntDen":"nan","Median":"nan","RawIntDen":"nan","Slice":1.0,"FeretX":2.0,"FeretY":2.0,"FeretAngle":0.0,"MinFeret":0.0,"MinThr":2600.75,"MaxThr":2986.25},{"Area":0.0,"Mean":"nan","StdDev":0.0,"Mode":5.0,"Min":1.7976931348623157e+308,"Max":-1.7976931348623157e+308,"X":11.0,"Y":9.0,"XM":6.0,"YM":4.0,"Perim.":0.0,"BX":2.0,"BY":5.625,"Width":0.5,"Height":1.25,"Feret":0.0,"IntDen":"nan","Median":"nan","RawIntDen":"nan","Slice":1.0,"FeretX":6.0,"FeretY":4.0,"FeretAngle":0.0,"MinFeret":0.0,"MinThr":2600.75,"MaxThr":2986.25}]},{"id":"redirect-stacks-shape0-type0-threshold0-variant0-limittrue-spatial3-density3-depth3x3-mode0","shape":0,"type":0,"threshold_case":0,"variant":0,"limit":true,"spatial":3,"density":3,"source_depth":3,"target_depth":3,"mode":0,"source_slice":2,"target_slice_before":3,"target_slice_after":2,"roi_owner_after":"none","rows":[{"Area":30.0,"Mean":18.25,"StdDev":1.7894489821099868,"Mode":15.75,"Min":15.0,"Max":21.5,"X":1.0,"Y":4.375,"XM":1.1078767123287672,"YM":4.424942922374429,"Perim.":28.0,"BX":-1.0,"BY":0.625,"Width":4.0,"Height":7.5,"Feret":10.0,"IntDen":547.5,"Median":18.25,"RawIntDen":2544.0,"Slice":2.0,"FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"MinThr":5.0,"MaxThr":68.75}]},{"id":"redirect-mask-title-shape1-type0-threshold3-variant0-limittrue-spatial3-density3-depth1x1-mode2","shape":1,"type":0,"threshold_case":3,"variant":0,"limit":true,"spatial":3,"density":3,"source_depth":1,"target_depth":1,"mode":2,"source_slice":1,"target_slice_before":1,"target_slice_after":1,"roi_owner_after":"source","rows":[{"Area":7.5,"Mean":15.854166666666666,"StdDev":0.48216289841303694,"Mode":15.5,"Min":15.0,"Max":16.5,"X":1.125,"Y":3.958333333333333,"XM":1.1323915900131407,"YM":3.970105124835742,"Perim.":44.0,"BX":-1.0,"BY":0.625,"Width":4.0,"Height":7.5,"Feret":15.620499351813308,"IntDen":118.90625,"Median":16.0,"RawIntDen":521.0,"Slice":1.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":129.80557109226518,"MinFeret":10.0,"MinThr":15.0,"MaxThr":16.5}]},{"id":"redirect-stacks-shape1-type0-threshold0-variant0-limittrue-spatial3-density3-depth3x3-mode0","shape":1,"type":0,"threshold_case":0,"variant":0,"limit":true,"spatial":3,"density":3,"source_depth":3,"target_depth":3,"mode":0,"source_slice":2,"target_slice_before":3,"target_slice_after":2,"roi_owner_after":"source","rows":[{"Area":12.5,"Mean":17.875,"StdDev":1.1253654377228104,"Mode":16.75,"Min":16.0,"Max":19.75,"X":0.75,"Y":4.375,"XM":0.7919580419580419,"YM":4.396853146853147,"Perim.":44.0,"BX":-0.5,"BY":1.875,"Width":2.5,"Height":5.0,"Feret":15.620499351813308,"IntDen":223.4375,"Median":18.0,"RawIntDen":1030.0,"Slice":2.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":129.80557109226518,"MinFeret":10.0,"MinThr":5.0,"MaxThr":68.75}]},{"id":"redirect-stacks-shape0-type0-threshold0-variant0-limittrue-spatial3-density3-depth1x3-mode0","shape":0,"type":0,"threshold_case":0,"variant":0,"limit":true,"spatial":3,"density":3,"source_depth":1,"target_depth":3,"mode":0,"source_slice":1,"target_slice_before":3,"target_slice_after":3,"roi_owner_after":"none","rows":[{"Area":30.0,"Mean":20.75,"StdDev":1.7894489821099868,"Mode":18.25,"Min":17.5,"Max":24.0,"X":1.0,"Y":4.375,"XM":1.0948795180722892,"YM":4.418925702811245,"Perim.":28.0,"BX":-1.0,"BY":0.625,"Width":4.0,"Height":7.5,"Feret":10.0,"IntDen":622.5,"Median":20.75,"RawIntDen":3024.0,"Slice":1.0,"FeretX":0.0,"FeretY":0.0,"FeretAngle":143.13010235415598,"MinFeret":6.0,"MinThr":5.0,"MaxThr":68.75}]},{"id":"redirect-self-shape1-type0-threshold3-variant0-limittrue-spatial3-density3-depth1x1-mode1","shape":1,"type":0,"threshold_case":3,"variant":0,"limit":true,"spatial":3,"density":3,"source_depth":1,"target_depth":1,"mode":1,"source_slice":1,"target_slice_before":1,"target_slice_after":1,"roi_owner_after":"source","rows":[{"Area":72.0,"Mean":9.0,"StdDev":2.8284271247461903,"Mode":7.0,"Min":5.0,"Max":13.0,"X":6.0,"Y":6.0,"XM":6.0,"YM":6.611111111111111,"Perim.":44.0,"BX":1.0,"BY":0.0,"Width":10.0,"Height":12.0,"Feret":15.620499351813308,"IntDen":648.0,"Median":9.0,"RawIntDen":96.0,"Slice":1.0,"FeretX":1.0,"FeretY":1.0,"FeretAngle":129.80557109226518,"MinFeret":10.0,"MinThr":5.0,"MaxThr":13.0}]}])redirect");const auto config=cases.at(profile);
+  const int kind=config.at("shape"),type=config.at("type"),sourceDepth=config.at("source_depth"),targetDepth=config.at("target_depth");
+  const bool manager=profile==7,self=profile==9,mask=profile==6;
+  auto make=[&](bool destination,DatasetReadObserver& reads) {
+    const auto dtype=destination?(type==0?PixelType::UInt8:type==1?PixelType::UInt16:PixelType::Float32):PixelType::UInt8;
+    const int depth=destination?targetDepth:sourceDepth;Stack pixels;
+    for(int z=0;z<depth;++z){Image image(8,6,1,dtype);for(int y=0;y<6;++y)for(int x=0;x<8;++x){
+      double value=(destination?30+3*x+y:x+2*y)+z*10;
+      if(destination && type==1)value*=257;if(destination && type==2)value=value*.25-2;
+      if(!destination && mask)value=x>=3?255:0;image.at(x,y)=value;
+    }pixels.push_back(std::move(image));}
+    SpatialCalibration calibration;calibration.spacing=destination?std::array<double,3>{.5,1.25,1}:std::array<double,3>{2,3,1};
+    calibration.origin=destination?std::array<double,3>{-1,.625,0}:std::array<double,3>{-1,-3,0};calibration.unit=destination?"target_um":"source_um";
+    DocumentData data{Dataset::from_planes({1,1,depth,6,8,1},std::move(pixels),calibration).observe_reads(reads)};
+    data.metadata.title=destination?"target":mask?"mask":"source";
+    if(!destination && kind){Selection selection(kind==1?"rectangle":kind==2?"ellipse":kind==3?"polygon":kind==7?"line":"multipoint",
+      kind<=2?std::vector<std::array<double,2>>{{1,1},{6,5}}:kind==3?std::vector<std::array<double,2>>{{1,1},{7,1},{3,5}}:kind==7?std::vector<std::array<double,2>>{{1,1},{6,4}}:std::vector<std::array<double,2>>{{2,2},{6,4}});
+      data.selection=selection;if(manager)for(int i=0;i<3;++i)data.rois.push_back(Roi{"area "+std::to_string(i),selection,0,0,1,{}});
+    }
+    auto document=std::make_shared<imagejxx::Document>(std::move(data));
+    if(dtype!=PixelType::Float32)set_imagej_intensity_calibration(*document,ImageJIntensityCalibration::function(dtype,"straight_line",destination?std::vector<double>{5,.25}:std::vector<double>{-7,2},destination?"target_density":"source_density"));
+    return document;
+  };
+  DatasetReadObserver sourceReads,redirectReads;auto source=make(false,sourceReads),redirect=make(true,redirectReads);
+  for(bool destination:{false,true}) {
+    const auto owner=destination?redirect:source;auto view=owner->snapshot().display();view.t=view.c=0;view.crosshair={4,3,destination?targetDepth-1:std::min(1,sourceDepth-1)};
+    if(config.at("threshold_case").get<int>()&(destination?2:1)) {
+      double low=destination?40.4:6.4,high=destination?46.4:10.4;
+      if(destination && type==1){low*=257;high*=257;}if(destination && type==2){low=low*.25-2;high=high*.25-2;}
+      set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),{{low,high},{0,0,view.crosshair[2]}});
+    }owner->set_display(view);
+  }
+  w.addNativeDocument(source);w.addNativeDocument(redirect);w.setActiveIndex(0);
+  if(profile==0) {
+    DatasetReadObserver reads;auto rgb=std::make_shared<imagejxx::Document>(Dataset::from_stack({Image(8,6,3,PixelType::UInt8)}).observe_reads(reads));
+    w.addNativeDocument(rgb);w.action("measurement_redirect",{{"document_id",redirect->id}});const auto before=reads.counts().plane_reads;
+    bool refused=false;try{w.action("measure");}catch(const std::invalid_argument& error){refused=std::string(error.what()).find("Redirect measurement requires supported finite scalar")==0;}
+    require(refused && w.results.empty() && reads.counts().plane_reads==before,"Unsupported source silently used legacy Measure");
+    w.closeDocument(rgb->id,true);w.setActiveIndex(0);w.action("measurement_redirect",{{"document_id",0}});
+  }
+  Json columns={"Image","Redirect image","Redirect document","Redirect T","Redirect C","Redirect Z","Area","mean","stddev","minimum","maximum","median","integrated_density","X","Y","MinThr","MaxThr","Unit","Coordinate unit"};
+  if(kind<7)for(const auto* c:{"Perim.","Perim. unit","BX","BY","Width","Height","Feret","Feret unit"})columns.push_back(c);
+  if(config.at("variant")==1)for(const auto* c:{"Major","Minor","Angle"})columns.push_back(c);
+  if(config.at("variant")==2)for(const auto* c:{"Circ.","AR","Round","Solidity"})columns.push_back(c);
+  if(kind==7)for(const auto* c:{"Length","Perim.","Perim. unit"})columns.push_back(c);
+  w.updateSettings({{"measurements",columns},{"measurement_precision",6},{"measurement_limit_to_threshold",true}},false);
+  Json last,events=Json::array(),controls=Json::array(),report;std::atomic<bool> entered{false},release{false};HeadlessInputSession session(w);
+  try {
+    auto frame=[&](const Json& input=Json::array()){require(events.size()<256,"Redirect frame bound");last=session.frame(input);events.push_back(input);};
+    auto click=[&](const Json& control,const std::string& name){
+      require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"Redirect control unavailable");controls.push_back({{"name",name},{"control",control}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+      for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",{1,1}}}}));frame();
+    };
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};
+    auto choose=[&](std::uint64_t id){control("menu.Analyze");control("menu.measurement_redirect");control(id?"measurement_redirect."+std::to_string(id):"measurement_redirect.none");};
+    auto acknowledge=[&](){if(w.error().empty())return;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();require(w.error().empty(),"Redirect error was not acknowledged");};
+    frame();frame();frame();const auto sampled=self?source:redirect;choose(sampled->id);
+    const auto before=source->snapshot(),other=redirect->snapshot();const auto undo=source->undo_steps(),otherUndo=redirect->undo_steps();
+    const auto a=sourceReads.counts().plane_reads,b=redirectReads.counts().plane_reads;
+    control("menu.Analyze");control(manager?"menu.action.measure_rois":"menu.action.measure");w.wait();frame();require(w.error().empty(),"Redirect Measure failed");
+    const auto rows=w.results;require(rows.size()==(manager?3:config.at("rows").size()),"Redirect row count differs");
+    const auto acquired=sourceReads.counts().plane_reads+redirectReads.counts().plane_reads-a-b;
+    require(acquired==(mask?2:1),"Redirect did not share expected plane reads");
+    const std::map<std::string,std::string> aliases{{"mean","Mean"},{"minimum","Min"},{"maximum","Max"},{"stddev","StdDev"},{"median","Median"},{"integrated_density","IntDen"}};
+    for(std::size_t n=0;n<rows.size();++n){const auto& row=rows.at(n);const auto& expected=config.at("rows").at(manager?0:n);
+      for(const auto& c:columns){auto key=c.get<std::string>();const auto found=aliases.find(key);const auto reference=found==aliases.end()?key:found->second;
+        if(!expected.contains(reference))continue;require(row.contains(key),"Redirect omitted requested column");const auto& value=expected.at(reference);
+        if(value.is_string())require(row.at(key)==value,"Redirect nonfinite value differs");else require(row.at(key).is_number() && std::abs(row.at(key).get<double>()-value.get<double>())<=1e-6*std::max(1.,std::abs(value.get<double>())),"Redirect value differs from original");
+      }
+      require(row.at("Redirect document")==sampled->id && row.at("Redirect image")==sampled->snapshot().data().metadata.title,"Redirect provenance differs");
+      require(row.at("Redirect Z")==config.at(self?"source_slice":"target_slice_after"),"Redirect stack mapping differs");
+      require(row.at("Unit")==sampled->snapshot().data().dataset.calibration().unit,"Redirect statistics unit differs");
+      require(row.at("Coordinate unit")==((kind==7 || kind==11)?before.data().dataset.calibration().unit:sampled->snapshot().data().dataset.calibration().unit),"Redirect coordinate unit differs");
+    }
+    w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});
+    const auto working=w.renderMemoryInfo().at("working_bytes");const auto reserved=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
+    auto gate=[&](const JobContext& c){entered=true;while(!release.load()){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}};
+    auto start=[&](){entered=false;release=false;session.fixtureWorkerGate(gate);w.action(manager?"measure_rois":"measure");const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered.load() && std::chrono::steady_clock::now()<deadline)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered.load(),"Redirect worker gate did not enter");};
+    start();w.cancel();release=true;w.wait();require(w.results==rows && session.fixtureApplication().job_scheduler()->usage().reserved_bytes==reserved && w.renderMemoryInfo().at("working_bytes")==working,"Redirect cancel changed rows or reservations");acknowledge();
+    if(profile==0){
+      start();w.action("measurement_redirect",{{"document_id",0}});release=true;w.wait();require(!w.error().empty() && w.results==rows,"Changed redirect setting published rows");acknowledge();w.action("measurement_redirect",{{"document_id",sampled->id}});
+      start();auto view=sampled->snapshot().display();set_manual_threshold_state(view,sampled->snapshot().data().dataset.shape(),{{1,2},{}});sampled->set_display(view);release=true;w.wait();require(!w.error().empty() && w.results==rows,"Changed redirect threshold published rows");acknowledge();sampled->set_display(other.display());
+      start();session.fixtureApplication().set_global_calibration(global());release=true;w.wait();require(!w.error().empty() && w.results==rows,"Changed redirect Global context published rows");acknowledge();session.fixtureApplication().clear_global_calibration();
+    }
+    if(profile==8){start();auto view=redirect->snapshot().display();view.crosshair[2]=1;redirect->set_display(view);release=true;w.wait();require(!w.error().empty() && w.results==rows,"Changed sampled position published rows");acknowledge();redirect->set_display(other.display());}
+    session.fixtureWorkerGate({});
+    require(source->snapshot().shares_data(before) && redirect->snapshot().shares_data(other) && source->undo_steps()==undo && redirect->undo_steps()==otherUndo,"Redirect changed source data/history");
+    w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});
+    if(profile==0){choose(0);control("menu.Analyze");control("menu.action.measure");w.wait();frame();require(w.error().empty() && w.results.size()==rows.size()+1 && !w.results.back().contains("Redirect image"),"None selector retained redirect");choose(sampled->id);}
+    if(profile==0 || manager){const auto preCloseRows=w.results;start();w.closeDocument(profile==0?sampled->id:source->id,true);release=true;w.wait();require(w.results==preCloseRows,"Closed measurement owner published rows");acknowledge();session.fixtureWorkerGate({});}
+    report={{"state","observed"},{"context",context},{"profile",profile},{"reference",config.at("id")},{"rows",rows},{"columns",columns},{"additional_measure_reads",acquired},{"actual_selector",true},{"unsupported_source_refused",profile==0},{"sampling_document",sampled->id},{"none_checked",profile==0},{"cancel_preserved",true},{"stale_redirect_setting",profile==0},{"stale_redirect_threshold",profile==0},{"stale_global",profile==0},{"stale_redirect_position",profile==8},{"sampling_close_checked",profile==0},{"source_close_checked",manager},{"source_unchanged",true},{"events",events},{"controls",controls}};
+    session.close();Window reopened((dir/"reopened-preferences.json").u8string());reopened.openFile((dir/"measured.ijx").u8string());
+    require(reopened.results==rows,"Redirect workspace lost rows/provenance");report["workspace_preserved"]=true;
+    require(report.dump().size()<8*1024*1024,"Redirect report bound");writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",controls}});throw;}
 }
 
 }

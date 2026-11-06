@@ -1244,6 +1244,7 @@ struct Window::Impl {
   bool headlessSessionActive = false;
   std::shared_ptr<std::optional<JobResult>> jobResult;
   RenderMemory::Lease measurementPendingMemory;
+  std::uint64_t measurementRedirectDocument=0;
   std::vector<RenderMemory::Lease> measurementRowMemory;
   enum class ReadOnlyTask { None, Measurement, Profile, DisplayExport };
   ReadOnlyTask analysisTask=ReadOnlyTask::None;
@@ -4294,6 +4295,10 @@ struct Window::Impl {
     options.roi_indices=indices;
     options.reflex_angle=preferenceState.settings.boolean("reflex_angle");
     options.limit_to_threshold=preferenceState.settings.boolean("measurement_limit_to_threshold");
+    if(measurementRedirectDocument) {
+      TargetRequest request;request.roi=RoiPolicy::WholePlane;
+      options.redirect=owner.controller_->resolve_target(request,measurementRedirectDocument);
+    }
     const auto& columns=preferenceState.settings.strings("measurements");
     options.shape_descriptors=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Circ." || column=="AR" || column=="Round" || column=="Solidity";});
     options.feret=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Feret" || column=="MinFeret" || column=="FeretAngle" || column=="FeretX" || column=="FeretY" || column=="Feret unit" || column=="Feret coordinate unit";});
@@ -7012,9 +7017,19 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+  if(name=="measurement_redirect") {
+    if(!p.contains("document_id") || !p.at("document_id").is_number_integer() ||
+        (p.at("document_id").is_number_integer() && !p.at("document_id").is_number_unsigned() && p.at("document_id").get<std::int64_t>()<0))
+      throw std::invalid_argument("Redirect requires a nonnegative document ID or zero for None");
+    const auto id=p.at("document_id").get<std::uint64_t>();
+    if(id)controller_->snapshot(id);
+    impl->measurementRedirectDocument=id;return;
+  }
   if((name=="measure" || name=="measure_rois") && !documents_.empty()) {
     const auto facade=document();
     const bool manager=name=="measure_rois";
+    if(impl->measurementRedirectDocument && !(manager?captured_roi_measurement_available(facade->nativeSnapshot()):captured_measurement_available(facade->nativeSnapshot())))
+      throw std::invalid_argument("Redirect measurement requires supported finite scalar source and selection");
     if(manager && p.is_object() && !p.empty() && !captured_roi_measurement_available(facade->nativeSnapshot()))
       throw std::invalid_argument("Selected ROI measurement requires finite scalar storage");
     if(manager?captured_roi_measurement_available(facade->nativeSnapshot()):captured_measurement_available(facade->nativeSnapshot())) {
@@ -10404,6 +10419,14 @@ void Window::poll() {
         const auto& command=*completed.analysis_command;
         const auto current=nativeSnapshot();const auto& captured=command.target().source();
         controller_->validate_target(command.target());command.validate_source(current);
+        if(command.options().measurement!=TargetMeasurementMode::Area) {
+          const auto redirect=command.options().redirect?command.options().redirect->document_id():0;
+          if(impl->measurementRedirectDocument!=redirect)throw RevisionConflict();
+          if(command.options().redirect) {
+            controller_->validate_target(*command.options().redirect);
+            command.validate_redirect(controller_->snapshot(redirect));
+          }
+        }
         if(command.options().measurement!=TargetMeasurementMode::Area &&
             impl->preferenceState.settings.boolean("measurement_limit_to_threshold")!=command.options().limit_to_threshold)throw RevisionConflict();
         if(current.id()!=captured.id() || (command.options().measurement!=TargetMeasurementMode::RoiManager &&
@@ -11032,6 +11055,21 @@ void Window::Impl::menu() {
     item("Fit Nonlinear Calibration...", "show_intensity_nonlinear_fit");
     item("Calibration Fit Plot", "show_intensity_fit_plot");
     item("Calibration Table Plot", "show_intensity_calibration_plot");
+    const bool redirectMenuOpen=ImGui::BeginMenu("Redirect measurements");
+    observeControl("menu.measurement_redirect");
+    if(redirectMenuOpen) {
+      if(ImGui::MenuItem("None",nullptr,measurementRedirectDocument==0))owner.action("measurement_redirect",{{"document_id",0}});
+      observeControl("measurement_redirect.none");
+      for(const auto& document:owner.documents_) {
+        const auto source=document->nativeSnapshot();
+        const auto label=source.data().metadata.title+" ["+std::to_string(source.id())+"]";
+        if(ImGui::MenuItem(label.c_str(),nullptr,measurementRedirectDocument==source.id()))owner.action("measurement_redirect",{{"document_id",source.id()}});
+        observeControl("measurement_redirect."+std::to_string(source.id()));
+      }
+      if(measurementRedirectDocument && std::none_of(owner.documents_.begin(),owner.documents_.end(),[&](const auto& document){return document->id==measurementRedirectDocument;}))
+        ImGui::TextDisabled("Selected source closed; choose None or another image");
+      ImGui::EndMenu();
+    }
     item("Measure", "measure", "M");
     item("Measure ROIs", "measure_rois");
     if(actionAllowed("show_histogram"))item("Histogram...", "show_histogram");

@@ -170,8 +170,34 @@ PlanePosition manager_position(const DocumentSnapshot& source,std::size_t index)
   const auto& roi=source.data().rois[index];const auto& view=source.display();
   return {roi.t.value_or(view.t),roi.c.value_or(view.c),roi.z.value_or(view.crosshair[2])};
 }
+const ResolvedTarget& sampling_target(const ResolvedTarget& source,const TargetAnalysisOptions& options) {
+  return options.redirect?*options.redirect:source;
+}
+bool redirect_mask_source(const ResolvedTarget& source,const TargetAnalysisOptions& options) {
+  return options.redirect && source.source().data().dataset.pixel_type()==PixelType::UInt8 && source.source().data().metadata.title=="mask";
+}
+std::size_t flat_plane(PlanePosition p,DatasetShape shape) {
+  return (std::size_t(p.t)*shape.z+p.z)*shape.c+p.c;
+}
+std::size_t plane_count(DatasetShape shape) {return mul(mul(shape.t,shape.c),shape.z);}
+PlanePosition unflatten_plane(std::size_t index,DatasetShape shape) {
+  const auto c=index%shape.c;index/=shape.c;const auto z=index%shape.z;index/=shape.z;
+  return {int(index),int(c),int(z)};
+}
+PlanePosition redirected_position(const ResolvedTarget& source,const TargetAnalysisOptions& options,PlanePosition position,bool positioned_point=false) {
+  if(!options.redirect)return position;
+  const auto shape=source.source().data().dataset.shape(),other=options.redirect->source().data().dataset.shape();
+  const auto index=flat_plane(position,shape),count=plane_count(other);
+  if(plane_count(shape)==count || (positioned_point && count>1 && index<count))return unflatten_plane(index,other);
+  const auto& display=options.redirect->source().display();return {display.t,display.c,display.crosshair[2]};
+}
+void validate_threshold_context(const DocumentSnapshot& captured,const DocumentSnapshot& current) {
+  const auto& before=captured.display().properties;const auto& after=current.display().properties;
+  const auto a=before.find(manual_threshold_property),b=after.find(manual_threshold_property);
+  if((a==before.end())!=(b==after.end()) || (a!=before.end() && !metadata_equal(a->second,b->second)))throw RevisionConflict();
+}
 struct MeasurementRowPlan {
-  PlanePosition position;std::optional<std::size_t> roi,point_index;
+  PlanePosition position,sampling_position;std::optional<std::size_t> roi,point_index;
   std::array<double,2> point{};
   std::optional<unsigned> counter;
   std::optional<std::size_t> counter_count;
@@ -181,7 +207,7 @@ struct MeasurementRowPlan {
   std::optional<MeasurementFrame> frame;
   std::optional<MeasurementRectangle> rectangle;
 };
-struct MeasurementGroup {PlanePosition position;std::vector<std::size_t> rows;bool pixels=false;};
+struct MeasurementGroup {PlanePosition position,source_position;std::vector<std::size_t> rows;bool pixels=false,mask_pixels=false;};
 struct MeasurementPlan {std::vector<MeasurementRowPlan> rows;std::vector<MeasurementGroup> groups;};
 const Selection* measurement_selection(const ResolvedTarget& target,const MeasurementRowPlan& row) {
   const auto& data=target.source().data();
@@ -229,11 +255,24 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       (!manager && target.roi_policy()==RoiPolicy::PositionedRois))
     invalid("Measurement target ROI policy disagrees with its mode");
   const auto& source=target.source();const auto& data=source.data();const auto shape=data.dataset.shape();
-  const auto threshold=options.limit_to_threshold?manual_threshold_state(source.display(),shape):std::optional<ManualThresholdState>{};
+  const auto& sampling=sampling_target(target,options);const auto& sampled=sampling.source().data().dataset;
+  const auto sample_shape=sampled.shape();const bool source_mask=redirect_mask_source(target,options);
+  if(options.redirect) {
+    const auto& view=sampling.source().display();
+    if(sampling.position_count()!=1 || position_key(sampling.position(0))!=position_key({view.t,view.c,view.crosshair[2]}) ||
+        sampling.roi_policy()!=RoiPolicy::WholePlane || sampling.execution_mode()!=ExecutionMode::Planes)
+      invalid("Redirect requires a captured current whole plane");
+    if(sample_shape.x!=shape.x || sample_shape.y!=shape.y)invalid("Redirect image must have the same XY size");
+    if(sample_shape.s!=1 || sampled.sample_policy()!=FloatingSamplePolicy::FiniteOnly ||
+        (sampled.pixel_type()!=PixelType::UInt8 && sampled.pixel_type()!=PixelType::UInt16 && sampled.pixel_type()!=PixelType::Float32))
+      invalid("Redirect requires finite-policy scalar UInt8, UInt16 or Float32 storage");
+    sampling.calibration().validate();
+  }
+  const auto threshold=options.limit_to_threshold?manual_threshold_state(sampling.source().display(),sample_shape):std::optional<ManualThresholdState>{};
   const auto capture_threshold=[&](MeasurementRowPlan& row) {
     row.threshold=std::nullopt;
-    if(!threshold || !manual_threshold_contains(*threshold,row.position))return;
-    auto low=threshold->range.lower,high=threshold->range.upper;const auto type=data.dataset.pixel_type();
+    if(!threshold || !manual_threshold_contains(*threshold,row.sampling_position))return;
+    auto low=threshold->range.lower,high=threshold->range.upper;const auto type=sampled.pixel_type();
     if(type==PixelType::UInt8){low=std::max(0.,low);high=std::min(255.,high);}
     else if(type==PixelType::UInt16) {
       const auto round=[](double v){return std::clamp(std::floor(v+.5),double(std::numeric_limits<std::int64_t>::min()),double(std::numeric_limits<std::int64_t>::max()));};
@@ -251,7 +290,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
     MeasurementRowPlan row;
     if(manager){row.roi=indices[n];row.position=manager_position(source,*row.roi);}
     else row.position=target.position(n);
-    return row;
+    row.sampling_position=redirected_position(target,options,row.position);return row;
   };
   std::size_t count=0;
   for(std::size_t n=0;n<parent_count;++n) {
@@ -265,16 +304,24 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   // Admit bounded map/group/record growth before building either collection.
   within(add(4096,mul(count,1024)),limits.max_working_bytes);
   if(add(4096,mul(count,2048))>limits.max_record_bytes)invalid("Measurement rows exceed metadata budget");
-  DatasetHistogramLimits sampling;sampling.max_pixels=limits.max_pixels;sampling.max_working_bytes=limits.max_working_bytes;
-  auto layout_limits=sampling;layout_limits.max_pixels=std::numeric_limits<std::size_t>::max();
+  DatasetHistogramLimits sampling_limits;sampling_limits.max_pixels=limits.max_pixels;sampling_limits.max_working_bytes=limits.max_working_bytes;
+  auto layout_limits=sampling_limits;layout_limits.max_pixels=std::numeric_limits<std::size_t>::max();
   layout_limits.max_working_bytes=std::numeric_limits<std::size_t>::max();
-  const auto base=detail::estimate_target_histogram_resources(target,{},layout_limits,false);
+  auto base=detail::estimate_target_histogram_resources(target,{},layout_limits,false);
+  if(options.redirect) {
+    const auto other=detail::estimate_target_histogram_resources(sampling,{},layout_limits,false);
+    base.working_bytes=add(base.working_bytes,other.working_bytes);
+    base.record_bytes=add(base.record_bytes,other.record_bytes);
+    within(base.working_bytes,limits.max_working_bytes);
+  }
   MeasurementPlan plan;plan.rows.reserve(count);plan.groups.reserve(std::min(count,target.position_count()));
-  std::map<PositionKey,std::size_t> groups;
-  auto group_for=[&](PlanePosition position) {
-    const auto key=position_key(position);const auto found=groups.find(key);
+  std::map<std::array<int,6>,std::size_t> groups;std::set<PositionKey> source_positions;
+  auto group_for=[&](const MeasurementRowPlan& row) {
+    source_positions.insert(position_key(row.position));
+    const auto p=row.sampling_position,q=source_mask?row.position:PlanePosition{};
+    const std::array<int,6> key{p.t,p.c,p.z,q.t,q.c,q.z};const auto found=groups.find(key);
     if(found!=groups.end())return found->second;
-    const auto ordinal=plan.groups.size();groups.emplace(key,ordinal);plan.groups.push_back({position,{}});return ordinal;
+    const auto ordinal=plan.groups.size();groups.emplace(key,ordinal);plan.groups.push_back({row.sampling_position,row.position,{}});return ordinal;
   };
   TargetAnalysisEstimate out;out.row_count=count;out.plane_pixels=base.plane_pixels;out.plane_bytes=base.plane_bytes;
   bool has_area=false,has_mask=false,has_points=false,has_typed_profile=false;std::size_t raster_peak=0,line_peak=0,path_peak=0,path_work=0,polygon_peak=0,polygon_work=0,shape_peak=0,shape_work=0,rectangle_work=0,ellipse_work=0;
@@ -283,7 +330,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   for(std::size_t n=0;n<parent_count;++n) {
     auto row=parent(n);
     const auto* selection=measurement_selection(target,row);
-    const bool compact_short=options.limit_to_threshold && data.dataset.pixel_type()==PixelType::UInt16 &&
+    const bool compact_short=(options.limit_to_threshold || options.redirect) && sampled.pixel_type()==PixelType::UInt16 &&
         (analytic_selection(selection) || (selection && (selection->kind=="polygon" || selection->kind=="freehand")));
     const bool frame_needed=options.bounding_rectangle || fitted_center || compact_short;
     if(point_selection(selection)) {
@@ -296,6 +343,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       for(std::size_t index=0;index<selection->points.size();++index) {
         row.point_index=index;
         row.position=!entries.empty() && selection->points.size()>1 && entries[index].position?*entries[index].position:base_position;
+        row.sampling_position=redirected_position(target,options,row.position,!entries.empty() && selection->points.size()>1 && bool(entries[index].position));
         capture_threshold(row);
         if(!entries.empty()) {
           row.counter=entries[index].counter;
@@ -304,7 +352,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
         for(int axis=0;axis<2;++axis)row.point[axis]=float(float(selection->points[index][axis])-low[axis])+low[axis];
         const auto world=target.calibration().voxel_to_world({row.point[0],row.point[1],double(row.position.z)});
         for(double coordinate:world)if(!std::isfinite(coordinate))invalid("Point world coordinate must be finite");
-        const auto group=group_for(row.position);plan.groups[group].pixels=true;
+        const auto group=group_for(row);plan.groups[group].pixels=true;
         plan.groups[group].rows.push_back(plan.rows.size());plan.rows.push_back(row);
       }
       continue;
@@ -325,7 +373,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       if(polygon_work>limits.max_measurement_work)invalid("Measurement batch exceeds its geometry work limit");
       const auto bytes=add(8192,mul(add(controls,std::max(controls,selection->points.size())),16));
       within(add(add(4096,mul(count,1024)),bytes),limits.max_working_bytes);
-      row.perimeter=imagej_calibrated_polygon_length(*selection,target.calibration(),
+      row.perimeter=imagej_calibrated_polygon_length(*selection,selection->kind=="polyline"?sampling.calibration():target.calibration(),
           selection_polygon_integer_coordinates(*selection),bytes);
       polygon_peak=std::max(polygon_peak,bytes);
     }
@@ -334,14 +382,14 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       rectangle_work=add(rectangle_work,add(16,work));
       if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>limits.max_measurement_work)
         invalid("Processor frame exceeds aggregate geometry work limit");
-      row.frame=measurement_frame(selection,shape.x,shape.y,fitted_center);
+      row.frame=source_mask?MeasurementFrame{{0,0,shape.x,shape.y},true}:measurement_frame(selection,shape.x,shape.y,fitted_center);
       if(fitted_center) {
         const auto& b=row.frame->pixels;
         ellipse_work=add(ellipse_work,(row.frame->mask_present || row.threshold) && b[2] && b[3]?base.plane_pixels:16);
         if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>limits.max_measurement_work)
           invalid("Ellipse exceeds aggregate geometry work limit");
       }
-      if(options.bounding_rectangle)row.rectangle=measurement_rectangle(*row.frame,target.calibration(),row.position.z);
+      if(options.bounding_rectangle)row.rectangle=measurement_rectangle(*row.frame,sampling.calibration(),row.sampling_position.z);
     }
     if(options.shape_descriptors || options.feret) {
       if(options.shape_descriptors && !row.perimeter)invalid("Shape descriptors require a qualified perimeter");
@@ -356,37 +404,41 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       shape_peak=std::max(shape_peak,geometry.working_bytes);
       row.shape_geometry=detail::prepare_area_shape_geometry(selection,shape.x,shape.y,geometry_limits,feret,options.shape_descriptors);
     }
-    const auto group=group_for(row.position);
+    const auto group=group_for(row);
     plan.groups[group].rows.push_back(plan.rows.size());plan.rows.push_back(row);
     if(selection && selection->kind=="angle") {
       imagej_calibrated_angle(measurement_angle(*selection,shape),target.calibration(),options.reflex_angle);
     }else if(selection && selection->kind=="polyline") {
       if(selection->width>1)invalid("Polyline measurement currently supports thin paths");
       selection->validate(shape.x,shape.y);
-      const auto path=detail::estimate_polyline_measurement(shape.x,shape.y,data.dataset.pixel_type(),target.calibration(),
+      const auto path=detail::estimate_polyline_measurement(shape.x,shape.y,sampled.pixel_type(),sampling.calibration(),
           selection->points,limits.max_working_bytes-add(4096,mul(count,1024)),limits.max_measurement_work);
       path_work=add(path_work,path.work_steps);
       if(path_work>limits.max_measurement_work)invalid("Measurement batch exceeds its path work limit");
-      const std::size_t bins=data.dataset.pixel_type()==PixelType::UInt8?256:data.dataset.pixel_type()==PixelType::UInt16?65536:0;
+      const std::size_t bins=sampled.pixel_type()==PixelType::UInt8?256:sampled.pixel_type()==PixelType::UInt16?65536:0;
       has_typed_profile|=options.limit_to_threshold;
       path_peak=std::max(path_peak,add(path.working_bytes,options.limit_to_threshold?mul(bins,sizeof(std::uint64_t)):0));plan.groups[group].pixels=true;
     }else if(selection && selection->kind=="line") {
       plan.groups[group].pixels=true;has_typed_profile|=options.limit_to_threshold;
       const auto line=measurement_line(*selection,shape);
       line_peak=std::max(line_peak,detail::calibrated_profile_sample_count(line));
-      profile_length(target.calibration(),line);
+      profile_length(sampling.calibration(),line);
       // Validate the actual plane affine before provider acquisition.
       const auto midpoint=target.calibration().voxel_to_world({(line[0]+line[2])/2,(line[1]+line[3])/2,double(row.position.z)});
       for(double value:midpoint)if(!std::isfinite(value))invalid("Measurement midpoint must be finite");
+      if(options.redirect) {
+        const auto sampled_midpoint=sampling.calibration().voxel_to_world({(line[0]+line[2])/2,(line[1]+line[3])/2,double(row.sampling_position.z)});
+        for(double value:sampled_midpoint)if(!std::isfinite(value))invalid("Redirect measurement midpoint must be finite");
+      }
       imagej_line_bounds(line);
     } else {
       plan.groups[group].pixels=true;
-      has_area=true;
+      has_area=true;plan.groups[group].mask_pixels=source_mask;
       if(selection) {
         has_mask=true;
         if(manager || n==0) {
           const auto prefix=add(base.working_bytes,out.geometry_bytes);within(prefix,limits.max_working_bytes);
-          auto mask_limits=sampling;mask_limits.max_working_bytes=std::min(mask_limits.max_working_bytes,limits.max_working_bytes-prefix);
+          auto mask_limits=sampling_limits;mask_limits.max_working_bytes=std::min(mask_limits.max_working_bytes,limits.max_working_bytes-prefix);
           const auto mask=detail::estimate_analysis_mask(*selection,shape,mask_limits);
           out.geometry_bytes=add(out.geometry_bytes,mask.geometry_bytes);raster_peak=std::max(raster_peak,mask.raster_bytes);
           within(add(base.working_bytes,add(out.geometry_bytes,raster_peak)),limits.max_working_bytes);
@@ -395,17 +447,17 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
     }
   }
   if(manager) {
-    if(target.position_count()!=groups.size())invalid("ROI measurement target must contain exactly its row positions");
+    if(target.position_count()!=source_positions.size())invalid("ROI measurement target must contain exactly its row positions");
     for(std::size_t n=0;n<target.position_count();++n)
-      if(!groups.count(position_key(target.position(n))))invalid("ROI measurement target must contain exactly its row positions");
+      if(!source_positions.count(position_key(target.position(n))))invalid("ROI measurement target must contain exactly its row positions");
   }
   out.plane_count=std::count_if(plan.groups.begin(),plan.groups.end(),[](const auto& group){return group.pixels;});
-  out.total_pixels=mul(out.plane_pixels,out.plane_count);
+  out.total_pixels=mul(out.plane_pixels,add(out.plane_count,std::count_if(plan.groups.begin(),plan.groups.end(),[](const auto& group){return group.mask_pixels;})));
   if(out.total_pixels>limits.max_pixels)invalid("Measurement exceeds its total target pixel limit");
   if(out.plane_count && out.plane_pixels>std::size_t(std::numeric_limits<int>::max()))invalid("Analysis plane count is unsupported");
   if(!out.plane_count)out.plane_bytes=0;
-  out.mask_bytes=has_mask?out.plane_bytes:0;out.geometry_bytes=add(out.geometry_bytes,raster_peak);
-  const auto type=data.dataset.pixel_type();const std::size_t bins=type==PixelType::UInt8?256:type==PixelType::UInt16?65536:0;
+  out.mask_bytes=has_mask || source_mask?out.plane_bytes:0;out.geometry_bytes=add(out.geometry_bytes,raster_peak);
+  const auto type=sampled.pixel_type();const std::size_t bins=type==PixelType::UInt8?256:type==PixelType::UInt16?65536:0;
   const auto histogram=mul(add((has_area || has_points || has_typed_profile) && bins==65536?65536:0,256),sizeof(std::uint64_t));
   out.result_bytes=add(sizeof(TargetAnalysisResult),mul(count,add(sizeof(TargetAnalysisPlane)+1024,histogram)));
   out.plot_bytes=out.result_bytes;
@@ -414,9 +466,11 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   out.kernel_bytes=std::max({area_kernel,line_kernel,path_peak,polygon_peak,shape_peak});
   Budget budget{limits.max_record_bytes};budget.take(add(base.record_bytes,add(4096,mul(count,2048))));
   budget.text(target.calibration().unit);budget.text(target.calibration().time_unit);
-  const auto before=budget.used;if(const auto record=density_record(target))budget.value(*record,0);
+  if(options.redirect){budget.text(sampling.calibration().unit);budget.text(sampling.calibration().time_unit);}
+  const auto before=budget.used;if(const auto record=density_record(sampling))budget.value(*record,0);
   out.record_bytes=budget.used;out.calibration_bytes=add(mul(budget.used-before,2),mul(bins,sizeof(std::uint32_t)));
   out.calibration_bytes=add(out.calibration_bytes,mul(add(target.calibration().unit.size(),target.calibration().time_unit.size()),4));
+  if(options.redirect)out.calibration_bytes=add(out.calibration_bytes,mul(add(sampling.calibration().unit.size(),sampling.calibration().time_unit.size()),4));
   out.working_bytes=base.working_bytes;
   if(!out.plane_count)out.working_bytes-=base.plane_bytes+base.histogram_bytes;
   for(auto bytes:{out.mask_bytes,out.geometry_bytes,out.kernel_bytes,out.record_bytes,out.calibration_bytes,out.result_bytes,out.plot_bytes,
@@ -439,6 +493,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
       invalid("Target analysis requires finite-policy scalar storage");
     target.calibration().validate();return estimate_measurement(target,options,limits,retained);
   }
+  if(options.redirect)invalid("Redirect requires explicit selection or manager measurement");
   if(options.limit_to_threshold)invalid("Threshold limiting requires explicit selection or manager measurement");
   if(options.shape_descriptors || options.feret || options.bounding_rectangle || options.ellipse)invalid("Area geometry options require explicit selection or manager measurement");
   if(options.line && !options.path.empty())invalid("Analysis accepts line or path, not both");
@@ -515,10 +570,16 @@ const ImageJIntensityCalibration& ResolvedTargetAnalysis::intensity()const{retur
 const MetadataObject& ResolvedTargetAnalysis::record()const{return state_->record;}
 void ResolvedTargetAnalysis::validate_source(const DocumentSnapshot& current)const {
   state_->target.validate_source(current);
-  if(!state_->options.limit_to_threshold)return;
-  const auto& before=state_->target.source().display().properties;const auto& after=current.display().properties;
-  const auto a=before.find(manual_threshold_property),b=after.find(manual_threshold_property);
-  if((a==before.end())!=(b==after.end()) || (a!=before.end() && !metadata_equal(a->second,b->second)))throw RevisionConflict();
+  if(state_->options.limit_to_threshold && !state_->options.redirect)validate_threshold_context(state_->target.source(),current);
+}
+void ResolvedTargetAnalysis::validate_redirect(const DocumentSnapshot& current)const {
+  if(!state_->options.redirect)invalid("Analysis has no redirect source");
+  const auto& redirect=*state_->options.redirect;redirect.validate_source(current);
+  if(state_->options.limit_to_threshold)validate_threshold_context(redirect.source(),current);
+  if(plane_count(state_->target.source().data().dataset.shape())!=plane_count(redirect.source().data().dataset.shape())) {
+    const auto& a=redirect.source().display();const auto& b=current.display();
+    if(a.t!=b.t || a.c!=b.c || a.crosshair[2]!=b.crosshair[2])throw RevisionConflict();
+  }
 }
 TargetAnalysisEstimate estimate_target_analysis(const ResolvedTarget& target,
     const TargetAnalysisOptions& options,const TargetAnalysisLimits& limits) {
@@ -553,13 +614,14 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
     const TargetAnalysisOptions& options,const TargetAnalysisLimits& limits) {
   return detail::without_execution_callbacks([&] {
     MeasurementPlan measurements;const auto admitted=estimate(target,options,limits,&measurements);
-    auto intensity=target.intensity_calibration();
-    intensity.validate_for(target.source().data().dataset.pixel_type(),1);
+    const auto& sampling=sampling_target(target,options);
+    auto intensity=sampling.intensity_calibration();
+    intensity.validate_for(sampling.source().data().dataset.pixel_type(),1);
     auto lookup=admitted.plane_count?intensity.table_words():std::vector<std::uint32_t>{};
-    const auto spatial=target.calibration();
+    const auto spatial=sampling.calibration();
     const auto& dataset=target.source().data().dataset;
     detail::axis_command_record::SourceRecord source{target.document_id(),dataset.shape(),
-        dataset.pixel_type(),dataset.sample_policy(),target.source_revisions(),spatial};
+        dataset.pixel_type(),dataset.sample_policy(),target.source_revisions(),target.calibration()};
     const auto context=target.calibration_context();
     MetadataObject requested{{"statistics",options.statistics},{"interpolate",options.interpolate}};
     if(options.line)requested["line"]=metadata_array({(*options.line)[0],(*options.line)[1],(*options.line)[2],(*options.line)[3]});
@@ -573,7 +635,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(options.limit_to_threshold) {
         requested["limit_to_threshold"]=true;
         requested["threshold_policy"]="captured-manual/typed-statistics/raw-fit-population/processor-roi-histogram-v1";
-        const auto& properties=target.source().display().properties;const auto found=properties.find(manual_threshold_property);
+        const auto& properties=sampling.source().display().properties;const auto found=properties.find(manual_threshold_property);
         requested["threshold_state"]=found==properties.end()?MetadataValue(std::monostate{}):found->second;
       }
       if(options.shape_descriptors)requested["shape_descriptor_policy"]="rounded-hull/legacy-ellipse/area-options-v1";
@@ -608,6 +670,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
             if(selection->attributes.count(spline_fit_attribute)){fitted_metrics=true;item["spline_fit"]=true;}
           }
         }
+        if(options.redirect)item["sampling_position"]=metadata_array({row.sampling_position.t,row.sampling_position.c,row.sampling_position.z});
         if(row.counter){annotated=true;item["counter"]=std::uint64_t(*row.counter);}
         if(row.counter_count)item["counter_count"]=std::uint64_t(*row.counter_count);
         rows.push_back(metadata_object(std::move(item)));
@@ -626,12 +689,19 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.redirect?17:options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
         {"uses_global",context && context->uses_global()},
         {"options",metadata_object(std::move(requested))}};
+    if(options.redirect) {
+      record["redirect"]=metadata_object(sampling.record());
+      record["redirect_policy"]="source-roi/target-statistics/flat-stack-or-captured-position-v1";
+      record["redirect_mask_source"]=redirect_mask_source(target,options);
+      record["redirect_application_bound"]=sampling.application_calibration_bound();
+      record["redirect_uses_global"]=sampling.calibration_context() && sampling.calibration_context()->uses_global();
+    }
     Budget bounded{limits.max_record_bytes};bounded.object(record);
     if(bounded.used>admitted.record_bytes)invalid("Analysis record exceeds admitted metadata");
     return ResolvedTargetAnalysis(std::make_shared<const ResolvedTargetAnalysis::State>(
@@ -647,7 +717,9 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
   out.record=state.record;out.estimate=state.estimate;
   if(state.options.measurement!=TargetMeasurementMode::Area) {
     out.planes.resize(state.estimate.row_count);
-    const auto& dataset=state.target.source().data().dataset;const auto shape=dataset.shape();
+    const auto& sampling=sampling_target(state.target,state.options);
+    const auto& dataset=sampling.source().data().dataset;const auto shape=dataset.shape();
+    const bool source_mask=redirect_mask_source(state.target,state.options);
     execution_progress(0,state.measurements.rows.size());kernel_checkpoint();
     std::size_t completed=0;KernelStage stage("Selection measurements",state.measurements.rows.size());
     for(const auto& group:state.measurements.groups) {
@@ -656,9 +728,19 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           image->type!=dataset.pixel_type() || image->pixels.size()!=state.estimate.plane_pixels)
         )invalid("Analysis acquired plane has a different shape/type/storage");
       if(image)detail::validate_analysis_source(*image);
+      std::optional<Image> redirected_mask;
+      if(group.mask_pixels) {
+        const auto& source_dataset=state.target.source().data().dataset;
+        const auto source=state.target.source().shares_data(sampling.source()) && position_key(group.source_position)==position_key(group.position)?image:source_dataset.plane(group.source_position);
+        if(!source || source->width!=shape.x || source->height!=shape.y || source->channels!=1 || source->type!=PixelType::UInt8 || source->pixels.size()!=state.estimate.plane_pixels)
+          invalid("Redirect mask acquired plane has a different shape/type/storage");
+        detail::validate_analysis_source(*source);redirected_mask.emplace(shape.x,shape.y,1,PixelType::UInt8);
+        for(std::size_t i=0;i<source->pixels.size();++i){kernel_checkpoint_periodic();redirected_mask->pixels[i]=source->pixels[i]!=0?255:0;}
+      }
       for(const auto ordinal:group.rows) {
         stage.checkpoint(completed);const auto& plan=state.measurements.rows[ordinal];auto& row=out.planes[ordinal];
         row.position=plan.position;row.roi_index=plan.roi;row.perimeter=plan.perimeter;
+        if(state.options.redirect)row.sampling_position=plan.sampling_position;
         const auto* selection=measurement_selection(state.target,plan);
         const auto* threshold=plan.threshold?&*plan.threshold:nullptr;
         const auto nan=std::numeric_limits<double>::quiet_NaN();std::array<double,2> threshold_summary{nan,nan};
@@ -667,7 +749,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
         if(plan.point_index) {
           row.point_index=plan.point_index;row.bounds=point_bounds(plan.point,shape);
           row.point_counter=plan.counter;row.point_counter_count=plan.counter_count;
-          row.point_world=state.spatial.voxel_to_world({plan.point[0],plan.point[1],double(row.position.z)});
+          row.point_world=state.target.calibration().voxel_to_world({plan.point[0],plan.point[1],double(row.position.z)});
           Image sample(1,1,1,dataset.pixel_type());
           const bool inside=(*row.bounds)[2]!=0;
           if(inside)sample.pixels[0]=image->at((*row.bounds)[0],(*row.bounds)[1]);
@@ -678,7 +760,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           row.statistics->area=0;
         }else if(selection && selection->kind=="angle") {
           const auto points=measurement_angle(*selection,shape);row.statistics=ImageJScalarStatistics{};
-          row.angle_degrees=imagej_calibrated_angle(points,state.spatial,state.options.reflex_angle);
+          row.angle_degrees=imagej_calibrated_angle(points,state.target.calibration(),state.options.reflex_angle);
           row.bounds=detail::angle_bounds(points);
         }else if(selection && selection->kind=="polyline") {
           auto measured=detail::calibrated_polyline_measurement_with_table(*image,state.spatial,state.intensity,state.lookup,
@@ -687,17 +769,19 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
         }else if(selection && selection->kind=="line") {
           const auto line=measurement_line(*selection,shape);
           auto measured=detail::calibrated_line_measurement_with_table(*image,state.spatial,state.intensity,state.lookup,
-              line,state.options.interpolate,state.limits.max_working_bytes,true,double(row.position.z),threshold,saved_threshold);
+              line,state.options.interpolate,state.limits.max_working_bytes,true,double(plan.sampling_position.z),threshold,saved_threshold);
           row.statistics=std::move(measured.statistics);row.length=measured.length;row.perimeter=measured.length;
           row.angle_degrees=measured.angle_degrees;row.midpoint_world=measured.midpoint_world;
+          if(state.options.redirect)row.midpoint_world=state.target.calibration().voxel_to_world({(line[0]+line[2])/2,(line[1]+line[3])/2,double(row.position.z)});
           row.bounds=imagej_line_bounds(line);
         } else {
-          auto mask=selection?std::optional<Image>{selection->mask(shape.x,shape.y)}:std::optional<Image>{};
+          auto mask=source_mask?std::optional<Image>{}:selection?std::optional<Image>{selection->mask(shape.x,shape.y)}:std::optional<Image>{};
+          const auto* membership=source_mask?&*redirected_mask:mask?&*mask:nullptr;
           std::optional<std::array<double,2>> centroid,center_of_mass;
           const bool fit_center=state.options.ellipse || state.options.shape_descriptors;
           row.statistics=detail::calibrated_statistics_with_table(*image,state.spatial,state.intensity,state.lookup,
-              mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true,fit_center?nullptr:&centroid,&center_of_mass,threshold,saved_threshold,
-              state.options.limit_to_threshold && plan.frame?&plan.frame->pixels:nullptr);
+              membership,state.limits.max_working_bytes,&row.bounds,true,fit_center?nullptr:&centroid,&center_of_mass,threshold,saved_threshold,
+              (state.options.limit_to_threshold || state.options.redirect) && plan.frame?&plan.frame->pixels:nullptr);
           if(plan.rectangle) {
             const auto& b=*plan.rectangle;
             row.bounding_x=b.origin[0];row.bounding_y=b.origin[1];row.bounding_width=b.width;row.bounding_height=b.height;
@@ -710,7 +794,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           }
           double major=0,minor=0;
           if(fit_center) {
-            const auto fitted=detail::area_ellipse_summary(mask?&*mask:nullptr,shape.x,shape.y,plan.frame->pixels,plan.frame->mask_present,threshold?image.get():nullptr,threshold);
+            const auto fitted=detail::area_ellipse_summary(membership,shape.x,shape.y,plan.frame->pixels,plan.frame->mask_present,threshold?image.get():nullptr,threshold);
             centroid=fitted.center;
             const double scale=std::abs(state.spatial.spacing[0]-state.spatial.spacing[1])/state.spatial.spacing[0]<.01?state.spatial.spacing[0]:0.;
             major=fitted.axes[0]*scale;minor=fitted.axes[1]*scale;
@@ -727,10 +811,10 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
             row.roundness=4.*area/(3.14159265358979323846*major*major);
             row.solidity=double(row.statistics->pixel_count)/(selection?plan.shape_geometry->hull_area:double(row.statistics->pixel_count));
           }
-          if(center_of_mass)row.center_of_mass_world=moment_world(state.spatial,{(*center_of_mass)[0],(*center_of_mass)[1],double(row.position.z)});
+          if(center_of_mass)row.center_of_mass_world=moment_world(state.spatial,{(*center_of_mass)[0],(*center_of_mass)[1],double(plan.sampling_position.z)});
           if(centroid) {
             if(std::isfinite((*centroid)[0]) && std::isfinite((*centroid)[1]))
-              row.centroid_world=state.spatial.voxel_to_world({(*centroid)[0],(*centroid)[1],double(row.position.z)});
+              row.centroid_world=state.spatial.voxel_to_world({(*centroid)[0],(*centroid)[1],double(plan.sampling_position.z)});
             else {const auto nan=std::numeric_limits<double>::quiet_NaN();row.centroid_world=std::array<double,3>{nan,nan,nan};}
           }
         }

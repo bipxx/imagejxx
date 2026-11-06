@@ -639,11 +639,88 @@ Current verification is scoped in [the coverage checklist](COVERAGE_CHECKLIST.md
 Redirected intensity, other measurement variants and supported-platform release
 qualification remain open.
 
-| Existing command/key | Current behavior and remaining path |
+## Redirected measurements
+
+`TargetAnalysisOptions.redirect` is an optional immutable
+`ResolvedTarget` defaulting to `None`/`std::nullopt`. Preparation accepts a
+single captured current plane with `RoiPolicy.WHOLE_PLANE` and plane execution;
+use a normal current-plane request. The resolver normalizes request scopes to
+ranges/positions, so consumers validate resolved position identity rather than
+expecting the request enum to survive. The redirect image must have equal XY
+size and finite scalar UInt8/UInt16/Float32 storage. Unsupported targets and
+independent AREA/profile-mode redirects reject before provider reads.
+
+```python
+request = imagejxx.TargetRequest()
+request.roi = imagejxx.RoiPolicy.WHOLE_PLANE
+options = imagejxx.TargetAnalysisOptions()
+options.measurement = imagejxx.TargetMeasurementMode.SELECTION
+options.redirect = app.resolve_target(request, sampling_document.id)
+command = imagejxx.resolve_target_analysis(
+    app.resolve_target(imagejxx.TargetRequest(), source_document.id), options)
+result = imagejxx.execute_target_analysis(command)
+# Validate both application owners and locally consumed contexts before adoption.
+app.validate_target(command.target)
+app.validate_target(command.options.redirect)
+command.validate_source(source_document.snapshot())
+command.validate_redirect(sampling_document.snapshot())
+```
+
+The primary target owns ROI/manager order and source row positions. Redirect
+pixels, density calibration, area calibration, fitted centroid/axes and processor
+bounds come from the sampling target. Area perimeter/Feret retain source ROI
+calibration; thin-line length uses sampling calibration while its reported
+midpoint and point coordinates retain source calibration. `result.spatial` and
+`command.spatial` describe sampled statistics; inspect the primary target for
+source geometry. Detached results retain the primary geometry calibration in
+`result.record["spatial"]`, as well as the typed sampled `result.spatial`; neither
+requires retaining a provider or application. The diagnostic record retains both
+owners/calibrations.
+
+Equal flattened stack depths map the captured source index with C varying
+fastest, then Z, then T, even when axis decompositions differ. Unequal depths use
+the redirect image's captured current position. Positioned multipoints retain
+their explicit valid stack index where applicable. Readonly
+`TargetAnalysisPlane.sampling_position` identifies the mapped redirect position;
+`position` retains the source row identity. This never navigates either document
+or reassigns its selection. Duplicate sampling groups share reads. The exact
+UInt8 source title `mask` selects nonzero source pixels across the full plane for
+area statistics, overriding its ROI mask while preserving source geometry; both
+provider staging and the additional mask are admitted before reads.
+
+LIMIT consumes the redirect's captured threshold and its native T/C/Z
+applicability. An unused primary threshold change does not stale a redirected
+command. `validate_redirect(current)` checks redirect data/metadata and consumed
+threshold context; it also checks current T/C/Z when unequal depths consume
+that position. Pan/zoom and unrelated redirect selection changes are not new
+sampling inputs. Application validation additionally guards both owners' closure
+and global/bypass generations. Frozen detached execution remains available;
+it does not authorize adopting stale results.
+
+Both ImGui hosts use Analyze > Redirect measurements with explicit None/open
+image choices. The shared action is
+`action("measurement_redirect", {"document_id": id})`; zero selects None.
+The selected process-local document ID is not persisted into global Preferences
+or rebound on restart. Workspace rows retain explicit redirect image/ID/T/C/Z
+provenance, and a fresh Window starts with None. Open sampling images and choose
+them explicitly for new measurements. The existing Results columns control also
+offers redirect provenance and Coordinate unit. Table/CSV preserve separate
+statistics, coordinate, perimeter and Feret units.
+
+[Scoped verification](parity/reviews/redirect-measurements-20261106.json) includes
+549original cases/588rows, independent Global/bypass/closure guards, two native
+actual-sample-pose admission boundaries, both Windows host outputs, CSV/workspace,
+affected Windows/Linux native controls and the installed Windows SDK client.
+5,173distinct Python passes/1optionalGLskip combine current runs with scoped
+reuse;321unchanged strict-selection cases are separate. The original matrix does
+not qualify all cross-plane threshold, positioned-point, replay, RGB or supported-
+platform variants. The current queue/checklist retain their owners.
+
+
 | --- | --- |
 | `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Point properties/vertex alignment are scoped delivered; interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
-| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set; the five Feret columns and companion units request the explicit Feret set. BX/BY/Width/Height request the independent processor rectangle set. Major/Minor/Angle request the explicit ellipse set; Angle-only preserves non-area behavior. MinThr/MaxThr expose captured threshold bounds when the separate LIMIT setting is enabled. Redirected intensity remains a separate requirement. Add required computations/options with their owning consumer and references. |
+| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. The four canonical shape columns request the explicit descriptor set; the five Feret columns and companion units request the explicit Feret set. BX/BY/Width/Height request the independent processor rectangle set. Major/Minor/Angle request the explicit ellipse set; Angle-only preserves non-area behavior. MinThr/MaxThr expose captured threshold bounds when the separate LIMIT setting is enabled. Redirected intensity uses the separate session-local source selector described above. Remaining statistic outputs/options retain their owning consumers and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
 | `reflex_angle` | Boolean false by default; shared Preferences control/API/persistence, captured once per measurement. True selects 360 minus the refreshed calibrated angle. |

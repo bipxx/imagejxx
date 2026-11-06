@@ -20,5 +20,6 @@ Json interpolationWorkflowUiCase(Window&,const std::string&,const std::string&,b
 Json interpolationComponentsUiCase(Window&,const std::string&,const std::string&,int profile,bool configured);
 Json interpolationPointNoopUiCase(Window&,const std::string&,const std::string&,bool multiple);
 Json subtypeMeasurementUiCase(Window&,const std::string&,const std::string&,int profile);
+Json redirectMeasurementUiCase(Window&,const std::string&,const std::string&,int profile);
 Json interpolationRepeatUiCase(Window&,const std::string&,const std::string&,bool opened,bool high_zoom);
 }

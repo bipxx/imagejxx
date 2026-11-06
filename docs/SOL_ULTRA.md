@@ -20,7 +20,9 @@ PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
 verified in both Windows hosts. Scientific TIFF reslice/export now preserves
 world/time transforms. Vertex Convex Hull has scoped API/both-Windows-host
 evidence. Bounding Rectangle now has scoped API/both-host checks too; next
-is T04a.2 M3 redirected intensity. LIMIT has scoped API/both-host coverage:
+is T04a.2 M3 existing-statistic outputs/column choices. Redirect now has scoped
+API/both-host evidence (549original cases,5173distinct Python passes/1optionalGLskip,
+96hostpairs, affected Windows/Linux native andWindowsSDK). LIMIT has scoped API/both-host coverage:
 597original cases,4928distinct installed Python passes/1optionalGLskip,86hostpairs,
 affected Windows/Linux native and3Windows SDKclients. See PLAN and coverage. ELLIPSE Major/Minor/Angle now has
 scoped API/both-host evidence, including fitted centers and preserved line Angle. The explicit shape, Feret

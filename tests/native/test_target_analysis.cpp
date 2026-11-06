@@ -30,7 +30,84 @@ struct Source final:PlaneSource {
   }
 };
 }
-int main(){
+int main() try {
+  for(int depth:{1,3}) {
+    // Source Z belongs to the reported midpoint, sampled Z to the sampler.
+    // Valid finite native calibration must not fail due to an unrelated plane.
+    auto source=std::make_shared<Document>(Dataset::from_stack(Stack(3,Image(8,6,1,PixelType::UInt8))));
+    source->select(Selection("line",{{1,1},{6,4}}));auto view=source->snapshot().display();view.crosshair[2]=2;source->set_display(view);
+    SpatialCalibration cal;cal.spacing={1,1,1e308};DatasetReadObserver reads;
+    auto sampled=std::make_shared<Document>(Dataset::from_planes({1,1,depth,6,8,1},Stack(depth,Image(8,6,1,PixelType::UInt8)),cal).observe_reads(reads));
+    Application app;app.adopt(source);app.adopt(sampled);TargetRequest request;request.roi=RoiPolicy::WholePlane;
+    TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.redirect=app.resolve_target(request,sampled->id);
+    if(depth==3) {
+      refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target({},source->id),options);});check(reads.counts().plane_reads==0);
+    }else {
+      const auto command=resolve_target_analysis(app.resolve_target({},source->id),options);check(reads.counts().plane_reads==0);
+      const auto row=execute_target_analysis(command).planes[0];check(row.sampling_position && row.position.z==2 && row.sampling_position->z==0);
+      check(row.midpoint_world && *row.midpoint_world==std::array<double,3>{3.5,2.5,2});
+      check(row.statistics->mean==0 && reads.counts().plane_reads==1);
+    }
+  }
+  for(const auto type:{PixelType::UInt8,PixelType::UInt16}) {
+    // A sampled lookup belongs once in provenance. Dense UInt16 functions
+    // must fit the admitted record without duplicating table_f32_hex.
+    const double scale=type==PixelType::UInt16?257:1;Image a(8,6,1,PixelType::UInt8),b(8,6,1,type);
+    for(int y=0;y<6;++y)for(int x=0;x<8;++x){a.at(x,y)=x+2*y;b.at(x,y)=scale*(30+3*x+y);}
+    auto source=std::make_shared<Document>(Dataset::from_stack({a}));source->select(Selection("rectangle",{{1,1},{6,5}}));
+    DatasetReadObserver reads;auto sampled=std::make_shared<Document>(Dataset::from_stack({b}).observe_reads(reads));
+    set_imagej_intensity_calibration(*sampled,ImageJIntensityCalibration::function(type,"straight_line",{5,.25},"sampled"));
+    auto view=sampled->snapshot().display();set_manual_threshold_state(view,sampled->snapshot().data().dataset.shape(),{{scale*40.4,scale*46.4},{}});sampled->set_display(view);
+    Application app;app.adopt(source);app.adopt(sampled);TargetRequest request;request.roi=RoiPolicy::WholePlane;
+    TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.redirect=app.resolve_target(request,sampled->id);
+    options.limit_to_threshold=true;options.shape_descriptors=true;options.bounding_rectangle=true;options.feret=true;
+    const auto command=resolve_target_analysis(app.resolve_target({},source->id),options);check(reads.counts().plane_reads==0);
+    const auto result=execute_target_analysis(command);check(result.planes[0].statistics->pixel_count==(type==PixelType::UInt16?8:10));
+    check(std::abs(result.planes[0].statistics->mean-(type==PixelType::UInt16?2815.9375:15.75))<1e-10 && reads.counts().plane_reads==1);
+  }
+  {
+    // Redirect statistics/calibration/thresholds belong to the sampled owner;
+    // area perimeter and captured row identity remain with the source ROI.
+    Image a(8,6,1,PixelType::UInt8),b(8,6,1,PixelType::UInt8);
+    for(int y=0;y<6;++y)for(int x=0;x<8;++x){a.at(x,y)=x+2*y;b.at(x,y)=30+3*x+y;}
+    SpatialCalibration source_cal,sample_cal;source_cal.spacing={2,3,1};source_cal.origin={-1,-3,0};
+    sample_cal.spacing={.5,1.25,1};sample_cal.origin={-1,.625,0};
+    DatasetReadObserver ar,br;
+    auto source=std::make_shared<Document>(Dataset::from_planes({1,1,1,6,8,1},{a},source_cal).observe_reads(ar));
+    auto sampled=std::make_shared<Document>(Dataset::from_planes({1,1,1,6,8,1},{b},sample_cal).observe_reads(br));
+    source->select(Selection("rectangle",{{1,1},{6,5}}));
+    auto av=source->snapshot().display(),bv=sampled->snapshot().display();
+    set_manual_threshold_state(av,source->snapshot().data().dataset.shape(),{{6.4,10.4},{}});source->set_display(av);
+    set_manual_threshold_state(bv,sampled->snapshot().data().dataset.shape(),{{40.4,46.4},{}});sampled->set_display(bv);
+    Application app;app.adopt(source);app.adopt(sampled);TargetRequest capture;capture.roi=RoiPolicy::WholePlane;
+    TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.limit_to_threshold=true;options.bounding_rectangle=true;
+    options.redirect=app.resolve_target(capture,sampled->id);
+    check(options.redirect->scope()==TargetScope::Ranges && options.redirect->position_count()==1);
+    const auto command=resolve_target_analysis(app.resolve_target({},source->id),options);
+    check(ar.counts().plane_reads==0 && br.counts().plane_reads==0);
+    const auto before=source->snapshot(),other=sampled->snapshot();const auto result=execute_target_analysis(command);const auto& row=result.planes[0];
+    check(row.statistics->pixel_count==10 && row.statistics->area==6.25 && row.statistics->mean==43);
+    check(row.perimeter==44 && row.bounding_width==2.5 && row.bounding_height==5);
+    check(row.centroid_world && (*row.centroid_world)[0]==1 && (*row.centroid_world)[1]==4.375);
+    check(row.threshold_lower==40 && row.threshold_upper==46 && row.sampling_position.has_value());
+    check(ar.counts().plane_reads==0 && br.counts().plane_reads==1);
+    check(source->snapshot().shares_data(before) && sampled->snapshot().shares_data(other));
+    av.zoom=2;av.pan[0]={3,4};set_manual_threshold_state(av,source->snapshot().data().dataset.shape(),{{1,2},{}});source->set_display(av);
+    command.validate_source(source->snapshot());bv.zoom=2;sampled->set_display(bv);command.validate_redirect(sampled->snapshot());
+    set_manual_threshold_state(bv,sampled->snapshot().data().dataset.shape(),{{1,2},{}});sampled->set_display(bv);
+    refuses<RevisionConflict>([&]{command.validate_redirect(sampled->snapshot());});
+    check(execute_target_analysis(command).planes[0].statistics->mean==43);
+    const auto reads=br.counts().plane_reads;
+    refuses<std::invalid_argument>([&]{execute_target_analysis(command,{},command.estimate().working_bytes-1);});
+    ExecutionControl cancelled;cancelled.cancellation=std::make_shared<CancellationToken>();cancelled.cancellation->cancel();
+    refuses<OperationCancelled>([&]{execute_target_analysis(command,cancelled);});check(br.counts().plane_reads==reads);
+    options.measurement=TargetMeasurementMode::Area;
+    refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target({},source->id),options);});
+    options.measurement=TargetMeasurementMode::Selection;options.redirect=app.resolve_target({},sampled->id);
+    refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target({},source->id),options);});
+    auto small=std::make_shared<Document>(Dataset::from_stack({Image(2,2,1,PixelType::UInt8)}));app.adopt(small);options.redirect=app.resolve_target(capture,small->id);
+    refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target({},source->id),options);});
+  }
   {
     // Concrete failing consumer: Short LIMIT compaction uses the processor
     // rectangle, even when the input mask is a full-canvas native allocation.
@@ -673,4 +750,6 @@ int main(){
     refuses<std::invalid_argument>([&]{prepare_select_planar_annotation(temporary.snapshot(),0,8192);});
   }
   std::cout<<"target analysis: metadata admission, installed API, captured order/calibration, cancellation, detached results passed\n";
+} catch(const std::exception& error) {
+  std::cerr<<"Target analysis exception: "<<error.what()<<std::endl;return 1;
 }
