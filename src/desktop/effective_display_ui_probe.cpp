@@ -3,6 +3,7 @@
 #include "rendering.hpp"
 #include "window.hpp"
 #include <imagejxx/selection_spline.hpp>
+#include <imagejxx/selection_interpolation.hpp>
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
@@ -691,6 +692,66 @@ Json splineWorkflowUiCase(Window& w,const std::string& context,const std::string
     reopened.replaySelectionCreation(metadataObjectFromJson(record),SelectionCreationRequest{SelectionCreationOperation::Replace,edited,SelectionCreationGeometry::NativePathV4});
     require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(edited) && reopened.nativeDocument()->undo_steps()==undo+1,"Spline explicit replay lost typed state/history");
     Json report={{"contract","imagejxx.spline.ui.1"},{"context",context},{"state","observed"},{"open",opened},{"mode",straighten?"straighten":"fit"},{"sample_count",count},{"sample25",fitted.points[25]},{"edited_controls",editedState->controls.points},{"drag_target",dragTarget},{"record",record},{"events",events},{"controls",buttons}};
+    writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",buttons}});throw;}
+}
+
+
+Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std::string& directory,bool opened,bool configured) {
+  const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
+  require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh interpolation fixture required");std::filesystem::create_directories(dir);
+  const Selection controls(opened?"polyline":"freehand",{{3,3},{13,3},{13,13},{3,13}});
+  DocumentData data{Dataset::from_stack({Image(16,16,1,PixelType::UInt8)})};data.selection=controls;
+  auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);w.recording=true;
+  Json events=Json::array(),buttons=Json::array(),last;HeadlessInputSession session(w);bool expectedError=false;
+  try {
+    auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);require(expectedError || w.error().empty(),"Interpolate UI frame failed");};
+    auto click=[&](const Json& item,const std::string& name){const auto control=item;require(control.at("enabled").get<bool>(),"Interpolate control disabled");buttons.push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto key=[&](const char* name){for(bool down:{true,false}){frame(Json::array({{{"type","key"},{"name",name},{"down",down}}}));frame();}};
+    auto menu=[&](){for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection","menu.action.show_interpolate_selection"})click(last.at("host_controls").at(name),name);};
+    for(int i=0;i<3;++i)frame();const auto original=owner->snapshot();
+    menu();click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
+    require(owner->snapshot().shares_data(original) && owner->undo_steps()==0 && w.workflow.empty(),"Interpolate cancel changed state");
+    menu();owner->select(Selection("point",{{1,1}}));expectedError=true;
+    click(last.at("dialog").at("controls").at("apply"),"dialog.apply.stale");require(!w.error().empty() && w.workflow.empty() && owner->undo_steps()==0,"Stale Interpolate published output");
+    frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");owner->select(controls);frame();
+    menu();
+    if(configured) {
+      click(last.at("dialog").at("controls").at("interval"),"dialog.interval");
+      frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",true}}}));key("A");
+      frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",false}}}));
+      frame(Json::array({{{"type","text"},{"value","2.7"}}}));key("Tab");
+      click(last.at("dialog").at("controls").at("smooth"),"dialog.smooth");
+      click(last.at("dialog").at("controls").at("adjust_to_match"),"dialog.adjust_to_match");
+      require(std::abs(std::stod(last.at("dialog").at("text").at("interval").get<std::string>())-2.7)<1e-6 && last.at("dialog").at("values").at("smooth").get<bool>() && last.at("dialog").at("values").at("adjust_to_match").get<bool>(),"Physical interpolation options not consumed");
+    }
+    click(last.at("dialog").at("controls").at("apply"),"dialog.apply");w.wait();frame();
+    const auto result=*owner->snapshot().data().selection;
+    const std::size_t count=configured?(opened?12:8):(opened?31:41);
+    const std::array<double,2> expected=configured?(opened?std::array<double,2>{10.7147855758667,3}:std::array<double,2>{10.913954734802246,8.827909469604492}):std::array<double,2>{6,3};
+    require(result.points.size()==count && owner->undo_steps()==1 && w.workflow.size()==1,"Interpolation output/history missing");
+    for(int a=0;a<2;++a)require(std::abs(result.points[3][a]-expected[a])<1e-5,"Interpolate differs from pinned sample3");
+    const auto record=w.workflow.front();w.action("undo");require(owner->snapshot().data().selection==std::optional<Selection>(controls),"Interpolation Undo lost source");
+    w.action("redo");require(owner->snapshot().data().selection==std::optional<Selection>(result),"Interpolation Redo lost samples");
+    w.action("edit_selection");frame();const auto canvas=last.at("ordinary_canvas");
+    auto screen=[&](double x,double y){return Json::array({canvas.at("origin")[0].get<double>()+x*canvas.at("scale")[0].get<double>(),canvas.at("origin")[1].get<double>()+y*canvas.at("scale")[1].get<double>()});};
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",screen(result.points[3][0],result.points[3][1])}}}));
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
+    auto target=screen(result.points[3][0]+1,result.points[3][1]+1);for(auto& v:target)v=std::floor(v.get<double>());
+    const std::array<double,2> dragTarget{(target[0].get<double>()-canvas.at("origin")[0].get<double>())/canvas.at("scale")[0].get<double>(),(target[1].get<double>()-canvas.at("origin")[1].get<double>())/canvas.at("scale")[1].get<double>()};
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",target}}}));frame();frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
+    const auto edited=*owner->snapshot().data().selection;
+    require(owner->undo_steps()==1 && std::abs(edited.points[3][0]-dragTarget[0])<1e-5 && std::abs(edited.points[3][1]-dragTarget[1])<1e-5,"Physical interpolation vertex edit/history failed");
+    w.action("undo");require(owner->snapshot().data().selection==std::optional<Selection>(controls),"Interpolation Undo after transient edit failed");
+    w.action("redo");require(owner->snapshot().data().selection==std::optional<Selection>(edited),"Edited interpolation Redo failed");
+    w.action("save_workspace",{{"path",(dir/"interpolated.ijx").u8string()}});session.close();
+    Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"interpolated.ijx").u8string());
+    require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(edited),"Workspace lost edited interpolation");
+    bool refused=false;try{reopened.replaySelectionCreation(metadataObjectFromJson(record));}catch(const std::exception&){refused=true;}require(refused,"Replay must require explicit rebind");
+    reopened.document()->select(selectionJson(controls));const auto undo=reopened.nativeDocument()->undo_steps();
+    reopened.replaySelectionCreation(metadataObjectFromJson(record),SelectionCreationRequest{SelectionCreationOperation::Replace,result,SelectionCreationGeometry::NativePathV4});
+    require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(result) && reopened.nativeDocument()->undo_steps()==undo+1,"Interpolation explicit replay failed");
+    Json report={{"context",context},{"state","observed"},{"open",opened},{"configured",configured},{"samples",result.points},{"edited",edited.points},{"drag_target",dragTarget},{"record",record},{"events",events},{"controls",buttons}};
     writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",buttons}});throw;}
 }

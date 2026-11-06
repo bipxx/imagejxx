@@ -1,5 +1,6 @@
 #include <imagejxx/selection_transform.hpp>
 #include <imagejxx/selection_spline.hpp>
+#include <imagejxx/selection_interpolation.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/selection_creation.hpp>
 #include <iostream>
@@ -108,5 +109,18 @@ int main(){try{
   check(remove_spline_fit(freeSpline,16,16,{},removeControl)==removedFree,"Remove callback redirected frozen fitted samples");
   std::cout<<"PASS Spline numeric/state,real knot refit,removal and explicit V4 candidate\n";
   std::cout<<"PASS Convex Hull geometry, exact/short limits, point metadata policy and frozen callback input\n";
+  Selection interpolationInput("polyline",{{3,3},{13,3},{13,13},{3,13}});
+  const auto interpolated=interpolate_selection(interpolationInput,16,16);
+  check(interpolated.points.size()==31 && interpolated.points[3]==std::array<double,2>{6,3},"Interpolation chord spacing/default endpoint differs");
+  SelectionInterpolationOptions interpolationOptions;interpolationOptions.interval=2.7;interpolationOptions.adjust_to_match=true;
+  const auto adjusted=interpolate_selection(interpolationInput,16,16,interpolationOptions);
+  check(adjusted.points.size()==12 && std::abs(adjusted.points[3][0]-10.7147855758667)<1e-5,"Adjusted interpolation differs");
+  SelectionEditLimits interpolationLimits;interpolationLimits.max_working_bytes=estimate_interpolated_selection(interpolationInput,16,16,interpolationOptions);
+  check(interpolate_selection(interpolationInput,16,16,interpolationOptions,interpolationLimits)==adjusted,"Exact interpolation cap refused");
+  --interpolationLimits.max_working_bytes;refuses([&]{interpolate_selection(interpolationInput,16,16,interpolationOptions,interpolationLimits);});
+  ++interpolationLimits.max_working_bytes;ExecutionControl interpolationControl;
+  interpolationControl.checkpoint=[&]{interpolationInput=Selection("point",{{1,1}});interpolationOptions.interval=99;};
+  check(interpolate_selection(interpolationInput,16,16,interpolationOptions,interpolationLimits,interpolationControl)==adjusted,"Interpolation callback redirected frozen source/options");
+  std::cout<<"PASS Interpolate numeric,limits and frozen source/options\n";
   return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -237,3 +237,44 @@ Linux installed-client and remaining supported-platform UI/release qualification
 stay with T06/T09/T14. Seventeen legacy gesture checks still lack retired inputs;
 no expectation was repinned and unavailable evidence is not a pass. G018 remains
 open. Selection interpolation is next, with explicit composite-hole scope.
+
+## Selection interpolation
+
+**Edit → Selection → Interpolate...** consumes Interval (pixels), Smooth and
+Adjust interval to match. C++ selection_interpolation.hpp and Python expose
+SelectionInterpolationOptions(interval=1,smooth=false,adjust_to_match=false),
+estimate_interpolated_selection and interpolate_selection with existing geometry
+limits/execution controls. Negative interval toggles adjustment, matching the
+actual upstream signed dispatch; magnitude must be finite and at least0.01.
+
+Supported native profiles: polygon, freehand area, polyline, straight line,
+axis-aligned rectangle and supported fitted samples. Output is ordinary editable
+freehand/polygon or open polyline, with generic width/attributes retained and
+stale spline state removed. Native open geometry uses polyline; it does not
+preserve all upstream FREELINE/TRACED source provenance for repeated commands.
+Spacing uses circle/chord intersections, not accumulated spline arc length.
+Smooth updates native freehand points in order; Adjust runs the bounded upstream
+interval trials. Native source/Float32 profiles and endpoint rounding are tested
+against actual command observations. Controls/output are bounded to65,536, with
+existing byte admission,64Mi work bound,frozen options and live cancellation.
+
+Both hosts expose physical default/configured controls, cancel/stale refusal,
+editable vertices, workspace and explicit V4 result replay/rebind. The command
+retains selection-only history. Ordinary result gestures keep the existing
+transient policy: no extra Undo step; command Undo restores source and Redo
+restores the edited result. Pixels/calibration are preserved. No new third-party
+runtime dependency, controller, renderer or environment is introduced.
+
+[Scoped evidence](parity/reviews/selection-interpolation-20261105.json):
+194 observations contain188 matching sample arrays,4 upstream interval refusals
+and2 explicit native refusals where upstream publishes only one area vertex.
+206 focused and2425 distinct affected Windows Python IDs ultimately pass;
+Windows/Linux core,installed Windows SDK and both physical hosts pass,including
+60 shared lifecycle scenarios. Those counts do not prove all-source parity.
+
+Next T06 work: compound components/holes and curved/oval/rounded/mask profiles.
+Point no-op, native source/output-type provenance for repeated commands, high-
+zoom context, degenerate-area representation and scientific/saved-row consumers
+remain open. T15 owns last-used GUI options; T09 operation-intent macros and
+T14 Linux installed-client/remaining platform UI/release qualification remain.
+Historical reference gates stay unavailable rather than passed or repinned.

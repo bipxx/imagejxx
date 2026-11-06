@@ -4,6 +4,7 @@
 #include <imagejxx/selection_enlargement.hpp>
 #include <imagejxx/selection_transform.hpp>
 #include <imagejxx/selection_spline.hpp>
+#include <imagejxx/selection_interpolation.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <utility>
@@ -83,6 +84,20 @@ void bind_selection_creation(py::module_ &m) {
     py::arg("discard_point_metadata")=py::bool_(false),py::arg("limits")=SelectionEditLimits{},
     py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   }
+  py::class_<SelectionInterpolationOptions>(m,"SelectionInterpolationOptions")
+      .def(py::init<>())
+      .def_property("interval",[](const SelectionInterpolationOptions& v){return v.interval;},[](SelectionInterpolationOptions& v,py::handle x){if(boolean(x))throw py::type_error("Interpolation interval must not be Boolean");v.interval=py::cast<double>(x);})
+      .def_property("smooth",[](const SelectionInterpolationOptions& v){return v.smooth;},[](SelectionInterpolationOptions& v,py::handle x){if(!boolean(x))throw py::type_error("Smooth must be Boolean");v.smooth=py::cast<bool>(x);})
+      .def_property("adjust_to_match",[](const SelectionInterpolationOptions& v){return v.adjust_to_match;},[](SelectionInterpolationOptions& v,py::handle x){if(!boolean(x))throw py::type_error("Adjust must be Boolean");v.adjust_to_match=py::cast<bool>(x);});
+  m.def("estimate_interpolated_selection",[](const Selection& source,py::handle width,py::handle height,SelectionInterpolationOptions options,SelectionEditLimits limits) {
+    const auto w=index_value(width),h=index_value(height);detail::admit_selection_geometry(source,w,h,limits,{});const Selection frozen=source;
+    py::gil_scoped_release release;return estimate_interpolated_selection(frozen,w,h,options,limits);
+  },py::arg("selection"),py::arg("width"),py::arg("height"),py::arg("options")=SelectionInterpolationOptions{},py::arg("limits")=SelectionEditLimits{});
+  m.def("interpolate_selection",[](const Selection& source,py::handle width,py::handle height,SelectionInterpolationOptions options,SelectionEditLimits limits,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint) {
+    const auto w=index_value(width),h=index_value(height);detail::admit_selection_geometry(source,w,h,limits,{});const Selection frozen=source;
+    const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return interpolate_selection(frozen,w,h,options,limits,control);
+  },py::arg("selection"),py::arg("width"),py::arg("height"),py::arg("options")=SelectionInterpolationOptions{},py::arg("limits")=SelectionEditLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   py::enum_<SplineFitMode>(m,"SplineFitMode").value("FIT",SplineFitMode::Fit).value("STRAIGHTEN",SplineFitMode::Straighten);
   py::class_<SplineFitOptions>(m,"SplineFitOptions")
       .def(py::init<>()).def_readwrite("mode",&SplineFitOptions::mode)

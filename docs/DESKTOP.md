@@ -26,6 +26,10 @@ Drag or edit actual knots; **Remove Spline Fit** restores command controls.
 History, workspace and explicit replay preserve typed state in both hosts. See
 [options, APIs and remaining scope](SELECTION_TRANSFORMS.md#editable-spline-fitting).
 
+**Edit → Selection → Interpolate...** resamples supported ordinary/fitted
+selections with pixel interval, Smooth and Adjust controls. See
+[source profiles, history policy and remaining gaps](SELECTION_TRANSFORMS.md#selection-interpolation).
+
 ## Brightness/Contrast
 
 Open **Image → Brightness/Contrast...** for the modeless native panel. See

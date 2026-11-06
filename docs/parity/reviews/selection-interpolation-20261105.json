@@ -1,0 +1,969 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T06/G018 ordinary-source selection interpolation",
+  "base_commit": "177a7a8d450c9e857264fe0b6bb831132330df81",
+  "command_candidate": {
+    "upstream_property": "selection08",
+    "invocation": "ij.plugin.Selection(interpolate)",
+    "actions": [
+      "show_interpolate_selection",
+      "interpolate_selection"
+    ]
+  },
+  "state": {
+    "implemented": "Public admitted C++/Python interpolation options/estimate/transform;circle/chord traversal and ordered freehand smoothing;physical interval/smooth/adjust controls and existing worker/history/workspace/rebind owners.",
+    "verified": "194 actual-command observations:188 matching sample arrays,4 upstream invalid-interval refusals,2 documented native one-vertex-area refusals.206 focused and2425 distinct affected Windows Python IDs ultimately pass.Windows/Linux core and installed Windows SDK pass.",
+    "integrated": "Both Windows physical ImGui hosts default/configured,Apply/Cancel/stale refusal,actual vertex drag,command Undo/Redo after transient edits,workspace and explicit V4 rebind.60 shared lifecycle scenarios pass.Actual Python Measure/Length and unchanged pixels pass.",
+    "release_ready": false,
+    "family_closed": false
+  },
+  "contract": {
+    "header": "include/imagejxx/selection_interpolation.hpp",
+    "api": [
+      "SelectionInterpolationOptions(interval=1,smooth=false,adjust_to_match=false)",
+      "estimate_interpolated_selection(selection,width,height,options,limits)",
+      "interpolate_selection(selection,width,height,options,limits,control)"
+    ],
+    "options": {
+      "interval": 1,
+      "smooth": false,
+      "adjust_to_match": false,
+      "signed": "Negative interval toggles adjustment;finite magnitude>=0.01;source type thresholds use signed input."
+    },
+    "source_profiles": [
+      "polygon",
+      "polyline",
+      "freehand area",
+      "straight line",
+      "axis-aligned rectangle",
+      "supported fitted samples"
+    ],
+    "output": "Ordinary editable freehand/polygon or open polyline;generic width/attributes retained,stale spline state removed.Native polyline does not preserve upstream FREELINE/TRACED provenance for repeated commands.",
+    "math": "Fixed straight-line chord distance between outputs;ordered in-place native freehand smoothing;bounded50 feedback trials plus final best trial;ULP-scale on-circle endpoint fallback only when no segment root. Distinct from spline arc-length stepping.",
+    "limits": "65536 controls/output,existing geometry byte admission and64Mi work bound;planning owns source/options before callbacks,live cancellation retained.",
+    "history": "Interpolate retains one selection-only history entry;ordinary result gestures remain transient.Command Undo returns source;Redo restores edited result.No blanket history-policy change.",
+    "replay": "Existing NativePathV4 resolved candidate,explicit source rebind;no new schema or operation-intent macro implementation",
+    "runtime": "No new dependency,environment,renderer,controller or scheduler"
+  },
+  "reference": {
+    "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "observer": "tests/reference/ObserveSelectionInterpolation.java",
+    "method": "Actual Selection.run(interpolate),macro interval/smooth/adjust,AWT desktop with headless=false",
+    "fixture": {
+      "path": "tests/fixtures/selection-interpolation-imagej154r.json",
+      "bytes": 202395,
+      "sha256": "c6a90e68da9983bd2cc1b86700114747988b086278457355e49a26eb8bc45937"
+    },
+    "acceptance": {
+      "state": "accepted_actual_command_observations",
+      "cases": 194,
+      "refusals": 4,
+      "fixture_sha256": "c6a90e68da9983bd2cc1b86700114747988b086278457355e49a26eb8bc45937",
+      "first_attempt": "194 setup refusals from headless GenericDialog;retained as failed observer,no accepted expectations changed"
+    },
+    "comparisons": "Absolute1e-5,relative1e-7;194 accepted observations unchanged through implementation. Two unrepresentable native output cases are explicit fidelity gaps,not matching outputs.",
+    "initial_observer_failure": "Headless=true inherited from spline observer returned194 setup refusals;kept as failed unaccepted observation,not numerical truth."
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/selection_interpolation.hpp",
+      "bytes": 596,
+      "sha256": "83c8bf0ce27f9f648f9c5852929102e6e44afef60463c16366c8893c2ad645da"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 39716,
+      "sha256": "971d9cb48ce67e0388b7cde6ecf3ed12bdfd9844d5169c29bd776103cf89ed9d"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 27041,
+      "sha256": "c740ea9761a4533e0ee022846ccab8f4f21fa1cc8ba4d93eb78357d290775fdc"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 83414,
+      "sha256": "2a9c4d4229e30fca135b0604d4b652cbf0f7e8eedccdc0d489c6f8e9fb1a72f4"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 927068,
+      "sha256": "d70ea4d696124ae838bd041f98f6db3320702afbebac5a8e841d10715708021d"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 69788,
+      "sha256": "48104ec2f85b8a38f7b28eb88cbf438cde25476fdcf8aecb0c9816b60c26fcc9"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 1501,
+      "sha256": "5e8d427029748e95436cc8cd87dd59fb050be3c853739ea97c96c0f4cddf4c1b"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 65856,
+      "sha256": "6d91d8821868f6cb0096f928ca88fbca9b8a21918e0f2f119156d9ce57fb38a7"
+    },
+    {
+      "path": "tests/native/test_selection_transform.cpp",
+      "bytes": 12393,
+      "sha256": "e5efcd4bb95d517de14bd8a24d3b868af9811e44b9c2b33ff6b3f2f33dac7d72"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 34005,
+      "sha256": "0c48ee9a88db39ef483bdc225ffe07f2785f983e2d544139c5554b5fdcd551e3"
+    },
+    {
+      "path": "tests/python/test_selection_interpolation.py",
+      "bytes": 6860,
+      "sha256": "d7a3d5aa6b990c5f6f73979b6df2fddde732f6ff073bf3d075b55650e972eca6"
+    },
+    {
+      "path": "tests/reference/ObserveSelectionInterpolation.java",
+      "bytes": 4462,
+      "sha256": "8f87b75b02dd2e97698213c7a57b3c280bec6e3d71833979589a52f900ff41b1"
+    },
+    {
+      "path": "tests/fixtures/selection-interpolation-imagej154r.json",
+      "bytes": 202395,
+      "sha256": "c6a90e68da9983bd2cc1b86700114747988b086278457355e49a26eb8bc45937"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-_desktop001.process.json",
+      "bytes": 2855,
+      "sha256": "f4cbf2f3a15c245548d59c46f8c3221aa07c0145ab72bb87ddc84edd50115495"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-_desktop002.process.json",
+      "bytes": 2856,
+      "sha256": "9a5a809a538365cb043bdb34cfee943e017dc319b488157708f9e02826b83d57"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-_desktop003.process.json",
+      "bytes": 2854,
+      "sha256": "9581f8a9a6b9ee9f9c35f02e6ea68a22f1c5df3451f140535a5873a31e0fe36b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-_native001.process.json",
+      "bytes": 2032,
+      "sha256": "f4faac8fd05aadeb41fe93bf9d25017353a603c8b4da0305680166cc2d19ed27"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-_native002.process.json",
+      "bytes": 2031,
+      "sha256": "af8c34ea56e0ba0da3549e2daa5b97ae6bfaba2ef729a7596526e51d35be8da6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_app001.process.json",
+      "bytes": 2855,
+      "sha256": "c1fb9572dd0f661acd26e166a8e1b9aa005368b43938a7f7b7071441d0d28294"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_app002.process.json",
+      "bytes": 2860,
+      "sha256": "53742df6e043ab459dbb673bdf1140049e4aeca0bd7ba18ffe799d4675f6e555"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_app003.process.json",
+      "bytes": 2860,
+      "sha256": "fcf9be3729b37d15bb23c020d481e53ad56c0c8f124da5a0289a87272ac65022"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_core001.process.json",
+      "bytes": 2037,
+      "sha256": "8e6d83ba5ac28e4accefc35ff6bc55211ab789cd95085d0b7f5038df47cad80b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_core002.process.json",
+      "bytes": 2036,
+      "sha256": "df7764aceb2544d59439019083aae134de7a0ab5e559e5507b86d858f313d7f0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_core003.process.json",
+      "bytes": 2037,
+      "sha256": "c62d969b803ea46a456a7095d8069df85ea77c3c2f8ed995e22f8d52f8e9e5c8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_desktop001.process.json",
+      "bytes": 2859,
+      "sha256": "2596034d10949df8eaf520a6ba33295703b7c75b5538e3225428585b30b1a43c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_desktop002.process.json",
+      "bytes": 2861,
+      "sha256": "fda70c9186e5145eb54f991d91994b2627dd3ee24f5f4ece434198d152a89289"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_desktop003.process.json",
+      "bytes": 2859,
+      "sha256": "ea902487b7c505835ac7076e0d35beb5485f91418e50da550ea23b53a5d6a9b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_display_actions_tests001.process.json",
+      "bytes": 2874,
+      "sha256": "9861661721aa6d9c16c07de1e26c56d7e15f2bd232fd1ebd51522060a021aef7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_display_actions_tests002.process.json",
+      "bytes": 2874,
+      "sha256": "2a0429e352455a8607320774016cd29627bf5805b482893948e555205404eb12"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_display_actions_tests003.process.json",
+      "bytes": 2878,
+      "sha256": "a60f7bc00dfceeede9ebf4c0daabf232f2abd46bf3fa97e534e25226d42a3fa2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_native_selection_menu_tests001.process.json",
+      "bytes": 2880,
+      "sha256": "e9a724a485c18c775bb10d2d811626be2e1403b7fd61431b4c662a58550b8215"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_native_selection_menu_tests002.process.json",
+      "bytes": 2885,
+      "sha256": "fce3baee9e849b65933a5e056a79048d83ee4ba27920406bb4be52bf69cb0c25"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_native_selection_menu_tests003.process.json",
+      "bytes": 2884,
+      "sha256": "d758c38c7c3d711d65495e56a43a2590b840d12790a4ba4b736bd401b276165f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_path_visual_tests001.process.json",
+      "bytes": 2875,
+      "sha256": "9f31481599e83b9a69a0a911a56ab7f3adc50e418dbb99e42021156ad12711fd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_path_visual_tests002.process.json",
+      "bytes": 2874,
+      "sha256": "af4eb41fd96ac7f0ac326d8c00100004c13adcccdd6f178cd092f7de0ca76eee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_path_visual_tests003.process.json",
+      "bytes": 2867,
+      "sha256": "4de44bd57d915160c3cecce7958915dcc08765fa2b29dea244918b35f9b1ca69"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_selection_creation_tests001.process.json",
+      "bytes": 2060,
+      "sha256": "14ba8300a10a6bbb9b321936b23117d29845bef4142d562608cdfa861ae89193"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_selection_creation_tests002.process.json",
+      "bytes": 2059,
+      "sha256": "bd4addb07b35afb12c62cb79b2d6e9c574ceef598b13f15e561b5ce656c83918"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_selection_edit_tests001.process.json",
+      "bytes": 2053,
+      "sha256": "dbc1ef657eb6889f5f4c138fe0e141c40d6012fd059830f3464e6d693828d54b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_selection_edit_tests002.process.json",
+      "bytes": 2055,
+      "sha256": "63e2a0a18d5dcd62c58e93cbbcbb433813b0b2294e27e911890df6998c175270"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_selection_transform_tests001.process.json",
+      "bytes": 2059,
+      "sha256": "56b4a32991679453352aeeaa30520f07d05d47d02904c47d2fe525e148c9787c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_selection_transform_tests002.process.json",
+      "bytes": 2059,
+      "sha256": "8cf788d874e3f3ba1e4eca19c3cbfc99af2ff67731dc43e810efa4b6057a84eb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-test_planar_annotation_host001.process.json",
+      "bytes": 2875,
+      "sha256": "5a55207cdf968f38529132b37fdebf2a5c441ac3beeb3c815d77b64aaa7a4f30"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-test_planar_annotation_host002.process.json",
+      "bytes": 2871,
+      "sha256": "afc146ecb6d07fa8bcc50edfc52abc491ca6f79ab921c30466c6ed790ccb80ba"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-test_planar_annotation_host003.process.json",
+      "bytes": 2875,
+      "sha256": "d9cb197e585710d266e73a6536aa1151e3c0e921e95bc43611be31829ccfd40f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-app001.process.json",
+      "bytes": 2121,
+      "sha256": "5e024293318c7b5785635961a235a8605b10a0c5ef8f0923ce26112a25ee78a0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-app002.process.json",
+      "bytes": 2120,
+      "sha256": "16c852283c023c93caca1dace4cfae5004572d9ef80c608009e53edff0a7a617"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-app003.process.json",
+      "bytes": 2119,
+      "sha256": "c6425fd9349b39b471f5878084c66c6a8e38f151098ac900a25a3ed48b19d583"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-processing001.process.json",
+      "bytes": 2138,
+      "sha256": "b82c7e015d8302427140421e3cb57a1be7476348aeca7aa4371062c7627c09be"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-processing002.process.json",
+      "bytes": 2139,
+      "sha256": "ee6ddbfeab03ea9a3c30b8edb518d6a1e361719f347e50b2f69574aaa414f8e8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-python001.process.json",
+      "bytes": 2135,
+      "sha256": "3162f3c892495d61272b9c93701c4cec4291288001a14f3cda629fc6759e1917"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-python002.process.json",
+      "bytes": 2134,
+      "sha256": "6d66c29879859e4eb825bef6f2e7c777f0f7bc4a5a64b2619b5ac73278bb83fd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-python003.process.json",
+      "bytes": 2134,
+      "sha256": "79c8b5b76a5815206236d5cca1448ade50e6514b2b126ecc6afb2fc33a126f2c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-sdk001.process.json",
+      "bytes": 2123,
+      "sha256": "ef838350598d3bb75423e1d0b112f9607b137af28bb84a94f5f99ff195c12887"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/install-sdk002.process.json",
+      "bytes": 2125,
+      "sha256": "f5bafcf8e48732b7290de49447685bb45ee1cdda5bf7f9814c32316eeb5e2890"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/linux-build001.process.json",
+      "bytes": 1565,
+      "sha256": "6f834700d4167044bdd83e4f9d73772f854cd5863eddfa3ad5f1705403602b71"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/linux-build002.process.json",
+      "bytes": 1569,
+      "sha256": "06f86f49a3c31e3ee1e6157b56a6b7b839f7abc4a8f6583869dd1562e4928584"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/linux-native001.process.json",
+      "bytes": 1463,
+      "sha256": "9e1594d0983e3baa32c508ab77e632284a5521967d0d26aa94d057960f187c96"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/linux-native002.process.json",
+      "bytes": 1462,
+      "sha256": "00c763acda2a188431e069835e13529f60c43a23aadcc3f4d5214d319ee244e1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/linux-owner001.process.json",
+      "bytes": 3078,
+      "sha256": "d9586b7ea66d6c64dee035359c8458e5da147fef603ad2ed27c79ced4fbd9353"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/linux-owner002.process.json",
+      "bytes": 3077,
+      "sha256": "6d07bef04fdfab0ee1f33ba28ff53ee9f7e6634bb730eec9f9a216ddc419e11f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-imagejxx_path_visual_tests002.process.json",
+      "bytes": 1826,
+      "sha256": "2404326545bc4bf5797483ad043e69d5c880925119198b60d0b966b92ca5af32"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-imagejxx_selection_creation_tests001.process.json",
+      "bytes": 1836,
+      "sha256": "39b3fd9161b48dda2dd4a9b4b188024baffd005908db17bc16724b428a487946"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-imagejxx_selection_creation_tests002.process.json",
+      "bytes": 1838,
+      "sha256": "080667687476a6093a2f338aa5a2ea7ba499eec39fd2fa19b8305849393d9276"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-imagejxx_selection_edit_tests001.process.json",
+      "bytes": 1832,
+      "sha256": "9ee5772f01a2a3dbb75f9d784b13ea4c7d07a1cfde4307157912a89d54ba8e03"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-imagejxx_selection_edit_tests002.process.json",
+      "bytes": 1832,
+      "sha256": "6e73debcf04ecd134209c8553b5066be62ba94c4dda51cec194d72ab3ec8fe1f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-imagejxx_selection_transform_tests001.process.json",
+      "bytes": 1839,
+      "sha256": "401e2a5fe236c8952f98a9d19e0fddf2029b44cc4f6480918bc22b73850857a6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-imagejxx_selection_transform_tests002.process.json",
+      "bytes": 1838,
+      "sha256": "bc351b44f1c2e09de4b94f38f0444c17ed6d06afe409974b4441983e9ef33e6d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-menu002.process.json",
+      "bytes": 1982,
+      "sha256": "eca0c39ef28dad1993523ebf8560ff89140bbd0cdf584abd258868e910e5bb86"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-test_planar_annotation_host002.process.json",
+      "bytes": 1828,
+      "sha256": "42ad21945a12404daf3d78f7a03c51f54f2a190baa2cc4e429a265add767405e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-ui002.process.json",
+      "bytes": 1973,
+      "sha256": "67f6879bbf532f1431e0f1030aa3227a9be85ff7647b08e7c392100c0ad27d10"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-ui003.process.json",
+      "bytes": 1973,
+      "sha256": "f8e98c23f1a92495b0d4d802512079580eb85029d23c7441b0a563a1a2a33e58"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-history003.process.json",
+      "bytes": 3715,
+      "sha256": "279dae82cf357d21b9c723f4f697b3cf39ae642dd4af296bb1b47b7094df3aca"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-interpolation001.process.json",
+      "bytes": 2359,
+      "sha256": "afabd91348c3659801dfec13f3e830fae838f8f42b80f29389dd82fa20ab27ab"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-interpolation002.process.json",
+      "bytes": 2360,
+      "sha256": "2c0198dc69c77ca66645a6b68b3edbfd7c89b71ad27dc7e4c210110bc2f17da3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-measure004.process.json",
+      "bytes": 2394,
+      "sha256": "b266c5658018f286c598b51c108afc6f216a4cd91f31be4882d510965d5534dc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-measure005.process.json",
+      "bytes": 2394,
+      "sha256": "d2988305a8d72453ce58275d7086c4ca1c5f66cc6c6aa372549a3bf8635324b5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-selection002.process.json",
+      "bytes": 4581,
+      "sha256": "ee3556ee985cc60d0407407f5a36b3c93eafe1032170b2c85ffa144c69c8c91e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/reference-compile001.process.json",
+      "bytes": 2201,
+      "sha256": "3c9e5e6ccf9067d172db51ab0de2d0bd55dc9fca20a2f7b8b9b5cc62fe7f6a24"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/reference-observe001.process.json",
+      "bytes": 2163,
+      "sha256": "1f058a9111b733a8e4e97459e5b270ae6f295638c080da937d3184e020d4a07e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/reference-observe002.process.json",
+      "bytes": 2166,
+      "sha256": "93654ddb55938f4b329e49589326b1b22a8d1f8ab6bc07444ba5cdeb693d3e2c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/reference001-pack.process.json",
+      "bytes": 2521,
+      "sha256": "af111d40ba2551c84f1e69e29e413413235bde70f31986d5e6f0ef31948c138b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/reference001-verify.process.json",
+      "bytes": 2397,
+      "sha256": "ca9f872d4fad4383df8fee31f21e5c44040d3720f5d2c6901d1761afc89ed8a0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/sdk-build001.process.json",
+      "bytes": 2110,
+      "sha256": "b19a88606e81fdb6fbcea5a05ac5da5a4528f3e3a6e4e40462be041a86ac0fe4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/sdk-configure001.process.json",
+      "bytes": 2418,
+      "sha256": "169d5cc7511f94188f9d7d2245b217f7e70448ee9301fce8c177857413fc5c17"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/sdk-profile001.process.json",
+      "bytes": 2072,
+      "sha256": "948ec4ad720439b80811dcf412a6f275fe75be7c4e984fd49dae770053e7cb1b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/sdk-run001.process.json",
+      "bytes": 1938,
+      "sha256": "22ae4f7b028e9a487378bf8935f7f3a470e9b57d6d90298c0138448820c61f21"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/verify001-pack.process.json",
+      "bytes": 2508,
+      "sha256": "fe19fd7b2ab29022c0d49f22071c1045d7f71a62d7d9b454abf20be01141356d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/verify001-verify.process.json",
+      "bytes": 2386,
+      "sha256": "e0353af9b85cec0ad955c74beaaa6d6d67e6d414417ddc0a5fa8f959e9303d09"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/verify002-pack.process.json",
+      "bytes": 2503,
+      "sha256": "ac08a1f7003d9c0b209733474c67002f94f1de92a0172e2e1cd00c53cf0d2e3e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/verify002-verify.process.json",
+      "bytes": 2385,
+      "sha256": "5acbb266f684b92261b2eaaca9f846eb98d0fa194e288c8f5d92281252dc74fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/verify003-pack.process.json",
+      "bytes": 2506,
+      "sha256": "dfd3f5195fc1a58944952bf9f5c3c9dcc448ecde750016fc80d46a931ec32394"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/verify003-verify.process.json",
+      "bytes": 2385,
+      "sha256": "c6e132adbe71d71e4bc802d626b03580e5098fa31b6e47b2f4c4d58cda2ae246"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/entry.json",
+      "bytes": 14330,
+      "sha256": "b3ff2de985d67595df144c373d3ebf5be9b5b59971e9a42684dd860943f0dc08"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/reference-acceptance002.json",
+      "bytes": 305,
+      "sha256": "560ceb394ed183e82d4a8ba70328c0e2884746d0a0d4ab21736386a2b339fb51"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/installed-identities001.json",
+      "bytes": 2975,
+      "sha256": "2a35666be3b6895e8b669525110c2b69c08b7d57ceb2bc836c7dc1c7759ecc2c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/installed-identities002.json",
+      "bytes": 2975,
+      "sha256": "3866a32fd2782eb5bf1431e654c6cd119b0918187a901c1a34ebf6049f37dfc8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/installed-identities003.json",
+      "bytes": 2975,
+      "sha256": "21012c1e9ddc1193ec92a3866186621f98be23b246befbbbb2ec98300c450085"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/linux-identities002.json",
+      "bytes": 730,
+      "sha256": "e7664cdf77f5dddcd83f6a44ceadce5efb95e8ab25917d19f0211760af508c00"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/final-readers003.json",
+      "bytes": 3513,
+      "sha256": "7c3720f592ef09430758453cf9c7f77dd7d06600745614e9e5552569ec5a58fb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/build-imagejxx_core001.log",
+      "bytes": 3560,
+      "sha256": "7eeba8192f9cc76afe7295b9883d7a9721a6f45f01d32cec00312d04095d6601"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/linux-native001.log",
+      "bytes": 588,
+      "sha256": "37336cdcc5e4ea6916b3e93f3f0d810266cde323954eabd46937efae225b4444"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/linux-native002.log",
+      "bytes": 588,
+      "sha256": "37336cdcc5e4ea6916b3e93f3f0d810266cde323954eabd46937efae225b4444"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-ui002.log",
+      "bytes": 681,
+      "sha256": "612a95337f9cc5d710217ba14ab0cd6b5cfc34063f8f97c725e04a3237bdf780"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/native-ui003.log",
+      "bytes": 681,
+      "sha256": "612a95337f9cc5d710217ba14ab0cd6b5cfc34063f8f97c725e04a3237bdf780"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-history003.log",
+      "bytes": 886,
+      "sha256": "85ad03c040300de786ecaf88bd094b40a4dd955ad66f0d43bc4f5025acf69379"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-interpolation001.log",
+      "bytes": 3737,
+      "sha256": "43ad5086dee5d5861c116bb45db150975a442e2d4568624ca854ccb7cb56b070"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-interpolation002.log",
+      "bytes": 1054,
+      "sha256": "56bd691709cdea7c87fe264f1ca076484156d5906be2583ef1bd74becb3e52d7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-measure004.log",
+      "bytes": 1514,
+      "sha256": "6f760849a6f8c643e954f1780215a48a79727b5e77ad490d576bcf1feb43b0ef"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-measure005.log",
+      "bytes": 886,
+      "sha256": "1c24232e3e40394b55023d360c3785569b61fcde9134d2d1a6b79da31b88a615"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-selection002.log",
+      "bytes": 12584,
+      "sha256": "ffb30dfe3bca6f4ce76a29d839719728ea4ee6b3a3292ae1b15b98be4dfea4eb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/sdk-build001.log",
+      "bytes": 403,
+      "sha256": "f1e86709c8d8268e577802e13b77a358f5618fcb51487a91cfc5982a7efb63ed"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/sdk-configure001.log",
+      "bytes": 955,
+      "sha256": "df5050696aa08c5d4ef13b706dc43febad09bf0734c909ae0c61e8f7436a07fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/sdk-profile001.log",
+      "bytes": 163,
+      "sha256": "fc35d2317ef9729e12c3756dc2a985945fe08f61c4b369fa2ec15226d2e8e84b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/sdk-run001.log",
+      "bytes": 595,
+      "sha256": "e6e6e10d34fd3502dc0b48c5d203936364e58a102197a5fc24057e8a0f9235f1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/static-closeout005.json",
+      "bytes": 806,
+      "sha256": "cf0c20adb33728df19449787bd807fb6d5894b6a4de0b5612be79c1e216a4c7c"
+    }
+  ],
+  "python_attempts": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-history003.xml",
+        "bytes": 2581,
+        "sha256": "7d0b3c0f6299a6d304d18631b49720ebcaa4a352d98418aa68a8c3fa060c57f1"
+      },
+      "passed": 18,
+      "failed_ids": []
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-interpolation001.xml",
+        "bytes": 33386,
+        "sha256": "ed8609bf8ab62d3b227a9ea5952114a57489d6efc48f6a1456092a52a7daa6fc"
+      },
+      "passed": 201,
+      "failed_ids": [
+        "tests.python.test_selection_interpolation::test_actual_command_samples[shape2-freehand-8.0-true-false-false]",
+        "tests.python.test_selection_interpolation::test_actual_command_samples[shape2-freehand-8.0-true-true-false]",
+        "tests.python.test_selection_interpolation::test_physical_workflow_in_python_host[True-False]",
+        "tests.python.test_selection_interpolation::test_physical_workflow_in_python_host[True-True]",
+        "tests.python.test_selection_interpolation::test_desktop_edit_history_and_invalid_options"
+      ]
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-interpolation002.xml",
+        "bytes": 31246,
+        "sha256": "6f7cad09969ec5b37ee2742fc424e97fcc6480a86ca7b5f901949939519d5620"
+      },
+      "passed": 206,
+      "failed_ids": []
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-measure004.xml",
+        "bytes": 748,
+        "sha256": "b83c3383ba67f4b24cd26369bbb290119147ee3b5d8f53b0e8695cb67f37bc2b"
+      },
+      "passed": 0,
+      "failed_ids": [
+        "tests.python.test_selection_interpolation::test_desktop_edit_history_and_invalid_options"
+      ]
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-measure005.xml",
+        "bytes": 373,
+        "sha256": "30f2d3501db89c827186a34a39f0d78c08b56111e3565bc8e7d3e56317ebfd7e"
+      },
+      "passed": 1,
+      "failed_ids": []
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/python-selection002.xml",
+        "bytes": 308234,
+        "sha256": "8fadc676a785c841a24e9fa7fc7ff6971605e96435652a16cfe8e287035665b7"
+      },
+      "passed": 2206,
+      "failed_ids": [
+        "tests.python.test_selection_edit::test_imgui_move_is_preview_until_release[rectangle]",
+        "tests.python.test_selection_edit::test_imgui_move_is_preview_until_release[ellipse]",
+        "tests.python.test_selection_edit::test_imgui_resize_modifiers[modifiers0-expected0]",
+        "tests.python.test_selection_edit::test_imgui_resize_modifiers[modifiers1-expected1]",
+        "tests.python.test_selection_edit::test_imgui_resize_modifiers[modifiers2-expected2]",
+        "tests.python.test_selection_edit::test_imgui_resize_modifiers[modifiers3-expected3]",
+        "tests.python.test_selection_edit::test_imgui_shift_move_uses_physical_axes",
+        "tests.python.test_selection_edit::test_imgui_keyboard_nudge_and_shift_step",
+        "tests.python.test_selection_edit::test_imgui_vertex_drag_insert_delete_and_minimum",
+        "tests.python.test_selection_edit::test_imgui_alt_insert_on_closing_edge",
+        "tests.python.test_selection_edit::test_imgui_mask_move_and_hole_hit",
+        "tests.python.test_point_annotation_editing::test_properties_stage_cancel_apply_clear_store_and_native_session",
+        "tests.python.test_point_annotation_editing::test_actual_point_properties_controls_and_measure_export[imgui_python]"
+      ]
+    }
+  ],
+  "all_failed_python_ids_eventually_recovered": true,
+  "failed_attempts": [
+    {
+      "lapse": "First interpolation observer inherited spline headless=true;all194 GenericDialog command cases refused before numerics.",
+      "correction": "Interpolate constructs GenericDialog even for macro options;run the same actual command on the Windows AWT desktop with headless=false and macro-driven dialog values. Retain initial output as failed observer attempt;no accepted expectations exist yet."
+    },
+    {
+      "lapse": "First core compile refused a same-scope local name redeclaration in the new interpolation trial loop.",
+      "correction": "Rename endpoint references;only core failed and no downstream target ran. Retry affected core002 then execute not-yet-run targets001;preserve compiler diagnostic."
+    },
+    {
+      "lapse": "First Python run201/206 passed;two closed endpoint cases lost a seam vertex from libm boundary rounding;two configured UI probes read unparsed generic-dialog values instead of pending text;zero interval was validated only asynchronously.",
+      "correction": "Endpoint-on-circle ULP guard only after no segment root;retain194 accepted samples/tolerances unchanged. Read observed dialog.text before Apply;consumed numeric output remains pinned. Refuse invalid interval before snapshot capture to preserve atomic synchronous option errors. Rebuild only changed core/frontend/probe and relink clients;rerun affected numerical/UI routes."
+    },
+    {
+      "lapse": "Broader history checks exposed13 regressions from assuming ordinary transient selection edits should create independent Undo steps,contrary to document.hpp documented policy.",
+      "correction": "Restore all existing common publication sites exactly. Interpolate itself uses retained V4 command history;ordinary result edits remain transient. Verify command Undo returns source and Redo restores edited result,including both physical hosts. No cosmetic metadata/newcontroller or old expectation changes. Retry affected history/UI checks only;core/numerical/SDK evidence unchanged."
+    },
+    {
+      "lapse": "Late Measure assertion treated raw _desktop.Editor.results as a parsed list;binding returns JSON text. Measure ran,but assertion indexing failed.",
+      "correction": "Use json.loads on the observed raw getter and rerun only this node. No product build,numerical tolerance change or SDK regeneration. Include both small failed/successful scratch in verified retention before final closeout."
+    }
+  ],
+  "observed_cost": {
+    "build_seconds": 246.28576822777399,
+    "python_check_seconds": 14.386086100013927,
+    "nonzero_commands": [
+      {
+        "receipt": "build-imagejxx_core001.process.json",
+        "exit_code": 1
+      },
+      {
+        "receipt": "python-interpolation001.process.json",
+        "exit_code": 1
+      },
+      {
+        "receipt": "python-measure004.process.json",
+        "exit_code": 1
+      },
+      {
+        "receipt": "python-selection002.process.json",
+        "exit_code": 1
+      }
+    ]
+  },
+  "storage": {
+    "measurements": [
+      {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-entry-20261105.json",
+        "bytes": 66573,
+        "sha256": "6d59b2090e9594c4b9dad24c6c2010b96ab036bd6d03932354f46c052c3bc77f",
+        "known_bytes": 7369085909,
+        "unknown_subtrees": 214,
+        "budget_verified": false
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-pre-retirement-20261105.json",
+        "bytes": 66573,
+        "sha256": "3f084cfbb7e198408fb3d73fc2d3a31eada5edadfc6d1740b9c1afbdada51e81",
+        "known_bytes": 7377939414,
+        "unknown_subtrees": 214,
+        "budget_verified": false
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-closeout-20261105.json",
+        "bytes": 66573,
+        "sha256": "77a5fa0dd86f606d9f27c9c00d69a9ea058c441c343f001dd323405c13a38707",
+        "known_bytes": 7373296854,
+        "unknown_subtrees": 214,
+        "budget_verified": false
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-interpolation-final-closeout-20261105.json",
+        "bytes": 66574,
+        "sha256": "fc1c206023906b1cbe2b5777469bfbe5d9d69dcc931b7c7a8ef43fe085c4ee59",
+        "known_bytes": 7373373349,
+        "unknown_subtrees": 214,
+        "budget_verified": false
+      }
+    ],
+    "complete_budget_verified": false,
+    "unknown_subtrees": 214,
+    "planned_generated_upper_bound_bytes": 134217728,
+    "pre_retirement_observed_growth_bytes": 8853505,
+    "final_known_bytes": 7373373349,
+    "final_physical_free_bytes": 269884579840,
+    "retirements": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/measure004-empty-retirement.json",
+          "bytes": 273,
+          "sha256": "9c5173d8f4d619263fd000344f82ab96bc040ffbdbdaf87941e09aa31ba3ac57"
+        },
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/selection-interpolation-20261105/scratch/measure004",
+          "source_bytes": 0,
+          "source_files": 0,
+          "archive_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/measure005-empty-retirement.json",
+          "bytes": 273,
+          "sha256": "dba77381a14b85d5c93dacace966b26b28a5e9d77f772ef7e7534aaf47e77a2b"
+        },
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/selection-interpolation-20261105/scratch/measure005",
+          "source_bytes": 0,
+          "source_files": 0,
+          "archive_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/reference001-retirement.json",
+          "bytes": 435,
+          "sha256": "e1bc79d0796f81593d0c3c018dd915ef9f9b2fb7a993a944094ded533ce5a5c0"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-interpolation-20261105/scratch/reference001",
+          "source_bytes": 244979,
+          "source_files": 3,
+          "source_snapshot_sha256": "9760851e15eafe9db1f6aef3ffaed35b1bd46e9d20d6fc389f90a8c3ed026c70",
+          "archive_bytes": 49750,
+          "archive_sha256": "3cc9c36ac7f482d6e8849edbecf406f3d210d3039298315ad42855e3994dd54c",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/sdk001-retirement.json",
+          "bytes": 342,
+          "sha256": "ad5f4ba4ea10a5b22a6d48f12fc031123516d9114e720b50dd83e9792bf68e9f"
+        },
+        "result": {
+          "source": ".tmp\\manual-workflow-verification\\selection-interpolation-20261105\\scratch\\sdk001",
+          "bytes_removed": 2998345,
+          "files": 83,
+          "state": "hashed_owned_consumer_tree_removed_without_archive",
+          "source_snapshot_sha256": "1ee3932660b37916262f20661da6a74f75deeffc8537e1a0fe056fe55078d58f",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/verify001-retirement.json",
+          "bytes": 432,
+          "sha256": "7f5b128904958f31c6920ed0f01c42b796d98cf32b6fe414f8bd06da2b46b256"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-interpolation-20261105/scratch/verify001",
+          "source_bytes": 281475,
+          "source_files": 6,
+          "source_snapshot_sha256": "689eb356ba67a9bb6dee69c736f042380b59233b07e7da6fa0f1e69a983191d4",
+          "archive_bytes": 35951,
+          "archive_sha256": "52228ac1dd4134daa9a10af2273ba09e97367719abde41ab3ebf22a74ea81fa3",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/verify002-retirement.json",
+          "bytes": 436,
+          "sha256": "4c6cbe0e9eaccb16fc34c2ea34dabd9884d584661965f525c673016a0091e077"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-interpolation-20261105/scratch/verify002",
+          "source_bytes": 1065273,
+          "source_files": 130,
+          "source_snapshot_sha256": "365a638b89b171240aa4a8649ee8e8ca3b16692902b8cda3471b2cc3e24aa964",
+          "archive_bytes": 200264,
+          "archive_sha256": "4364676ccf4fd439af6031b289a1fad4e605251f3fbd28b09fc30d8199ff048d",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-interpolation-20261105/verify003-retirement.json",
+          "bytes": 434,
+          "sha256": "28c24cb65a0fa8f808ccfdd8533a42648e5385e5256aa3d1f8443d80780ea085"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-interpolation-20261105/scratch/verify003",
+          "source_bytes": 898659,
+          "source_files": 90,
+          "source_snapshot_sha256": "36cbb8c93a30ddcc9cd4f7bf994950bb9ff6dc5dcf64054a6f8e923b271a0d13",
+          "archive_bytes": 114919,
+          "archive_sha256": "039ef57a7059209753f06b086e3870a588ed090ff7290230acdf203c0bb34044",
+          "source_removed": true
+        }
+      }
+    ],
+    "scratch_removed": true,
+    "active_products_preserved": "Configured Windows/Linux caches/intermediates,one installed runtime/app/SDK;no retired build generations recreated.",
+    "scope": "Full normalized intended .cache/.tmp/public retained review/dependency/runtime/Linux roots;unknown subtrees remain unknown,never zero. Final measurement precedes small public receipt/static closeout edits.",
+    "evidence_availability": "Live capture/SDK consumer paths in old receipts are retired.Full necessary captures are compressed and hash-verified through manifests;SDK consumer identity hashes only. Local ignored evidence identities are not public CI artifacts."
+  },
+  "waste_review": {
+    "fix_now": "Use actual chord/smoothing rules and pending dialog text;retain existing transient policy;decode raw desktop JSON results;verify absolute cleanup paths;scope retries to changed inputs.",
+    "defer": "T02 phase/copy tightening only on demonstrated need.T06 compound/curved/repeat source profiles next.T09 intent,T14 remaining platform,T15 GUI remembered-option settings. Code-observed repeated fitted-state extraction/control copy for kind;four-payload metadata admission covers current scope. T02 optimizes only on measured large-control cost,without weakening validation.",
+    "no_action": "No generic framework,new environments or full unchanged campaign;no product speedup/process RSS claim.",
+    "notebook": "../compilexx/docs/notes/imagejxx-plan-inefficiencies.md updated without sibling commit."
+  },
+  "limitations": [
+    "Full commercially usable ImageJ/Fiji editor and G018 remain open;test totals are not overall completion percentages.",
+    "Composite components/holes,curved/oval/rounded/mask sources are next T06 scope;currently refuse rather than flatten into a merged polygon.",
+    "Native point no-op,source/output-type provenance for repeated FREELINE/TRACED commands,high-zoom kind context and one-vertex-area representability remain open.",
+    "Scientific/saved-row integration,GUI remembered options,operation-intent macros,Linux installed-client and other supported-platform UI/release qualification retain T06/T15/T09/T14 owners.",
+    "17 legacy gesture checks and G016 retired checkpoint evidence remain unavailable underT00;not rerun,passed,repinned or regenerated.",
+    "No new broad historical check_plan success claim;known retired G016 gate remains blocked.Scoped99-family/history/link preservation checked separately."
+  ],
+  "documentation_checks": {
+    "state": "passed_scoped_static_checks",
+    "inventory_families": 99,
+    "all_status_required_work_fields_unchanged": true,
+    "nonG018_families_unchanged": true,
+    "historical_hashes": {
+      "docs/PLAN_HISTORY.md": "e1e3bad18cc074559ca2a31fb268dceab5e626b296dec8c111c49519b325e3d6",
+      "docs/SOL_ULTRA_HISTORY.md": "046be5c34d2e43c2a2c880ac6179113d3ed4b3ae731b4801fac6c8236962bbe4",
+      "docs/THREE_AGENT_EXECUTION_HISTORY.md": "7533dbca1e69b2239204213a1ce948934f42b20db72e4419e4e61b32170528d9"
+    },
+    "protected_unrelated_sources_unchanged": true,
+    "prior_transform_implementations_unchanged": true,
+    "new_links_and_python_syntax": "passed",
+    "known_global_gate": "check_plan historical G016 evidence still unavailable;not rerun or counted passing",
+    "scratch": "absent after verified retirement"
+  }
+}

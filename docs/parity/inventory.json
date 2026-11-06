@@ -906,7 +906,8 @@
           "docs/parity/reviews/selection-fit-circle-20261105.json",
           "docs/parity/reviews/selection-fit-ellipse-20261105.json",
           "docs/parity/reviews/selection-fit-rectangle-20261105.json",
-          "docs/parity/reviews/selection-spline-20261105.json"
+          "docs/parity/reviews/selection-spline-20261105.json",
+          "docs/parity/reviews/selection-interpolation-20261105.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
@@ -930,7 +931,8 @@
           "src/native/selection_transform.cpp",
           "include/imagejxx/selection_spline.hpp",
           "src/native/imagej_spline.cpp",
-          "src/native/selection_spline_detail.hpp"
+          "src/native/selection_spline_detail.hpp",
+          "include/imagejxx/selection_interpolation.hpp"
         ],
         "tests": [
           "tests/python/test_selection_enlargement.py",
@@ -965,7 +967,10 @@
           "tests/fixtures/fit-rectangle-imagej154r.json",
           "tests/python/test_selection_spline.py",
           "tests/reference/ObserveSelectionSpline.java",
-          "tests/fixtures/selection-spline-imagej154r.json"
+          "tests/fixtures/selection-spline-imagej154r.json",
+          "tests/python/test_selection_interpolation.py",
+          "tests/reference/ObserveSelectionInterpolation.java",
+          "tests/fixtures/selection-interpolation-imagej154r.json"
         ]
       },
       "id": "G018",

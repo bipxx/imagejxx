@@ -1,4 +1,5 @@
 #include <imagejxx/selection_transform.hpp>
+#include <imagejxx/selection_interpolation.hpp>
 #include <imagejxx/selection_spline.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
@@ -477,3 +478,146 @@ Selection fit_rectangle_selection(const Selection& source,int w,int h,bool disca
 }
 
 }
+
+
+// Interpolate uses circle/chord spacing. Spline straightening deliberately uses
+// a different, accumulated arc-length rule and must not share that algorithm.
+namespace imagejxx {
+namespace {
+struct InterpolationPlan {
+  Selection source;
+  std::vector<Point> points;
+  SelectionInterpolationOptions options;
+  std::string source_kind;
+  std::size_t capacity,bytes;
+  bool open;
+};
+void interpolation_float_bounds(std::vector<Point>& points) {
+  Point base{std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
+  for(auto& p:points)for(int a=0;a<2;++a){p[a]=float(p[a]);base[a]=std::min(base[a],p[a]);}
+  for(auto& p:points)for(int a=0;a<2;++a)p[a]=float(float(float(p[a])-float(base[a]))+float(base[a]));
+}
+InterpolationPlan interpolation_plan(const Selection& source,int width,int height,
+    const SelectionInterpolationOptions& options,const SelectionEditLimits& limits,
+    const ExecutionControl& control) {
+  if(!std::isfinite(options.interval) || std::abs(options.interval)<.01)
+    throw std::invalid_argument("Interpolation interval magnitude must be at least0.01 pixels");
+  if(source.kind!="polygon" && source.kind!="polyline" && source.kind!="freehand" &&
+      source.kind!="line" && source.kind!="rectangle")
+    throw std::invalid_argument("Interpolate requires vertex,straight-line or rectangle geometry;composite/curved profiles remain separate");
+  auto bytes=detail::admit_selection_geometry(source,width,height,limits,control);
+  const auto count=source.kind=="rectangle"?std::size_t(4):source.points.size();
+  if(count>65536 || count>limits.max_vertices)throw std::length_error("Interpolation input vertex limit");
+  if(bytes>limits.max_working_bytes || limits.max_working_bytes-bytes<4096 ||
+      count>(limits.max_working_bytes-bytes-4096)/64)
+    throw std::length_error("Interpolation source workspace limit");
+  bytes+=4096+count*64;
+  ExecutionScope planning(control);
+  return detail::without_execution_callbacks([&] {
+    validate_selection_spline_fit(source);
+    const bool fitted=source.attributes.count(spline_fit_attribute)!=0;
+    auto kind=source.kind;
+    if(fitted)kind=selection_spline_fit(source)->controls.kind;
+    std::vector<Point> points;
+    if(source.kind=="rectangle") {
+      const auto& a=source.points[0];const auto& b=source.points[1];
+      const double x=std::min(a[0],b[0]),y=std::min(a[1],b[1]),right=std::max(a[0],b[0]),bottom=std::max(a[1],b[1]);
+      points={{x,y},{right,y},{right,bottom},{x,bottom}};
+    } else points=source.points;
+    for(const auto& p:points)for(double v:p)if(std::abs(v)>1e9)
+      throw std::invalid_argument("Interpolation coordinate range");
+    if(!fitted && source.kind!="line" && source.kind!="rectangle")interpolation_float_bounds(points);
+    else for(auto& p:points)for(auto& v:p)v=float(v);
+    if(options.smooth && kind=="freehand") {
+      for(std::size_t i=1;i+2<points.size();++i)
+        for(int a=0;a<2;++a)points[i][a]=float(float(float(points[i-1][a])+float(points[i][a])+float(points[i+1][a]))/3.f);
+      for(int a=0;a<2;++a)points[0][a]=float(float(float(points.back()[a])+float(points[0][a])+float(points[1][a]))/3.f);
+      for(int a=0;a<2;++a)points.back()[a]=float(float(float(points[points.size()-2][a])+float(points.back()[a])+float(points[0][a]))/3.f);
+    }
+    const bool open=source.kind=="polyline" || source.kind=="line";
+    double length=0;
+    for(std::size_t i=1;i<points.size()+std::size_t(!open);++i) {
+      kernel_checkpoint_periodic();const auto& a=points[i-1];const auto& b=points[i%points.size()];
+      const double dx=float(b[0])-float(a[0]),dy=float(b[1])-float(a[1]);length+=std::sqrt(dx*dx+dy*dy);
+    }
+    const double required=10+length*1.5/std::abs(options.interval);
+    const auto limit=std::min(limits.max_vertices,std::size_t(65536));
+    if(!std::isfinite(required) || required>double(limit)+10)
+      throw std::length_error("Interpolation output vertex limit");
+    const auto capacity=std::size_t(required);
+    if(capacity>(limits.max_working_bytes-bytes)/64)throw std::length_error("Interpolation output workspace limit");
+    bytes+=capacity*64;
+    if(!open)points.push_back(points.front());
+    return InterpolationPlan{source,std::move(points),options,std::move(kind),capacity,bytes,open};
+  });
+}
+std::optional<Point> interpolation_intersection(Point a,Point b,Point center,double radius) {
+  const double dxAC=center[0]-a[0],dyAC=center[1]-a[1];
+  const double lenAC=std::sqrt(dxAC*dxAC+dyAC*dyAC),dx=b[0]-a[0],dy=b[1]-a[1];
+  const double extent=std::sqrt(dx*dx+dy*dy),angle=std::atan2(dy,dx);
+  const double turn=angle-std::atan2(dyAC,dxAC),x=lenAC*std::cos(turn),y=lenAC*std::sin(turn);
+  if(std::abs(y)>radius)return {};
+  const double half=std::sqrt(radius*radius-y*y);
+  for(double offset:{x-half,x+half})if(offset>=0 && offset<=extent)
+    return Point{std::cos(angle)*offset+a[0],std::sin(angle)*offset+a[1]};
+  // An endpoint lying on the circle can miss the segment by a few libm ULPs.
+  // Retain that endpoint, without extending the contour or changing spacing.
+  const double ex=b[0]-center[0],ey=b[1]-center[1];
+  const double squared=ex*ex+ey*ey,rr=radius*radius;
+  if(std::abs(squared-rr)<=8*std::numeric_limits<double>::epsilon()*std::max(squared,rr))return b;
+  return {};
+}
+Selection interpolate_planned(InterpolationPlan plan,int width,int height,const SelectionEditLimits& limits) {
+  const double interval=std::abs(plan.options.interval);
+  const bool adjust=(plan.options.interval<0)!=plan.options.adjust_to_match;
+  double trial_interval=interval,best_interval=0,min_diff=1e9;
+  std::vector<Point> output;output.reserve(plan.capacity);
+  std::size_t work=0;
+  for(int trial=0;trial<=50;) {
+    output.clear();output.push_back(plan.points.front());std::size_t segment=0;auto a=plan.points.front();
+    while(segment+1<plan.points.size()) {
+      kernel_checkpoint_periodic();
+      if(++work>64u*1024u*1024u)throw std::length_error("Interpolation work limit");
+      const auto next=interpolation_intersection(a,plan.points[segment+1],output.back(),trial_interval);
+      if(next) {
+        if(output.size()>=plan.capacity || output.size()>=limits.max_vertices || output.size()>=65536)
+          throw std::length_error("Interpolation output vertex limit");
+        a=*next;output.push_back(a);
+      } else a=plan.points[++segment];
+    }
+    if(output.size()+1>plan.capacity)throw std::length_error("Interpolation endpoint workspace limit");
+    output.push_back(plan.points.back());
+    if(!adjust){if(plan.open)output.pop_back();break;}
+    const auto& lastFrom=output[output.size()-2];const auto& lastTo=output.back();
+    const double dx=lastFrom[0]-lastTo[0],dy=lastFrom[1]-lastTo[1],diff=std::sqrt(dx*dx+dy*dy)-trial_interval;
+    if(std::abs(diff)<min_diff){min_diff=std::abs(diff);best_interval=trial_interval;}
+    trial_interval+=.66*diff/double(output.size()-1);
+    if((trial_interval<.8*interval || std::abs(diff)<.05 || trial==49) && trial<50) {
+      trial=50;trial_interval=best_interval;
+    } else ++trial;
+  }
+  if(!plan.open)output.pop_back();
+  if(output.size()<(plan.open?2u:3u))
+    throw std::invalid_argument("Interpolated geometry has too few vertices for a native editable selection");
+  interpolation_float_bounds(output);
+  Selection result=std::move(plan.source);
+  const bool polygon=(plan.source_kind=="polygon" && plan.options.interval>1) ||
+      ((plan.source_kind=="rectangle" || plan.source_kind=="freehand") && plan.options.interval>=8);
+  result.kind=plan.open?"polyline":polygon?"polygon":"freehand";
+  result.points=std::move(output);result.attributes.erase(spline_fit_attribute);
+  result.validate(width,height);return result;
+}
+}
+std::size_t estimate_interpolated_selection(const Selection& source,int width,int height,
+    const SelectionInterpolationOptions& options,const SelectionEditLimits& limits) {
+  return interpolation_plan(source,width,height,options,limits,{}).bytes;
+}
+Selection interpolate_selection(const Selection& source,int width,int height,
+    const SelectionInterpolationOptions& options,const SelectionEditLimits& limits,const ExecutionControl& control) {
+  const auto frozen_options=options;const auto frozen_limits=limits;const auto frozen_control=control;
+  auto plan=interpolation_plan(source,width,height,frozen_options,frozen_limits,frozen_control);
+  ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  auto result=interpolate_planned(std::move(plan),width,height,frozen_limits);
+  kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
+}
+} // namespace imagejxx

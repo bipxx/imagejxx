@@ -1,4 +1,5 @@
 #include <imagejxx/selection_spline.hpp>
+#include <imagejxx/selection_interpolation.hpp>
 #include "window.hpp"
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
@@ -1933,6 +1934,11 @@ struct Window::Impl {
           ? selectionPanel.preview():captured.data().selection;
       if(selection && (selection->is_path() || selection->kind=="point" || selection->kind=="multipoint"))
         return owner.controller_->active_document_id()==source->id;
+    }
+    if(action=="show_interpolate_selection" || action=="interpolate_selection") {
+      const auto captured=source->nativeSnapshot();const auto& selected=captured.data().selection;
+      if(!selected || captured.display().orthogonal || owner.busy() || owner.controller_->active_document_id()!=source->id)return false;
+      return selected->kind=="polygon" || selected->kind=="polyline" || selected->kind=="freehand" || selected->kind=="line" || selected->kind=="rectangle";
     }
     if(action=="show_fit_spline" || action=="fit_spline_selection" || action=="remove_spline_fit") {
       const auto captured=source->nativeSnapshot();const auto& selected=captured.data().selection;
@@ -7817,6 +7823,49 @@ void Window::action(const std::string &name, const Json &p) {
         selection_enlargement_command_from_record(source,record,impl->selectionCreationLimits());
     impl->publishEnlargement(command);return;
   }
+  if(name=="show_interpolate_selection" || name=="interpolate_selection") {
+    const bool show=name=="show_interpolate_selection";
+    if(!p.is_object())throw std::invalid_argument("Interpolation options must be an object");
+    const auto source=nativeSnapshot(targetId);
+    if(busy() || source.id()!=controller_->active_document_id() || source.display().orthogonal || !source.data().selection)
+      throw std::invalid_argument("Interpolate requires the idle active XY selection");
+    const auto& selected=*source.data().selection;
+    if(selected.kind!="polygon" && selected.kind!="polyline" && selected.kind!="freehand" && selected.kind!="line" && selected.kind!="rectangle")
+      throw std::invalid_argument("Interpolate requires vertex,line or rectangle geometry");
+    for(const auto& field:p.items())if(field.key()!="document_id" && (show || (field.key()!="interval" && field.key()!="smooth" && field.key()!="adjust_to_match")))
+      throw std::invalid_argument("Unknown interpolation option");
+    if(show) {
+      const auto id=source.id();const auto revisions=source.revisions();const PlanePosition position{source.display().t,source.display().c,source.display().crosshair[2]};
+      impl->ask("Interpolate",{{"interval",1.},{"smooth",false},{"adjust_to_match",false}},
+          [this,id,revisions,position](Json choice) {
+            const auto current=nativeSnapshot(id);
+            if(controller_->active_document_id()!=id || !current.revisions().matches(revisions,Change::Data) || current.display().orthogonal || current.display().t!=position.t || current.display().c!=position.c || current.display().crosshair[2]!=position.z)throw RevisionConflict();
+            choice["document_id"]=id;action("interpolate_selection",choice);
+          },Json::array({{{"name","interval"},{"label","Interval (pixels)"},{"kind","float"}},
+            {{"name","smooth"},{"label","Smooth freehand contours"},{"kind","bool"}},
+            {{"name","adjust_to_match"},{"label","Adjust interval to match"},{"kind","bool"}}}),"selection_interpolation");
+      return;
+    }
+    SelectionInterpolationOptions options;
+    if(p.contains("interval")){if(!p.at("interval").is_number())throw std::invalid_argument("Interval must be numeric");options.interval=p.at("interval").get<double>();}
+    for(const char* field:{"smooth","adjust_to_match"})if(p.contains(field) && !p.at(field).is_boolean())throw std::invalid_argument("Interpolation switches must be Boolean");
+    options.smooth=p.value("smooth",false);options.adjust_to_match=p.value("adjust_to_match",false);
+    if(!std::isfinite(options.interval) || std::abs(options.interval)<.01)throw std::invalid_argument("Interpolation interval magnitude must be at least0.01 pixels");
+    const auto cap=impl->selectionCreationLimits();const auto total=cap.max_working_bytes;
+    const auto plan=controller_->prepare_snapshot_capture(total/8,source.id());const auto allowance=RenderMemory::mul(plan.bytes(),4);
+    if(allowance>=total)throw std::length_error("Interpolation source capture exceeds processing budget");
+    auto memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(allowance));auto captured=controller_->capture_snapshot(plan);
+    if(!source.same_document(captured) || !source.revisions().matches(captured.revisions(),Change::Data))throw RevisionConflict();
+    SelectionEditLimits limits{cap.max_pixels,cap.max_candidate_vertices,total-allowance};auto creationLimits=cap;creationLimits.max_working_bytes=limits.max_working_bytes;
+    const bool captureRecording=recording;const std::string label="Interpolate";
+    impl->startControlled([captured=std::move(captured),options,limits,creationLimits,memory,total,captureRecording,label](const JobContext& context) {
+      const auto shape=captured.data().dataset.shape();
+      auto result=interpolate_selection(*captured.data().selection,shape.x,shape.y,options,limits,context.execution_control());
+      auto command=resolve_selection_creation_command(captured,{SelectionCreationOperation::Replace,std::move(result),SelectionCreationGeometry::NativePathV4},creationLimits,context.execution_control());
+      return Impl::JobResult(std::move(command),memory,total,captureRecording,label);
+    },documentById(source.id()),false,label,label,total,{},true);
+    return;
+  }
   if(name=="show_fit_spline" || name=="fit_spline_selection" || name=="remove_spline_fit") {
     const bool show=name=="show_fit_spline",removing=name=="remove_spline_fit";
     if(!p.is_object())throw std::invalid_argument("Spline options must be an object");
@@ -10784,6 +10833,7 @@ void Window::Impl::menu() {
       item("Fit Circle", "show_fit_circle");
       item("Fit Ellipse", "show_fit_ellipse");
       item("Fit Rectangle", "show_fit_rectangle");
+      item("Interpolate...", "show_interpolate_selection");
       item("Fit Spline...", "show_fit_spline");
       item("Remove Spline Fit", "remove_spline_fit");
       for(bool shrink:{false,true}){
