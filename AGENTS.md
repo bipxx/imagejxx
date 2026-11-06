@@ -1,3 +1,26 @@
+# Enforcement at the action boundary
+
+These instructions apply before execution, not just when reporting results.
+For each dependent action, use the current task record or its referenced receipt
+as the authority for whether the required checkpoint is satisfied:
+
+- Proceed only from observed evidence for the inputs and process state being
+  consumed. Name the evidence path and decision before launching the action;
+  a planned check, previous summary or instruction edit does not establish it.
+- If evidence is missing, stale or contradictory, stop that dependent action and
+  record the concrete blocker. Correct it within existing authority; continue
+  independent safe work without requesting routine permission or bypassing it.
+- If a lapse is discovered after execution, record what actually ran and the
+  corrective result. Never relabel a retrospective check as a preflight. Before
+  repeating the affected action, perform its missing check and record the result.
+- Closeout must identify completed checks, unavailable evidence and retained
+  scratch with its owner and safety blocker. Do not mark an affected checkpoint
+  or task complete while its required evidence or safe retirement is unresolved.
+
+Use the existing task records and maintained tools below. This file governs
+agent decisions; it is not an automatic filesystem or process guard. Reinforcing
+its text does not prove compliance or justify rerunning unchanged verification.
+
 # Mandatory storage and cleanup gate
 
 These rules apply to every task, retry, helper process and authorized delegated
