@@ -45,6 +45,7 @@ def test_native_manager_positions_history_and_noop():
     current = native.snapshot()
     assert (current.display.t, current.display.c, current.display.crosshair[2]) == (0, 0, 0)
     assert current.selection.kind == "rectangle" and current.previous_selection.kind == "ellipse"
+    assert current.selection.attributes["imagej_roi_name"]=="zero"
     assert native.history().undo_steps == start + 1
     revisions = (current.revisions.selection, current.revisions.display)
     commit(native, ij.prepare_select_roi(current, 0))
@@ -87,7 +88,7 @@ def test_scientific_manager_desktop_workflow(tmp_path, layer):
     action(editor, "select_roi", {"index": 0})
     current = native.snapshot()
     assert (current.display.t, current.display.c, current.display.crosshair[2]) == (0, 1, 2)
-    assert current.selection.attributes == roi.selection.attributes
+    assert current.selection.attributes == {**roi.selection.attributes,"imagej_roi_name":roi.name}
     before = native.history().undo_steps
     action(editor, "update_roi", {"index": 0})
     assert native.history().undo_steps == before

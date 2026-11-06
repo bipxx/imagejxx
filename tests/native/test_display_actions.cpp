@@ -478,6 +478,10 @@ void circleJobs(const std::filesystem::path& root) {
 }
 } // namespace
 int main(int argc,char **argv){try{
+  if(argc==3 && std::string(argv[2])=="--display-label") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"label-preferences.json").u8string());
+    imagejxx::desktop::displayLabelUiCase(w,"imgui_cpp",argv[1]);return 0;
+  }
   if(argc==4 && std::string(argv[2])=="--result-format") {
     Window w((std::filesystem::u8path(argv[1]).parent_path()/"format-preferences.json").u8string());
     imagejxx::desktop::resultFormattingUiCase(w,"imgui_cpp",argv[1],argv[3]);return 0;

@@ -48,12 +48,17 @@ int main() {
     auto selected=owner.snapshot();
     check(selected.display().t==0 && selected.display().c==0 && selected.display().crosshair[2]==0,
           "Reselect did not restore captured zero T/C/Z");
-    check(selected.data().selection==stored.data().selection &&
+    auto named_stored=*stored.data().selection;named_stored.attributes["imagej_roi_name"]=std::string("zero");
+    check(selected.data().selection==named_stored &&
           selected.data().previous_selection==before.data().selection && owner.history().undo_steps==1,
           "Reselect changed metadata history or lost Previous");
     const auto noop=owner.snapshot();
     publish(owner, prepare_select_roi(noop,0));
     check(owner.snapshot().revisions().matches(noop.revisions(),Change::All), "No-op selection advanced revisions");
+    publish(owner, prepare_update_roi(owner.snapshot(),0));
+    check(owner.snapshot().revisions().matches(noop.revisions(),Change::All) &&
+          owner.snapshot().data().rois==stored.data().rois && owner.history().undo_steps==1,
+          "Projected name created a stored attribute or no-op history");
     auto stale=prepare_rename_roi(owner.snapshot(),0,"stale");
     view=owner.snapshot().display();view.t=1;owner.set_display(view);
     const auto after_navigation=owner.snapshot();
@@ -88,6 +93,30 @@ int main() {
     for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<3;++z)
       check(owner.snapshot().data().dataset.plane({t,c,z})==original.data().dataset.plane({t,c,z}),
             "ROI manager copied or replaced pixel planes");
+    {
+      Document named_owner(original.data().dataset, "attribute round trip");
+      Selection geometry("rectangle", {{1,1},{5,4}});
+      geometry.attributes["imagej_roi_name"]=std::string("original private value");
+      geometry.attributes["future"]=std::string("keep");
+      named_owner.select(geometry);
+      publish(named_owner,prepare_store_roi(named_owner.snapshot(),"row name"));
+      publish(named_owner,prepare_select_roi(named_owner.snapshot(),0));
+      const auto selected_state=named_owner.snapshot();
+      const auto steps=named_owner.history().undo_steps;
+      publish(named_owner,prepare_update_roi(selected_state,0));
+      check(named_owner.snapshot().revisions().matches(selected_state.revisions(),Change::All) &&
+            named_owner.snapshot().data().rois[0].selection==geometry &&
+            named_owner.history().undo_steps==steps,
+            "Name projection did not restore the original stored private attribute");
+      auto edited=*selected_state.data().selection;edited.points[0][0]=2;
+      edited.attributes["future"]=std::string("edited");named_owner.select(edited);
+      publish(named_owner,prepare_update_roi(named_owner.snapshot(),0));
+      auto expected=geometry;expected.points[0][0]=2;
+      expected.attributes["future"]=std::string("edited");
+      check(named_owner.snapshot().data().rois[0].selection==expected &&
+            named_owner.history().undo_steps==steps+1,
+            "Update lost edited geometry, unrelated attributes or original name attribute");
+    }
     std::cout<<"PASS roi-manager "<<checks<<" assertions\n";
     return 0;
   } catch(const std::exception &error) {

@@ -32,8 +32,9 @@ PreparedRoiManagerEdit replace(const DocumentSnapshot &source, std::size_t index
 PreparedRoiManagerEdit select_value(const DocumentSnapshot &source,const Roi &value,
                                     std::optional<std::size_t> index) {
   PreparedRoiManagerEdit result{source.begin_edit(Change::All),source.display(),index};
-  if(!source.data().selection || *source.data().selection!=value.selection)
-    result.transaction.select(value.selection);
+  auto named=value.selection;named.attributes["imagej_roi_name"]=value.name;
+  if(!source.data().selection || *source.data().selection!=named)
+    result.transaction.select(std::move(named));
   if(value.t)result.display->t=*value.t;
   if(value.c)result.display->c=*value.c;
   if(value.z)result.display->crosshair[2]=*value.z;
@@ -68,7 +69,21 @@ PreparedRoiManagerEdit prepare_store_roi(const DocumentSnapshot &source,
 PreparedRoiManagerEdit prepare_update_roi(const DocumentSnapshot &source,
                                          std::size_t index) {
   auto value = row(source, index);
-  value.selection = selected(source);
+  auto selection = selected(source);
+  // Selection projects the row name without editing the stored geometry. Do
+  // not persist that projection as a metadata/history change on Update.
+  const auto name = selection.attributes.find("imagej_roi_name");
+  if (name != selection.attributes.end()) {
+    const auto text = std::get_if<std::string>(&name->second);
+    if (text && *text == value.name) {
+      const auto original = value.selection.attributes.find("imagej_roi_name");
+      if (original == value.selection.attributes.end())
+        selection.attributes.erase(name);
+      else
+        name->second = original->second;
+    }
+  }
+  value.selection = std::move(selection);
   return replace(source, index, std::move(value));
 }
 PreparedRoiManagerEdit prepare_rename_roi(const DocumentSnapshot &source,

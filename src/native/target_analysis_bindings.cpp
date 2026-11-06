@@ -22,6 +22,7 @@ void bind_target_analysis(py::module_& m) {
     .def_readwrite("limit_to_threshold",&TargetAnalysisOptions::limit_to_threshold)
     .def_readwrite("area_fraction",&TargetAnalysisOptions::area_fraction)
     .def_readwrite("moments",&TargetAnalysisOptions::moments)
+    .def_readwrite("display_label",&TargetAnalysisOptions::display_label)
     .def_readwrite("redirect",&TargetAnalysisOptions::redirect);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
@@ -50,6 +51,7 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("area_fraction",&TargetAnalysisPlane::area_fraction)
     .def_readonly("skewness",&TargetAnalysisPlane::skewness)
     .def_readonly("kurtosis",&TargetAnalysisPlane::kurtosis)
+    .def_readonly("label",&TargetAnalysisPlane::label)
     .def_readonly("bounds",&TargetAnalysisPlane::bounds)
     .def_readonly("roi_index",&TargetAnalysisPlane::roi_index)
     .def_readonly("point_index",&TargetAnalysisPlane::point_index)

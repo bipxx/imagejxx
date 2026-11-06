@@ -3,6 +3,7 @@
 #include "rendering.hpp"
 #include "window.hpp"
 #include <imagejxx/selection_spline.hpp>
+#include <imagejxx/roi_manager.hpp>
 #include <imagejxx/manual_threshold.hpp>
 #include <cstring>
 #include <iomanip>
@@ -1436,6 +1437,72 @@ Json resultFormattingUiCase(Window& w,const std::string& context,const std::stri
     reopened.openFile((dir/"measured.ijx").u8string());require(reopened.results==report["rows"],"Workspace lost raw rows");reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(bytes(dir/"reopened.csv")==report.at("csv"),"Reopened CSV differs");
     report["state"]="observed";report["workspace_preserved"]=report["presentation_only_while_running"]=report["source_unchanged"]=true;
     require(report.dump().size()<8*1024*1024,"Formatting report bound");writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
+}
+
+
+Json displayLabelUiCase(Window& w,const std::string& context,const std::string& fresh_directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
+  require(!fs::exists(dir) && w.documents().empty(),"Fresh label fixture required");fs::create_directories(dir);
+  Json report={{"context",context},{"events",Json::array()},{"controls",Json::array()}};Json last;
+  std::atomic<bool> entered=false,release=false;
+  try {
+    Image low(4,1,1,PixelType::UInt8),high=low;low.pixels={0,1,1,4};high.pixels={10,11,11,14};DatasetReadObserver reads,otherReads;
+    const std::string title="source,\"title\nnext";auto source=std::make_shared<imagejxx::Document>(Dataset::from_stack({low,high}).observe_reads(reads),title);
+    auto edit=source->begin_edit();edit.set_property("slice_labels",metadata_array({std::string("slice0.tif"),std::string("slice1.tif\nsecond")}));source->commit(edit);
+    auto view=source->snapshot().display();view.crosshair[2]=1;source->set_display(view);source->select(Selection("rectangle",{{0,0},{4,1}}));
+    auto stored=prepare_store_roi(source->snapshot(),"roi,name");source->commit(stored.transaction,stored.display);auto adopted=prepare_select_roi(source->snapshot(),0);source->commit(adopted.transaction,adopted.display);source->mark_saved();
+    high.pixels={50,51,51,54};auto other=std::make_shared<imagejxx::Document>(Dataset::from_stack({high}).observe_reads(otherReads),"target,title");
+    w.addNativeDocument(source);w.addNativeDocument(other);w.setActiveIndex(0);
+    const auto before=source->snapshot(),otherBefore=other->snapshot();const auto undo=source->undo_steps();
+    w.updateSettings({{"measurements",Json::array({"mean"})},{"measurement_precision",3},{"measurement_scientific",false}},false);
+    HeadlessInputSession session(w);
+    auto frame=[&](const Json& events=Json::array()){require(report["events"].size()<256,"Label frame bound");last=session.frame(events);report["events"].push_back(events);};
+    auto click=[&](const Json& control,const std::string& name){
+      require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"Label control unavailable");report["controls"].push_back({{"name",name},{"control",control}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+    };
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};
+    auto widget=[&](const std::string& name){click(last.at("preferences_panel").at("widget_controls").at(name),"preferences."+name);};
+    auto acknowledge=[&](){if(w.error().empty())return;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();};
+    frame();frame();frame();const auto preferencesPath=last.at("preferences_path").get<std::string>();
+    control("menu.Analyze");control("menu.action.measure");w.wait();frame();require(w.error().empty() && w.results.size()==1 && !w.results[0].contains("Label"),"Default requested label");
+    control("menu.Edit");control("menu.Edit.Preferences");widget("search");
+    for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}})}}}));
+    frame(Json::array({{{"type","text"},{"value","Results columns"}}}));
+    auto choice=[&](){
+      for(int attempt=0;;++attempt) {
+        const auto item=last.at("preferences_panel").at("fields").at("measurements").at("choices").at("Label");
+        const auto rect=item.at("rect").get<std::array<float,4>>(),clip=item.at("clip_rect").get<std::array<float,4>>();
+        if(item.at("visible").get<bool>() && rect[1]>=clip[1] && rect[3]<=clip[3]){click(item,"preferences.column.Label");return;}
+        require(attempt<16,"Cannot expose Label choice");frame(Json::array({{{"type","position"},{"space","screen"},{"point",{clip[0]+2,(clip[1]+clip[3])*.5f}}}}));frame(Json::array({{{"type","wheel"},{"x",0},{"y",rect[3]>clip[3]?-3:3}}}));
+      }
+    };
+    choice();widget("revert");require(last.at("preferences_panel").at("fields").at("measurements").at("choices").at("Label").at("selected")==false,"Label Revert failed");
+    choice();widget("apply");const auto columns=w.settings().strings("measurements");require(std::find(columns.begin(),columns.end(),"Label")!=columns.end(),"Label Apply failed");
+    widget("defaults");require(last.at("preferences_panel").at("draft").at("measurements").empty(),"Label Defaults failed");widget("revert");widget("close_button");
+    control("menu.Analyze");control("menu.action.measure");w.wait();frame();const auto label=title+":roi,name:slice1";
+    require(w.error().empty() && w.results.size()==2 && w.results.back().at("Label")==label && w.results[0].contains("Label")==false,"Captured current label failed");
+    bool rendered=false;for(const auto& cell:last.at("results_table").at("cells"))if(cell.at("name")=="Label" && cell.at("row")==1){require(cell.at("text")==label,"Label table text differs");rendered=true;}require(rendered,"Label table cell not observed");
+    report["results_table"]=last.at("results_table");report["current_label"]=label;
+    w.action("measure_rois");w.wait();frame();require(w.error().empty() && w.results.size()==3 && w.results.back().at("Label")==label,"Manager label failed");
+    control("menu.Analyze");control("menu.measurement_redirect");control("measurement_redirect."+std::to_string(other->id));control("menu.Analyze");control("menu.action.measure");w.wait();frame();
+    require(w.error().empty() && w.results.size()==4 && w.results.back().at("Label")=="target,title:roi,name:slice1","Redirect label source ownership differs");
+    const auto rows=w.results;w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});const auto raw=readBytes((dir/"measure.csv").u8string());std::string csv(raw.begin(),raw.end()),copied;
+    {
+      auto& platform=ImGui::GetPlatformIO();struct Restore {ImGuiPlatformIO& p;decltype(p.Platform_SetClipboardTextFn) fn;void* data;~Restore(){p.Platform_SetClipboardTextFn=fn;p.Platform_ClipboardUserData=data;}} restore{platform,platform.Platform_SetClipboardTextFn,platform.Platform_ClipboardUserData};
+      platform.Platform_ClipboardUserData=&copied;platform.Platform_SetClipboardTextFn=[](ImGuiContext* c,const char* text){static_cast<std::string*>(c->PlatformIO.Platform_ClipboardUserData)->assign(text?text:"");};control("results.copy_csv");require(copied==csv,"Label copied/saved CSV differ");
+    }
+    auto start=[&](){entered=false;release=false;session.fixtureWorkerGate([&](const JobContext& c){entered=true;while(!release){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}});w.action("measure");const auto end=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered && std::chrono::steady_clock::now()<end)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered,"Label gate timeout");};
+    start();w.updateSettings({{"measurements",Json::array({"mean"})}},false);release=true;w.wait();require(!w.error().empty() && w.results==rows,"Stale Label choice published");acknowledge();w.updateSettings({{"measurements",columns}},true);
+    start();w.cancel();release=true;w.wait();require(w.results==rows,"Canceled Label published");acknowledge();session.fixtureWorkerGate({});
+    require(source->snapshot().shares_data(before) && other->snapshot().shares_data(otherBefore) && source->undo_steps()==undo && other->undo_steps()==0,"Label changed data/history");
+    w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});
+    start();w.closeDocument(other->id,true);release=true;w.wait();require(w.results==rows,"Closed label sampling owner published rows");acknowledge();session.fixtureWorkerGate({});report["sampling_close_preserved"]=true;
+    report["rows"]=rows;report["sampling_document"]=other->id;report["columns"]=columns;report["csv"]=csv;report["copied_csv"]=copied;report["stale_setting_refused"]=report["cancel_preserved"]=report["source_unchanged"]=true;
+    session.close();Window reopened(preferencesPath);require(reopened.settings().strings("measurements")==columns,"Saved Label choice lost");reopened.openFile((dir/"measured.ijx").u8string());require(reopened.results==rows,"Saved Label rows lost");
+    reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(readBytes((dir/"reopened.csv").u8string())==raw,"Reopened Label CSV differs");report["workspace_preserved"]=true;report["state"]="observed";
+    require(report.dump().size()<8*1024*1024,"Label report bound");writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
 }
 

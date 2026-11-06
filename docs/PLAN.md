@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Scientific notation and numeric presentation are scoped delivered: shared table/Copy CSV/Save CSV, actual settings and persistence in both Windows hosts. [Receipt](parity/reviews/result-format-20261106.json) and [coverage](COVERAGE_CHECKLIST.md#numeric-presentation-and-copy-csv). Next ready: M3 Display label. Full M3 and release scope remain open.
+Scientific notation and numeric presentation are scoped delivered: shared table/Copy CSV/Save CSV, actual settings and persistence in both Windows hosts. [Receipt](parity/reviews/result-format-20261106.json) and [coverage](COVERAGE_CHECKLIST.md#numeric-presentation-and-copy-csv). Display label is scoped delivered: 2,490 original observations, 2,606 distinct installed Python passes and Windows/Linux native/installed C++ checks; both Windows hosts cover actual controls, outputs and persistence. All 10 owned groups are retired. [Scope](parity/reviews/display-label-20261106.json), [coverage](COVERAGE_CHECKLIST.md#display-label-scoped-coverage). Next ready: Invert Y coordinates. Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -159,7 +159,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.2 M3: area fraction (%Area). | Default-off captured native/Python request/result, raw populations independent of LIMIT/density, integer/Float32 threshold rules and overflow fix; actual controls/table/CSV/workspace, 28 affected host pairs, both Windows/Linux native and installed C++ checks. 6,631 distinct scoped Python passes/1optionalGLskip include explicit reuse. [Receipt](parity/reviews/area-fraction-measurements-20261106.json). Full M3/release scope remains open. |
 | Delivered scoped | T04a.2 M3: skewness/kurtosis (Skew/Kurt). | Default-off captured moment pair and independent columns; 1,619 original cases, 8,258 distinct Python passes/1 optional GL skip, 28 affected Windows host pairs, Windows/Linux native and installed C++ consumers. All eight owned groups retired; full M3/release remain open. [Receipt](parity/reviews/moment-measurements-20261106.json). |
 | Delivered scoped | T04a.2 M3: scientific notation/numeric presentation. | Default-off scientific setting, precision mapping, raw values preserved and one shared table/copied/exported CSV route. 1,950 original observations, 63 distinct affected/reused installed Python passes/1 optional GL skip; native settings Windows/Linux and actual both-Windows-host workflows. All 12 owned groups retired. [Receipt](parity/reviews/result-format-20261106.json). |
-| Next ready | T04a.2 M3: Display label. | Capture source/redirect title, ROI name and plane label/position under the original Analyzer policy; actual preference, table/copied/exported CSV and persistence. AUTO/per-column formatting and wider M3 variants retain owners. |
+| Delivered scoped | T04a.2 M3: Display label. | Captured labels, name/plane/redirect policy, actual settings/table/Copy CSV/Save CSV/persistence and lifecycle guards. 2,606 distinct installed Python passes, both Windows hosts and Windows/Linux native/installed C++ clients; all 10 owned groups retired. Two external C++ report readers remain unavailable. [Receipt](parity/reviews/display-label-20261106.json). |
+| Next ready | T04a.2 M3: Invert Y coordinates. | Observe calibration/height/coordinate ownership before API freeze; default-off captured option, actual controls/current/manager/redirect/table/Copy CSV/Save CSV and persistence. AUTO/per-column and other Analyzer variants retain owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1043,15 +1044,75 @@ Final review found premature Float32 overflow saturation; twelve API/editor cont
 
 Waste review: one probe-placement compile failure, two subnormal policy failures and seven null-reader assertion failures remain recorded with corrections. The task-entry exit omitted the plan's copied-CSV verb; final review caught it before acceptance, and the shared serializer/control now passes both hosts. All 12 owned groups are retired with verified necessary captures; observer compiler products are identity-only. Known storage entry 7,459,804,258 B, before final retirement 7,466,849,179 B, final 7,466,434,953 B before docs; 214 inaccessible subtrees leave budget unverified. Twenty actual product build commands, including corrective compiles/relinks, sum 237.518 s. This is command time, not runtime speed or critical-path duration. T02/M3 owns the demonstrated formatter build fanout at the next required formatter change; no cleanup-only recompile is justified now.
 
-**Next ready: T04a.2 M3 Display label.**
+**Scoped delivered: T04a.2 M3 Display label.**
 
-1. Freeze the complete user-visible exit in the existing task record: choose Display label, Measure/current/manager/redirect, table, **Copy CSV and Save CSV**, Apply/Revert/Defaults and saved preferences/workspace. Map every exit verb to a maintained actual route before editing; the previous copied-CSV omission must not recur. Record exact requirements, settings/defaults, API signatures, binding mutability, exception/publication timing, owned files and checks. Preserve default-off behavior and existing image/ROI/T/C/Z columns.
-2. Inspect pinned `Analyzer.getFileName`, LABELS routing and `ImageStack.getShortSliceLabel`, then observe original outputs before freezing the contract: source versus redirected title, no/null/empty ROI name, names containing a dot, 30-character truncation, Unicode/UTF-16 boundaries, short/empty/multiline slice labels, stack index and C/Z/T ordering. Include quotes/commas/newlines and empty titles. Do not derive Label from only the currently visible Image title or infer native UTF-8 truncation from Java character counts.
-3. Easiest path: reuse already frozen source/sampling metadata, ROI-manager names and captured positions in analysis preparation/result publication. Inspect the canonical plane-label metadata used by existing readers/remaps/session serialization; reuse it rather than introducing another label map. Capture bounded required strings once per prepared row, with no new pixel read, rasterization, image buffer, processing controller or registry. Freeze whether an additive native opt-in/optional result string is needed only after inspecting real callers; preserve old defaults/provenance and rebuild affected installed clients if the public contract changes.
-4. Make label dependencies explicit: source ROI/stack position and redirected title can have different owners. Qualify rename/metadata/selection/source-close/stale settings and detached-result lifetimes for exactly the consumed state. Preserve the independent presentation-only scientific/precision behavior, including changing those settings during an unchanged running measurement. If a required plane-label path is missing, add the smallest coherent metadata preservation needed by its real consumer; assign wider format/remap variants to T08/T10 rather than silently substituting an index and closing them.
-5. Put original/native positive tails before expensive links: unnamed/dotted/long/non-BMP names, short versus absent slice labels, source/redirect stack lengths and positions, manager ordering, empty strings and CSV escaping. Review string admission/ownership and the API's actual return/mutability/exception behavior first. Preserve numerical/statistic results and raw history; reuse matching numerical reference evidence.
-6. Use the existing settings/results/Copy CSV/Save CSV and actual input probes in both hosts. Verify checkbox changes, Apply/Revert/Defaults, selected versus default columns, current/manager/redirect labels, copied/saved text, preferences/workspace and applicable stale/cancel/source-close guards. Check actual producer/reader report fields before assertions. Use active caches/runtimes/installed prefixes; compare changed installed component bytes and pure exports; keep necessary consumers through final review.
-7. Close with exact scoped receipt, coverage/queue updates and brief measured waste review. Retain/hash-verify necessary captures and retire terminal scratch serially. Keep AUTO/per-column ResultsTable state, invert-Y/other M3 options, wider geometry/replay/platform and full release exits explicitly open; choose the next demonstrated missing workflow only after this closeout. Missing unrelated references block only their dependent claims.
+[Receipt](parity/reviews/display-label-20261106.json) accepts the default-off
+captured native/Python option/result, original source/name/plane/redirect policy,
+actual shared settings/table/Copy CSV/Save CSV and persistence in both Windows
+hosts. 2,490 original observations,325 native provider vectors,2,606 distinct
+installed Python passes and Windows/Linux native/installed C++ clients support
+this scope. A real Update-after-select history regression was fixed with original
+attribute/no-op/edit controls. Two external C++ handoff/ZIP report readers remain
+unavailable; their accidental selection without input preflight is recorded and
+was not repeated. Broader ROI name synchronization, AUTO/per-column state and
+full M3/platform/release scope stay open.
+
+All ten owned groups are retired, with eight verified lossless capture archives;
+observer/SDK compiler products retain identities only. Known storage at entry
+7,466,550,193 B, before final retirement7,487,744,033 B, afterward7,474,195,681 B
+before final documentation.214 inaccessible subtrees keep budget unverified.
+Twenty product build commands sum271.263s; four SDK builds are separate. These
+are command sums, not critical-path time or runtime speed. No new dependency,
+cache/runtime generation, generic runner or numerical campaign was added.
+
+### Next ready: Invert Y coordinates
+
+1. Freeze the complete workflow in the existing task record: enable/disable
+   **Invert Y coordinates**, Measure current/manager/redirect, table, **Copy CSV
+   and Save CSV**, Apply/Revert/Defaults and saved preferences/workspace. Map
+   G009/G066/G071, exact settings/defaults, public signatures, owned files and
+   affected checks to real maintained consumers before edits. Parent M3 stays open.
+2. Observe original behavior first using the existing reviewed ImageJ archive,
+   classes and JDK. Inspected `Calibration.getY(y,height)` branches on calibration
+   or Analyzer inversion; nonzero `yOrigin` and zero-origin image-height handling
+   differ. `Analyzer.updateY`, point/redirect routes and `ImageStatistics`
+   centroid/bounds call sites are relevant. Do not assume every output is simply
+   negated or every coordinate uses the source height. Record exact observations
+   for off/on, zero/nonzero origin, spacing, image height, redirect height,
+   rectangle/ellipse/polygon/point, weighted center, bounds and Feret outputs.
+3. Easiest API path: extend the existing captured `TargetAnalysisOptions`, result
+   preparation/execution and provenance only where original observations require
+   it. Inspect actual public centroid/COM/rectangle/Feret fields and world-space
+   consumers before freezing the option/output semantics. Preserve native world
+   geometry, selection coordinates and disabled output; define explicit qualified
+   coordinate mapping rather than mutating image calibration or adding a UI-only
+   rewrite that disagrees with the C++/Python API. Assign unqualified constructors
+   to existing M3/T06 owners; do not silently accept them.
+4. Easiest settings/UI path: use shared native Settings and the existing analysis
+   request capture, measurement-column and preferences controls. Inspect bool
+   versus column-choice semantics; avoid a duplicate setting. Capture computational
+   inversion before launch; scientific/precision stay presentation-only. Verify
+   actual Apply/Revert/Defaults and both-host current/manager/redirect paths.
+5. Before broad links, run original positive/native tests and affected coordinate
+   regressions. Cover source versus sampling calibration/height, parent versus
+   positioned point pose, centroid/weighted-center/bounds/Feret composition,
+   density/LIMIT where relevant, zero/nonfinite behavior and unchanged scalar
+   statistics. Review source guards, return timing, binding mutability, ownership
+   and resource/cancellation contracts before assertions. Reuse unchanged labels,
+   formatting and numerical reference evidence; broaden only for a demonstrated
+   shared mapping change.
+6. Batch affected core/header/binding/UI edits and build once per affected
+   platform in active caches. Verify install components, origins and current
+   source/built/installed bytes before affected installed C++/Python consumers.
+   Every reference/report-dependent reader must have its exact consumed input
+   and producer mapping checked before selection; missing inputs block only
+   dependent claims. Keep SDK consumer configuration through final review.
+7. Close with exact platform/variant evidence, the canonical coverage update and
+   brief waste review. Retain/hash-verify necessary diagnostics and retire owned
+   terminal scratch before a successor. Keep full AUTO/per-column table state,
+   Add to overlay/NaN-empty and other remaining Analyzer options, wider replay/
+   formats/platform and release exits assigned. Detail the next successor only
+   after this coherent workflow closes.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 

@@ -3,6 +3,7 @@
 #include "contrast_command_record.hpp"
 #include "dataset_histogram_internal.hpp"
 #include "kernel_control.hpp"
+#include "measurement_label_internal.hpp"
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/selection_interpolation.hpp>
@@ -206,6 +207,7 @@ struct MeasurementRowPlan {
   std::optional<std::array<double,2>> threshold,fraction_threshold;
   std::optional<MeasurementFrame> frame;
   std::optional<MeasurementRectangle> rectangle;
+  std::optional<std::string> label;
 };
 struct MeasurementGroup {PlanePosition position,source_position;std::vector<std::size_t> rows;bool pixels=false,mask_pixels=false;};
 struct MeasurementPlan {std::vector<MeasurementRowPlan> rows;std::vector<MeasurementGroup> groups;bool fraction_uses_threshold=false;};
@@ -214,6 +216,44 @@ const Selection* measurement_selection(const ResolvedTarget& target,const Measur
   if(row.roi)return &data.rois[*row.roi].selection;
   return target.roi_policy()==RoiPolicy::ActiveSelection && data.selection?&*data.selection:nullptr;
 }
+
+const std::string* label_entry(const MetadataValue& value,std::size_t index,std::size_t count) {
+  if(const auto* list=std::get_if<std::vector<std::string>>(&value)) {
+    if(list->size()!=count)invalid("Measurement label array must match its source extent");return &(*list)[index];
+  }
+  const auto* tree=std::get_if<std::shared_ptr<const MetadataTree>>(&value);
+  if(!tree || !*tree)invalid("Measurement labels require an array");
+  const auto* list=std::get_if<MetadataArray>(&(*tree)->value);
+  if(!list || list->size()!=count)invalid("Measurement label array must match its source extent");
+  const auto& entry=(*list)[index];if(std::holds_alternative<std::monostate>(entry))return nullptr;
+  const auto* text=std::get_if<std::string>(&entry);if(!text)invalid("Measurement label entries must be strings or null");return text;
+}
+detail::MeasurementLabelParts label_parts(const ResolvedTarget& target,const TargetAnalysisOptions& options,const MeasurementRowPlan& row) {
+  const auto& data=target.source().data();const auto shape=data.dataset.shape();detail::MeasurementLabelParts out;
+  out.title=&sampling_target(target,options).source().data().metadata.title;
+  if(row.roi)out.name=&data.rois[*row.roi].name;
+  else if(const auto* selection=measurement_selection(target,row)) {
+    const auto found=selection->attributes.find("imagej_roi_name");
+    if(found!=selection->attributes.end() && !std::holds_alternative<std::monostate>(found->second)) {
+      out.name=std::get_if<std::string>(&found->second);if(!out.name)invalid("Active measurement ROI name must be a string or null");
+    }
+  }
+  out.stack=plane_count(shape)>1;out.index=flat_plane(row.position,shape)+1;
+  if(out.stack)for(const auto* key:{"plane_labels","slice_labels"}) {
+    const MetadataValue* selected=nullptr;
+    for(const auto* object:{&data.metadata.properties,&data.metadata.extensions}) {
+      const auto found=object->find(key);if(found!=object->end()){selected=&found->second;break;}
+    }
+    if(selected) {
+      const bool planes=std::string_view(key)=="plane_labels";
+      const auto index=planes?(std::size_t(row.position.t)*shape.c+row.position.c)*shape.z+row.position.z:std::size_t(row.position.z);
+      out.slice=label_entry(*selected,index,planes?plane_count(shape):std::size_t(shape.z));break;
+    }
+  }
+  out.bound=add(out.title->size(),272);
+  out.work=add(out.title->size(),add(out.name?mul(out.name->size(),2):0,out.slice?mul(out.slice->size(),2):0));return out;
+}
+
 bool point_selection(const Selection* selection) {
   return selection && (selection->kind=="point" || selection->kind=="multipoint");
 }
@@ -303,19 +343,28 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
     else row.position=target.position(n);
     row.sampling_position=redirected_position(target,options,row.position);return row;
   };
-  std::size_t count=0;
+  std::size_t count=0,label_bytes=0,label_work=0;
   for(std::size_t n=0;n<parent_count;++n) {
-    const auto* selection=measurement_selection(target,parent(n));
+    const auto row=parent(n);const auto* selection=measurement_selection(target,row);
     if((options.shape_descriptors || options.feret || options.bounding_rectangle || options.ellipse) && selection && selection->kind!="rectangle" && selection->kind!="ellipse" && selection->kind!="polygon" && selection->kind!="freehand")
       invalid("Area geometry options currently require ordinary area rows");
     const auto rows=point_selection(selection)?selection->points.size():1;
     if(!rows)invalid("Point measurement requires a nonempty point selection");
     count=add(count,rows);if(count>limits.max_measurement_rows)invalid("Measurement exceeds its expanded row limit");
+    if(options.display_label) {
+      const auto parts=label_parts(target,options,row);label_bytes=add(label_bytes,mul(rows,parts.bound));
+      label_work=add(label_work,add(parts.work,mul(rows,parts.bound)));
+      if(label_work>limits.max_measurement_work)invalid("Measurement labels exceed aggregate text work limit");
+    }
   }
   // Admit bounded map/group/record growth before building either collection.
   within(add(4096,mul(count,1024)),limits.max_working_bytes);
   if(add(4096,mul(count,2048))>limits.max_record_bytes)invalid("Measurement rows exceed metadata budget");
-  DatasetHistogramLimits sampling_limits;sampling_limits.max_pixels=limits.max_pixels;sampling_limits.max_working_bytes=limits.max_working_bytes;
+  const auto private_label_bytes=mul(label_bytes,2);
+  within(add(4096,add(mul(count,1024),private_label_bytes)),limits.max_working_bytes);
+  const auto working_limit=limits.max_working_bytes-private_label_bytes;
+  const auto geometry_work_limit=limits.max_measurement_work-label_work;
+  DatasetHistogramLimits sampling_limits;sampling_limits.max_pixels=limits.max_pixels;sampling_limits.max_working_bytes=working_limit;
   auto layout_limits=sampling_limits;layout_limits.max_pixels=std::numeric_limits<std::size_t>::max();
   layout_limits.max_working_bytes=std::numeric_limits<std::size_t>::max();
   auto base=detail::estimate_target_histogram_resources(target,{},layout_limits,false);
@@ -323,7 +372,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
     const auto other=detail::estimate_target_histogram_resources(sampling,{},layout_limits,false);
     base.working_bytes=add(base.working_bytes,other.working_bytes);
     base.record_bytes=add(base.record_bytes,other.record_bytes);
-    within(base.working_bytes,limits.max_working_bytes);
+    within(base.working_bytes,working_limit);
   }
   MeasurementPlan plan;plan.rows.reserve(count);plan.groups.reserve(std::min(count,target.position_count()));
   std::map<std::array<int,6>,std::size_t> groups;std::set<PositionKey> source_positions;
@@ -341,6 +390,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   for(std::size_t n=0;n<parent_count;++n) {
     auto row=parent(n);
     const auto* selection=measurement_selection(target,row);
+    if(options.display_label)row.label=detail::measurement_label(label_parts(target,options,row));
     const bool compact_short=(options.limit_to_threshold || options.redirect) && sampled.pixel_type()==PixelType::UInt16 &&
         (analytic_selection(selection) || (selection && (selection->kind=="polygon" || selection->kind=="freehand")));
     const bool frame_needed=options.bounding_rectangle || fitted_center || compact_short;
@@ -381,9 +431,9 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       const auto controls=detail::spline_control_count(*selection);
       const auto metric_work=add(controls,selection->kind=="polyline"?std::max<std::size_t>(1,selection->points.size()-1):selection->points.size());
       polygon_work=add(polygon_work,metric_work);
-      if(polygon_work>limits.max_measurement_work)invalid("Measurement batch exceeds its geometry work limit");
+      if(polygon_work>geometry_work_limit)invalid("Measurement batch exceeds its geometry work limit");
       const auto bytes=add(8192,mul(add(controls,std::max(controls,selection->points.size())),16));
-      within(add(add(4096,mul(count,1024)),bytes),limits.max_working_bytes);
+      within(add(add(4096,mul(count,1024)),bytes),working_limit);
       row.perimeter=imagej_calibrated_polygon_length(*selection,selection->kind=="polyline"?sampling.calibration():target.calibration(),
           selection_polygon_integer_coordinates(*selection),bytes);
       polygon_peak=std::max(polygon_peak,bytes);
@@ -391,13 +441,13 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
     if(frame_needed) {
       const auto work=selection && (selection->kind=="polygon" || selection->kind=="freehand")?selection->points.size():0;
       rectangle_work=add(rectangle_work,add(16,work));
-      if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>limits.max_measurement_work)
+      if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>geometry_work_limit)
         invalid("Processor frame exceeds aggregate geometry work limit");
       row.frame=source_mask?MeasurementFrame{{0,0,shape.x,shape.y},true}:measurement_frame(selection,shape.x,shape.y,fitted_center);
       if(fitted_center) {
         const auto& b=row.frame->pixels;
         ellipse_work=add(ellipse_work,(row.frame->mask_present || row.threshold) && b[2] && b[3]?base.plane_pixels:16);
-        if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>limits.max_measurement_work)
+        if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>geometry_work_limit)
           invalid("Ellipse exceeds aggregate geometry work limit");
       }
       if(options.bounding_rectangle)row.rectangle=measurement_rectangle(*row.frame,sampling.calibration(),row.sampling_position.z);
@@ -405,13 +455,13 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
     if(options.shape_descriptors || options.feret) {
       if(options.shape_descriptors && !row.perimeter)invalid("Shape descriptors require a qualified perimeter");
       SelectionEditLimits geometry_limits;geometry_limits.max_xy_pixels=limits.max_pixels;
-      const auto prefix=add(base.working_bytes,add(out.geometry_bytes,add(4096,mul(count,1024))));within(prefix,limits.max_working_bytes);
-      geometry_limits.max_working_bytes=limits.max_working_bytes-prefix;
+      const auto prefix=add(base.working_bytes,add(out.geometry_bytes,add(4096,mul(count,1024))));within(prefix,working_limit);
+      geometry_limits.max_working_bytes=working_limit-prefix;
       const auto* feret=options.feret?&target.calibration():nullptr;
       const auto geometry=detail::estimate_area_shape_geometry(selection,shape.x,shape.y,geometry_limits,feret,options.shape_descriptors);
       shape_work=add(shape_work,geometry.work_units);
-      if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>limits.max_measurement_work)invalid("Shape/Feret options exceed aggregate geometry work limit");
-      within(add(prefix,geometry.working_bytes),limits.max_working_bytes);
+      if(add(rectangle_work,add(ellipse_work,add(shape_work,polygon_work)))>geometry_work_limit)invalid("Shape/Feret options exceed aggregate geometry work limit");
+      within(add(prefix,geometry.working_bytes),working_limit);
       shape_peak=std::max(shape_peak,geometry.working_bytes);
       row.shape_geometry=detail::prepare_area_shape_geometry(selection,shape.x,shape.y,geometry_limits,feret,options.shape_descriptors);
     }
@@ -423,9 +473,9 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       if(selection->width>1)invalid("Polyline measurement currently supports thin paths");
       selection->validate(shape.x,shape.y);
       const auto path=detail::estimate_polyline_measurement(shape.x,shape.y,sampled.pixel_type(),sampling.calibration(),
-          selection->points,limits.max_working_bytes-add(4096,mul(count,1024)),limits.max_measurement_work);
+          selection->points,working_limit-add(4096,mul(count,1024)),geometry_work_limit);
       path_work=add(path_work,path.work_steps);
-      if(path_work>limits.max_measurement_work)invalid("Measurement batch exceeds its path work limit");
+      if(path_work>geometry_work_limit)invalid("Measurement batch exceeds its path work limit");
       const std::size_t bins=sampled.pixel_type()==PixelType::UInt8?256:sampled.pixel_type()==PixelType::UInt16?65536:0;
       has_typed_profile|=options.limit_to_threshold;
       path_peak=std::max(path_peak,add(path.working_bytes,options.limit_to_threshold?mul(bins,sizeof(std::uint64_t)):0));plan.groups[group].pixels=true;
@@ -448,11 +498,11 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       if(selection) {
         has_mask=true;
         if(manager || n==0) {
-          const auto prefix=add(base.working_bytes,out.geometry_bytes);within(prefix,limits.max_working_bytes);
-          auto mask_limits=sampling_limits;mask_limits.max_working_bytes=std::min(mask_limits.max_working_bytes,limits.max_working_bytes-prefix);
+          const auto prefix=add(base.working_bytes,out.geometry_bytes);within(prefix,working_limit);
+          auto mask_limits=sampling_limits;mask_limits.max_working_bytes=std::min(mask_limits.max_working_bytes,working_limit-prefix);
           const auto mask=detail::estimate_analysis_mask(*selection,shape,mask_limits);
           out.geometry_bytes=add(out.geometry_bytes,mask.geometry_bytes);raster_peak=std::max(raster_peak,mask.raster_bytes);
-          within(add(base.working_bytes,add(out.geometry_bytes,raster_peak)),limits.max_working_bytes);
+          within(add(base.working_bytes,add(out.geometry_bytes,raster_peak)),working_limit);
         }
       }
     }
@@ -471,6 +521,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   const auto type=sampled.pixel_type();const std::size_t bins=type==PixelType::UInt8?256:type==PixelType::UInt16?65536:0;
   const auto histogram=mul(add((has_area || has_points || has_typed_profile) && bins==65536?65536:0,256),sizeof(std::uint64_t));
   out.result_bytes=add(sizeof(TargetAnalysisResult),mul(count,add(sizeof(TargetAnalysisPlane)+1024,histogram)));
+  out.result_bytes=add(out.result_bytes,label_bytes);
   out.plot_bytes=out.result_bytes;
   const auto area_kernel=has_area || has_points?add(8192,add(mul(bins,sizeof(std::uint64_t)),type==PixelType::Float32?mul(has_area?out.plane_pixels:1,sizeof(float)):0)):0;
   const auto line_kernel=add(8192,add(mul(line_peak,sizeof(double)+sizeof(float)),has_typed_profile?mul(bins,sizeof(std::uint64_t)):0));
@@ -486,8 +537,9 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
   if(!out.plane_count)out.working_bytes-=base.plane_bytes+base.histogram_bytes;
   for(auto bytes:{out.mask_bytes,out.geometry_bytes,out.kernel_bytes,out.record_bytes,out.calibration_bytes,out.result_bytes,out.plot_bytes,
       mul(count,256),sizeof(ResolvedTargetAnalysis)+sizeof(TargetAnalysisOptions)+sizeof(TargetAnalysisLimits)+4096}) {
-    out.working_bytes=add(out.working_bytes,bytes);within(out.working_bytes,limits.max_working_bytes);
+    out.working_bytes=add(out.working_bytes,bytes);within(out.working_bytes,working_limit);
   }
+  out.working_bytes=add(out.working_bytes,private_label_bytes);within(out.working_bytes,limits.max_working_bytes);
   plan.fraction_uses_threshold=fraction_uses_threshold;
   if(retained)*retained=std::move(plan);
   return out;
@@ -509,6 +561,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
   if(options.limit_to_threshold)invalid("Threshold limiting requires explicit selection or manager measurement");
   if(options.area_fraction)invalid("Area fraction requires explicit selection or manager measurement");
   if(options.moments)invalid("Moments require explicit selection or manager measurement");
+  if(options.display_label)invalid("Display label requires explicit selection or manager measurement");
   if(options.shape_descriptors || options.feret || options.bounding_rectangle || options.ellipse)invalid("Area geometry options require explicit selection or manager measurement");
   if(options.line && !options.path.empty())invalid("Analysis accepts line or path, not both");
   if(!options.path.empty() && (options.path.size()<2 || options.path.size()>4096))invalid("Analysis path requires 2..4096 vertices");
@@ -653,6 +706,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
         requested["threshold_state"]=found==properties.end()?MetadataValue(std::monostate{}):found->second;
       }
       if(options.moments){requested["moments"]=true;requested["moment_policy"]="typed-row-order/legacy-variance/excess-kurtosis-v1";}
+      if(options.display_label){requested["display_label"]=true;requested["label_policy"]="captured-parent/source-roi/redirect-title/utf16-to-utf8-v1";}
       if(options.area_fraction) {
         requested["area_fraction"]=true;
         requested["area_fraction_policy"]="raw-membership/integer-rounded-or-float-threshold/independent-limit-v1";
@@ -714,7 +768,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.moments?19:options.area_fraction?18:options.redirect?17:options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.display_label?20:options.moments?19:options.area_fraction?18:options.redirect?17:options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -773,6 +827,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
         if(state.options.area_fraction)row.area_fraction=0;
         auto* fraction=row.area_fraction?&*row.area_fraction:nullptr;
         const auto* fraction_threshold=plan.fraction_threshold?&*plan.fraction_threshold:nullptr;
+        row.label=plan.label;
         std::array<double,2> moment_values{};auto* moments=state.options.moments?&moment_values:nullptr;
         row.perimeter_in_pixels=row.perimeter.has_value() && !selection;
         if(plan.point_index) {

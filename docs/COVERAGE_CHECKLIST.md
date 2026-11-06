@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Scientific notation and numeric presentation now have scoped table/Copy CSV/Save CSV and persistence coverage in both Windows hosts. All 12 owned task scratch groups are retired. Next ready: Display label. [Exact scope](parity/reviews/result-format-20261106.json); full ImageJ/Fiji and release scope remain open.
+Updated 2026-11-06. Scientific notation and numeric presentation now have scoped table/Copy CSV/Save CSV and persistence coverage in both Windows hosts. All 12 owned task scratch groups are retired. Display label now has scoped native/Python, both Windows ImGui host and installed C++ coverage; all 10 owned groups are retired. [Accepted scope](#display-label-scoped-coverage). Next ready: Invert Y coordinates. [Exact scope](parity/reviews/result-format-20261106.json); full ImageJ/Fiji and release scope remain open.
 
 This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
 
@@ -33,6 +33,41 @@ option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
 
+## Display label scoped coverage
+
+Scope: T04a.2 M3, G009/G066/G071; ROI naming owner T08, preferences owner T15, wider UI/platform owners T12/T14. [Scoped delivery receipt](parity/reviews/display-label-20261106.json) preserves contracts, failures, exact reuse, installed identities and retirement. Full M3 and families remain open.
+
+| Aspect | Observed state | Scope / remaining exit |
+|---|---|---|
+| I | Delivered, scoped | Default-off C++ request, owned optional result/read-only Python binding, captured labels and existing measurement choice. |
+| V | Passed, scoped | 2,490 original observations; 325 native provider vectors plus regressions; 2,606 distinct installed Windows Python passes, including all 2,511 new feature cases. Current native and installed C++ clients pass on Windows/Linux. Two external C++ report readers remain unavailable. |
+| UI | Windows C++ and Python ImGui | Actual Label choice, Apply/Revert/Defaults, current/manager/redirect, matching rows/table, copied/saved CSV and preferences/workspace. Cancellation, setting stale and sampling-owner close preserve state. |
+| R | Open | Wider variants, full table state, OS clipboard/platform/accessibility, commercial inventory and supported-release qualification remain open. |
+
+- [x] Additive default-off `TargetAnalysisOptions.display_label` and read-only optional `TargetAnalysisPlane.label`; preserve disabled behavior and prior provenance versions, use v20 when requested.
+- [x] Match the observed title/name/slice rules, including null/empty/dotted/long names, first line, extension stripping, UTF-16 caps and UTF-8 observable replacement. Preserve raw metadata.
+- [x] Verify classic Z/TCZ metadata priority and provider forms, C-fast fallback index, redirect title and positioned multipoint parent label distinct from sampling pose.
+- [x] Restore manager/native planar row names into active selections without editing stored metadata/history. Preserve unrelated attributes, selection no-op and original private attributes on Update; fix and verify the observed unwanted Update history edit.
+- [x] Actual Label choice and Apply/Revert/Defaults in both hosts; default columns omit labels and preferences restore the choice.
+- [x] Current-selection, ordered-manager and redirect rows/table agree across hosts; copied CSV equals saved CSV, including quotes/commas/newlines and missing optional cells. Process-local redirect IDs are checked against their actual selected controls before normalization.
+- [x] Save/reopen preferences, workspace and exported output; consumed metadata/settings guards preserve prior publication and source/history.
+- [x] Admit label/output/work before reads; reject malformed selected metadata and generic unsupported requests; cover applicable cancellation and sampling-source close.
+- [x] Verify current built/installed modules/header/library bytes and loaded Python origins; run affected history/lifecycle/installed-client checks, explicitly reusing unchanged numerical evidence.
+- [x] Retain/hash-verify eight lossless archives, including failure diagnostics; retire all ten owned scratch groups. Observer classes and SDK consumer products retain identities only; active caches/runtime/SDK prefixes remain reusable.
+- [ ] T08: complete stored-row rename synchronization with an independently active selection and wider ROI interchange variants; accepted selection/Update behavior above does not close them.
+- [ ] T00/T14: qualify unavailable external C++ point handoff/ZIP report readers and wider platforms; absent inputs are not passes. Full storage budget remains unverified because214 inaccessible subtrees are unknown.
+- [ ] M3/T09: complete Invert Y and other Analyzer options, full AUTO/per-column ResultsTable state and wider table workflows; T12/T14 retains OS clipboard/accessibility/keyboard/release obligations.
+
+## Next ready coverage: Invert Y coordinates
+
+Owner: T04a.2 M3; coordinate/calibration dependencies T04/T06, settings T15, tables T09 and platform T14. [PLAN handoff](PLAN.md#next-ready-invert-y-coordinates) defines the next increment; these are acceptance exits, not a parallel queue.
+
+- [ ] Observe original area centroid, weighted center, point and processor-bounds/Feret Y under off/on, zero/nonzero origin, anisotropic spacing, current/manager/redirect and differing source heights; freeze coordinate versus sampling ownership before API edits.
+- [ ] Implement a default-off captured native/Python option and shared setting with explicit result/provenance semantics; preserve world/image geometry and disabled numerical outputs.
+- [ ] Deliver actual both-host control, Apply/Revert/Defaults, Measure/current/manager/redirect, table/Copy CSV/Save CSV and preferences/workspace reopen.
+- [ ] Verify affected coordinate outputs, stale/cancel/resource/history behavior and changed installed clients; reuse unrelated green numerical/reference inputs.
+- [ ] Review waste, retain necessary evidence, retire terminal scratch and update this coverage view with scoped platform/release limits.
+
 ## Numeric presentation and Copy CSV
 
 Scope: T04a.2 M3 / G009 G066 G071; settings owner T15, table owner T04/T09, wider UI/platform owner T12/T14. [Delivery receipt](parity/reviews/result-format-20261106.json) preserves exact inputs, corrections, scoped reuse and cleanup. This accepts one usable workflow; full M3 and full table families stay open.
@@ -53,7 +88,7 @@ Scope: T04a.2 M3 / G009 G066 G071; settings owner T15, table owner T04/T09, wide
 - [x] Verify current source/built/installed artifacts and loaded Python origins; reuse unaffected core/settings/numerical checks explicitly rather than restarting pixel reference campaigns.
 - [x] Retain/hash-verify necessary captures and diagnostics, retire all 12 owned scratch groups and preserve reusable active compiler/runtime/SDK products. [Receipts](parity/reviews/result-format-20261106.json); complete budget is unverified because214 inaccessible subtrees remain unknown.
 - [ ] Complete Java ResultsTable AUTO/per-column precision/column state beyond native JSON-kind presentation (M3/T09); scientific scope above does not close it.
-- [ ] Complete Display label (next ready M3/T08/T15), remaining Analyzer options and OS clipboard/platform/accessibility/keyboard qualification (T12/T14).
+- [ ] Complete Invert Y coordinates (next ready M3/T15), remaining Analyzer options and OS clipboard/platform/accessibility/keyboard qualification (T12/T14).
 
 ## Skew/Kurt scoped coverage (T04a.2 M3)
 
@@ -79,7 +114,7 @@ Detailed behavior within the current scope:
 - [x] Rebuild affected bindings and verify installed module/header/library identities and Windows/Linux C++ consumers after the public struct changes.
 - [x] Required evidence retained/hash-verified, all eight owned scratch groups retired, active caches/runtime/installed SDKs preserved. Known bytes before/after retirement: 7,473,446,484 / 7,459,706,257, before final docs. [Exact receipts](parity/reviews/moment-measurements-20261106.json). Complete budget remains unverified: 214 inaccessible subtrees are unknown.
 - [x] Reconcile [API contract](TARGET_ANALYSIS.md), PLAN, coverage and [scoped receipt](parity/reviews/moment-measurements-20261106.json); preserve numerical failures/corrections and remaining platform/variant limits.
-- [ ] Finish residual M3 options, including labels and full AUTO/per-column formatting state, under their existing owners; the separately accepted numeric presentation workflow does not close M3.
+- [ ] Finish residual M3 options, including Invert Y and full AUTO/per-column formatting state, under their existing owners; the separately accepted numeric presentation workflow does not close M3.
 
 ## Accepted scoped workflows
 
@@ -475,6 +510,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Remaining configuration groups, real DPI/keyboard-only/assistive access and macOS/Linux installed-platform checks remain required; no family or milestone is complete.
 ### G009 Measurement/plot defaults
 
+**Display label accepted subset:** [Captured labels, controls, outputs and exact limits](#display-label-scoped-coverage). Full-family exits remain open.
+
 **Numeric presentation accepted subset:** [Table, Copy CSV, Save CSV, controls and exact limits](#numeric-presentation-and-copy-csv). Full-family exits remain open.
 
 **Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#skewkurt-scoped-coverage-t04a2-m3). Full-family exits below stay open.
@@ -491,7 +528,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subsets:** Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
-- [ ] Complete remaining measurement options, labels, full AUTO/per-column precision and configurable plot axes/profile sampling. [Scientific presentation and copied/exported results](parity/reviews/result-format-20261106.json) are scoped delivered; LIMIT/redirect/%Area/Skew/Kurt retain their own evidence. Wider types/positions/cross-plane/replay and platforms remain with their owners.
+- [ ] Complete remaining measurement options, wider label variants, full AUTO/per-column precision and configurable plot axes/profile sampling. [Scientific presentation and copied/exported results](parity/reviews/result-format-20261106.json) are scoped delivered; LIMIT/redirect/%Area/Skew/Kurt retain their own evidence. Wider types/positions/cross-plane/replay and platforms remain with their owners.
 ### G010 Resource settings
 
 - [ ] Complete full `G010` scope and supported release exits.
@@ -2942,10 +2979,10 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Reconcile stale family/child labels against exact scoped receipts without rewriting historical outcomes or treating partial references as full certification.
 - [ ] Keep missing reference paths and producer/reader mappings with T00; recover only from a new plausible source and never recreate retired build generations.
 - [ ] Keep every deferred gap with its T00–T15 owner; queue changes do not close unfinished formats, point/manager, analysis, Fiji or platform variants.
-- [ ] Keep cleanup claims evidence-based: the latest [numeric-presentation closeout](parity/reviews/result-format-20261106.json) records all12 owned groups retired with verified necessary captures;214 inaccessible storage subtrees leave the complete local budget unverified. Historical receipts keep their own scope. Reconcile actual task receipts at every closeout; instruction text is not an automatic filesystem guard.
+- [ ] Keep cleanup claims evidence-based: the latest [Display label closeout](parity/reviews/display-label-20261106.json) records all10 owned groups retired with verified necessary captures;214 inaccessible storage subtrees leave the complete local budget unverified. Historical receipts keep their own scope. Reconcile actual task receipts at every closeout; instruction text is not an automatic filesystem guard.
 
 ## Next update
 
-Next ready: Display label, as detailed in PLAN. Freeze the source/redirect title, ROI name and slice-label policy against original observations; reuse captured metadata and current/manager positions. Include actual preferences, table, **Copy CSV and Save CSV**, persistence and consumed stale/ownership guards. AUTO/per-column formatting and wider M3/T06/T08/T14 variants retain their existing owners; full M3 remains open.
+Next ready: Invert Y coordinates, as detailed in PLAN and the acceptance exits above. Observe origin/height/calibration and current/manager/redirect coordinate policy before API freeze; include actual preferences, table, **Copy CSV and Save CSV**, persistence and consumed stale/ownership guards. Display label has scoped accepted evidence; AUTO/per-column formatting and wider M3/T06/T08/T14 variants retain owners. Full M3 remains open.
 
 At every task closeout, update existing behavior/residual rows, I/V/UI/R states, exact input/platform evidence, unavailable checks and cleanup outcomes. Keep PLAN as the execution queue and this file as the single coverage view.

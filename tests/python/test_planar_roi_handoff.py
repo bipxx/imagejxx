@@ -42,7 +42,8 @@ def test_selection_copy_preserves_values_and_parent_pose_without_history_or_meta
     assert edit.row_index is None and doc.snapshot().shares_data(before)
     commit(doc, edit)
     current = doc.snapshot()
-    assert current.selection == row.selection and current.previous_selection == prior
+    named=row.selection.with_attributes({**row.selection.attributes,"imagej_roi_name":row.name})
+    assert current.selection == named and current.previous_selection == prior
     assert (current.display.t, current.display.c, current.display.crosshair[2]) == (1 if t is None else t, 1 if c is None else c, 1)
     assert current.display.crosshair[:2] == [3, 2]
     assert current.metadata == before.metadata and current.dataset.shares_pixels(before.dataset)
@@ -101,7 +102,8 @@ def test_other_native_xy_geometry_is_copied_without_rasterization(selection):
     doc, row, reads = owner(selection)
     commit(doc, ij.prepare_select_planar_annotation(doc.snapshot(), 0))
     commit(doc, ij.prepare_store_planar_annotation_roi(doc.snapshot(), 0))
-    assert doc.snapshot().selection == doc.snapshot().rois[0].selection == row.selection
+    assert doc.snapshot().rois[0].selection == row.selection
+    assert doc.snapshot().selection == row.selection.with_attributes({**row.selection.attributes,"imagej_roi_name":row.name})
     assert reads.counts().plane_reads == reads.counts().region_reads == 0
 
 
@@ -141,7 +143,7 @@ def test_working_limit_refuses_before_decode_or_publication_and_opaque_versions_
     opaque = ij.Selection("point", [(1, 1)], attributes={KEY: {"version": 99, "points": []}})
     doc, _, _ = owner(opaque)
     commit(doc, ij.prepare_select_planar_annotation(doc.snapshot(), 0))
-    assert doc.snapshot().selection.attributes == opaque.attributes
+    assert doc.snapshot().selection.attributes == {**opaque.attributes,"imagej_roi_name":"imported"}
 
 
 def action(editor, command, **params):

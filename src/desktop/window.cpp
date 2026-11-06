@@ -4387,6 +4387,7 @@ struct Window::Impl {
     options.shape_descriptors=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Circ." || column=="AR" || column=="Round" || column=="Solidity";});
     options.feret=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Feret" || column=="MinFeret" || column=="FeretAngle" || column=="FeretX" || column=="FeretY" || column=="Feret unit" || column=="Feret coordinate unit";});
     options.bounding_rectangle=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="BX" || column=="BY" || column=="Width" || column=="Height";});
+    options.display_label=std::find(columns.begin(),columns.end(),"Label")!=columns.end();
     options.area_fraction=std::find(columns.begin(),columns.end(),"%Area")!=columns.end();
     options.moments=std::find(columns.begin(),columns.end(),"Skew")!=columns.end() || std::find(columns.begin(),columns.end(),"Kurt")!=columns.end();
     options.ellipse=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Major" || column=="Minor";});
@@ -10492,6 +10493,7 @@ void Window::poll() {
           if((std::find(columns.begin(),columns.end(),"%Area")!=columns.end())!=command.options().area_fraction)throw RevisionConflict();
           const bool moments=std::find(columns.begin(),columns.end(),"Skew")!=columns.end() || std::find(columns.begin(),columns.end(),"Kurt")!=columns.end();
           if(moments!=command.options().moments)throw RevisionConflict();
+          if((std::find(columns.begin(),columns.end(),"Label")!=columns.end())!=command.options().display_label)throw RevisionConflict();
         }
         if(current.id()!=captured.id() || (command.options().measurement!=TargetMeasurementMode::RoiManager &&
             (current.display().t!=captured.display().t ||

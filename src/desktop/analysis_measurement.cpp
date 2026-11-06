@@ -47,6 +47,12 @@ std::size_t captured_measurement_row_bytes(const ResolvedTargetAnalysis& command
   // array is retained by a measurement row. Getter/externally injected rows are
   // outside this managed frontend allocation.
   auto bytes=RenderMemory::mul(command.estimate().row_count,RenderMemory::add(8192,RenderMemory::mul(text,8)));
+  if(command.options().display_label) {
+    const auto& title=command.options().redirect?command.options().redirect->source().data().metadata.title:source.data().metadata.title;
+    // The captured Label owns another title plus bounded UTF16 name/slice text.
+    const auto label=RenderMemory::add(title.size(),272);
+    bytes=RenderMemory::add(bytes,RenderMemory::mul(command.estimate().row_count,RenderMemory::mul(label,8)));
+  }
   if(command.options().measurement==TargetMeasurementMode::RoiManager) {
     const auto& rois=source.data().rois;const auto& indices=command.options().roi_indices;
     const auto parent_count=indices.empty()?rois.size():indices.size();
@@ -83,6 +89,7 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       {"Mode",scalar(s.mode_value)},{"IntDen",scalar(s.integrated_density)},
       {"RawIntDen",scalar(double(s.pixel_count)*s.raw_mean)},
       {"Area",scalar(s.area)},{"Unit",result.spatial.unit},{"Value unit",command.intensity().value_unit()}};
+    if(row.label)values["Label"]=*row.label;
     if(row.area_fraction)values["%Area"]=scalar(*row.area_fraction);
     if(row.skewness)values["Skew"]=scalar(*row.skewness);
     if(row.kurtosis)values["Kurt"]=scalar(*row.kurtosis);

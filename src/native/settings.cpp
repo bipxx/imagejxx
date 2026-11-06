@@ -368,7 +368,7 @@ const std::vector<SettingDefinition> &Settings::schema() {
        std::vector<std::string>{},
        0,
        0,
-       {"Image",
+       {"Label", "Image",
         "Slice",
         "%Area",
         "Skew",

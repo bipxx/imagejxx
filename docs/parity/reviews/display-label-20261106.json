@@ -1,0 +1,625 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 Display label",
+  "implemented": true,
+  "verified": "Scoped: 2,606 distinct installed Windows Python passes; 2,490 original observations; 325 native provider vectors plus regressions; current Windows/Linux native and installed C++ clients. Two external C++ report readers remain unavailable.",
+  "integrated": "Windows standalone C++ and optional Python Dear ImGui: actual preference, table, Copy CSV, Save CSV, persistence and lifecycle guards.",
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_complete": false,
+  "requirements": [
+    "G009",
+    "G066",
+    "G071"
+  ],
+  "scope": "Default-off captured labels, current/ordered-manager/redirect title policy, UTF-16 truncation with observable UTF-8 projection, metadata providers and point parent pose. No numerical kernel change or new runtime component, font, model or data dependency.",
+  "contract": {
+    "api": "TargetAnalysisOptions.display_label=false; optionalTargetAnalysisPlane.label,read-onlyPython. Provenance20onlywhenrequested;existingversions/defaultspreserved.",
+    "setting": "Existingmeasurements StringList gainsLabel;emptydefaultdoesnotrequestit;actualApply/Revert/Defaults sharedbybothhosts.",
+    "names": "Managerrow.nameauthoritative;restoredselection projectsimagej_roi_namewithouteditingstoredrow/history;matchingprojectionnormalizedonUpdatebacktooriginalstoredprivateattribute. Existingattrs/geometry/no-op/historypreserved. Independentlyactive-selectionnamesarenotautomaticallysyncedwhenstoredrowrenamed.",
+    "text": "Fullsource/redirecttitle;nullnameignored,emptynameappendscolon,dottednameignored,>30UTF16nameunitsfirst27+ellipsis. Slicefirstline,observedlast4UTF16extensionstripwithBMPdecimaldigitguard,cap60units;splitpairprojectsJavaUTF8observable?replacement. Rawmetadatauntouched.",
+    "metadata": "plane_labelsbeforeslice_labels;propertiesbeforeextensionsforsamekey;exactextent,selectedstring/nullorlegacystringvector. NativeTCZindexversusoriginalC-fastfallbackindex;pointlabelsparentposebeforepointsamplepose. SourceROI/slicewithsamplingtitle.",
+    "ownership_resources": "Capturedimmutablemetadata;pre-readlabel/row/work/typeadmission. titlebytes+272perrowbound,2xprivateworkingreservationplusresultbytes,8xfrontendJSONlabelcharge. No secondcontroller/pixelread/imagebuffer.",
+    "csv": "Sharednativeformatter/serializer;actualownedrestoredclipboardtestbackend verifiescopied=saved;OSclipboardinteropnotqualified."
+  },
+  "original_reference": {
+    "fixture": "tests/fixtures/display-label-imagej154r.json",
+    "sha256": "b9b7c70ccb6455c869890e53a4108dd0816ed10496b5b1115624da343b27752d",
+    "observations": 2490,
+    "observer": "tests/reference/ObserveDisplayLabels.java",
+    "source_archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "source_version": "ImageJ1.54r commit62db90a269cccc1ac79f658e4602043214ed055b",
+    "reader": "Native/Pythoncomparelabel_utf8;rawlabel_utf16diagnosticsmayhaveunpairedsurrogatesandarenotnativeJSONinputs. 37observedBMPdecimaldigitintervalsarefacts,noruntimeJavadependency."
+  },
+  "checks": {
+    "distinct_installed_python_passes": 2606,
+    "new_feature_passes": 2511,
+    "union": ".tmp/manual-workflow-verification/display-label-20261106/verification-union037.json",
+    "hosts": ".tmp/manual-workflow-verification/display-label-20261106/host-comparison037.json",
+    "installed_identities": ".tmp/manual-workflow-verification/display-label-20261106/installed-identities034.json",
+    "linux_installed_identities": ".tmp/manual-workflow-verification/display-label-20261106/linux-installed-identities034.json",
+    "unavailable": [
+      "IMAGEJXX_POINT_ROI_HANDOFF_CPP_REPORT",
+      "IMAGEJXX_POINT_ROI_ZIP_CPP_REPORT"
+    ],
+    "reuse": "0282507passes/03196passes plus0363correctedIDs;036actualUIrepeat. 032onlyUpdateprojection;Label/numerical/serializationinputsunchanged. Native024hasnoUpdate;currentPython036table/rowscomparetoitafterownedIDnormalization.",
+    "process_receipts": {
+      "analysis015.process.json": {
+        "sha256": "6efdeae91926c897a6236d0a4eac6a9a110e7b7fe5d58cf7097023e8e457af87",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.0735232001170516
+      },
+      "analysis017.process.json": {
+        "sha256": "c5223351059cfb2198c33b6cedb6d05f3d46dbedf5d9c3cee95fab8ab62f49ac",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.26074300007894635
+      },
+      "analysis033.process.json": {
+        "sha256": "4c6f45a0a3224c452709bfa853df8d3d3c3003da20526561eb25659c0e1efdb2",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.08894960000179708
+      },
+      "build014a.process.json": {
+        "sha256": "497cc87eb3d248d95cc81de9d98b2e4a6b1abcfe18bcabe1d8c07374cc50e06d",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 8.315003599971533
+      },
+      "build014b.process.json": {
+        "sha256": "b731b85fb14a990876a82d1b1b8f837b34d587df9c242abbd437e41e6a47ac67",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 34.02010260010138
+      },
+      "build014c.process.json": {
+        "sha256": "93f1314cdd1ba49a8ac056222d282cb1a216327f111533fae224559e3f7c95f9",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 2.390131799969822
+      },
+      "build016.process.json": {
+        "sha256": "4d78d60ae09a07bf4768aee2eecc4974232077f4957e250306462594f92b1433",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 30.043402399867773
+      },
+      "build018a.process.json": {
+        "sha256": "4078131ceaec01724b39ddaaf7e933ae868e956439dfbff9d63050fdce177e0e",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 34.56024249992333
+      },
+      "build018b.process.json": {
+        "sha256": "f81ad789ba2f359148d967f99ca90a899875da31509849be406a2216fc70b2ad",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 34.863206199835986
+      },
+      "build018c.process.json": {
+        "sha256": "d14b2146a515d1ec0cf23d5e23cb9739ca77823b2f48b3dd9a894117bef3cb9f",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 6.5828233999200165
+      },
+      "build023a.process.json": {
+        "sha256": "1987ea70e880f0ab118d309c186bf33d6b0ddea2618946b19aa9d28d854da081",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 12.460162799805403
+      },
+      "build023b.process.json": {
+        "sha256": "47e3cf2536b4214b098b313d463fcfbeef79aeca01cd93647dada7313047c5be",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 1.7919813999906182
+      },
+      "build025a.process.json": {
+        "sha256": "04ce3f4ea22925d6476cc5b7708688f4865fce8128e6a9eadb5d25a5f2bd10d5",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 11.356188599951565
+      },
+      "build025b.process.json": {
+        "sha256": "f43193f560029c4b2dfb1ebd4fdd8c4d26155ce5276206da34c2c912d8b39642",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 6.9464046999346465
+      },
+      "build033a.process.json": {
+        "sha256": "9066faa4729b0983fa03b9bd2867a2b7d2a3320165da859ae5b35a6b6717d3e4",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 2.1146656998898834
+      },
+      "build033b.process.json": {
+        "sha256": "5f8a1afab9540e4ddb3358f2fb59fcb38cc194b3c71ba9a065b6b8e806ab26d9",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 2.183109999867156
+      },
+      "build033c.process.json": {
+        "sha256": "b5b0251d927d182982d7ba335cbfbf149f8c142b38f17bfb0cfec3cc3bba3071",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.9172161999158561
+      },
+      "build034a.process.json": {
+        "sha256": "6845ce71128d8a1a9a19fb33ffcbb3639a52c1c12e935028957a96483f41926f",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 37.751264799851924
+      },
+      "build034b.process.json": {
+        "sha256": "4241842b037c61b995c4d4e22a79d6cc949b9d1b8a47686ae9089af78a614f32",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 6.809966800035909
+      },
+      "build034c.process.json": {
+        "sha256": "c84dccc8d0a8b9e9d77f79f900d1e5606e7fd921f6fded9588bf6b81b16889c0",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 2.7859769999049604
+      },
+      "build034d.process.json": {
+        "sha256": "37f7255c07cb12229fc01975be1a951e6dc019392909d8ba65e9a123e6b132d8",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 1.917018000036478
+      },
+      "install026-desktop.process.json": {
+        "sha256": "61fe6648a2711687d22d2478f2d9e3c7574931c63a71c186fcb243689d4e43b4",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.29298070003278553
+      },
+      "install026-development.process.json": {
+        "sha256": "00c0abf8d8e0c400085db63007d534bc411833360ecd13215f6e740a0c17e386",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.8767504000570625
+      },
+      "install026-Unspecified.process.json": {
+        "sha256": "433cdebcf796e4e7915f33c3076e743e45a3f3d35f66bf5524a371de525e181c",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.396653100149706
+      },
+      "install034-desktop.process.json": {
+        "sha256": "a26b1de22798f93ab70e6e781af0f81aff95f17824dec052b61f842dea9d9b37",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13840459985658526
+      },
+      "install034-development.process.json": {
+        "sha256": "5f5ec83e6d42f32cb8b296b87f91b1fcda0ef58fd94693cd9802a377913d0ef0",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1645597000606358
+      },
+      "install034-Unspecified.process.json": {
+        "sha256": "19e162934f86d89362fcd0942a1e3103e556536e2aaa088c510f956066e85ba4",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1391079998575151
+      },
+      "linux-analysis021.process.json": {
+        "sha256": "b19582add085e6e4028ee05794587e5992b07e1904f56ecbaf81c320d990659e",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.09377121200000005
+      },
+      "linux-analysis034.process.json": {
+        "sha256": "661544445bcfe97835012971cd3fcfcd97ec3808f864fa899e946997043d1a56",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.10410603000000052
+      },
+      "linux-build021.process.json": {
+        "sha256": "605f99d6bd01b42a1cc5d75a475507e66556c001d5dda89da3e70820799835bf",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 22.424260055999998
+      },
+      "linux-build034.process.json": {
+        "sha256": "61ffc4344e934b6a5068b0adbfc1005b6fb20dffeed2e965defd5dd0334e6548",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 11.029407528
+      },
+      "linux-install021.process.json": {
+        "sha256": "e95e5c07877193a8a28104130e8dd507c38f693e762b24108b023857c67f1621",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.6807818370000014
+      },
+      "linux-install034.process.json": {
+        "sha256": "d4844ee60cab63d697f3bfa4b2303ad2f89093f1ea948a018128348f82994f8b",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 15.30684773
+      },
+      "linux-owner020.process.json": {
+        "sha256": "5f8fd07929294eede16bc9e0cb3cf6028bb5eed495b8f344dc2d650af19f6f78",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "elapsed_seconds": 4.699019399937242
+      },
+      "linux-owner021.process.json": {
+        "sha256": "4ea0aec2c7aa22d932078b7ea69baee5c752dd06ba9d83f2e5e35256aff95426",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 42.97041409998201
+      },
+      "linux-owner034.process.json": {
+        "sha256": "3cf3bef092b091137c2516ed26f486a0d99d29bc969dc3406857bb426b002a5d",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 32.36252560000867
+      },
+      "linux-retirement039.process.json": {
+        "sha256": "54cad3c8b90eb9fd12b6597e95aae4cdb67b9849fcc3a95eb1bf972cf3364785",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.904225300066173
+      },
+      "linux-roi021.process.json": {
+        "sha256": "c7ef80b6902ae339d05f8d7ec637705d763aa260d7df09abbfb455cfd8361e51",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.060203682000000924
+      },
+      "linux-roi034.process.json": {
+        "sha256": "752f7813a84b7c76db27281b043883a2dc12bcc3cb86271c10188f6f271077ce",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1003448089999992
+      },
+      "linux-sdk-build021.process.json": {
+        "sha256": "29d0624c8575918b19411ecfa2aa75ff5db71ef0c8e89ffc1d0cc3c4806300d5",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 12.695647286000003
+      },
+      "linux-sdk-build034.process.json": {
+        "sha256": "d7df421ddbe3da69ffbc3a708ba609ed07e473db2a82a465cfefdd1ce9efb84c",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.6698357040000005
+      },
+      "linux-sdk-client021.process.json": {
+        "sha256": "43ba23986f112b23f2e0b0fcbc82a9af18effc58764928af98e49d1135356c87",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.09987431500000099
+      },
+      "linux-sdk-client034.process.json": {
+        "sha256": "d087be15913ed3626551c9fc61947392ea2185b5ef9ea11acee52e8fd3f245e1",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.10618742200000142
+      },
+      "linux-sdk-configure021.process.json": {
+        "sha256": "2b6b4c950b7d20d8e2462506317dc035a8c9a847f9a799894115bfb19cd219f6",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 2.0678554300000016
+      },
+      "native022-retention038.pack.process.json": {
+        "sha256": "7dfc4b80fe603bd542fe1a0be3c2cf2c41d28277216f4b1f017de450357225c8",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1597148000728339
+      },
+      "native022-retention038.verify.process.json": {
+        "sha256": "bdd99f85badb37248e1eb06546c5f526946dcf8ac680ff9a0f0b75f5acd63a20",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13300449983216822
+      },
+      "native022.process.json": {
+        "sha256": "46d7a96bcdbffb2ca2300298e6f711bfa4790761f5dd77ac070e5838bc6e96ac",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.4456958000082523
+      },
+      "native024-retention038.pack.process.json": {
+        "sha256": "fb6d0df681d8e63229093312e8461ea75f551d542de0cea9b31f257d675e3150",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.16235160012729466
+      },
+      "native024-retention038.verify.process.json": {
+        "sha256": "c1c7ef0cbbcec047d114cfc23f17b0c44a35d3134fdd99145c8516c80a1597ad",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.12753479997627437
+      },
+      "native024.process.json": {
+        "sha256": "d5814399140233a92370d71b6a644697a3e379ba5a244195a2b3e9377261ea61",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.3653411997947842
+      },
+      "python028-retention038.pack.process.json": {
+        "sha256": "889e61a8d9a456f6dffbd2bb1badcb07a763ff8c1c79ebed06342eaac4dba430",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.15838389983400702
+      },
+      "python028-retention038.verify.process.json": {
+        "sha256": "261bbe601607815401a352dffdbbe8ad74e1f274b602ef31a72094b20dad7062",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.26302179996855557
+      },
+      "python028.process.json": {
+        "sha256": "eeef517082b69ad8eed3009de0da8ec4b346b21f0c9852e961390634c114beb8",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.1173038000706583
+      },
+      "python031-retention038.pack.process.json": {
+        "sha256": "05811dc9f7ba6ec1f4c29459be642f8ec2fb79684c1410835a0210e2906455fe",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.21120120002888143
+      },
+      "python031-retention038.verify.process.json": {
+        "sha256": "d3856b8f9ae4de72afe642f3317361aec13055fc03296908372d29393dfe0d57",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13399320002645254
+      },
+      "python031.process.json": {
+        "sha256": "bd4cc8b15eaa4c2da4890be0d803cfa1ed1b53addad9a95def76c6ad52542288",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "elapsed_seconds": 2.3563372001517564
+      },
+      "python036-retention038.pack.process.json": {
+        "sha256": "ef15f12a0d33a7cec769f10f5d4e28e4d0c42562ecd63cab451e40372ea842fd",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.15200080000795424
+      },
+      "python036-retention038.verify.process.json": {
+        "sha256": "f0b28fadb6019558273db51256f431660120955834e2d596f671c286a22edf6a",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13108789990656078
+      },
+      "python036.process.json": {
+        "sha256": "07b68ad0ed9a927b3fec554ed30856e729e976cb091935ab4ff2477bb5971026",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 1.286373799899593
+      },
+      "reference002-compile.process.json": {
+        "sha256": "3b745f47e7f503d85387898dbe79c1d799e131db9cb7dc3b142be89fed73f40f",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.6499618999660015
+      },
+      "reference002-observe.process.json": {
+        "sha256": "a9f64c52d6f7ce733431c76b41cf3231c1eb2fed6579ac08395270cda0a87ea3",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 1.036315299803391
+      },
+      "reference002-retention019.pack.process.json": {
+        "sha256": "9cf32b8e2209fb2ac3f6aef9db4c1256ba1c499898d337365908c98f0179fc1c",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.18499019998125732
+      },
+      "reference002-retention019.verify.process.json": {
+        "sha256": "8995a7f8b5261d8f5fb73b6ea24d16d6483724f0bee46d4e4efadf3c17f6fc4b",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13273229985497892
+      },
+      "reference005-compile.process.json": {
+        "sha256": "87a6edfc868bf14d65b2b72dbbcbbe17b94d5df00809c3d55d22b8742362691b",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.625068600056693
+      },
+      "reference005-observe.process.json": {
+        "sha256": "02cd65844ae8dc57a974feb04a02c779368db7fd4b885624784565694058a0bc",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.7765600001439452
+      },
+      "reference005-retention019.pack.process.json": {
+        "sha256": "fc6969fb118f3744b8b1024b5e192f8a190d8c8fb353dc859ef8f9001a81f6db",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1827994000632316
+      },
+      "reference005-retention019.verify.process.json": {
+        "sha256": "895e1727da3095df4ab5a2c8a568f0d5dd7fdd4998274ef5cac2f38c6637ad50",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13131220010109246
+      },
+      "reference011-compile.process.json": {
+        "sha256": "4f142b3cc874e8e4820f2029a3ed6bc69d0fd1e51cca69f1f1068eaae9678456",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.6510503999888897
+      },
+      "reference011-observe.process.json": {
+        "sha256": "dffdfc7769c2f0d63736b47e898e7fe4137944e1bb8267bc0947b209196a0860",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.698242399841547
+      },
+      "reference011-retention038.pack.process.json": {
+        "sha256": "b5bf78397eeb4661f06dfa499d92a5bb85753b49fc2f5d8bab6416cf972e6803",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.18396960012614727
+      },
+      "reference011-retention038.verify.process.json": {
+        "sha256": "4162e4cbdcb56c1ef62332b812f705ecc5d62864f0bce613add4be58d4a6bd4b",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13344420003704727
+      },
+      "roi017.process.json": {
+        "sha256": "33380beba05bd46aec4a7cbd8dbd8396c5156e84f8f3988aac6a175082221a37",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.07430509990081191
+      },
+      "roi033.process.json": {
+        "sha256": "4047f1f69a19b089c3495a6b985847523ce18c91f008f14979bf8980c324e992",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.06539799994789064
+      },
+      "sdk-build027.process.json": {
+        "sha256": "3f16f484078e586e0f12873373286a0d3784730cd4ddf1be0caad29e46814630",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 32.14704920002259
+      },
+      "sdk-build036.process.json": {
+        "sha256": "4dce54bff4e284ae8b20768d349a44482a89a9ccd5bc21c3ce3c09cadaee84d7",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.9635780998505652
+      },
+      "sdk-client027.process.json": {
+        "sha256": "5e5727da1a4c3c0465039a5c76b24c681f11b73926dcc57cb516b0bd6e451ca5",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.0972428999375552
+      },
+      "sdk-client036.process.json": {
+        "sha256": "3ef7efce17964fe6b58e458ab4061044df7b702462841599419959202177fb64",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.09188469988293946
+      },
+      "sdk-configure027.process.json": {
+        "sha256": "757df5e8000c38b02c06bb0a6be21cb281b21032b3de7af7f4a6ed9076ab8f2a",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 5.651895300019532
+      }
+    }
+  },
+  "failures_and_corrections": [
+    "015newtestredirectcapturedefaultActiveSelectionwrong;testonlyWholePlanefix016then017pass.",
+    "020Linuxreferencebackslashpreflightfailurebeforebuild;normalizedkeys021samecache/scratchidentity.",
+    "022probeone-shotgateincorrectlyarmedonce;probeonlyrearm023then024pass.",
+    "0284managercasesusedij.Roiinsteadpublicij.ROI;testonlyfix0314pass,2507greenreused.",
+    "0312realUpdatehistoryfailuresfixed032/033with3nativecontrols;0362desktopcontrolsnowpass. Oneopaqueattrtestupdatedforprojectedname.",
+    "0312C++reportreadersselectedwithoutenvinputpreflight;concretelapserecorded032,unavailableandnotrepeated. No referenceexpectationschanged.",
+    "DraftLFanchors/pointmemberandreadonlyrgpatherrorscaughtbeforeproductcompile;samefilesusedafterobservedcorrection."
+  ],
+  "cleanup": {
+    "state": "All 10 owned groups retired; eight necessary lossless archives verified. Observer classes and SDK consumer compiler products retain identities only.",
+    "receipts": [
+      ".tmp/manual-workflow-verification/display-label-20261106/early-retirement019.json",
+      ".tmp/manual-workflow-verification/display-label-20261106/windows-retirement038.json",
+      ".tmp/manual-workflow-verification/display-label-20261106/linux-retirement039.json"
+    ],
+    "archives": [
+      {
+        "path": ".tmp/manual-workflow-verification/display-label-20261106/native022-retention038.zip",
+        "bytes": 16780,
+        "sha256": "41796d647b29f64ccf4a89c507cb7cfae476a11b0f869183bd6b8f51edd476d5",
+        "manifest": ".tmp/manual-workflow-verification/display-label-20261106/native022-retention038.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/display-label-20261106/native022-retention038.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/display-label-20261106/native024-retention038.zip",
+        "bytes": 4967,
+        "sha256": "09443e9e0b6bbf52c500623273cd0faa62b684fe09fe14f0daeec645ad1a2d92",
+        "manifest": ".tmp/manual-workflow-verification/display-label-20261106/native024-retention038.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/display-label-20261106/native024-retention038.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/display-label-20261106/python028-retention038.zip",
+        "bytes": 5674,
+        "sha256": "b60ca42041e956b92ea8654ff9fac8fd6d0fbcfd9dec6424318589714256f9be",
+        "manifest": ".tmp/manual-workflow-verification/display-label-20261106/python028-retention038.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/display-label-20261106/python028-retention038.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/display-label-20261106/python031-retention038.zip",
+        "bytes": 31852,
+        "sha256": "1347d25e51d4075c4a7615b1c8302265badf792b36a919edd5b3cb9878e30cae",
+        "manifest": ".tmp/manual-workflow-verification/display-label-20261106/python031-retention038.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/display-label-20261106/python031-retention038.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/display-label-20261106/python036-retention038.zip",
+        "bytes": 9918,
+        "sha256": "c4eb428f0912b07d4c2d97316030e07fbde0cc30200f22d52b3771cdcbd80d1d",
+        "manifest": ".tmp/manual-workflow-verification/display-label-20261106/python036-retention038.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/display-label-20261106/python036-retention038.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/display-label-20261106/reference002-retention019.zip",
+        "bytes": 37354,
+        "sha256": "03621c1bb2feef0eff2c551f1d0818eee7763d46a70b8a3aa1c4ce2a6330f3bb",
+        "manifest": ".tmp/manual-workflow-verification/display-label-20261106/reference002-retention019.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/display-label-20261106/reference002-retention019.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/display-label-20261106/reference005-retention019.zip",
+        "bytes": 38678,
+        "sha256": "1a27fa237c00d085d8541e361a43ecf94f2f6ffe35f554c9c05c344408217958",
+        "manifest": ".tmp/manual-workflow-verification/display-label-20261106/reference005-retention019.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/display-label-20261106/reference005-retention019.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/display-label-20261106/reference011-retention038.zip",
+        "bytes": 41046,
+        "sha256": "1f665288f8ec55db29b3dacf55763989fe85f041c25c1bfd98e047bd7ec1fa78",
+        "manifest": ".tmp/manual-workflow-verification/display-label-20261106/reference011-retention038.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/display-label-20261106/reference011-retention038.verify.json"
+      }
+    ],
+    "active_cache_runtime_sdk_prefixes": "Preserved. No new generation; retired project build/ tree was not recreated.",
+    "entry_known_bytes": 7466550193,
+    "before_retirement_known_bytes": 7487744033,
+    "after_retirement_known_bytes": 7474195681,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "measurement_receipts": [
+      ".tmp/manual-workflow-verification/display-label-before-retirement037.json",
+      ".tmp/manual-workflow-verification/display-label-final040.json"
+    ],
+    "allocation": "256MiBincrementalboundnotexceeded;fullownedbudgetunknownnotheadroom."
+  },
+  "waste_review": {
+    "fix_now": "Fixed the real Update history regression and test API spelling. Recorded the missing-report preflight lapse and selected only independent affected IDs for retry. No duplicate SDK configuration or unchanged numerical campaign. Captures retired after final review.",
+    "defer": "T08 owns stored rename/independent active-selection naming variants; M3/T09 owns full AUTO/per-column table state; T00/T14 owns missing references and platform qualification. T02 formatter fanout is unchanged and needs no cleanup-only recompile.",
+    "build_commands": 20,
+    "build_command_seconds": 271.263,
+    "sdk_build_commands": 4,
+    "sdk_build_command_seconds": 46.476,
+    "time_limit": "Sumscommandtimes,notcriticalpathduration,runtimeperformanceoroverallcompletion."
+  },
+  "remaining": [
+    "M3 Invert Y and other Analyzer options",
+    "Full AUTO/per-column state and wider ResultsTable editing/filtering/import/summaries",
+    "Stored rename/active-selection synchronization and wider ROI interchange/replay/format variants",
+    "Commercial Fiji inventory decisions, missing references and supported-platform release gates",
+    "OS clipboard interoperability, accessibility/keyboard/DPI and matched performance qualification"
+  ],
+  "next_ready": "M3 Invert Y coordinates: observe original calibration, centroid, COM, point, bounds/Feret and redirect height policy before freezing API/output semantics.",
+  "task_record": {
+    "path": ".tmp/manual-workflow-verification/display-label-20261106/entry.json",
+    "sha256": "034c18635d40d9437c7fff951455d39ee6628f6545a9acbd4f93e0e0827ca068",
+    "state": "Frozen scoped closeout; subsequent publication receipts remain separate."
+  }
+}

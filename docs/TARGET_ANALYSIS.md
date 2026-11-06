@@ -931,5 +931,53 @@ format observations, actual input/copy callback/current/manager/redirect workflo
 in both Windows hosts, affected installed Python and native controls, corrections
 and safe scratch retirement. The tests capture Copy CSV through an owned ImGui
 clipboard sink and restore the backend; OS clipboard interoperability and wider
-platform/accessibility/keyboard qualification remain open, alongside labels and
+platform/accessibility/keyboard qualification remain open, alongside wider Analyzer options and
 AUTO/per-column formatting. Full M3/family/release completion is not asserted.
+
+## Captured Display label
+
+`TargetAnalysisOptions.display_label` defaults false. In SELECTION/ROI_MANAGER,
+true requests the optional owned `TargetAnalysisPlane.label` (read-only in Python)
+and provenance v20; prior versions and disabled results stay unchanged. Generic
+AREA mode refuses this option before pixel reads. The existing `measurements`
+StringList gains `Label`; an empty default list does not request optional labels.
+Both ImGui hosts consume that same setting and publish the captured field through
+the table, Copy CSV, Save CSV and preferences/workspace persistence.
+
+The label uses the captured sampling image title (source when not redirected),
+source ROI name and source parent-plane label/index. Manager row names are
+authoritative. Active selections use the private string/null
+`attributes["imagej_roi_name"]`. Selecting stored/native planar rows projects
+their names into copied active selections without editing the stored metadata
+or history. Update normalizes a matching projection back to the stored private
+attribute, preserving original attributes and no-op history. Independently
+active selections do not automatically follow a later stored-row rename.
+
+Null names are absent; empty names append a colon; names containing ASCII `.`
+are omitted. Names over30 UTF-16 units retain27 plus `...`. Slice labels use the
+first line, observed four-unit extension/digit rule and60-unit cap. Truncation
+inside a surrogate pair follows original UTF-8 observable replacement `?`;
+source metadata remains unchanged. The full title is retained. Empty/missing
+slice labels use the original one-based C-fast stack index; positioned multipoint
+rows keep their parent label even when sampled point positions differ.
+
+Metadata lookup prefers `plane_labels` to `slice_labels`, properties to
+extensions for the same key. Plane arrays use native TCZ order, slice arrays Z;
+the exact extent is required and the selected entry must be string/null (legacy
+string vectors also work). Singleton images ignore slice metadata. These labels
+remain independent of density/threshold numerical results.
+
+Preparation admits title bytes plus272 per expanded row before string allocation
+or source reads; private working reservation is twice that bound, result strings
+are charged and frontend retained JSON adds eight times the label bound per row.
+Text work is deducted from aggregate measurement work. Captured immutable source
+and sampling metadata/settings participate in existing stale/cancel/close guards.
+No image buffer, additional pixel read, runtime Java component or new processing
+controller is introduced.
+
+[Scoped evidence](parity/reviews/display-label-20261106.json) records2,490 original
+observations, all2,511 new installed feature checks,2,606 distinct affected
+installed Python passes, Windows/Linux native/installed C++ consumers and actual
+both-Windows-host output/lifecycle checks. Two externally supplied C++ point
+report readers remain unavailable. Wider ROI/replay/format/platform, OS clipboard
+and full M3/release scope remain open.

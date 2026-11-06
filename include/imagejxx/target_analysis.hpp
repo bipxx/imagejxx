@@ -41,6 +41,9 @@ struct TargetAnalysisOptions {
   // Explicit legacy ordered Skew/Kurt request; preserves processor-specific
   // populations and excess-kurtosis convention. Line/angle rows retain zero.
   bool moments = false;
+  // Captured Analyzer Label, UTF8-observable UTF16 truncation. Active names use
+  // Selection.attributes["imagej_roi_name"]; manager rows use their own name.
+  bool display_label = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -110,6 +113,8 @@ struct TargetAnalysisPlane {
   std::optional<double> area_fraction;
   // Present together only when moments requested; may be NaN or infinity.
   std::optional<double> skewness,kurtosis;
+  // Present only when display_label requested, including a deliberate empty label.
+  std::optional<std::string> label;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image
