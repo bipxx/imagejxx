@@ -20,8 +20,8 @@ PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
 verified in both Windows hosts. Scientific TIFF reslice/export now preserves
 world/time transforms. Vertex Convex Hull has scoped API/both-Windows-host
 evidence. Bounding Rectangle now has scoped API/both-host checks too; next
-is T06/G018 spline fitting/removal; Fit Circle, Fit Ellipse and minimum-area
-Fit Rectangle now have scoped API and both-host checks. The analysis details below retain residual
+is T06/G018 selection interpolation; editable spline fitting/removal, Fit Circle,
+Fit Ellipse and minimum-area Fit Rectangle have scoped API and both-host checks. The analysis details below retain residual
 scope; they do not require finishing every point/manager variant first. Keep
 unrelated print/platform work with its owner; batch related changes and run
 affected checks under PLAN's delivery specifications. Implementation has resumed;

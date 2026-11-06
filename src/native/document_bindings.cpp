@@ -334,19 +334,34 @@ void bind_document(py::module_ &m) {
         py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
       .def("moved_vertex", py::overload_cast<std::size_t, std::array<double, 2>>(
           &SelectionEditor::moved_vertex, py::const_), py::arg("index"),
-           py::arg("point"))
+           py::arg("point"),py::call_guard<py::gil_scoped_release>())
       .def("insertion_index", py::overload_cast<std::array<double, 2>, std::array<double, 2>>(
           &SelectionEditor::insertion_index, py::const_),
            py::arg("point"), py::arg("metric") = std::array<double, 2>{1, 1})
       .def("inserted_vertex", py::overload_cast<std::size_t, std::array<double, 2>>(
           &SelectionEditor::inserted_vertex, py::const_),
-           py::arg("index"), py::arg("point"))
+           py::arg("index"), py::arg("point"),py::call_guard<py::gil_scoped_release>())
       .def("removed_vertex", py::overload_cast<std::size_t>(
-          &SelectionEditor::removed_vertex, py::const_), py::arg("index"))
+          &SelectionEditor::removed_vertex, py::const_), py::arg("index"),py::call_guard<py::gil_scoped_release>())
       .def("rotated", py::overload_cast<double, std::optional<std::array<double, 2>>>(
           &SelectionEditor::rotated, py::const_), py::arg("degrees"),
            py::arg("pivot") = py::none(),
            py::call_guard<py::gil_scoped_release>())
+      .def("moved_vertex",[](const SelectionEditor& editor,std::size_t index,std::array<double,2> point,SelectionEditLimits limits,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return editor.moved_vertex(index,point,limits,control);
+      },py::arg("index"),py::arg("point"),py::arg("limits"),py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
+      .def("inserted_vertex",[](const SelectionEditor& editor,std::size_t index,std::array<double,2> point,SelectionEditLimits limits,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return editor.inserted_vertex(index,point,limits,control);
+      },py::arg("index"),py::arg("point"),py::arg("limits"),py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
+      .def("removed_vertex",[](const SelectionEditor& editor,std::size_t index,SelectionEditLimits limits,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return editor.removed_vertex(index,limits,control);
+      },py::arg("index"),py::arg("limits"),py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
+      .def("moved",[](const SelectionEditor& editor,std::array<double,2> delta,SelectionEditLimits limits,bool keep_inside,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return editor.moved(delta,keep_inside,limits,control);
+      },py::arg("delta"),py::arg("limits"),py::kw_only(),py::arg("keep_inside")=false,py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
+      .def("rotated",[](const SelectionEditor& editor,double degrees,SelectionEditLimits limits,std::optional<std::array<double,2>> pivot,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return editor.rotated(degrees,pivot,limits,control);
+      },py::arg("degrees"),py::arg("limits"),py::kw_only(),py::arg("pivot")=py::none(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
       .def("rotation_degrees", &SelectionEditor::rotation_degrees,
            py::arg("from_point"), py::arg("to_point"))
       .def("box_geometry", py::overload_cast<std::array<double, 2>, std::array<double, 2>, double>(

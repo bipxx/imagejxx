@@ -21,6 +21,10 @@ editable ellipse through the same background and history controls. See
 rectangle through the same worker, history and explicit replay controls. See
 [source profiles and work limits](SELECTION_TRANSFORMS.md#fit-rectangle-minimum-area).
 
+**Edit → Selection → Fit Spline...** offers Fit/Straighten and sample count.
+Drag or edit actual knots; **Remove Spline Fit** restores command controls.
+History, workspace and explicit replay preserve typed state in both hosts. See
+[options, APIs and remaining scope](SELECTION_TRANSFORMS.md#editable-spline-fitting).
 
 ## Brightness/Contrast
 

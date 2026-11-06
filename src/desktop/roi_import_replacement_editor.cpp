@@ -1,3 +1,4 @@
+#include <imagejxx/selection_spline.hpp>
 #include "roi_import_replacement_editor.hpp"
 #include "geometry_number.hpp"
 #include "path_visual.hpp"
@@ -55,7 +56,7 @@ Selection RoiImportReplacementEditor::vertex_geometry() const {
     throw std::invalid_argument("Choose a valid vertex");
   auto geometry = base_.selection;
   const std::array<double,2> point{parse_geometry_number(point_[0]),parse_geometry_number(point_[1])};
-  if(geometry.is_path()) {
+  if(geometry.is_path() || geometry.attributes.count(spline_fit_attribute)) {
     const auto dims=planar_annotation_geometry(recorded_,Plane(plane_));
     return SelectionEditor(geometry,dims.width,dims.height).moved_vertex(std::size_t(vertex_-1),point);
   }
@@ -79,6 +80,7 @@ void RoiImportReplacementEditor::change_geometry(int kind,
   auto updated = base_;
   updated.selection = Selection(names[kind], points, base_.selection.width);
   updated.selection.attributes = base_.selection.attributes;
+  updated.selection.attributes.erase(spline_fit_attribute);
   // Geometry replacement preserves the user's other pending fields/style.
   const auto name = name_, stroke = stroke_, fill = fill_,
              width = stroke_width_;
@@ -118,7 +120,7 @@ RoiImportReplacementEditor::replacement(DatasetShape target) const {
                          row.selection.kind == "rotated_ellipse";
     Selection unit(row.selection.is_rounded_box() ? "rounded_rectangle" : ellipse ? "ellipse" : "rectangle", {{0, 0}, {1, 1}},
                    row.selection.width);
-    unit.attributes = row.selection.attributes;
+    unit.attributes = row.selection.attributes;unit.attributes.erase(spline_fit_attribute);
     const auto dims = planar_annotation_geometry(target, row.plane);
     row.selection =
         SelectionEditor(unit, dims.width, dims.height, SelectionEditLimits{})

@@ -1,4 +1,5 @@
 #include <imagejxx/selection_transform.hpp>
+#include <imagejxx/selection_spline.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
 #include "selection_region_rotation.hpp"
@@ -291,7 +292,7 @@ Selection convex_hull_selection(const Selection &source,int width,int height,
   auto hull=ordered_hull(std::move(points),true);
   Selection result("polygon",std::move(hull));result.width=frozen.width;
   result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();
   return result;
 }
@@ -342,7 +343,7 @@ Selection bounding_rectangle_selection(const Selection &source,int width,int hei
   }
   Selection result("rectangle",{{b[0],b[1]},{b[2],b[3]}});result.width=frozen.width;
   result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 std::size_t estimate_fit_circle_selection(const Selection &source,int width,int height,
@@ -364,7 +365,7 @@ Selection fit_circle_selection(const Selection &source,int width,int height,bool
   for(double v:{x,y,d,x+d,y+d})if(!std::isfinite(v) || v<std::numeric_limits<int>::min() || v>std::numeric_limits<int>::max())
     throw std::invalid_argument("Fit Circle exceeds integer output profile");
   Selection result("ellipse",{{x,y},{x+d,y+d}});result.width=frozen.width;result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 std::size_t estimate_fit_ellipse_selection(const Selection& s,int width,int height,const SelectionEditLimits& limits) {
@@ -423,7 +424,7 @@ Selection fit_ellipse_selection(const Selection& source,int width,int height,boo
   }
   const double ux=std::cos(angle)*major/2,uy=-std::sin(angle)*major/2,vx=std::sin(angle)*minor/2,vy=std::cos(angle)*minor/2;
   Selection result("rotated_ellipse",{{cx,cy},{cx+ux,cy+uy},{cx+vx,cy+vy}});result.width=frozen.width;result.attributes=frozen.attributes;
-  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
+  result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
   result.validate(width,height);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 
@@ -471,7 +472,7 @@ Selection fit_rectangle_selection(const Selection& source,int w,int h,bool disca
   const Point u{std::cos(bestAngle)*axis/2,std::sin(bestAngle)*axis/2};
   const double length=std::hypot(u[0],u[1]);const Point v{-u[1]*span/(2*length),u[0]*span/(2*length)};
   Selection result("rotated_rectangle",{center,{center[0]+u[0],center[1]+u[1]},{center[0]+v[0],center[1]+v[1]}});
-  result.width=frozen.width;result.attributes=frozen.attributes;result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);
+  result.width=frozen.width;result.attributes=frozen.attributes;result.attributes.erase(point_annotations_attribute);result.attributes.erase(point_style_attribute);result.attributes.erase(spline_fit_attribute);
   result.validate(w,h);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
 }
 

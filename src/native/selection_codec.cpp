@@ -1,4 +1,5 @@
 #include "selection_codec.hpp"
+#include <imagejxx/selection_spline.hpp>
 #include "session_metadata.hpp"
 #include <imagejxx/operations.hpp>
 #include <limits>
@@ -149,6 +150,7 @@ Selection decode_selection(const Json &value, const SessionLimits &limits,bool a
     if(kind=="region")restored.validate(1,1);
     return restored;
   }
+  validate_selection_spline_fit(result);
   return result;
 }
 

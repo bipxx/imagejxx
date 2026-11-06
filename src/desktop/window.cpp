@@ -1,3 +1,4 @@
+#include <imagejxx/selection_spline.hpp>
 #include "window.hpp"
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
@@ -1933,6 +1934,12 @@ struct Window::Impl {
       if(selection && (selection->is_path() || selection->kind=="point" || selection->kind=="multipoint"))
         return owner.controller_->active_document_id()==source->id;
     }
+    if(action=="show_fit_spline" || action=="fit_spline_selection" || action=="remove_spline_fit") {
+      const auto captured=source->nativeSnapshot();const auto& selected=captured.data().selection;
+      if(!selected || captured.display().orthogonal || owner.busy() || owner.controller_->active_document_id()!=source->id)return false;
+      return action=="remove_spline_fit"?selected->attributes.count(spline_fit_attribute)!=0:
+          selected->kind=="polygon" || selected->kind=="polyline" || selected->kind=="freehand";
+    }
     if(action=="show_bounding_rectangle" || action=="bounding_rectangle_selection" ||
         action=="show_fit_circle" || action=="fit_circle_selection" || action=="show_fit_ellipse" || action=="fit_ellipse_selection" || action=="show_fit_rectangle" || action=="fit_rectangle_selection") {
       const auto captured=source->nativeSnapshot();
@@ -3107,6 +3114,7 @@ struct Window::Impl {
     if(selectionPanel.path_edited()) {publishAuthoredPath(source,value);return;}
     auto edit=source.begin_edit(Change::Data);
     edit.select(value);
+    if(value.attributes.count(spline_fit_attribute) || (source.data().selection && source.data().selection->attributes.count(spline_fit_attribute)))edit.retain_selection_history();
     if(owner.documentById(source.id())->scientific())owner.controller_->commit(edit);
     else owner.commitEdit(edit);
   }
@@ -7809,6 +7817,54 @@ void Window::action(const std::string &name, const Json &p) {
         selection_enlargement_command_from_record(source,record,impl->selectionCreationLimits());
     impl->publishEnlargement(command);return;
   }
+  if(name=="show_fit_spline" || name=="fit_spline_selection" || name=="remove_spline_fit") {
+    const bool show=name=="show_fit_spline",removing=name=="remove_spline_fit";
+    if(!p.is_object())throw std::invalid_argument("Spline options must be an object");
+    const auto source=nativeSnapshot(targetId);
+    if(busy() || source.id()!=controller_->active_document_id() || source.display().orthogonal || !source.data().selection)
+      throw std::invalid_argument("Spline editing requires the idle active XY selection");
+    const auto& selected=*source.data().selection;
+    if(selected.kind!="polygon" && selected.kind!="polyline" && selected.kind!="freehand")throw std::invalid_argument("Fit Spline requires polygon,polyline or freehand controls");
+    if(removing && !selected.attributes.count(spline_fit_attribute))throw std::invalid_argument("Selection has no retained spline fit");
+    for(const auto& field:p.items())if(field.key()!="document_id" && (show || removing || (field.key()!="mode" && field.key()!="evaluation_points" && field.key()!="magnification")))throw std::invalid_argument("Unknown spline option");
+    const double canvasZoom=impl->panes.size()>activeIndex()?double(impl->panes[activeIndex()].zoom):1.;
+    if(show) {
+      SplineFitOptions defaults;if(const auto existing=selection_spline_fit(selected))defaults=existing->options;
+      const auto id=source.id();const auto revisions=source.revisions();
+      const PlanePosition position{source.display().t,source.display().c,source.display().crosshair[2]};
+      impl->ask("Fit Spline",{{"mode",defaults.mode==SplineFitMode::Fit?"fit":"straighten"},{"evaluation_points",defaults.evaluation_points}},
+          [this,id,revisions,position,canvasZoom](Json choice) {
+            const auto current=nativeSnapshot(id);
+            if(controller_->active_document_id()!=id || !current.revisions().matches(revisions,Change::Data) || current.display().orthogonal || current.display().t!=position.t || current.display().c!=position.c || current.display().crosshair[2]!=position.z || impl->panes.size()<=activeIndex() || double(impl->panes[activeIndex()].zoom)!=canvasZoom)throw RevisionConflict();
+            choice["document_id"]=id;
+            choice["magnification"]=(choice.value("mode",std::string("fit"))=="fit" && choice.value("evaluation_points",std::int64_t(0))==0)?canvasZoom:1.;
+            action("fit_spline_selection",choice);
+          },Json::array({{{"name","mode"},{"label","Mode"},{"kind","choice"},{"choices",{"fit","straighten"}}},
+            {{"name","evaluation_points"},{"label","Samples (0 = automatic; straightening requires 0)"},{"kind","int"}}}),"selection_spline");
+      return;
+    }
+    SplineFitOptions options;
+    if(!removing) {
+      const auto mode=p.value("mode",std::string("fit"));if(mode!="fit" && mode!="straighten")throw std::invalid_argument("Unknown spline mode");options.mode=mode=="fit"?SplineFitMode::Fit:SplineFitMode::Straighten;
+      if(p.contains("evaluation_points")){const auto& count=p.at("evaluation_points");if(!count.is_number_integer() || (count.is_number_integer() && !count.is_number_unsigned() && count.get<std::int64_t>()<0))throw std::invalid_argument("Spline sample count must be a nonnegative integer");options.evaluation_points=count.get<std::size_t>();}
+      options.magnification=options.mode==SplineFitMode::Fit && !options.evaluation_points?canvasZoom:1.;
+      if(p.contains("magnification")){if(!p.at("magnification").is_number())throw std::invalid_argument("Spline magnification must be numeric");options.magnification=p.at("magnification").get<double>();}
+    }
+    const auto cap=impl->selectionCreationLimits();const auto total=cap.max_working_bytes;
+    const auto plan=controller_->prepare_snapshot_capture(total/8,source.id());const auto allowance=RenderMemory::mul(plan.bytes(),4);
+    if(allowance>=total)throw std::length_error("Spline source capture exceeds processing budget");
+    auto memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(allowance));auto captured=controller_->capture_snapshot(plan);
+    if(!source.same_document(captured) || !source.revisions().matches(captured.revisions(),Change::Data))throw RevisionConflict();
+    SelectionEditLimits limits{cap.max_pixels,cap.max_candidate_vertices,total-allowance};auto creationLimits=cap;creationLimits.max_working_bytes=limits.max_working_bytes;
+    const bool captureRecording=recording;const std::string label=removing?"Remove Spline Fit":"Fit Spline";
+    impl->startControlled([captured=std::move(captured),options,limits,creationLimits,memory,total,captureRecording,removing,label](const JobContext& context) {
+      const auto shape=captured.data().dataset.shape();
+      auto result=removing?remove_spline_fit(*captured.data().selection,shape.x,shape.y,limits,context.execution_control()):fit_spline_selection(*captured.data().selection,shape.x,shape.y,options,limits,context.execution_control());
+      auto command=resolve_selection_creation_command(captured,{SelectionCreationOperation::Replace,std::move(result),SelectionCreationGeometry::NativePathV4},creationLimits,context.execution_control());
+      return Impl::JobResult(std::move(command),memory,total,captureRecording,label);
+    },documentById(source.id()),false,label,label,total,{},true);
+    return;
+  }
   if(name=="show_convex_hull" || name=="convex_hull_selection" ||
       name=="show_bounding_rectangle" || name=="bounding_rectangle_selection" ||
       name=="show_fit_circle" || name=="fit_circle_selection" || name=="show_fit_ellipse" || name=="fit_ellipse_selection" || name=="show_fit_rectangle" || name=="fit_rectangle_selection") {
@@ -9317,9 +9373,14 @@ void Window::action(const std::string &name, const Json &p) {
         throw std::invalid_argument("Rotation pivot needs X/Y");
       pivot = v.get<std::array<double, 2>>();
     }
-    const auto result = editor.rotated(number(get(p, "degrees")), pivot);
-    if (result != editor.selection())
-      d->select(selectionJson(result));
+    const auto splineEditSource=d->nativeSnapshot();
+    const auto result = editor.selection().attributes.count(spline_fit_attribute)?editor.rotated(number(get(p,"degrees")),pivot,SelectionEditLimits{16777216,65536,impl->selectionCreationLimits().max_working_bytes}):editor.rotated(number(get(p,"degrees")),pivot);
+    if (result != editor.selection()) {
+      if(editor.selection().attributes.count(spline_fit_attribute)) {
+        if(!splineEditSource.data().selection || *splineEditSource.data().selection!=editor.selection())throw RevisionConflict();
+        auto edit=splineEditSource.begin_edit(Change::Data);edit.select(result);edit.retain_selection_history();d->commitNative(edit);
+      } else d->select(selectionJson(result));
+    }
     return;
   }
   if (name == "move_selection" || name == "resize_selection" ||
@@ -9329,6 +9390,7 @@ void Window::action(const std::string &name, const Json &p) {
       throw std::invalid_argument("Draw a selection first");
     SelectionEditor editor(selectionFromJson(selected), frame.width,
                            frame.height);
+    const auto splineEditSource=d->nativeSnapshot();
     Selection result = editor.selection();
     const auto index = [&] {
       const auto &value = get(p, "index");
@@ -9347,20 +9409,23 @@ void Window::action(const std::string &name, const Json &p) {
     const std::array<double, 2> position{
         {number(get(p, "x")), number(get(p, "y"))}};
     if (name == "move_selection")
-      result = editor.moved({number(get(p, "dx")), number(get(p, "dy"))},
-                            boolean(get(p, "keep_inside")));
+      result = editor.selection().attributes.count(spline_fit_attribute)?editor.moved({number(get(p,"dx")),number(get(p,"dy"))},boolean(get(p,"keep_inside")),SelectionEditLimits{16777216,65536,impl->selectionCreationLimits().max_working_bytes}):editor.moved({number(get(p,"dx")),number(get(p,"dy"))},boolean(get(p,"keep_inside")));
     else if (name == "resize_selection")
       result =
           editor.resized(index(), position, boolean(get(p, "preserve_aspect")),
                          boolean(get(p, "from_center")));
     else if (name == "move_selection_vertex")
-      result = editor.moved_vertex(index(), position);
+      result = editor.selection().attributes.count(spline_fit_attribute)?editor.moved_vertex(index(),position,SelectionEditLimits{16777216,65536,impl->selectionCreationLimits().max_working_bytes}):editor.moved_vertex(index(),position);
     else if (name == "insert_selection_vertex")
-      result = editor.inserted_vertex(index(), position);
+      result = editor.selection().attributes.count(spline_fit_attribute)?editor.inserted_vertex(index(),position,SelectionEditLimits{16777216,65536,impl->selectionCreationLimits().max_working_bytes}):editor.inserted_vertex(index(),position);
     else
-      result = editor.removed_vertex(index());
-    if (result != editor.selection())
-      d->select(selectionJson(result));
+      result = editor.selection().attributes.count(spline_fit_attribute)?editor.removed_vertex(index(),SelectionEditLimits{16777216,65536,impl->selectionCreationLimits().max_working_bytes}):editor.removed_vertex(index());
+    if (result != editor.selection()) {
+      if(editor.selection().attributes.count(spline_fit_attribute)) {
+        if(!splineEditSource.data().selection || *splineEditSource.data().selection!=editor.selection())throw RevisionConflict();
+        auto edit=splineEditSource.begin_edit(Change::Data);edit.select(result);edit.retain_selection_history();d->commitNative(edit);
+      } else d->select(selectionJson(result));
+    }
     return;
   }
   if (name == "selection_mask") {
@@ -10719,6 +10784,8 @@ void Window::Impl::menu() {
       item("Fit Circle", "show_fit_circle");
       item("Fit Ellipse", "show_fit_ellipse");
       item("Fit Rectangle", "show_fit_rectangle");
+      item("Fit Spline...", "show_fit_spline");
+      item("Remove Spline Fit", "remove_spline_fit");
       for(bool shrink:{false,true}){
         const bool enabled=actionAllowed("enlarge_selection");
         const bool selected=ImGui::MenuItem(shrink?"Shrink...":"Expand...",nullptr,false,enabled);
@@ -12762,7 +12829,7 @@ void Window::Impl::canvas(Pane &pane) {
     if (source.data().selection && value == *source.data().selection)
       return;
     if(value.is_path() && pathTransform)publishAuthoredPath(source,value);
-    else {auto edit = source.begin_edit(Change::Data);edit.select(value);d->commitNative(edit);}
+    else {auto edit = source.begin_edit(Change::Data);edit.select(value);if(value.attributes.count(spline_fit_attribute) || (source.data().selection && source.data().selection->attributes.count(spline_fit_attribute)))edit.retain_selection_history();d->commitNative(edit);}
     refreshSelection(true);
   };
   auto available = ImGui::GetContentRegionAvail();
@@ -13107,7 +13174,7 @@ void Window::Impl::canvas(Pane &pane) {
               else
                 delta[0] = 0;
             }
-            pane.selectionGesture->preview = editor.moved(delta, !io.KeyAlt);
+            pane.selectionGesture->preview = editor.selection().attributes.count(spline_fit_attribute)?editor.moved(delta,!io.KeyAlt,SelectionEditLimits{16777216,65536,selectionCreationLimits().max_working_bytes}):editor.moved(delta,!io.KeyAlt);
           } else if (gesture.handle.kind == SelectionHandleKind::Resize) {
             try {
               pane.selectionGesture->preview = editor.selection().is_path()
@@ -13129,7 +13196,7 @@ void Window::Impl::canvas(Pane &pane) {
             double angle = editor.rotation_degrees(gesture.down, position);
             if (io.KeyShift)
               angle = std::round(angle / 15) * 15;
-            pane.selectionGesture->preview = editor.rotated(angle);
+            pane.selectionGesture->preview = editor.selection().attributes.count(spline_fit_attribute)?editor.rotated(angle,{},SelectionEditLimits{16777216,65536,selectionCreationLimits().max_working_bytes}):editor.rotated(angle);
           } else {
             auto target = position;
             if (io.KeyShift) {
@@ -13142,7 +13209,7 @@ void Window::Impl::canvas(Pane &pane) {
                 target[0] = original[0];
             }
             pane.selectionGesture->preview =
-                editor.moved_vertex(gesture.handle.index, target);
+                (editor.selection().attributes.count(spline_fit_attribute)?editor.moved_vertex(gesture.handle.index,target,SelectionEditLimits{16777216,65536,selectionCreationLimits().max_working_bytes}):editor.moved_vertex(gesture.handle.index,target));
           }
         } catch (...) {
           pane.selectionGesture.reset();
@@ -13179,15 +13246,15 @@ void Window::Impl::canvas(Pane &pane) {
           p[0] += delta[0];
           p[1] += delta[1];
           commitSelection(
-              pane.selectionEditor->moved_vertex(*pane.selectionVertex, p),
+              (pane.selectionEditor->selection().attributes.count(spline_fit_attribute)?pane.selectionEditor->moved_vertex(*pane.selectionVertex,p,SelectionEditLimits{16777216,65536,selectionCreationLimits().max_working_bytes}):pane.selectionEditor->moved_vertex(*pane.selectionVertex,p)),
               *pane.selectionSource);
         } else
-          commitSelection(pane.selectionEditor->moved(delta, true),
+          commitSelection((pane.selectionEditor->selection().attributes.count(spline_fit_attribute)?pane.selectionEditor->moved(delta,true,SelectionEditLimits{16777216,65536,selectionCreationLimits().max_working_bytes}):pane.selectionEditor->moved(delta,true)),
                           *pane.selectionSource);
       }
       if (pressed(ImGuiKey_Delete) && pane.selectionVertex && !pane.selectionEditor->selection().is_path()) {
         auto changed =
-            pane.selectionEditor->removed_vertex(*pane.selectionVertex);
+            (pane.selectionEditor->selection().attributes.count(spline_fit_attribute)?pane.selectionEditor->removed_vertex(*pane.selectionVertex,SelectionEditLimits{16777216,65536,selectionCreationLimits().max_working_bytes}):pane.selectionEditor->removed_vertex(*pane.selectionVertex));
         commitSelection(changed, *pane.selectionSource);
       }
     });

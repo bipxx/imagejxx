@@ -149,7 +149,7 @@ source-constructor/attachment/style/platform parity. Seventeen older selection
 gesture reference checks currently lack their retired capture environment; their
 expectations remain unchanged and unavailable evidence is not treated as a pass.
 
-Curved/mask Convex Hull conversion semantics and spline fitting,
+Curved/mask Convex Hull conversion semantics and remaining spline source profiles,
 scientific/saved-row variants and supported-platform UI qualification remain
 with T06/G018 and their existing owners. Commercial eligibility requirements
 remain unchanged; this conversion adds no third-party runtime dependency.
@@ -192,3 +192,48 @@ The [scoped receipt](parity/reviews/selection-fit-rectangle-20261105.json) recor
 physical Windows hosts. Full source-constructor/attachment/style/platform and
 fit-intent macro parity remain open. Seventeen retired legacy gesture-reference
 checks remain unavailable; no pass is inferred from other selection checks.
+
+## Editable spline fitting
+
+Use **Edit → Selection → Fit Spline...** on polygon, polyline or freehand
+controls. Choose Fit or Straighten and an evaluation count (0 uses the captured
+length/zoom default; Straighten uses finer preliminary sampling).
+**Remove Spline Fit** restores command controls. Repeated Fit/Remove on freehand
+sources follows ImageJ command trimming; editing a retained knot refits all
+current controls without repeating that trimming. Drag, insert/delete and
+numeric Properties operate on actual knots. Processing/display geometry stays
+an ordinary sampled polygon or open polyline; an open spline is not filled.
+
+C++ selection_spline.hpp and Python imagejxx expose SplineFitOptions,
+SplineFitMode, SelectionSplineFit, estimate_spline_selection,
+fit_spline_selection, remove_spline_fit, selection_spline_fit and
+validate_selection_spline_fit. Options are mode, evaluation_points=0 and
+magnification=1. Explicit count and nonunit magnification are mutually exclusive;
+Straighten requires count0/magnification1. State exposes controls, options and
+sampling_points, the frozen resolved/preliminary count. Generic width/attributes
+survive; geometry conversions discard stale spline state.
+
+Version1 typed state has seven fields: version, kind, mode, evaluation_points,
+magnification, sampling_points and controls. Structural admission/rendering
+borrows controls without solving or copying them. Creation/load/edit boundaries
+check actual samples against state. Output/controls are bounded to65,536 vertices
+and existing geometry work/byte limits; public operations admit before callbacks,
+freeze inputs and retain live cancellation. The existing ImageJ spline-import
+solver profile remains unchanged. No new third-party dependency is introduced.
+
+Both Windows hosts use the captured controlled worker and selection-only history
+for Fit/Remove and knot edits. Workspace preserves samples/knots/context without
+changing pixels. Recorder output uses explicit NativePathV4 resolved candidates;
+older profiles refuse typed spline state. Replay uses the existing explicit
+source rebind when identity differs. This is resolved-result replay, not an
+ImageJ operation-intent macro implementation.
+
+[Scoped evidence](parity/reviews/selection-spline-20261105.json):56 actual pinned
+ImageJ observations (including2 refusals),71 focused spline cases, Windows/Linux
+native core and installed Windows SDK checks; both physical hosts plus50 shared
+fit lifecycle scenarios. Constructor/attachment/mutable-buffer and additional
+magnification variants, saved-row/scientific integration, operation-intent macros,
+Linux installed-client and remaining supported-platform UI/release qualification
+stay with T06/T09/T14. Seventeen legacy gesture checks still lack retired inputs;
+no expectation was repinned and unavailable evidence is not a pass. G018 remains
+open. Selection interpolation is next, with explicit composite-hole scope.

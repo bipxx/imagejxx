@@ -1,4 +1,6 @@
 #include "selection_panel.hpp"
+#include "../native/selection_spline_detail.hpp"
+#include <imagejxx/selection_spline.hpp>
 #include "path_visual.hpp"
 #include "point_visual.hpp"
 #include <imagejxx/composite_path.hpp>
@@ -181,6 +183,9 @@ void SelectionPanel::rebuild(const ExecutionControl &control) {
         }
         auto replacement=Selection::from_path(ImageJCompositePath(std::move(commands)));
         replacement.width=result.width;replacement.attributes=result.attributes;result=std::move(replacement);
+      } else if(auto fit=selection_spline_fit(result)) {
+        fit->controls.points=points_;SplineFitOptions options;options.evaluation_points=result.points.size();
+        result=detail::refit_spline_controls(fit->controls,shape.x,shape.y,options,geometryLimits_,control);
       } else result.points = points_;
       result.validate(shape.x, shape.y);
       if (geometryOnly_) {

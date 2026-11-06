@@ -1,3 +1,4 @@
+#include <imagejxx/selection_spline.hpp>
 #include "planar_annotation_rebind.hpp"
 #include "geometry_number.hpp"
 #include "path_visual.hpp"
@@ -43,7 +44,7 @@ struct PlanarAnnotationRebind::State {
       throw std::invalid_argument("Select a valid 1-based replacement vertex");
     auto geometry=replacement->selection;
     const std::array<double,2> position{parse_geometry_number(point[0]),parse_geometry_number(point[1])};
-    if(geometry.is_path()) {
+    if(geometry.is_path() || geometry.attributes.count(spline_fit_attribute)) {
       const auto shape=planar_annotation_geometry(source->data().dataset.shape(),replacement->plane);
       return SelectionEditor(geometry,shape.width,shape.height).moved_vertex(std::size_t(vertex-1),position);
     }
@@ -67,7 +68,7 @@ struct PlanarAnnotationRebind::State {
       for(int i=0;i<5;++i)values[i]=parse_geometry_number(box[i]);
       const bool ellipse=value.selection.kind=="ellipse" || value.selection.kind=="rotated_ellipse";
       Selection unit(value.selection.is_rounded_box()?"rounded_rectangle":ellipse?"ellipse":"rectangle",{{0,0},{1,1}},value.selection.width);
-      unit.attributes=value.selection.attributes;
+      unit.attributes=value.selection.attributes;unit.attributes.erase(spline_fit_attribute);
       const auto dimensions=planar_annotation_geometry(source->data().dataset.shape(),value.plane);
       value.selection=SelectionEditor(unit,dimensions.width,dimensions.height,SelectionEditLimits{})
           .box_geometry({values[0],values[1]},{values[2],values[3]},values[4]);

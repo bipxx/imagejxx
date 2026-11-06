@@ -1,3 +1,4 @@
+#include "selection_spline_detail.hpp"
 #include "kernel_control.hpp"
 #include "saved_roi_geometry_internal.hpp"
 #include <algorithm>
@@ -267,6 +268,7 @@ void Selection::validate(int w, int h) const {
       throw std::invalid_argument("Line needs two points");
   } else if (kind != "point" && kind != "multipoint")
     throw std::invalid_argument("Unknown selection kind");
+  (void)detail::spline_control_count(*this);
 }
 namespace {
 Image area_box_mask(const Selection &selection, int width, int height) {

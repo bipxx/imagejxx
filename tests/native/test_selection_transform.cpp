@@ -1,4 +1,5 @@
 #include <imagejxx/selection_transform.hpp>
+#include <imagejxx/selection_spline.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/selection_creation.hpp>
 #include <iostream>
@@ -89,6 +90,23 @@ int main(){try{
   auto rectangleEdit=prepare_selection_creation(rectangleCommand);ellipseOwner.commit(rectangleEdit);
   check(ellipseOwner.snapshot().data().selection==std::optional<Selection>(fittedRectangle),"V4 rectangle lost native geometry");
   std::cout<<"PASS Fit Rectangle minimum-area frame,limits,collinearity,frozen callbacks and V4 candidate\n";
+  const Selection splineControls("polygon",{{3,3},{13,3},{13,13},{3,13}});
+  const auto spline=fit_spline_selection(splineControls,16,16);
+  check(spline.points.size()==100 && selection_spline_fit(spline)->controls==splineControls,"Spline lost source knots/default samples");
+  const SelectionEditor splineEditor(spline,16,16);check(splineEditor.handles().size()==4,"Spline exposes sampled vertices instead of knots");
+  const auto refit=splineEditor.moved_vertex(1,{14,4});
+  check(selection_spline_fit(refit)->controls.points[1]==std::array<double,2>{14,4},"Spline knot edit detached fit");
+  check(remove_spline_fit(spline,16,16)==splineControls,"Spline removal lost controls");
+  const auto splineCommand=resolve_selection_creation_command(ellipseOwner.snapshot(),{SelectionCreationOperation::Replace,spline,SelectionCreationGeometry::NativePathV4});
+  validate_selection_creation_command_record(splineCommand.record());
+  refuses([&]{resolve_selection_creation_command(ellipseOwner.snapshot(),{SelectionCreationOperation::Replace,spline});});
+  auto freeSpline=fit_spline_selection(Selection("freehand",{{2.2,3.7},{12.8,3.1},{5.5,13.2}}),16,16);
+  const auto insertedFree=SelectionEditor(freeSpline,16,16).inserted_vertex(1,{7,2});
+  check(selection_spline_fit(insertedFree)->controls.points.size()==4 && selection_spline_fit(insertedFree)->controls.kind=="freehand","Freehand insertion reapplied command trimming");
+  const auto removedFree=remove_spline_fit(freeSpline,16,16);ExecutionControl removeControl;
+  removeControl.checkpoint=[&]{freeSpline=Selection("point",{{0,0}});};
+  check(remove_spline_fit(freeSpline,16,16,{},removeControl)==removedFree,"Remove callback redirected frozen fitted samples");
+  std::cout<<"PASS Spline numeric/state,real knot refit,removal and explicit V4 candidate\n";
   std::cout<<"PASS Convex Hull geometry, exact/short limits, point metadata policy and frozen callback input\n";
   return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

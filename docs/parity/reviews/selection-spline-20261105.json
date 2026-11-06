@@ -1,0 +1,1533 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T06/G018 editable spline fitting/removal",
+  "base_commit": "a50c128bb06869118e851c6573872f673dac40fe",
+  "command_candidate": {
+    "upstream_property": "selection04",
+    "invocation": "ij.plugin.Selection(spline)",
+    "native_actions": [
+      "show_fit_spline",
+      "fit_spline_selection",
+      "remove_spline_fit"
+    ]
+  },
+  "state": {
+    "implemented": "Bounded public C++/Python estimate/fit/remove/state APIs; real editable knots, freehand command preprocessing separated from editor refit, frozen sampling context and explicit V4 typed state.",
+    "verified": "56 pinned actual ImageJ observations (2 refusals),71 focused spline cases and2209 distinct affected Windows Python IDs ultimately pass. Final71 supersede earlier spline prototype checks. Windows/Linux changed native core and installed Windows SDK pass.",
+    "integrated": "Fit/Straighten/Remove,physical knot drag,numeric properties,history,workspace and explicit replay/rebind observed in both Windows ImGui hosts;50 shared fit/remove lifecycle scenarios pass.",
+    "release_ready": false,
+    "family_closed": false
+  },
+  "contract": {
+    "header": "include/imagejxx/selection_spline.hpp",
+    "options": {
+      "mode": [
+        "Fit",
+        "Straighten"
+      ],
+      "evaluation_points": "0 auto;explicit count mutually exclusive with nonunit magnification",
+      "magnification": "1 default;frozen pane zoom for auto Fit;Straighten requires1/count0"
+    },
+    "state": "ordinary sampled polygon/polyline + version1 seven-field controls/options/sampling_points metadata; no Selection layout change",
+    "limits": "65,536 controls/samples,existing work/byte admission and live cancellation; borrowed structural rendering/preflight, numerical validation on creation/load/edit",
+    "freehand": "Fit/Remove command trimming can change controls; control edits bypass that trimming and preserve every edited knot",
+    "compatibility": "Default/V1-V3 refuse typed spline candidates; explicit NativePathV4 resolved replay, not intent macros",
+    "unmodified": "Generic width/attributes and raw pixels/calibration preserved; no new dependency/controller/renderer/scheduler/runtime"
+  },
+  "reference": {
+    "source_archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "observer": "tests/reference/ObserveSelectionSpline.java",
+    "dispatch": "Selection.run(spline), remove/straighten macro options and PolygonRoi.fitSpline(count)",
+    "fixture": {
+      "path": "tests/fixtures/selection-spline-imagej154r.json",
+      "bytes": 132864,
+      "sha256": "252565faf5a24e657b0fa9ecb2f97a220347609aef8060c90717a4b8851778ae"
+    },
+    "append_only": {
+      "first51_unchanged": true,
+      "original_sha256": "6ee9a86bca090917adbd5566c89ea0a20e62aaf43f0e82594726183c16bee325",
+      "expanded_sha256": "252565faf5a24e657b0fa9ecb2f97a220347609aef8060c90717a4b8851778ae",
+      "cases": 56,
+      "refusals": 2,
+      "added": [
+        "repeat1-freehand-refit-0",
+        "repeat3-freehand-refit-0",
+        "repeat4-freehand-refit-0",
+        "long-polyline-fit-0",
+        "long-polyline-refit-0"
+      ]
+    },
+    "comparison": "absolute1e-5,relative1e-7;no prior expectation/tolerance changes"
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/selection_spline.hpp",
+      "bytes": 1289,
+      "sha256": "ebff09bd1b7b60cd8514e4a66c12e48d5e6b219d6c07a394cc624062e39f10f7"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 62399,
+      "sha256": "8d892b2ae5b20abc720ae87b790c4b379deef72bc36dc9bd720830f33df8b41f"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 1392,
+      "sha256": "63d759d4593bc431619853ecb4824f7bd46d7f1f098a7c0c66b0e66b71700c0c"
+    },
+    {
+      "path": "src/desktop/path_visual.cpp",
+      "bytes": 7675,
+      "sha256": "c8bdd3d8dee76bbba738deac73abc1cb3c51527382bddc8633432419d6fd2a10"
+    },
+    {
+      "path": "src/desktop/planar_annotation_rebind.cpp",
+      "bytes": 14108,
+      "sha256": "7ad4dc51a95f3d61da28b3962a7159a8bd9e2f935b9fd15cad3eff7c9dacd6a5"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 65526,
+      "sha256": "4ab908572e71e738067011a21a648d73a651c31d81a7f6d89c3132ec609bc0d3"
+    },
+    {
+      "path": "src/desktop/roi_import_replacement_editor.cpp",
+      "bytes": 17268,
+      "sha256": "de58acbd452ddd3a488ee7bcd54ffd821e38448c8705e345ed6aa75477fee787"
+    },
+    {
+      "path": "src/desktop/selection_panel.cpp",
+      "bytes": 38702,
+      "sha256": "b0ea93c3bd165fd0392e80e8f99a59caaba64ae48bc32edcb4cb0fd2e881b3ae"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 922130,
+      "sha256": "0d696d81c4c836e41e961a4e8f6c84e08d1f828aff1ff2026c74c400c776a559"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 83306,
+      "sha256": "444a3c01230326bb3da3d15b2fcbca8e05e57332189cf8e8b68377a9b3cf7760"
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 60896,
+      "sha256": "d4612f4b93943019b7a9936c65d25e06e00f4331274685062a8a6a791b72fa49"
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 44930,
+      "sha256": "4365965d1f9e6536ab3dec17d5312878d3141a5d2ab9c3fff9b94927b8b3eefa"
+    },
+    {
+      "path": "src/native/imagej_spline.cpp",
+      "bytes": 26365,
+      "sha256": "54af8cf3d63e543df00a228c1c3106bda20d585dda667857947422ac0a27466a"
+    },
+    {
+      "path": "src/native/selection_codec.cpp",
+      "bytes": 8727,
+      "sha256": "94b4aa4e26a17cca03cc3a0cd1d97871d308e11649c1aada331eaee351016f93"
+    },
+    {
+      "path": "src/native/selection_creation.cpp",
+      "bytes": 88424,
+      "sha256": "b05a2dc3a403e4f058f92f884a400d33520b8e1f02374f5ee4f6d85695883b77"
+    },
+    {
+      "path": "src/native/selection_creation_bindings.cpp",
+      "bytes": 24691,
+      "sha256": "a1dad9ecbc87be5b0cd9ac21f62c9f806fe380b704b59e65146fd9092c64f5f7"
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 78021,
+      "sha256": "86464c8655e1dfe3c6d6f5018457aa0bff922f1793438a210d5f65c019676e06"
+    },
+    {
+      "path": "src/native/selection_spline_detail.hpp",
+      "bytes": 616,
+      "sha256": "1808dc434539a280a5343a082100663a14aa8e89e530995ce8a87a9b51679996"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 31058,
+      "sha256": "88cf9c2da06d50a363f766be0a45a58f92c7b1706da130c569a619ddbdf77b71"
+    },
+    {
+      "path": "tests/fixtures/selection-spline-imagej154r.json",
+      "bytes": 132864,
+      "sha256": "252565faf5a24e657b0fa9ecb2f97a220347609aef8060c90717a4b8851778ae"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 33314,
+      "sha256": "8c9c5a5bb6776138f1bd15b5fa74ffafcc4e9b22354283136bb001770e3295b8"
+    },
+    {
+      "path": "tests/native/test_selection_transform.cpp",
+      "bytes": 10783,
+      "sha256": "45788905f732e086b22880edd02ab1978cbad8277d4b44aaeec0aeadc0a08d60"
+    },
+    {
+      "path": "tests/python/test_selection_spline.py",
+      "bytes": 12369,
+      "sha256": "4fa1217a871d415589dfcd0e12913b31c8812639cf0cace7f22ca99bb5f98067"
+    },
+    {
+      "path": "tests/reference/ObserveSelectionSpline.java",
+      "bytes": 3923,
+      "sha256": "c81136eeb39b5032ee6e11f1186f3ef2cd0b07d0b0f4eee6f90f302335ee221e"
+    },
+    {
+      "path": "scripts/check_plan.py",
+      "bytes": 14303,
+      "sha256": "b4fc6b25ad1f457d68e943224bd0a9aef92d61c6c3e779273063c3ae0d767dbc"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-_desktop004.process.json",
+      "bytes": 2853,
+      "sha256": "d4eed8390f69381b7b379082bd40709dc937248b68fd5058b3c9e89120cb83ba"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-_desktop005.process.json",
+      "bytes": 2856,
+      "sha256": "79c36f42a850d4758dfef1dc63e4ceb2a9859f103f6c49c1bb881a5d9b2d5b43"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-_desktop009.process.json",
+      "bytes": 3258,
+      "sha256": "a7793ab5ba352046b90ed6445bbca5f6333a114f307a36a7e8a7422f929c993a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-_native001.process.json",
+      "bytes": 2029,
+      "sha256": "8445241912956b3bad2851ae81b722f871043d25165a472cfaccb2ba336adbcb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-_native002.process.json",
+      "bytes": 2031,
+      "sha256": "f4e1082b498df9729c6edf9da81f4bb0e62eac3bc6402ecbea6f51a37f331eb5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-_native003.process.json",
+      "bytes": 2031,
+      "sha256": "c6e8dc1367d1fec289e4dd8bf47d6055f8998c02a2b1ad62724880a88c5ee384"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-_native004.process.json",
+      "bytes": 2031,
+      "sha256": "b338a4eab3e670f3a81719adfe246e5b6c5fb6f91ac7a1ed0e055b3cac51d9b7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-_native009.process.json",
+      "bytes": 2548,
+      "sha256": "ceb986871788ea00a4a8d1e5eec47cf2224ab2097984a8b0ba53c522236dbfa4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_app004.process.json",
+      "bytes": 2854,
+      "sha256": "98edb45333674ea112aef7f397477ffb5d8b907cdacbda32934d680bb77df56f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_app005.process.json",
+      "bytes": 2860,
+      "sha256": "1def3603f4b7bd3a5f749e4ae634dd31eb0e9c34a00284ec5d8659fc6ac4109c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_app009.process.json",
+      "bytes": 3267,
+      "sha256": "32341e0597c29066dad6f295cc724734f8fd691658f89896df8d481ba7f516c7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_core001.process.json",
+      "bytes": 2037,
+      "sha256": "bc45b82e1acbc227050e44bebff6b916a74e03dd450387a32e75462d658ab9aa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_core002.process.json",
+      "bytes": 2038,
+      "sha256": "63659d6f28a093f87f1274de07d7ed51a127afae0664f11f8e83d25dcca7d351"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_core003.process.json",
+      "bytes": 2040,
+      "sha256": "4da77e4671b7a235a76ff3ce6bf47bedd8c731d170ee026287046ecc6015601f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_core004.process.json",
+      "bytes": 2038,
+      "sha256": "d1d20d1974e7afff623871056d0a77f9e8c1d21a9e089cb668f74fd45a5bd33e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_core009.process.json",
+      "bytes": 2556,
+      "sha256": "83f4f85056d2ceb4f841d0d2239a57236e4fc28a5de5a7582669941ef468e236"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_desktop004.process.json",
+      "bytes": 2864,
+      "sha256": "3b2d6031d1497889fc8c5eaaefbe71dc35e1eb6aae24baa4546862d147081a95"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_desktop005.process.json",
+      "bytes": 2860,
+      "sha256": "46d257fc51e883f73f27075a7df801fafdd710bd7a337a96b233b4f14052fdee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_desktop009.process.json",
+      "bytes": 3277,
+      "sha256": "f3fd20ae992126a17d59f3938f706c34084e58af0bbd88be81cb3c98c595bf18"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_display_actions_tests004.process.json",
+      "bytes": 2870,
+      "sha256": "fc803a0d5b9a370b0c5435b2c5aff65247e10a6475020cfec105eaef183d8660"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_display_actions_tests005.process.json",
+      "bytes": 2877,
+      "sha256": "a296df7742752f35bc4db7839ac4474505b16bcbeebe83e90a6df8b5eb3f901e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_display_actions_tests009.process.json",
+      "bytes": 3286,
+      "sha256": "d4d8a287ec76e352e05851621e321ef17b451f81195f79fdafff87a56fc650dd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_native_selection_menu_tests004.process.json",
+      "bytes": 2880,
+      "sha256": "b3f7bc93268860160cd63fc5e01a2e893f5286c9118d0f162e34995506d2b534"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_native_selection_menu_tests005.process.json",
+      "bytes": 2883,
+      "sha256": "963c85a214594d34a113b1d032af939ee413185e3c5ec3550b5760210b1ef505"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_native_selection_menu_tests009.process.json",
+      "bytes": 3295,
+      "sha256": "e3194a5e4a21cc92fc1ee081cd2efd08d846c6985b1b0ee317ecd95aae44c367"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_path_visual_tests004.process.json",
+      "bytes": 2874,
+      "sha256": "db3b75deea3e9bd608fc94efd9aa9c2d8fb7f80237c08399e58ceb6f57ba573e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_path_visual_tests005.process.json",
+      "bytes": 2874,
+      "sha256": "a04d5b28408cc71996a7f9675d4f40380a7282cec95536c974076a8bb0449cad"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_path_visual_tests009.process.json",
+      "bytes": 3287,
+      "sha256": "5de4d3bc9033c436accf9fdb5b5b959c5de90f2f32e8c882052bffd3dcddbf55"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_creation_geometry_tests003.process.json",
+      "bytes": 2065,
+      "sha256": "c28c097979657d2bda2289c8e3b4abac7da357d1f953ba7e4154d0776564c846"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_creation_geometry_tests004.process.json",
+      "bytes": 2067,
+      "sha256": "0831db99308fca6ebe2238f91b85492fc409823f0819e8800d2f41b8b1d2d2b8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_creation_geometry_tests009.process.json",
+      "bytes": 2584,
+      "sha256": "4efe434ace0768ae3168fa71325bc4bdb3706b3f4a6fd2663e82c0f9e415ca44"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_creation_tests003.process.json",
+      "bytes": 2058,
+      "sha256": "3bdecf67c236706e05cad73d7c8cee35665cabb563be0fe974b34ada8151fdc7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_creation_tests004.process.json",
+      "bytes": 2059,
+      "sha256": "df349e99283c4209e681442a424038835b72fa2b499a45670a977fec858b50b5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_creation_tests009.process.json",
+      "bytes": 2574,
+      "sha256": "f8721f656d55b47db92544205b4e743dd7ac376471357dcd8e53a0dd371ee418"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_edit_tests004.process.json",
+      "bytes": 2055,
+      "sha256": "cb176a041b6703b7949b594eabdff38a2baf45ab7039876c76f474e4dd8676b2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_edit_tests009.process.json",
+      "bytes": 2573,
+      "sha256": "cdc1c273d320c8420abf05d49e5b7de199c40b64d7f1310070f80cf2f2a71447"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_transform_tests003.process.json",
+      "bytes": 2060,
+      "sha256": "7a9fab09b338e41d99ae983e72ca5f0e1054f7ab5b1ec49914e85a8de26452cb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_transform_tests004.process.json",
+      "bytes": 2060,
+      "sha256": "6657d70752cf9bc8140287141ad52de831624f89f7c756a3560a812f0e2573a0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-imagejxx_selection_transform_tests009.process.json",
+      "bytes": 2575,
+      "sha256": "d84bfec4648bfe136b01567ffa3c4333f6a9ea23f85cb041f65515470b5b1f8e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-test_planar_annotation_host004.process.json",
+      "bytes": 2871,
+      "sha256": "ac71c4e9df7a189678febcaa6f2a0cc806a23fba452956818e37f3df0d9a9ab4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-test_planar_annotation_host005.process.json",
+      "bytes": 2876,
+      "sha256": "39d1c788422e9d65f343c82fe4aa37fe455b7e962d84f753e52613d8aba33bc8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/build-test_planar_annotation_host009.process.json",
+      "bytes": 3283,
+      "sha256": "f52859534592fef671b8a32133e1377dfbb3046499a1268bcb411ba932efcedc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/cpp-rebind007.process.json",
+      "bytes": 1984,
+      "sha256": "65abd28b447616501047b9fc37b198de39230e459aae6bc672177131e139ba61"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/cpp-replacement007.process.json",
+      "bytes": 1990,
+      "sha256": "6ce6b2e8f31c3bcb6780267d21c5c3a9878e03d25a898ee6955dd4efdd38c813"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/entry.json",
+      "bytes": 13632,
+      "sha256": "8260557489ac6709267058845d8eebcc0425d306bdc465c6d38c6150015fb0ae"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/final-readers010.json",
+      "bytes": 3555,
+      "sha256": "9e3f2d376708c23b30f93b0c4c43c17397b679c8e1ca3da80e3de7146f0f0188"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/final009-pack.process.json",
+      "bytes": 2466,
+      "sha256": "b5f0626ea33c4d4c952c68292fe6f8cbb26c48d1bbad49cc7f8d89d9d4358848"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/final009-retirement.json",
+      "bytes": 426,
+      "sha256": "8e86073e30afd67bb02cd29440a03ceb11c1fc42b5b89ea461581e1174346f04"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/final009-verify.json",
+      "bytes": 1407,
+      "sha256": "20c0d1b8ef0ff6b0e06fd771cf34d9ccc86842047e83d0f5db0406ac95f59eb7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/final009-verify.process.json",
+      "bytes": 2353,
+      "sha256": "91110894ba86462bfd131f3b75c490cf30b058bc575f774d81886320fa15ac13"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-app004.process.json",
+      "bytes": 2120,
+      "sha256": "407b9cf4646671c46703950859a7df85a3b7908fffaca3ce2d2d91c80b9d421e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-app005.process.json",
+      "bytes": 2121,
+      "sha256": "b71506f7590b0c82c4ed36808d9ab0d56a5a3ecbae25e79fe1c87a0d7a6a77ae"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-app009.process.json",
+      "bytes": 2121,
+      "sha256": "7eea88516b2c262447fa17d31cdbeb803e712e08229ac13652b80cd9ec10af1d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-processing001.process.json",
+      "bytes": 2139,
+      "sha256": "1977e23ef6b661ae3b559edb59c92a768692ff5f9db16f2b5c7f06085c5936fd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-python001.process.json",
+      "bytes": 2131,
+      "sha256": "e6f1f61dd6a9802e4dd1607e8e3fad04796ff9ce17dbc643728c2836d7d744f5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-python002.process.json",
+      "bytes": 2129,
+      "sha256": "01ff0bd68a5e6010026be89c751f2893dd9b7ac0943bb0056c3584d93704c7cc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-python003.process.json",
+      "bytes": 2133,
+      "sha256": "f59cfa9231db6d9b70bd4aaf2896def8f9f02ac4c9dc99f72c63daa6268de1fa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-python004.process.json",
+      "bytes": 2131,
+      "sha256": "58ffda2efddbe6a8a3ec0cc28da73e7b619768d2b8e8fa8b5cd1af06e4559333"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-python005.process.json",
+      "bytes": 2132,
+      "sha256": "5928e6fd3b50b5c5d460dc00395eb7c8c7618f0cbefe543ae8da5ae1032f7e0a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-python009.process.json",
+      "bytes": 2132,
+      "sha256": "987d151b7211bfd96b393cbae82c8ebbfbb2829657359cff47a5cb777271915f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-sdk004.process.json",
+      "bytes": 2126,
+      "sha256": "086acdc507e6989b39e3bd65c5e421ff0a24aea8d5c1baaeb7b10aaa512b38b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/install-sdk009.process.json",
+      "bytes": 2124,
+      "sha256": "0e0436a7ff4d8c62fbff43adbd455faa296d7ab99b38d5396e478546afe51f75"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/installed-identities004.json",
+      "bytes": 2645,
+      "sha256": "c9979d79f4a8ae5181e8894c9a61f88a3808d71f147c82f32d20bc14ea3323f2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/installed-identities005.json",
+      "bytes": 2645,
+      "sha256": "4d4839345a448ed34860b774b6d1edaeb6de8691b361b7d3805cff2d7cd9ff62"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/installed-identities009.json",
+      "bytes": 2645,
+      "sha256": "83697494c83683559208cd7ff09622913ee03707e600de8a540928738508dc5c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-build004.process.json",
+      "bytes": 1572,
+      "sha256": "644dfad5312afe9aa4792da9e1885162146ca3ad266f62e16e290e4d78b09781"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-build005.process.json",
+      "bytes": 1570,
+      "sha256": "055f54cdf2202877a6db50c8bad25faf7395437b39100ccf7bf557d04d98e8d9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-build009.process.json",
+      "bytes": 1568,
+      "sha256": "85ca2e95768cf267d3a0e43568a9bbaeca2f3903681e8e1d7492995e85f65d7d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-identities009.json",
+      "bytes": 730,
+      "sha256": "6bf1eaff78644497012e7459b562577b9be4a5b6167c5ad879d0cd4d2f6313bd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-native005.process.json",
+      "bytes": 1463,
+      "sha256": "be761e8d54fe04e48c9ddcc570fef3492e69eafc0ca3420b523fc372d58c7803"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-native009.process.json",
+      "bytes": 1463,
+      "sha256": "d0410eaf810796debb96ac74375e292219691268a88ee842bc72c51f9fd306e5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-owner004.process.json",
+      "bytes": 3007,
+      "sha256": "bceb8c18edec954d62fd40f1910ef1c82aeb0a81999b11ccbc98cc57da1950c9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-owner005.process.json",
+      "bytes": 3012,
+      "sha256": "ceb0ddd55f18938ff399f0a46872a71aa8ce29c2027aebe343f884a4628e5254"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-owner009.process.json",
+      "bytes": 3073,
+      "sha256": "a5751c7da6d33e2064eb20586d1edeafb26d3ebfcb87983cbefebec4a0207c95"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_native_selection_menu_tests009.process.json",
+      "bytes": 1845,
+      "sha256": "ef0e7c43033bf0953851ecf9a211cdb00cb0b8c84271337302dd3e01dd580fa7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_path_visual_tests004.process.json",
+      "bytes": 1825,
+      "sha256": "551492ea05dd9a43c54a6a2aacac42c0de66d149290631ed081882ff3901b853"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_path_visual_tests005.process.json",
+      "bytes": 1825,
+      "sha256": "06d51eabe74287ae1d289102da60fcd3de60b20b13a747bcc46c4a3471d92b77"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_path_visual_tests009.process.json",
+      "bytes": 1824,
+      "sha256": "1f2fda5a80576198121bdc6d631ee5ee72833f28e1406460e40d96ea4350a9ad"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_creation_geometry_tests003.process.json",
+      "bytes": 1858,
+      "sha256": "25a310e97e80e8813a4138caa4150096dbc98fa60759461bec09c7e7af78b29a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_creation_geometry_tests004.process.json",
+      "bytes": 1857,
+      "sha256": "4b0218188defbc5561b967dd5682ae3379dbf4a3d9804aa4906bfb6d9c1702dc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_creation_geometry_tests009.process.json",
+      "bytes": 1854,
+      "sha256": "4144bc257e59359da117b8d4ddcf8dc9c48993b2501af9757ee3c7f2908c6909"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_creation_tests003.process.json",
+      "bytes": 1840,
+      "sha256": "97ed96c1391996f76bc4b1addcfafe38bc601a2a4e811dbde0429069fc6da6ee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_creation_tests004.process.json",
+      "bytes": 1839,
+      "sha256": "e612d2b128609483c31a3654ee20ffc4a71d82d49b9c981fa2dc44a297f3017e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_creation_tests009.process.json",
+      "bytes": 1838,
+      "sha256": "94af4257034b1e95d4d82645d1e30d84be42b4d9f3a441a7ff84c39c0ded7f95"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_edit_tests004.process.json",
+      "bytes": 1829,
+      "sha256": "f2cf6c28837b67ade12829d0a457924711047f4766e0e5d3ebbcad30ed72fb08"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_edit_tests009.process.json",
+      "bytes": 1831,
+      "sha256": "54651f68dd50fd842c1eee2246d932095267874780c59191389cc9972e428509"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_transform_tests003.process.json",
+      "bytes": 1843,
+      "sha256": "d49efacdcd76bc6de213ee50d288bed50cf0415ed596efbe1ee94dbc23305a4e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_transform_tests004.process.json",
+      "bytes": 1841,
+      "sha256": "7267d090b88d26f19cf79f9642e1e54278d07ae3bfdeaee0a4858a6c490625a9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_selection_transform_tests009.process.json",
+      "bytes": 1842,
+      "sha256": "399dff78a585bf17698b5b05030a9e2e9a3e68015020fa7a7ab9e05b0f3fcd35"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-menu005.process.json",
+      "bytes": 1984,
+      "sha256": "1242f8bfc50c4b7030e70332d3c1cb35a90784e610036746a0d65f8f68ab70f4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-menu010.process.json",
+      "bytes": 1974,
+      "sha256": "fce019aa33cf511a7290f4071583e20a0e02ba5a1f4474655acdd99d2111974f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-regression005-pack.process.json",
+      "bytes": 2522,
+      "sha256": "7d1253001929b6abaffd7bf021b4731d61c53f0dfb547db3522e6076fb6de564"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-regression005-retirement.json",
+      "bytes": 434,
+      "sha256": "74a6617848012e799d13c91764507239b26a489ca448431f36c09ce5ab080a3b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-regression005-verify.json",
+      "bytes": 1475,
+      "sha256": "9d7f92ac9ff5108333be8a58b8167c832e2e429134e1a0d58a9135b6a629cf10"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-regression005-verify.process.json",
+      "bytes": 2401,
+      "sha256": "0d5156cff002fc6db13556a3d601ed943d491765228b596e6fd6a97489a91482"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-test_planar_annotation_host004.process.json",
+      "bytes": 1824,
+      "sha256": "701168f4d33ce321104fe458bb8fba7c746411e13d9169f1f1b702f5f9ff809e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-test_planar_annotation_host005.process.json",
+      "bytes": 1828,
+      "sha256": "2f895cff8e442047c95560e493430d25d2b0c10f4b5b8b6004b836057e9cb5a0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-test_planar_annotation_host009.process.json",
+      "bytes": 1826,
+      "sha256": "b04fb0848cf21d9b4fe0595412e6257e3c0a8fdf83cd3f180bfa74a56fe86aa1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui004-pack.process.json",
+      "bytes": 2487,
+      "sha256": "2a8d8f6f1679b9fc274913b2b441df259bfff7a3b370e9f4a3d03fecc4efe900"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui004-retirement.json",
+      "bytes": 429,
+      "sha256": "bb28d97169f8c19e3886859aa8028f5c5106a397dc3327bd5729a10e4c9fad8f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui004-verify.json",
+      "bytes": 1431,
+      "sha256": "c95f7b1fcf66436d3367bfe45aeb81f0fb810007708228408737c5e03a267315"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui004-verify.process.json",
+      "bytes": 2369,
+      "sha256": "26eb7832bfdd75b00a2f90e39ee898e5b0dd0b5f5a873b18e2511fb47b81ed1e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui004.process.json",
+      "bytes": 1960,
+      "sha256": "ace653771a80c0aae1b2c5fe3a207c4bcb8ceafef94d94e1bb62017144f27c79"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui005-pack.process.json",
+      "bytes": 2487,
+      "sha256": "c8ceb0961690cfbba696af45a9ae4ff39ad1a54b25a55da7679fb3f033d2b684"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui005-retirement.json",
+      "bytes": 429,
+      "sha256": "f1f9e003cc6294a7666289efb40056c8a469d773a7a2e382a355c3912986da07"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui005-verify.json",
+      "bytes": 1431,
+      "sha256": "da1d1b7ac5644907b2b7bda8d6b63e7d354d79b4fbf727b7a41d03da52a448a4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui005-verify.process.json",
+      "bytes": 2369,
+      "sha256": "e2c9b59f65f5247769c1cf0394399db254395ffc6fe295f6baab92ce737a3a48"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui005.process.json",
+      "bytes": 1960,
+      "sha256": "a9c588f24355fca7e142235f6f7779afbeed3cd02f31749d0eba3b789f3320b5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui009.process.json",
+      "bytes": 1967,
+      "sha256": "42ff38093a9bd0b5d3539edd93350d29f1606934752a8461a7a06298912c7acc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui010.process.json",
+      "bytes": 1970,
+      "sha256": "a55314efdf5abb2a17c81bb8e053da9f2630015d86126db5a92ea99e7590318a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/producer-inputs007-pack.process.json",
+      "bytes": 2516,
+      "sha256": "eabfeeaf7bf9be6f89d177d215d67bdc7f876f1d91237e7f395b8f9a17adc9ba"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/producer-inputs007-retirement.json",
+      "bytes": 438,
+      "sha256": "fbb105a8358fafadb1873c11b902d038a267c0115cb22739284614d144646c20"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/producer-inputs007-verify.json",
+      "bytes": 1469,
+      "sha256": "817a4a7a897cb1fe9f35d94e3f9cd3d5cf80d89c5471910c4bd8062163521e76"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/producer-inputs007-verify.process.json",
+      "bytes": 2392,
+      "sha256": "7472b8a5457096fb18d553aac1b0e1fad58238af1a9a1d09810a110f6e1336fb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-api004-pack.process.json",
+      "bytes": 2492,
+      "sha256": "8733b2850fdb27b59d6baa38a22e0ccb1599a7bbb85a77fe37a1cec17aec386f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-api004-retirement.json",
+      "bytes": 430,
+      "sha256": "0daf004f78c68061e2f497b3efc541cd0f7f62e65fe8cde747a92f46b14432ef"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-api004-verify.json",
+      "bytes": 1437,
+      "sha256": "ddb5a8cbba62daff41331b2d36e0d9881023e784eb704fac9d9d26e3babbd4c2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-api004-verify.process.json",
+      "bytes": 2369,
+      "sha256": "10b8801c147c1326bc36ab3fe1dc36bfa4918c46f3e004a456711fa5e13fd9cc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-api004.process.json",
+      "bytes": 3031,
+      "sha256": "6d7760db294ac07944760a72fedb1c9488067840325a7894670de284094f279c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-api004.xml",
+      "bytes": 293562,
+      "sha256": "2894741a59c3021b92e7d57de5a29c2da51d5ba7d0267f5d65033bacb15b50c6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-core001-empty-retirement.json",
+      "bytes": 270,
+      "sha256": "b4730564123b8bb0a929df1bcb035e53e07cf1d167c0ed9fd119f6b7e3bd16d8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-core001.process.json",
+      "bytes": 2474,
+      "sha256": "da289eea472001bf4cf4372bafcd365dd927a65eba73497756c47dc68d3eed25"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-core001.xml",
+      "bytes": 152484,
+      "sha256": "70703cc3a9a8c8a72c873215fc1dcb63a3232fb7034860246898b21e5a549d16"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-core002-empty-retirement.json",
+      "bytes": 270,
+      "sha256": "01b8fb91738683645b01b9b9e4c44d0da8382a3deb5436dafd6fc7c7c5b5f631"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-core002.process.json",
+      "bytes": 2326,
+      "sha256": "e3deab308b6689df68287e103bc9ce56a152363498324f15c8611354fc782a7e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-core002.xml",
+      "bytes": 7386,
+      "sha256": "91aaae7a89b7c59006be31326e2e7b631a356042c19ea59223e89e2c14c3a543"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-owner003-pack.process.json",
+      "bytes": 2497,
+      "sha256": "6c5c93363114a5b88f9391a8c0105e9d0c7bf87fb9e3474c6f9bf5e5832838b1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-owner003-retirement.json",
+      "bytes": 428,
+      "sha256": "623cefb58680780fc6c46ed55fd4485ff73094d29675b934d9156a2b8e41cae1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-owner003-verify.json",
+      "bytes": 1444,
+      "sha256": "dc89abcc603add1b43bed51a9ec1b3f8750e1dcb7717919c4e369ef23bac6f70"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-owner003-verify.process.json",
+      "bytes": 2381,
+      "sha256": "06da9c2211f66e2a732cc1b7937adb7c1e64be8e78c580272f63b10ebfc363c8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-owner003.process.json",
+      "bytes": 2611,
+      "sha256": "aa94125952d3496a96cb96ecfc48a431f274314a3ddf24abf662c4175b800e7c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-owner003.xml",
+      "bytes": 212285,
+      "sha256": "86b059d6dfdcc9e55bf36fb4fd4c95e82333228203502c896f70f5025662763d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-report007-pack.process.json",
+      "bytes": 2505,
+      "sha256": "92720c5524d4cec17a101b16c62afc4ef5e92a3bee5a32bc7a0412dd108e79e6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-report007-retirement.json",
+      "bytes": 436,
+      "sha256": "8836f40a51c790ac0e76d24ef1e5e7e26ca659e47eebca80979938af5edc7fe3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-report007-verify.json",
+      "bytes": 1456,
+      "sha256": "7caea581c95bc6d74bf6f76bb6d77da3db1a95a53a1574718313e7400afa121e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-report007-verify.process.json",
+      "bytes": 2385,
+      "sha256": "52156f5cc7ad1eb5b1f5c0a8e1a64643d39dd8384cc34d1b0a414ae98e9a76fc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-report007.process.json",
+      "bytes": 2401,
+      "sha256": "c96101f3510938ceb6097ce1f447e2272d3ce06f7965bad50e811965133ba765"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-report007.xml",
+      "bytes": 1226,
+      "sha256": "0d4d54856105f2c7963b85d485665661bdfd08ad2d3789fc4f7f1e37e31f4756"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-review006-pack.process.json",
+      "bytes": 2506,
+      "sha256": "1ce1d5a8a7735397b67d07f6a257f27f203a2014dbab2e84e5055281007d8018"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-review006-retirement.json",
+      "bytes": 437,
+      "sha256": "4f99a4940aeaf04af476dfbd4951b7c1a0f714fe669cc1d808ec426c06489de2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-review006-verify.json",
+      "bytes": 1459,
+      "sha256": "9869be9336fa5de6abe358308ced634012292f0d6300a2b5b483cc97ce770235"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-review006-verify.process.json",
+      "bytes": 2384,
+      "sha256": "473659d2e0e9a41dcadd04936a718ca4e7f63bbf46742a4d3f212fc5dac1bdac"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-review006.process.json",
+      "bytes": 2494,
+      "sha256": "afab8a703370b01741bc20d501d7929fac36bdec006d207b2b37a791c620f735"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-review006.xml",
+      "bytes": 14602,
+      "sha256": "119197976605816b837f40c70bdf004c43519ae3d2a61e0c61a9e856df7f094e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-spline009.process.json",
+      "bytes": 2330,
+      "sha256": "78c1dfd0b8587ed2e48f9f893ea8a629d536cfe9b774dbd320f7e887fb7cb868"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-spline009.xml",
+      "bytes": 13879,
+      "sha256": "506281647c312419638056e384bd817794a59397a38b94033d4409937f53b534"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-spline010.process.json",
+      "bytes": 3012,
+      "sha256": "cddabd72722a909e4d167353f298626979a5bbb329009e2f7feaee842d977df9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-spline010.xml",
+      "bytes": 1195,
+      "sha256": "b9777de575b8358cc68ec33d673a2501c68298a768ff1e13edabdbcbaafdb78b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-ui005-pack.process.json",
+      "bytes": 2483,
+      "sha256": "d0a287310ed3b82ca63a2bf9c3bb430f0b4fb3203c94e5cb16fb88b1976c20bf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-ui005-retirement.json",
+      "bytes": 429,
+      "sha256": "f1beb737597c4cc601eeb430eed8abb4c23e50f48dbc61605961d20ef85cebb7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-ui005-verify.json",
+      "bytes": 1430,
+      "sha256": "d8c7d4f77365643368e58480dcda6e0b41df6b5021fd51841d03739a7def93a1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-ui005-verify.process.json",
+      "bytes": 2367,
+      "sha256": "f324a613e93a83619a71691df7c47b79f8364f8f83361cd04c1d0e01bb6e4569"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-ui005.process.json",
+      "bytes": 2466,
+      "sha256": "58cb362aefd8245b35d030b451c0b29c591b165b848b7369e9680dbeb73334ae"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-ui005.xml",
+      "bytes": 1058,
+      "sha256": "011c6bdaa21dfd2e9ddf8c59126c997a5e711f8e90546d36955b9b3373697720"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference-append008.json",
+      "bytes": 425,
+      "sha256": "7c06cde49e5c5306f128217a2aaaef3bafd73fa1ed90d48a6f5da132f1c09423"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference-compile001.process.json",
+      "bytes": 2188,
+      "sha256": "4c8197e1a647a07074cec39f4899d77b87a6fa7f303c0cd7a024e50802e097a9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference-compile008.process.json",
+      "bytes": 2188,
+      "sha256": "61e4095a20d21615d524a8ef8ea19116cdf81eb40c91e94bef78aeb0da744371"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference-observe001.process.json",
+      "bytes": 2152,
+      "sha256": "afa6f0721b165f9b9f76afdf8a9c398d941e74f8c5e2e9fe7ff821051ae23a5b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference-observe008.process.json",
+      "bytes": 2153,
+      "sha256": "067b5de5e64241ed54ac9e0fc7f47d05ff03a54b6247e8a68dc59b346ac25d6f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference001-pack.process.json",
+      "bytes": 2485,
+      "sha256": "90344a26ce48612a65ab6b961e2426cd84b3e0446c20db8983963ff377dfc578"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference001-retirement.json",
+      "bytes": 425,
+      "sha256": "6e6f77ea3b949be1d48079c6a7532bb8d900e1728d4179046f1ca7cace1f5839"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference001-verify.json",
+      "bytes": 1426,
+      "sha256": "c2f0256c0e2049305db4eaac5bbe5087d264921d455669637a8bd3c4ebf64293"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference001-verify.process.json",
+      "bytes": 2369,
+      "sha256": "00c9fd8b9b656cc99d76f96978d6e75606f6ab27d054165c78f45288b00b237d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference008-pack.process.json",
+      "bytes": 2484,
+      "sha256": "1e40116181de8acd0a3173ad23f5865290689d2ed2df248c9c332b9affec0ddd"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference008-retirement.json",
+      "bytes": 428,
+      "sha256": "d7fdeeada77b6afafe4dcd358339809fc51187ab7da3283a802b903ba6e8cbf2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference008-verify.json",
+      "bytes": 1429,
+      "sha256": "9089af54987ef8f3fcff6140385cde8fb5e573e0374f4b19af5497b553c99947"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference008-verify.process.json",
+      "bytes": 2369,
+      "sha256": "6caf8478760dacea2c018f168194607b3e2c9adbe6531f6f073490edfe7ebf64"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/sdk-build001.process.json",
+      "bytes": 2104,
+      "sha256": "4bf49a524ce45a946e17440a7a31dff6556e5b97963f0dca8609827031603b67"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/sdk-build009.process.json",
+      "bytes": 2616,
+      "sha256": "b1912c4a65c78fb6ece11897feeabbeb15637c2975d83f7806b425d765c2d0ce"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/sdk-configure001.process.json",
+      "bytes": 2405,
+      "sha256": "65367d04f8751b1036541331630fa945e545d20a6f5594247a78cb3507109217"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/sdk-run001.process.json",
+      "bytes": 1924,
+      "sha256": "c3d53128debb39e78a3d2fa409595092683399ecc7baa5daf3a7d4d91ae9e662"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/sdk-run009.process.json",
+      "bytes": 1925,
+      "sha256": "f841c89e0ad987738b234e88c9ce58c7324621bbb9b1e42b3279878bef9d91dc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/sdk001-retirement.json",
+      "bytes": 335,
+      "sha256": "402067b993e0226addb87ed5dca8e91ec31318e701b92aec62e583208af81f23"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/static-closeout010.json",
+      "bytes": 1327,
+      "sha256": "c6e0983dc5a7fa28eebbebd78df1057175801f0a9ab872fe9cf9991bb1476cb1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-build004.log",
+      "bytes": 92,
+      "sha256": "082d42bed74f45db51fd9f44737cc3b033416b9fd671c63fe5f8a5e387429091"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/linux-owner004.log",
+      "bytes": 127,
+      "sha256": "b5d00d439875041bdf44a72c0bb08988ad795ad3d66a50fc79b6b0bec1ff3458"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-imagejxx_native_selection_menu_tests009.log",
+      "bytes": 39,
+      "sha256": "8cf552eadf9d544c167d2fed3d8b44480a0993e8d34a05290f7c7bff0eb34284"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui004.log",
+      "bytes": 558,
+      "sha256": "dc306d361b246b7fa48219343af388b00cf080caeaf4d25a7ae05199665ff59f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui009.log",
+      "bytes": 29,
+      "sha256": "241f28404ff08ef3402bb18e5c9756671817fe9178447848dd4359865cff2e48"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-api004.log",
+      "bytes": 4360,
+      "sha256": "2aba6fadc315d42e20f4a296cdb7cda6706449e2193693b138244db8d0816074"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-core001.log",
+      "bytes": 4338,
+      "sha256": "3c0b9a4a2815b771080a98d836fd8293161f866eafaf088c99ea6e444e260fe4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-review006.log",
+      "bytes": 3882,
+      "sha256": "d9c0a298d71b39bb6d8a200bc7ab5794e9eb868e8e4403b11255c8365f9519b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-spline009.log",
+      "bytes": 4710,
+      "sha256": "8cbae9dc98aeb8efcc9e1d3faa8777a4e4aa24d55ad0761963e2f3e72613bb94"
+    }
+  ],
+  "failed_attempts": {
+    "python": [
+      {
+        "attempt": "python-api004.xml",
+        "failed_or_errored_ids": [
+          "tests.python.test_selection_spline::test_desktop_spline_api_history_workspace_and_settings[False]",
+          "tests.python.test_selection_spline::test_desktop_spline_api_history_workspace_and_settings[True]"
+        ]
+      },
+      {
+        "attempt": "python-core001.xml",
+        "failed_or_errored_ids": [
+          "tests.python.test_selection_spline::test_pinned_spline_modes[shape1-freehand-remove-0]",
+          "tests.python.test_selection_spline::test_pinned_spline_modes[shape3-freehand-remove-0]",
+          "tests.python.test_selection_spline::test_pinned_spline_modes[shape4-freehand-remove-0]"
+        ]
+      },
+      {
+        "attempt": "python-review006.xml",
+        "failed_or_errored_ids": [
+          "tests.python.test_imagej_roi_import_replacement_ui::test_real_controls_refusal_preview_and_discard",
+          "tests.python.test_imagej_roi_import_replacement_ui::test_atomic_native_replacement_and_original_transport",
+          "tests.python.test_imagej_roi_import_replacement_ui::test_rotated_geometry_style_and_precision",
+          "tests.python.test_imagej_roi_import_replacement_ui::test_mask_loading_rejects_wrong_canvas_and_cancel_is_atomic",
+          "tests.python.test_planar_annotation_rebind_ui::test_annotation_rebind_form[imgui_cpp]"
+        ]
+      },
+      {
+        "attempt": "python-spline009.xml",
+        "failed_or_errored_ids": [
+          "tests.python.test_selection_spline::test_actual_spline_workflow_in_python_host[False-False]",
+          "tests.python.test_selection_spline::test_actual_spline_workflow_in_python_host[False-True]",
+          "tests.python.test_selection_spline::test_actual_spline_workflow_in_python_host[True-False]",
+          "tests.python.test_selection_spline::test_actual_spline_workflow_in_python_host[True-True]",
+          "tests.python.test_selection_spline::test_desktop_spline_api_history_workspace_and_settings[False]",
+          "tests.python.test_selection_spline::test_desktop_spline_api_history_workspace_and_settings[True]",
+          "tests.python.test_selection_spline::test_freehand_numeric_properties_keep_all_edited_controls"
+        ]
+      }
+    ],
+    "all_python_failures_eventually_recovered": true,
+    "recorded_lapses": [
+      {
+        "lapse": "Global receipt suffix replacement changed p08m-001 cache identity in Linux launch004;CMake --build failed before compilation.",
+        "correction": "Launch005 replaces only explicit receipt IDs;assert exact configured p08m-001-2aqxi4ay/cache-native001 before launching.005 passes.No new cache generation was configured."
+      },
+      {
+        "lapse": "Mixed-EOL normalization wrote some files even when output bytes were unchanged,invalidating compiler timestamps contrary to AGENTS.",
+        "correction": "Compare computed bytes with existing bytes before every further write.Skip unchanged inputs;do not rerun builds to make receipts cleaner.Record actual elapsed cost in final task receipt;no new rule/audit framework."
+      },
+      {
+        "lapse": "Two added current-UI reader modules selected without preflighting their required CPP_REPORT environment inputs;review006 had5 setup/reader failures.",
+        "correction": "Inspect maintained ci_observations producer/reader mapping.Generate only two current CLI reports and supply hashed input paths;7 readers then pass.No legacy17 recovery or full campaign restart."
+      },
+      {
+        "lapse": "Known generated delta peaked217486274B,7771074B above planned200MiB,including large producer/private/Python report copies.",
+        "correction": "Measured complete normalized roots before immediate serial hash-verified compression/retirement of8 groups;stop additional capture work until retirement.Minimum future capture allowance must include full-render JSON copies,not file count.Small final spline-only checks avoid repeating large unchanged reader groups."
+      },
+      {
+        "lapse": "Final009 menu test was reconstructed without its required fresh output-directory argument; executable refused before test actions.",
+        "correction": "Inspected exact native-menu005 argv and failure diagnostic; reuse that argv with only the owned output target replaced. Retry010 only this failed launcher; other009 native passes retained. No source/test expectation changes."
+      },
+      {
+        "lapse": "Final native-ui009 supplied a precreated empty root; this producer requires a nonexistent path, so it refused before observations.",
+        "correction": "Read actual main at test_display_actions.cpp427-428; assert new native-ui010 path does not exist and let the producer own creation. Keep failure log and empty scratch for final safe retirement. Do not rerun green menu/path/native checks."
+      },
+      {
+        "lapse": "Python-spline00964 numerical/API cases passed, but7 tmp_path setups errored because pytest basetemp parent was absent.",
+        "correction": "Create only owned basetemp parent; leave basetemp itself absent for pytest. Retry only7 errored node IDs parsed from009 XML. No numerical or assertion changes. Native UI010 had already passed and is not rerun."
+      }
+    ],
+    "other": "Initial freehand removal numerics,history and physical drag probe failures corrected. Inline final reader used geometric perimeter instead of traced perimeter; corrected derivation only. First documentation edit failed implicit GBK decoding before mutation. All failure logs/receipts retained; failed attempts are not described as passing."
+  },
+  "storage": {
+    "measurements": [
+      {
+        "path": ".tmp/manual-workflow-verification/selection-spline-entry-20261105.json",
+        "bytes": 66573,
+        "sha256": "078f90dea47737743ca6e0b6179e3771a61d3e3efe4791b53fa00d49db2889e3",
+        "known_bytes": 7318824924,
+        "unknown_subtree_count": 214,
+        "budget_verified": false
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-spline-ui-entry-20261105.json",
+        "bytes": 66573,
+        "sha256": "fba40cbe7b194eb760f862c4659d28e0d32e9408e001c383cf636c9c82c965fe",
+        "known_bytes": 7323658128,
+        "unknown_subtree_count": 214,
+        "budget_verified": false
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-spline-pre-retirement-20261105.json",
+        "bytes": 66573,
+        "sha256": "b4098594a773c6eebd394a1d46c7ef19ac6ea54550edfb581fb3d7219ad43ca6",
+        "known_bytes": 7536311198,
+        "unknown_subtree_count": 214,
+        "budget_verified": false
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-spline-after-retirement-20261105.json",
+        "bytes": 66572,
+        "sha256": "7154f081c82e372950570f25b1ff342ade9f93fa038a458a03dc9cb186ca3a07",
+        "known_bytes": 7371258746,
+        "unknown_subtree_count": 214,
+        "budget_verified": false
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-spline-resume009-20261105.json",
+        "bytes": 66573,
+        "sha256": "a576ee1f3718d5e73f4a5c26bf17110274a6588466021f05a853dc26f7ffa170",
+        "known_bytes": 7371326932,
+        "unknown_subtree_count": 214,
+        "budget_verified": false
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-spline-final-checks-20261105.json",
+        "bytes": 66573,
+        "sha256": "14cb2cad272e26cfd2b8b5f5978fb2df978f22061ccf89c1726f16dfde4bb97b",
+        "known_bytes": 7372112583,
+        "unknown_subtree_count": 214,
+        "budget_verified": false
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/selection-spline-closeout-20261105.json",
+        "bytes": 66572,
+        "sha256": "24a598a3a202b91c7ebac6a906b36f92f78fb5d69f9a3da7b5194f7e6c7f696b",
+        "known_bytes": 7368943913,
+        "unknown_subtree_count": 214,
+        "budget_verified": false
+      }
+    ],
+    "complete_budget_verified": false,
+    "unknown_subtrees": 214,
+    "peak_original_generated_bytes": 217486274,
+    "original_allowance_bytes": 209715200,
+    "overrun_bytes": 7771074,
+    "final_additional_allowance_bytes": 67108864,
+    "final_additional_known_growth_bytes": 785651,
+    "after_cleanup_known_bytes": 7368943913,
+    "after_cleanup_physical_free_bytes": 270218960896,
+    "scope": "normalized complete intended project.cache/.tmp/public review/dependency/runtime/Linux roots;inaccessible subtrees unknown,not zero",
+    "retention": [
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/final009-retirement.json",
+          "bytes": 426,
+          "sha256": "8e86073e30afd67bb02cd29440a03ceb11c1fc42b5b89ea461581e1174346f04"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/final009",
+          "source_bytes": 413628,
+          "source_files": 80,
+          "source_snapshot_sha256": "dd8b1c570bfe96bc01dec4507ffc4e6a8038ff5c57a2f884bef70642239c0c84",
+          "archive_bytes": 111842,
+          "archive_sha256": "7107c6e840ba5021c78d0b27d84b7051fbaf1b545deb429549553fc6d86b3a6c",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-regression005-retirement.json",
+          "bytes": 434,
+          "sha256": "74a6617848012e799d13c91764507239b26a489ca448431f36c09ce5ab080a3b"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/native-regression005",
+          "source_bytes": 32721,
+          "source_files": 1,
+          "source_snapshot_sha256": "d0992d3790a12fca3760e82cd8e91307c41b8666c01321597113651b11f2f408",
+          "archive_bytes": 1090,
+          "archive_sha256": "c35de9d7e9ab57b7f7d8c0387c0c39c259612eb80421a680c05646d34f631e63",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui004-retirement.json",
+          "bytes": 429,
+          "sha256": "bb28d97169f8c19e3886859aa8028f5c5106a397dc3327bd5729a10e4c9fad8f"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/native-ui004",
+          "source_bytes": 289946,
+          "source_files": 62,
+          "source_snapshot_sha256": "91a28dd5660efe2afd0f953610997026df0bdf80b68fbbfaf5fb29e43544dba1",
+          "archive_bytes": 60065,
+          "archive_sha256": "e0359f9e30b287986269d73218677e0552e1d1441f728ac74eed1b941d278a81",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/native-ui005-retirement.json",
+          "bytes": 429,
+          "sha256": "f1f9e003cc6294a7666289efb40056c8a469d773a7a2e382a355c3912986da07"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/native-ui005",
+          "source_bytes": 253579,
+          "source_files": 69,
+          "source_snapshot_sha256": "b2c07cd0c37dbf8e4897e069b7c4eb0431eb79ab828d86f2365fb838872da1b6",
+          "archive_bytes": 69857,
+          "archive_sha256": "d5c8ee68be7db64644719c28a7159329e08bfb451b2c7c291c0111f8cc4b5ebe",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/producer-inputs007-retirement.json",
+          "bytes": 438,
+          "sha256": "fbb105a8358fafadb1873c11b902d038a267c0115cb22739284614d144646c20"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/producer-inputs007",
+          "source_bytes": 73500261,
+          "source_files": 4,
+          "source_snapshot_sha256": "1c7dc3a4979c5e7b49cb16f94d5060e74d25f9539baf71b1c17765e1495ae83c",
+          "archive_bytes": 6093679,
+          "archive_sha256": "3ca1bf27574835fcab119533a11fd2cc7c195206e7cf7dc5edd8b090694c396c",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-api004-retirement.json",
+          "bytes": 430,
+          "sha256": "0daf004f78c68061e2f497b3efc541cd0f7f62e65fe8cde747a92f46b14432ef"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/python-api004",
+          "source_bytes": 127738,
+          "source_files": 38,
+          "source_snapshot_sha256": "1624a5009998f1acfac6c2b7e31055e7c694d9a3b59b80743b7e384579f4e2a4",
+          "archive_bytes": 73687,
+          "archive_sha256": "24ac547073f2f4112d311a02040698dbe2b980fef34a23534e65db9a0775afc6",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-core001-empty-retirement.json",
+          "bytes": 270,
+          "sha256": "b4730564123b8bb0a929df1bcb035e53e07cf1d167c0ed9fd119f6b7e3bd16d8"
+        },
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/python-core001",
+          "source_bytes": 0,
+          "source_files": 0,
+          "archive_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-core002-empty-retirement.json",
+          "bytes": 270,
+          "sha256": "01b8fb91738683645b01b9b9e4c44d0da8382a3deb5436dafd6fc7c7c5b5f631"
+        },
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/python-core002",
+          "source_bytes": 0,
+          "source_files": 0,
+          "archive_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-owner003-retirement.json",
+          "bytes": 428,
+          "sha256": "623cefb58680780fc6c46ed55fd4485ff73094d29675b934d9156a2b8e41cae1"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/python-owner003",
+          "source_bytes": 2131,
+          "source_files": 1,
+          "source_snapshot_sha256": "3de8dedd571b45b9c95af4b168b54b2afea8d689652eea475457ffba3337bbd1",
+          "archive_bytes": 2561,
+          "archive_sha256": "dfea0334e8f3a56c14478c6668181bd740ef7a493e8f40b96346713aa8970920",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-report007-retirement.json",
+          "bytes": 436,
+          "sha256": "8836f40a51c790ac0e76d24ef1e5e7e26ca659e47eebca80979938af5edc7fe3"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/python-report007",
+          "source_bytes": 73721790,
+          "source_files": 4,
+          "source_snapshot_sha256": "5c42f3fcb625d42a45a511918052357435948d7b7617fd28c4b5beea29670587",
+          "archive_bytes": 6116909,
+          "archive_sha256": "e3f8f2c2031deabe98807bc4f6281b26a4ae224af075a6d605a045435eac3661",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-review006-retirement.json",
+          "bytes": 437,
+          "sha256": "4f99a4940aeaf04af476dfbd4951b7c1a0f714fe669cc1d808ec426c06489de2"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/python-review006",
+          "source_bytes": 33338570,
+          "source_files": 24,
+          "source_snapshot_sha256": "72d2ca54f04601b05a13b5af0d8fbbe82f1aa511b139c3365898516278c128dc",
+          "archive_bytes": 3261248,
+          "archive_sha256": "9785d7b135e10881b2313351e8c571ba9d9f4f78bca997d9199a155937e118cb",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/python-ui005-retirement.json",
+          "bytes": 429,
+          "sha256": "f1beb737597c4cc601eeb430eed8abb4c23e50f48dbc61605961d20ef85cebb7"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/python-ui005",
+          "source_bytes": 126712,
+          "source_files": 10,
+          "source_snapshot_sha256": "cf0668f93574bca4a9e7ea93344a89244fac3b6b663cdf042b04fed3fb06d056",
+          "archive_bytes": 35103,
+          "archive_sha256": "483caea8b0bbde683ff02e2192937f04b3b6d4d0e19c185b89a8dd90b49c97e3",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference001-retirement.json",
+          "bytes": 425,
+          "sha256": "6e6f77ea3b949be1d48079c6a7532bb8d900e1728d4179046f1ca7cace1f5839"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/reference001",
+          "source_bytes": 5260,
+          "source_files": 1,
+          "source_snapshot_sha256": "7832450d0d4a873d463183af73d973237428a1eaeade0aff1f487e5b0da4d767",
+          "archive_bytes": 3249,
+          "archive_sha256": "c0416d1d94ccaf154b43eb1127d90f73f6021e77e59d64a7f546d9e98339c084",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/reference008-retirement.json",
+          "bytes": 428,
+          "sha256": "d7fdeeada77b6afafe4dcd358339809fc51187ab7da3283a802b903ba6e8cbf2"
+        },
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/selection-spline-20261105/scratch/reference008",
+          "source_bytes": 238959,
+          "source_files": 3,
+          "source_snapshot_sha256": "6d7caf2a8f614375fddc57350cf5946513b3d0d1750a46f50910c7c43b08921f",
+          "archive_bytes": 90142,
+          "archive_sha256": "6201944e0bf647795feda657784a43432c7ce030554b3fd8e75dacd990796a17",
+          "source_removed": true
+        }
+      },
+      {
+        "receipt": {
+          "path": ".tmp/manual-workflow-verification/selection-spline-20261105/sdk001-retirement.json",
+          "bytes": 335,
+          "sha256": "402067b993e0226addb87ed5dca8e91ec31318e701b92aec62e583208af81f23"
+        },
+        "result": {
+          "source": ".tmp\\manual-workflow-verification\\selection-spline-20261105\\scratch\\sdk001",
+          "bytes_removed": 2964103,
+          "files": 83,
+          "state": "hashed_owned_consumer_tree_removed_without_archive",
+          "source_snapshot_sha256": "8f68fbbac27b20d7652e4ed3a984d4c7ce451574d87768151cfd80f3d46dcc95",
+          "source_removed": true
+        }
+      }
+    ],
+    "scratch_removed": true,
+    "preserved": "Warm configured caches,compiler intermediates,installed runtimes/app/SDK;SDK consumer identity-only,not archived",
+    "availability": "Retired live capture paths in reader receipts now resolve through compressed archives and manifests;not directly available live. Necessary final/failure captures losslessly packed and live-hash verified. Local ignored logs/archives are evidence identities,not public CI artifacts."
+  },
+  "waste_review": {
+    "fix_now": "Separate command preprocessing/refit,freeze evaluation context,retain spline selection-only history,use observed screen/world targets;serial compressed retention and concrete launch preflight.",
+    "defer": "T02 tighter phase/copy/allocation estimates only on measured consumer need. T06 remaining source profiles/interpolation;T09 operation-intent macros;T14 remaining platform/installed-client/release qualification.",
+    "no_action": "No new framework,controller,environment or unchanged broad campaign;reuse scoped unchanged results.",
+    "plan_feedback": "Selection interpolation is the next ready task with proposed API/options/real-source preflight and topology/resampling reuse details. Canonical compilexx notebook updated;no sibling commit."
+  },
+  "limitations": [
+    "G018 and full commercially usable ImageJ/Fiji editor remain open;test counts are not completion percentages.",
+    "Full constructor,traced/attachment/mutable upstream-buffer,magnification,scientific/saved-row variants remain owning-task scope;native profiles do not prove arbitrary source equivalence.",
+    "Linux installed-client and other supported-platform UI/release qualification remain open;this increment proves Linux changed core,not full Linux UI.",
+    "Resolved-result replay does not prove ImageJ operation-intent macros.",
+    "17 legacy gesture checks still need retired build/references/selection-creation-imagej154r-001/capture-001/capture.json;unavailable,not rerun/passed/repinned.",
+    "No product speedup,whole-process memory/RSS or full-family/release claim.",
+    "Global check_plan evidence validation remains blocked at retired G016 build/plan-implementation/p05e-roi-boolean-001/native-local-checkpoint-001.json. Its stale assignment-table reader was corrected to PLAN_HISTORY;all99 requirements/statuses and protected histories remain unchanged. T00 owns reference recovery."
+  ],
+  "documentation_checks": {
+    "state": "passed_scoped_static_checks",
+    "receipt": {
+      "path": ".tmp/manual-workflow-verification/selection-spline-20261105/static-closeout010.json",
+      "bytes": 1327,
+      "sha256": "c6e0983dc5a7fa28eebbebd78df1057175801f0a9ab872fe9cf9991bb1476cb1"
+    },
+    "global_check_plan": "unavailable historical G016 evidence;not passed",
+    "source_change_after_final_tests": "Test module docstring only;no product/test executable behavior changed",
+    "storage_measurement_timing": "Post-cleanup normalized measurement precedes small public receipt/document closeout edits;214 inaccessible subtrees remain unknown."
+  }
+}

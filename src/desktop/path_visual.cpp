@@ -1,4 +1,6 @@
 #include "path_visual.hpp"
+#include "../native/selection_spline_detail.hpp"
+#include <imagejxx/selection_spline.hpp>
 #include "point_visual.hpp"
 #include <imagejxx/composite_path.hpp>
 #include <algorithm>
@@ -28,10 +30,12 @@ Json planarSelectionJson(const Selection &selection) {
           {"path", selection.path_commands()}};
 }
 std::size_t selectionControlPointCount(const Selection &selection) {
+  if(const auto count=detail::spline_control_count(selection))return count;
   if(!selection.is_path())return selection.points.size();
   return (selection.path_commands().size()-selection.path_geometry().segment_count())/2;
 }
 std::array<double,2> selectionControlPoint(const Selection &selection,std::size_t index) {
+  if(const auto fit=selection_spline_fit(selection))return fit->controls.points.at(index);
   if(!selection.is_path())return selection.points.at(index);
   const auto &commands=selection.path_commands();
   for(std::size_t at=0;at<commands.size();) {
@@ -42,6 +46,7 @@ std::array<double,2> selectionControlPoint(const Selection &selection,std::size_
   throw std::invalid_argument("Path control point outside geometry");
 }
 std::vector<Point> planarControlPoints(const Selection &selection) {
+  if(const auto fit=selection_spline_fit(selection))return fit->controls.points;
   if (!selection.is_path())
     return selection.points;
   std::vector<Point> result;

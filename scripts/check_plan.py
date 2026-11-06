@@ -162,7 +162,8 @@ def audit_rows():
 
 
 def validate_inventory(require_complete=False):
-    plan = (ROOT / "docs/PLAN.md").read_text(encoding="utf-8")
+    # The live queue links to the preserved 99-family assignment table.
+    plan = (ROOT / "docs/PLAN_HISTORY.md").read_text(encoding="utf-8")
     mappings = [
         match.groups()
         for match in re.finditer(r"(?m)^\| (G\d{3}) \| (.*?) \| (.*?) \|$", plan)

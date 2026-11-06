@@ -2,6 +2,7 @@
 #include "headless_session_internal.hpp"
 #include "rendering.hpp"
 #include "window.hpp"
+#include <imagejxx/selection_spline.hpp>
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
@@ -638,6 +639,60 @@ Json fitEllipseWorkflowUiCase(Window& w,const std::string& context,const std::st
 
 Json fitRectangleWorkflowUiCase(Window& w,const std::string& context,const std::string& directory,bool area) {
   return selectionConversionUiCase(w,context,directory,area?7:6);
+}
+
+Json splineWorkflowUiCase(Window& w,const std::string& context,const std::string& directory,bool opened,bool straighten) {
+  const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
+  require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh spline fixture required");std::filesystem::create_directories(dir);
+  const Selection controls(opened?"polyline":"polygon",{{3,3},{13,3},{13,13},{3,13}});
+  DocumentData data{Dataset::from_stack({Image(16,16,1,PixelType::UInt8)})};data.selection=controls;
+  auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);w.recording=true;
+  Json events=Json::array(),buttons=Json::array(),last;HeadlessInputSession session(w);bool expectedError=false;
+  try {
+    auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);require(expectedError || w.error().empty(),"Spline UI frame failed");};
+    auto click=[&](const Json& item,const std::string& name){const auto control=item;require(control.at("enabled").get<bool>(),"Spline control disabled");buttons.push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto key=[&](const char* name){for(bool down:{true,false}){frame(Json::array({{{"type","key"},{"name",name},{"down",down}}}));frame();}};
+    auto menu=[&](const char* action){for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection",std::string("menu.action.")+action})click(last.at("host_controls").at(name),name);};
+    for(int i=0;i<3;++i)frame();const auto original=owner->snapshot();
+    menu("show_fit_spline");click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
+    require(owner->snapshot().shares_data(original) && owner->undo_steps()==0 && w.workflow.empty(),"Spline cancel changed source/history");
+    menu("show_fit_spline");owner->select(Selection("point",{{1,1}}));expectedError=true;
+    click(last.at("dialog").at("controls").at("apply"),"dialog.apply.stale");require(!w.error().empty() && w.workflow.empty() && owner->undo_steps()==0,"Stale spline review published output");
+    frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");owner->select(controls);frame();
+    menu("show_fit_spline");
+    if(straighten){click(last.at("dialog").at("controls").at("mode"),"dialog.mode");frame();frame();key("Home");key("Down");key("Enter");require(last.at("dialog").at("values").at("mode")=="straighten","Physical spline mode choice failed");}
+    click(last.at("dialog").at("controls").at("apply"),"dialog.apply");w.wait();frame();
+    const auto fitted=*owner->snapshot().data().selection;const auto state=selection_spline_fit(fitted);
+    const std::size_t count=straighten?(opened?33:45):100;
+    const std::array<double,2> expected=straighten?(opened?std::array<double,2>{9.775123596191406,14.279576301574707}:std::array<double,2>{10.44990348815918,14.497529029846191}):(opened?std::array<double,2>{11.221332550048828,1.92404305934906}:std::array<double,2>{13.07493782043457,3.076462745666504});
+    require(state && state->controls==controls && fitted.points.size()==count && owner->undo_steps()==1 && w.workflow.size()==1,"Spline menu lost controls/history");
+    for(int a=0;a<2;++a)require(std::abs(fitted.points[25][a]-expected[a])<1e-5,"Spline menu differs from pinned sample25");
+    const auto record=w.workflow.front();
+    w.action("edit_selection");frame();const auto canvas=last.at("ordinary_canvas");
+    auto screen=[&](double x,double y){return Json::array({canvas.at("origin").at(0).get<double>()+x*canvas.at("scale").at(0).get<double>(),canvas.at("origin").at(1).get<double>()+y*canvas.at("scale").at(1).get<double>()});};
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",screen(13,3)}}}));
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
+    auto targetScreen=screen(14,4);for(auto& coordinate:targetScreen)coordinate=std::floor(coordinate.get<double>());
+    const std::array<double,2> dragTarget{(targetScreen[0].get<double>()-canvas.at("origin")[0].get<double>())/canvas.at("scale")[0].get<double>(),(targetScreen[1].get<double>()-canvas.at("origin")[1].get<double>())/canvas.at("scale")[1].get<double>()};
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",targetScreen}}}));frame();
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
+    const auto edited=*owner->snapshot().data().selection;const auto editedState=selection_spline_fit(edited);
+    require(editedState && editedState->controls.points.size()==4 && std::abs(editedState->controls.points[1][0]-dragTarget[0])<1e-5 && std::abs(editedState->controls.points[1][1]-dragTarget[1])<1e-5 && owner->undo_steps()==2,"Physical spline knot drag detached or edited sampled vertices");
+    w.action("undo");require(owner->snapshot().data().selection==std::optional<Selection>(fitted),"Spline knot Undo lost fit");
+    w.action("redo");require(owner->snapshot().data().selection==std::optional<Selection>(edited),"Spline knot Redo lost state");frame();
+    menu("remove_spline_fit");w.wait();frame();
+    require(!selection_spline_fit(*owner->snapshot().data().selection) && owner->snapshot().data().selection->points==editedState->controls.points,"Remove menu did not restore actual controls");
+    w.action("undo");require(owner->snapshot().data().selection==std::optional<Selection>(edited),"Remove Undo lost spline");
+    w.action("save_workspace",{{"path",(dir/"spline.ijx").u8string()}});session.close();
+    Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"spline.ijx").u8string());
+    require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(edited),"Workspace lost spline controls/options");
+    bool refused=false;try{reopened.replaySelectionCreation(metadataObjectFromJson(record));}catch(const std::exception&){refused=true;}require(refused,"Spline replay must require explicit rebind");
+    reopened.document()->select(selectionJson(controls));const auto undo=reopened.nativeDocument()->undo_steps();
+    reopened.replaySelectionCreation(metadataObjectFromJson(record),SelectionCreationRequest{SelectionCreationOperation::Replace,edited,SelectionCreationGeometry::NativePathV4});
+    require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(edited) && reopened.nativeDocument()->undo_steps()==undo+1,"Spline explicit replay lost typed state/history");
+    Json report={{"contract","imagejxx.spline.ui.1"},{"context",context},{"state","observed"},{"open",opened},{"mode",straighten?"straighten":"fit"},{"sample_count",count},{"sample25",fitted.points[25]},{"edited_controls",editedState->controls.points},{"drag_target",dragTarget},{"record",record},{"events",events},{"controls",buttons}};
+    writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",buttons}});throw;}
 }
 
 }

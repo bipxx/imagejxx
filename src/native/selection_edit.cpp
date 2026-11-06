@@ -1,5 +1,7 @@
 #include "kernel_control.hpp"
 #include "selection_region_rotation.hpp"
+#include "selection_spline_detail.hpp"
+#include <imagejxx/selection_spline.hpp>
 #include <algorithm>
 #include <cmath>
 #include <imagejxx/roi_style.hpp>
@@ -23,7 +25,17 @@ bool box(const Selection &selection) {
          selection.kind == "rotated_ellipse";
 }
 std::size_t vertex_count(const Selection &s) {
-  return s.is_path() ? (s.path_commands().size()-s.path_geometry().segment_count())/2 : s.points.size();
+  return s.is_path() ? (s.path_commands().size()-s.path_geometry().segment_count())/2 : std::max(s.points.size(),detail::spline_control_count(s));
+}
+template<class Operation>
+Selection edit_spline(const Selection& source,int width,int height,const SelectionEditLimits& limits,Operation operation) {
+  validate_selection_spline_fit(source);auto state=selection_spline_fit(source);
+  if(!state)throw std::invalid_argument("Selection has no spline controls");
+  auto changed=operation(SelectionEditor(state->controls,width,height));
+  // ImageJ handle edits retain the current evaluation count and fit normally,
+  // including edits of a previously equidistant/straightened spline.
+  SplineFitOptions options;options.evaluation_points=source.points.size();
+  return detail::refit_spline_controls(changed,width,height,options,limits,{});
 }
 Selection path_result(const Selection &s,const ImageJCompositePath &path) {
   auto result=Selection::from_path(path);result.width=s.width;result.attributes=s.attributes;return result;
@@ -259,6 +271,7 @@ void SelectionEditor::initialize_bounds(bool validate) {
 std::vector<SelectionHandle> SelectionEditor::handles() const {
   if (!has_bounds_)
     return {};
+  if(selection_.attributes.count(spline_fit_attribute))return SelectionEditor(selection_spline_fit(selection_)->controls,width_,height_).handles();
   std::vector<SelectionHandle> result;
   if (box(selection_)) {
     const auto frame = *selection_.box_frame();
@@ -469,6 +482,7 @@ Selection SelectionEditor::moved(std::array<double, 2> delta,
     delta[0] = std::clamp(delta[0], -bounds_[0], width_ - bounds_[2]);
     delta[1] = std::clamp(delta[1], -bounds_[1], height_ - bounds_[3]);
   }
+  if(selection_.attributes.count(spline_fit_attribute) && (delta[0]!=0 || delta[1]!=0))return edit_spline(selection_,width_,height_,{},[&](const auto& editor){return editor.moved(delta,false);});
   kernel_checkpoint();
   Selection result = selection_;
   if (delta[0] == 0 && delta[1] == 0)
@@ -621,6 +635,7 @@ Selection SelectionEditor::resized(std::size_t handle,
 Selection SelectionEditor::moved_vertex(std::size_t index,
                                         std::array<double, 2> point) const {
   finite_point(point);
+  if(selection_.attributes.count(spline_fit_attribute))return edit_spline(selection_,width_,height_,{},[&](const auto& editor){return editor.moved_vertex(index,point);});
   if (box(selection_) || selection_.is_mask() ||
       index >= vertex_count(selection_))
     throw std::invalid_argument("Invalid selection vertex");
@@ -645,6 +660,7 @@ Selection SelectionEditor::moved_vertex(std::size_t index,
 std::size_t
 SelectionEditor::insertion_index(std::array<double, 2> point,
                                  std::array<double, 2> metric) const {
+  if(selection_.attributes.count(spline_fit_attribute))return SelectionEditor(selection_spline_fit(selection_)->controls,width_,height_).insertion_index(point,metric);
   finite_point(point);
   finite_point(metric);
   if (metric[0] <= 0 || metric[1] <= 0)
@@ -682,9 +698,10 @@ SelectionEditor::insertion_index(std::array<double, 2> point,
 }
 Selection SelectionEditor::inserted_vertex(std::size_t index,
                                            std::array<double, 2> point) const {
+  if(selection_.attributes.count(spline_fit_attribute))return edit_spline(selection_,width_,height_,{},[&](const auto& editor){return editor.inserted_vertex(index,point);});
   finite_point(point);
   if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
-      selection_.kind == "angle" || index > selection_.points.size())
+      selection_.kind == "angle" || index > (selection_.attributes.count(spline_fit_attribute)?detail::spline_control_count(selection_):selection_.points.size()))
     throw std::invalid_argument(
         "Selection does not support this vertex insertion");
   kernel_checkpoint();
@@ -702,6 +719,7 @@ Selection SelectionEditor::inserted_vertex(std::size_t index,
   return checked(std::move(result));
 }
 Selection SelectionEditor::removed_vertex(std::size_t index) const {
+  if(selection_.attributes.count(spline_fit_attribute))return edit_spline(selection_,width_,height_,{},[&](const auto& editor){return editor.removed_vertex(index);});
   const std::size_t minimum =
       selection_.kind == "polygon" || selection_.kind == "freehand" ||
               selection_.kind == "angle"
@@ -709,7 +727,7 @@ Selection SelectionEditor::removed_vertex(std::size_t index) const {
       : selection_.kind == "line" || selection_.kind == "polyline" ? 2
                                                                    : 1;
   if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
-      index >= selection_.points.size() || selection_.points.size() <= minimum)
+      index >= (selection_.attributes.count(spline_fit_attribute)?detail::spline_control_count(selection_):selection_.points.size()) || (selection_.attributes.count(spline_fit_attribute)?detail::spline_control_count(selection_):selection_.points.size()) <= minimum)
     throw std::invalid_argument("Cannot remove this selection vertex");
   kernel_checkpoint();
   Selection result = selection_;
@@ -724,6 +742,10 @@ Selection SelectionEditor::removed_vertex(std::size_t index) const {
 Selection
 SelectionEditor::rotated(double degrees,
                          std::optional<std::array<double, 2>> pivot) const {
+  if(selection_.attributes.count(spline_fit_attribute)) {
+    const auto center=pivot.value_or(std::array<double,2>{(bounds_[0]+bounds_[2])/2,(bounds_[1]+bounds_[3])/2});
+    return edit_spline(selection_,width_,height_,{},[&](const auto& editor){return editor.rotated(degrees,center);});
+  }
   require_finite(degrees, "Selection rotation");
   if (pivot)
     finite_point(*pivot);
@@ -845,6 +867,7 @@ Selection SelectionEditor::box_geometry(std::array<double, 2> center,
 }
 Selection SelectionEditor::properties(double width,
                                       const MetadataObject &patch) const {
+  if(patch.count(spline_fit_attribute))throw std::invalid_argument("Edit spline state through knot/fit/remove operations");
   Selection result = selection_;
   result.width = width;
   for (const auto &entry : patch)
@@ -907,7 +930,12 @@ Selection SelectionEditor::moved(std::array<double, 2> delta, bool keep_inside,
       (bounds_[2] - bounds_[0] > width_ || bounds_[3] - bounds_[1] > height_))
     throw std::invalid_argument("Selection does not fit inside the image");
   return controlled_geometry(*this, width_, height_, limits, control, 0,
-      [delta, keep_inside](const auto &editor) {
+      [delta, keep_inside,limits](const auto &editor) {
+        if(editor.selection().attributes.count(spline_fit_attribute)) {
+          auto adjusted=delta;const auto b=editor.bounds();
+          if(keep_inside){adjusted[0]=std::clamp(adjusted[0],-b[0],double(editor.width_)-b[2]);adjusted[1]=std::clamp(adjusted[1],-b[1],double(editor.height_)-b[3]);}
+          return edit_spline(editor.selection(),editor.width_,editor.height_,limits,[&](const auto& knots){return knots.moved(adjusted,false);});
+        }
         return editor.moved(delta, keep_inside);
       });
 }
@@ -953,7 +981,8 @@ Selection SelectionEditor::moved_vertex(
       index >= vertex_count(selection_))
     throw std::invalid_argument("Invalid selection vertex");
   return controlled_geometry(*this, width_, height_, limits, control, 0,
-      [index, point](const auto &editor) {
+      [index, point,limits](const auto &editor) {
+        if(editor.selection().attributes.count(spline_fit_attribute))return edit_spline(editor.selection(),editor.width_,editor.height_,limits,[&](const auto& knots){return knots.moved_vertex(index,point);});
         return editor.moved_vertex(index, point);
       });
 }
@@ -976,7 +1005,7 @@ Selection SelectionEditor::inserted_vertex(
     const SelectionEditLimits &limits, const ExecutionControl &control) const {
   finite_point(point);
   if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
-      selection_.kind == "angle" || index > selection_.points.size())
+      selection_.kind == "angle" || index > (selection_.attributes.count(spline_fit_attribute)?detail::spline_control_count(selection_):selection_.points.size()))
     throw std::invalid_argument("Selection does not support this vertex insertion");
   auto admitted=limits;
   if(selection_.attributes.count(point_annotations_attribute)) {
@@ -986,7 +1015,8 @@ Selection SelectionEditor::inserted_vertex(
     admitted.max_working_bytes-=extra;
   }
   return controlled_geometry(*this, width_, height_, admitted, control, 1,
-      [index, point](const auto &editor) {
+      [index, point,limits](const auto &editor) {
+        if(editor.selection().attributes.count(spline_fit_attribute))return edit_spline(editor.selection(),editor.width_,editor.height_,limits,[&](const auto& knots){return knots.inserted_vertex(index,point);});
         return editor.inserted_vertex(index, point);
       });
 }
@@ -999,10 +1029,10 @@ Selection SelectionEditor::removed_vertex(
           ? 3
       : selection_.kind == "line" || selection_.kind == "polyline" ? 2 : 1;
   if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
-      index >= selection_.points.size() || selection_.points.size() <= minimum)
+      index >= (selection_.attributes.count(spline_fit_attribute)?detail::spline_control_count(selection_):selection_.points.size()) || (selection_.attributes.count(spline_fit_attribute)?detail::spline_control_count(selection_):selection_.points.size()) <= minimum)
     throw std::invalid_argument("Cannot remove this selection vertex");
   return controlled_geometry(*this, width_, height_, limits, control, 0,
-      [index](const auto &editor) { return editor.removed_vertex(index); });
+      [index,limits](const auto &editor) { if(editor.selection().attributes.count(spline_fit_attribute))return edit_spline(editor.selection(),editor.width_,editor.height_,limits,[&](const auto& knots){return knots.removed_vertex(index);});return editor.removed_vertex(index); });
 }
 Selection SelectionEditor::rotated(
     double degrees, std::optional<std::array<double, 2>> pivot,
@@ -1016,7 +1046,8 @@ Selection SelectionEditor::rotated(
                              std::remainder(degrees, 360.) != 0
                          ? 3 - selection_.points.size() : std::size_t(0);
   return controlled_geometry(*this, width_, height_, limits, control, added,
-      [degrees, pivot](const auto &editor) {
+      [degrees, pivot,limits](const auto &editor) {
+        if(editor.selection().attributes.count(spline_fit_attribute)){const auto b=editor.bounds();const auto center=pivot.value_or(std::array<double,2>{(b[0]+b[2])/2,(b[1]+b[3])/2});return edit_spline(editor.selection(),editor.width_,editor.height_,limits,[&](const auto& knots){return knots.rotated(degrees,center);});}
         return editor.rotated(degrees, pivot);
       });
 }

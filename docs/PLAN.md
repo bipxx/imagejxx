@@ -7,14 +7,14 @@ now has both-host composition checks. Scientific navigation/reslice TIFF export
 now preserves its transform. Convex Hull vertex conversion has scoped API and
 both-Windows-host evidence. Bounding Rectangle now has the same scoped
 workflow coverage. Fit Circle and Fit Ellipse now have scoped API/both-host
-evidence. Minimum-area Fit Rectangle now has scoped API/both-host evidence;
-spline fitting/removal is next.
+evidence. Minimum-area Fit Rectangle and editable spline fitting/removal now
+have scoped API/both-host evidence; selection interpolation is next.
 Local cleanup retired scratch and compiler
 intermediates; preserve existing configured caches/products and rebuild only
 for changed compiler inputs or a demonstrated verification dependency.
 Native snapshot capture and queued ownership are scoped integrated in both
 Windows hosts; Python controls and changed installed clients on Windows/Linux pass.
-Next: T06/G018 spline fitting/removal. Remaining print/platform/output
+Next: T06/G018 selection interpolation. Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
 Appearance interchange, typed draft preview and the full T00-T15
@@ -127,7 +127,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T06/G018: Fit Circle, area and point branches. |52 pinned observations;679 distinct affected Windows Python cases, Windows/Linux native and installed Windows SDK checks pass. Both physical hosts cover menus/loss/history/session/rebind; ten gated area-job scenarios cover cancellation/stale/resource retirement and zero provider reads. [Receipt](parity/reviews/selection-fit-circle-20261105.json). Full constructor/style/fallback/fit-intent macro/platform parity remains open. |
 | Delivered scoped workflow | T06/G018: Fit Ellipse. |55 pinned observations;836 distinct affected Windows Python cases, Windows/Linux core and installed Windows SDK pass. Both physical hosts and20 shared Circle/Ellipse lifecycle scenarios pass. [Receipt](parity/reviews/selection-fit-ellipse-20261105.json). Full source/style/contour/platform and fit-intent macro scope remains open;17 legacy gesture checks lack retired references. |
 | Delivered scoped workflow | T06/G018: minimum-area Fit Rectangle. |55 pinned observations;2113 distinct affected Windows Python cases, Windows/Linux core and installed Windows SDK pass. Both physical hosts and30 shared fit lifecycle scenarios pass. [Receipt](parity/reviews/selection-fit-rectangle-20261105.json). Native masks/path contours are explicit profiles; full source/platform/fit-intent scope remains open. |
-| Active next | T06/G018: spline fitting/removal. | Freeze source trim/knot/evaluation and open/closed semantics, preserve editable controls and actual spline consumers, then reuse worker/history/workspace/replay. Straightening mode remains an explicit option, not silently dropped. |
+| Delivered scoped workflow | T06/G018: editable spline fitting/removal. |56 pinned observations (2 refusals);71 focused spline cases and2209 distinct affected Windows Python IDs ultimately pass. Windows/Linux core, installed Windows SDK, both physical hosts and50 shared fit lifecycle scenarios pass. [Receipt](parity/reviews/selection-spline-20261105.json). Constructor/attachment/magnification variants, intent macros and remaining platform qualification stay open. |
+| Active next | T06/G018: selection interpolation. | Freeze interval/smooth/adjust semantics against actual upstream dispatch; reuse existing geometry, sampling, worker/history and explicit V4 replay. Preserve topology and assign composite/source variants explicitly. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -716,64 +717,73 @@ reslice, virtual/tiled sources and extra platform qualification remain named
 T07/T10/T11/T14 residuals, not prerequisites unless the chosen consumer needs
 them. Expand this specification only when it becomes the next ready task.
 
-**Active next: spline fitting/removal (T06/G018).** Convex Hull, Bounding
-Rectangle, Fit Circle, Fit Ellipse and minimum-area Fit Rectangle have scoped
-API and both-Windows-host integration. See [contracts](SELECTION_TRANSFORMS.md)
-and the [rectangle receipt](parity/reviews/selection-fit-rectangle-20261105.json).
-These increments do not close full G018, constructor/style or platform scope.
+**Delivered scoped: editable spline fitting/removal (T06/G018).** Fit and
+Straighten, Remove, real knot drag/insertion/deletion and numeric properties,
+Undo/Redo, workspace/reopen and explicit V4 rebind work in both Windows hosts.
+Ordinary polygon/polyline processing samples retain validated controls/options
+and frozen evaluation context separately; open lines keep stroke semantics.
+The existing solver, geometry limits, captured worker and publication owners
+are reused. No new renderer, controller, scheduler, environment or dependency.
+See [contract and residuals](SELECTION_TRANSFORMS.md#editable-spline-fitting)
+and [scoped receipt](parity/reviews/selection-spline-20261105.json).
 
-Deliver segmented/closed selection -> Fit Spline -> editable spline -> remove
-fit -> Undo/Redo -> workspace/reopen and explicit replay in both Windows hosts.
-Preserve source control knots and fitted geometry as distinct state; a sampled
-polygon with a cosmetic spline flag does not satisfy the workflow. Open lines
-must remain open with their stroke/measurement semantics, not implicitly filled
-composite areas. Reuse existing ImageJSpline interchange and path/edit consumers
-where their actual ownership fits; inspect native selection/render/mask/analysis/
-serialization/candidate routes before choosing the smallest correct representation.
-Avoid a parallel geometry/controller model. If a new native kind or wire profile
-is necessary, identify its actual consumers and compatibility/refusal rules first.
+56 primary observations include repeated freehand Fit and length-dependent
+polyline refit; the first51 expectations are unchanged.71 focused spline cases
+and2209 distinct affected Windows Python IDs ultimately pass. Windows/Linux core,
+installed Windows SDK, both physical hosts and50 fit lifecycle scenarios pass.
+This does not prove full source-constructor, attachment, mutable upstream-buffer,
+magnification, operation-intent macro or supported-platform equivalence.
+T06/T09/T14 retain those residuals; T00 owns the17 missing gesture references.
 
-Inspect pinned Selection.fitSpline, trimPolygon/trimFloatPolygon, PolygonRoi
-getSpline/default evaluation and SplineFitter before freezing math. Current
-upstream dispatch accepts polygon/polyline/free/traced geometry, trims long
-nonsegmented inputs, preserves control knots separately, and has fit/remove/
-straighten modes. Node positions use Float32 accumulated square roots of segment
-length with a .001 minimum; closed polygons need the upstream closed-boundary
-condition, not a generic open natural spline. Default evaluation is length/2,
-adjusted for subunit magnification, with minimum100 points. Straightening uses a
-finer preliminary spline and roughly unit-length resampling. Observe these
-branches through the actual method before setting tolerances or expected outputs.
-Name unsupported constructor/traced/freehand/magnification variants explicitly;
-assign each to T06 if not included, retaining the parent requirement as open.
+Waste/cleanup: explicit Fit/Remove preprocessing differs from knot refitting;
+preserve that distinction in later consumers. History and fractional-pixel probe
+assumptions were corrected without changing reference expectations. Full-render
+report copies exceeded the original200MiB allocation by7,771,074B; serial
+compressed/live-hash retirement reduced them before final checks. Final extra
+known growth stayed below1MiB against a new64MiB bound. Unknown214 subtrees
+still make the complete budget unverified. All task scratch is retired after
+verified retention; warm cache/runtime/SDK products are preserved. Launcher
+failures stay recorded. Before another launch, inspect the actual argument,
+nonexistent-output-root and existing-basetemp-parent contracts.
 
-At entry freeze command IDs, admitted C++/Python estimate/fit/remove APIs,
-mode/evaluation_points/magnification inputs and defaults, consumed settings,
-owned files and exact affected tests. A core API must accept frozen evaluation
-context rather than read GUI state. Use an owned bounded tridiagonal solver and
-existing execution limits; retain live cancellation and reject invalid/nonfinite/
-singular or oversized evaluations before publication. Preserve typed metadata,
-width/provenance and calibration/pixels; any necessary loss requires existing
-explicit consent and reversible history. Controls must edit/refit real knots,
-not silently detach the fit. Exercise open/closed masks, measurements and display
-through actual consumers before claiming integration.
+**Active next: selection interpolation (T06/G018).** Deliver selected line/area
+-> Interpolate dialog -> editable result -> Undo/Redo -> workspace/reopen and
+explicit replay. Preserve open/closed topology, attributes/width, pixels and
+calibration. Keep interval, smooth and adjust-to-match as explicit options.
+Freeze constructor, units/defaults and spline-state rules from actual pinned
+Selection.run(interpolate) / getInterpolatedPolygon before fixing the contract.
 
-Reuse captured prepared-task publication and source/owner/pose/cap/recording
-checks, with status staged before commit. Inspect candidate AND wire validators,
-including explicit legacy refusal paths. Fit/remove and recorder/workspace
-roundtrips must preserve knots and mode; resolved-only replay does not imply
-operation-intent macro compatibility. Keep any outstanding T09 intent gap named.
-Verify primary outputs, duplicates/tiny/closed seams, exact/short limits, callback
-freeze/cancel, editable controls, fit/remove history and both physical hosts.
-Preflight all required references; do not rerun the17 unavailable retired gesture
-checks. Batch implementation and driver cases before warm-cache compilation;
-verify installed paths/components/bytes, retain SDK scratch through allocation
-review, then retain failure/current evidence and retire scratch before advancing.
+1. Observe default/explicit interval, smooth/adjust, open endpoints/closed seam,
+   duplicate/tiny segments, fitted versus ordinary sources, off-canvas and
+   invalid/oversized cases through the actual upstream dispatch. Add an original
+   observer/new fixture; preserve existing expectations. Preflight paths/reports;
+   do not rerun the17 known-unavailable legacy checks.
+2. Proposed API: SelectionInterpolationOptions(interval,smooth,adjust_to_match),
+   estimate_interpolated_selection and
+   interpolate_selection(selection,width,height,options,limits,control).
+   Confirm names/defaults and actual consumers at entry. Reuse the equidistant
+   traversal in imagej_spline.cpp if semantics agree; otherwise factor a local
+   shared traversal while keeping distinct command rules. Admit point/workspace
+   bounds before allocation; freeze controls/options before callbacks, retain
+   live cancellation. Clear stale spline state for ordinary output unless the
+   observed command retains a fitted owner. Do not repeat Fit command trimming
+   during knot refit. No second resampling engine or generic framework.
+3. Reuse the existing Selection menu/dialog, captured worker, stale owner/pose/
+   recording/cap guards, staged status and selection-only history. Inspect both
+   candidate and wire gates; use explicit V4 for open/degenerate native geometry.
+   Verify primary values, actual masks/measurement/render consumers, exact/short
+   limits, cancellation, physical controls, history, workspace and explicit
+   rebind in both hosts, plus affected native/installed-client routes. Batch
+   source/binding/UI edits before warm-cache compilation. Estimate all capture
+   copies, retain final/failure hashes and retire scratch serially at closeout.
 
-**Following candidate: selection interpolation (T06/G018).** Freeze interval,
-smooth and adjust-to-match options, open/closed topology and composite holes at
-entry. Reuse fitted-path sampling where correct; do not introduce another
-resampling owner. Remaining curved/mask hull conversion, saved-row/scientific and
-platform qualification keep their existing owners.
+Composite paths must preserve components/holes rather than joining unrelated
+contours into one polygon. Inspect the real command before choosing that profile;
+if separate handling is needed, assign its next increment explicitly to T06
+without claiming all interpolation complete. Saved-row/scientific consumers,
+curved/mask hull conversion and remaining platform qualification retain their
+owners. Detail only the next ready successor after actual source branches are
+known, rather than expanding the whole horizon again.
 
 ### Reduce overhead at the existing task boundaries
 
