@@ -941,14 +941,18 @@ to repeat this green checkpoint.
 
 **Active next: T04a.2 M3/T06 fitted-source measurement qualification.**
 
-1. Inspect actual Fit Spline -> Measure callers and existing retained controls/
-   samples/type/constructor ownership. Observe pinned PolygonRoi.getLength,
-   including traced-before-spline and freehand/freeline-before-spline branches,
-   source control minima and calibrated spacing. Preserve all old fixtures.
-2. Freeze the actual missing semantics and smallest state/API change before
-   editing. Reuse current optional perimeter, captured row plan, result settings/
-   CSV/session paths and existing fit state; add no measurement engine/controller.
-   Do not force retained fitted geometry through the fresh-constructor helper.
+1. Initial constructor -> Fit Spline -> Measure qualification now has
+   [200 original observations](../tests/fixtures/fitted-measurements-imagej154r.json)
+   from the pinned ImageJ source. Of100 actual-command cases, the installed API
+   refuses28 and matches controls/samples in48; all72 successful captured rows
+   lack Perim. These are observed remaining gaps, not passing product tests.
+2. Correct existing fit preprocessing for subtype/constructor precision and
+   observed legal short control sets. Preserve the existing spline solver and
+   old fixtures. Then extend the existing metric using traced controls first,
+   smoothed Freehand/Freeline controls where applicable, otherwise spline sample
+   segments. Reuse optional perimeter, captured frozen rows, settings/CSV/session
+   and existing fit state; add no engine/controller. Check relative Float32 origin
+   rounding and affected state/edit assertions before the coherent build.
 3. Batch affected numerical/state/binding/UI changes once, then run meaningful
    native/Python/installed-client and both-host checks. Reuse the qualified
    ordinary-source matrix; keep necessary consumers through final review,
