@@ -103,6 +103,13 @@ std::array<double,3> moment_world(const SpatialCalibration& spatial,const std::a
   }
   return out;
 }
+double reported_y(double world_y,const SpatialCalibration& spatial,int height) {
+  // A captured axis-reversed Y calibration already reports upward coordinates:
+  // the Analyzer option is ORed with that calibration, never toggled twice.
+  if(spatial.direction[3]==0 && spatial.direction[5]==0 && spatial.direction[4]<0)return world_y;
+  if(spatial.origin[1]!=0)return world_y==0?0.:-world_y; // Original exact-origin subtraction yields +0.
+  return (height-1)*spatial.spacing[1]-world_y;
+}
 bool analytic_selection(const Selection* selection) {
   return !selection || selection->kind=="rectangle" || selection->kind=="ellipse";
 }
@@ -562,6 +569,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
   if(options.area_fraction)invalid("Area fraction requires explicit selection or manager measurement");
   if(options.moments)invalid("Moments require explicit selection or manager measurement");
   if(options.display_label)invalid("Display label requires explicit selection or manager measurement");
+  if(options.invert_y)invalid("Invert Y requires explicit selection or manager measurement");
   if(options.shape_descriptors || options.feret || options.bounding_rectangle || options.ellipse)invalid("Area geometry options require explicit selection or manager measurement");
   if(options.line && !options.path.empty())invalid("Analysis accepts line or path, not both");
   if(!options.path.empty() && (options.path.size()<2 || options.path.size()>4096))invalid("Analysis path requires 2..4096 vertices");
@@ -705,6 +713,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
         const auto& properties=sampling.source().display().properties;const auto found=properties.find(manual_threshold_property);
         requested["threshold_state"]=found==properties.end()?MetadataValue(std::monostate{}):found->second;
       }
+      if(options.invert_y){requested["invert_y"]=true;requested["report_y_policy"]="captured-world-y/axis-reversed-or/origin-or-height-anchor-v1";}
       if(options.moments){requested["moments"]=true;requested["moment_policy"]="typed-row-order/legacy-variance/excess-kurtosis-v1";}
       if(options.display_label){requested["display_label"]=true;requested["label_policy"]="captured-parent/source-roi/redirect-title/utf16-to-utf8-v1";}
       if(options.area_fraction) {
@@ -768,7 +777,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.display_label?20:options.moments?19:options.area_fraction?18:options.redirect?17:options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.invert_y?21:options.display_label?20:options.moments?19:options.area_fraction?18:options.redirect?17:options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -901,6 +910,15 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
               row.centroid_world=state.spatial.voxel_to_world({(*centroid)[0],(*centroid)[1],double(plan.sampling_position.z)});
             else {const auto nan=std::numeric_limits<double>::quiet_NaN();row.centroid_world=std::array<double,3>{nan,nan,nan};}
           }
+        }
+        if(state.options.invert_y) {
+          const auto& source_spatial=state.target.calibration();
+          const auto source_height=state.target.source().data().dataset.shape().y;
+          if(row.point_world)row.reported_y=reported_y((*row.point_world)[1],source_spatial,source_height);
+          else if(row.midpoint_world)row.reported_y=reported_y((*row.midpoint_world)[1],source_spatial,source_height);
+          else if(row.centroid_world)row.reported_y=reported_y((*row.centroid_world)[1],state.spatial,shape.y);
+          if(row.center_of_mass_world)row.reported_center_of_mass_y=reported_y((*row.center_of_mass_world)[1],state.spatial,shape.y);
+          if(row.bounding_y)row.reported_bounding_y=reported_y(*row.bounding_y,state.spatial,shape.y);
         }
         if(moments){row.skewness=moment_values[0];row.kurtosis=moment_values[1];}
         if(saved_threshold){row.threshold_lower=threshold_summary[0];row.threshold_upper=threshold_summary[1];}

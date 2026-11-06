@@ -281,6 +281,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_fit_circle_area_ui_case",[](Window& window,const std::string& directory) {
         return fitCircleWorkflowUiCase(window,"imgui_python",directory,true).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_invert_y_ui_case",[](Window& window,const std::string& directory) {
+        return invertYUiCase(window,"imgui_python",directory).dump();
+      },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
       .def("_display_label_ui_case",[](Window& window,const std::string& directory) {
         return displayLabelUiCase(window,"imgui_python",directory).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())

@@ -44,6 +44,8 @@ struct TargetAnalysisOptions {
   // Captured Analyzer Label, UTF8-observable UTF16 truncation. Active names use
   // Selection.attributes["imagej_roi_name"]; manager rows use their own name.
   bool display_label = false;
+  // Report Y upwards without changing physical world coordinates.
+  bool invert_y = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -115,6 +117,8 @@ struct TargetAnalysisPlane {
   std::optional<double> skewness,kurtosis;
   // Present only when display_label requested, including a deliberate empty label.
   std::optional<std::string> label;
+  // Opt-in measurement report coordinates; *_world and raw geometry stay fixed.
+  std::optional<double> reported_y,reported_center_of_mass_y,reported_bounding_y;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image

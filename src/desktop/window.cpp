@@ -4379,6 +4379,7 @@ struct Window::Impl {
     options.roi_indices=indices;
     options.reflex_angle=preferenceState.settings.boolean("reflex_angle");
     options.limit_to_threshold=preferenceState.settings.boolean("measurement_limit_to_threshold");
+    options.invert_y=preferenceState.settings.boolean("measurement_invert_y");
     if(measurementRedirectDocument) {
       TargetRequest request;request.roi=RoiPolicy::WholePlane;
       options.redirect=owner.controller_->resolve_target(request,measurementRedirectDocument);
@@ -10489,6 +10490,7 @@ void Window::poll() {
         if(command.options().measurement!=TargetMeasurementMode::Area &&
             impl->preferenceState.settings.boolean("measurement_limit_to_threshold")!=command.options().limit_to_threshold)throw RevisionConflict();
         if(command.options().measurement!=TargetMeasurementMode::Area) {
+          if(impl->preferenceState.settings.boolean("measurement_invert_y")!=command.options().invert_y)throw RevisionConflict();
           const auto& columns=impl->preferenceState.settings.strings("measurements");
           if((std::find(columns.begin(),columns.end(),"%Area")!=columns.end())!=command.options().area_fraction)throw RevisionConflict();
           const bool moments=std::find(columns.begin(),columns.end(),"Skew")!=columns.end() || std::find(columns.begin(),columns.end(),"Kurt")!=columns.end();

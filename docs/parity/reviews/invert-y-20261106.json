@@ -1,0 +1,643 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 Invert Y coordinates",
+  "implemented": true,
+  "verified": "Scoped: 3,330 distinct installed Windows Python passes, including 870 new cases. 325 native original coordinate cases plus unchanged controls; current native/installed C++ clients pass on Windows/Linux. Unaffected settings evidence is explicitly reused.",
+  "integrated": "Windows standalone C++ and optional Python Dear ImGui: actual controls, current/manager/redirect, table, Copy CSV, Save CSV and preferences/workspace. Both Invert Y and shared Label probe pairs agree.",
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_complete": false,
+  "requirements": [
+    "G009",
+    "G066",
+    "G071"
+  ],
+  "scope": "Captured default-off measurement report Y coordinates; source point/midpoint and sampling area/COM/rectangle ownership. Physical world geometry and disabled numerical results stay unchanged. No new runtime code dependency, model, font or asset.",
+  "contract": {
+    "api": "TargetAnalysisOptions.invert_y=false; owned C++ optional TargetAnalysisPlane.reported_y, reported_center_of_mass_y, reported_bounding_y, exposed read-only in Python. Existing *_world, bounding_y, rectangle vectors, Feret, scalar statistics, X/Z and stored calibration are unchanged.",
+    "setting": "measurement_invert_y: Boolean=false; shared native/Python Settings, Measurements > Invert Y coordinates. Captured before launch; publication refuses a consumed setting change. Existing column choices are preserved.",
+    "calibration": "An already axis-reversed world Y basis (direction[3]==direction[5]==0, direction[4]<0) remains upward: calibration and option use OR semantics. Otherwise nonzero world origin Y reports -worldY; zero origin uses (height-1)*spacingY-worldY. Source frame/height for points and line midpoints; sampling frame/height for area centroid, COM and bounding origin. Exact nonzero-origin zero is canonical original +0, rather than the -0 produced by simply negating worldY.",
+    "native_extension": "For a non-axis-aligned native affine, this is an explicit report-only world-Y scalar reflection with the same anchor. It is analytically qualified, not an ImageJ rotated-world-coordinate claim. Physical geometry and X/Z stay fixed.",
+    "original_policy": "Observed option changes Y/YM/BY only, not Feret coordinates/angles or scalar/ellipse outputs. Irregular-line/angle zero-coordinate rows remain zero. Existing unsupported point/line auxiliary columns retain their M3/T06 owners.",
+    "timing_resources": "Fixed three optional doubles are charged by sizeof(TargetAnalysisPlane) in existing result/working estimates. Existing JSON keys are replaced, not appended as image data. No additional buffer, source-plane traversal, provider read or processing controller. Runtime cap refusal precedes checkpoint/provider access. Nonfinite numerical summaries remain valid without weakening geometry conversion.",
+    "provenance": "v21 only when invert_y requested; prior versions/defaults remain compatible. Detached scalar results retain no new source/provider ownership.",
+    "persistence_output": "Both hosts use the same native row serializer/formatting and shared Copy CSV/Save CSV path. Original and report aliases are explicit: visible Y/centroid_y, YM and BY prefer reported fields. Preferences and workspace rows round-trip. Clipboard check uses a restored owned ImGui sink; OS interoperability remains open."
+  },
+  "original_reference": {
+    "fixture": "tests/fixtures/invert-y-imagej154r.json",
+    "sha256": "a87572ced4068868c61c043173369c22f1649339d64b56457aa00e9c12de8212",
+    "observer": "tests/reference/ObserveInvertY.java",
+    "observations": 865,
+    "same_xy_coordinate_cases": 649,
+    "different_xy_cases": 216,
+    "original_different_xy_refusals": 96,
+    "original_different_xy_accepted_bypass_cases": 120,
+    "source_archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "source_version": "ImageJ1.54r commit62db90a269cccc1ac79f658e4602043214ed055b",
+    "coverage": "Nine shapes, three baseline calibrations, local inversion OR option, four redirect modes and ellipse fit on/off; one appended nonzero-origin exact-zero point case. Prior864 observations remain exactly unchanged.",
+    "limits": "Existing native equal-XY redirect admission remains:216 native guard checks do not prove coordinate parity. Of those,120 original point/line/angle bypass variants remain an explicit M3 residual. No full865-case coordinate-parity claim."
+  },
+  "checks": {
+    "distinct_installed_python_passes": 3330,
+    "new_feature_passes": 870,
+    "native_original_cases": 325,
+    "union": ".tmp/manual-workflow-verification/invert-y-20261106/verification-union031.json",
+    "host_pairs": ".tmp/manual-workflow-verification/invert-y-20261106/host-comparison018.json",
+    "installed_identities": ".tmp/manual-workflow-verification/invert-y-20261106/installed-identities028.json",
+    "linux_installed_identities": ".tmp/manual-workflow-verification/invert-y-20261106/linux-installed-identities028.json",
+    "process_receipts": {
+      "analysis008.process.json": {
+        "sha256": "bf055f936fbe7eb27651beca51aff087bb0db8f2ce5b63e526c2c3c76cbf9138",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1267095000948757
+      },
+      "analysis027.process.json": {
+        "sha256": "6accbcf9f8e1befdbf2ed8a85cbb5d61a04d91364795a55df1b79807d45503df",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.11932060006074607
+      },
+      "build007a.process.json": {
+        "sha256": "1459f90b01bb3ee3d9e012f664ab0a7afa4851ea567f7651c26c7a0dfa451ed6",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 6.415707899956033
+      },
+      "build007b.process.json": {
+        "sha256": "d8996127e41c7611a1a5359e53a638c765cf883a856f461df6c9e96aa8ae2e15",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "elapsed_seconds": 1.3476692999247462
+      },
+      "build008.process.json": {
+        "sha256": "754861d0136c80635e79199e0696fc535ef8d1415d2188056216565d9257211a",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.1360700000077486
+      },
+      "build009a.process.json": {
+        "sha256": "b7f731bb5e48e1cbb2b8d0648380430edc340ac6ce2fa61000f753b164ed8410",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 35.57249450008385
+      },
+      "build009b.process.json": {
+        "sha256": "a94cc0c66e3b3c117fe55a0816b8ef18f6d8d16134250243b5c5053a1e74796c",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 42.01530639990233
+      },
+      "build009c.process.json": {
+        "sha256": "4f4960b3482e65a2a87f3b6c8fe01efbc516c45158500536267c5c1ec271a0cd",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 7.708775500068441
+      },
+      "build014a.process.json": {
+        "sha256": "464724d1410ff99c5d930c869599123b5b889a706cc8fbee6a346d3ef2fd2b13",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 11.799043599981815
+      },
+      "build014b.process.json": {
+        "sha256": "3dcae38a6b4f8c9ff6da69b9c0b0508ef2e7a7e2ceea85ee099172ad3350fe32",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 6.986840900033712
+      },
+      "build027a.process.json": {
+        "sha256": "7e9c8434878baeafbd5fdda67ba88a57a278ddd3bc5e70009a2286c7882c564d",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 4.488175499951467
+      },
+      "build027b.process.json": {
+        "sha256": "dc0c759e49da67c13e70cb2f6c75310ab0c42e283812b5fa752ddb3c5b89bf1d",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.058785100001842
+      },
+      "build028a.process.json": {
+        "sha256": "161f69167947bc70fbed4d7e81046f78363f9c414afc3a4fcbcfd9c5141bbae7",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 41.089065100066364
+      },
+      "build028b.process.json": {
+        "sha256": "bda1b83701d5bce3392c9e3e669694e6fe0047c2f5ac8a12d7a4aa6a18e5572a",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 7.64304309990257
+      },
+      "build028c.process.json": {
+        "sha256": "014eec7ec572dfcad73112d48365b6341ada255e8b62bb89ebc9d5f54ebc4fa3",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.5075181999709457
+      },
+      "install014-desktop.process.json": {
+        "sha256": "9f14198bb224b4cd019f56a704053e923095bd54ea2b76766b2aa375510c19d6",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.14084200002253056
+      },
+      "install014-development.process.json": {
+        "sha256": "01d056c6f3f7d4db861ff1fbfc90c74cd2d18c52e7460ba2cafdc341f3157278",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.16480170004069805
+      },
+      "install014-Unspecified.process.json": {
+        "sha256": "1d05f17e0097bb36bc5b3aff2680f53c91c6dcd6af23fabed24613e9e989471c",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.16495450004003942
+      },
+      "install028-desktop.process.json": {
+        "sha256": "9d94d8dfdb5183e78717120f0c4a17be36bae7e743f6354d832249078dc981fb",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1399121000431478
+      },
+      "install028-development.process.json": {
+        "sha256": "3b628a357a11fb4d06478ce1f1084fb76d2fde7af1276a31b827f7e51c540e7c",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.19202090008184314
+      },
+      "install028-Unspecified.process.json": {
+        "sha256": "d0d5447fef3b8dc0780a5f366b4a8a6ee7e2c65f479bb5fc707ca0c3d2adad88",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1657059001736343
+      },
+      "linux-analysis010.process.json": {
+        "sha256": "d00ab5341efe9a7476d8a6b9dc93bd6df6fc3159d7709bf316819010834775cf",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.10650206599999734
+      },
+      "linux-analysis028.process.json": {
+        "sha256": "83168b986395f6e682ba5e13057baa632ab1e1551fbd27ac521c1d909d5755a9",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1212627580000003
+      },
+      "linux-build010.process.json": {
+        "sha256": "e858318680068b88976599b106acfdeb3b23d9d0c68a96c42198cdaa5bef4a59",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 32.175626315
+      },
+      "linux-build028.process.json": {
+        "sha256": "d07b19576ca47b720caac216dccd3f911715cae7ef8d2ac348b7db9c8d27d720",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 51.093811691
+      },
+      "linux-corrective-retirement033.process.json": {
+        "sha256": "53697072f91d4be2a378989017679edf5791d35e0ef3c47f7d18d3eb41dcc972",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.841582699911669
+      },
+      "linux-install010.process.json": {
+        "sha256": "b7913394471c8d929bd9eb6b6065d0d6cf622a3ffb00796f9e62444bf7b721d6",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.8232779749999963
+      },
+      "linux-install028.process.json": {
+        "sha256": "fbbbd33b0e889e8fec5703b4e6150b9ba0b9d912f69677acbdba61b111ff4cda",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 1.1956049980000003
+      },
+      "linux-owner010.process.json": {
+        "sha256": "cff351fb801edbdf2c3d618e49468f931aee16a6b9e479934d0f5e3d6b2e9848",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 54.951427599880844
+      },
+      "linux-owner028.process.json": {
+        "sha256": "77c76fbcd51dea0c46d90aec0e9382933bf92001c4f70c7fd7ee99c0500513cc",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 79.15374869992957
+      },
+      "linux-retirement020.process.json": {
+        "sha256": "90f04193268781398bb15caa6e79e3f6f1cbb89a6a11011f99a3e520187b36b3",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.8322064001113176
+      },
+      "linux-sdk-build010.process.json": {
+        "sha256": "4503544c48bd191b7983c6becfb3ea9dd717ff4bb7d6678d06ec09bd894dad29",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 18.618963738000005
+      },
+      "linux-sdk-build028.process.json": {
+        "sha256": "4be773ba3b03c3b3a5263f6d3d064e0b3853e3e298b43b1cfa129f7d03b4da69",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 19.046036714000003
+      },
+      "linux-sdk-client010.process.json": {
+        "sha256": "cb02bfdfe93812ae00702fc71728f6d84b807ef03df5bb2152c16aedb0b6a582",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.09377130199999328
+      },
+      "linux-sdk-client028.process.json": {
+        "sha256": "a5d15a69679c78721743afd5a2f6763c69a5cf417f5d0f0e4f13b4da0aba06aa",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.11491983099999459
+      },
+      "linux-sdk-configure010.process.json": {
+        "sha256": "47cc0d8331c6659b914186b71c8df0b30fd6891fa28946a306837184f5a7e4ec",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 1.8084009419999987
+      },
+      "linux-sdk-configure028.process.json": {
+        "sha256": "5039374bc4e20b301f442a24e80d0db7827c56700c0360e17723549dae2bb5c4",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 2.1663929020000054
+      },
+      "linux-settings010.process.json": {
+        "sha256": "ad469f84ad6a3ef25ca7b69425adcbac70d8cc6c91604f14d78e7ed66bd9344c",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.06570755499999592
+      },
+      "native011-retention019.pack.process.json": {
+        "sha256": "f7f83ac07ff868fdcdccf1b2376fcbbe0cf380a4dfc064b543b78eb2f75ec615",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1987515001092106
+      },
+      "native011-retention019.verify.process.json": {
+        "sha256": "0f7521d7c91b2c419e0419d09151c97c58e1408070b4045fba9663bb455a315e",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13587220013141632
+      },
+      "native011.process.json": {
+        "sha256": "18fcbbd66a14380725d492eeab1c3a3a64883764a4fdfacb5cc5b480a68ee8b0",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.5041928999125957
+      },
+      "native012-retention019.pack.process.json": {
+        "sha256": "557961c96abe7d28ac14c2c40b28e0e86c3251caf8c8e883654913a2ec4340fc",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.18592550000175834
+      },
+      "native012-retention019.verify.process.json": {
+        "sha256": "f3588444f6cce2696d87766a59b42464ff617b5be0bef29755dcc15d2d8e86a1",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.14692079997621477
+      },
+      "native012.process.json": {
+        "sha256": "fc3228ebeec1345544157b338a4a3dabce528558db0a09f5abbe676cabbc4560",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.36642530001699924
+      },
+      "python015-retention019.pack.process.json": {
+        "sha256": "d663bc49f9b32377cc8c3fd5539533cd904a4dc5d9b00e3a537c048eeb3e1ce6",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1875434999819845
+      },
+      "python015-retention019.verify.process.json": {
+        "sha256": "30dea7779b8b99edf69943c3a050fed150fc64d5dea2b7dd8ce3e1260fbb5511",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13485999987460673
+      },
+      "python015.process.json": {
+        "sha256": "a4246e37817851ef63c07214f1e39de5412519c95b108c1446171e1db9a67895",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 7.6325326999649405
+      },
+      "python017.process.json": {
+        "sha256": "d038cd2acd565949a9fde220c12f00512a098f1c4a02bcaef0f1c90a9f0ed6a0",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.8808895000256598
+      },
+      "python029-retention032.pack.process.json": {
+        "sha256": "cb77e46ddaec04321d7398bbbcbf5f15ebfe563cfb3166106cf6ed10e67ca618",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.17390769999474287
+      },
+      "python029-retention032.verify.process.json": {
+        "sha256": "da4a42816923a0cf817dda73f6b38997903d11b3d36046f29bb95784f6148226",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1342895000707358
+      },
+      "python029.process.json": {
+        "sha256": "e69ee41fb5ba684aafa4cc539ae31f1774e28efdca1c44498d636a6e58ae5741",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "elapsed_seconds": 1.009923900011927
+      },
+      "python030-retention032.pack.process.json": {
+        "sha256": "7d83773949c5520b509cc167b459ce910666962ed4bda2b4396f836998cee07a",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.318581199971959
+      },
+      "python030-retention032.verify.process.json": {
+        "sha256": "7721c65a18528af6b61c975343aad1983a37e89e2624479c75b7e26ab05149a1",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1280745998956263
+      },
+      "python030.process.json": {
+        "sha256": "2ecf05f4297397ada7eed35a087b13a91b7cb59f230cb4e0485d462b7f99ac2f",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.9806196999270469
+      },
+      "reference002-compile.process.json": {
+        "sha256": "1a98757650ed34fc64eef77ee0799e87d68b965310a2ab0333763a75532747d9",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.5772734999191016
+      },
+      "reference002-observe.process.json": {
+        "sha256": "438be66e886633c83c0b2ac9613b0d2f36f2b0ef1db0f5760a0efbde4ecc1ac7",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.21552570001222193
+      },
+      "reference002-retention011.pack.process.json": {
+        "sha256": "a99cae2104381449d8914f7919e2b333d687134e3fc9a223d2de579818745ca6",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.18523840000852942
+      },
+      "reference002-retention011.verify.process.json": {
+        "sha256": "d096e42d642bb0b8fab836391b335872468f1134260ed86b15f92d45a2167d51",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13292040000669658
+      },
+      "reference004-compile.process.json": {
+        "sha256": "eb7f1d7453691ee2016b967cff96b2df79764aa1268ca6ed9b372c44f7c68d53",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.5480817998759449
+      },
+      "reference004-observe.process.json": {
+        "sha256": "a32508d096dbae37581a0bc6b334d6149c24fb79a3a0c1418e00f2bf4d7e9760",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.292830599937588
+      },
+      "reference004-retention011.pack.process.json": {
+        "sha256": "9c987cb24fed976c23af73a3c537b1c93940383572c90f71b5d0c6b65b6ed091",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.16038250015117228
+      },
+      "reference004-retention011.verify.process.json": {
+        "sha256": "6d60446da89cb084032767134528a4357e2a4388b6cb1856e5ff226eb2384d92",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.14163440000265837
+      },
+      "reference025-compile.process.json": {
+        "sha256": "8646e0ac084a9a712b49e203ec9183c19181e93b0aa2127fa1f30c1188bec78f",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.6259726998396218
+      },
+      "reference025-observe.process.json": {
+        "sha256": "675863d4c70c6f4c9b012eb978a9ac0055a43b4833a2f6ff2769db5fedb26acb",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.3170117000117898
+      },
+      "reference025-retention032.pack.process.json": {
+        "sha256": "287c60745e769f7420d21bf3ce5617f7555fb6c376bd8c9c1780157997801199",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.16180880018509924
+      },
+      "reference025-retention032.verify.process.json": {
+        "sha256": "3d6120664d08497e6973d36f80757a2930f56132e6457c4531fb104a5d000afe",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13329209992662072
+      },
+      "sdk-build016.process.json": {
+        "sha256": "e297725198d2885ce90d4ba418d2cb57b7bed92d2a1bdacb8a6bb55c8e666d13",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.4221353998873383
+      },
+      "sdk-build029.process.json": {
+        "sha256": "6a2a6e6a055183a10a297b720aec268472ad51922de27f3d3dc36959311ffc67",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 3.7434996999800205
+      },
+      "sdk-client016.process.json": {
+        "sha256": "e35cf6e135ddb55472714d04c374e78e684113bf7d6b766c05852826d7debb7e",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.13589669996872544
+      },
+      "sdk-client029.process.json": {
+        "sha256": "9e0750c67402a3f975f28a19b55c853108b9b5d1dd42573255cbc96dd351252b",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.12071769987232983
+      },
+      "sdk-configure016.process.json": {
+        "sha256": "5f9fe3738a8689751f1a76f536f56371ef767d19ee7bee7dbe6551bc24c473de",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 4.9641849000472575
+      },
+      "sdk-configure029.process.json": {
+        "sha256": "e22cb0271091e143bf80c822650417eb7faa0bb1da845e72f73f7a8ec64300e4",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 4.356143099954352
+      },
+      "settings-build012.process.json": {
+        "sha256": "67b4cf1e6035c7dad9866d8aab4bcd9824957251541c820667bebc8ffb47e848",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.8639807000290602
+      },
+      "settings012.process.json": {
+        "sha256": "57a1b91bd94b4c0f966f325b4e3b9734601cce5d6a8d3e36f2453807934a3438",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1996192999649793
+      },
+      "signed-zero023.process.json": {
+        "sha256": "2737a7c993517893ab40bc9cbc86083a06de7e9ea479233c8a80b30737498f17",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.09437020006589592
+      },
+      "signed-zero024.process.json": {
+        "sha256": "aa303e225594e5c849b38d1e342e898f132ecf1ef16edf892033c00ae19643e4",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.22190840006805956
+      }
+    },
+    "reuse": "3328 green nonzero/admission IDs015/017 reused with exact branch/input proof029; original zero-sign tail029 and visible table/CSV030 add two distinct IDs. Current SDK/native027/028/029 pass325 cases. Prior nonzero actual host pairs018 do not consume the corrected nonzero-origin zero branch; their exact outputs remain valid. Settings implementation/consumer inputs are unchanged by the private analysis-helper correction."
+  },
+  "failures_and_corrections": [
+    "Original002 stopped at actual differing-size area redirect refusal. Observer004 records those refusals and diagnostics; no expectation or admission guard was changed to manufacture parity.",
+    "Native test007b compile used Document::id() instead of the actual public const id field. Read document.hpp311 at correction boundary, fixed the three new test caller sites, rebuilt only the test008 and reused unchanged core007. This actual API inspection lapse is recorded; no product core correction was needed.",
+    "Read-only guessed paths/wildcard lookup errors were corrected to maintained roots and real declarations before dependent edits/builds. Python Settings getter spelling was checked and corrected before execution.",
+    "Late diff review found actual native -0 at a nonzero calibration origin; original025 appended tail proves +0. Prior864 observations remain unchanged. Private helper corrected027; native/installed C++ signbit checks and Python original sign/table0.000/CSV checks pass.",
+    "The late finding exposed premature SDK retirement after018 review. Two replacement consumer configurations were necessary (12,907,020 generated bytes). They were kept through the full corrective original/native/frontend review031, then safely retired. This is recorded waste, not evidence of successful initial prevention.",
+    "A direct isolated runtime probe023 lacked numpy; no product code reached. Retry024 used the existing dependency path and verified installed module origin. No environment generation was created.",
+    "New frontend CSV assertion029 expected unquoted text although the established serializer quotes fields. Only the test reader changed to csv.reader; failed capture/diagnostics are retained and030 passes without a product rebuild."
+  ],
+  "cleanup": {
+    "state": "All 13 owned groups retired; eight necessary lossless archives verified. Observer/SDK compiler products retain identities only.",
+    "receipts": [
+      ".tmp/manual-workflow-verification/invert-y-20261106/early-retirement011.json",
+      ".tmp/manual-workflow-verification/invert-y-20261106/windows-retirement019.json",
+      ".tmp/manual-workflow-verification/invert-y-20261106/linux-retirement020.json",
+      ".tmp/manual-workflow-verification/invert-y-20261106/windows-corrective-retirement032.json",
+      ".tmp/manual-workflow-verification/invert-y-20261106/linux-corrective-retirement033.json"
+    ],
+    "archives": [
+      {
+        "path": ".tmp/manual-workflow-verification/invert-y-20261106/native011-retention019.zip",
+        "bytes": 5124,
+        "sha256": "963f7f987ae4b79c3e816e29457ef995d79d62f529de395abf3282f67cd87ec2",
+        "manifest": ".tmp/manual-workflow-verification/invert-y-20261106/native011-retention019.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/invert-y-20261106/native011-retention019.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/invert-y-20261106/native012-retention019.zip",
+        "bytes": 4972,
+        "sha256": "ddcc3105c0f44fb7849807d367a193e2002ee993fed02cf1213ea99ae7eebaab",
+        "manifest": ".tmp/manual-workflow-verification/invert-y-20261106/native012-retention019.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/invert-y-20261106/native012-retention019.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/invert-y-20261106/python015-retention019.zip",
+        "bytes": 11384,
+        "sha256": "1f8c2b601d81ba1d6d9239d343c0bf36cf4d286d210f3c9268cef1f8ab2f585a",
+        "manifest": ".tmp/manual-workflow-verification/invert-y-20261106/python015-retention019.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/invert-y-20261106/python015-retention019.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/invert-y-20261106/python029-retention032.zip",
+        "bytes": 450,
+        "sha256": "497840036b82b4286f0b5d23be05f0aedaf94efe28f91e50f9cd22294e04564d",
+        "manifest": ".tmp/manual-workflow-verification/invert-y-20261106/python029-retention032.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/invert-y-20261106/python029-retention032.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/invert-y-20261106/python030-retention032.zip",
+        "bytes": 450,
+        "sha256": "497840036b82b4286f0b5d23be05f0aedaf94efe28f91e50f9cd22294e04564d",
+        "manifest": ".tmp/manual-workflow-verification/invert-y-20261106/python030-retention032.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/invert-y-20261106/python030-retention032.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/invert-y-20261106/reference002-retention011.zip",
+        "bytes": 750,
+        "sha256": "de3c31a1feed7b1c2be340cb6e4b6db53fad4b6dced56e0dcee64784f765a9ff",
+        "manifest": ".tmp/manual-workflow-verification/invert-y-20261106/reference002-retention011.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/invert-y-20261106/reference002-retention011.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/invert-y-20261106/reference004-retention011.zip",
+        "bytes": 12809,
+        "sha256": "22d6fecb7021cd21c2a2227632b6b7e7bea48020d3352e5eadbecf1dcd9e924d",
+        "manifest": ".tmp/manual-workflow-verification/invert-y-20261106/reference004-retention011.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/invert-y-20261106/reference004-retention011.verify.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/invert-y-20261106/reference025-retention032.zip",
+        "bytes": 12893,
+        "sha256": "22ed8c602d523d41cf3e7eb3c2eb764d729badb76f664108a5cdb271ea6c5ec5",
+        "manifest": ".tmp/manual-workflow-verification/invert-y-20261106/reference025-retention032.manifest.json",
+        "verification": ".tmp/manual-workflow-verification/invert-y-20261106/reference025-retention032.verify.json"
+      }
+    ],
+    "active_cache_runtime_sdk_prefixes": "Preserved; no new cache/runtime/SDK installation generation or retired project build/ recreation.",
+    "entry_known_bytes": 7474299167,
+    "before_retirement_known_bytes": 7490657780,
+    "after_retirement_known_bytes": 7477954558,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "measurements": [
+      ".tmp/manual-workflow-verification/invert-y-entry001.json",
+      ".tmp/manual-workflow-verification/invert-y-before-retirement018.json",
+      ".tmp/manual-workflow-verification/invert-y-final021.json",
+      ".tmp/manual-workflow-verification/invert-y-corrective-before031.json",
+      ".tmp/manual-workflow-verification/invert-y-final034.json"
+    ],
+    "allocation": "Planned256MiB incremental bound; measured owned scratch and retained deltas stayed below it. Complete budget and inaccessible storage remain unverified; no complete peak-allocation claim. Unknown subtrees are not headroom.",
+    "retirement_phases": [
+      {
+        "before": 7489386548,
+        "after": 7477055487,
+        "receipts": "018/021; earlier phase retained unchanged"
+      },
+      {
+        "before": 7490657780,
+        "after": 7477954558,
+        "receipts": "031/034; corrective phase"
+      }
+    ]
+  },
+  "waste_review": {
+    "fix_now": "Correct original exact-zero sign and test API/CSV readers; preserve required numerical semantics. Source-bound narrow retries reuse valid3328 green IDs and nonzero UI reports. Shared measurement-option probe has two real checked consumers. Necessary evidence is hashed before terminal scratch retirement.",
+    "defer": "M3/T06 owns differing-XY bypass and unsupported auxiliary shape columns. T09 owns full ResultsTable allocation/AUTO state, next NaN-empty workflow; T08 owns independent name synchronization. T00/T14 owns wider reference/platform/release qualification.",
+    "build_commands": 16,
+    "build_command_seconds": 258.902,
+    "sdk_build_commands": 4,
+    "sdk_build_command_seconds": 44.831,
+    "time_limit": "Command sums, not critical-path duration, runtime speed or overall completion.",
+    "actual_lapse": "SDKs were retired before the late signed-zero boundary review. Two replacement configurations generated12,907,020B. Corrective check031 observed original/native positive zero and visible/exported0.000 while replacement configurations still existed; then retirement032/033 completed. Another policy edit alone would not correct this lapse.",
+    "available_build_check_time": "No fixed user deadline; actual command time is retained in existing owned receipts.",
+    "retries": {
+      "reference_refusal_observer": 1,
+      "native_test_identity_compile": 1,
+      "isolated_dependency_probe": 1,
+      "csv_test_reader": 1,
+      "document_anchor_before_write": 1,
+      "replacement_sdk_configurations_due_to_late_finding": 2
+    }
+  },
+  "remaining": [
+    "M3 differing-XY original point/line/angle redirect bypass and wider auxiliary columns",
+    "NaN empty cells and Add to overlay options",
+    "Full ResultsTable AUTO/per-column/allocation/import/editing/filtering/summaries",
+    "Wider types/geometry/replay/interchange and supported-platform release gates",
+    "Commercial Fiji inventory, missing references, accessibility/keyboard/DPI and matched performance qualification"
+  ],
+  "next_ready": "M3/T09 NaN empty cells: observe original per-column allocation/growth and toggle timing, then preserve explicit table state through publication, output and workspace. A current render-time missing-value rewrite would not match the original.",
+  "task_record": {
+    "path": ".tmp/manual-workflow-verification/invert-y-20261106/entry.json",
+    "sha256": "f79f7adba460fc672536113b3dfcaa81d25d6a4154b2d3e98dde26c8ced90a50",
+    "state": "Frozen scoped closeout; publication receipts remain separate."
+  }
+}

@@ -981,3 +981,51 @@ installed Python passes, Windows/Linux native/installed C++ consumers and actual
 both-Windows-host output/lifecycle checks. Two externally supplied C++ point
 report readers remain unavailable. Wider ROI/replay/format/platform, OS clipboard
 and full M3/release scope remain open.
+
+## Captured Invert Y report coordinates
+
+`TargetAnalysisOptions.invert_y` defaults false. SELECTION/ROI_MANAGER requests
+may enable it; generic AREA refuses before pixel reads. Enabled requests use
+provenance v21 and expose three owned optional C++ fields (read-only in Python):
+`TargetAnalysisPlane.reported_y`, `reported_center_of_mass_y` and
+`reported_bounding_y`. They correspond to measured Y, YM and BY when that row
+already provides the relevant coordinate. Existing `*_world`, raw `bounding_y`,
+rectangle world vectors, X/Z, Feret values/angles, scalar statistics and image
+calibration remain unchanged. These reporting fields are not new geometry.
+
+The shared Boolean setting `measurement_invert_y=false` appears as **Invert Y
+coordinates** in Measurements preferences. Both hosts capture it before launch;
+a consumed change while a job is pending refuses publication. Existing rows are
+not retroactively inverted. The native row serializer prefers reported Y for
+visible `Y`/`centroid_y`, reported COM Y for `YM`, and reported bounding Y for `BY`.
+Table, Copy CSV, Save CSV and preferences/workspace share those captured values.
+An empty default column list does not prevent this independent option.
+
+For original-compatible calibration, a captured axis-reversed Y basis already
+reports upward coordinates: `direction[3]==direction[5]==0` and
+`direction[4]<0` keeps the existing Y (calibration inversion OR measurement flag,
+not a second toggle). Otherwise nonzero world origin Y reports `-worldY` (exact-origin zero is original positive zero), while
+zero origin reports `(imageHeight-1)*spacingY-worldY`. Point and straight-line
+midpoint use the source calibration/height; area centroid, weighted center and
+processor rectangle use the sampling calibration/height. Original Feret
+coordinates and irregular-line/angle zero-coordinate rows are not inverted.
+Existing unsupported auxiliary columns remain with their M3/T06 owners.
+
+For arbitrary native affines, this is an explicit report-only reflection of the
+world-Y scalar with the same anchor. Physical world geometry and X/Z stay fixed;
+this extension is analytically tested, not original ImageJ rotated-world parity.
+Nonfinite numerical summaries remain NaN/Inf and do not weaken the geometry API's
+finite-coordinate checks. Fixed result fields are charged by the existing
+`sizeof(TargetAnalysisPlane)` resource estimate. No buffer, image traversal,
+provider read or processing controller is added; runtime cap refusal precedes
+checkpoint/provider access.
+
+[Scoped evidence](parity/reviews/invert-y-20261106.json) records 865 original
+observations: 649 same-XY coordinate cases,96 differing-size refusals and 120
+original point/line/angle bypass variants. The native equal-XY redirect guard
+remains unchanged: its216 differing-size checks are admission evidence, not
+coordinate parity for those 120 accepted original variants. Current Windows/Linux
+native/settings/installed C++ clients pass; 3,330 distinct installed Python checks
+include 870 new cases and two matching Windows host pairs (Invert Y and Label).
+Thirteen owned scratch groups are retired with eight verified lossless archives.
+Full M3, table state, wider variants/platforms and release remain open.

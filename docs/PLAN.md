@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Scientific notation and numeric presentation are scoped delivered: shared table/Copy CSV/Save CSV, actual settings and persistence in both Windows hosts. [Receipt](parity/reviews/result-format-20261106.json) and [coverage](COVERAGE_CHECKLIST.md#numeric-presentation-and-copy-csv). Display label is scoped delivered: 2,490 original observations, 2,606 distinct installed Python passes and Windows/Linux native/installed C++ checks; both Windows hosts cover actual controls, outputs and persistence. All 10 owned groups are retired. [Scope](parity/reviews/display-label-20261106.json), [coverage](COVERAGE_CHECKLIST.md#display-label-scoped-coverage). Next ready: Invert Y coordinates. Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. Next ready: NaN empty cells. Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -160,7 +160,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.2 M3: skewness/kurtosis (Skew/Kurt). | Default-off captured moment pair and independent columns; 1,619 original cases, 8,258 distinct Python passes/1 optional GL skip, 28 affected Windows host pairs, Windows/Linux native and installed C++ consumers. All eight owned groups retired; full M3/release remain open. [Receipt](parity/reviews/moment-measurements-20261106.json). |
 | Delivered scoped | T04a.2 M3: scientific notation/numeric presentation. | Default-off scientific setting, precision mapping, raw values preserved and one shared table/copied/exported CSV route. 1,950 original observations, 63 distinct affected/reused installed Python passes/1 optional GL skip; native settings Windows/Linux and actual both-Windows-host workflows. All 12 owned groups retired. [Receipt](parity/reviews/result-format-20261106.json). |
 | Delivered scoped | T04a.2 M3: Display label. | Captured labels, name/plane/redirect policy, actual settings/table/Copy CSV/Save CSV/persistence and lifecycle guards. 2,606 distinct installed Python passes, both Windows hosts and Windows/Linux native/installed C++ clients; all 10 owned groups retired. Two external C++ report readers remain unavailable. [Receipt](parity/reviews/display-label-20261106.json). |
-| Next ready | T04a.2 M3: Invert Y coordinates. | Observe calibration/height/coordinate ownership before API freeze; default-off captured option, actual controls/current/manager/redirect/table/Copy CSV/Save CSV and persistence. AUTO/per-column and other Analyzer variants retain owners. |
+| Delivered scoped | T04a.2 M3: Invert Y coordinates. | Default-off captured report-only Y/YM/BY, unchanged physical geometry and scalar/Feret outputs. 3,330 distinct installed Python passes (870 new); two matching Windows host pairs and current Windows/Linux native/settings/installed C++ clients. All thirteen owned groups retired. Differing-XY bypass and wider M3 remain open. [Receipt](parity/reviews/invert-y-20261106.json). |
+| Next ready | T04a.2 M3/T09: NaN empty cells. | Observe original per-column allocation/growth/toggle semantics before minimal table-state/API freeze; actual preference, mixed rows, table/Copy CSV/Save CSV and persistence. Full AUTO/table editing, Add to overlay and wider variants retain owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1044,75 +1045,87 @@ Final review found premature Float32 overflow saturation; twelve API/editor cont
 
 Waste review: one probe-placement compile failure, two subnormal policy failures and seven null-reader assertion failures remain recorded with corrections. The task-entry exit omitted the plan's copied-CSV verb; final review caught it before acceptance, and the shared serializer/control now passes both hosts. All 12 owned groups are retired with verified necessary captures; observer compiler products are identity-only. Known storage entry 7,459,804,258 B, before final retirement 7,466,849,179 B, final 7,466,434,953 B before docs; 214 inaccessible subtrees leave budget unverified. Twenty actual product build commands, including corrective compiles/relinks, sum 237.518 s. This is command time, not runtime speed or critical-path duration. T02/M3 owns the demonstrated formatter build fanout at the next required formatter change; no cleanup-only recompile is justified now.
 
-**Scoped delivered: T04a.2 M3 Display label.**
+**Scoped delivered: T04a.2 M3 Invert Y report coordinates.**
 
-[Receipt](parity/reviews/display-label-20261106.json) accepts the default-off
-captured native/Python option/result, original source/name/plane/redirect policy,
-actual shared settings/table/Copy CSV/Save CSV and persistence in both Windows
-hosts. 2,490 original observations,325 native provider vectors,2,606 distinct
-installed Python passes and Windows/Linux native/installed C++ clients support
-this scope. A real Update-after-select history regression was fixed with original
-attribute/no-op/edit controls. Two external C++ handoff/ZIP report readers remain
-unavailable; their accidental selection without input preflight is recorded and
-was not repeated. Broader ROI name synchronization, AUTO/per-column state and
-full M3/platform/release scope stay open.
+[Receipt](parity/reviews/invert-y-20261106.json) accepts captured default-off
+`invert_y` and three owned report summaries (read-only in Python), shared settings and actual
+current/manager/redirect/table/Copy CSV/Save CSV/persistence. Physical geometry,
+existing scalar/Feret data and old rows stay fixed. 649 original same-XY coordinate
+cases, 325 native positives and3,330 distinct installed Python passes (870 new)
+support this scope. Windows/Linux native/installed C++ clients and two actual
+Windows host pairs pass, with explicit unchanged-input reuse. 216 different-XY
+native guard cases include 96 original refusals and 120 original accepted bypass
+variants; those remain M3/T06 work, not accepted coordinate parity.
 
-All ten owned groups are retired, with eight verified lossless capture archives;
-observer/SDK compiler products retain identities only. Known storage at entry
-7,466,550,193 B, before final retirement7,487,744,033 B, afterward7,474,195,681 B
-before final documentation.214 inaccessible subtrees keep budget unverified.
-Twenty product build commands sum271.263s; four SDK builds are separate. These
-are command sums, not critical-path time or runtime speed. No new dependency,
-cache/runtime generation, generic runner or numerical campaign was added.
+Waste review: final diff review found a visible -0 at the nonzero calibration
+origin; one appended original observation proves +0 and leaves prior 864 rows
+unchanged. The private helper now preserves positive zero; native signbit and
+installed table/CSV checks pass. SDKs had already been retired after the earlier
+review: two replacement configurations generated 12,907,020 B. This was actual
+premature-retirement waste. The corrective check 031 observed original/native
+positive zero, current installed bytes and visible/exported 0.000 while replacement
+SDKs were still available; retirement032/033 followed. A CSV assertion then needed
+only a proper quoted-field reader, with no product rebuild. The earlier test
+compile also used `Document::id()` instead of its inspected const field; only the
+caller/test was rebuilt. No unchanged green numerical campaign was restarted.
 
-### Next ready: Invert Y coordinates
+All thirteen owned groups are now retired with eight verified necessary archives;
+observer/SDK compiler products retain identities only. Known entry 7,474,299,167B;
+first phase before/after 7,489,386,548/7,477,055,487B; corrective phase before/after
+7,490,657,780/7,477,954,558 B before final docs. 214 inaccessible subtrees keep
+budget unverified. Sixteen product build commands sum 258.902 s; four SDK builds are
+separate. These are command sums, not critical-path duration or runtime speed.
 
-1. Freeze the complete workflow in the existing task record: enable/disable
-   **Invert Y coordinates**, Measure current/manager/redirect, table, **Copy CSV
-   and Save CSV**, Apply/Revert/Defaults and saved preferences/workspace. Map
-   G009/G066/G071, exact settings/defaults, public signatures, owned files and
-   affected checks to real maintained consumers before edits. Parent M3 stays open.
-2. Observe original behavior first using the existing reviewed ImageJ archive,
-   classes and JDK. Inspected `Calibration.getY(y,height)` branches on calibration
-   or Analyzer inversion; nonzero `yOrigin` and zero-origin image-height handling
-   differ. `Analyzer.updateY`, point/redirect routes and `ImageStatistics`
-   centroid/bounds call sites are relevant. Do not assume every output is simply
-   negated or every coordinate uses the source height. Record exact observations
-   for off/on, zero/nonzero origin, spacing, image height, redirect height,
-   rectangle/ellipse/polygon/point, weighted center, bounds and Feret outputs.
-3. Easiest API path: extend the existing captured `TargetAnalysisOptions`, result
-   preparation/execution and provenance only where original observations require
-   it. Inspect actual public centroid/COM/rectangle/Feret fields and world-space
-   consumers before freezing the option/output semantics. Preserve native world
-   geometry, selection coordinates and disabled output; define explicit qualified
-   coordinate mapping rather than mutating image calibration or adding a UI-only
-   rewrite that disagrees with the C++/Python API. Assign unqualified constructors
-   to existing M3/T06 owners; do not silently accept them.
-4. Easiest settings/UI path: use shared native Settings and the existing analysis
-   request capture, measurement-column and preferences controls. Inspect bool
-   versus column-choice semantics; avoid a duplicate setting. Capture computational
-   inversion before launch; scientific/precision stay presentation-only. Verify
-   actual Apply/Revert/Defaults and both-host current/manager/redirect paths.
-5. Before broad links, run original positive/native tests and affected coordinate
-   regressions. Cover source versus sampling calibration/height, parent versus
-   positioned point pose, centroid/weighted-center/bounds/Feret composition,
-   density/LIMIT where relevant, zero/nonfinite behavior and unchanged scalar
-   statistics. Review source guards, return timing, binding mutability, ownership
-   and resource/cancellation contracts before assertions. Reuse unchanged labels,
-   formatting and numerical reference evidence; broaden only for a demonstrated
-   shared mapping change.
-6. Batch affected core/header/binding/UI edits and build once per affected
-   platform in active caches. Verify install components, origins and current
-   source/built/installed bytes before affected installed C++/Python consumers.
-   Every reference/report-dependent reader must have its exact consumed input
-   and producer mapping checked before selection; missing inputs block only
-   dependent claims. Keep SDK consumer configuration through final review.
-7. Close with exact platform/variant evidence, the canonical coverage update and
-   brief waste review. Retain/hash-verify necessary diagnostics and retire owned
-   terminal scratch before a successor. Keep full AUTO/per-column table state,
-   Add to overlay/NaN-empty and other remaining Analyzer options, wider replay/
-   formats/platform and release exits assigned. Detail the next successor only
-   after this coherent workflow closes.
+### Next ready: NaN empty cells
+
+1. Freeze a complete M3/T09 workflow in the existing task record: choose **NaN
+   empty cells**, create mixed current/manager/redirect measurement rows and new
+   numeric columns, view table, **Copy CSV and Save CSV**, Apply/Revert/Defaults,
+   clear/save/reopen and preferences/workspace. Map G009/G066/G071, settings,
+   native/Python interfaces, concrete writers/readers and lifecycle exits before
+   edits. Preserve separate implementation, verification, UI and release states.
+2. Observe the original first using the existing reviewed ResultsTable/Analyzer
+   classes and JDK. Inspected `ResultsTable.setNaNEmptyCells(bool)` controls
+   initialization of newly allocated numeric columns and newly grown capacity;
+   it does not rewrite existing allocated cells. Observe toggles before/after
+   column creation, unused capacity and row growth boundaries, late columns,
+   empty tables, row increments, numeric/string/label fields, explicit values and
+   save/reopen. Record original zero/NaN spellings and precision/scientific output.
+   A current-setting replacement of every missing displayed cell is insufficient.
+3. Easiest core/API path: inspect the maintained Results writers, publication,
+   import/clear/edit and persistence routes before freezing a small explicit
+   table-state contract. `Window::poll` appends captured rows through
+   `OutputPublication::reserve`; preserve its admission/atomicity. Keep numerical
+   image analysis separate and reuse the existing native row formatter/CSV
+   serializer. If original allocation timing requires retained column/capacity
+   state, add only that demonstrated state and native/Python access, with a
+   versioned persistence adapter; do not create a generic registry/controller.
+4. Define absent numeric cells, explicit null, actual NaN/Inf, strings/labels,
+   native integer IDs, booleans and compound JSON separately. Freeze compatibility
+   for existing arbitrary-JSON results and legacy workspaces; do not silently
+   reinterpret all missing/native values as original numeric table cells. A
+   qualified adapter may be necessary; make its real consumer/API explicit before
+   implementation. Existing rows/allocated defaults must survive a later toggle.
+5. Reuse shared Settings/preferences for the single default-off choice. Decide
+   exactly when table state captures it from observed allocation semantics,
+   including concurrent measurement publication and Cancel/stale/clear. Verify
+   both actual hosts, Apply/Revert/Defaults, mixed rows/new columns, table text,
+   copied/saved CSV, saved preferences and reopened workspace/table state. Inspect
+   probe report schemas and one-shot gate timing before writing assertions.
+6. Put bounded original/native state cases before expensive links: old/new
+   columns, toggles and capacity boundaries, typed missing values, precision,
+   empty/clear and persistence. Charge retained table state, simultaneous staging
+   and output under existing limits before allocation/publication. Select affected
+   native/Python/installed clients by the actual public contract; verify install
+   components/loaded paths/bytes and all consumed reference/report inputs. Reuse
+   unchanged image geometry/pixel evidence and retain SDK configuration until
+   final review, without restarting every family campaign.
+7. Close with exact scoped evidence, canonical coverage/queue updates and brief
+   waste review. Hash-verify necessary diagnostics and retire terminal scratch
+   before a successor. Keep full AUTO/per-column formatting/editing/import/filter/
+   summary variants, Add to overlay, differing-XY bypass and platform/release
+   exits with their existing owners. Detail only the next ready successor after
+   this coherent workflow closes; missing unrelated references block their claims.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 

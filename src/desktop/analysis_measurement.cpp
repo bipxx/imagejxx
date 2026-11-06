@@ -159,6 +159,9 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       // Analyzer's angle/irregular-line rows leave these summaries at zero.
       values["X"]=0;values["Y"]=0;values["centroid_x"]=0;values["centroid_y"]=0;
     }
+    if(row.reported_y)values["Y"]=values["centroid_y"]=scalar(*row.reported_y);
+    if(row.reported_center_of_mass_y)values["YM"]=scalar(*row.reported_center_of_mass_y);
+    if(row.reported_bounding_y)values["BY"]=scalar(*row.reported_bounding_y);
     rows.push_back(std::move(values));
   }
   return rows;

@@ -1441,21 +1441,21 @@ Json resultFormattingUiCase(Window& w,const std::string& context,const std::stri
 }
 
 
-Json displayLabelUiCase(Window& w,const std::string& context,const std::string& fresh_directory) {
+static Json measurementOptionUiCase(Window& w,const std::string& context,const std::string& fresh_directory,bool invert_y) {
   namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
   require(!fs::exists(dir) && w.documents().empty(),"Fresh label fixture required");fs::create_directories(dir);
   Json report={{"context",context},{"events",Json::array()},{"controls",Json::array()}};Json last;
   std::atomic<bool> entered=false,release=false;
   try {
-    Image low(4,1,1,PixelType::UInt8),high=low;low.pixels={0,1,1,4};high.pixels={10,11,11,14};DatasetReadObserver reads,otherReads;
+    Image low(4,invert_y?3:1,1,PixelType::UInt8),high=low;const double values[]={0,1,1,4};for(std::size_t i=0;i<low.pixels.size();++i){low.pixels[i]=values[i%4];high.pixels[i]=values[i%4]+10;}DatasetReadObserver reads,otherReads;
     const std::string title="source,\"title\nnext";auto source=std::make_shared<imagejxx::Document>(Dataset::from_stack({low,high}).observe_reads(reads),title);
     auto edit=source->begin_edit();edit.set_property("slice_labels",metadata_array({std::string("slice0.tif"),std::string("slice1.tif\nsecond")}));source->commit(edit);
     auto view=source->snapshot().display();view.crosshair[2]=1;source->set_display(view);source->select(Selection("rectangle",{{0,0},{4,1}}));
     auto stored=prepare_store_roi(source->snapshot(),"roi,name");source->commit(stored.transaction,stored.display);auto adopted=prepare_select_roi(source->snapshot(),0);source->commit(adopted.transaction,adopted.display);source->mark_saved();
-    high.pixels={50,51,51,54};auto other=std::make_shared<imagejxx::Document>(Dataset::from_stack({high}).observe_reads(otherReads),"target,title");
+    for(std::size_t i=0;i<high.pixels.size();++i)high.pixels[i]=values[i%4]+50;SpatialCalibration targetSpatial;if(invert_y){targetSpatial.spacing[1]=2;targetSpatial.origin[1]=7;}auto other=std::make_shared<imagejxx::Document>(Dataset::from_stack({high},targetSpatial).observe_reads(otherReads),"target,title");
     w.addNativeDocument(source);w.addNativeDocument(other);w.setActiveIndex(0);
     const auto before=source->snapshot(),otherBefore=other->snapshot();const auto undo=source->undo_steps();
-    w.updateSettings({{"measurements",Json::array({"mean"})},{"measurement_precision",3},{"measurement_scientific",false}},false);
+    w.updateSettings({{"measurements",invert_y?Json::array({"mean","Y","YM","BY"}):Json::array({"mean"})},{"measurement_invert_y",false},{"measurement_precision",3},{"measurement_scientific",false}},false);
     HeadlessInputSession session(w);
     auto frame=[&](const Json& events=Json::array()){require(report["events"].size()<256,"Label frame bound");last=session.frame(events);report["events"].push_back(events);};
     auto click=[&](const Json& control,const std::string& name){
@@ -1469,8 +1469,9 @@ Json displayLabelUiCase(Window& w,const std::string& context,const std::string& 
     control("menu.Analyze");control("menu.action.measure");w.wait();frame();require(w.error().empty() && w.results.size()==1 && !w.results[0].contains("Label"),"Default requested label");
     control("menu.Edit");control("menu.Edit.Preferences");widget("search");
     for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}})}}}));
-    frame(Json::array({{{"type","text"},{"value","Results columns"}}}));
+    frame(Json::array({{{"type","text"},{"value",invert_y?"Invert Y coordinates":"Results columns"}}}));
     auto choice=[&](){
+      if(invert_y){click(last.at("preferences_panel").at("fields").at("measurement_invert_y").at("control"),"preferences.measurement_invert_y");return;}
       for(int attempt=0;;++attempt) {
         const auto item=last.at("preferences_panel").at("fields").at("measurements").at("choices").at("Label");
         const auto rect=item.at("rect").get<std::array<float,4>>(),clip=item.at("clip_rect").get<std::array<float,4>>();
@@ -1478,32 +1479,35 @@ Json displayLabelUiCase(Window& w,const std::string& context,const std::string& 
         require(attempt<16,"Cannot expose Label choice");frame(Json::array({{{"type","position"},{"space","screen"},{"point",{clip[0]+2,(clip[1]+clip[3])*.5f}}}}));frame(Json::array({{{"type","wheel"},{"x",0},{"y",rect[3]>clip[3]?-3:3}}}));
       }
     };
-    choice();widget("revert");require(last.at("preferences_panel").at("fields").at("measurements").at("choices").at("Label").at("selected")==false,"Label Revert failed");
-    choice();widget("apply");const auto columns=w.settings().strings("measurements");require(std::find(columns.begin(),columns.end(),"Label")!=columns.end(),"Label Apply failed");
-    widget("defaults");require(last.at("preferences_panel").at("draft").at("measurements").empty(),"Label Defaults failed");widget("revert");widget("close_button");
+    choice();widget("revert");require(invert_y?last.at("preferences_panel").at("draft").at("measurement_invert_y")==false:last.at("preferences_panel").at("fields").at("measurements").at("choices").at("Label").at("selected")==false,"Measurement option Revert failed");
+    choice();widget("apply");const auto columns=w.settings().strings("measurements");require(invert_y?w.settings().boolean("measurement_invert_y"):std::find(columns.begin(),columns.end(),"Label")!=columns.end(),"Measurement option Apply failed");
+    widget("defaults");require(invert_y?last.at("preferences_panel").at("draft").at("measurement_invert_y")==false:last.at("preferences_panel").at("draft").at("measurements").empty(),"Measurement option Defaults failed");widget("revert");widget("close_button");
     control("menu.Analyze");control("menu.action.measure");w.wait();frame();const auto label=title+":roi,name:slice1";
-    require(w.error().empty() && w.results.size()==2 && w.results.back().at("Label")==label && w.results[0].contains("Label")==false,"Captured current label failed");
-    bool rendered=false;for(const auto& cell:last.at("results_table").at("cells"))if(cell.at("name")=="Label" && cell.at("row")==1){require(cell.at("text")==label,"Label table text differs");rendered=true;}require(rendered,"Label table cell not observed");
+    require(w.error().empty() && w.results.size()==2 && (invert_y?w.results.back().at("Y")==1.5 && w.results[0].at("Y")==.5:w.results.back().at("Label")==label && w.results[0].contains("Label")==false),"Captured current label failed");
+    bool rendered=false;for(const auto& cell:last.at("results_table").at("cells"))if(cell.at("name")== (invert_y?"Y":"Label") && cell.at("row")==1){require(cell.at("text")== (invert_y?"1.500":label),"Measurement table text differs");rendered=true;}require(rendered,"Label table cell not observed");
     report["results_table"]=last.at("results_table");report["current_label"]=label;
-    w.action("measure_rois");w.wait();frame();require(w.error().empty() && w.results.size()==3 && w.results.back().at("Label")==label,"Manager label failed");
+    w.action("measure_rois");w.wait();frame();require(w.error().empty() && w.results.size()==3 && (invert_y?w.results.back().at("Y")==1.5:w.results.back().at("Label")==label),"Manager measurement option failed");
     control("menu.Analyze");control("menu.measurement_redirect");control("measurement_redirect."+std::to_string(other->id));control("menu.Analyze");control("menu.action.measure");w.wait();frame();
-    require(w.error().empty() && w.results.size()==4 && w.results.back().at("Label")=="target,title:roi,name:slice1","Redirect label source ownership differs");
+    require(w.error().empty() && w.results.size()==4 && (invert_y?w.results.back().at("Y")==-8:w.results.back().at("Label")=="target,title:roi,name:slice1"),"Redirect measurement option source ownership differs");
     const auto rows=w.results;w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});const auto raw=readBytes((dir/"measure.csv").u8string());std::string csv(raw.begin(),raw.end()),copied;
     {
       auto& platform=ImGui::GetPlatformIO();struct Restore {ImGuiPlatformIO& p;decltype(p.Platform_SetClipboardTextFn) fn;void* data;~Restore(){p.Platform_SetClipboardTextFn=fn;p.Platform_ClipboardUserData=data;}} restore{platform,platform.Platform_SetClipboardTextFn,platform.Platform_ClipboardUserData};
       platform.Platform_ClipboardUserData=&copied;platform.Platform_SetClipboardTextFn=[](ImGuiContext* c,const char* text){static_cast<std::string*>(c->PlatformIO.Platform_ClipboardUserData)->assign(text?text:"");};control("results.copy_csv");require(copied==csv,"Label copied/saved CSV differ");
     }
     auto start=[&](){entered=false;release=false;session.fixtureWorkerGate([&](const JobContext& c){entered=true;while(!release){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}});w.action("measure");const auto end=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered && std::chrono::steady_clock::now()<end)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered,"Label gate timeout");};
-    start();w.updateSettings({{"measurements",Json::array({"mean"})}},false);release=true;w.wait();require(!w.error().empty() && w.results==rows,"Stale Label choice published");acknowledge();w.updateSettings({{"measurements",columns}},true);
+    start();w.updateSettings(invert_y?Json{{"measurement_invert_y",false}}:Json{{"measurements",Json::array({"mean"})}},false);release=true;w.wait();require(!w.error().empty() && w.results==rows,"Stale Label choice published");acknowledge();w.updateSettings({{"measurements",columns},{"measurement_invert_y",invert_y}},true);
     start();w.cancel();release=true;w.wait();require(w.results==rows,"Canceled Label published");acknowledge();session.fixtureWorkerGate({});
     require(source->snapshot().shares_data(before) && other->snapshot().shares_data(otherBefore) && source->undo_steps()==undo && other->undo_steps()==0,"Label changed data/history");
     w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});
     start();w.closeDocument(other->id,true);release=true;w.wait();require(w.results==rows,"Closed label sampling owner published rows");acknowledge();session.fixtureWorkerGate({});report["sampling_close_preserved"]=true;
     report["rows"]=rows;report["sampling_document"]=other->id;report["columns"]=columns;report["csv"]=csv;report["copied_csv"]=copied;report["stale_setting_refused"]=report["cancel_preserved"]=report["source_unchanged"]=true;
-    session.close();Window reopened(preferencesPath);require(reopened.settings().strings("measurements")==columns,"Saved Label choice lost");reopened.openFile((dir/"measured.ijx").u8string());require(reopened.results==rows,"Saved Label rows lost");
+    session.close();Window reopened(preferencesPath);require(reopened.settings().strings("measurements")==columns && reopened.settings().boolean("measurement_invert_y")==invert_y,"Saved measurement option lost");reopened.openFile((dir/"measured.ijx").u8string());require(reopened.results==rows,"Saved Label rows lost");
     reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(readBytes((dir/"reopened.csv").u8string())==raw,"Reopened Label CSV differs");report["workspace_preserved"]=true;report["state"]="observed";
     require(report.dump().size()<8*1024*1024,"Label report bound");writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
 }
+
+Json displayLabelUiCase(Window& w,const std::string& context,const std::string& path) {return measurementOptionUiCase(w,context,path,false);}
+Json invertYUiCase(Window& w,const std::string& context,const std::string& path) {return measurementOptionUiCase(w,context,path,true);}
 
 }
