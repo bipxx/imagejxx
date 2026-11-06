@@ -35,6 +35,20 @@ double profile_length(const SpatialCalibration& spatial,const std::array<double,
   if(!std::isfinite(length))invalid("Analysis profile physical length must be finite");
   return length;
 }
+std::array<double,3> moment_world(const SpatialCalibration& spatial,const std::array<double,3>& point) {
+  if(std::all_of(point.begin(),point.end(),[](double v){return std::isfinite(v);}))return spatial.voxel_to_world(point);
+  // These are IEEE numerical summaries, not valid geometry coordinates. Keep
+  // an unrelated zero basis coefficient from turning another axis into NaN.
+  std::array<double,3> out{};
+  for(int axis=0;axis<3;++axis) {
+    for(int component=0;component<3;++component) {
+      const auto coefficient=spatial.direction[axis*3+component];
+      if(coefficient!=0)out[axis]+=coefficient*(point[component]*spatial.spacing[component]);
+    }
+    out[axis]+=spatial.origin[axis];
+  }
+  return out;
+}
 bool analytic_selection(const Selection* selection) {
   return !selection || selection->kind=="rectangle" || selection->kind=="ellipse";
 }
@@ -474,11 +488,14 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
         requested["geometry_policy"]="calibrated-angle-refresh/irregular-path-v1";}
       if(points)requested["point_policy"]="float32-relative/rounded-pixel/expanded-rows-v1";
       if(annotated)requested["annotation_policy"]="scientific-czt/counters-v1";
-      if(area_centroids)requested["area_centroid_policy"]="geometric-pixel-centers/captured-affine-v1";
+      if(area_centroids) {
+        requested["area_centroid_policy"]="geometric-pixel-centers/captured-affine-v1";
+        requested["center_of_mass_policy"]="typed-row-order/byte-float-minvalue/nonzero-affine-v1";
+      }
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(area_centroids?10:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -542,9 +559,10 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           row.bounds=imagej_line_bounds(line);
         } else {
           auto mask=selection?std::optional<Image>{selection->mask(shape.x,shape.y)}:std::optional<Image>{};
-          std::optional<std::array<double,2>> centroid;
+          std::optional<std::array<double,2>> centroid,center_of_mass;
           row.statistics=detail::calibrated_statistics_with_table(*image,state.spatial,state.intensity,state.lookup,
-              mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true,&centroid);
+              mask?&*mask:nullptr,state.limits.max_working_bytes,&row.bounds,true,&centroid,&center_of_mass);
+          if(center_of_mass)row.center_of_mass_world=moment_world(state.spatial,{(*center_of_mass)[0],(*center_of_mass)[1],double(row.position.z)});
           if(centroid) {
             if(std::isfinite((*centroid)[0]) && std::isfinite((*centroid)[1]))
               row.centroid_world=state.spatial.voxel_to_world({(*centroid)[0],(*centroid)[1],double(row.position.z)});

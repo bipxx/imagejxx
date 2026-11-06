@@ -61,6 +61,9 @@ struct TargetAnalysisPlane {
   // Area-only geometric centroid: mean pixel centers (x+.5,y+.5), captured
   // plane z, transformed by spatial. Empty membership has NaN components.
   std::optional<std::array<double,3>> centroid_world;
+  // Area-only intensity-weighted summary, at captured plane z. NaN/Inf moment
+  // components propagate through nonzero spatial axes, not geometry APIs.
+  std::optional<std::array<double,3>> center_of_mass_world;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image

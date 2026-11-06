@@ -20,8 +20,9 @@ PLAN records scoped B2b.1 replay and the bounded everyday editing workflow as
 verified in both Windows hosts. Scientific TIFF reslice/export now preserves
 world/time transforms. Vertex Convex Hull has scoped API/both-Windows-host
 evidence. Bounding Rectangle now has scoped API/both-host checks too; next
-is T04a.2 M3 intensity-weighted center of mass. Calibrated area centroids now
-have scoped original/API/both-host CSV/workspace evidence. Rectangle/ellipse and whole-image
+is T04a.2 M3 Shape descriptors (Circ./AR/Round./Solidity together). Calibrated
+geometric centroids and weighted center of mass have scoped original/API/
+both-host CSV/workspace evidence. Rectangle/ellipse and whole-image
 perimeter have scoped API/both-host CSV/workspace evidence with explicit units.
 Fit Spline -> Measure,
 refit/straighten/remove and segmented explicit counts have scoped evidence;

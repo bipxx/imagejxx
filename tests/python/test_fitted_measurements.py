@@ -50,7 +50,7 @@ def test_actual_fit_command_controls_samples_and_captured_metric(case):
     snapshot = owner.snapshot()
     command = ij.resolve_target_analysis(app.resolve_target(), options)
     assert reads.counts().plane_reads == before_reads
-    assert command.record["version"] == (8 if fitted.kind == "polyline" else 10)
+    assert command.record["version"] == (8 if fitted.kind == "polyline" else 11)
     assert command.record["options"]["rows"][0]["spline_fit"] is True
     row = ij.execute_target_analysis(command).planes[0]
     assert row.perimeter == pytest.approx(expected, abs=1e-7, rel=1e-7)

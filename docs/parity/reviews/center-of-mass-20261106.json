@@ -1,0 +1,412 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 intensity-weighted center of mass",
+  "implemented": true,
+  "verified": true,
+  "integrated": true,
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "scope": "Captured area center_of_mass_world optional readonly result, typed row-order weighted sums fused into existing membership traversal and borrowed intensity table; independent geometric X/Y. Original Byte/Float denorm_min versus Short behavior, signed/density NaN/Inf and sparse nonfinite numerical summaries. Public finite geometry API unchanged. Existing settings XM/YM, precision/CSV/workspace; area diagnostic version11, other versions preserved. Public DTO requires matching C++ client rebuild.",
+  "checks": {
+    "python_collected_distinct": 1724,
+    "python_passed": 1723,
+    "python_skipped": 1,
+    "skip": "Optional hidden-OpenGL settings context requires IMAGEJXX_RENDER_TESTS=1; renderer unchanged.",
+    "original_observations": 720,
+    "new_physical_profiles_per_windows_host": 5,
+    "matching_host_pairs": 37,
+    "native": "Windows analysis/settings/UI, installed Windows target_analysis_api and Linux analysis/settings terminal0 cleanup_complete"
+  },
+  "remaining": "Full M3/T06/editor/platform/release remains open. Next coherent Shape descriptors option Circ./AR/Round./Solidity; Feret, threshold/redirect, manager/replay and unsampled constructor/mask/scientific/line/point variants retain owners. Retired G016/17gesture inputs unavailable, not passed/recreated/repinned.",
+  "cleanup": "retirement008.json proves five exact disposable scratch groups and parent absent. Three original/capture groups archived/live-hash verified; SDK/compiler identities retained only. All diagnostics/owned receipts outside scratch retained. Linux used no disposable scratch. Warm active cache/runtime/app/installedSDK remain.",
+  "storage": {
+    "before_bytes": 7416944499,
+    "measured_checkpoint_bytes": 7423214129,
+    "after_bytes": 7418969436,
+    "measured_growth_bytes": 6269630,
+    "physical_free_after_bytes": 232862429184,
+    "allocation_bound_bytes": 268435456,
+    "unknown_subtrees": 214,
+    "budget_verified": false
+  },
+  "cost": {
+    "windows_build_commands": 8,
+    "windows_build_command_seconds": 97.182,
+    "native_module_build_seconds": 38.13,
+    "linux_build_seconds": 13.944,
+    "python_seconds": 9.417,
+    "sdk_command_seconds": 9.068,
+    "product_build_retries": 0,
+    "product_test_retries": 0
+  },
+  "lapses_and_corrections": [
+    "count_correction007 records earlier805/995passes plus1optional skip, not806/996allpassed; live PLAN and canonical notes corrected, old receipts preserved.",
+    "Existing M3 queue was growing per-increment milestone rows; consolidated to one current area-result row with prior evidence links and one next ready option, rather than appending another history."
+  ],
+  "count_correction": {
+    "observed": {
+      "analytic-perimeter": {
+        "collected": 806,
+        "passed": 805,
+        "skipped": [
+          {
+            "class": "tests.python.test_settings",
+            "name": "test_settings_in_hidden_opengl_and_recreated_context",
+            "reason": "Set IMAGEJXX_RENDER_TESTS=1 for hidden OpenGL"
+          }
+        ],
+        "source": ".tmp/manual-workflow-verification/analytic-perimeter-20261106/python006.xml"
+      },
+      "area-centroid": {
+        "collected": 996,
+        "passed": 995,
+        "skipped": [
+          {
+            "class": "tests.python.test_settings",
+            "name": "test_settings_in_hidden_opengl_and_recreated_context",
+            "reason": "Set IMAGEJXX_RENDER_TESTS=1 for hidden OpenGL"
+          }
+        ],
+        "source": ".tmp/manual-workflow-verification/area-centroid-20261106/python008.xml"
+      },
+      "center-of-mass": {
+        "collected": 1724,
+        "passed": 1723,
+        "skipped": [
+          {
+            "class": "tests.python.test_settings",
+            "name": "test_settings_in_hidden_opengl_and_recreated_context",
+            "reason": "Set IMAGEJXX_RENDER_TESTS=1 for hidden OpenGL"
+          }
+        ],
+        "source": ".tmp/manual-workflow-verification/center-of-mass-20261106/python005.xml"
+      }
+    },
+    "lapse": "Earlier public summaries described collected case IDs as passed without separately reporting the optional hidden-OpenGL skip. Actual JUnit evidence shows805+1 and995+1, not806/996passed.",
+    "corrective_action": "Current receipt reports1723passed/1optionalOpenGLskip over1724distinct IDs; correct live PLAN predecessor counts in place, preserve immutable historical receipts/expectations. No unrelated renderer rerun. Separate collected/pass/skip in existing closeout from now on."
+  },
+  "sources": [
+    {
+      "path": "src/native/calibrated_analysis.cpp",
+      "bytes": 34188,
+      "sha256": "c2b84665f1eb7686f4d3cff9a59e349f91f14952fc77be853e553431a0d1ab7d"
+    },
+    {
+      "path": "src/native/calibrated_analysis_internal.hpp",
+      "bytes": 1920,
+      "sha256": "8c65f6a690c70096c8f10202b0e693f19c35ab8eb309f7f41acbfcba680f13d9"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 41117,
+      "sha256": "c7525266121efe45f494b72fc71c1d4b14ae53476c4c587d6ef119649428c332"
+    },
+    {
+      "path": "include/imagejxx/target_analysis.hpp",
+      "bytes": 6535,
+      "sha256": "80fe39fa7e7807227d584ba79e47b0339bf5c9fb9b8fbfe4e97bde97eadbb65c"
+    },
+    {
+      "path": "src/native/target_analysis_bindings.cpp",
+      "bytes": 7102,
+      "sha256": "c08690069cc1b8409ddc1fa884f6a4a644e55bb4cf20630b22a7c28bb111371d"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 27633,
+      "sha256": "94a55c1fd8984e378c4a3bddfd5ca2c3583d5c2eb5c26ed57cd569a4bc8ee0f5"
+    },
+    {
+      "path": "src/desktop/analysis_measurement.cpp",
+      "bytes": 7140,
+      "sha256": "75b5d9929f36a65a643be733bff24e6720f8cc38a473678322ccc21642927702"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 101894,
+      "sha256": "8236d749c5dc403c0e8784f49411b7c39b23d2b5f87ded4bd2aa266e51dca9ab"
+    },
+    {
+      "path": "tests/native/test_target_analysis.cpp",
+      "bytes": 24847,
+      "sha256": "63eaefbbf658281d862fb6783ab954fc8eadbacef19963169d0eb2654d6d41e2"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 38288,
+      "sha256": "58af3e8fbf1357b7b0a55c336114de18ceec4add42fbd7185162aed30f5708a7"
+    },
+    {
+      "path": "tests/python/test_center_of_mass.py",
+      "bytes": 7308,
+      "sha256": "b4e31bcc452c26eeb44c8c4a2f5a27b0b67f63eb184237e17bca4d9974c0a41e"
+    },
+    {
+      "path": "tests/python/test_area_centroid.py",
+      "bytes": 5832,
+      "sha256": "c9bd88877ea9e482f678f7f514e7cd206072c7518da55669fbf4a804eb075721"
+    },
+    {
+      "path": "tests/python/test_target_measurements.py",
+      "bytes": 8163,
+      "sha256": "f2cd5a4e9ac308ccb095dc7004091e98f7417919bbfb523fd1555a986efd1a6f"
+    },
+    {
+      "path": "tests/python/test_analytic_perimeter.py",
+      "bytes": 5235,
+      "sha256": "23124ed908d478817d3d139dedcda39c9bbf5a4efa2ed0885fb8ead127ab1a87"
+    },
+    {
+      "path": "tests/python/test_fitted_measurements.py",
+      "bytes": 5881,
+      "sha256": "a2a0e78da1a4697b28034578f2bc2a519f70f0746c97969ab39a319dd75b0d92"
+    },
+    {
+      "path": "tests/python/test_subtype_measurements.py",
+      "bytes": 11844,
+      "sha256": "580982138dd046d92f54454a2245280bcac17be87e34a2370b6f39571a4275d3"
+    },
+    {
+      "path": "tests/reference/ObserveCenterOfMass.java",
+      "bytes": 3226,
+      "sha256": "1b8d55ed56795972bd47ae6169bebbbdc589a8999ef43a5314b1e92af7d1cf02"
+    },
+    {
+      "path": "tests/fixtures/center-of-mass-imagej154r.json",
+      "bytes": 425798,
+      "sha256": "d4bcce81dab139cca59eab505080be518727b2aee096cb3d89531a493e7b3138"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 143415,
+      "sha256": "1cda1aa6068d86d8c27abab40f09e52a487a959bb9fa42a475578c38492ded0c"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 7743,
+      "sha256": "16a2111f4300aa50788fecd36764e14e9b53087c2c5943b356da9a1eec35f9b0"
+    },
+    {
+      "path": "docs/THREE_AGENT_EXECUTION.md",
+      "bytes": 7750,
+      "sha256": "c13ad01dc0191485d6044d4084be6929408b0d9fbe86e101a103ce69a5f6ace3"
+    },
+    {
+      "path": "docs/TARGET_ANALYSIS.md",
+      "bytes": 39875,
+      "sha256": "747b75c9f47dc075585fa0a7cc049e6c0613159839b34c56ab8670cf3c801f7a"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/entry.json",
+      "bytes": 23708,
+      "sha256": "57307ce377e0766fa6cef3cd4cd857d93af212246735189bd20dbd106e7d3e35"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/python005.xml",
+      "bytes": 298978,
+      "sha256": "7f670470dca1796cad6d8303c7cf956d95be170587d39b0f61b0fd2bbfdf2fe1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/installed-identities005.json",
+      "bytes": 3391,
+      "sha256": "4222bb22d9bcad8faf188625b44392221fc3a702eb18139ca60c98b833ed966b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/review007.json",
+      "bytes": 1105,
+      "sha256": "90e1c284156fdbcd74d24b41082d705a807af02911056b1b7f110598cc9cf87a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/retirement008.json",
+      "bytes": 958,
+      "sha256": "e4dcb7968cbd98c53cd64fc294d7840dddd6609c24f465511ee6e4b7727a97ce"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/scratch-identities008.json",
+      "bytes": 424249,
+      "sha256": "2e5c52e37ef835e7bcaeba9eed887772dce4898b617dafc1c8ae56af706bbbdc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-prebuild-20261106.json",
+      "bytes": 66574,
+      "sha256": "8342330019af9008e7a74cbbd331574323a68160426a72945b91a88d86c133de"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-preretirement-20261106.json",
+      "bytes": 66574,
+      "sha256": "27beb46f06f86994bcfa167389621ebc50eb1307513b51fb6fb140d30cc799e0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-final-20261106.json",
+      "bytes": 66573,
+      "sha256": "528b6f238c30b9627f755a41827a1720a92bc35c6cee6e3e1360b949701d3aff"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/build-_desktop004.process.json",
+      "bytes": 2856,
+      "sha256": "f3750ca8c8cdaaed939c29db863a6298267c13b2d6fd14b606174ad36ff6243b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/build-_native004.process.json",
+      "bytes": 2029,
+      "sha256": "091822a1abe91d0b53e03ab445898963b180d47f73dfaa5363ff6cf72456ad23"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/build-imagejxx_app004.process.json",
+      "bytes": 2858,
+      "sha256": "76d954dac88ed207581a8285fabe525802d1f4a2a3110e51fb23ed74c31bf6cc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/build-imagejxx_core003.process.json",
+      "bytes": 2556,
+      "sha256": "c186ee668d6d58a37c3812a4f80f07fe119ea3af37fff5c587b717c8308b1f3e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/build-imagejxx_desktop004.process.json",
+      "bytes": 2865,
+      "sha256": "b0fe3998ef829d951ce4490e04ae45deafc53fc9e676943bfeeee5c5061696b9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/build-imagejxx_display_actions_tests004.process.json",
+      "bytes": 2879,
+      "sha256": "fd3104ccb59bac3fa2daa1dc381cbf74f2ce88d47b9f1c841102be462f7fbb78"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/build-imagejxx_settings_tests004.process.json",
+      "bytes": 2045,
+      "sha256": "5a288b78f4627e527e7e92c358dd156708651804e9d13be6c2ef477285fcafb4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/build-imagejxx_target_analysis_tests003.process.json",
+      "bytes": 2569,
+      "sha256": "3781c0b437f113474dcb336df059ed52d317de259f348295f75ded25b9ccad03"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/compile001.process.json",
+      "bytes": 2285,
+      "sha256": "6d9817ff791e0b11d5e0af5ded38bbb7c44c80dd5a760382ef3d9cc98a5d9515"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/imagejxx_display_actions_tests005.process.json",
+      "bytes": 1953,
+      "sha256": "455e679911df2aa2f9856b8a50acb1ce91f6ce7cfbe1990eeb8b14de015971d5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/imagejxx_settings_tests005.process.json",
+      "bytes": 1818,
+      "sha256": "8652d5323e85fba0491ada43850855d0d2160905a766f711796a41832f784f98"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/install-desktop005.process.json",
+      "bytes": 2119,
+      "sha256": "14287b78e13f85704b0f57a2656013bfdd4bf27e969ee929352f41737535c5b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/install-development005.process.json",
+      "bytes": 2119,
+      "sha256": "f9dfab115b55e1a857119798b092685fa6474bc61ea21cb7224a8b4c263c0ec5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/install-Unspecified005.process.json",
+      "bytes": 2132,
+      "sha256": "ae349776a1eba4463a3704cb283903b70b92b363e0aa17e8f3bf276c01243565"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/linux-analysis004.process.json",
+      "bytes": 1491,
+      "sha256": "2cbe1057f6a67ccaf73f206660d912c47421eefad4a661647bef62dc8ec89267"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/linux-build004.process.json",
+      "bytes": 1607,
+      "sha256": "86bada06c3438aa71d5908d0530e28694e36413c80032a3dcbbe997fcb7a190b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/linux-owner004.process.json",
+      "bytes": 4445,
+      "sha256": "9a786df991e21119c9d1dea53e1afd36675be7ef7a20cfc8f9cf297f5043df61"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/linux-settings004.process.json",
+      "bytes": 1484,
+      "sha256": "8307d65b2db78795a09a0f46fb7e9c55226d7701706ca83ce9dcafea844dd997"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/native003.process.json",
+      "bytes": 1833,
+      "sha256": "056e41e08312475907edf325ee79f9ef19412aa66f5ddc93dbe16fd0e4fa7deb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/observe001.process.json",
+      "bytes": 2154,
+      "sha256": "85a09ab3be4bee4a99a89a13ac4dd83eaa58b60f30872e82d9a5d1097e992558"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/python005.process.json",
+      "bytes": 2763,
+      "sha256": "dbc643ca47be8c1d58a8fd7a33f86fee67b988c7f1c41ea50c6654c2e95d3984"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/sdk-build006.process.json",
+      "bytes": 2094,
+      "sha256": "a3b7a0dc4c005a53c6f2447093e88de02362edb964c0a5906d4fdbee9a1c436d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/sdk-carrier006.process.json",
+      "bytes": 2012,
+      "sha256": "80063645bc671ad481de00179da8a991d3d41277a07c8f18a15e7215f40249d4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/sdk-configure006.process.json",
+      "bytes": 2395,
+      "sha256": "d3638d0a3d7dae52dde15d3d1ad70fa6e1ab947bda9415f0b9ed5b7020f8493b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/sdk-run006.process.json",
+      "bytes": 1908,
+      "sha256": "63db6bd8fa121281ab6bbfc96f4261b906500a6783dd29df71036411dc63db0d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/native005-retained007.zip",
+      "bytes": 391881,
+      "sha256": "99d28861e31993ead63936c297e3424dc969aa06abe75a2490874d974d9a77fb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/python005-retained007.zip",
+      "bytes": 227524,
+      "sha256": "94f63f9667382c6177a6fa86cb41a4b63fa891b14caf9001294796c2e06891c5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/reference001-retained007.zip",
+      "bytes": 15113,
+      "sha256": "f379a00589961b336682200c1190fa0f0d08176cf3f5eebdf464612226ece9e2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/native005-verify007.json",
+      "bytes": 1438,
+      "sha256": "fa8635b37bb18440d29b30186b080694c5a1b9700f1e6169d620cdeeb3544204"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/python005-verify007.json",
+      "bytes": 1436,
+      "sha256": "95bcaba288064921b95acf562901344d64e180e0be825c8d23b1930027cbcf8c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/center-of-mass-20261106/reference001-verify007.json",
+      "bytes": 1450,
+      "sha256": "ec62188ac82c5af2752e18f1b022ece3a1009131e8e891cd35ac2054c6526433"
+    }
+  ],
+  "task_record": ".tmp/manual-workflow-verification/center-of-mass-20261106/entry.json",
+  "next": "T04a.2 M3 Shape descriptors option (Circ./AR/Round./Solidity)",
+  "limits": [
+    "720sampled finite-source typed/density/geometry/calibration cases, not every constructor or family",
+    "Nonfinite summaries are numerical diagnostics, not valid geometry coordinates",
+    "Native affine/slice convention is an extension, not original ImageJ world-coordinate parity",
+    "One optional hidden-OpenGL test skipped; Linux UI/installed SDK/macOS/release gates open",
+    "Retired G016/gesture references unavailable"
+  ]
+}

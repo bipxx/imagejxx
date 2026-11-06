@@ -9,6 +9,7 @@
 #include <imagejxx/roi_manager.hpp>
 #include <imagejxx/planar_annotation_command.hpp>
 #include <cmath>
+#include <limits>
 #include <iostream>
 using namespace imagejxx;
 namespace {
@@ -29,6 +30,27 @@ struct Source final:PlaneSource {
 int main(){
   {
     SpatialCalibration spatial;spatial.spacing={2,.5,1};spatial.origin={-6.5,.75,0};spatial.unit="um";
+    const PixelType types[]={PixelType::UInt8,PixelType::UInt16,PixelType::Float32,PixelType::Float32,PixelType::UInt8};
+    for(int i=0;i<5;++i) {
+      Image pixels(8,6,1,types[i]);
+      for(int y=0;y<6;++y)for(int x=0;x<8;++x)pixels.at(x,y)=i==0?x+2*y+1:i==3?2*(x%2)-1:i==4?x%2:0;
+      DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,1,6,8,1},{pixels},spatial).observe_reads(reads));Application app;app.adopt(owner);
+      if(i==4)app.set_global_calibration(GlobalCalibration(spatial,ImageJIntensityCalibration::function(PixelType::UInt8,"straight_line",{-1,2},"OD"),PixelType::UInt8));
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;const auto before=reads.counts().plane_reads;
+      const auto command=resolve_target_analysis(app.resolve_target(),options);check(command.record().at("version")==MetadataValue(std::int64_t(11)) && reads.counts().plane_reads==before);
+      owner->select(Selection("rectangle",{{0,0},{1,1}}));const auto frozen=owner->snapshot();const auto result=execute_target_analysis(command);const auto& row=result.planes.front();
+      check(row.center_of_mass_world.has_value());const auto mass=*row.center_of_mass_world;
+      if(i==0)check(std::abs(mass[0]-2.6052631578947363)<1e-12 && std::abs(mass[1]-2.557017543859649)<1e-12);
+      else if(i==1)check(std::isnan(mass[0]) && std::isnan(mass[1]));
+      else if(i==2)check(mass[0]==1.5 && mass[1]==2.25);
+      else check(std::isinf(mass[0]) && !std::signbit(mass[0]) && std::isnan(mass[1]));
+      check(mass[2]==0 && row.centroid_world && *row.centroid_world==std::array<double,3>{1.5,2.25,0});
+      check(reads.counts().plane_reads==before+1 && owner->snapshot().shares_data(frozen) && owner->undo_steps()==0);
+    }
+    refuses<std::invalid_argument>([&]{spatial.voxel_to_world({std::numeric_limits<double>::infinity(),0,0});});
+  }
+  {
+    SpatialCalibration spatial;spatial.spacing={2,.5,1};spatial.origin={-6.5,.75,0};spatial.unit="um";
     for(int kind=0;kind<5;++kind) {
       DatasetReadObserver reads;DocumentData data{Dataset::from_planes({1,1,1,40,40,1},{Image(40,40,1,PixelType::UInt8)},spatial).observe_reads(reads)};
       if(kind==1 || kind==2)data.selection=Selection(kind==1?"rectangle":"ellipse",{{3,3},{13,11}});
@@ -36,7 +58,7 @@ int main(){
       if(kind==4)data.selection=Selection("rectangle",{{60,60},{64,64}});
       auto owner=std::make_shared<Document>(std::move(data));Application app;app.adopt(owner);TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;
       const auto before=reads.counts().plane_reads;const auto command=resolve_target_analysis(app.resolve_target(),options);
-      check(reads.counts().plane_reads==before && command.record().at("version")==MetadataValue(std::int64_t(10)));
+      check(reads.counts().plane_reads==before && command.record().at("version")==MetadataValue(std::int64_t(11)));
       owner->select(Selection("rectangle",{{0,0},{1,1}}));const auto frozen=owner->snapshot();const auto result=execute_target_analysis(command);const auto& row=result.planes.front();
       check(row.centroid_world.has_value());const auto point=*row.centroid_world;
       if(kind==4)check(std::isnan(point[0]) && std::isnan(point[1]) && std::isnan(point[2]));
@@ -57,7 +79,7 @@ int main(){
       auto owner=std::make_shared<Document>(std::move(data));Application application;application.adopt(owner);
       TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;
       const auto before=reads.counts().plane_reads;const auto command=resolve_target_analysis(application.resolve_target(),options);
-      check(reads.counts().plane_reads==before && command.record().at("version")==MetadataValue(std::int64_t(10)));
+      check(reads.counts().plane_reads==before && command.record().at("version")==MetadataValue(std::int64_t(11)));
       owner->select(Selection("rectangle",{{0,0},{1,1}}));const auto frozen=owner->snapshot();
       const auto result=execute_target_analysis(command);const auto& row=result.planes.front();
       check(row.perimeter && std::abs(*row.perimeter-expected[i])<1e-11);
@@ -86,7 +108,7 @@ int main(){
       const auto command=resolve_target_analysis(application.resolve_target(),settings);
       document->select(source);const auto result=execute_target_analysis(command);
       check(result.planes.front().perimeter && std::abs(*result.planes.front().perimeter-expected[i])<1e-6);
-      check(command.record().at("version")==MetadataValue(std::int64_t(i==3?8:10)));
+      check(command.record().at("version")==MetadataValue(std::int64_t(i==3?8:11)));
     }
   }
   {
@@ -109,7 +131,7 @@ int main(){
     document->select(with_selection_polygon_coordinates(integer,false));
     const auto result=execute_target_analysis(command);
     check(result.planes.front().perimeter && std::abs(*result.planes.front().perimeter-48.24621125123532)<1e-11);
-    check(command.record().at("version")==MetadataValue(std::int64_t(10)));
+    check(command.record().at("version")==MetadataValue(std::int64_t(11)));
   }
   {
     // Original lifecycle rows: fractional repeated closed fit, traced straighten,
@@ -201,7 +223,7 @@ int main(){
     check(rows.planes[0].roi_index==1 && rows.planes[1].roi_index==0);
     check(rows.planes[0].statistics->mean==2.5 && rows.planes[1].statistics->mean==.5);
     check(rows.planes[0].length && rows.planes[0].midpoint_world==measured.midpoint_world);
-    check(rows.record.at("version")==MetadataValue(std::int64_t(10)));
+    check(rows.record.at("version")==MetadataValue(std::int64_t(11)));
     const auto irregular=imagej_calibrated_polyline_measurement(*source->read_plane({0,0,0}),
         SpatialCalibration{},ImageJIntensityCalibration::uncalibrated(),{{0,0},{2,0},{2,1}});
     check(irregular.statistics.pixel_count==2 && irregular.statistics.mean==1.5 && irregular.length==3);

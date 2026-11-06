@@ -62,7 +62,8 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     const ImageJIntensityCalibration& density,const Image* mask,std::size_t maximum,
     const std::vector<std::uint32_t>* supplied,
     std::optional<std::array<int,4>>* bounds=nullptr,bool source_validated=false,
-    std::optional<std::array<double,2>>* centroid=nullptr) {
+    std::optional<std::array<double,2>>* centroid=nullptr,
+    std::optional<std::array<double,2>>* center_of_mass=nullptr) {
   const auto n=shape(im);spatial.validate();density.validate_for(im.type,im.channels);
   if(mask && (mask->channels!=1 || mask->width!=im.width || mask->height!=im.height || mask->pixels.size()!=n))
     throw std::invalid_argument("Analysis mask must match the source");
@@ -76,7 +77,8 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
   if(!supplied)owned_lut=table(density);
   const auto& lut=supplied?*supplied:owned_lut;ImageJScalarStatistics out;out.histogram.resize(256);
   int x0=im.width,y0=im.height,x1=-1,y1=-1;
-  double geometric_count=0,xsum=0,ysum=0;
+  double geometric_count=0,xsum=0,ysum=0,mass=0,mass_x=0,mass_y=0;
+  if(center_of_mass)*center_of_mass=std::nullopt;
   if(centroid)*centroid=std::nullopt;
   if(bounds){*bounds=std::nullopt;if(!mask)*bounds=std::array<int,4>{0,0,im.width,im.height};}
   auto included=[&](std::size_t i){
@@ -84,6 +86,12 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     // Geometric membership is independent of density-table NaNs or weighting.
     // This predicate is visited once in the owning histogram/member traversal.
     if(centroid){++geometric_count;xsum+=double(i%im.width);ysum+=double(i/im.width);}
+    if(center_of_mass) {
+      double weight=im.type==PixelType::Float32?double(float(im.pixels[i])):value(std::size_t(im.pixels[i]),density,lut);
+      // Original Byte/Float moments perturb zero weights; Short does not.
+      if(im.type!=PixelType::UInt16)weight+=std::numeric_limits<double>::denorm_min();
+      mass+=weight;mass_x+=double(i%im.width)*weight;mass_y+=double(i/im.width)*weight;
+    }
     if(bounds && mask){const auto x=int(i%im.width),y=int(i/im.width);
       x0=std::min(x0,x);y0=std::min(y0,y);x1=std::max(x1,x);y1=std::max(y1,y);}
     return true;
@@ -172,6 +180,7 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
   out.stddev=deviation(double(out.pixel_count),sum,sum2);out.integrated_density=out.area*out.mean;
   if(bounds && mask && x1>=0)*bounds=std::array<int,4>{x0,y0,x1-x0+1,y1-y0+1};
   if(centroid)*centroid=geometric_count?std::array<double,2>{xsum/geometric_count+.5,ysum/geometric_count+.5}:std::array<double,2>{nan,nan};
+  if(center_of_mass)*center_of_mass=std::array<double,2>{mass_x/mass+.5,mass_y/mass+.5};
   return out;
 }
 static std::vector<double> profile_impl(const Image& im,const ImageJIntensityCalibration& density,
@@ -524,8 +533,9 @@ std::size_t calibrated_profile_sample_count(const std::array<double,4>& p,std::s
 ImageJScalarStatistics calibrated_statistics_with_table(const Image& im,const SpatialCalibration& spatial,
     const ImageJIntensityCalibration& density,const std::vector<std::uint32_t>& lut,const Image* mask,std::size_t maximum,
     std::optional<std::array<int,4>>* bounds,bool source_validated,
-    std::optional<std::array<double,2>>* centroid) {
-  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds,source_validated,centroid);
+    std::optional<std::array<double,2>>* centroid,
+    std::optional<std::array<double,2>>* center_of_mass) {
+  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds,source_validated,centroid,center_of_mass);
 }
 ImageJLineMeasurement calibrated_line_measurement_with_table(const Image& im,
     const SpatialCalibration& spatial,const ImageJIntensityCalibration& density,

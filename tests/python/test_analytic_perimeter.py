@@ -44,7 +44,7 @@ def test_original_analytic_perimeter_and_captured_units(case):
     before = reads.counts().plane_reads
     command = ij.resolve_target_analysis(app.resolve_target(), options)
     assert reads.counts().plane_reads == before
-    assert command.record["version"] == 10
+    assert command.record["version"] == 11
     whole = case["kind"] == "whole_image"
     captured = command.record["options"]["rows"][0]
     assert captured["analytic_type"] == case["kind"]

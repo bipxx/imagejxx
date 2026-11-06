@@ -7,7 +7,8 @@ ImageJScalarStatistics calibrated_statistics_with_table(const Image&,
     const SpatialCalibration&, const ImageJIntensityCalibration&,
     const std::vector<std::uint32_t>&, const Image*, std::size_t,
     std::optional<std::array<int,4>>* bounds = nullptr, bool source_validated = false,
-    std::optional<std::array<double,2>>* centroid = nullptr);
+    std::optional<std::array<double,2>>* centroid = nullptr,
+    std::optional<std::array<double,2>>* center_of_mass = nullptr);
 ImageJLineMeasurement calibrated_line_measurement_with_table(const Image&,
     const SpatialCalibration&,const ImageJIntensityCalibration&,
     const std::vector<std::uint32_t>&,const std::array<double,4>&,bool,std::size_t,

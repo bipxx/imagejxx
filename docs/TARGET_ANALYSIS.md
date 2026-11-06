@@ -484,17 +484,25 @@ Whole-image and supported area/manager rows publish X/Y and centroid_x/y/z using
 the existing settings, precision, CSV and workspace paths.99 original cases
 qualify sampled scalar types, constructors, origins/reflection and outside ROIs;
 native affine/slice behavior is an extension, not an ImageJ world-coordinate
-claim. Commands containing area rows now carry diagnostic version10 and the
-`area_centroid_policy`; non-area provenance retains its previous meaning.
-[Scoped evidence](parity/reviews/area-centroid-20261106.json). Weighted center of
-mass, other descriptors, threshold/redirect and remaining variants stay open.
+claim. Weighted summaries additionally expose readonly `center_of_mass_world`
+and XM/YM, using captured calibrated intensity weights in row order. Byte/Float
+add the original smallest-positive-double perturbation; Short does not. Zero
+and cancelling denominators, density NaN/Inf and signed16 preserve their original
+numerical meaning. Nonfinite moment components propagate only through nonzero
+affine axes, with captured plane Z; these diagnostic values do not weaken the
+finite-only public geometry API. Geometric X/Y remains independent.
+Commands containing area rows carry diagnostic version11, `area_centroid_policy`
+and `center_of_mass_policy`; non-area provenance keeps its previous meaning.
+[Scoped centroid evidence](parity/reviews/area-centroid-20261106.json) and
+[weighted evidence](parity/reviews/center-of-mass-20261106.json). Other descriptors,
+threshold/redirect and remaining variants stay open.
 
 
 | Existing command/key | Current behavior and remaining path |
 | --- | --- |
 | `measure` | Whole/area, thin straight/irregular paths, refreshed/reflex angles and expanded/annotated point rows use captured measurement. Point properties/vertex alignment are scoped delivered; interchange and remaining area/shape/options stay open. |
 | `measure_rois` | Supported rows use frozen native T/C/Z/defaults, grouping and atomic adoption. All/explicit selected indices and actual selected-row button work; remaining manager variants stay open. Active selection/history remain untouched by measurement. |
-| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted center of mass, Feret/other shape, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
+| `measurements` | Selects existing output columns. It selects the supported geometric area X/Y and centroid_x/y/z columns; weighted XM/YM is also available. Feret/other shape, threshold-limited and redirected-intensity calculations remain separate requirements. Add required computations/options with their owning consumer and references. |
 | `measurement_precision` | Existing table/CSV formatter consumes this key; reuse it for new rows and test their exports. |
 | `profile_samples` | Configures editor Profile paths only; never silently changes Analyzer line measurement. |
 | `reflex_angle` | Boolean false by default; shared Preferences control/API/persistence, captured once per measurement. True selects 360 minus the refreshed calibrated angle. |

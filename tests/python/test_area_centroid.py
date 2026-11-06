@@ -31,7 +31,7 @@ def test_original_centroid_captured_without_another_read(case):
     options = ij.TargetAnalysisOptions(); options.measurement = ij.TargetMeasurementMode.SELECTION
     before = reads.counts().plane_reads
     command = ij.resolve_target_analysis(app.resolve_target(), options)
-    assert reads.counts().plane_reads == before and command.record["version"] == 10
+    assert reads.counts().plane_reads == before and command.record["version"] == 11
     assert command.record["options"]["area_centroid_policy"] == "geometric-pixel-centers/captured-affine-v1"
     owner.select(ij.Selection("rectangle", [[0,0],[1,1]]))
     snapshot, undo = owner.snapshot(), owner.undo_steps

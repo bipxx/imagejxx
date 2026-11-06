@@ -382,6 +382,8 @@ const std::vector<SettingDefinition> &Settings::schema() {
         "Angle",
         "X",
         "Y",
+        "XM",
+        "YM",
         "label",
         "x",
         "y",

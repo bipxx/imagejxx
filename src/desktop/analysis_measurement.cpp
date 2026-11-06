@@ -89,6 +89,9 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       values["Perim."]=scalar(*row.perimeter);
       values["Perim. unit"]=row.perimeter_in_pixels?std::string("pixel"):result.spatial.unit;
     }
+    if(row.center_of_mass_world) {
+      values["XM"]=scalar((*row.center_of_mass_world)[0]);values["YM"]=scalar((*row.center_of_mass_world)[1]);
+    }
     if(row.length)values["Length"]=scalar(*row.length);
     if(row.angle_degrees)values["Angle"]=scalar(*row.angle_degrees);
     if(row.point_index) {

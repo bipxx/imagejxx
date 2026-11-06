@@ -49,6 +49,7 @@ void bind_target_analysis(py::module_& m) {
     .def_readonly("length",&TargetAnalysisPlane::length).def_readonly("angle_degrees",&TargetAnalysisPlane::angle_degrees)
     .def_readonly("midpoint_world",&TargetAnalysisPlane::midpoint_world)
     .def_readonly("centroid_world",&TargetAnalysisPlane::centroid_world)
+    .def_readonly("center_of_mass_world",&TargetAnalysisPlane::center_of_mass_world)
     .def_property_readonly("statistics",[](const TargetAnalysisPlane& v)->py::object{
       if(v.statistics)return bindings::calibrated_statistics_python(*v.statistics);
       return py::none();})
