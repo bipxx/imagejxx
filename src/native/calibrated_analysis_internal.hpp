@@ -11,7 +11,9 @@ ImageJScalarStatistics calibrated_statistics_with_table(const Image&,
     std::optional<std::array<double,2>>* center_of_mass = nullptr,
     const std::array<double,2>* threshold = nullptr,
     std::array<double,2>* threshold_summary = nullptr,
-    const std::array<int,4>* processor_roi = nullptr);
+    const std::array<int,4>* processor_roi = nullptr,
+    double* area_fraction = nullptr,
+    const std::array<double,2>* area_fraction_threshold = nullptr);
 ImageJLineMeasurement calibrated_line_measurement_with_table(const Image&,
     const SpatialCalibration&,const ImageJIntensityCalibration&,
     const std::vector<std::uint32_t>&,const std::array<double,4>&,bool,std::size_t,

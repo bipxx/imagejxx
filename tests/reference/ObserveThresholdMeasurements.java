@@ -6,6 +6,8 @@ import ij.process.*;
 
 /** Original LIMIT per-column populations; uses reviewed ImageJ classes only. */
 public class ObserveThresholdMeasurements {
+  static int extraFlags=0;
+  static boolean zeroSource=false;
   static String num(double v) {return ObserveAreaCentroid.num(v);}
   static double raw(int type,double v) {return type==1?v*257:type==2?v*.25-2:v;}
   static String histogram(int[] values) {
@@ -17,6 +19,7 @@ public class ObserveThresholdMeasurements {
   static void observe(int shape,int type,int threshold,int density,int variant,boolean limit) {
     ImageProcessor ip=type==0?new ByteProcessor(8,6):type==1?new ShortProcessor(8,6):new FloatProcessor(8,6);
     for(int y=0;y<6;y++)for(int x=0;x<8;x++)ip.setf(x,y,(float)raw(type,x+2*y));
+    if(zeroSource)for(int y=0;y<6;y++)for(int x=0;x<8;x++)ip.setf(x,y,0);
     ImagePlus image=new ImagePlus("threshold",ip);image.setGlobalCalibration(null);Calibration cal=image.getLocalCalibration();cal.setUnit("um");
     if(density==1)cal.setFunction(Calibration.STRAIGHT_LINE,new double[]{-2,.5},"linear");
     if(density==3){float[] table=new float[type==0?256:65536];for(int i=0;i<table.length;i++)table[i]=i;table[(int)raw(type,7)]=Float.NaN;cal.setCTable(table,"mixed_nan");}
@@ -31,13 +34,13 @@ public class ObserveThresholdMeasurements {
       StringBuilder b=new StringBuilder("[");for(int i=0;i<x.length;i++){if(i>0)b.append(',');b.append('[').append((double)x[i]).append(',').append((double)y[i]).append(']');}points=b.append(']').toString();
     }
     if(roi!=null)image.setRoi(roi);if(shape==4)((PolygonRoi)roi).fitSpline();
-    double lower=threshold==1?raw(type,6):threshold==2?raw(type,6.4):threshold==3?raw(type,100):raw(type,-10);
-    double upper=threshold==1?raw(type,10):threshold==2?raw(type,10.4):threshold==3?raw(type,110):raw(type,100);
+    double lower=threshold==5?raw(type,6.6):threshold==1?raw(type,6):threshold==2?raw(type,6.4):threshold==3?raw(type,100):raw(type,-10);
+    double upper=threshold==5?raw(type,10.6):threshold==1?raw(type,10):threshold==2?raw(type,10.4):threshold==3?raw(type,110):raw(type,100);
     if(threshold!=0)ip.setThreshold(lower,upper,ImageProcessor.NO_LUT_UPDATE);
     boolean active=ip.isThreshold();double actualLower=ip.getMinThreshold(),actualUpper=ip.getMaxThreshold();
     int flags=Measurements.AREA|Measurements.MEAN|Measurements.STD_DEV|Measurements.MODE|Measurements.MIN_MAX|Measurements.MEDIAN|Measurements.CENTROID|Measurements.CENTER_OF_MASS|Measurements.INTEGRATED_DENSITY|Measurements.PERIMETER|Measurements.RECT|Measurements.FERET;
     if(variant==1)flags|=Measurements.ELLIPSE;if(variant==2)flags|=Measurements.SHAPE_DESCRIPTORS;if(limit)flags|=Measurements.LIMIT;
-    Analyzer.setMeasurements(flags);ImageStatistics stats=shape<7?image.getStatistics(flags):null;
+    flags|=extraFlags;Analyzer.setMeasurements(flags);ImageStatistics stats=shape<7?image.getStatistics(flags):null;
     java.awt.Rectangle bounds=ip.getRoi();ResultsTable table=new ResultsTable();new Analyzer(image,flags,table).measure();
     StringBuilder out=new StringBuilder("{\"id\":\"threshold-shape"+shape+"-type"+type+"-range"+threshold+"-density"+density+"-variant"+variant+"-limit"+limit+"\",\"kind\":\""+kind+"\",\"points\":"+points+",\"type\":"+type+",\"threshold_case\":"+threshold+",\"density\":"+density+",\"variant\":"+variant+",\"limit\":"+limit+",\"fitted\":"+(shape==4)+",\"selection_retained\":"+(image.getRoi()!=null)+",\"requested_range\":["+num(lower)+","+num(upper)+"],\"threshold_active\":"+active+",\"effective_range\":["+num(actualLower)+","+num(actualUpper)+"],\"processor_bounds\":["+bounds.x+","+bounds.y+","+bounds.width+","+bounds.height+"],\"summary\":");
     if(stats==null)out.append("null");else {
@@ -46,6 +49,7 @@ public class ObserveThresholdMeasurements {
       for(int i=0;i<names.length;i++){if(i>0)out.append(',');out.append('"').append(names[i]).append("\":").append(num(values[i]));}
       out.append(",\"histogram\":").append(histogram(stats.histogram)).append(",\"histogram16\":").append(histogram(stats.histogram16)).append('}');
     }
+    if(extraFlags!=0)out.append(",\"zero_source\":").append(zeroSource);
     out.append(",\"rows\":[");for(int row=0;row<table.size();row++){
       if(row>0)out.append(',');out.append('{');boolean first=true;for(String heading:table.getHeadings()){if(!first)out.append(',');first=false;out.append('"').append(heading).append("\":").append(num(table.getValue(heading,row)));}out.append('}');
     }System.out.println(out.append("]}").toString());

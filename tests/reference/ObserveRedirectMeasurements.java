@@ -7,6 +7,7 @@ import ij.process.*;
 
 /** Original Analyzer two-image ownership; no application implementation imported. */
 public class ObserveRedirectMeasurements {
+  static int extraFlags=0;
   static String number(double v) {
     return Double.isFinite(v)?Double.toString(v):"\""+(Double.isNaN(v)?"nan":v>0?"inf":"-inf")+"\"";
   }
@@ -46,7 +47,7 @@ public class ObserveRedirectMeasurements {
     if((threshold&2)!=0)target.getProcessor().setThreshold(raw(type,40.4),raw(type,46.4),ImageProcessor.NO_LUT_UPDATE);
     int flags=Measurements.AREA|Measurements.MEAN|Measurements.STD_DEV|Measurements.MODE|Measurements.MIN_MAX|Measurements.MEDIAN|Measurements.CENTROID|Measurements.CENTER_OF_MASS|Measurements.INTEGRATED_DENSITY|Measurements.PERIMETER|Measurements.RECT|Measurements.FERET|Measurements.STACK_POSITION;
     if(variant==1)flags|=Measurements.ELLIPSE;if(variant==2)flags|=Measurements.SHAPE_DESCRIPTORS;if(limit)flags|=Measurements.LIMIT;
-    Analyzer.setMeasurements(flags);Analyzer.setRedirectImage(mode==1?source:target);
+    flags|=extraFlags;Analyzer.setMeasurements(flags);Analyzer.setRedirectImage(mode==1?source:target);
     int before=target.getCurrentSlice();ResultsTable table=new ResultsTable();new Analyzer(source,flags,table).measure();
     StringBuilder b=new StringBuilder("{\"id\":\"redirect-"+group+"-shape"+shape+"-type"+type+"-threshold"+threshold+"-variant"+variant+"-limit"+limit+"-spatial"+spatial+"-density"+density+"-depth"+sourceDepth+"x"+targetDepth+"-mode"+mode+"\",\"shape\":"+shape+",\"type\":"+type+",\"threshold_case\":"+threshold+",\"variant\":"+variant+",\"limit\":"+limit+",\"spatial\":"+spatial+",\"density\":"+density+",\"source_depth\":"+sourceDepth+",\"target_depth\":"+targetDepth+",\"mode\":"+mode+",\"source_slice\":"+source.getCurrentSlice()+",\"target_slice_before\":"+before+",\"target_slice_after\":"+target.getCurrentSlice()+",\"roi_owner_after\":\""+(roi==null?"none":roi.getImage()==source?"source":roi.getImage()==target?"target":"other")+"\",\"rows\":[");
     for(int row=0;row<table.size();row++) {

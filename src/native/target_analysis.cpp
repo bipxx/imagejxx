@@ -203,12 +203,12 @@ struct MeasurementRowPlan {
   std::optional<std::size_t> counter_count;
   std::optional<double> perimeter;
   std::optional<detail::AreaShapeGeometry> shape_geometry;
-  std::optional<std::array<double,2>> threshold;
+  std::optional<std::array<double,2>> threshold,fraction_threshold;
   std::optional<MeasurementFrame> frame;
   std::optional<MeasurementRectangle> rectangle;
 };
 struct MeasurementGroup {PlanePosition position,source_position;std::vector<std::size_t> rows;bool pixels=false,mask_pixels=false;};
-struct MeasurementPlan {std::vector<MeasurementRowPlan> rows;std::vector<MeasurementGroup> groups;};
+struct MeasurementPlan {std::vector<MeasurementRowPlan> rows;std::vector<MeasurementGroup> groups;bool fraction_uses_threshold=false;};
 const Selection* measurement_selection(const ResolvedTarget& target,const MeasurementRowPlan& row) {
   const auto& data=target.source().data();
   if(row.roi)return &data.rois[*row.roi].selection;
@@ -268,9 +268,20 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       invalid("Redirect requires finite-policy scalar UInt8, UInt16 or Float32 storage");
     sampling.calibration().validate();
   }
-  const auto threshold=options.limit_to_threshold?manual_threshold_state(sampling.source().display(),sample_shape):std::optional<ManualThresholdState>{};
+  std::optional<ManualThresholdState> threshold;bool threshold_captured=false;
+  bool fraction_uses_threshold=false;
   const auto capture_threshold=[&](MeasurementRowPlan& row) {
-    row.threshold=std::nullopt;
+    row.threshold=std::nullopt;row.fraction_threshold=std::nullopt;
+    const auto* selection=measurement_selection(target,row);
+    const bool fraction_member=options.area_fraction && (!selection ||
+        (selection->kind!="line" && selection->kind!="polyline" && selection->kind!="angle"));
+    fraction_uses_threshold|=fraction_member;
+    if((options.limit_to_threshold || fraction_member) && !threshold_captured) {
+      threshold=manual_threshold_state(sampling.source().display(),sample_shape);threshold_captured=true;
+    }
+    if(fraction_member && threshold && manual_threshold_contains(*threshold,row.sampling_position))
+      row.fraction_threshold=std::array<double,2>{threshold->range.lower,threshold->range.upper};
+    if(!options.limit_to_threshold)return;
     if(!threshold || !manual_threshold_contains(*threshold,row.sampling_position))return;
     auto low=threshold->range.lower,high=threshold->range.upper;const auto type=sampled.pixel_type();
     if(type==PixelType::UInt8){low=std::max(0.,low);high=std::min(255.,high);}
@@ -477,6 +488,7 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       mul(count,256),sizeof(ResolvedTargetAnalysis)+sizeof(TargetAnalysisOptions)+sizeof(TargetAnalysisLimits)+4096}) {
     out.working_bytes=add(out.working_bytes,bytes);within(out.working_bytes,limits.max_working_bytes);
   }
+  plan.fraction_uses_threshold=fraction_uses_threshold;
   if(retained)*retained=std::move(plan);
   return out;
 }
@@ -495,6 +507,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
   }
   if(options.redirect)invalid("Redirect requires explicit selection or manager measurement");
   if(options.limit_to_threshold)invalid("Threshold limiting requires explicit selection or manager measurement");
+  if(options.area_fraction)invalid("Area fraction requires explicit selection or manager measurement");
   if(options.shape_descriptors || options.feret || options.bounding_rectangle || options.ellipse)invalid("Area geometry options require explicit selection or manager measurement");
   if(options.line && !options.path.empty())invalid("Analysis accepts line or path, not both");
   if(!options.path.empty() && (options.path.size()<2 || options.path.size()>4096))invalid("Analysis path requires 2..4096 vertices");
@@ -570,12 +583,12 @@ const ImageJIntensityCalibration& ResolvedTargetAnalysis::intensity()const{retur
 const MetadataObject& ResolvedTargetAnalysis::record()const{return state_->record;}
 void ResolvedTargetAnalysis::validate_source(const DocumentSnapshot& current)const {
   state_->target.validate_source(current);
-  if(state_->options.limit_to_threshold && !state_->options.redirect)validate_threshold_context(state_->target.source(),current);
+  if((state_->options.limit_to_threshold || state_->measurements.fraction_uses_threshold) && !state_->options.redirect)validate_threshold_context(state_->target.source(),current);
 }
 void ResolvedTargetAnalysis::validate_redirect(const DocumentSnapshot& current)const {
   if(!state_->options.redirect)invalid("Analysis has no redirect source");
   const auto& redirect=*state_->options.redirect;redirect.validate_source(current);
-  if(state_->options.limit_to_threshold)validate_threshold_context(redirect.source(),current);
+  if(state_->options.limit_to_threshold || state_->measurements.fraction_uses_threshold)validate_threshold_context(redirect.source(),current);
   if(plane_count(state_->target.source().data().dataset.shape())!=plane_count(redirect.source().data().dataset.shape())) {
     const auto& a=redirect.source().display();const auto& b=current.display();
     if(a.t!=b.t || a.c!=b.c || a.crosshair[2]!=b.crosshair[2])throw RevisionConflict();
@@ -638,6 +651,14 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
         const auto& properties=sampling.source().display().properties;const auto found=properties.find(manual_threshold_property);
         requested["threshold_state"]=found==properties.end()?MetadataValue(std::monostate{}):found->second;
       }
+      if(options.area_fraction) {
+        requested["area_fraction"]=true;
+        requested["area_fraction_policy"]="raw-membership/integer-rounded-or-float-threshold/independent-limit-v1";
+        if(measurements.fraction_uses_threshold) {
+          const auto& properties=sampling.source().display().properties;const auto found=properties.find(manual_threshold_property);
+          requested["area_fraction_threshold_state"]=found==properties.end()?MetadataValue(std::monostate{}):found->second;
+        }
+      }
       if(options.shape_descriptors)requested["shape_descriptor_policy"]="rounded-hull/legacy-ellipse/area-options-v1";
       if(options.feret)requested["feret_policy"]="float-hull/analytic-oval/pixel-fallback/local-plane-v1";
       if(options.bounding_rectangle)requested["rectangle_policy"]="processor-roi/local-axes/full-affine-v1";
@@ -648,6 +669,8 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
         if(row.roi)item["roi_index"]=std::uint64_t(*row.roi);
         if(options.limit_to_threshold)item["threshold_range"]=row.threshold?
             metadata_array({(*row.threshold)[0],(*row.threshold)[1]}):MetadataValue(std::monostate{});
+        if(options.area_fraction)item["area_fraction_range"]=row.fraction_threshold?
+            metadata_array({(*row.fraction_threshold)[0],(*row.fraction_threshold)[1]}):MetadataValue(std::monostate{});
         if(row.frame){const auto& b=row.frame->pixels;item["processor_rectangle"]=metadata_array({b[0],b[1],b[2],b[3]});}
         if(row.point_index) {
           points=true;item["point_index"]=std::uint64_t(*row.point_index);
@@ -689,7 +712,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.redirect?17:options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.area_fraction?18:options.redirect?17:options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -745,6 +768,9 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
         const auto* threshold=plan.threshold?&*plan.threshold:nullptr;
         const auto nan=std::numeric_limits<double>::quiet_NaN();std::array<double,2> threshold_summary{nan,nan};
         auto* saved_threshold=state.options.limit_to_threshold?&threshold_summary:nullptr;
+        if(state.options.area_fraction)row.area_fraction=0;
+        auto* fraction=row.area_fraction?&*row.area_fraction:nullptr;
+        const auto* fraction_threshold=plan.fraction_threshold?&*plan.fraction_threshold:nullptr;
         row.perimeter_in_pixels=row.perimeter.has_value() && !selection;
         if(plan.point_index) {
           row.point_index=plan.point_index;row.bounds=point_bounds(plan.point,shape);
@@ -755,7 +781,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           if(inside)sample.pixels[0]=image->at((*row.bounds)[0],(*row.bounds)[1]);
           const auto mask=inside?std::optional<Image>{}:std::optional<Image>{Image(1,1,1,PixelType::UInt8)};
           row.statistics=detail::calibrated_statistics_with_table(sample,state.spatial,state.intensity,state.lookup,
-              mask?&*mask:nullptr,state.limits.max_working_bytes,nullptr,true,nullptr,nullptr,threshold,saved_threshold);
+              mask?&*mask:nullptr,state.limits.max_working_bytes,nullptr,true,nullptr,nullptr,threshold,saved_threshold,nullptr,fraction,fraction_threshold);
           // Analyzer.savePoints overrides Area after computing integrated density.
           row.statistics->area=0;
         }else if(selection && selection->kind=="angle") {
@@ -781,7 +807,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           const bool fit_center=state.options.ellipse || state.options.shape_descriptors;
           row.statistics=detail::calibrated_statistics_with_table(*image,state.spatial,state.intensity,state.lookup,
               membership,state.limits.max_working_bytes,&row.bounds,true,fit_center?nullptr:&centroid,&center_of_mass,threshold,saved_threshold,
-              (state.options.limit_to_threshold || state.options.redirect) && plan.frame?&plan.frame->pixels:nullptr);
+              (state.options.limit_to_threshold || state.options.redirect) && plan.frame?&plan.frame->pixels:nullptr,fraction,fraction_threshold);
           if(plan.rectangle) {
             const auto& b=*plan.rectangle;
             row.bounding_x=b.origin[0];row.bounding_y=b.origin[1];row.bounding_width=b.width;row.bounding_height=b.height;

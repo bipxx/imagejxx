@@ -31,6 +31,38 @@ struct Source final:PlaneSource {
 };
 }
 int main() try {
+  {
+    Image pixels(5,1,1,PixelType::UInt8);pixels.pixels={0,6,6,7,10};
+    auto owner=std::make_shared<Document>(Dataset::from_stack({pixels}));Application app;app.adopt(owner);
+    auto view=owner->snapshot().display();set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),{{6.6,10.6},{}});owner->set_display(view);
+    TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.area_fraction=true;
+    auto frozen=resolve_target_analysis(app.resolve_target(),options);
+    auto ordinary=execute_target_analysis(frozen).planes.front();check(ordinary.area_fraction && *ordinary.area_fraction==40 && ordinary.statistics->pixel_count==5);
+    options.limit_to_threshold=true;auto limited=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();
+    check(*limited.area_fraction==40 && limited.statistics->pixel_count==4);
+    options.area_fraction=false;check(!execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front().area_fraction);
+    auto changed=owner->snapshot().display();set_manual_threshold_state(changed,owner->snapshot().data().dataset.shape(),{{1,2},{}});owner->set_display(changed);
+    refuses<RevisionConflict>([&]{frozen.validate_source(owner->snapshot());});
+    owner->select(Selection("point",{{1,0}}));options.area_fraction=true;options.limit_to_threshold=false;
+    auto point=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();check(*point.area_fraction==0 && point.statistics->area==0);
+    owner->select(Selection("line",{{0,0},{4,0}}));auto line=resolve_target_analysis(app.resolve_target(),options);
+    check(*execute_target_analysis(line).planes.front().area_fraction==0);
+    owner->set_display(view);line.validate_source(owner->snapshot());
+    options.measurement=TargetMeasurementMode::Area;refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target(),options);});
+  }
+  for(double sign:{1.,-1.}) {
+    const double max=std::numeric_limits<float>::max();
+    // Exact Double inputs independently observed by ImageJ1.54r.
+    Image pixels(2,1,1,PixelType::Float32);pixels.pixels={0,sign*max};
+    auto owner=std::make_shared<Document>(Dataset::from_stack({pixels}));Application app;app.adopt(owner);
+    TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.area_fraction=true;
+    const double ranges[]={3.402823466385289e38,3.4028235677973362e38,3.4028235677973366e38};
+    for(int i=0;i<3;++i) {
+      auto view=owner->snapshot().display();set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),{{sign*ranges[i],sign*ranges[i]},{}});owner->set_display(view);
+      const auto row=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();
+      check(row.area_fraction && *row.area_fraction==(i==2?0:50));
+    }
+  }
   for(int depth:{1,3}) {
     // Source Z belongs to the reported midpoint, sampled Z to the sampler.
     // Valid finite native calibration must not fail due to an unrelated plane.

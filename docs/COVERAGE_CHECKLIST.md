@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Mode/IntDen/RawIntDen and unit/position column choices now have scoped both-Windows-host coverage alongside redirected intensity, LIMIT and ELLIPSE. Area fraction (%Area) is next; full ImageJ/Fiji and release scope remain open.
+Updated 2026-11-06. Area fraction (%Area) now has scoped native/Python and both-Windows-host coverage, including independent raw populations and Float32 overflow rounding. Skewness/kurtosis (Skew/Kurt) are next; full ImageJ/Fiji and release scope remain open.
 
 This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
 
@@ -70,6 +70,8 @@ Every checked entry below has **I: delivered, V: scoped, UI: Windows C++ and Pyt
 - [x] Default-off Limit to threshold, captured raw ranges/typed scalar versus fitted populations, MinThr/MaxThr, stale context/preferences, manager grouping, actual preferences/threshold controls and CSV/workspace (`G009 G066 G068 G071`). I:delivered; V:597 original cases,4,928 distinct installed Python passes/1 optional OpenGL skip, affected Windows/Linux native and3installed Windows SDK clients; UI:86 matching Windows C++/Python profiles,18new threshold profiles; R:open. Initial test/probe failures and corrections remain recorded. [Scope and limitations](parity/reviews/threshold-measurements-20261106.json).
 
 - [x] Default-None redirected intensity through captured two-owner API, actual Analyze source selector/Measure/manager, mixed calibration/threshold/geometry, stack mapping, scalar/point/line, mask-source, CSV/workspace and stale/close/cancel guards (`G009 G066 G068 G071`). I:delivered; V:549 original cases/588 rows,5,173 distinct installed Python passes/1optionalGLskip with scoped reuse, affected Windows/Linux native and installed Windows SDK client; UI:96 matching Windows host pairs (10new redirect profiles); R:open. Positioned/cross-plane threshold/replay/RGB/wider platform variants remain unqualified. [Scope, failures and reuse](parity/reviews/redirect-measurements-20261106.json).
+
+- [x] Captured %Area API and actual column choice/Measure/manager/redirect/table/CSV/workspace, independent of density and LIMIT; ordinary and six Float32 overflow observations, both Windows hosts and Windows/Linux native/installed C++ checks (`G009 G066 G068 G071`). I: delivered; V: scoped with explicit unchanged-input reuse; UI: both Windows hosts; R: open. [Evidence and remaining limits](parity/reviews/area-fraction-measurements-20261106.json).
 
 ## Cross-cutting exits still open
 
@@ -2501,8 +2503,17 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [x] Qualify area, line, point, ordered manager and redirected rows; preserve source geometry and sampling calibration/position ownership.
 - [x] Reuse applicable frozen LIMIT/redirect observations; add reference cases only for an identified missing consumed behavior. Record unavailable inputs separately from passing checks.
 - [x] Complete the [column selection, table, CSV and persistence exit](#g071-results-and-tables) in both Windows ImGui hosts; link scoped evidence here before accepting the increment.
-- [ ] Next: complete %Area with original processor-specific numerator/denominator, threshold-independent-of-LIMIT semantics, captured settings/owner guards, actual controls, CSV and persistence under M3.
-- [ ] Keep remaining skewness/kurtosis and unsampled constructor/positioned/cross-plane threshold/replay/platform variants assigned to M3/T06/T14. Preserve default-off native extensions and reference limits.
+
+**Delivered scoped: area fraction (%Area).** [Exact evidence](parity/reviews/area-fraction-measurements-20261106.json) keeps implementation, verification, integration and release status separate; no full-family closure.
+
+- [x] Explicit default-off `TargetAnalysisOptions.area_fraction`; optional `TargetAnalysisPlane.area_fraction`, read-only in Python; provenance version18 only for the new request.
+- [x] Raw ROI/point denominator and nonzero/threshold numerator before density/LIMIT filtering; integer threshold rounding, Float32 narrowing, empty NaN and original zero-valued line/polyline/angle rows.
+- [x] Independent source/sampling guards when LIMIT is off, descriptor copies, zero source reads during preparation and unchanged source data/history; existing grouped reads/cancellation/publication guarantees preserved.
+- [x] 1,437 ordinary original cases plus six independent Float32 overflow-boundary observations; actual API/editor failure corrected and retained. Existing 597LIMIT/549redirect expectations unchanged.
+- [x] Actual %Area checkbox/Apply, stale preference refusal, table/CSV precision, saved preferences/workspace and 28 matching affected Windows host pairs. Native and installed C++ clients pass on Windows/Linux; wider UI platforms remain open.
+- [x] Final delta checked without repeating unchanged campaigns; all ten scratch groups retired, four necessary archives verified, active compiler/runtime/SDK products preserved. Complete storage budget remains unverified because 214 subtrees are inaccessible.
+- [ ] Next: complete Skew/Kurt through one shared moment traversal, captured APIs and actual controls/output/persistence under M3.
+- [ ] Keep unsampled constructor/positioned/cross-plane threshold/replay/RGB/legacy-type/platform variants assigned to M3/T06/T14. Preserve default-off native extensions and reference limits.
 
 - [x] Qualified ELLIPSE Major/Minor/Angle and implicit Shape fitted-center composition, including empty/outside selections:333original observations,68exact Windows host pairs, installed API/SDK and affected Windows/Linux native checks. Wider variants and release gates remain open; see the scoped receipt above.
 
@@ -2558,6 +2569,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [ ] Thick-line and rectangular averages, configurable interpolation/sampling, live profiles, Z/T profiles and fixed plot axes
 ### G071 Results and tables
+
+- [x] Scoped %Area column control, table/CSV and saved preferences/workspace in both Windows hosts; default empty-list behavior and unknown saved names preserved. [Evidence](parity/reviews/area-fraction-measurements-20261106.json). Full table editing/import/filtering/summaries and release scope remain open.
 
 **Delivered scoped column workflow (M3; Windows captured-row domain):** [Receipt](parity/reviews/statistic-columns-20261106.json). Existing unknown saved choices and empty-list defaults remain compatible; broader table features and release gates remain open.
 
@@ -2863,8 +2876,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Reconcile stale family/child labels against exact scoped receipts without rewriting historical outcomes or treating partial references as full certification.
 - [ ] Keep missing reference paths and producer/reader mappings with T00; recover only from a new plausible source and never recreate retired build generations.
 - [ ] Keep every deferred gap with its T00–T15 owner; queue changes do not close unfinished formats, point/manager, analysis, Fiji or platform variants.
-- [ ] Keep cleanup claims evidence-based: the latest [statistic-column closeout](parity/reviews/statistic-columns-20261106.json) records all3owned scratch groups retired with verified retained evidence;214 inaccessible storage subtrees leave complete local budget unverified. Reconcile the current task receipt at every closeout; this is historical evidence, not a fresh storage measurement or an automatic filesystem guard.
+- [ ] Keep cleanup claims evidence-based: the latest [area-fraction closeout](parity/reviews/area-fraction-measurements-20261106.json) records all10owned scratch groups retired with verified retained evidence;214 inaccessible storage subtrees leave complete local budget unverified. Reconcile the current task receipt at every closeout; this is historical evidence, not a fresh storage measurement or an automatic filesystem guard.
 
 ## Next update
 
-Next, complete the independent %Area measurement workflow. Observe raw nonzero/threshold numerator and ROI denominator per processor, separately from LIMIT and density; qualify captured API/settings, both host controls, CSV and reopen. Keep moments and wider M3/T06/T14 variants assigned to their owners. Update the affected entries and exact scoped receipt at closeout.
+Next, complete Skew/Kurt as one moment workflow. Reuse ordered weight accumulation where valid; observe processor-specific zero/empty/nonfinite/density/LIMIT and point/line behavior before freezing API signatures. Put numerical tail positives before links, then qualify actual controls, table/CSV and persistence. Wider M3/T06/T14 variants retain their owners; update affected entries and exact scoped evidence at closeout.

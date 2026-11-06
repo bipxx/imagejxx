@@ -66,7 +66,8 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     std::optional<std::array<double,2>>* center_of_mass=nullptr,
     const std::array<double,2>* threshold=nullptr,
     std::array<double,2>* threshold_summary=nullptr,
-    const std::array<int,4>* processor_roi=nullptr) {
+    const std::array<int,4>* processor_roi=nullptr,
+    double* area_fraction=nullptr,const std::array<double,2>* area_fraction_threshold=nullptr) {
   const auto n=shape(im);spatial.validate();density.validate_for(im.type,im.channels);
   if(mask && (mask->channels!=1 || mask->width!=im.width || mask->height!=im.height || mask->pixels.size()!=n))
     throw std::invalid_argument("Analysis mask must match the source");
@@ -96,8 +97,25 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
   if(center_of_mass)*center_of_mass=std::nullopt;
   if(centroid)*centroid=std::nullopt;
   if(bounds){*bounds=std::nullopt;if(!mask)*bounds=std::array<int,4>{0,0,im.width,im.height};}
+  std::uint64_t fraction_members=0,fraction_matches=0;
+  std::array<double,2> fraction_range{};
+  if(area_fraction && area_fraction_threshold)for(int axis=0;axis<2;++axis) {
+    const double v=(*area_fraction_threshold)[axis];
+    if(bins)fraction_range[axis]=std::floor(v+.5);
+    else {
+      const double max=std::numeric_limits<float>::max();
+      const double edge=max+(max-double(std::nextafter(std::numeric_limits<float>::max(),0.f)))*.5;
+      if(v>max)fraction_range[axis]=v<edge?max:std::numeric_limits<double>::infinity();
+      else if(v<-max)fraction_range[axis]=v>-edge?-max:-std::numeric_limits<double>::infinity();
+      else fraction_range[axis]=double(float(v));
+    }
+  }
   auto included=[&](std::size_t i){
     if(mask && mask->pixels[i]==0)return false;
+    if(area_fraction) {
+      ++fraction_members;const double raw=im.pixels[i];
+      if(area_fraction_threshold?(raw>=fraction_range[0] && raw<=fraction_range[1]):raw!=0)++fraction_matches;
+    }
     // Geometric membership is independent of density-table NaNs or weighting.
     // This predicate is visited once in the owning histogram/member traversal.
     const bool selected_sample=contains(im.pixels[i]);
@@ -200,6 +218,7 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
       out.median=members.size()%2?members[mid]:float((members[mid-1]+members[mid])/2.0f);
     } else {out.median=nan;out.mode_value=nan;}
   }
+  if(area_fraction)*area_fraction=fraction_members?double(fraction_matches)*100.0/double(fraction_members):nan;
   out.area=double(out.pixel_count)*spatial.spacing[0]*spatial.spacing[1];
   out.mean=out.pixel_count?sum/double(out.pixel_count):nan;
   out.raw_mean=out.pixel_count?raw_sum/double(out.pixel_count):nan;
@@ -597,8 +616,9 @@ ImageJScalarStatistics calibrated_statistics_with_table(const Image& im,const Sp
     std::optional<std::array<int,4>>* bounds,bool source_validated,
     std::optional<std::array<double,2>>* centroid,
     std::optional<std::array<double,2>>* center_of_mass,
-    const std::array<double,2>* threshold,std::array<double,2>* threshold_summary,const std::array<int,4>* processor_roi) {
-  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds,source_validated,centroid,center_of_mass,threshold,threshold_summary,processor_roi);
+    const std::array<double,2>* threshold,std::array<double,2>* threshold_summary,const std::array<int,4>* processor_roi,
+    double* area_fraction,const std::array<double,2>* area_fraction_threshold) {
+  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds,source_validated,centroid,center_of_mass,threshold,threshold_summary,processor_roi,area_fraction,area_fraction_threshold);
 }
 ImageJLineMeasurement calibrated_line_measurement_with_table(const Image& im,
     const SpatialCalibration& spatial,const ImageJIntensityCalibration& density,

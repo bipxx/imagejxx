@@ -20,6 +20,7 @@ void bind_target_analysis(py::module_& m) {
     .def_readwrite("bounding_rectangle",&TargetAnalysisOptions::bounding_rectangle)
     .def_readwrite("ellipse",&TargetAnalysisOptions::ellipse)
     .def_readwrite("limit_to_threshold",&TargetAnalysisOptions::limit_to_threshold)
+    .def_readwrite("area_fraction",&TargetAnalysisOptions::area_fraction)
     .def_readwrite("redirect",&TargetAnalysisOptions::redirect);
   py::class_<TargetAnalysisLimits>(m,"TargetAnalysisLimits")
     .def(py::init<>()).def_readwrite("max_pixels",&TargetAnalysisLimits::max_pixels)
@@ -45,6 +46,7 @@ void bind_target_analysis(py::module_& m) {
   py::class_<TargetAnalysisPlane>(m,"TargetAnalysisPlane")
     .def_readonly("position",&TargetAnalysisPlane::position)
     .def_readonly("sampling_position",&TargetAnalysisPlane::sampling_position)
+    .def_readonly("area_fraction",&TargetAnalysisPlane::area_fraction)
     .def_readonly("bounds",&TargetAnalysisPlane::bounds)
     .def_readonly("roi_index",&TargetAnalysisPlane::roi_index)
     .def_readonly("point_index",&TargetAnalysisPlane::point_index)

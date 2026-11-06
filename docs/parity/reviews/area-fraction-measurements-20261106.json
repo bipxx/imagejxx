@@ -1,0 +1,384 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 area-fraction (%Area) measurements",
+  "implemented": true,
+  "verified": "scoped",
+  "integrated": "Windows standalone C++ and optional Python ImGui",
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "requirements": [
+    "G009",
+    "G066",
+    "G068",
+    "G071",
+    "Analyze.SetMeasurements.AreaFraction",
+    "ROIManager.Measure captured area fraction"
+  ],
+  "scope": "Explicit captured %Area request and per-row value, selectable preference, actual Apply/stale-setting/table/CSV/persisted preferences/workspace workflows. Qualified finite scalar UInt8/UInt16/canonical Float32 area and point populations, with original zero line/polyline/angle behavior, manager and redirected rows. No new runtime dependency, model, font or asset; ImageJ/JDK are reference producers only.",
+  "contract": {
+    "C++": "TargetAnalysisOptions.area_fraction=false; append optional<double> TargetAnalysisPlane.area_fraction. Explicit Selection/RoiManager modes only.",
+    "Python": "Options field read/write; result field read-only and None when not requested. Detached options copies do not mutate the captured command.",
+    "compatibility": "Default-off computation; existing labels/keys/versions unchanged when off, unknown saved choices and empty-list column enumeration preserved. Native struct layout changed initially, so matched bindings and installed C++ clients were rebuilt; no old-binary ABI compatibility claim.",
+    "numerical": "Raw nonzero membership without an applicable threshold; raw threshold matches with one. Denominator precedes LIMIT and density/NaN filtering. Integer thresholds round independently of the statistical population; Float32 thresholds follow Java narrowing including half-ULP overflow boundaries. Empty membership NaN, qualified per-point result, original line/polyline/angle zero.",
+    "ownership": "One fused raw-membership traversal, no new image scan/buffer. Existing grouped reads/leases and sizeof(result)-based admission retained. Consumed threshold snapshots include absent state and sampling owner even with LIMIT off; unused line-only fraction threshold ignored. Data/history, global context, source closure, cancellation and atomic publication guarantees preserved.",
+    "provenance": "Version18 only for explicit area_fraction. Raw fraction range separate from typed LIMIT range; no duplicate intensity table or new registry/controller.",
+    "UI": "Select %Area in existing Results columns. Column presence requests the captured computation; no extra global setting. Existing precision and nonfinite strings; optional field omitted from future default-off rows. Saved preferences and workspace rows preserved."
+  },
+  "checks": {
+    "ordinary_original_cases": 1437,
+    "ordinary_matrix": {
+      "threshold": 888,
+      "redirect": 549
+    },
+    "independent_extreme_original_cases": 6,
+    "historical_defaults": "Existing 597LIMIT and549redirect case objects regenerated exactly unchanged in002. Later conditional rounding/extreme observer modes do not consume their default paths; reuse is explicit. Historical fixtures were not repinned.",
+    "fixture": {
+      "path": "tests/fixtures/area-fraction-measurements-imagej154r.json",
+      "sha256": "fb0e9a28446c0a522744097c91ead6fb4051f44e1cbc9264abfb3a70636d2f23",
+      "bytes": 1514524
+    },
+    "distinct_installed_python": {
+      "passed": 6631,
+      "skipped": 1,
+      "failed_unresolved": 0,
+      "passed_node_ids_sha256": "016aedded898131d806d1ca5a137d03c9073ea8a029f125d8bd6f434a39de828",
+      "qualification": "Current boundary033 plus proven normal-input reuse033; 10 repeated normal controls and other duplicate successes counted once. One optional OpenGL skip is not a pass."
+    },
+    "junit_counts": {
+      "python017.xml": {
+        "tests": 1347,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      },
+      "python018.xml": {
+        "tests": 99,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "python021.xml": {
+        "tests": 5177,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "python025.xml": {
+        "tests": 12,
+        "failures": 8,
+        "errors": 0,
+        "skipped": 0
+      },
+      "python033.xml": {
+        "tests": 22,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "affected_matching_windows_host_pairs": 28,
+    "host_scope": "10redirect+18LIMIT pairs; exact rows/columns/CSV and rendered %Area text for redirect pairs, actual eighth checkbox/Apply and stale %Area preference. Process-local sampling IDs normalized only after exact captured-owner assertions. Native022 also exercised its existing broader aggregate; no fresh full Python96-profile claim.",
+    "normal_reuse_after_fix": "reuse-proof033.json verifies exact unchanged ordinary fixture bytes, unchanged other source/header/binding/UI/probe inputs, and threshold ranges outside the corrected overflow branches. 5176 affected passes/1skip in021 and1437 ordinary+6guards retained. Final033 reruns12 independent API/editor boundaries and10 normal Float6.6 controls.",
+    "native": "Windows analysis028 and settings010; Linux analysis030 and settings014; normal standalone UI022 retained under explicit private-fix reuse.",
+    "installed_C++": "Windows SDK020 configuration reused for final032 build/run; Linux SDK014 configuration reused for final030 build/run. Both include six independent original Double boundary inputs. Actual imported archive/include paths and bytes verified before checks.",
+    "installed_modules": "Nine final source/built-installed pairs031 including both native extensions, changed public header, SDK archive, app and unchanged pure exports; loaded runtime origins asserted by existing bootstrap. Unspecified/desktop/development components reused; no new runtime or SDK prefix.",
+    "platform_limits": "Windows UI/Python and Windows/Linux native/installed C++ only. Linux Python/UI, macOS and full release qualification remain open."
+  },
+  "failures_and_corrections": [
+    {
+      "attempt": "python017",
+      "observed": "1344 original cases passed; three self-redirect cases correctly rejected the new test driver supplying the raw other document instead of the actual sampled primary owner.",
+      "correction": "Fix owner selection only; 018 ran93 failed/unexecuted originals and6 guards, preserving1344 unchanged passes. No product rebuild for a test-driver correction."
+    },
+    {
+      "review": "Float32 tail023 / python025",
+      "observed": "Premature saturation mapped a Double just above Float32 max to infinity. Six independent original observations exposed8 API/editor mismatches and4 passes.",
+      "correction": "Use the actual half-ULP overflow edge with symmetric signs. Native028/Linux030, both retained SDK clients and Python03322 controls pass. Permanent independent Java inputs guard the fix; normal cases reused, not rerun."
+    },
+    {
+      "preflight": "reuse proof033",
+      "observed": "A hash reconstruction used LF while the Windows-written fixture had CRLF; assertion stopped before a process launched.",
+      "correction": "Inspect terminal bytes and reproduce the actual newline; exact previous fixture SHA matched. Reuse the unlaunched fresh group, no cache/run generation."
+    }
+  ],
+  "cleanup": {
+    "total_owned_groups_retired": 10,
+    "receipts": [
+      "early-retirement019.json",
+      "linux-retirement037.json",
+      "retirement038.json"
+    ],
+    "scratch_parent_absent": true,
+    "Linux_hostlocal_sdk_absent": true,
+    "retained_archives": 4,
+    "archive_bytes": 1281291,
+    "retention": "Necessary raw original/UI captures losslessly packed and live/hash verified before exact owned plain/link-bounded snapshot retirement. Compiled observers, duplicate historical baseline output and installed-client compiler products retained by identity only. Failure017/025 logs/XML remain outside retired scratch; warm compiler/runtime/installed SDK products preserved.",
+    "storage_known_bytes": {
+      "entry": 7450284995,
+      "preretirement": 7468911446,
+      "final_before_document_deltas": 7455269864
+    },
+    "inaccessible_subtrees": 214,
+    "budget_verified": false,
+    "allocation": "256MiB bounded increment; reference/UI groups<8MiB, each installed-client group<16MiB. No overrun. Complete normalized Windows/Linux scope measured; unknown subtrees never counted as zero/headroom."
+  },
+  "waste_review": {
+    "fix_now": "Fused counting reuses admitted masks/lookup/read groups. No extra controller, registry or executable runner. Permanent cast-tail positives added; failed/unexecuted tests selected with existing pytest argument-file support. Both configured SDK consumers survived final review and were reused for the correction before retirement. Duplicate observer/baseline/SDK bytes retired by identity.",
+    "measured_product_builds": {
+      "product_commands": [
+        {
+          "receipt": "build007-owned.json",
+          "elapsed_seconds": 8.082517100032419
+        },
+        {
+          "receipt": "build008-owned.json",
+          "elapsed_seconds": 24.67074210010469
+        },
+        {
+          "receipt": "build009-owned.json",
+          "elapsed_seconds": 0.8556923000141978
+        },
+        {
+          "receipt": "build011-owned.json",
+          "elapsed_seconds": 33.87183539988473
+        },
+        {
+          "receipt": "build012-owned.json",
+          "elapsed_seconds": 31.972356899874285
+        },
+        {
+          "receipt": "build013a-owned.json",
+          "elapsed_seconds": 5.910564399790019
+        },
+        {
+          "receipt": "build013b-owned.json",
+          "elapsed_seconds": 2.5152942000422627
+        },
+        {
+          "receipt": "build013c-owned.json",
+          "elapsed_seconds": 1.8644260000437498
+        },
+        {
+          "receipt": "build027-owned.json",
+          "elapsed_seconds": 2.179695700062439
+        },
+        {
+          "receipt": "build028-owned.json",
+          "elapsed_seconds": 23.805999800097197
+        },
+        {
+          "receipt": "link029-_native-owned.json",
+          "elapsed_seconds": 30.219957400113344
+        },
+        {
+          "receipt": "link029-_desktop-owned.json",
+          "elapsed_seconds": 5.9369030999951065
+        },
+        {
+          "receipt": "link029-imagejxx_app-owned.json",
+          "elapsed_seconds": 2.615597099997103
+        },
+        {
+          "receipt": "link029-imagejxx_display_actions_tests-owned.json",
+          "elapsed_seconds": 1.5758990000467747
+        },
+        {
+          "receipt": "linux-build014.process.json",
+          "elapsed_seconds": 17.662036867
+        },
+        {
+          "receipt": "linux-build030.process.json",
+          "elapsed_seconds": 14.073167044999998
+        }
+      ],
+      "product_command_count": 16,
+      "product_seconds_sum": 207.81268441209832,
+      "qualification": "Commandelapsed sums, notcriticalpath/walltime orruntimeperformance. Actualcorrectivebuilds/relinks retained. BothSDKconfigurationsreusedforlatefix, no secondconfigure."
+    },
+    "SDK_build_command_seconds": {
+      "sdk-build020.process.json": 24.24733790010214,
+      "sdk-build032.process.json": 23.752340800128877,
+      "linux-sdk-build014.process.json": 8.439822122000002,
+      "linux-sdk-build030.process.json": 8.628845675
+    },
+    "SDK_configure_command_seconds": {
+      "sdk-configure020.process.json": 4.795822800137103,
+      "linux-sdk-configure014.process.json": 1.6904361849999994
+    },
+    "time_qualification": "Command sums only, not wall critical path or runtime speed superiority. Actual corrective build costs retained.",
+    "defer": "T02 owns historical SDK-prefix curation: ten config-bearing prefixes were observed, individual sizes/retention obligations were not audited. Reused recorded active p13g-resumed SDK; no new prefix. Shared-header build fanout and broader performance work need measured consumer evidence. M3 owns Skew/Kurt next, T06/T14 wider variants.",
+    "next_start": "Observe typed moment populations and numerical tails before expensive links. Deliver Skew/Kurt together in one existing traversal, preserve old reference expectations, use one coherent source batch and retain SDK consumers through final review.",
+    "bounded_read_correction": "An accidental whole-line historical JSON fixture read was replaced by bounded parsed metadata; no new scanner or checklist."
+  },
+  "source_sha256": {
+    "include/imagejxx/target_analysis.hpp": "1ede0612505a4f3e1caccb283e19c03bafd3c5b9a015927d4c2c023a82fc52a9",
+    "src/desktop/analysis_measurement.cpp": "cac61b5d436deb68ae97d611a00e4393abee0d2760765661b6bb4daeea93d730",
+    "src/desktop/effective_display_ui_probe.cpp": "841e1039137e91d3ad87afb10ea55d478c6c15024e17cbfb803503ed2ad88e29",
+    "src/desktop/window.cpp": "45a5f5d38f2c668277df9ad7ad7be41232499960a594b2cecbcc5c86d9eba90e",
+    "src/native/calibrated_analysis.cpp": "2b58770268e9d8403afe068eb73527ff5bb807c8e6f5dc8b7036d7e7925387f2",
+    "src/native/calibrated_analysis_internal.hpp": "2230da0c0c2b9530f0acd22ada2db97ecbcfe9b48e5ae2413d176f60048e7216",
+    "src/native/settings.cpp": "cbc93981a68b9e2a3f7de8b1cc5ee1c1fc56a604edd02969b69f8ad10446aced",
+    "src/native/target_analysis.cpp": "b690e10e41ce052aef73c2730cf9bcd6f205a1264bd3e1448cba2f920725c06d",
+    "src/native/target_analysis_bindings.cpp": "5828f100aebef38c42fe88b4d0157a4bff5fac4e118c1e03d4ad1ccd4eeca934",
+    "tests/fixtures/area-fraction-measurements-imagej154r.json": "fb0e9a28446c0a522744097c91ead6fb4051f44e1cbc9264abfb3a70636d2f23",
+    "tests/native/test_target_analysis.cpp": "b5da2f5d8c8889db8c2eb7dba6ae46addcd2d674f66f5eee767552dea2bbc446",
+    "tests/python/test_area_fraction_measurements.py": "9d186b86eb61cef6acb567857dd254ec96df34a52800b95ce6e909a668cae4de",
+    "tests/python/test_threshold_measurements.py": "8298d9911d59b96f8e416e61d210dcfa7abe2a0d2696e2883ebbe3439dd38b82",
+    "tests/reference/ObserveAreaFractionMeasurements.java": "5c3426f073903187424c8dfc7ef81f604cc136bbd871dd6701f2625f3f252721",
+    "tests/reference/ObserveRedirectMeasurements.java": "c52343e60a5809a2ec9e3cb9be44d5e54a3d3a9c8fa09f556a386b330a7eb49a",
+    "tests/reference/ObserveThresholdMeasurements.java": "f1d62117878a2987e2cf3dcb0a75edcbe5b622b49580276c73970bb1ef84fdd3"
+  },
+  "local_task_record": ".tmp/manual-workflow-verification/area-fraction-20261106/entry.json",
+  "local_evidence_base": ".tmp/manual-workflow-verification/area-fraction-20261106",
+  "evidence_pins": {
+    "python017.xml": {
+      "sha256": "c89a6138e3ddc5bbaf9575c8d0432d43f572aa54fee3fe4b10b944f043a8f51f",
+      "bytes": 318955
+    },
+    "python017-owned.json": {
+      "sha256": "9e70d4f39bc460dc6c2e5d5edf69fcf71f5daf0b2bc66ba15e401999b801f9c4",
+      "bytes": 2409
+    },
+    "python018.xml": {
+      "sha256": "2423b20b81b729697de1b596b0e9c29189c274c70a6447d0906cc3f4d60d4afe",
+      "bytes": 24064
+    },
+    "python018-owned.json": {
+      "sha256": "8f5bc81b67922ee2d9e2aed1c16d309a34ecc49384b1b8cbc4cc747ef466bad2",
+      "bytes": 2407
+    },
+    "python021.xml": {
+      "sha256": "0759e83f6cb65f6512dff33444a9bc2ba4b414167095cb607aa094912299452c",
+      "bytes": 912985
+    },
+    "python021-owned.json": {
+      "sha256": "d26e26f79cc367fb4276f5c5ce4113baea79c736178636d726a14a989060e2de",
+      "bytes": 3534
+    },
+    "python025.xml": {
+      "sha256": "00608a579e30beb4f042a889af771e0ae4e15b4317d0c66fd782d9d9db0659db",
+      "bytes": 3772
+    },
+    "python025-owned.json": {
+      "sha256": "527559cb9a2939abd471a713244097ea9223942c05cd9100fd12eff4559c01c1",
+      "bytes": 2359
+    },
+    "python033.xml": {
+      "sha256": "c6309a41c0785c9d037433c5fa753f51ce523f1a2d676c884440ebb3ff9dbc6b",
+      "bytes": 4279
+    },
+    "python033-owned.json": {
+      "sha256": "c21988ecffeedc560131eaf5163872a8260a366db06c65deca3486175687ae64",
+      "bytes": 4266
+    },
+    "native028-owned.json": {
+      "sha256": "ee2a5e3d093dfc724e8711302d68e3f30f6e96b4382c3a3bb2101c04717694a6",
+      "bytes": 1829
+    },
+    "native022-owned.json": {
+      "sha256": "81ca92f3e32d49bd492f58326200a7bff7a1ce2eef8427505eb5f65fd5397982",
+      "bytes": 1952
+    },
+    "host-pairs035.json": {
+      "sha256": "22ef75662726f32b5bcc466db19ae3ff5044f2164293f33565decbd5e6556dc4",
+      "bytes": 18566
+    },
+    "reuse-proof033.json": {
+      "sha256": "b96935fd33688238836737f8d0b06f6a2b3927f9e33604cc1cdc743b64bbca80",
+      "bytes": 793
+    },
+    "installed-identities016.json": {
+      "sha256": "fffdc591ea18c9c53e3f299bee349ad34552e893f26b36a1001d6f0dc6fef55d",
+      "bytes": 3588
+    },
+    "installed-identities031.json": {
+      "sha256": "473128d5d077a57f0fda8a5a18739d17ec23fb316923b72b40ef4145f2359d95",
+      "bytes": 3588
+    },
+    "linux-observed014.json": {
+      "sha256": "611099330a84a384846888feb74ad54cbf490ec29d3127cf7f45f3163b1ee90a",
+      "bytes": 389
+    },
+    "linux-installed-identities030.json": {
+      "sha256": "ddefd0daa0f5d972bdf9be9a22327b804d3f5f0ff6b4ca96f1149882c790dc4e",
+      "bytes": 670
+    },
+    "linux-sdk-import030.txt": {
+      "sha256": "1dc3d9155658a4437bca6660026ed8b497096d07738c3f74299ee5e1394a9d90",
+      "bytes": 201
+    },
+    "linux-owner030.process.json": {
+      "sha256": "27a137b6adbb633ff26eda43389fe12780777ebc5b275753f72e55763169fe34",
+      "bytes": 5986
+    },
+    "linux-sdk-client030.process.json": {
+      "sha256": "898e7062016b0e71fc804bd3d4812868479cd40689bdea0e3612f60e15a5d853",
+      "bytes": 1453
+    },
+    "sdk-run032.process.json": {
+      "sha256": "dd9734758a5c322cd34a80b460f71e7b74e6d469f3e98868688850ef03524a69",
+      "bytes": 1903
+    },
+    "sdk-import020.txt": {
+      "sha256": "1891069ab62f559670f76cb0860b4cfbdb1c07133f27bc4f883d7cac48153894",
+      "bytes": 200
+    },
+    "early-retirement019.json": {
+      "sha256": "50e96c72f7f08438cfc7a4a5a9e1cbd1f3585574f569979b0c19515fd65f8739",
+      "bytes": 438
+    },
+    "retirement038.json": {
+      "sha256": "88ecbdadd9e6ea2d9d44d62be9d1790e92c6e5c090bf08a4553d40b95e0d6e55",
+      "bytes": 1475
+    },
+    "linux-retirement037.json": {
+      "sha256": "38c8db682a4528ffd415d8ed1d2eade915548d56ee5b209f6b2e39d11551a9d9",
+      "bytes": 291
+    },
+    "linux-sdk-identity037.json": {
+      "sha256": "27aa39135b39f6e4496b63778f74854b5d6a42709c086f3a0235c733d7895f68",
+      "bytes": 7106
+    },
+    "sdk-identity038.json": {
+      "sha256": "c152b76c492b9bee4d11ae5de6408e059ef3e22159c8e50502b127e6d239d9ca",
+      "bytes": 57409
+    },
+    "reference-identity019.json": {
+      "sha256": "040dd5599bfd510828d19f88fb8c3049c2649f028b945e266230c5a2ff62a362",
+      "bytes": 6403
+    },
+    "reference-identity038.json": {
+      "sha256": "29dbab7e2ad27b33fff57c787952d3d66af4d68ee8807491bb9603a011114b80",
+      "bytes": 3899
+    },
+    "reference019.zip": {
+      "sha256": "66b0458b9fd7ce8f4d657f2d40a6a6c1c87eec9f45f789c86e6bc97778a9e439",
+      "bytes": 64342
+    },
+    "native022038.zip": {
+      "sha256": "3c4950765c72585b64e269ba2f57f5e45bd4a4ee695661267320fdc0b5dc3900",
+      "bytes": 677689
+    },
+    "python021038.zip": {
+      "sha256": "cc2e3383256eeba5ed6fbe7547ba7ee8ef21df17c81ed9c0cb2b7268c94df8aa",
+      "bytes": 538867
+    },
+    "reference024038.zip": {
+      "sha256": "82ad96ddc5443213114cd43194e72ae4e0dfa912750c3d812c2075d2fc8c6ae6",
+      "bytes": 393
+    },
+    "entry.json": {
+      "sha256": "570e0f01481dc54fea7596582ab2c3ebc8afcd939764780b6c47f9a56cb40f3d",
+      "bytes": 47574
+    }
+  },
+  "remaining": [
+    "M3 Skew/Kurt moment workflow (next ready)",
+    "Wider ROI constructors/positioned/cross-plane threshold/RGB/legacy types/replay",
+    "Linux Python/UI, macOS and supported-platform release gates",
+    "Full table editing/import/filtering/summaries",
+    "Full commercial inventory and equivalent-output performance qualification",
+    "Full99-family ImageJ/Fiji editor goal"
+  ]
+}

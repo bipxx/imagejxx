@@ -83,6 +83,7 @@ Json captured_measurement_rows(const ResolvedTargetAnalysis& command,const Targe
       {"Mode",scalar(s.mode_value)},{"IntDen",scalar(s.integrated_density)},
       {"RawIntDen",scalar(double(s.pixel_count)*s.raw_mean)},
       {"Area",scalar(s.area)},{"Unit",result.spatial.unit},{"Value unit",command.intensity().value_unit()}};
+    if(row.area_fraction)values["%Area"]=scalar(*row.area_fraction);
     if(command.options().redirect) {
       const auto& redirect=*command.options().redirect;
       if(!row.sampling_position)throw std::invalid_argument("Redirect measurement requires captured sampling position");

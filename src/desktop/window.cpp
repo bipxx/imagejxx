@@ -4303,6 +4303,7 @@ struct Window::Impl {
     options.shape_descriptors=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Circ." || column=="AR" || column=="Round" || column=="Solidity";});
     options.feret=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Feret" || column=="MinFeret" || column=="FeretAngle" || column=="FeretX" || column=="FeretY" || column=="Feret unit" || column=="Feret coordinate unit";});
     options.bounding_rectangle=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="BX" || column=="BY" || column=="Width" || column=="Height";});
+    options.area_fraction=std::find(columns.begin(),columns.end(),"%Area")!=columns.end();
     options.ellipse=std::any_of(columns.begin(),columns.end(),[](const std::string& column){return column=="Major" || column=="Minor";});
     if(!options.ellipse && std::find(columns.begin(),columns.end(),"Angle")!=columns.end()) {
       const auto ordinary=[](const Selection* s){return !s || s->kind=="rectangle" || s->kind=="ellipse" || s->kind=="polygon" || s->kind=="freehand";};
@@ -10429,6 +10430,10 @@ void Window::poll() {
         }
         if(command.options().measurement!=TargetMeasurementMode::Area &&
             impl->preferenceState.settings.boolean("measurement_limit_to_threshold")!=command.options().limit_to_threshold)throw RevisionConflict();
+        if(command.options().measurement!=TargetMeasurementMode::Area) {
+          const auto& columns=impl->preferenceState.settings.strings("measurements");
+          if((std::find(columns.begin(),columns.end(),"%Area")!=columns.end())!=command.options().area_fraction)throw RevisionConflict();
+        }
         if(current.id()!=captured.id() || (command.options().measurement!=TargetMeasurementMode::RoiManager &&
             (current.display().t!=captured.display().t ||
             current.display().c!=captured.display().c ||

@@ -35,6 +35,9 @@ struct TargetAnalysisOptions {
   // Optional whole-plane/current-plane immutable sampling source. Source ROI,
   // row identity and source-specific geometry remain with the primary target.
   std::optional<ResolvedTarget> redirect;
+  // Explicit %Area: raw nonzero/threshold membership, independent of LIMIT and
+  // density. Area and point rows consume sampled threshold; line/angle rows0.
+  bool area_fraction = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -100,6 +103,8 @@ struct TargetAnalysisPlane {
       bounding_horizontal_world,bounding_vertical_world;
   // Actual immutable redirect read position; source row position stays above.
   std::optional<PlanePosition> sampling_position;
+  // Present only when area_fraction requested; percentage, empty membership NaN.
+  std::optional<double> area_fraction;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image

@@ -25,6 +25,7 @@ def fixture(case):
     if case["type"]==1:values=values*257
     if case["type"]==2:values=values*.25-2
     values=values.astype([np.uint8,np.uint16,np.float32][case["type"]])
+    if case.get("zero_source",False):values.fill(0)
     reads=ij.DatasetReadObserver();spatial=ij.SpatialCalibration(unit="um")
     owner=ij.Document(ij.Dataset(values,axes="YX",calibration=spatial).observe_reads(reads))
     if case["kind"]!="whole_image":
@@ -173,7 +174,7 @@ def test_physical_threshold_preference_measure_csv_workspace(tmp_path,profile):
     aliases={"mean":"Mean","minimum":"Min","maximum":"Max","median":"Median"}
     for row,expected in zip(report["rows"],case["rows"]):
         for column in report["columns"]:
-            if column in {"Unit","Value unit","T","C","Z"}:continue
+            if column in {"Unit","Value unit","T","C","Z","%Area"}:continue
             name=aliases.get(column,column)
             if name not in expected:assert column not in row;continue
             value=expected[name]
@@ -193,7 +194,7 @@ def test_physical_threshold_preference_measure_csv_workspace(tmp_path,profile):
         for key in ["Value unit","T","C","Z"]:assert emitted[key]==str(stored[key])
     for row,expected in zip(rows,case["rows"]):
         for column in report["columns"]:
-            if column in {"Unit","Value unit","T","C","Z"}:continue
+            if column in {"Unit","Value unit","T","C","Z","%Area"}:continue
             name=aliases.get(column,column)
             if name not in expected:assert row[column]=="";continue
             value=expected[name]

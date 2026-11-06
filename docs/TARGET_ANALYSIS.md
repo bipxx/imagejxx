@@ -716,7 +716,43 @@ three labels and `Value unit`, `T`, `C`, `Z`; an empty preference still shows
 all available keys, and unknown saved names remain usable. Nonfinite values
 retain their existing string representation and CSV precision is unchanged.
 [Scoped column/UI verification](parity/reviews/statistic-columns-20261106.json) covers both Windows hosts;
-%Area, moments and wider platform/geometry variants remain open.
+Moments and wider platform/geometry variants remain open.
+
+For explicit Selection/ROI_MANAGER analysis, set
+`TargetAnalysisOptions.area_fraction = true` (Python `True`). The optional
+`TargetAnalysisPlane.area_fraction` is read-only in Python and absent when the
+request is off; an opted-in descriptor uses diagnostic version18. Existing
+versions and defaults remain unchanged.
+
+The result is a percentage of raw ROI membership: raw nonzero samples without
+an applicable threshold, raw threshold matches when one is captured. Its
+denominator precedes LIMIT and density-table NaN filtering. Integer thresholds
+round independently of the existing statistical population; Float32 thresholds
+follow Java narrowing, including the half-ULP overflow boundary. Empty membership
+produces NaN. Qualified point rows use their raw sample; original thin straight
+line/polyline/angle rows produce zero. No spatial or intensity-unit factor is
+applied to the percentage.
+
+For example, Byte values `[0,6,6,7,10]` with raw threshold `[6.6,10.6]` give
+%Area = 40 both with LIMIT off (five statistical samples) and on (four statistical
+samples). The percentage counts two matches in five raw members. It is not
+computed from final displayed Area or statistical pixel_count.
+
+Select `%Area` in Results columns to request it from Measure/ROI Manager. The
+choice persists through the existing preferences route; rows survive workspace
+reopen. Table/CSV use the existing precision and nonfinite-string formatting.
+An empty column list still enumerates available keys and does not implicitly
+request new optional computations. Consumed source/sampling threshold changes
+invalidate a frozen area/point command even with LIMIT off; line-only %Area adds
+no threshold dependency, though LIMIT can still create one for other statistics.
+Application/global/closure guards remain required as before.
+
+[Scoped %Area evidence](parity/reviews/area-fraction-measurements-20261106.json) includes 1,437 ordinary original
+cases, six independent overflow observations, both Windows ImGui hosts and
+native/installed C++ clients on Windows/Linux. The private overflow correction
+uses explicitly proven normal-input reuse; it does not imply a fresh full
+campaign or Linux/macOS UI qualification. Wider ROI/type/replay/platform and
+release scope remains open.
 
 [Scoped verification](parity/reviews/redirect-measurements-20261106.json) includes
 549original cases/588rows, independent Global/bypass/closure guards, two native
