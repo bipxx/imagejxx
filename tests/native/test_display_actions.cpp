@@ -383,14 +383,21 @@ void circleJobs(const std::filesystem::path& root) {
     Window interpolation((root/(label+"-preferences.json")).u8string());
     imagejxx::desktop::interpolationWorkflowUiCase(interpolation,"imgui_cpp",(root/label).u8string(),opened,configured);
   }
-  for(int fit:{0,1,2,3,4,5})for(int mode=0;mode<10;++mode) {
-    const bool rectangle=fit==2,ellipse=fit==1,spline=fit==3 || fit==4,removing=fit==4,interpolation=fit==5;
+  for(int profile:{0,1,2,3})for(bool configured:{false,true}) {
+    const auto label=std::string("components-")+std::to_string(profile)+(configured?"-configured":"-default");
+    Window components((root/(label+"-preferences.json")).u8string());
+    imagejxx::desktop::interpolationComponentsUiCase(components,"imgui_cpp",(root/label).u8string(),profile,configured);
+  }
+  for(int fit:{0,1,2,3,4,5,6,7})for(int mode=0;mode<10;++mode) {
+    const bool rectangle=fit==2,ellipse=fit==1,spline=fit==3 || fit==4,removing=fit==4,interpolation=fit>=5,compound=fit==6,maskProfile=fit==7;
     const char* fitAction=interpolation?"interpolate_selection":removing?"remove_spline_fit":spline?"fit_spline_selection":rectangle?"fit_rectangle_selection":ellipse?"fit_ellipse_selection":"fit_circle_selection";
-    const auto dir=root/(std::string(interpolation?"interpolation-job-":removing?"spline-remove-job-":spline?"spline-job-":rectangle?"rectangle-job-":ellipse?"ellipse-job-":"circle-job-")+std::to_string(mode));std::filesystem::create_directory(dir);
+    const auto dir=root/(std::string(compound?"compound-job-":maskProfile?"mask-interpolation-job-":interpolation?"interpolation-job-":removing?"spline-remove-job-":spline?"spline-job-":rectangle?"rectangle-job-":ellipse?"ellipse-job-":"circle-job-")+std::to_string(mode));std::filesystem::create_directory(dir);
     DatasetReadObserver reads;Image image(16,16,1,PixelType::UInt8);
     auto source=std::make_shared<Document>(Dataset::from_stack({image,image}).observe_reads(reads));
     const Selection splineControls("polyline",{{3,3},{13,3},{13,13},{3,13}});
     source->select(spline?(removing?fit_spline_selection(splineControls,16,16):splineControls):Selection("rectangle",{{3,3},{13,13}}));
+    if(compound)source->select(Selection::from_path({0,3,3,1,13,3,1,13,13,1,3,13,4,0,6,6,1,10,6,1,10,10,1,6,10,4}));
+    if(maskProfile){Image pixels(16,16,1,PixelType::UInt8);for(int y=3;y<13;++y)for(int x=3;x<13;++x)if(!(x>=6 && x<10 && y>=6 && y<10))pixels.at(x,y)=1;source->select(Selection::from_mask(pixels));}
     Window w((dir/"preferences.json").u8string());w.addVirtualDocument(source);w.recording=true;
     w.updateSettings({{"processing_memory_mb",32}},false);
     if(mode==8){w.addVirtualDocument(std::make_shared<Document>(Dataset::from_stack({image})));w.setActiveIndex(0);}
@@ -421,7 +428,7 @@ void circleJobs(const std::filesystem::path& root) {
       w.wait();
     }
     check(reads.counts().plane_reads==count && !w.busy() && scheduler->usage().reserved_bytes==0 && w.renderMemoryInfo().at("working_bytes")==0,"Terminal fit read samples or retained worker/capture storage");
-    if(mode==0)check(w.error().empty() && (interpolation?(source->snapshot().data().selection->kind=="freehand" && source->snapshot().data().selection->points.size()==41 && source->snapshot().data().selection->points[3]==std::array<double,2>{6,3}):spline?(removing?(source->snapshot().data().selection==std::optional<Selection>(splineControls)):(selection_spline_fit(*source->snapshot().data().selection) && selection_spline_fit(*source->snapshot().data().selection)->controls==splineControls)):rectangle?(source->snapshot().data().selection->kind=="rotated_rectangle" && source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{8,8},{8,3},{13,8}}):ellipse?(source->snapshot().data().selection->kind=="rotated_ellipse" && source->snapshot().data().selection->points[0]==std::array<double,2>{8,8}):source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{2,2},{13,13}}) && source->undo_steps()==1 && w.workflow.size()==1,"Area circle did not publish exactly once");
+    if(mode==0)check(w.error().empty() && ((compound || maskProfile)?(source->snapshot().data().selection->is_path() && source->snapshot().data().selection->mask(16,16).at(4,4)!=0 && source->snapshot().data().selection->mask(16,16).at(8,8)==0):interpolation?(source->snapshot().data().selection->kind=="freehand" && source->snapshot().data().selection->points.size()==41 && source->snapshot().data().selection->points[3]==std::array<double,2>{6,3}):spline?(removing?(source->snapshot().data().selection==std::optional<Selection>(splineControls)):(selection_spline_fit(*source->snapshot().data().selection) && selection_spline_fit(*source->snapshot().data().selection)->controls==splineControls)):rectangle?(source->snapshot().data().selection->kind=="rotated_rectangle" && source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{8,8},{8,3},{13,8}}):ellipse?(source->snapshot().data().selection->kind=="rotated_ellipse" && source->snapshot().data().selection->points[0]==std::array<double,2>{8,8}):source->snapshot().data().selection->points==std::vector<std::array<double,2>>{{2,2},{13,13}}) && source->undo_steps()==1 && w.workflow.size()==1,"Area circle did not publish exactly once");
     else check(source->undo_steps()==0 && w.workflow.empty(),"Rejected circle published history/recording");
     if(mode==3 || mode==5 || mode==6 || mode==7 || mode==8)check(!w.error().empty(),"Stale circle was not visibly refused");
   }

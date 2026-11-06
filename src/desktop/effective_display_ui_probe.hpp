@@ -17,4 +17,5 @@ Json fitEllipseWorkflowUiCase(Window&,const std::string& context,const std::stri
 Json fitRectangleWorkflowUiCase(Window&,const std::string&,const std::string&,bool area);
 Json splineWorkflowUiCase(Window&,const std::string&,const std::string&,bool opened,bool straighten);
 Json interpolationWorkflowUiCase(Window&,const std::string&,const std::string&,bool opened,bool configured);
+Json interpolationComponentsUiCase(Window&,const std::string&,const std::string&,int profile,bool configured);
 }

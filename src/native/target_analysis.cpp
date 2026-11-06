@@ -209,7 +209,9 @@ TargetAnalysisEstimate estimate_measurement(const ResolvedTarget& target,const T
       if(selection) {
         has_mask=true;
         if(manager || n==0) {
-          const auto mask=detail::estimate_analysis_mask(*selection,shape,sampling);
+          const auto prefix=add(base.working_bytes,out.geometry_bytes);within(prefix,limits.max_working_bytes);
+          auto mask_limits=sampling;mask_limits.max_working_bytes=std::min(mask_limits.max_working_bytes,limits.max_working_bytes-prefix);
+          const auto mask=detail::estimate_analysis_mask(*selection,shape,mask_limits);
           out.geometry_bytes=add(out.geometry_bytes,mask.geometry_bytes);raster_peak=std::max(raster_peak,mask.raster_bytes);
           within(add(base.working_bytes,add(out.geometry_bytes,raster_peak)),limits.max_working_bytes);
         }

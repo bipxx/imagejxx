@@ -8,6 +8,14 @@ bounds. Counts include both endpoints. Underflow, overflow, quiet NaNs and empty
 finite populations have separate counters. See `dataset_histogram.hpp` for the
 precise raw mapping, sample validation and bounded working-storage contract.
 
+Native even-odd path ROIs are admitted as area selections, including interpolated
+components/holes. Estimates charge retained path commands and shared bounded
+mask planning against the remaining byte cap before provider access. A short
+cap refuses before callbacks/reads; exact-cap standalone execution acquires one
+plane. Observed-range UInt16 target histograms retain their existing two-pass
+extrema/count behavior. [Scoped checks](parity/reviews/interpolation-compound-20261105.json)
+do not qualify every Histogram panel/recording variant.
+
 ```python
 request = imagejxx.DatasetHistogramRequest()
 request.binning = imagejxx.HistogramBinning.UniformRange

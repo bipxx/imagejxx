@@ -497,6 +497,35 @@ void interpolation_float_bounds(std::vector<Point>& points) {
   for(auto& p:points)for(int a=0;a<2;++a){p[a]=float(p[a]);base[a]=std::min(base[a],p[a]);}
   for(auto& p:points)for(int a=0;a<2;++a)p[a]=float(float(float(p[a])-float(base[a]))+float(base[a]));
 }
+std::size_t prepare_interpolation_points(std::vector<Point>& points,bool open,
+    bool normalize,bool smooth,const SelectionInterpolationOptions& options,
+    const SelectionEditLimits& limits,std::size_t& bytes) {
+  if(points.size()<(open?2u:3u))throw std::invalid_argument("Interpolation contour has too few vertices");
+    for(const auto& p:points)for(double v:p)if(std::abs(v)>1e9)
+      throw std::invalid_argument("Interpolation coordinate range");
+    if(normalize)interpolation_float_bounds(points);
+    else for(auto& p:points)for(auto& v:p)v=float(v);
+    if(smooth) {
+      for(std::size_t i=1;i+2<points.size();++i)
+        for(int a=0;a<2;++a)points[i][a]=float(float(float(points[i-1][a])+float(points[i][a])+float(points[i+1][a]))/3.f);
+      for(int a=0;a<2;++a)points[0][a]=float(float(float(points.back()[a])+float(points[0][a])+float(points[1][a]))/3.f);
+      for(int a=0;a<2;++a)points.back()[a]=float(float(float(points[points.size()-2][a])+float(points.back()[a])+float(points[0][a]))/3.f);
+    }
+    double length=0;
+    for(std::size_t i=1;i<points.size()+std::size_t(!open);++i) {
+      kernel_checkpoint_periodic();const auto& a=points[i-1];const auto& b=points[i%points.size()];
+      const double dx=float(b[0])-float(a[0]),dy=float(b[1])-float(a[1]);length+=std::sqrt(dx*dx+dy*dy);
+    }
+    const double required=10+length*1.5/std::abs(options.interval);
+    const auto limit=std::min(limits.max_vertices,std::size_t(65536));
+    if(!std::isfinite(required) || required>double(limit)+10)
+      throw std::length_error("Interpolation output vertex limit");
+    const auto capacity=std::size_t(required);
+    if(capacity>(limits.max_working_bytes-bytes)/64)throw std::length_error("Interpolation output workspace limit");
+    bytes+=capacity*64;
+    if(!open)points.push_back(points.front());
+  return capacity;
+}
 InterpolationPlan interpolation_plan(const Selection& source,int width,int height,
     const SelectionInterpolationOptions& options,const SelectionEditLimits& limits,
     const ExecutionControl& control) {
@@ -504,7 +533,7 @@ InterpolationPlan interpolation_plan(const Selection& source,int width,int heigh
     throw std::invalid_argument("Interpolation interval magnitude must be at least0.01 pixels");
   if(source.kind!="polygon" && source.kind!="polyline" && source.kind!="freehand" &&
       source.kind!="line" && source.kind!="rectangle")
-    throw std::invalid_argument("Interpolate requires vertex,straight-line or rectangle geometry;composite/curved profiles remain separate");
+    throw std::invalid_argument("Interpolate requires supported continuous or mask geometry");
   auto bytes=detail::admit_selection_geometry(source,width,height,limits,control);
   const auto count=source.kind=="rectangle"?std::size_t(4):source.points.size();
   if(count>65536 || count>limits.max_vertices)throw std::length_error("Interpolation input vertex limit");
@@ -524,30 +553,10 @@ InterpolationPlan interpolation_plan(const Selection& source,int width,int heigh
       const double x=std::min(a[0],b[0]),y=std::min(a[1],b[1]),right=std::max(a[0],b[0]),bottom=std::max(a[1],b[1]);
       points={{x,y},{right,y},{right,bottom},{x,bottom}};
     } else points=source.points;
-    for(const auto& p:points)for(double v:p)if(std::abs(v)>1e9)
-      throw std::invalid_argument("Interpolation coordinate range");
-    if(!fitted && source.kind!="line" && source.kind!="rectangle")interpolation_float_bounds(points);
-    else for(auto& p:points)for(auto& v:p)v=float(v);
-    if(options.smooth && kind=="freehand") {
-      for(std::size_t i=1;i+2<points.size();++i)
-        for(int a=0;a<2;++a)points[i][a]=float(float(float(points[i-1][a])+float(points[i][a])+float(points[i+1][a]))/3.f);
-      for(int a=0;a<2;++a)points[0][a]=float(float(float(points.back()[a])+float(points[0][a])+float(points[1][a]))/3.f);
-      for(int a=0;a<2;++a)points.back()[a]=float(float(float(points[points.size()-2][a])+float(points.back()[a])+float(points[0][a]))/3.f);
-    }
     const bool open=source.kind=="polyline" || source.kind=="line";
-    double length=0;
-    for(std::size_t i=1;i<points.size()+std::size_t(!open);++i) {
-      kernel_checkpoint_periodic();const auto& a=points[i-1];const auto& b=points[i%points.size()];
-      const double dx=float(b[0])-float(a[0]),dy=float(b[1])-float(a[1]);length+=std::sqrt(dx*dx+dy*dy);
-    }
-    const double required=10+length*1.5/std::abs(options.interval);
-    const auto limit=std::min(limits.max_vertices,std::size_t(65536));
-    if(!std::isfinite(required) || required>double(limit)+10)
-      throw std::length_error("Interpolation output vertex limit");
-    const auto capacity=std::size_t(required);
-    if(capacity>(limits.max_working_bytes-bytes)/64)throw std::length_error("Interpolation output workspace limit");
-    bytes+=capacity*64;
-    if(!open)points.push_back(points.front());
+    const auto capacity=prepare_interpolation_points(points,open,
+        !fitted && source.kind!="line" && source.kind!="rectangle",
+        options.smooth && kind=="freehand",options,limits,bytes);
     return InterpolationPlan{source,std::move(points),options,std::move(kind),capacity,bytes,open};
   });
 }
@@ -567,12 +576,12 @@ std::optional<Point> interpolation_intersection(Point a,Point b,Point center,dou
   if(std::abs(squared-rr)<=8*std::numeric_limits<double>::epsilon()*std::max(squared,rr))return b;
   return {};
 }
-Selection interpolate_planned(InterpolationPlan plan,int width,int height,const SelectionEditLimits& limits) {
+Selection interpolate_planned(InterpolationPlan plan,int width,int height,const SelectionEditLimits& limits,std::size_t* shared_work=nullptr) {
   const double interval=std::abs(plan.options.interval);
   const bool adjust=(plan.options.interval<0)!=plan.options.adjust_to_match;
   double trial_interval=interval,best_interval=0,min_diff=1e9;
   std::vector<Point> output;output.reserve(plan.capacity);
-  std::size_t work=0;
+  std::size_t local_work=0;auto& work=shared_work?*shared_work:local_work;
   for(int trial=0;trial<=50;) {
     output.clear();output.push_back(plan.points.front());std::size_t segment=0;auto a=plan.points.front();
     while(segment+1<plan.points.size()) {
@@ -607,14 +616,173 @@ Selection interpolate_planned(InterpolationPlan plan,int width,int height,const 
   result.points=std::move(output);result.attributes.erase(spline_fit_attribute);
   result.validate(width,height);return result;
 }
+
+bool compound_interpolation_source(const Selection& s) {
+  return s.is_path() || s.is_mask() || s.is_rounded_box() || s.kind=="ellipse" ||
+      s.kind=="rotated_ellipse" || s.kind=="rotated_rectangle";
+}
+void interpolation_charge(std::size_t& bytes,std::size_t count,std::size_t unit,const SelectionEditLimits& limits) {
+  if(bytes>limits.max_working_bytes || count>(limits.max_working_bytes-bytes)/unit)
+    throw std::length_error("Compound interpolation workspace limit");
+  bytes+=count*unit;
+}
+void interpolation_work(std::size_t& work) {
+  if(++work>64u*1024u*1024u)throw std::length_error("Compound interpolation work limit");
+  kernel_checkpoint_periodic();
+}
+// The existing mask wire exporter uses row rectangles, not ordered boundaries.
+// Extract the first actual pixel-cell boundary owner here, then use the same
+// contour/sampling/path owners as continuous selections. Four-connected islands
+// remain distinct even at a diagonal contact; even-odd fill retains holes.
+detail::ImageJShapeContours interpolation_mask_contours(const Selection& source,
+    const SelectionEditLimits& limits,std::size_t& bytes,std::size_t& work) {
+  const int width=source.mask_width(),height=source.mask_height();const auto origin=source.mask_origin();
+  for(double v:{double(origin[0]),double(origin[1]),double(origin[0])+width,double(origin[1])+height})
+    if(std::abs(v)>1e9)throw std::invalid_argument("Mask contour coordinate range");
+  const auto& packed=source.packed_mask();
+  auto member=[&](int x,int y) {
+    if(x<0 || y<0 || x>=width || y>=height)return false;
+    const auto at=std::size_t(y)*width+x;return bool(packed[at/8]&(0x80u>>(at%8)));
+  };
+  auto visit=[&](auto emit) {
+    for(int y=0;y<height;++y)for(int x=0;x<width;++x) {
+      interpolation_work(work);if(!member(x,y))continue;
+      if(!member(x,y-1))emit(x,y,x+1,y);
+      if(!member(x+1,y))emit(x+1,y,x+1,y+1);
+      if(!member(x,y+1))emit(x+1,y+1,x,y+1);
+      if(!member(x-1,y))emit(x,y+1,x,y);
+    }
+  };
+  std::size_t count=0;const auto maximum=std::min(limits.max_vertices,std::size_t(65536));
+  visit([&](int,int,int,int){if(++count>maximum)throw std::length_error("Mask boundary vertex limit");});
+  if(!count)throw std::invalid_argument("Interpolate requires a nonempty mask boundary");
+  interpolation_charge(bytes,count,192,limits);
+  struct GridEdge {std::array<int,2> a,b;};
+  std::vector<GridEdge> edges;edges.reserve(count);
+  visit([&](int x,int y,int r,int b){edges.push_back({{x,y},{r,b}});});
+  std::sort(edges.begin(),edges.end(),[&](const auto& a,const auto& b){interpolation_work(work);return a.a<b.a || (a.a==b.a && a.b<b.b);});
+  std::vector<unsigned char> used(count,0);
+  detail::ImageJShapeContours out;out.points.reserve(count);out.offsets.reserve(count/4+1);
+  auto direction=[](const GridEdge& e){return e.b[0]>e.a[0]?0:e.b[1]>e.a[1]?1:e.b[0]<e.a[0]?2:3;};
+  for(std::size_t first=0;first<count;++first)if(!used[first]) {
+    std::vector<Point> loop;std::size_t current=first;
+    for(;;) {
+      interpolation_work(work);if(used[current])throw std::invalid_argument("Mask boundary cycle mismatch");
+      const auto edge=edges[current];used[current]=1;
+      loop.push_back({double(origin[0])+edge.a[0],double(origin[1])+edge.a[1]});
+      if(edge.b==edges[first].a)break;
+      auto next=std::lower_bound(edges.begin(),edges.end(),edge.b,[&](const GridEdge& e,const std::array<int,2>& point){interpolation_work(work);return e.a<point;});
+      std::size_t selected=count;int best=5;
+      for(;next!=edges.end() && next->a==edge.b;++next) {
+        const auto index=std::size_t(next-edges.begin());if(used[index])continue;
+        const int turn=(direction(*next)-direction(edge)+4)%4;
+        const int rank=turn==1?0:turn==0?1:turn==3?2:3;
+        if(rank<best){best=rank;selected=index;}
+      }
+      if(selected==count)throw std::invalid_argument("Mask boundary is not closed");current=selected;
+    }
+    out.offsets.push_back(out.points.size());
+    // Remove only collinear grid vertices, not corners or diagonal contacts.
+    for(std::size_t i=0;i<loop.size();++i) {
+      const auto& a=loop[(i+loop.size()-1)%loop.size()];const auto& b=loop[i];const auto& c=loop[(i+1)%loop.size()];
+      if((b[0]-a[0])*(c[1]-b[1])!=(b[1]-a[1])*(c[0]-b[0]))out.points.push_back(b);
+    }
+    const auto begin=out.offsets.back();double area=0;
+    for(std::size_t i=begin;i<out.points.size();++i){const auto& a=out.points[i];const auto& b=out.points[i+1==out.points.size()?begin:i+1];area+=(a[0]-out.points[begin][0])*(b[1]-out.points[begin][1])-(b[0]-out.points[begin][0])*(a[1]-out.points[begin][1]);}
+    if(area<0)std::reverse(out.points.begin()+begin+1,out.points.end());
+  }
+  out.offsets.push_back(out.points.size());return out;
+}
+bool interpolation_smooth_component(const std::vector<Point>& points,std::size_t& work) {
+  if(points.size()<3)throw std::invalid_argument("Interpolation contour has too few vertices");
+  bool grid=true;double length=0;
+  for(std::size_t i=0;i<points.size();++i) {
+    interpolation_work(work);const auto a=points[i],b=points[(i+1)%points.size()];const double dx=b[0]-a[0],dy=b[1]-a[1];
+    length+=std::sqrt(dx*dx+dy*dy);
+    grid=grid && (dx==0 || dy==0) && a[0]==std::floor(a[0]) && a[1]==std::floor(a[1]);
+  }
+  const auto n=points.size();const bool long_edges=length/(double(n)*std::sqrt(double(n)))>=2;
+  return (grid && !long_edges) || (n>10 && !long_edges);
+}
+struct CompoundInterpolationPlan {Selection result;std::size_t bytes;};
+CompoundInterpolationPlan compound_interpolation_plan(const Selection& source,int width,int height,
+    const SelectionInterpolationOptions& options,const SelectionEditLimits& limits,const ExecutionControl& control) {
+  if(!std::isfinite(options.interval) || std::abs(options.interval)<.01)
+    throw std::invalid_argument("Interpolation interval magnitude must be at least0.01 pixels");
+  auto bytes=detail::admit_selection_geometry(source,width,height,limits,control);
+  interpolation_charge(bytes,1,4096,limits);
+  ExecutionScope planning(control);
+  return detail::without_execution_callbacks([&] {
+    std::size_t work=0;detail::ImageJShapeContours contours;
+    if(source.is_mask())contours=interpolation_mask_contours(source,limits,bytes,work);
+    else {
+      std::size_t scalars=source.is_path()?source.path_commands().size():source.is_rounded_box()?44:source.kind=="rotated_rectangle"?13:32;
+      interpolation_charge(bytes,scalars,2*sizeof(double),limits);
+      std::vector<double> commands;
+      if(source.kind=="rotated_rectangle") {
+        const auto frame=*source.box_frame();
+        for(const auto& q:std::vector<Point>{{-1,-1},{1,-1},{1,1},{-1,1}}) {
+          const auto p=frame.image_point(q);commands.insert(commands.end(),{commands.empty()?0.:1.,p[0],p[1]});
+        }commands.push_back(4);
+      } else commands=fit_rectangle_path(source);
+      auto roi=ImageJRoiLimits{};roi.max_vertices=std::min(limits.max_vertices,std::size_t(65536));roi.max_mask_pixels=limits.max_xy_pixels;
+      const auto budget=limits.max_working_bytes-bytes;
+      const auto shape=detail::plan_imagej_shape_contours(commands,width,height,roi,budget);
+      if(shape.work_units>(64u*1024u*1024u-work)/2)throw std::length_error("Compound interpolation shape work limit");
+      work+=shape.work_units*2;
+      interpolation_charge(bytes,shape.packed_bytes+shape.temporary_bytes,1,limits);
+      contours=detail::imagej_shape_contours(commands,width,height,roi,budget);
+      interpolation_charge(bytes,contours.points.size(),192,limits);
+      if(source.kind=="ellipse") {
+        const Point origin{std::floor(std::trunc(std::min(source.points[0][0],source.points[1][0]))-.0004),std::floor(std::trunc(std::min(source.points[0][1],source.points[1][1]))-.0004)};
+        for(auto& p:contours.points)for(int axis=0;axis<2;++axis)p[axis]=double(float(float(p[axis])+float(origin[axis])));
+      }
+    }
+    if(contours.offsets.size()<2 || contours.points.empty())throw std::invalid_argument("Interpolate requires nonempty contours");
+    const auto components=contours.offsets.size()-1;interpolation_charge(bytes,components,128,limits);
+    std::vector<InterpolationPlan> curves;curves.reserve(components);std::size_t capacities=0;
+    for(std::size_t i=0;i<components;++i) {
+      std::vector<Point> points(contours.points.begin()+contours.offsets[i],contours.points.begin()+contours.offsets[i+1]);
+      const bool analytic=source.is_rounded_box() || source.kind=="ellipse" || source.kind=="rotated_ellipse";
+      // A single ShapeRoi uses its own direct flattened polygon, not the
+      // inferred PolygonRoi produced by getRois() in the multi-component branch.
+      const bool direct_shape=source.is_path() && components==1;
+      const bool smooth=!analytic && !direct_shape && interpolation_smooth_component(points,work);
+      const auto capacity=prepare_interpolation_points(points,false,!analytic && !direct_shape,options.smooth && smooth,options,limits,bytes);
+      capacities+=capacity;
+      curves.push_back({Selection("polygon"),std::move(points),options,smooth?"freehand":"polygon",capacity,0,false});
+    }
+    std::vector<double> commands;commands.reserve(3*std::min({capacities,limits.max_vertices,std::size_t(65536)})+components);
+    std::size_t segments=0;
+    for(auto& curve:curves) {
+      const auto sampled=interpolate_planned(std::move(curve),width,height,limits,&work);
+      const auto n=sampled.points.size();
+      if(segments>=limits.max_vertices || n>limits.max_vertices-segments-1 || segments+n+1>65536)
+        throw std::length_error("Compound interpolation aggregate vertex limit");
+      segments+=n+1;
+      for(std::size_t i=0;i<n;++i)commands.insert(commands.end(),{i?1.:0.,sampled.points[i][0],sampled.points[i][1]});
+      commands.push_back(4);
+    }
+    auto result=Selection::from_path(commands);result.width=source.width;result.attributes=source.attributes;
+    result.attributes.erase(spline_fit_attribute);if(source.is_rounded_box())result.attributes.erase("corner_diameter");
+    result.validate(width,height);return CompoundInterpolationPlan{std::move(result),bytes};
+  });
+}
+
 }
 std::size_t estimate_interpolated_selection(const Selection& source,int width,int height,
     const SelectionInterpolationOptions& options,const SelectionEditLimits& limits) {
-  return interpolation_plan(source,width,height,options,limits,{}).bytes;
+  return compound_interpolation_source(source)?compound_interpolation_plan(source,width,height,options,limits,{}).bytes:
+      interpolation_plan(source,width,height,options,limits,{}).bytes;
 }
 Selection interpolate_selection(const Selection& source,int width,int height,
     const SelectionInterpolationOptions& options,const SelectionEditLimits& limits,const ExecutionControl& control) {
   const auto frozen_options=options;const auto frozen_limits=limits;const auto frozen_control=control;
+  if(compound_interpolation_source(source)) {
+    auto plan=compound_interpolation_plan(source,width,height,frozen_options,frozen_limits,frozen_control);
+    ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+    auto result=std::move(plan.result);kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
+  }
   auto plan=interpolation_plan(source,width,height,frozen_options,frozen_limits,frozen_control);
   ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
   auto result=interpolate_planned(std::move(plan),width,height,frozen_limits);

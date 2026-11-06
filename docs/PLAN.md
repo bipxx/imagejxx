@@ -9,13 +9,15 @@ both-Windows-host evidence. Bounding Rectangle now has the same scoped
 workflow coverage. Fit Circle and Fit Ellipse now have scoped API/both-host
 evidence. Minimum-area Fit Rectangle and editable spline fitting/removal now
 have scoped API/both-host evidence; ordinary-source selection interpolation now
-has the same scoped coverage. Compound/curved interpolation profiles are next.
+has the same scoped coverage. Compound/curved interpolation now preserves
+components and holes with scoped API/both-host checks.
 Local cleanup retired scratch and compiler
 intermediates; preserve existing configured caches/products and rebuild only
 for changed compiler inputs or a demonstrated verification dependency.
 Native snapshot capture and queued ownership are scoped integrated in both
 Windows hosts; Python controls and changed installed clients on Windows/Linux pass.
-Next: T06/G018 compound/curved interpolation source profiles. Remaining print/platform/output
+Next: T06/G018 repeated-source/type, zoom and degenerate interpolation semantics.
+Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
 Appearance interchange, typed draft preview and the full T00-T15
@@ -130,7 +132,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped workflow | T06/G018: minimum-area Fit Rectangle. |55 pinned observations;2113 distinct affected Windows Python cases, Windows/Linux core and installed Windows SDK pass. Both physical hosts and30 shared fit lifecycle scenarios pass. [Receipt](parity/reviews/selection-fit-rectangle-20261105.json). Native masks/path contours are explicit profiles; full source/platform/fit-intent scope remains open. |
 | Delivered scoped workflow | T06/G018: editable spline fitting/removal. |56 pinned observations (2 refusals);71 focused spline cases and2209 distinct affected Windows Python IDs ultimately pass. Windows/Linux core, installed Windows SDK, both physical hosts and50 shared fit lifecycle scenarios pass. [Receipt](parity/reviews/selection-spline-20261105.json). Constructor/attachment/magnification variants, intent macros and remaining platform qualification stay open. |
 | Delivered scoped workflow | T06/G018: ordinary-source selection interpolation. |194 actual-command observations:188 matching sample arrays,4 upstream invalid-interval refusals and2 explicit native one-vertex-area refusals.206 focused and2425 distinct affected Windows Python IDs ultimately pass;Windows/Linux core,installed Windows SDK,both physical hosts and60 shared lifecycle scenarios pass. [Receipt](parity/reviews/selection-interpolation-20261105.json). No full-source or family closure. |
-| Active next | T06/G018: compound/curved interpolation profiles. | Preserve components/holes with existing contour/path owners;observe actual composite option handling before extending the current API. Keep constructor/repeated-source-type/zoom and degenerate-output gaps explicit. |
+| Delivered scoped workflow | T06/G018: compound/curved interpolation profiles. |96 observations (84 preserved plus12 direct single-shape cases);2060 distinct affected Windows Python IDs ultimately pass. Windows/Linux core,installed Windows SDK,16 physical workflows and80 shared lifecycle scenarios pass. Holes/components,mask boundaries and actual Measure/workspace pass. [Receipt](parity/reviews/interpolation-compound-20261105.json). Native even-odd composition deliberately preserves topology where upstream subtraction loses it. |
+| Active next | T06/G018: repeated-source/type, zoom and degenerate interpolation semantics. | Observe actual two-command outputs and attached zoom context first;preserve meaningful type/provenance across edit,workspace and replay. Close point no-op and degenerate-area behavior without weakening history or geometry contracts. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -778,42 +781,75 @@ full budget unverified. Four capture groups were compressed/live-hash verified,
 the installed SDK consumer retained as identities only, and scratch retired.
 No new environment/controller/renderer/scheduler or unchanged full campaign.
 
-**Active next: compound/curved interpolation profiles (T06/G018).** Close the
-actual remaining source branches of the same command before choosing another
-fit tool. Preserve every component, hole, open endpoint and fill rule; never
-join separate contours into one polygon. Reuse the current public options and
-circle/chord sampler, existing bounded outline/path/region traversal, captured
-worker and NativePathV4 result route. Inspect those concrete traversal APIs at
-entry; do not create a second contour engine, renderer or resampling owner.
+**Delivered scoped: compound/curved interpolation profiles (T06/G018).**
+The unchanged estimate/interpolate APIs now accept compound/native paths,
+mask/region boundaries, ellipse/rounded and rotated frame profiles. Output uses
+editable even-odd paths, retaining components/holes and generic width/attributes.
+Single ShapeRoi and analytic profiles ignore Smooth; multiple components use
+their inferred public sampling profiles. Native composition preserves all
+components instead of reproducing upstream subtraction loss.
 
-1. Observe the pinned command on an outer contour plus hole, disconnected areas,
-   nested contours, curved/oval/rounded sources and masks, including off-canvas
-   and degenerate cases. Actual ShapeRoi dispatch has separate component and
-   adjust-option handling; measure it rather than assuming ordinary-source
-   behavior. Add observations without changing the194 accepted expectations.
-   Distinguish native mask/flatten profiles from upstream constructor equivalence.
-2. Preserve topology through the existing native composite/path owner and its
-   validators; bound total flattened/input/output vertices, working bytes and
-   trial work across all components, with frozen options and live cancellation.
-   Apply style/width and metadata rules at the existing creation boundary.
-   If compound replay needs a profile extension, inspect candidate AND wire
-   validators and legacy refusal before editing. Reuse actual renderer/mask/
-   measurement consumers; do not claim a convex-hull merge preserves holes.
-3. Keep both dialogs usable for the new admitted sources. Verify actual options,
-   topology/masks, edits, command Undo/Redo, workspace, explicit rebind and
-   cancellation/stale/resource lifecycle in both hosts. Batch changed public/core/
-   binding/UI sources, then use active Windows/Linux caches and installed-client
-   checks only where affected. Preflight reference paths and CLI/report schemas;
-   retain owned SDK consumer until final review, then retire terminal scratch.
+96 pinned observations retain84 original objects and append12 direct
+single-shape command samples.2060 distinct affected Windows Python IDs ultimately
+pass, with16 physical cases,80 lifecycle scenarios, actual Measure/Area and V5
+reopen, Windows/Linux core and installed Windows SDK checks.
+[Contract](SELECTION_TRANSFORMS.md#selection-interpolation),
+[receipt](parity/reviews/interpolation-compound-20261105.json). No public
+API/schema/layout, controller, runtime or dependency was added. G018 stays open.
 
-Next ready residual after that: native output/source-type provenance needed by
-repeated interpolation (notably upstream FREELINE/TRACED behavior), high-zoom
-output-kind context, point no-op and degenerate-area representation. Freeze the
-actual command contract before selecting a compatible representation; do not add
-a cosmetic flag to bypass history policy. Saved-row/scientific integration,
-operation-intent macros, GUI last-used settings and remaining platform/release
-qualification keep T06/T09/T15/T14 owners. T00 still owns retired references;
-neither the17 legacy gesture inputs nor missing G016 evidence was regenerated.
+Waste/cleanup: the first draft conflated single-shape command dispatch with
+multi-component public sampling; inspect both before compiling. Actual Measure
+then exposed the existing histogram area-kind gate. Shared native-path
+histogram/analysis admission now charges retained geometry and remaining-cap
+mask planning before provider access. Standalone histogram reads one plane;
+observed-range UInt16 targets use two passes. Two mistaken new read-count
+assertions were corrected and only those nodes retried. No numerical tolerance
+or accepted observation was relaxed. Known measured growth peaked at8,182,639B,
+below128MiB planned allocation;214 inaccessible subtrees keep the full budget
+unverified. Five necessary scratch groups were compressed/live-hash verified,
+two empty groups removed,SDK consumer retained as identities only; all task
+scratch retired. Warm caches/runtime/SDK remain. Next entry must inspect
+semantic branches and actual downstream consumer gates before its first build.
+
+**Active next: repeated-source/type, zoom and degenerate interpolation semantics
+(T06/G018).** Use the existing interpolation API, Selection owner, document
+transactions and V5/NativePathV4 persistence/rebind routes. Freeze the actual
+representation contract before editing; no cosmetic provenance flag that does
+not change repeated-command behavior.
+
+1. Observe two successive actual commands for polygon/freehand, FREELINE/TRACED,
+   single/compound ShapeRoi, point/multipoint and near-degenerate areas. Capture
+   kind, controls, sampled arrays, masks, signed interval/Smooth/Adjust and
+   attached ImagePlus magnification below/at/above the actual type threshold.
+   Read Selection.interpolate plus Roi/PolygonRoi subtype and display context
+   consumers first. Keep194 ordinary and96 component observations unchanged;
+   append new cases. Missing historical inputs remain unavailable.
+2. Identify the minimum behaviorally meaningful source/context state. Inspect
+   Selection validation, copies/equality, editor mutations, wire candidate AND
+   program validators, V5 workspace, Python getters and both host call sites.
+   If changing a public layout/schema is necessary, specify compatibility and
+   legacy refusal before editing, then rebuild affected installed consumers.
+   Retain point annotations for a no-op and explicitly decide whether no-op
+   creates history/recording; test the existing transaction policy. Represent
+   degenerate outputs honestly or retain a documented required gap.
+3. Reuse the current sampler, captured worker and dialogs. Verify repeated
+   Apply after actual edits, option combinations and zoom/type transitions,
+   Measure/geometry interpretation, Undo/Redo, workspace and explicit replay
+   rebind in both Windows hosts. Freeze binding mutability, dialog/report schemas
+   and histogram/analysis consumers before compilation. Use existing cache/
+   runtime paths, focused regressions and changed installed-client checks;
+   preserve failed diagnostics, retain SDK scratch through final review, then
+   retire terminal groups serially and measure storage before the successor.
+
+Next ready successor: T15 last-used Interval/Smooth/Adjust settings for the same
+dialog, using existing settings registry/persistence and explicit option values
+in recorded results. Inspect settings types, consumed defaults and invalid-value
+policy; freeze precise keys at entry. Apply/cancel/reopen, preference reload and
+both host defaults must agree without rewriting old result records.
+Saved-row/scientific integration, operation-intent macros and remaining
+platform/release qualification retain T06/T09/T14 owners. T00 owns retired
+references; neither17 legacy gesture inputs nor missing G016 evidence was
+regenerated.
 
 ### Reduce overhead at the existing task boundaries
 

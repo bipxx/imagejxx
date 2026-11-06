@@ -1,6 +1,7 @@
 #include <imagejxx/selection_transform.hpp>
 #include <imagejxx/selection_spline.hpp>
 #include <imagejxx/selection_interpolation.hpp>
+#include <imagejxx/dataset_histogram.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/selection_creation.hpp>
 #include <iostream>
@@ -122,5 +123,34 @@ int main(){try{
   interpolationControl.checkpoint=[&]{interpolationInput=Selection("point",{{1,1}});interpolationOptions.interval=99;};
   check(interpolate_selection(interpolationInput,16,16,interpolationOptions,interpolationLimits,interpolationControl)==adjusted,"Interpolation callback redirected frozen source/options");
   std::cout<<"PASS Interpolate numeric,limits and frozen source/options\n";
+  Selection compoundSource=Selection::from_path({0,3,3,1,13,3,1,13,13,1,3,13,4,0,6,6,1,10,6,1,10,10,1,6,10,4});
+  compoundSource.width=3;compoundSource.attributes["tag"]=std::string("retained");
+  const auto compoundResult=interpolate_selection(compoundSource,16,16);
+  check(compoundResult.is_path() && compoundResult.width==3 && compoundResult.attributes==compoundSource.attributes,"Compound style/geometry owner lost");
+  const auto compoundPixels=compoundResult.mask(16,16);
+  check(compoundPixels.at(4,4)!=0 && compoundPixels.at(8,8)==0,"Compound interpolation filled its hole");
+  SelectionEditLimits compoundLimits;compoundLimits.max_working_bytes=estimate_interpolated_selection(compoundSource,16,16);
+  check(interpolate_selection(compoundSource,16,16,{},compoundLimits)==compoundResult,"Exact compound cap refused");
+  --compoundLimits.max_working_bytes;refuses([&]{interpolate_selection(compoundSource,16,16,{},compoundLimits);});++compoundLimits.max_working_bytes;
+  ExecutionControl compoundControl;compoundControl.checkpoint=[&]{compoundSource=Selection("point",{{1,1}});};
+  check(interpolate_selection(compoundSource,16,16,{},compoundLimits,compoundControl)==compoundResult,"Compound callback redirected source");
+  Image compoundMaskImage(16,16,1,PixelType::UInt8);
+  for(int y=3;y<13;++y)for(int x=3;x<13;++x)if(!(x>=6 && x<10 && y>=6 && y<10))compoundMaskImage.at(x,y)=1;
+  const auto maskInterpolation=interpolate_selection(Selection::from_mask(compoundMaskImage),16,16).mask(16,16);
+  check(maskInterpolation.at(4,4)!=0 && maskInterpolation.at(8,8)==0,"Mask boundary interpolation filled its hole");
+  std::cout<<"PASS Compound/curved interpolation owner,holes,caps,frozen callbacks and mask boundary\n";
+  DatasetReadObserver pathHistogramReads;
+  const auto pathHistogramData=Dataset::from_stack({Image(16,16,1,PixelType::UInt8)}).observe_reads(pathHistogramReads);
+  DatasetHistogramRequest pathHistogramRequest;pathHistogramRequest.area_roi=compoundResult;
+  const auto pathHistogramEstimate=estimate_dataset_histogram(pathHistogramData,pathHistogramRequest);
+  check(pathHistogramReads.counts().plane_reads==0,"Path histogram estimate read image samples");
+  DatasetHistogramLimits pathHistogramLimits;pathHistogramLimits.max_working_bytes=pathHistogramEstimate.working_bytes-1;
+  int pathHistogramCalls=0;ExecutionControl pathHistogramControl;pathHistogramControl.checkpoint=[&]{++pathHistogramCalls;};
+  refuses([&]{accumulate_dataset_histogram(pathHistogramData,pathHistogramRequest,pathHistogramLimits,pathHistogramControl);});
+  check(pathHistogramCalls==0 && pathHistogramReads.counts().plane_reads==0,"Short path histogram cap reached callbacks/provider");
+  ++pathHistogramLimits.max_working_bytes;
+  const auto pathHistogram=accumulate_dataset_histogram(pathHistogramData,pathHistogramRequest,pathHistogramLimits);
+  check(pathHistogram.visited_count==84 && pathHistogramReads.counts().plane_reads==1,"Path histogram lost area/hole membership or single plane capture");
+  std::cout<<"PASS Native path histogram admission,exact/short caps and single provider read\n";
   return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -756,4 +756,65 @@ Json interpolationWorkflowUiCase(Window& w,const std::string& context,const std:
   }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",buttons}});throw;}
 }
 
+
+Json interpolationComponentsUiCase(Window& w,const std::string& context,const std::string& directory,int profile,bool configured) {
+  require(profile>=0 && profile<=3,"Unknown interpolation source profile");
+  const auto dir=std::filesystem::absolute(std::filesystem::u8path(directory));
+  require(!std::filesystem::exists(dir) && w.documents().empty(),"Fresh component fixture required");std::filesystem::create_directories(dir);
+  auto rect=[](double x,double y,double r,double b){return std::vector<double>{0,x,y,1,r,y,1,r,b,1,x,b,4};};
+  auto commands=rect(2,2,30,30);const auto hole=rect(10,10,22,22);commands.insert(commands.end(),hole.begin(),hole.end());
+  Selection source=Selection::from_path(commands);
+  if(profile==1) {
+    Image mask(40,40,1,PixelType::UInt8);for(int y=2;y<30;++y)for(int x=2;x<30;++x)if(!(x>=10 && x<22 && y>=10 && y<22))mask.at(x,y)=1;
+    source=Selection::from_mask(mask);
+  } else if(profile==2)source=Selection("ellipse",{{3.2,4.7},{26.8,19.9}});
+  else if(profile==3)source=Selection::from_path({0,2,15,2,16,-2,30,15,3,28,30,4,30,2,15,4});
+  DocumentData data{Dataset::from_stack({Image(40,40,1,PixelType::UInt8)})};data.selection=source;
+  auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);w.recording=true;
+  Json events=Json::array(),buttons=Json::array(),last;HeadlessInputSession session(w);bool expectedError=false;
+  auto vertices=[](const Selection& value){std::vector<std::array<double,2>> points;for(const auto& h:SelectionEditor(value,40,40).handles())if(h.kind==SelectionHandleKind::Vertex)points.push_back(h.position);return points;};
+  try {
+    auto frame=[&](Json input=Json::array()){last=session.frame(input);events.push_back(input);require(expectedError || w.error().empty(),"Component UI frame failed");};
+    auto click=[&](const Json& item,const std::string& name){const auto control=item;require(control.at("enabled").get<bool>(),"Component control disabled");buttons.push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto key=[&](const char* name){for(bool down:{true,false}){frame(Json::array({{{"type","key"},{"name",name},{"down",down}}}));frame();}};
+    auto menu=[&](){for(const auto& name:std::vector<std::string>{"menu.Edit","menu.Edit.Selection","menu.action.show_interpolate_selection"})click(last.at("host_controls").at(name),name);};
+    for(int i=0;i<3;++i)frame();const auto original=owner->snapshot();
+    menu();click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");
+    require(owner->snapshot().shares_data(original) && owner->undo_steps()==0 && w.workflow.empty(),"Component cancel changed state");
+    menu();owner->select(Selection("point",{{1,1}}));expectedError=true;
+    click(last.at("dialog").at("controls").at("apply"),"dialog.apply.stale");require(!w.error().empty() && w.workflow.empty(),"Stale component review published");
+    frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");expectedError=false;frame();click(last.at("dialog").at("controls").at("cancel"),"dialog.cancel");owner->select(source);frame();menu();
+    if(configured) {
+      click(last.at("dialog").at("controls").at("interval"),"dialog.interval");frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",true}}}));key("A");frame(Json::array({{{"type","key"},{"name","Ctrl"},{"down",false}}}));frame(Json::array({{{"type","text"},{"value","2.7"}}}));key("Tab");
+      click(last.at("dialog").at("controls").at("smooth"),"dialog.smooth");click(last.at("dialog").at("controls").at("adjust_to_match"),"dialog.adjust_to_match");
+      require(std::abs(std::stod(last.at("dialog").at("text").at("interval").get<std::string>())-2.7)<1e-6,"Component interval text not consumed");
+    }
+    click(last.at("dialog").at("controls").at("apply"),"dialog.apply");w.wait();frame();
+    const auto result=*owner->snapshot().data().selection;const auto points=vertices(result);
+    const std::size_t count=profile<2?(configured?58:162):profile==2?(configured?24:64):(configured?27:74);
+    const std::array<double,2> expected=profile<2?(configured?std::array<double,2>{9.966925621032715,2}:std::array<double,2>{5,2}):profile==2?(configured?std::array<double,2>{22.589611053466797,18.149965286254883}:std::array<double,2>{26.17453384399414,14.862444877624512}):(configured?std::array<double,2>{7.8226847648620605,9.42914867401123}:std::array<double,2>{3.9983789920806885,12.762760162353516});
+    require(result.is_path() && points.size()==count && owner->undo_steps()==1 && w.workflow.size()==1,"Component output/history missing");
+    for(int axis=0;axis<2;++axis)require(std::abs(points[3][axis]-expected[axis])<1e-5,"Component result differs from pinned vertex");
+    if(profile<2){const auto mask=result.mask(40,40);require(mask.at(4,4)!=0 && mask.at(16,16)==0,"Component profile lost exterior/hole");}
+    const auto record=w.workflow.front();w.action("edit_selection");frame();const auto canvas=last.at("ordinary_canvas");
+    auto screen=[&](double x,double y){return Json::array({canvas.at("origin")[0].get<double>()+x*canvas.at("scale")[0].get<double>(),canvas.at("origin")[1].get<double>()+y*canvas.at("scale")[1].get<double>()});};
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",screen(points[3][0],points[3][1])}}}));frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
+    auto target=screen(points[3][0]+1,points[3][1]+1);for(auto& v:target)v=std::floor(v.get<double>());
+    const std::array<double,2> dragTarget{(target[0].get<double>()-canvas.at("origin")[0].get<double>())/canvas.at("scale")[0].get<double>(),(target[1].get<double>()-canvas.at("origin")[1].get<double>())/canvas.at("scale")[1].get<double>()};
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",target}}}));frame();frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
+    const auto edited=*owner->snapshot().data().selection;const auto editedPoints=vertices(edited);
+    require(owner->undo_steps()==1 && std::abs(editedPoints[3][0]-dragTarget[0])<1e-5 && std::abs(editedPoints[3][1]-dragTarget[1])<1e-5,"Component point edit/transient policy failed");
+    w.action("undo");require(owner->snapshot().data().selection==std::optional<Selection>(source),"Component Undo lost source");
+    w.action("redo");require(owner->snapshot().data().selection==std::optional<Selection>(edited),"Component Redo lost edited result");
+    w.action("save_workspace",{{"path",(dir/"components.ijx").u8string()}});session.close();
+    Window reopened((dir/"reopened.json").u8string());reopened.openFile((dir/"components.ijx").u8string());require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(edited),"Workspace lost compound path");
+    bool refused=false;try{reopened.replaySelectionCreation(metadataObjectFromJson(record));}catch(const std::exception&){refused=true;}require(refused,"Component replay must require explicit rebind");
+    reopened.document()->select(selectionJson(source));const auto undo=reopened.nativeDocument()->undo_steps();
+    reopened.replaySelectionCreation(metadataObjectFromJson(record),SelectionCreationRequest{SelectionCreationOperation::Replace,result,SelectionCreationGeometry::NativePathV4});
+    require(reopened.nativeSnapshot().data().selection==std::optional<Selection>(result) && reopened.nativeDocument()->undo_steps()==undo+1,"Component explicit replay failed");
+    Json report={{"context",context},{"state","observed"},{"profile",profile},{"configured",configured},{"commands",result.path_commands()},{"edited_commands",edited.path_commands()},{"drag_target",dragTarget},{"record",record},{"events",events},{"controls",buttons}};
+    writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){writeJson((dir/"failure.json").u8string(),{{"context",context},{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"events",events},{"controls",buttons}});throw;}
+}
+
 }

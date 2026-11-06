@@ -907,7 +907,8 @@
           "docs/parity/reviews/selection-fit-ellipse-20261105.json",
           "docs/parity/reviews/selection-fit-rectangle-20261105.json",
           "docs/parity/reviews/selection-spline-20261105.json",
-          "docs/parity/reviews/selection-interpolation-20261105.json"
+          "docs/parity/reviews/selection-interpolation-20261105.json",
+          "docs/parity/reviews/interpolation-compound-20261105.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
@@ -932,7 +933,11 @@
           "include/imagejxx/selection_spline.hpp",
           "src/native/imagej_spline.cpp",
           "src/native/selection_spline_detail.hpp",
-          "include/imagejxx/selection_interpolation.hpp"
+          "include/imagejxx/selection_interpolation.hpp",
+          "src/native/imagej_shape_plan.hpp",
+          "src/native/imagej_shape.cpp",
+          "src/native/dataset_histogram.cpp",
+          "src/native/target_analysis.cpp"
         ],
         "tests": [
           "tests/python/test_selection_enlargement.py",
@@ -970,7 +975,10 @@
           "tests/fixtures/selection-spline-imagej154r.json",
           "tests/python/test_selection_interpolation.py",
           "tests/reference/ObserveSelectionInterpolation.java",
-          "tests/fixtures/selection-interpolation-imagej154r.json"
+          "tests/fixtures/selection-interpolation-imagej154r.json",
+          "tests/python/test_interpolation_compound.py",
+          "tests/reference/ObserveInterpolationComponents.java",
+          "tests/fixtures/interpolation-components-imagej154r.json"
         ]
       },
       "id": "G018",

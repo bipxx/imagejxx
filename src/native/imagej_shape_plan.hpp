@@ -35,4 +35,14 @@ ImageJShapeMaskPlan plan_imagej_shape_outline(const std::vector<double>&,int,int
     const ImageJRoiLimits&,std::size_t);
 std::vector<std::array<double,2>> imagej_shape_outline(const std::vector<double>&,int,int,
     const ImageJRoiLimits&,std::size_t);
+// Separate native subpaths; offsets contains a terminal points.size() sentinel.
+// Existing merged outline and mask traversals keep their historical defaults.
+struct ImageJShapeContours {
+  std::vector<std::array<double,2>> points;
+  std::vector<std::size_t> offsets;
+};
+ImageJShapeMaskPlan plan_imagej_shape_contours(const std::vector<double>&,int,int,
+    const ImageJRoiLimits&,std::size_t);
+ImageJShapeContours imagej_shape_contours(const std::vector<double>&,int,int,
+    const ImageJRoiLimits&,std::size_t);
 } // namespace imagejxx::detail

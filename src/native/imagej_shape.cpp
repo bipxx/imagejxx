@@ -52,9 +52,10 @@ double distance_squared(Point p, Point a, Point b) {
 // One bounded de Casteljau traversal serves the allocation-free edge count and
 // actual edge construction. Coordinates are already GeneralPath binary32; the
 // stored integer origin is applied before the second binary32 rounding.
-template <class Emit>
+struct IgnoreContour { void operator()() const {} };
+template <class Emit,class Begin=IgnoreContour>
 void flatten_shape(const std::vector<double> &path, Point origin,
-                   ShapeWork &work, const ImageJRoiLimits &limits, Emit emit, double flatness_squared = .0001) {
+                   ShapeWork &work, const ImageJRoiLimits &limits, Emit emit, double flatness_squared = .0001,Begin begin = {}) {
   std::size_t edge_count = 0;
   auto edge = [&](Point a, Point b) {
     work.poll();
@@ -97,7 +98,7 @@ void flatten_shape(const std::vector<double> &path, Point origin,
     const int op = int(path[cursor++]);
     if (op == 0) {
       if (active) edge(current, start);
-      start = current = local(cursor); active = true;
+      start = current = local(cursor); active = true; begin();
     } else if (op == 1) {
       const auto p = local(cursor); edge(current, p); current = p;
     } else if (op == 2) {
@@ -119,11 +120,12 @@ struct ShapeRaster {
   std::vector<double> normalized;
   std::unique_ptr<Edge[]> edges;
   std::unique_ptr<double[]> intersections;
+  std::vector<std::size_t> contour_offsets;
   ShapeWork work;
 };
 
 ShapeRaster prepare_shape(const std::vector<double> &path, int width, int height,
-                          const ImageJRoiLimits &limits, std::size_t cap, double flatness = .01) {
+                          const ImageJRoiLimits &limits, std::size_t cap, double flatness = .01,bool keep_contours=false) {
   require(width > 0 && height > 0 && limits.max_mask_pixels > 0 &&
               limits.max_path_work > 0,
           "Composite ROI requires an explicit positive mask canvas and limits");
@@ -131,7 +133,7 @@ ShapeRaster prepare_shape(const std::vector<double> &path, int width, int height
           "ImageJ composite mask pixel limit");
   require(limits.max_vertices > 0 && path.size() / 7 <= limits.max_vertices,
           "ImageJ composite path limit");
-  ShapeRaster state{{}, {}, {}, {}, {0, limits.max_path_work}};
+  ShapeRaster state{{}, {}, {}, {}, {}, {0, limits.max_path_work}};
   const auto pixels = multiply_bytes(std::size_t(width), std::size_t(height));
   state.plan.packed_bytes = pixels / 8 + (pixels % 8 != 0);
   std::size_t segments = 0, normalized_size = 0;
@@ -205,21 +207,26 @@ ShapeRaster prepare_shape(const std::vector<double> &path, int width, int height
   if (x1 >= x0 && y1 >= y0)
     state.plan.clipped_bounds = {int(x0), int(y0), int(x1 - x0), int(y1 - y0)};
   const Point origin{left, top};
+  std::size_t contour_count=0;
   flatten_shape(state.normalized, origin, state.work, limits,
-                [&](Point, Point) { ++state.plan.flattened_edges; }, flatness*flatness);
+                [&](Point, Point) { ++state.plan.flattened_edges; }, flatness*flatness,
+                [&]{++contour_count;});
   const auto edge_bytes = multiply_bytes(state.plan.flattened_edges, sizeof(Edge));
   const auto intersection_bytes = multiply_bytes(state.plan.flattened_edges, sizeof(double));
   state.plan.temporary_bytes = std::max(bounds_peak,
       add_bytes(add_bytes(commands_bytes, add_bytes(edge_bytes, intersection_bytes)),
-                shape_fixed_workspace));
+                add_bytes(shape_fixed_workspace,keep_contours?multiply_bytes(contour_count+1,sizeof(std::size_t)):0)));
   admit_workspace(state.plan.packed_bytes, state.plan.temporary_bytes, cap);
   if (state.plan.flattened_edges) {
     state.edges = std::make_unique<Edge[]>(state.plan.flattened_edges);
     state.intersections = std::make_unique<double[]>(state.plan.flattened_edges);
   }
+  if(keep_contours)state.contour_offsets.reserve(contour_count+1);
   next = 0;
   flatten_shape(state.normalized, origin, state.work, limits,
-                [&](Point a, Point b) { state.edges[next++] = {a, b}; }, flatness*flatness);
+                [&](Point a, Point b) { state.edges[next++] = {a, b}; }, flatness*flatness,
+                [&]{if(keep_contours)state.contour_offsets.push_back(next);});
+  if(keep_contours)state.contour_offsets.push_back(next);
   require(next == state.plan.flattened_edges, "ImageJ shape edge-count mismatch");
   require(!next || std::size_t(height) <= (limits.max_path_work - state.work.units) / next,
           "ImageJ composite scan work limit");
@@ -288,6 +295,26 @@ std::vector<std::array<double,2>> imagej_shape_outline(const std::vector<double>
   std::vector<Point> points;points.reserve(state.plan.flattened_edges);
   for(std::size_t i=0;i<state.plan.flattened_edges;++i){kernel_checkpoint_periodic();points.push_back(state.edges[i][0]);}
   return points;
+}
+ImageJShapeMaskPlan plan_imagej_shape_contours(const std::vector<double>& commands,
+    int width,int height,const ImageJRoiLimits& limits,std::size_t cap) {
+  return without_execution_callbacks([&] {
+    auto state=prepare_shape(commands,width,height,limits,cap,.1,true);
+    state.plan.temporary_bytes=add_bytes(state.plan.temporary_bytes,multiply_bytes(state.plan.flattened_edges,sizeof(Point)));
+    admit_workspace(state.plan.packed_bytes,state.plan.temporary_bytes,cap);
+    state.plan.work_units=state.work.units;
+    return state.plan;
+  });
+}
+ImageJShapeContours imagej_shape_contours(const std::vector<double>& commands,
+    int width,int height,const ImageJRoiLimits& limits,std::size_t cap) {
+  auto state=prepare_shape(commands,width,height,limits,cap,.1,true);
+  const auto bytes=multiply_bytes(state.plan.flattened_edges,sizeof(Point));
+  admit_workspace(state.plan.packed_bytes,add_bytes(state.plan.temporary_bytes,bytes),cap);
+  ImageJShapeContours result;result.points.reserve(state.plan.flattened_edges);
+  result.offsets=std::move(state.contour_offsets);
+  for(std::size_t i=0;i<state.plan.flattened_edges;++i){kernel_checkpoint_periodic();result.points.push_back(state.edges[i][0]);}
+  return result;
 }
 } // namespace detail
 

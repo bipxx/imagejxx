@@ -1,0 +1,1186 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "task": "T06/G018 compound/curved interpolation profiles",
+  "base_commit": "8c50b79cc08234d4caeb2e2db303058588c5ff1e",
+  "state": {
+    "implemented": "Unchanged C++/Python interpolation API extended to compound/native paths,mask/region boundaries,ellipse/rounded and rotated frame profiles;shared sampler and bounded flattening. Native-path histogram/analysis area admission closes real Measure dependency.",
+    "verified": "96 pinned observations;2060 distinct affected Windows Python IDs ultimately pass. Windows/Linux native core and Windows installed SDK consumer pass.",
+    "integrated": "16 physical workflows across both Windows ImGui hosts;80 shared lifecycle scenarios,editable result/history,V5 workspace,V4 rebind and actual Measure/Area with unchanged pixels.",
+    "family_closed": false,
+    "release_ready": false
+  },
+  "contract": {
+    "api": [
+      "SelectionInterpolationOptions(interval=1,smooth=false,adjust_to_match=false) unchanged",
+      "estimate_interpolated_selection(selection,width,height,options,limits) unchanged",
+      "interpolate_selection(selection,width,height,options,limits,control) unchanged"
+    ],
+    "output": "Editable even-odd native path,all components/holes retained;generic width/attrs kept,spline fit and rounded corner state cleared. No public layout/schema/dependency/runtime/controller changes.",
+    "sampling": "Existing circle/chord sampler;single ShapeRoi direct dispatch and analytic profiles ignore Smooth. Multiple components use inferred public ROI sampling plus native even-odd composition. Adjust follows actual ShapeRoi sampling branch.",
+    "bounds": "Aggregate 65536 vertices/segments and64Mi work,existing byte admission;retained commands and intermediate buffers charged,live cancellation,callback-suppressed owned planning. Empty masks/under-three-vertex contours refuse atomically.",
+    "masks": "Canonical pixel-cell boundary tracing,4connected islands,holes and intrinsic offcanvas region origin;existing .01 mask and .1 outline defaults unchanged.",
+    "history": "One command history entry;result point gestures retain existing transient policy. Undo restores source,Redo edited result.",
+    "consumer": "Native-path area admission retains path geometry and bounded mask scratch at remaining cap;short-cap zero-callback/provider-read refusal. Standalone histogram1read;UInt16 observed-range target2passes.",
+    "replay": "Existing resolved NativePathV4 result and explicit source rebind;operation-intent macros remain open."
+  },
+  "reference": {
+    "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "observer": {
+      "path": "tests/reference/ObserveInterpolationComponents.java",
+      "bytes": 6249,
+      "sha256": "293b995d215f4460f01f4246cb7954a413eec5f75a4266b6da5954341e80a536"
+    },
+    "fixture": {
+      "path": "tests/fixtures/interpolation-components-imagej154r.json",
+      "bytes": 569563,
+      "sha256": "c04bef0e18bf04cdf3db7ae434a61c6839af426807229aa38df082743a1f0a02"
+    },
+    "acceptance": {
+      "state": "accepted_actual_command_and_public_component_observations",
+      "cases": 84,
+      "fixture_sha256": "976d79bba17a32fa947d8e8af0e17366b28b160f9e8c5640b00232d9a641001e",
+      "upstream_compound_behavior_is_not_native_topology_policy": true
+    },
+    "append": {
+      "first84_unchanged": true,
+      "cases": 96,
+      "added_ids": [
+        "single-curve-1.0-false-false",
+        "single-curve-1.0-false-true",
+        "single-curve-1.0-true-false",
+        "single-curve-1.0-true-true",
+        "single-curve-2.7-false-false",
+        "single-curve-2.7-false-true",
+        "single-curve-2.7-true-false",
+        "single-curve-2.7-true-true",
+        "single-curve-5.0-false-false",
+        "single-curve-5.0-false-true",
+        "single-curve-5.0-true-false",
+        "single-curve-5.0-true-true"
+      ],
+      "base_sha256": "976d79bba17a32fa947d8e8af0e17366b28b160f9e8c5640b00232d9a641001e",
+      "expanded_sha256": "c04bef0e18bf04cdf3db7ae434a61c6839af426807229aa38df082743a1f0a02"
+    },
+    "interpretation": "84 original objects unchanged,12 direct single-shape command rows appended. Arrays use1e-5 absolute/1e-7 relative and exact40x40mask membership;194 ordinary observations unchanged. Upstream24 compound command errors retained. Original54 uniform-profile differences include6single-curveSmooth cases fixed by direct dispatch;remaining48 concern upstream errors/disconnected/nested composition. Native even-odd preserves topology rather than claiming whole-command constructor equivalence."
+  },
+  "verification": {
+    "readers": {
+      "state": "passed",
+      "physical_cases": [
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify002/python/pytest/test_actual_components_workflo0/components-ui/case.json",
+          "sha256": "75b9b913ad95833ae11ca66e90f430f91ad8bf825a5bb8ff33e3ab72b72eec05",
+          "context": "imgui_python",
+          "profile": 0,
+          "configured": false,
+          "contours": 2,
+          "points": 162
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify002/python/pytest/test_actual_components_workflo1/components-ui/case.json",
+          "sha256": "909e0e7bb465802c73ea31b432101c9c3285dac105f67d83d811ceebc778a0e1",
+          "context": "imgui_python",
+          "profile": 1,
+          "configured": false,
+          "contours": 2,
+          "points": 162
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify002/python/pytest/test_actual_components_workflo2/components-ui/case.json",
+          "sha256": "833ef10b241e7e7cf4aec6062b513529a3650c5f3d9ae07480032b60325ecbcc",
+          "context": "imgui_python",
+          "profile": 2,
+          "configured": false,
+          "contours": 1,
+          "points": 64
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify002/python/pytest/test_actual_components_workflo3/components-ui/case.json",
+          "sha256": "210dc3f49a83fcfa7b575f68adc8184d7f512df8c9b401d63a7885623d4554ed",
+          "context": "imgui_python",
+          "profile": 3,
+          "configured": false,
+          "contours": 1,
+          "points": 74
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify002/python/pytest/test_actual_components_workflo4/components-ui/case.json",
+          "sha256": "784a3b533366d412f3c20bee1a98c54a8439b49042a629397333968b19ff48d4",
+          "context": "imgui_python",
+          "profile": 0,
+          "configured": true,
+          "contours": 2,
+          "points": 58
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify002/python/pytest/test_actual_components_workflo5/components-ui/case.json",
+          "sha256": "92b9824c47b68eceb0372030d3e264343f612fa3c039485f2129a1e800c98998",
+          "context": "imgui_python",
+          "profile": 1,
+          "configured": true,
+          "contours": 2,
+          "points": 58
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify002/python/pytest/test_actual_components_workflo6/components-ui/case.json",
+          "sha256": "e1c7a15a4098ddcb9e733ae5e7e5b1a34bea095e0ceb51e22c613cfb86447b3a",
+          "context": "imgui_python",
+          "profile": 2,
+          "configured": true,
+          "contours": 1,
+          "points": 24
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify002/python/pytest/test_actual_components_workflo7/components-ui/case.json",
+          "sha256": "989fceb563a1ae1b9aff0470a33e2db5a454859cddaf7c53c77d2f2e835af069",
+          "context": "imgui_python",
+          "profile": 3,
+          "configured": true,
+          "contours": 1,
+          "points": 27
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/native003/ui/components-0-configured/case.json",
+          "sha256": "eea23bac397a417aabcf4bdb5d60d21cc09dc423ea8ebefb5cef11aefd935e86",
+          "context": "imgui_cpp",
+          "profile": 0,
+          "configured": true,
+          "contours": 2,
+          "points": 58
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/native003/ui/components-0-default/case.json",
+          "sha256": "cd5f808bba853fe2308d5bbc030fbaea5fdbacc3e8f6f291b111c07ff3ceafaa",
+          "context": "imgui_cpp",
+          "profile": 0,
+          "configured": false,
+          "contours": 2,
+          "points": 162
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/native003/ui/components-1-configured/case.json",
+          "sha256": "e30e866df1bc2213c90739c468844283b5e78ed215304312e91cbfa5d9a31e70",
+          "context": "imgui_cpp",
+          "profile": 1,
+          "configured": true,
+          "contours": 2,
+          "points": 58
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/native003/ui/components-1-default/case.json",
+          "sha256": "143b01bf41ea0ed9dee911b6bd152f3a4cdbe563644c352c8d62db1b0e98354c",
+          "context": "imgui_cpp",
+          "profile": 1,
+          "configured": false,
+          "contours": 2,
+          "points": 162
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/native003/ui/components-2-configured/case.json",
+          "sha256": "c8b9396624b89cc37d6b28c97bcf647950708d54cbe6a22737706490be6556d5",
+          "context": "imgui_cpp",
+          "profile": 2,
+          "configured": true,
+          "contours": 1,
+          "points": 24
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/native003/ui/components-2-default/case.json",
+          "sha256": "9efef2cf857f3fcf0c8a7f6f29cf96c1b5e329b045f508ccd000848d92ca1147",
+          "context": "imgui_cpp",
+          "profile": 2,
+          "configured": false,
+          "contours": 1,
+          "points": 64
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/native003/ui/components-3-configured/case.json",
+          "sha256": "36a2529731bf442584d7ee14b8127a29f0fc5a7f74ecaed9898365c5fff34f79",
+          "context": "imgui_cpp",
+          "profile": 3,
+          "configured": true,
+          "contours": 1,
+          "points": 27
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/native003/ui/components-3-default/case.json",
+          "sha256": "11f5d24e8e12c55f0547ffa7b5bcc771cb5bdeef3fc19eac6fb4d90e5b8c25e6",
+          "context": "imgui_cpp",
+          "profile": 3,
+          "configured": false,
+          "contours": 1,
+          "points": 74
+        }
+      ],
+      "distinct_python_ids_passed": 2060,
+      "xml_attempts": [
+        {
+          "name": "python-analysis003.xml",
+          "cases": 293,
+          "failed": 2
+        },
+        {
+          "name": "python-components002.xml",
+          "cases": 327,
+          "failed": 1
+        },
+        {
+          "name": "python-geometry003.xml",
+          "cases": 1441,
+          "failed": 0
+        },
+        {
+          "name": "python-target004.xml",
+          "cases": 2,
+          "failed": 0
+        }
+      ],
+      "all_failed_ids_eventually_recovered": true,
+      "reference": "96rows,first84unchanged;directsinglecommandarrays/masksandmulti-componentpublicsampling/XORprofiles;194ordinaryrowsunchanged",
+      "availability": "Currentcapturepathsretaineduntilverifiedretirement;afterthatusearchives/manifests."
+    },
+    "native_scope": "Changed transform/creation/edit/path visual/planar host/menu controls,Windows/Linux core,Windows SDK selection_transform_api;Linux installed-client/UI and macOS not qualified.",
+    "native_lifecycle": "8fit/interpolate groups x10scenarios;owner/pose/source/cap/recording stale refusal,queued/running/READYcancel,resource refusal,zero provider reads and terminal working bytes.",
+    "python_attempts": [
+      {
+        "name": "python-analysis003.xml",
+        "cases": 293,
+        "failed": 2
+      },
+      {
+        "name": "python-components002.xml",
+        "cases": 327,
+        "failed": 1
+      },
+      {
+        "name": "python-geometry003.xml",
+        "cases": 1441,
+        "failed": 0
+      },
+      {
+        "name": "python-target004.xml",
+        "cases": 2,
+        "failed": 0
+      }
+    ],
+    "initial_failures": "First327cases had Measure area-kind failure. After concrete fix293analysis cases had2new read-count assertion failures;target contract2passes confirmed and2nodes retried. All failed IDs recovered.",
+    "installed": [
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+        "component": "Unspecified",
+        "sha256": "7c6f52d826d212df965f813c713dd1f52aa78b870f1f05dda6c971c2b546406a"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+        "component": "Unspecified",
+        "sha256": "62154ef5540624d3d36742d28acd5af15eb4871b6e6edce6331a264ea1b7374a"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+        "component": "processing-python",
+        "sha256": "2a9c4d4229e30fca135b0604d4b652cbf0f7e8eedccdc0d489c6f8e9fb1a72f4"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+        "component": "desktop",
+        "sha256": "65e2278c3cbe50c2eb4f4773af0d2a758083df4567a797e7695498a1eac31d17"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\include\\imagejxx\\selection_transform.hpp",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\include\\imagejxx\\selection_transform.hpp",
+        "component": "development",
+        "sha256": "6641a7fe2c5449a60397c9f808cf9831aab92f7419d5572c7e56b68d04a2b49c"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx_core.lib",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "component": "development",
+        "sha256": "b3fa95c9db64f43a246bb18087106ad2a0847d802bf9acb7dd3b64f565fa7044"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\include\\imagejxx\\selection_spline.hpp",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\include\\imagejxx\\selection_spline.hpp",
+        "component": "development",
+        "sha256": "ebff09bd1b7b60cd8514e4a66c12e48d5e6b219d6c07a394cc624062e39f10f7"
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\include\\imagejxx\\selection_interpolation.hpp",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\include\\imagejxx\\selection_interpolation.hpp",
+        "component": "development",
+        "sha256": "83c8bf0ce27f9f648f9c5852929102e6e44afef60463c16366c8893c2ad645da"
+      }
+    ],
+    "linux": {
+      "files": [
+        {
+          "path": "/mnt/c/Users/HEQ/Projects/imagejxx/src/native/selection_transform.cpp",
+          "bytes": 50836,
+          "sha256": "f2a0b56203caf28211304235184b0a18cc02afa68ab192c50ff439687de5c80b"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/CMakeFiles/imagejxx_core.dir/src/native/selection_transform.cpp.o",
+          "bytes": 203264,
+          "sha256": "2e97d950a69fd1fcc56e4859668b2a3892ba7698c0ddc2f8e141fb8c66b36bf9"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/imagejxx_selection_transform_tests",
+          "bytes": 3242152,
+          "sha256": "0a25ffa8eddf38886ec26472cd3ae2c0e6028dce93579e6c970275a7cffbaac1"
+        }
+      ]
+    },
+    "process_receipts": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-_desktop001.process.json",
+        "bytes": 3268,
+        "sha256": "5ab8a2b4304966eeeae134c073b6476f880ab8e62986d15fed8714a8a04ab8ae",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-_desktop002.process.json",
+        "bytes": 2853,
+        "sha256": "95f4c4232171bcb5826ebaba0b63fbaa9a9713ec691484f7a3f5b2d77de8b729",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-_desktop003.process.json",
+        "bytes": 2856,
+        "sha256": "81abba9b6e6db48e36c97dc1f37489efc7d1c13d9e1e6f4bb0c36974c05d4cbd",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-_native001.process.json",
+        "bytes": 2547,
+        "sha256": "1998bab85d5602f6d070c5000ff86e2321e0dbfa22e77d97bd3f5cf17f2f25a2",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-_native002.process.json",
+        "bytes": 2031,
+        "sha256": "c3eca1495ceea0fff78ac0beaa174a86ae78f839bd4863c5d1cf2d6e3e087983",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-_native003.process.json",
+        "bytes": 2034,
+        "sha256": "31a87cdb2195d9ce5fa65664fab0281c09cc7db656e6c1b69f3d02a807884ba9",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_app001.process.json",
+        "bytes": 3271,
+        "sha256": "fc973a95dec3ca0200e9fdae3d0dd0517c79c750be2c204d3c558b3e375e2755",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_app002.process.json",
+        "bytes": 2859,
+        "sha256": "200c84fd63a9d7b668db0770247f9a85ee1613a68ea0ba72f5476251f2a95e7f",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_app003.process.json",
+        "bytes": 2853,
+        "sha256": "df5927b4b9601ba66a68b69d514517641c68003d0ccc494fbb4b8ddab8be5d62",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_core001.process.json",
+        "bytes": 2554,
+        "sha256": "964215171d4856ceec5ee3ef590980cb57437b2a14dd6623dd0408beaf923d31",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_core002.process.json",
+        "bytes": 2037,
+        "sha256": "58832a40f56935baaf14ed9de91d3246c7a4b6113084c23cb90a703b953ff7c0",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_core003.process.json",
+        "bytes": 2036,
+        "sha256": "d248fbb648c0d6556807ebd3001c9c6f90b0b0d4eefcdb9997728eb649b59970",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_desktop001.process.json",
+        "bytes": 3278,
+        "sha256": "dcabde8bf15123e0ae1bac8ef634c42e0522c3334b2436935fe8fe4c8c4d248f",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_desktop002.process.json",
+        "bytes": 2863,
+        "sha256": "db7f6e7d83b11d32b4d9de89598a7625ae9136174eb55322b618bdaa2cfcba55",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_desktop003.process.json",
+        "bytes": 2864,
+        "sha256": "aa7a4e76d7728089930dd62831a0fb21bd89652b1b16dc93109b13fb95523d9c",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_display_actions_tests001.process.json",
+        "bytes": 3290,
+        "sha256": "f61d8db0d1ab947abeeea2a5b111a99ca9f4f00a57d15e42a9736b1f125f2262",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_display_actions_tests002.process.json",
+        "bytes": 2874,
+        "sha256": "83d74093395e163d2ee3c0fc6dbbdaa3f4688dc5cb08898843e36bed497f8f6f",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_display_actions_tests003.process.json",
+        "bytes": 2875,
+        "sha256": "2ef78409bb76183e67c70438cd0b81a514a77b3a84e19581985a5f54009121d3",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_native_selection_menu_tests001.process.json",
+        "bytes": 3297,
+        "sha256": "7be617b63022ba1d40170921b2c6b09b2c824ecacd95b77e5a92a56ce53a8516",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_native_selection_menu_tests002.process.json",
+        "bytes": 2882,
+        "sha256": "dbec87a579b19ef4644ed2113b918acce3bed4ab1ca2b6bb41ab4a1268b2657a",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_native_selection_menu_tests003.process.json",
+        "bytes": 2880,
+        "sha256": "4f9e7805065fec51cbf1926220df1ca9c28d93dacc68733518c7e8b29034cc81",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_path_visual_tests001.process.json",
+        "bytes": 3285,
+        "sha256": "39dc85e832e60afadde01ed93291502de11453c1b9eb0a5db2620b2ce2b4e00b",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_path_visual_tests002.process.json",
+        "bytes": 2866,
+        "sha256": "b9526e2ff5e99dac5f614db09eabb1490036540314ce91b32f8458fbb766d777",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_path_visual_tests003.process.json",
+        "bytes": 2865,
+        "sha256": "7617a2c9dd440594f235a24e203f7313e57cb9c411efbcd1eb104afad132bc5c",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_selection_creation_tests001.process.json",
+        "bytes": 2573,
+        "sha256": "2cad6433cb510fab6718f8dd750127a0fa24b8ebeabe40d096cf82a16e537347",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_selection_creation_tests002.process.json",
+        "bytes": 2059,
+        "sha256": "5679ac8c167d704b10bfae191a216f93619f5c8e750601e75c9ea380396bd4cf",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_selection_creation_tests003.process.json",
+        "bytes": 2059,
+        "sha256": "2b6eb2cdf02cd4a30eec97d90db1836dd78f8e456fce305cac40d7b4c309d8c4",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_selection_edit_tests001.process.json",
+        "bytes": 2574,
+        "sha256": "8c46327a4bea0241b8467ed468abe6ebe8575330f1af85363ef2980aac37e82c",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_selection_edit_tests002.process.json",
+        "bytes": 2051,
+        "sha256": "48767826921ea3061c9251301cb1ec9dd929e8e860e17fded12b81a4c8dc5944",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_selection_edit_tests003.process.json",
+        "bytes": 2055,
+        "sha256": "9813a24cd34abc4dcb5e4f183ed731d0e8d7a90b0cc0b4b1dc79b9cd74eae7de",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_selection_transform_tests001.process.json",
+        "bytes": 2579,
+        "sha256": "200742b1623fd6477685c1afc590fee859c3e5dca5addda6ca6467711ac4b9ca",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_selection_transform_tests002.process.json",
+        "bytes": 2059,
+        "sha256": "dd41d2df5d4255693ef074f9ecc199e6263ab5c87f48ad40d3f6e3d2772f2a99",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-imagejxx_selection_transform_tests003.process.json",
+        "bytes": 2059,
+        "sha256": "8ec72158de3884b83840e55480e0a485a9ce022b60697ed184d648f3be4f3a80",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-test_planar_annotation_host001.process.json",
+        "bytes": 3288,
+        "sha256": "759f6d7860cba0fd0eaab5cf70d020f41e60c9983df787a8cacc7fb9873f3605",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-test_planar_annotation_host002.process.json",
+        "bytes": 2876,
+        "sha256": "27daaed4062f0944b01584937d913910247daa17f09e27e57eaca7af2b5b213c",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/build-test_planar_annotation_host003.process.json",
+        "bytes": 2875,
+        "sha256": "a2cf2706bd8e39273f41b1eedf48c16ff4ea5f05afb3153998051c84dea09c62",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/install-app001.process.json",
+        "bytes": 2120,
+        "sha256": "9e48ce7a1931ab61527797f2183768133a4705fe594d38dcd1cd75bb6517e680",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/install-app002.process.json",
+        "bytes": 2121,
+        "sha256": "9f3b079070f6ce8ad2832ce76c1a4bd60673ea3c3b037cf5d8fc86f0a9c5059d",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/install-app003.process.json",
+        "bytes": 2121,
+        "sha256": "39f9a7ce4f36fdd22d8479088ffd0c9189241ba7190f9b802fd45393ffd1d445",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/install-python001.process.json",
+        "bytes": 2133,
+        "sha256": "133e944064623c4e2b3c7f159bba9056009ac4283295845c25bb24daa3d3694d",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/install-python002.process.json",
+        "bytes": 2132,
+        "sha256": "77138c9db898715996c428f4c9042ad4d0459302d9ede684f1ad49efbd6d3a46",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/install-python003.process.json",
+        "bytes": 2134,
+        "sha256": "1c85f4707233a1352a6e93adbb0b0e3a852b53298bde089399d8a055eb763a8a",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/install-sdk001.process.json",
+        "bytes": 2124,
+        "sha256": "bb3faaa069a7c3f79ef8c67cdb399edcacb7c11c30a320ceb7218a8911d7ad85",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/install-sdk002.process.json",
+        "bytes": 2121,
+        "sha256": "abd8832d2755dd83ebc54b65d3683f1f4b64bb6cf3afcb859ac4e0513cd70c43",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/install-sdk003.process.json",
+        "bytes": 2123,
+        "sha256": "430c48f489824f70353fbc329783cf9182cb7d6d331d99c0076ed542cfa0eaa4",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-build001.process.json",
+        "bytes": 1566,
+        "sha256": "79e0083c57b006304e25592a60afe1f01d2acc874a215ba1ca26e5582e9e4c65",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-build002.process.json",
+        "bytes": 1559,
+        "sha256": "cdadd3f7fd4731a1bb97de874a782898edf39b9d2266db536c1ef233157c7734",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-build003.process.json",
+        "bytes": 1561,
+        "sha256": "1d935550481c849f55de6f013188dd6cfbd1d252b1785b744a5a61ccd3f824dd",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-native001.process.json",
+        "bytes": 1464,
+        "sha256": "80b96d5f07ddb1d6fbef698554e543723f5ef4e39ea8e59a77a07de7da5d1a9e",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-native002.process.json",
+        "bytes": 1463,
+        "sha256": "a8372840862809baa3eb74d6be808a057a93e81977235b22117b7263c01ffbf9",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-native003.process.json",
+        "bytes": 1464,
+        "sha256": "84f932ded008d6aed5997985e8c89f3348a49c747d42910f5fb3a1c532d16d0f",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-owner001.process.json",
+        "bytes": 3079,
+        "sha256": "f24fc1259546e0e2cd58dd9b5331c020179c743aad34e4741891487b3dabe9a1",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-owner002.process.json",
+        "bytes": 3511,
+        "sha256": "54f1770cfde97a7f7f04a6d63afa2f48f0f63ca3e83414062fc0000717b4f1c9",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-owner003.process.json",
+        "bytes": 3511,
+        "sha256": "29601a0fc7abd61ffef17c8631477bf629547879234b499d831ae4dbdd38fb5d",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-imagejxx_path_visual_tests003.process.json",
+        "bytes": 1824,
+        "sha256": "3f4c6ed4262a5d38449b5f9d5a078ed40c4dd3cae7cd3f2c8acfa80d1c9b1abc",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-imagejxx_selection_creation_tests001.process.json",
+        "bytes": 1839,
+        "sha256": "9d4ef2687165841ce7977df0247c533ae999d58bb36df887e22ac91e46050155",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-imagejxx_selection_creation_tests003.process.json",
+        "bytes": 1840,
+        "sha256": "45b4f9e809bc3601575ea318a9b933edfb58afcfc458d26439a968ff1eb67ae7",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-imagejxx_selection_edit_tests001.process.json",
+        "bytes": 1830,
+        "sha256": "ac2d724d7a601ec3c730b9b46a971ac6999c500bdb3eb79f4714c0936f8e730a",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-imagejxx_selection_edit_tests003.process.json",
+        "bytes": 1829,
+        "sha256": "db70ee4548bf66612a8c6f3127d822ec3106977387a382e7224318bf29b7e6ed",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-imagejxx_selection_transform_tests001.process.json",
+        "bytes": 1842,
+        "sha256": "7d4d9e9b707b2034fc97a39e548c969ccc6253723d7fe0c27ad9d1feb913703c",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-imagejxx_selection_transform_tests003.process.json",
+        "bytes": 1843,
+        "sha256": "6bc6e1e50079b4b4e9d391cfaf703a014738bb2582130631711d4aa6f6d0d4ef",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-menu003.process.json",
+        "bytes": 1982,
+        "sha256": "e46572f8fb024d16f264fe423b4c0d5ab97b7f27b01c89933541e66e133317a7",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-test_planar_annotation_host003.process.json",
+        "bytes": 1827,
+        "sha256": "0d3b57c90686b257a1aa137b0d02c44aca549fa3f47123da707232edc75b3c4c",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native-ui003.process.json",
+        "bytes": 1964,
+        "sha256": "9338b1276fe3c6e2d30febac55d2ff44762c809ae745e424ce12c16599f5db2b",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native003-pack.process.json",
+        "bytes": 2499,
+        "sha256": "5d6882d887693f33c117ab5c90c19ac6eb34eb17af04a9cb8d1e3aa06e80a5c0",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native003-verify.process.json",
+        "bytes": 2380,
+        "sha256": "0ee940348f1c4bd044d483a60937f8fa800bd4e6a129872aa0b445cb8aa5ae07",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/python-analysis003.process.json",
+        "bytes": 2826,
+        "sha256": "8141cce9d5d4ad134737af26acdfbd391ff0a5d4afbf0a74cf7f63437dd26bea",
+        "exit_code": 1
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/python-components002.process.json",
+        "bytes": 2405,
+        "sha256": "5c731f319f0ef1086e9a4f6dd09bd7a349b6b9ec956e02008cd22ea130e0eb39",
+        "exit_code": 1
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/python-geometry003.process.json",
+        "bytes": 2596,
+        "sha256": "70fd431dda68ab259c787129dcde88b54ad2bee4d68ad4abd813ade674ef75b2",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/python-target004.process.json",
+        "bytes": 2403,
+        "sha256": "3f7554c785ee48fd0f23d4f6577815ad4325d756cecbc8fb901a78ca636ca96c",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference-base002.process.json",
+        "bytes": 2164,
+        "sha256": "4aef6c031c9a9d4b242c93e5c54e64add8e0f4702c59139fca017e63885d9e24",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference-compile001.process.json",
+        "bytes": 2201,
+        "sha256": "4425777acafec22bb50f854368011a1c063c3330be0a1fd5ae194f92d7f54ec6",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference-compile002.process.json",
+        "bytes": 2198,
+        "sha256": "84c3d778f4ee79c811c92a9fec2dbd3d7074bb24b15072e5123e4c2945105860",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference-observe001.process.json",
+        "bytes": 2162,
+        "sha256": "63f6b8be6acae4e4b5dd1155b62c14adfaff2135ad5a6eb9e9abbfde41a9eed2",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference-single002.process.json",
+        "bytes": 2180,
+        "sha256": "2aee41b90035dc518f1a4c7cb7c9f19cb240de708bd43a26f716b7ac4c6a8799",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference001-pack.process.json",
+        "bytes": 2515,
+        "sha256": "48ebf5a16f7087f6be4c3f516319f7d564b47dbe28a24fd6eabb90f845824436",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference001-verify.process.json",
+        "bytes": 2393,
+        "sha256": "5780ac1dcb84db594b96f503fe24b4d7ebd0a339a10275b83c65505b18889a13",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference002-pack.process.json",
+        "bytes": 2517,
+        "sha256": "1261c6346fc7282a63db44aca2bc341d276c830fe8dbfdf9c8c0d0ff89d6d365",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference002-verify.process.json",
+        "bytes": 2388,
+        "sha256": "d571ec1e96ae7a7b3771ba18a6d66eda097694faf708cb4af781e2b4d41609aa",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/sdk-build001.process.json",
+        "bytes": 2106,
+        "sha256": "53d8a3064c8bd4dc87eb1741666e9bf5885f6f0ec98e51d63b2aa7c93394d29c",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/sdk-configure001.process.json",
+        "bytes": 2413,
+        "sha256": "3712e20fae7df776b5830d2f559a5dcb0b1db9ba904177bc06bf262c6dd05b6a",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/sdk-profile001.process.json",
+        "bytes": 2075,
+        "sha256": "b50c87ff9463a7728575fc9299b802333b92e1bf79a2ed7c504815c0ad258e34",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/sdk-run001.process.json",
+        "bytes": 1935,
+        "sha256": "96b575f58c4b4215bc8313efa7a0f6a8f8f22ba5ace9d67bf1575f9c95cb6f6f",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/verify002-pack.process.json",
+        "bytes": 2501,
+        "sha256": "e79b545bca40e28288dfff2a23cd55a493a49cda493ea176afbdb4455cd5b8a0",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/verify002-verify.process.json",
+        "bytes": 2382,
+        "sha256": "65bb7bd636e928c4ee40df08198cc6dbfc0079da50773f7ba604640170b3255c",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/verify003-pack.process.json",
+        "bytes": 2499,
+        "sha256": "8ef65361b9b066baea0a3bcce43471e12a7b6493cffb112c18baca8f9676e7b2",
+        "exit_code": 0
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/verify003-verify.process.json",
+        "bytes": 2381,
+        "sha256": "9da38726705f66b12f3b4b37c883050edda7ac8594184b10a6affdb19714830a",
+        "exit_code": 0
+      }
+    ],
+    "static_closeout": {
+      "state": "passed",
+      "scope": [
+        "99family statuses/requirements preserved;onlyG018evidence appended",
+        "4protected untracked files and3historical guide hashes unchanged",
+        "194ordinary and spline fixtures unchanged",
+        "96new fixture rows",
+        "public receipt source/evidence hashes match",
+        "new local Markdown link targets exist",
+        "project and sibling-note diff whitespace checks"
+      ],
+      "correction": "Initial link reader used implicit Windows GBK on UTF8 git output;rerun only link reader with explicit UTF8. Earlier invariants completed before that decode error.",
+      "known_gate": "Global check_plan.py not rerun:known retired G016 build/plan-implementation/p05e-roi-boolean-001/native-local-checkpoint-001.json unavailable. This is not a passing gate.",
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/static-closeout005.json",
+        "sha256": "ecf3d15a5b2e1e8c8c639c0240e97484911e1ff73ac48b94b3187286de50f47c"
+      }
+    }
+  },
+  "sources": [
+    {
+      "path": "src/native/imagej_shape.cpp",
+      "bytes": 20546,
+      "sha256": "707bdae275f13f2452dab603b6eeca12173632736aff2be29669ce628e52d294"
+    },
+    {
+      "path": "src/native/imagej_shape_plan.hpp",
+      "bytes": 2367,
+      "sha256": "08128ed5a108fec975cf5fa304c5559c56c68ffba8eda78a66b8b1194c81cc53"
+    },
+    {
+      "path": "src/native/selection_transform.cpp",
+      "bytes": 50836,
+      "sha256": "f2a0b56203caf28211304235184b0a18cc02afa68ab192c50ff439687de5c80b"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 927450,
+      "sha256": "7d7e0d5d8961bb2ac26ac4ff077bfbffc00eb29e8ec2108e6bfe7e5627e26208"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.cpp",
+      "bytes": 77968,
+      "sha256": "e635d4235395970a7b31842a61c615d0661f89c65e34d9b33a6af1080503f7e6"
+    },
+    {
+      "path": "src/desktop/effective_display_ui_probe.hpp",
+      "bytes": 1612,
+      "sha256": "540227a4baad3219e46b052eec45b352d1191afe183f408b8cf5530277f27dde"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 66201,
+      "sha256": "c97a7b43fff390369431d3abf1c71c70471c6d6154baa02bc615f6abfcf3b39d"
+    },
+    {
+      "path": "tests/native/test_selection_transform.cpp",
+      "bytes": 15537,
+      "sha256": "4f0332ee15f39a5b6e4f9bba7da16e9248ffabdf34832bdc567da99c98ffc669"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 34995,
+      "sha256": "685c7591af6bda5cc709457d9d41ad12c22b00158c83256d340a3552a1e1a586"
+    },
+    {
+      "path": "tests/python/test_interpolation_compound.py",
+      "bytes": 11542,
+      "sha256": "f6e5ec54200239aba3b69d129921bc05b00dd8d2de26abd4ca5aa85f58d302d7"
+    },
+    {
+      "path": "tests/reference/ObserveInterpolationComponents.java",
+      "bytes": 6249,
+      "sha256": "293b995d215f4460f01f4246cb7954a413eec5f75a4266b6da5954341e80a536"
+    },
+    {
+      "path": "tests/fixtures/interpolation-components-imagej154r.json",
+      "bytes": 569563,
+      "sha256": "c04bef0e18bf04cdf3db7ae434a61c6839af426807229aa38df082743a1f0a02"
+    },
+    {
+      "path": "src/native/dataset_histogram.cpp",
+      "bytes": 30937,
+      "sha256": "0094d9b954843dd76bcf9249f21d5697b504294fc605d8f847e56affe914e2c8"
+    },
+    {
+      "path": "src/native/target_analysis.cpp",
+      "bytes": 34579,
+      "sha256": "c21bb1092537837ad5baa3ef41a431f9fcd451e07775b325b2e6c507d9cdb97d"
+    }
+  ],
+  "retention": {
+    "scratch_absent": true,
+    "archives": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native003.zip",
+        "bytes": 171634,
+        "sha256": "9923a2544370e20df47314afad665c7e30d006e212120e0c50cc0d9efba25ac4"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference001.zip",
+        "bytes": 43394,
+        "sha256": "b67df44bfbc3c348952a1c209b70646e75e3902b0a2a35380385348833be203a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference002.zip",
+        "bytes": 54240,
+        "sha256": "4891152ad64d3eefe9b93894b0b8318dd05bc6780dd9a561059b25fa18f0d8bb"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/verify002.zip",
+        "bytes": 52057,
+        "sha256": "fa80d1b3d061ce9f9550bc7a937851a40cbef1626423becb5842d541e22c7639"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/verify003.zip",
+        "bytes": 4796,
+        "sha256": "eeb18b7025fe51cc20ad6b9b458d0f1d1b8115b78a580b1d50e8c0eb83f1689e"
+      }
+    ],
+    "retirements": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/native003-retirement.json",
+        "bytes": 434,
+        "sha256": "5559f49d83b97f89a16742b7668e3f2dc9689f4368338e6c763a22cbcade8c0d",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/native003",
+          "source_bytes": 744707,
+          "source_files": 112,
+          "source_snapshot_sha256": "4357ab0777351f955d3228b0d7bf29a1912f8f8f10a702c5ded736b92cf74d6d",
+          "archive_bytes": 171634,
+          "archive_sha256": "9923a2544370e20df47314afad665c7e30d006e212120e0c50cc0d9efba25ac4",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference001-retirement.json",
+        "bytes": 434,
+        "sha256": "153ea806353675f9b465390a94b539121515e85782d0996281d0c90fc36cdd2a",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/reference001",
+          "source_bytes": 488667,
+          "source_files": 2,
+          "source_snapshot_sha256": "75784028dafadf6b666a56a6398661bb29ec9977d6ea81c3171fe23eb4b54763",
+          "archive_bytes": 43394,
+          "archive_sha256": "b67df44bfbc3c348952a1c209b70646e75e3902b0a2a35380385348833be203a",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference002-retirement.json",
+        "bytes": 434,
+        "sha256": "c97cfbccd691d3eb2eb071b3f5b0ae74d9b7f2d8a2f331acfc592ca606709bef",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/reference002",
+          "source_bytes": 577772,
+          "source_files": 3,
+          "source_snapshot_sha256": "ad1ed685fefd398f1db2dbf3a1a0ceee97c308bed36072946bf98be80eddf06c",
+          "archive_bytes": 54240,
+          "archive_sha256": "4891152ad64d3eefe9b93894b0b8318dd05bc6780dd9a561059b25fa18f0d8bb",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/sdk001-retirement.json",
+        "bytes": 341,
+        "sha256": "b7b853cf7a38f2448742e1615f3376aec7e994a3591806822201f069c587f5a9",
+        "result": {
+          "source": ".tmp\\manual-workflow-verification\\interpolation-compound-20261105\\scratch\\sdk001",
+          "bytes_removed": 3136280,
+          "files": 83,
+          "state": "hashed_owned_consumer_tree_removed_without_archive",
+          "source_snapshot_sha256": "916c51d4627a772710732228ec99b6729ef9cad2f6cea2625df7f2fd2b144772",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/target004-empty-retirement.json",
+        "bytes": 271,
+        "sha256": "200587db35679f0a5661ad7a9df703e029f09e1b9cf516e9b4fe01eae04aa2af",
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/target004",
+          "source_bytes": 0,
+          "source_files": 0,
+          "archive_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/verify001-empty-retirement.json",
+        "bytes": 271,
+        "sha256": "d4edd33a9e6e0ab022741e3673901954265b90c2dfdc3d61cd991add0a17ca2a",
+        "result": {
+          "state": "removed_verified_empty_owned_scratch",
+          "source": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify001",
+          "source_bytes": 0,
+          "source_files": 0,
+          "archive_bytes": 0,
+          "archive_created": false,
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/verify002-retirement.json",
+        "bytes": 432,
+        "sha256": "b543e3593f39ece7a68b6c7d937f00ddc134419e30d1ef727a199d0f15e1ac27",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify002",
+          "source_bytes": 304408,
+          "source_files": 24,
+          "source_snapshot_sha256": "4209db215ce122d88bd39c4cd28631916967af4d006adf76134cf25978d485f2",
+          "archive_bytes": 52057,
+          "archive_sha256": "fa80d1b3d061ce9f9550bc7a937851a40cbef1626423becb5842d541e22c7639",
+          "source_removed": true
+        }
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/verify003-retirement.json",
+        "bytes": 428,
+        "sha256": "ab17cd99e45b85b81137d84abe90c75741765fefecdcc049add72c21f2c15796",
+        "result": {
+          "state": "verified_retention_then_removed",
+          "source": ".tmp/manual-workflow-verification/interpolation-compound-20261105/scratch/verify003",
+          "source_bytes": 4820,
+          "source_files": 1,
+          "source_snapshot_sha256": "9081043e1db398ebcab0368b8ffb50837cd9d365a187db99df0575369837f5e6",
+          "archive_bytes": 4796,
+          "archive_sha256": "eeb18b7025fe51cc20ad6b9b458d0f1d1b8115b78a580b1d50e8c0eb83f1689e",
+          "source_removed": true
+        }
+      }
+    ],
+    "availability": "Original capture/SDKscratch paths are retired. Captures available only through verified archives/manifests;SDKconsumer identities only. Historical G016 and17legacy gesture reference paths remain unavailable,not passes.",
+    "evidence": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/entry.json",
+        "bytes": 17757,
+        "sha256": "b0815c351e8f0332d37673be55675d35394256a74826573d44814533568bb2b6"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/final-readers004.json",
+        "bytes": 6673,
+        "sha256": "5e12027b0099abbc599a4e15ce05988cb10e9277ccb7531b491de553a36202ee"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/installed-identities003.json",
+        "bytes": 2975,
+        "sha256": "35f0209c4fbf371b224542edcccd4705a0e93df64449c7ae42df348bdfa02122"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/linux-identities003.json",
+        "bytes": 730,
+        "sha256": "8e4a940294fd2a89c45596958f24a8570986dffdb66dfb28fdbd1a2fe160ba14"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference-acceptance001.json",
+        "bytes": 246,
+        "sha256": "0ecaf867fe739b35674c2e33f9d66a41f065d432792691eb5fa02923ac1153e2"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-20261105/reference-append002.json",
+        "bytes": 662,
+        "sha256": "0845b4318cb935309c4bd10868a4664c0bac8698704a662fa844665c430b32df"
+      }
+    ]
+  },
+  "storage": {
+    "entry_known_bytes": 7373490081,
+    "measured_peak_known_bytes": 7381672720,
+    "after_retirement_known_bytes": 7377091126,
+    "planned_additional_bound_bytes": 134217728,
+    "observed_known_peak_growth_bytes": 8182639,
+    "unknown_subtrees": 214,
+    "complete_budget_verified": false,
+    "physical_free_after_retirement_bytes": 259720634368,
+    "measurement_scope": "Complete normalized project cache/tmp,retiredbuild/dependency/runtime,public reviews and Linux roots;inaccessible trees remain unknown. After measurement precedes final prose/receipt.",
+    "measurements": [
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-entry-20261105.json",
+        "bytes": 66573,
+        "sha256": "4f5bdc51a82e011491376afe8a33b9e9ab5b96b8ca98ffe2da0d0a705b793e5f"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-pre-retirement-20261105.json",
+        "bytes": 66574,
+        "sha256": "a354b1bc070e2745b60ad59ec95c59e489442586beb757a5164f81cd66834d4d"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/interpolation-compound-final-20261105.json",
+        "bytes": 66572,
+        "sha256": "ac07e142d9af40d8c977bb4d6910fa8e8585bd10a0f0bd5aaff2507bab0d3ad5"
+      }
+    ]
+  },
+  "waste_review": {
+    "scope": "Compound/curved interpolation and native-path Measure/histogram consumer scoped delivered;full G018/editor remains open.",
+    "checks": "final-readers004.json:2060 distinct Python IDs ultimately pass,16 physical cases;native UI80 lifecycle,Windows/Linux core andWindows installed SDK receipts pass.",
+    "waste": "Single/multi dispatch mismatch,real Measure admission gate and2wrong new target read-count assumptions corrected;freeze branches/downstream contracts before first build. No new generic infrastructure.",
+    "disposition": "Fix actual dependencies now;T02 duplicate conservative planning passes deferred until measured need.",
+    "cleanup": "All8 scratch groups removed after safe retention/identity checks;owned scratch parent absent. Five live-hash archives,two empty receipts,SDK hashes only.",
+    "storage": "Entry7373490081B;measured peak7381672720B;post-retirement7377091126B before final prose;214 unknown subtrees,budget unverified;physical free259720634368B.",
+    "plan_feedback": "Repeated source/type,zoom,point-noop/degenerate semantics active next;T15 remembered options successor. Other T06/T09/T14 residuals remain."
+  },
+  "remaining": [
+    "Repeated-command native source/output subtype provenance,FREELINE/TRACED semantics",
+    "Attached high-zoom output-kind context",
+    "Point no-op and degenerate-area representation",
+    "T06 saved-row/scientific/source-constructor/style variants",
+    "T15 remembered Interpolate GUI options",
+    "T09 operation-intent macros",
+    "T14 Linux installed-client and remaining supported-platform UI/release gates",
+    "T00 retired-reference availability;no repinning or retiredbuild recreation"
+  ],
+  "claims_excluded": [
+    "Full G018 or ImageJ/Fiji completion",
+    "Overall completion percentage",
+    "Speed superiority or whole-process/RSS bound"
+  ]
+}

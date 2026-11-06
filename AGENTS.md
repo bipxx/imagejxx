@@ -1,3 +1,28 @@
+# Mandatory storage and cleanup gate
+
+These rules apply to every task, retry, helper process and authorized delegated
+agent. Include the existing cache/runtime paths and cleanup ownership in any
+handoff. Delegation does not transfer responsibility for verifying closeout.
+
+- Before allocating build or verification data, use the recorded active cache
+  and runtime. Never recreate the retired project `build/` tree or make a new
+  cache/environment generation to work around a failure.
+- Stop storage-growing work when a known disk-space or budget problem remains.
+  Measure the complete owned scope and physical free space, resolve the problem,
+  and record the decision before resuming. Inaccessible storage stays unknown;
+  it does not count as zero or establish budget compliance.
+- Clean as each owned scratch group becomes terminal, once its required review
+  and checks finish. Preserve failure diagnostics, hash-verify necessary retained
+  evidence, and verify absolute ownership, process exit and link boundaries
+  before deletion. Keep reusable active compiler products when space permits.
+- Do not start the next task with disposable scratch left behind from the
+  current task. Finish safe retirement first, or record the exact retained path,
+  safety blocker and cleanup owner before proceeding with independent safe work.
+  A promise to clean later is not closeout.
+- Verify these gates through the existing task record and receipts. Do not claim
+  cleanup or budget compliance from this file alone. Report an actual lapse and
+  its corrective action; do not add another runner, ledger or checklist.
+
 # Workflow delivery and execution efficiency
 
 - Follow the active queue in `docs/PLAN.md`. Historical task numbers, role

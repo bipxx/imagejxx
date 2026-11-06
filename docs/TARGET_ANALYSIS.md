@@ -28,7 +28,12 @@ calibration and require their existing `validate_source` guard.
 
 Execution acquires each target plane once in captured order, including explicit
 position order. Statistics use full-plane, active-area or positioned-ROI union
-membership. An unmatched positioned plane has an empty population. All acquired
+membership. Native even-odd paths, including interpolated components/holes,
+reuse the shared bounded area mask planner. Admission charges retained geometry
+and passes the remaining parent byte budget before source access. Actual
+Measure/Area, workspace reopen and unchanged pixels have
+[scoped checks](parity/reviews/interpolation-compound-20261105.json).
+An unmatched positioned plane has an empty population. All acquired
 samples are validated even outside the ROI. Profile values use explicit frozen
 coordinates independently of area membership; profile-only targets do not
 rasterize selections and may retain a non-area selection dependency.

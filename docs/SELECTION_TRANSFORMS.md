@@ -236,7 +236,7 @@ magnification variants, saved-row/scientific integration, operation-intent macro
 Linux installed-client and remaining supported-platform UI/release qualification
 stay with T06/T09/T14. Seventeen legacy gesture checks still lack retired inputs;
 no expectation was repinned and unavailable evidence is not a pass. G018 remains
-open. Selection interpolation is next, with explicit composite-hole scope.
+open. Selection interpolation has the scoped coverage below.
 
 ## Selection interpolation
 
@@ -272,7 +272,32 @@ and2 explicit native refusals where upstream publishes only one area vertex.
 Windows/Linux core,installed Windows SDK and both physical hosts pass,including
 60 shared lifecycle scenarios. Those counts do not prove all-source parity.
 
-Next T06 work: compound components/holes and curved/oval/rounded/mask profiles.
+Compound/curved profiles now accept native path, mask/region, ellipse/rounded
+and rotated frame sources. Output is an editable even-odd path preserving each
+component and hole. Existing bounded de Casteljau flattening retains subpaths;
+mask tracing follows pixel-cell boundaries, keeps diagonal islands separate and
+preserves intrinsic off-canvas region origins. Limits apply across components,
+including retained inputs, output buffers, trial work and live cancellation.
+Empty masks and under-three-vertex components refuse atomically.
+
+Single native ShapeRoi profiles use actual direct-command sampling and ignore
+Smooth; analytic ellipse/rounded profiles also ignore Smooth. Multi-component
+paths use public component sampling and native even-odd composition. This is
+an explicit topology-preserving native profile: upstream command subtraction
+can error or lose disconnected/nested components. It is not whole-constructor
+equivalence. Generic width/attributes remain; stale spline and rounded-source
+corner state is cleared.
+
+[Compound evidence](parity/reviews/interpolation-compound-20261105.json):
+96 observations,84 original objects unchanged plus12 actual single-curve command
+rows.2060 distinct affected Python IDs ultimately pass, with16 physical
+workflows,80 shared lifecycle scenarios, Windows/Linux core and installed Windows
+SDK checks. Both hosts preserve command history, editable result vertices,
+V5 workspace and explicit NativePathV4 rebind. Actual Measure/Area and unchanged
+raw pixels pass; shared native-path histogram/analysis admission accounts for
+retained geometry and bounded mask scratch before provider access.
+
+Next T06 work is repeated-command source/type and zoom/degenerate semantics.
 Point no-op, native source/output-type provenance for repeated commands, high-
 zoom context, degenerate-area representation and scientific/saved-row consumers
 remain open. T15 owns last-used GUI options; T09 operation-intent macros and

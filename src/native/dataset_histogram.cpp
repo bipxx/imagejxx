@@ -1,4 +1,5 @@
 #include <imagejxx/dataset_histogram.hpp>
+#include <imagejxx/composite_path.hpp>
 #include "regional_geometry.hpp"
 #include <imagejxx/target_histogram.hpp>
 #include "dataset_histogram_internal.hpp"
@@ -80,7 +81,7 @@ struct Charge {
 bool area_kind(const std::string &kind) {
   return kind == "rounded_rectangle" || kind == "rotated_rounded_rectangle" || kind == "rectangle" || kind == "ellipse" || kind == "polygon" ||
          kind == "freehand" || kind == "rotated_rectangle" ||
-         kind == "rotated_ellipse" || kind == "mask" || kind == "region";
+         kind == "rotated_ellipse" || kind == "mask" || kind == "region" || kind == "path";
 }
 
 // Selection::mask uses float-relative polygon coordinates. Refuse its known
@@ -121,6 +122,8 @@ std::size_t selection_charge(const Selection &selection, DatasetShape shape,
   charge.take(multiply(selection.points.size(), sizeof(selection.points[0])));
   charge.object(selection.attributes);
   charge.take(selection.packed_mask().size());
+  if(selection.is_path())charge.take(add(sizeof(ImageJCompositePath)+sizeof(std::vector<double>),
+      multiply(selection.path_commands().size(),sizeof(double))));
   selection.validate(shape.x, shape.y);
   detail::validate_region_storage(selection);
   polygon_domain(selection);
@@ -143,8 +146,12 @@ std::size_t selection_charge(const Selection &selection, DatasetShape shape,
   return charge.bytes;
 }
 
-std::size_t raster_scratch(const Selection* selection) {
+std::size_t raster_scratch(const Selection* selection,DatasetShape shape,std::size_t cap) {
   if (!selection) return 0;
+  if(selection->is_path()) {
+    const auto plan=detail::plan_imagej_shape_mask(selection->path_commands(),shape.x,shape.y,{},cap);
+    return add(plan.packed_bytes,plan.temporary_bytes);
+  }
   if (selection->is_rounded_box()) {
     // Four cubics at subdivision depth ten: <=4101 edges, vector growth
     // capacity <=8192, scan intersections, path and bounded recursion slack.
@@ -211,9 +218,6 @@ Layout layout(const Dataset &source, const DatasetHistogramRequest &request,
   if (request.area_roi)
     estimate.selection_bytes = selection_charge(*request.area_roi, out.shape, limits);
   bytes = add(bytes, estimate.selection_bytes);
-  bytes = add(bytes, raster_scratch(request.area_roi?&*request.area_roi:nullptr));
-  if (request.area_roi && request.area_roi->is_rounded_box())
-    bytes = add(bytes, add(estimate.pixel_count / 8, (estimate.pixel_count % 8 != 0)));
   bytes = add(bytes, sizeof(DatasetHistogramResult) + sizeof(DatasetHistogramRequest) +
       sizeof(Dataset) + sizeof(ExecutionControl) + sizeof(DatasetHistogramLimits) +
       sizeof(Layout) + sizeof(std::optional<Image>) + sizeof(std::shared_ptr<const Image>) +
@@ -222,6 +226,10 @@ Layout layout(const Dataset &source, const DatasetHistogramRequest &request,
   // objects are charged above; these are the actual owned string lengths.
   bytes = add(bytes, add(source.calibration().unit.size(), 1));
   bytes = add(bytes, add(source.calibration().time_unit.size(), 1));
+  within(bytes, limits);
+  bytes = add(bytes, raster_scratch(request.area_roi?&*request.area_roi:nullptr,out.shape,limits.max_working_bytes-bytes));
+  if (request.area_roi && request.area_roi->is_rounded_box())
+    bytes = add(bytes, add(estimate.pixel_count / 8, (estimate.pixel_count % 8 != 0)));
   within(bytes, limits);
   estimate.working_bytes = bytes;
   return out;
@@ -297,7 +305,10 @@ static DatasetHistogramResult accumulate_histogram(
     const DatasetHistogramLimits &limits, const ExecutionControl &control,
     bool plane_progress) {
   if (control.cancellation && control.cancellation->canceled()) throw OperationCancelled();
-  const auto admitted = layout(source, request, limits);
+  const auto admitted = [&] {
+    ExecutionScope planning(control);
+    return detail::without_execution_callbacks([&]{return layout(source,request,limits);});
+  }();
   const Dataset captured_source = source;
   const DatasetHistogramLimits captured_limits = limits;
   const ExecutionControl captured_control = control;
@@ -430,7 +441,8 @@ DatasetHistogramResult accumulate_dataset_histogram_stages(
 detail::AnalysisMaskEstimate detail::estimate_analysis_mask(const Selection& selection,
     DatasetShape shape,const DatasetHistogramLimits& limits) {
   AnalysisMaskEstimate out;out.geometry_bytes=selection_charge(selection,shape,limits);
-  out.raster_bytes=raster_scratch(&selection);
+  within(out.geometry_bytes,limits);
+  out.raster_bytes=raster_scratch(&selection,shape,limits.max_working_bytes-out.geometry_bytes);
   if(selection.is_rounded_box()) {
     const auto n=multiply(std::size_t(shape.x),std::size_t(shape.y));
     out.raster_bytes=add(out.raster_bytes,add(n/8,n%8!=0));
@@ -456,7 +468,8 @@ TargetHistogramEstimate detail::estimate_target_histogram_resources(const Resolv
   auto area=[&](const Selection &selection) {
     const auto retained=selection_charge(selection,shape,limits);
     out.geometry_bytes=add(out.geometry_bytes,retained);
-    auto temporary=raster_scratch(&selection);
+    const auto prefix=add(bytes,out.geometry_bytes);within(prefix,limits);
+    auto temporary=raster_scratch(&selection,shape,limits.max_working_bytes-prefix);
     if(selection.is_rounded_box())temporary=add(temporary,add(out.plane_pixels/8,out.plane_pixels%8!=0));
     scratch=std::max(scratch,temporary);
     within(add(bytes,add(out.geometry_bytes,scratch)),limits);
