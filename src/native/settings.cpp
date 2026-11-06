@@ -368,6 +368,8 @@ const std::vector<SettingDefinition> &Settings::schema() {
        {"Image",
         "Slice",
         "%Area",
+        "Skew",
+        "Kurt",
         "Mode",
         "IntDen",
         "RawIntDen",

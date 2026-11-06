@@ -174,7 +174,7 @@ def test_physical_threshold_preference_measure_csv_workspace(tmp_path,profile):
     aliases={"mean":"Mean","minimum":"Min","maximum":"Max","median":"Median"}
     for row,expected in zip(report["rows"],case["rows"]):
         for column in report["columns"]:
-            if column in {"Unit","Value unit","T","C","Z","%Area"}:continue
+            if column in {"Unit","Value unit","T","C","Z","%Area","Skew","Kurt"}:continue
             name=aliases.get(column,column)
             if name not in expected:assert column not in row;continue
             value=expected[name]
@@ -194,7 +194,7 @@ def test_physical_threshold_preference_measure_csv_workspace(tmp_path,profile):
         for key in ["Value unit","T","C","Z"]:assert emitted[key]==str(stored[key])
     for row,expected in zip(rows,case["rows"]):
         for column in report["columns"]:
-            if column in {"Unit","Value unit","T","C","Z","%Area"}:continue
+            if column in {"Unit","Value unit","T","C","Z","%Area","Skew","Kurt"}:continue
             name=aliases.get(column,column)
             if name not in expected:assert row[column]=="";continue
             value=expected[name]

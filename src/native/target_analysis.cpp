@@ -508,6 +508,7 @@ TargetAnalysisEstimate estimate(const ResolvedTarget& target,const TargetAnalysi
   if(options.redirect)invalid("Redirect requires explicit selection or manager measurement");
   if(options.limit_to_threshold)invalid("Threshold limiting requires explicit selection or manager measurement");
   if(options.area_fraction)invalid("Area fraction requires explicit selection or manager measurement");
+  if(options.moments)invalid("Moments require explicit selection or manager measurement");
   if(options.shape_descriptors || options.feret || options.bounding_rectangle || options.ellipse)invalid("Area geometry options require explicit selection or manager measurement");
   if(options.line && !options.path.empty())invalid("Analysis accepts line or path, not both");
   if(!options.path.empty() && (options.path.size()<2 || options.path.size()>4096))invalid("Analysis path requires 2..4096 vertices");
@@ -651,6 +652,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
         const auto& properties=sampling.source().display().properties;const auto found=properties.find(manual_threshold_property);
         requested["threshold_state"]=found==properties.end()?MetadataValue(std::monostate{}):found->second;
       }
+      if(options.moments){requested["moments"]=true;requested["moment_policy"]="typed-row-order/legacy-variance/excess-kurtosis-v1";}
       if(options.area_fraction) {
         requested["area_fraction"]=true;
         requested["area_fraction_policy"]="raw-membership/integer-rounded-or-float-threshold/independent-limit-v1";
@@ -712,7 +714,7 @@ ResolvedTargetAnalysis resolve_target_analysis(const ResolvedTarget& target,
       if(analytic_metrics)requested["analytic_perimeter_policy"]="integer-extents/calibrated-roi/whole-image-pixels-v1";
       if(polygon_metrics)requested["polygon_metric_policy"]=fitted_metrics?"retained-spline-branches-v1":"constructor-length-v1/retained-empty-area";
     }
-    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.area_fraction?18:options.redirect?17:options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
+    MetadataObject record{{"schema","imagejxx.target-analysis"},{"version",measurement?(options.moments?19:options.area_fraction?18:options.redirect?17:options.limit_to_threshold?16:options.ellipse || options.shape_descriptors?15:options.bounding_rectangle?14:options.feret?13:area_centroids?11:analytic_metrics?9:fitted_metrics?8:polygon_metrics?7:annotated?6:points?5:geometry || options.reflex_angle?4:3):extended?2:1},
         {"target",metadata_object(target.record())},
         {"spatial",detail::axis_command_record::source_record(source).at("calibration")},
         {"intensity",intensity.record()},{"application_bound",target.application_calibration_bound()},
@@ -771,6 +773,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
         if(state.options.area_fraction)row.area_fraction=0;
         auto* fraction=row.area_fraction?&*row.area_fraction:nullptr;
         const auto* fraction_threshold=plan.fraction_threshold?&*plan.fraction_threshold:nullptr;
+        std::array<double,2> moment_values{};auto* moments=state.options.moments?&moment_values:nullptr;
         row.perimeter_in_pixels=row.perimeter.has_value() && !selection;
         if(plan.point_index) {
           row.point_index=plan.point_index;row.bounds=point_bounds(plan.point,shape);
@@ -781,7 +784,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           if(inside)sample.pixels[0]=image->at((*row.bounds)[0],(*row.bounds)[1]);
           const auto mask=inside?std::optional<Image>{}:std::optional<Image>{Image(1,1,1,PixelType::UInt8)};
           row.statistics=detail::calibrated_statistics_with_table(sample,state.spatial,state.intensity,state.lookup,
-              mask?&*mask:nullptr,state.limits.max_working_bytes,nullptr,true,nullptr,nullptr,threshold,saved_threshold,nullptr,fraction,fraction_threshold);
+              mask?&*mask:nullptr,state.limits.max_working_bytes,nullptr,true,nullptr,nullptr,threshold,saved_threshold,nullptr,fraction,fraction_threshold,moments);
           // Analyzer.savePoints overrides Area after computing integrated density.
           row.statistics->area=0;
         }else if(selection && selection->kind=="angle") {
@@ -807,7 +810,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
           const bool fit_center=state.options.ellipse || state.options.shape_descriptors;
           row.statistics=detail::calibrated_statistics_with_table(*image,state.spatial,state.intensity,state.lookup,
               membership,state.limits.max_working_bytes,&row.bounds,true,fit_center?nullptr:&centroid,&center_of_mass,threshold,saved_threshold,
-              (state.options.limit_to_threshold || state.options.redirect) && plan.frame?&plan.frame->pixels:nullptr,fraction,fraction_threshold);
+              (state.options.limit_to_threshold || state.options.redirect) && plan.frame?&plan.frame->pixels:nullptr,fraction,fraction_threshold,moments);
           if(plan.rectangle) {
             const auto& b=*plan.rectangle;
             row.bounding_x=b.origin[0];row.bounding_y=b.origin[1];row.bounding_width=b.width;row.bounding_height=b.height;
@@ -844,6 +847,7 @@ TargetAnalysisResult execute_target_analysis(const ResolvedTargetAnalysis& comma
             else {const auto nan=std::numeric_limits<double>::quiet_NaN();row.centroid_world=std::array<double,3>{nan,nan,nan};}
           }
         }
+        if(moments){row.skewness=moment_values[0];row.kurtosis=moment_values[1];}
         if(saved_threshold){row.threshold_lower=threshold_summary[0];row.threshold_upper=threshold_summary[1];}
         kernel_checkpoint();execution_progress(++completed,state.measurements.rows.size());
       }

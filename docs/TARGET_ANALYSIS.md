@@ -747,6 +747,38 @@ invalidate a frozen area/point command even with LIMIT off; line-only %Area adds
 no threshold dependency, though LIMIT can still create one for other statistics.
 Application/global/closure guards remain required as before.
 
+Skewness and kurtosis are also opt-in: `TargetAnalysisOptions.moments = true`
+(Python `True`) captures one paired computation. Optional
+`TargetAnalysisPlane.skewness` and `kurtosis` are read-only in Python and absent
+when disabled. Requested moments use provenance version19; prior request versions
+remain unchanged otherwise. Generic targets reject this option before source
+reads; explicit Selection/ROI Manager preparation supports the qualified domains.
+Select either `Skew` or `Kurt` in Results columns to request the pair; each column
+is independently visible. Empty/default column lists do not request moments.
+
+Ordered powers reuse the existing weight traversal, with original typed/density
+and LIMIT populations. Variance is `sum2/n - mean*mean`; skew is the original
+third central moment divided by `variance*sqrt(variance)`, and kurtosis is the
+original fourth central moment divided by `variance*variance`, minus three.
+Expression order and existing mean/count matter: no stable-estimator substitution
+or negative-variance clamping is applied. Empty results are NaN; constant/singleton
+and cancellation-prone populations can produce NaN or infinities. Original
+line/polyline/angle rows retain zero for these columns rather than sampling a
+new path statistic. Byte/Float weights receive the original tiny perturbation;
+Short uses calibrated weights. Float LIMIT tests the perturbed Float weight,
+including COM when moments are disabled. This fixes two independently observed
+zero/subnormal boundary cases without changing geometric or %Area membership.
+
+Settings capture, source/sampling ownership, stale/close/global/cancel guards,
+manager ordering and current table/CSV nonfinite formatting are preserved.
+Removing both column choices invalidates a captured moment job; choosing just
+one still requests the same pair. Public structs gained fields: affected bindings
+and installed SDK clients are rebuilt; no compatibility with old binary clients
+is asserted. [Scoped moment evidence](parity/reviews/moment-measurements-20261106.json) covers
+1,619 original observations, both Windows hosts and Windows/Linux native/installed
+C++ consumers. Numeric presentation, labels, wider types/constructors/replay and
+supported-platform release qualification remain open.
+
 [Scoped %Area evidence](parity/reviews/area-fraction-measurements-20261106.json) includes 1,437 ordinary original
 cases, six independent overflow observations, both Windows ImGui hosts and
 native/installed C++ clients on Windows/Linux. The private overflow correction

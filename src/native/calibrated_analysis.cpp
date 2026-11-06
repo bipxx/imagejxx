@@ -67,7 +67,8 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     const std::array<double,2>* threshold=nullptr,
     std::array<double,2>* threshold_summary=nullptr,
     const std::array<int,4>* processor_roi=nullptr,
-    double* area_fraction=nullptr,const std::array<double,2>* area_fraction_threshold=nullptr) {
+    double* area_fraction=nullptr,const std::array<double,2>* area_fraction_threshold=nullptr,
+    std::array<double,2>* moments=nullptr) {
   const auto n=shape(im);spatial.validate();density.validate_for(im.type,im.channels);
   if(mask && (mask->channels!=1 || mask->width!=im.width || mask->height!=im.height || mask->pixels.size()!=n))
     throw std::invalid_argument("Analysis mask must match the source");
@@ -94,6 +95,7 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
   }
   int x0=im.width,y0=im.height,x1=-1,y1=-1;
   double geometric_count=0,xsum=0,ysum=0,mass=0,mass_x=0,mass_y=0;
+  double moment2=0,moment3=0,moment4=0;
   if(center_of_mass)*center_of_mass=std::nullopt;
   if(centroid)*centroid=std::nullopt;
   if(bounds){*bounds=std::nullopt;if(!mask)*bounds=std::array<int,4>{0,0,im.width,im.height};}
@@ -120,11 +122,15 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
     // This predicate is visited once in the owning histogram/member traversal.
     const bool selected_sample=contains(im.pixels[i]);
     if(centroid && selected_sample){++geometric_count;xsum+=double(i%im.width);ysum+=double(i/im.width);}
-    if(center_of_mass && selected_sample) {
+    if((center_of_mass || moments) && (im.type==PixelType::Float32 || selected_sample)) {
       double weight=im.type==PixelType::Float32?double(float(im.pixels[i])):value(std::size_t(im.pixels[i]),density,lut);
-      // Original Byte/Float moments perturb zero weights; Short does not.
+      // Float compares the perturbed value, Byte compares raw before perturbing;
+      // Short uses the unperturbed calibrated weight. Preserve row order.
       if(im.type!=PixelType::UInt16)weight+=std::numeric_limits<double>::denorm_min();
-      mass+=weight;mass_x+=double(i%im.width)*weight;mass_y+=double(i/im.width)*weight;
+      if(im.type!=PixelType::Float32 || contains(weight)) {
+        if(center_of_mass){mass+=weight;mass_x+=double(i%im.width)*weight;mass_y+=double(i/im.width)*weight;}
+        if(moments){const double square=weight*weight;moment2+=square;moment3+=weight*square;moment4+=square*square;}
+      }
     }
     if(bounds && mask){const auto x=int(i%im.width),y=int(i/im.width);
       x0=std::min(x0,x);y0=std::min(y0,y);x1=std::max(x1,x);y1=std::max(y1,y);}
@@ -223,6 +229,15 @@ static ImageJScalarStatistics statistics_impl(const Image& im,const SpatialCalib
   out.mean=out.pixel_count?sum/double(out.pixel_count):nan;
   out.raw_mean=out.pixel_count?raw_sum/double(out.pixel_count):nan;
   out.stddev=deviation(double(out.pixel_count),sum,sum2);out.integrated_density=out.area*out.mean;
+  if(moments) {
+    if(!out.pixel_count)*moments={nan,nan};
+    else {
+      const double count=double(out.pixel_count),mean2=out.mean*out.mean;
+      const double variance=moment2/count-mean2,deviation=std::sqrt(variance);
+      (*moments)[0]=((moment3-3.0*out.mean*moment2)/count+2.0*out.mean*mean2)/(variance*deviation);
+      (*moments)[1]=(((moment4-4.0*out.mean*moment3+6.0*mean2*moment2)/count-3.0*mean2*mean2)/(variance*variance)-3.0);
+    }
+  }
   if(bounds && mask && x1>=0)*bounds=std::array<int,4>{x0,y0,x1-x0+1,y1-y0+1};
   if(centroid)*centroid=geometric_count?std::array<double,2>{xsum/geometric_count+.5,ysum/geometric_count+.5}:std::array<double,2>{nan,nan};
   if(center_of_mass)*center_of_mass=std::array<double,2>{mass_x/mass+.5,mass_y/mass+.5};
@@ -617,8 +632,8 @@ ImageJScalarStatistics calibrated_statistics_with_table(const Image& im,const Sp
     std::optional<std::array<double,2>>* centroid,
     std::optional<std::array<double,2>>* center_of_mass,
     const std::array<double,2>* threshold,std::array<double,2>* threshold_summary,const std::array<int,4>* processor_roi,
-    double* area_fraction,const std::array<double,2>* area_fraction_threshold) {
-  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds,source_validated,centroid,center_of_mass,threshold,threshold_summary,processor_roi,area_fraction,area_fraction_threshold);
+    double* area_fraction,const std::array<double,2>* area_fraction_threshold,std::array<double,2>* moments) {
+  return statistics_impl(im,spatial,density,mask,maximum,&lut,bounds,source_validated,centroid,center_of_mass,threshold,threshold_summary,processor_roi,area_fraction,area_fraction_threshold,moments);
 }
 ImageJLineMeasurement calibrated_line_measurement_with_table(const Image& im,
     const SpatialCalibration& spatial,const ImageJIntensityCalibration& density,

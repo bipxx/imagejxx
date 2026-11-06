@@ -32,6 +32,35 @@ struct Source final:PlaneSource {
 }
 int main() try {
   {
+    // Independently observed ImageJ vectors: ordered powers, not a stable fit.
+    auto run=[](PixelType type,const std::vector<double>& values,bool point=false) {
+      Image image(int(values.size()),1,1,type);image.pixels=values;
+      auto owner=std::make_shared<Document>(Dataset::from_stack({image}));if(point)owner->select(Selection("point",{{0,0}}));
+      Application app;app.adopt(owner);TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;
+      check(!options.moments);check(!execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front().skewness);
+      options.moments=true;return execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();
+    };
+    const auto byte=run(PixelType::UInt8,{0,1,1,4});check(std::abs(*byte.skewness-0.8888888888888888)<1e-12 && std::abs(*byte.kurtosis+0.8148148148148149)<1e-12);
+    const auto near=run(PixelType::Float32,{1,1,1.0000001192092896,1});check(*near.skewness==0 && *near.kurtosis==-3);
+    const auto huge=run(PixelType::Float32,{1.0000000200408773e20,1.0000000200408773e20,1.0000001080018076e20,1.0000000200408773e20});
+    check(*huge.skewness==0 && std::abs((*huge.kurtosis+250199979298363.88)/250199979298363.88)<1e-12);
+    const auto single=run(PixelType::Float32,{1.0000000200408773e20},true);check(std::isinf(*single.skewness) && *single.skewness>0 && std::isinf(*single.kurtosis) && *single.kurtosis<0);
+    for(bool tiny:{false,true}) {
+      auto owner=std::make_shared<Document>(Dataset::from_stack({Image(4,1,1,PixelType::Float32)}));Application app;app.adopt(owner);
+      auto view=owner->snapshot().display();const double bound=tiny?std::numeric_limits<double>::denorm_min():0;
+      set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),{{bound,bound},{}});owner->set_display(view);
+      TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;options.limit_to_threshold=true;options.moments=true;
+      auto row=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();
+      check(std::isnan(*row.skewness) && std::isnan(*row.kurtosis));
+      if(tiny)check((*row.center_of_mass_world)[0]==2 && (*row.center_of_mass_world)[1]==.5);else check(std::isnan((*row.center_of_mass_world)[0]));
+      options.moments=false;row=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();check(!row.skewness && !row.kurtosis);
+      if(tiny)check((*row.center_of_mass_world)[0]==2);else check(std::isnan((*row.center_of_mass_world)[0]));
+      owner->select(Selection("line",{{0,0},{3,0}}));options.moments=true;options.limit_to_threshold=false;
+      row=execute_target_analysis(resolve_target_analysis(app.resolve_target(),options)).planes.front();check(*row.skewness==0 && *row.kurtosis==0);
+      options.measurement=TargetMeasurementMode::Area;refuses<std::invalid_argument>([&]{resolve_target_analysis(app.resolve_target(),options);});
+    }
+  }
+  {
     Image pixels(5,1,1,PixelType::UInt8);pixels.pixels={0,6,6,7,10};
     auto owner=std::make_shared<Document>(Dataset::from_stack({pixels}));Application app;app.adopt(owner);
     auto view=owner->snapshot().display();set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),{{6.6,10.6},{}});owner->set_display(view);

@@ -1,0 +1,193 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3 Skew/Kurt moments",
+  "implemented": true,
+  "verified": "scoped; affected checks pass with one optional OpenGL skip",
+  "integrated": "standalone C++ and optional Python Dear ImGui on Windows",
+  "release_ready": false,
+  "full_goal_complete": false,
+  "parent_M3_T06_complete": false,
+  "requirements": [
+    "G009",
+    "G066",
+    "G068",
+    "G071"
+  ],
+  "scope": "Default-off captured moments with independently selected Skew/Kurt columns; scoped area/point, manager and redirected rows; actual controls/table/CSV/preferences/workspace. No new runtime dependency/model/font/asset; ImageJ/JDK are reference producers only.",
+  "contract": {
+    "request": "TargetAnalysisOptions.moments: bool = false",
+    "results": "TargetAnalysisPlane.skewness/kurtosis: optional<double>, Python read-only; absent by default",
+    "provenance": "version19 for requested moments; prior versions preserved otherwise",
+    "numerics": "Ordered powers in existing weight traversal; typed/density/nonfinite/LIMIT behavior, original excess kurtosis and legacy variance cancellation without clamping. Byte/Float perturbation, Short calibrated weight. Float threshold membership follows original perturb-before-comparison; geometry remains separate. Empty NaN; non-area line/polyline/angle zero; generic rejected before reads.",
+    "ownership": "Captured immutable request/results, consumed-source/settings/global/stale guards and existing grouped read/lease/cancellation/history paths preserved. Public structs changed; affected clients rebuilt, no old-binary ABI claim."
+  },
+  "checks": {
+    "junit_counts": {
+      "python004.xml": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "python017.xml": {
+        "tests": 1624,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "python020.xml": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "python021.xml": {
+        "tests": 6631,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      }
+    },
+    "distinct_passed": 8258,
+    "optional_skipped": 1,
+    "unresolved_failed": 0,
+    "passed_node_ids_sha256": "07699542fcf2aa179de22c336f285c75d301d21262925b6eac1888d6a044e28a",
+    "qualified_reuse": "4positiveUI020cases reused;021selects27remainingprofiles, no duplicatephysicalcampaign. API017all1624currentcasespass.",
+    "host_pairs": 28,
+    "native": "Windows010/Linuxtwo014controls andstandalone022",
+    "installed_C++": "Windows019/Linux014",
+    "source_inputs": "All007frozencompiledinputs unchanged;9built/source-installedpairs016current."
+  },
+  "original_reference": {
+    "ordinary_cases": 1437,
+    "tail_cases": 182,
+    "fixture_sha256": "b8f295fd98945a7e5655ff4b4ef3335f763d5e6d2f5d1f69e4a8ad28c3d5877a",
+    "fixture_bytes": 1622101,
+    "decision": "Inspecttailnonfinite/Floatzerothreshold/point-line results, thenfreezeimplementation andnativepositives beforelinks."
+  },
+  "failures_and_corrections": [
+    "Old installed backend failed two Float COM threshold-boundary controls in004; shared predicate corrected before first product build and both pass017. Original and product diagnostics retained.",
+    "Outer Linux retirement readback raised missing hashlib import after successful deletion; collected existing terminal owner and verified transported hash without rerunning deletion.",
+    "Documentation PLAN mixed line endings were briefly normalized; restored preflight-matching original bytes and applied two exact byte replacements before further edits."
+  ],
+  "cleanup": {
+    "entry_known_bytes": 7455375654,
+    "preretirement_known_bytes": 7473446484,
+    "final_known_bytes": 7459706257,
+    "inaccessible_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_bytes": 162699812864,
+    "snapshots": [
+      ".tmp/manual-workflow-verification/moments-preretirement024.json",
+      ".tmp/manual-workflow-verification/moments-final028.json"
+    ],
+    "all_owned_groups_retired": 8,
+    "necessary_verified_archives": 4,
+    "SDK_and_observer_products": "Identity-only; active compiler caches/runtime/installed SDK prefixes preserved",
+    "receipts": [
+      "early-retirement018.json",
+      "retirement026.json",
+      "linux-retirement027.json"
+    ]
+  },
+  "waste_review": {
+    "fix_now": "Numerical tails and COM dependency positives before consumer links; one fused traversal, no extra sample buffers/scans/controller/registry. Retired terminal scratch and retained bounded captures.",
+    "reuse": "Four positive UI020 cases reused, 27 remaining physical profiles in021; 56 older duplicate physical calls excluded. SDK configurations kept through final review, no corrective product rebuilds.",
+    "defer": "T02 owns historical SDK-prefix curation/shared build fanout; broader platform/constructor/replay/format/table variants retain existing task owners.",
+    "metrics": {
+      "product_build_commands": 9,
+      "product_build_seconds_sum": 128.5832945072092,
+      "sdk_build_commands": 2,
+      "sdk_build_seconds_sum": 34.68206355401317,
+      "corrective_product_builds": 0,
+      "interpretation": "Command elapsed-time sums; not critical path, runtime performance or overall completion."
+    }
+  },
+  "source_sha256": {
+    "include/imagejxx/target_analysis.hpp": "8333662344f14711efc17349a4101d1fbbb11c719b988ca36ae6389061eef168",
+    "src/native/target_analysis.cpp": "12838271f5a1eb59ac119765e083473b2661ed6052c48d03f119a987d06c9e9c",
+    "src/native/calibrated_analysis.cpp": "8746d7dc3055f688fd02c6eb21a95c02937f0ae8d0f54afdec7086e00c941538",
+    "src/native/calibrated_analysis_internal.hpp": "ad315bb8a66e08b132d23fa9a1f68bded2213f68dc4083a4f5b840e7267835b2",
+    "src/native/target_analysis_bindings.cpp": "b6d0db5a6bcd94f637b19586252b16a7d0ed1ca92ab4b76a42a4f939287e52cd",
+    "src/native/settings.cpp": "725959ef78b1f6cabb44ad255de72b30e72f79c0c092cda886951b4c91b99195",
+    "src/desktop/window.cpp": "bb858d0987fc0323ce5f76c00ba9486a589de2eb1fd2699fe26e9520767746fb",
+    "src/desktop/analysis_measurement.cpp": "abe9c5120842303d550762cfdee67ffb7da3e0da7310c5e99aadcd2433bbf6fa",
+    "src/desktop/effective_display_ui_probe.cpp": "6f465581f03b92b498299c9798ad55d36b84a27ee272e7de3cb6b26853669b36",
+    "tests/native/test_target_analysis.cpp": "ef921cc20c11b41ef1c5200f6f9dea1d5ef6c02029807c9c94aaf28ab0c7e74e"
+  },
+  "local_task_record": ".tmp/manual-workflow-verification/moments-20261106/entry.json",
+  "evidence_pins": {
+    ".tmp/manual-workflow-verification/moments-20261106/host-pairs023.json": {
+      "bytes": 18011,
+      "sha256": "6920e7d81efbd54eba5a09e6e32850d022b5754c5291fc05e9482011d39569f9"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/installed-identities016.json": {
+      "bytes": 3589,
+      "sha256": "1bf664bcda29e9d6620989a8777a45abbd973df1b32556b899c2f5e22417e220"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/linux-installed-identities014.json": {
+      "bytes": 671,
+      "sha256": "479c907e54cb255a91e823307b96216bfefb8cb44b9e07ac40f5dfff609e91d7"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/python004.xml": {
+      "bytes": 1750,
+      "sha256": "b7aaf9f8b3a35351c231e211dc625950ba5544099ec9810b1c29a67fef1683f9"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/python017.xml": {
+      "bytes": 354761,
+      "sha256": "9c82b41ab9bae3f1cb132c628f74223c696905f4baf12a16a0bbd54bd5214d10"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/python020.xml": {
+      "bytes": 802,
+      "sha256": "4ede5d3247b94c1e48eb3cb039958d576b39dbe89519e097a40c6766db6698b7"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/python021.xml": {
+      "bytes": 1254885,
+      "sha256": "b95ec13978c70170ba7be72972c32dbe98832a943b4c340a9dd8e6b49c446049"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/retirement026.json": {
+      "bytes": 920,
+      "sha256": "ec8350597a3bc6e598c802b1e46e90e0faa2aa9cc4e15e49703be5373f5f4a75"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/early-retirement018.json": {
+      "bytes": 403,
+      "sha256": "c25a3de500d14904018ce0746beec3e2c4888345c9bb3a81a02d71b9dae4a8c6"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/linux-retirement027.json": {
+      "bytes": 285,
+      "sha256": "7bb0e1e227fc79adaff199918916a6d6a229cdae998609873b85719bf3030005"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/reference018.zip": {
+      "bytes": 69507,
+      "sha256": "8c4021298022926bed76b6953d96f142a15910025bdfbbefcfefcbb19c58f60f"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/python020-retention026.zip": {
+      "bytes": 14049,
+      "sha256": "2e36d7af3a0cbdd749b176106429c3a5c73eca095528875fb343e3981b545667"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/python021-retention026.zip": {
+      "bytes": 533784,
+      "sha256": "7a095dd5c655bc60b557b2e5e5322a86b26a12d4d1cde501dd0b76d17a6b461f"
+    },
+    ".tmp/manual-workflow-verification/moments-20261106/native022-retention026.zip": {
+      "bytes": 680549,
+      "sha256": "992de266dc264546bf446c1a32587d42f4794b474349939953f2616aad9d3014"
+    }
+  },
+  "remaining": [
+    "M3 numeric presentation/scientific notation and labels; remaining required Analyzer options",
+    "Wider ROI constructors/positioned/cross-plane threshold/RGB/legacy types/replay",
+    "Linux Python/UI, macOS and supported-platform release gates",
+    "Full table editing/import/filtering/summaries",
+    "Full commercial inventory and equivalent-output performance qualification",
+    "Full99-family ImageJ/Fiji editor goal"
+  ],
+  "local_task_record_sha256": "d2033e4467964b619f5c6e454311e58c2de38276554997220e694a725b72900e",
+  "document_sha256": {
+    "docs/PLAN.md": "108cd14a2975958e7a48f3385e134b1a98081a2236ef0f6e892af471e58c7da8",
+    "docs/COVERAGE_CHECKLIST.md": "d97a3a64b7d403a17dfa58fd89b75d1ff4d043609c3a70c85c9427c284fb07eb",
+    "docs/TARGET_ANALYSIS.md": "7a4c8457521fd547ea7b2c7ec03d3478357fce389f08d23a8b6e4f58a46e377a",
+    "docs/SOL_ULTRA.md": "8553232c4f3b78ac74b0de261ab29c80af03f85a504596478515d00912632cd4",
+    "docs/THREE_AGENT_EXECUTION.md": "0734cc43eeece9cec838e5cdee1fff120705137e01de0dfcdccb6141e9699e2c"
+  }
+}

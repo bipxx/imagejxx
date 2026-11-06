@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Area fraction (%Area) now has scoped native/Python and both-Windows-host coverage, including independent raw populations and Float32 overflow rounding. Skewness/kurtosis (Skew/Kurt) are next; full ImageJ/Fiji and release scope remain open.
+Updated 2026-11-06. Skew/Kurt now has scoped API/native/installed-client and both-Windows-host evidence; all eight owned scratch groups are retired. Next ready is scientific notation/numeric presentation. [Exact scope](parity/reviews/moment-measurements-20261106.json); full ImageJ/Fiji and release scope remain open.
 
 This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
 
@@ -32,6 +32,32 @@ Each family has its required behavior, owner and remaining work. Registered
 option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
+
+## Current increment: Skew/Kurt (T04a.2 M3)
+
+This increment is accepted only for the scope in its [delivery receipt](parity/reviews/moment-measurements-20261106.json). Owners: T04a.2 M3 for measurements, T15 for consumed settings, T00 for wider platform/release qualification. Root completed all eight owned scratch retirements. [Existing task record](../.tmp/manual-workflow-verification/moments-20261106/entry.json) contains the contract, source identities and checks. Local receipts are workspace evidence; the linked delivery receipt preserves their identities and limitations.
+
+| Aspect | Observed status | Evidence / remaining exit |
+|---|---|---|
+| I: native and Python | Implemented, scoped | Default-off `TargetAnalysisOptions.moments`; optional `TargetAnalysisPlane.skewness` / `kurtosis`, read-only Python results; captured request and provenance. See [API tests](../tests/python/test_moment_measurements.py). |
+| V: original numerical behavior | Passed for stated corpus | 1,437 ordinary/redirect observations plus 182 tail cases: [fixture](../tests/fixtures/moment-measurements-imagej154r.json), [observer](../tests/reference/ObserveMomentMeasurements.java). Wider types/constructors remain unqualified. |
+| V: affected consumers | Scoped passed | 8,258 distinct installed Windows Python passes; one optional OpenGL skip. Windows/Linux native controls and installed C++ clients pass. Exact union/reuse and two initially failing Float COM controls are preserved in task record `verification_union023`; no all-platform Python claim. |
+| UI: actual hosts | Scoped passed | 28 matching affected standalone C++/Python Windows ImGui host pairs; actual independent controls, table/CSV and preferences/workspace. [Comparison receipt](../.tmp/manual-workflow-verification/moments-20261106/host-pairs023.json). Linux/macOS UI remain open. |
+| Integration/acceptance | Scoped accepted | Eight owned groups retired; four necessary archives verified, SDK/observer compiler products retained as identities only. API docs and queue reconciled. [Closeout](parity/reviews/moment-measurements-20261106.json). |
+| R: release | Open | Full M3/feature-family, licensing enumeration, missing references and supported-platform release exits remain open. |
+
+Detailed behavior within the current scope:
+
+- [x] One captured computation with independently selectable Skew and Kurt outputs; default-off behavior and existing saved column choices preserved.
+- [x] Reuse ordered weight accumulation; preserve typed Byte/Short/Float, density, LIMIT, empty, singleton, cancellation-sensitive variance and nonfinite behavior from original observations.
+- [x] Correct Float COM threshold membership for the observed perturb-before-comparison cases; preserve independent geometric and area-fraction populations. Initial failures and corrected passes remain in the existing record.
+- [x] Preserve point and original zero-valued line/angle behavior; reject unsupported generic requests before reads rather than inventing moments.
+- [x] Cover current selection, ordered manager and redirected measurement paths, source/history protection and applicable stale/cancel/resource guards.
+- [x] Exercise separate Skew/Kurt column choices, actual preferences Apply, table/CSV, saved settings/workspace and removal of both columns during a captured job.
+- [x] Rebuild affected bindings and verify installed module/header/library identities and Windows/Linux C++ consumers after the public struct changes.
+- [x] Required evidence retained/hash-verified, all eight owned scratch groups retired, active caches/runtime/installed SDKs preserved. Known bytes before/after retirement: 7,473,446,484 / 7,459,706,257, before final docs. [Exact receipts](parity/reviews/moment-measurements-20261106.json). Complete budget remains unverified: 214 inaccessible subtrees are unknown.
+- [x] Reconcile [API contract](TARGET_ANALYSIS.md), PLAN, coverage and [scoped receipt](parity/reviews/moment-measurements-20261106.json); preserve numerical failures/corrections and remaining platform/variant limits.
+- [ ] Finish residual M3 options, including numeric presentation and labels, under their existing owners; this increment does not close them.
 
 ## Accepted scoped workflows
 
@@ -72,6 +98,8 @@ Every checked entry below has **I: delivered, V: scoped, UI: Windows C++ and Pyt
 - [x] Default-None redirected intensity through captured two-owner API, actual Analyze source selector/Measure/manager, mixed calibration/threshold/geometry, stack mapping, scalar/point/line, mask-source, CSV/workspace and stale/close/cancel guards (`G009 G066 G068 G071`). I:delivered; V:549 original cases/588 rows,5,173 distinct installed Python passes/1optionalGLskip with scoped reuse, affected Windows/Linux native and installed Windows SDK client; UI:96 matching Windows host pairs (10new redirect profiles); R:open. Positioned/cross-plane threshold/replay/RGB/wider platform variants remain unqualified. [Scope, failures and reuse](parity/reviews/redirect-measurements-20261106.json).
 
 - [x] Captured %Area API and actual column choice/Measure/manager/redirect/table/CSV/workspace, independent of density and LIMIT; ordinary and six Float32 overflow observations, both Windows hosts and Windows/Linux native/installed C++ checks (`G009 G066 G068 G071`). I: delivered; V: scoped with explicit unchanged-input reuse; UI: both Windows hosts; R: open. [Evidence and remaining limits](parity/reviews/area-fraction-measurements-20261106.json).
+
+- [x] Default-off Skew/Kurt captured API, typed ordered moments and actual independent column choices/table/CSV/preferences/workspace, 28 affected Windows host pairs and Windows/Linux native/installed C++ clients (`G009 G066 G068 G071`). I: delivered; V: scoped; UI: Windows C++/Python ImGui; R: open. [Exact evidence and limitations](parity/reviews/moment-measurements-20261106.json).
 
 ## Cross-cutting exits still open
 
@@ -423,6 +451,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Remaining configuration groups, real DPI/keyboard-only/assistive access and macOS/Linux installed-platform checks remain required; no family or milestone is complete.
 ### G009 Measurement/plot defaults
 
+**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#current-increment-skewkurt-t04a2-m3). Full-family exits below stay open.
+
 **Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
 **LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
@@ -435,7 +465,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subsets:** Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
-- [ ] Visible/exported result columns, decimal formatting and profile sampling defaults are consumed. Complete selected measurement computation, threshold limits, redirect images and configurable plot axes/presentation remain.
+- [ ] Complete remaining measurement options, numeric presentation/scientific notation, labels and configurable plot axes/profile sampling. Scoped LIMIT, redirect, %Area and Skew/Kurt have the linked evidence; wider types/positions/cross-plane/replay and platform variants remain with their owners.
 ### G010 Resource settings
 
 - [ ] Complete full `G010` scope and supported release exits.
@@ -2489,6 +2519,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ### G066 Image/ROI measurements
 
+**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#current-increment-skewkurt-t04a2-m3). Full-family exits below stay open.
+
 **Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
 **LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
@@ -2537,6 +2569,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Circularity limits, exclude-edge/include-hole policies, summary, outlines/masks/ROI outputs, measurement choices and stack/C/T processing
 ### G068 Scale and calibration
 
+**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#current-increment-skewkurt-t04a2-m3). Full-family exits below stay open.
+
 **Redirect accepted subset:** Session-local source selector and two-owner measurements/outputs have [scoped evidence](parity/reviews/redirect-measurements-20261106.json); full-family residuals remain open.
 
 **LIMIT accepted subset:** Captured threshold-limited measurement/outputs are scoped delivered; [receipt](parity/reviews/threshold-measurements-20261106.json). Full-family residuals below remain open.
@@ -2569,6 +2603,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [ ] Thick-line and rectangular averages, configurable interpolation/sampling, live profiles, Z/T profiles and fixed plot axes
 ### G071 Results and tables
+
+**Current Skew/Kurt scope:** See [implementation, checks, hosts and scoped acceptance](#current-increment-skewkurt-t04a2-m3). Full-family exits below stay open.
 
 - [x] Scoped %Area column control, table/CSV and saved preferences/workspace in both Windows hosts; default empty-list behavior and unknown saved names preserved. [Evidence](parity/reviews/area-fraction-measurements-20261106.json). Full table editing/import/filtering/summaries and release scope remain open.
 
@@ -2876,8 +2912,10 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Reconcile stale family/child labels against exact scoped receipts without rewriting historical outcomes or treating partial references as full certification.
 - [ ] Keep missing reference paths and producer/reader mappings with T00; recover only from a new plausible source and never recreate retired build generations.
 - [ ] Keep every deferred gap with its T00–T15 owner; queue changes do not close unfinished formats, point/manager, analysis, Fiji or platform variants.
-- [ ] Keep cleanup claims evidence-based: the latest [area-fraction closeout](parity/reviews/area-fraction-measurements-20261106.json) records all10owned scratch groups retired with verified retained evidence;214 inaccessible storage subtrees leave complete local budget unverified. Reconcile the current task receipt at every closeout; this is historical evidence, not a fresh storage measurement or an automatic filesystem guard.
+- [ ] Keep cleanup claims evidence-based: the latest [moment closeout](parity/reviews/moment-measurements-20261106.json) records all eight owned groups retired and four verified necessary archives; 214 inaccessible storage subtrees leave complete local budget unverified. Historical earlier cleanup receipts retain their own scope. Reconcile the current task receipt at every closeout; instruction text is not an automatic filesystem guard.
 
 ## Next update
 
-Next, complete Skew/Kurt as one moment workflow. Reuse ordered weight accumulation where valid; observe processor-specific zero/empty/nonfinite/density/LIMIT and point/line behavior before freezing API signatures. Put numerical tail positives before links, then qualify actual controls, table/CSV and persistence. Wider M3/T06/T14 variants retain their owners; update affected entries and exact scoped evidence at closeout.
+Next ready: scientific notation and numeric presentation, as detailed in PLAN. Freeze original formatting/precision behavior, extend the existing shared table/CSV formatter and settings consumer, preserve raw accepted values/defaults, and qualify actual controls/persistence in both hosts. Labels and wider M3/T06/T14 variants retain their existing owners; full M3 remains open.
+
+At every subsequent task closeout, update the existing behavior and residual rows, I/V/UI/R states, exact input/platform evidence, unavailable checks and cleanup outcome. Keep PLAN as the execution queue and this file as the single coverage view.

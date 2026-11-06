@@ -38,6 +38,9 @@ struct TargetAnalysisOptions {
   // Explicit %Area: raw nonzero/threshold membership, independent of LIMIT and
   // density. Area and point rows consume sampled threshold; line/angle rows0.
   bool area_fraction = false;
+  // Explicit legacy ordered Skew/Kurt request; preserves processor-specific
+  // populations and excess-kurtosis convention. Line/angle rows retain zero.
+  bool moments = false;
 };
 struct TargetAnalysisLimits {
   std::size_t max_pixels = 128ULL * 1024 * 1024;
@@ -105,6 +108,8 @@ struct TargetAnalysisPlane {
   std::optional<PlanePosition> sampling_position;
   // Present only when area_fraction requested; percentage, empty membership NaN.
   std::optional<double> area_fraction;
+  // Present together only when moments requested; may be NaN or infinity.
+  std::optional<double> skewness,kurtosis;
 };
 // Detached results retain no source/provider or application. Distances are
 // Profile/calibrated lengths use the captured spatial affine; flagged whole-image
