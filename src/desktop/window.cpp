@@ -1298,6 +1298,7 @@ struct Window::Impl {
     std::shared_ptr<const void> reservation;
     std::shared_ptr<RenderMemory::Lease> measurement_record_memory;
     std::size_t measurement_workflow_size=0,measurement_record_bytes=0;
+    std::size_t profile_samples=0;std::uint64_t profile_plot_generation=0;
     State state;
     ComponentCounts components;
     std::optional<PreparedOperation> prepared;
@@ -4574,11 +4575,17 @@ struct Window::Impl {
     options.samples_per_segment=std::size_t(preferenceState.settings.integer("profile_samples"));
     TargetAnalysisLimits limits;limits.max_working_bytes=processingCap();
     const auto command=resolve_target_analysis(target,options,limits);
-    const auto text=captured_measurement_row_bytes(command);
-    const auto workspace=RenderMemory::add(command.estimate().working_bytes,text);
+    const bool recordStep=owner.recording;const auto workflowSize=owner.workflow.size();
+    if(recordStep && !owner.workflow.is_array())throw std::invalid_argument("Workflow must be an array");
+    const auto recordBytes=recordStep?RenderMemory::add(131072,RenderMemory::mul(RenderMemory::add(workflowSize,1),sizeof(Json)*2)):0;
+    std::shared_ptr<RenderMemory::Lease> recordMemory;MetadataObject profileRecord;
+    if(recordStep){recordMemory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(recordBytes));const auto value=captureProfileRecord(command,preferenceState.settings);if(measurementRecordWorkingBytes(value)>65536)throw std::length_error("Profile record exceeds captured allowance");profileRecord=metadataObjectFromJson(value);}
+    const auto text=captured_measurement_row_bytes(command);const auto generation=livePlot.generation;
+    const auto workspace=RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,text),recordBytes);
     if(workspace>processingCap())throw std::invalid_argument("Profile exceeds current processing memory budget");
     measurementPendingMemory=renderMemory->acquire(RenderMemory::add(command.estimate().plot_bytes,text));
-    try{start([command,cap=limits.max_working_bytes]{return JobResult(command,execute_target_analysis(command,{},cap));},
+    try{start([command,cap=limits.max_working_bytes,recordStep,workflowSize,recordBytes,recordMemory,profileRecord=std::move(profileRecord),generation]{
+        JobResult result(command,execute_target_analysis(command,{},cap));result.recorded=recordStep;result.record=profileRecord;result.measurement_record_memory=recordMemory;result.measurement_record_bytes=recordBytes;result.measurement_workflow_size=workflowSize;result.profile_samples=command.options().samples_per_segment;result.profile_plot_generation=generation;return result;},
         facade,false,"Profile","Profile",workspace,{},true);
       analysisTask=ReadOnlyTask::Profile;
     }catch(...){measurementPendingMemory.reset();throw;}
@@ -7278,6 +7285,28 @@ void Window::clearError() {
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
 
+  if(name=="run_workflow" && workflow.is_array() && workflow.size()==1 && isProfileRecord(workflow[0])){
+    if(!p.is_object())throw std::invalid_argument("Profile workflow parameters must be an object");Json request=p;request["record"]=workflow[0];action(p.empty()?"show_profile_rebind":"replay_profile",request);return;
+  }
+  if(name=="show_profile_rebind" || name=="replay_profile"){
+    if(busy() || documents_.empty())throw std::invalid_argument("Select an idle image before replaying Profile");
+    if(!p.is_object() || !p.contains("record"))throw std::invalid_argument("Profile replay requires a captured record");
+    for(const auto& field:p.items())if(field.key()!="record" && (name=="show_profile_rebind" || (field.key()!="rebind" && field.key()!="document_id" && field.key()!="restore_sampling")))throw std::invalid_argument("Unknown Profile replay parameter");
+    const auto bytes=measurementRecordWorkingBytes(p.at("record"));if(bytes>impl->processingCap()/4)throw std::length_error("Profile record exceeds processing budget");auto memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(bytes*4));const auto decoded=decodeProfileRecord(p.at("record"));
+    if(name=="show_profile_rebind"){
+      const auto selected=document()->id;const auto reviewed=captureProfileReplaySource(controller_->resolve_target({},selected));
+      Json values={{"rebind",false},{"restore_sampling",true},{"sampling_caption","Recorded samples per segment: "+std::to_string(decoded.samples)+". Current: "+std::to_string(settings().integer("profile_samples"))+". Zero uses the automatic interval policy."}};
+      Json fields=Json::array({{{"name","rebind"},{"label","Use selected image's current line and view"},{"kind","bool"}},{{"name","restore_sampling"},{"label","Restore recorded Profile sampling"},{"kind","bool"}}});
+      impl->ask("Replay Profile",std::move(values),[this,memory,record=p.at("record"),selected,reviewed](Json values){
+        if(documents_.empty() || document()->id!=selected)throw std::invalid_argument("Selected source changed; reopen Profile review");validateProfileReplaySource(reviewed,controller_->resolve_target({},selected),false);
+        Json request={{"record",record},{"rebind",values.at("rebind")},{"restore_sampling",values.at("restore_sampling")}};if(values.at("rebind").get<bool>())request["document_id"]=selected;action("replay_profile",request);
+      },std::move(fields),"profile_replay");return;
+    }
+    auto boolean=[&](const char* key){if(!p.contains(key))return false;if(!p.at(key).is_boolean())throw std::invalid_argument("Profile replay choices must be boolean");return p.at(key).get<bool>();};const bool rebind=boolean("rebind"),restore=boolean("restore_sampling");
+    auto sourceId=rebind?document()->id:decoded.source.document_id;if(p.contains("document_id")){const auto& value=p.at("document_id");if(!value.is_number_integer() || (!value.is_number_unsigned() && value.get<std::int64_t>()<=0) || (value.is_number_unsigned() && !value.get<std::uint64_t>()))throw std::invalid_argument("Profile replay requires a positive source ID");sourceId=value.get<std::uint64_t>();}
+    if(!rebind && sourceId!=decoded.source.document_id)throw std::invalid_argument("Changing Profile source requires explicit rebind");if(document()->id!=sourceId)throw std::invalid_argument("Activate the recorded image or explicitly rebind Profile");const auto source=controller_->resolve_target({},sourceId);validateProfileReplaySource(decoded.source,source,rebind);
+    if(!restore && std::size_t(settings().integer("profile_samples"))!=decoded.samples)throw std::invalid_argument("Profile sampling differs; explicitly restore recorded sampling in review");if(restore)updateSettings({{"profile_samples",decoded.samples}},false);impl->startProfile(documentById(sourceId));return;
+  }
   if(name=="run_workflow" && workflow.is_array() && workflow.size()==1 && isMeasurementRecord(workflow[0])) {
     if(!p.is_object())throw std::invalid_argument("Measure workflow parameters must be an object");
     Json request=p;request["record"]=workflow[0];action(p.empty()?"show_measurement_rebind":"replay_measurement",request);return;
@@ -9428,7 +9457,7 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (name == "save_workflow") {
-    if(workflow.is_array())for(const auto& step:workflow)if(isMeasurementRecord(step))(void)decodeMeasurementRecord(step);
+    if(workflow.is_array())for(const auto& step:workflow){if(isMeasurementRecord(step))(void)decodeMeasurementRecord(step);else if(isProfileRecord(step))(void)decodeProfileRecord(step);}
     if(workflow.is_array()&&workflow.size()==1&&workflow[0].value("schema",std::string{})=="imagejxx.native-workflow-program"){
       auto cap=std::size_t(settings().integer("processing_memory_mb"))*1048576;if(!cap)cap=256*1048576;
       auto text=native_workflow_program_from_record(metadataObjectFromJson(workflow[0]),desktop_workflow_program_limits(cap)).json();
@@ -9450,7 +9479,7 @@ void Window::action(const std::string &name, const Json &p) {
     if (get(root, "format") != "imagejxx-workflow" ||
         get(root, "version") != 1 || !get(root, "steps").is_array())
       throw std::invalid_argument("Invalid workflow file");
-    for(const auto& step:root.at("steps"))if(isMeasurementRecord(step))(void)decodeMeasurementRecord(step);
+    for(const auto& step:root.at("steps")){if(isMeasurementRecord(step))(void)decodeMeasurementRecord(step);else if(isProfileRecord(step))(void)decodeProfileRecord(step);}
     workflow = get(root, "steps");
     return;
   }
@@ -10756,6 +10785,7 @@ void Window::poll() {
         if(RenderMemory::add(RenderMemory::add(RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command)),completed.table_workspace),overlayBytes),completed.measurement_record_bytes)>impl->processingCap())
           throw std::invalid_argument("Analysis exceeds current processing memory budget");
         if(completed.analysis_profile) {
+          if(completed.profile_samples!=std::size_t(impl->preferenceState.settings.integer("profile_samples")) || completed.profile_plot_generation!=impl->livePlot.generation || completed.recorded!=recording || (completed.recorded && (!workflow.is_array() || workflow.size()!=completed.measurement_workflow_size)))throw RevisionConflict();
           auto& profile=*completed.analysis_profile;
           if(profile.planes.size()!=1)throw std::invalid_argument("Profile UI requires one captured plane");
           const auto unit=command.spatial().unit;const auto valueUnit=command.intensity().value_unit();
@@ -10766,7 +10796,8 @@ void Window::poll() {
               captured.id(),impl->nextNumericPayloadId(),captured.data().metadata.title,
               plot_plane_caption(captured,"XY profile")+" | "+plot_selection_caption(captured),yLabel,&impl->measurementPendingMemory);
           std::string status="Profile complete";
-          impl->publishNumericPlot(std::move(payload),captured,&command.target());++impl->nextPlotPayloadId;
+          OutputPublication recordedOutput(results,workflow,{},"",completed.recorded?metadataJson(completed.record):Json{});
+          impl->publishNumericPlot(std::move(payload),captured,&command.target());recordedOutput.publish();++impl->nextPlotPayloadId;
           impl->status.swap(status);return;
         }
         if(!completed.overlay_plan)throw std::logic_error("Measurement overlay capture is missing");
@@ -12389,6 +12420,11 @@ void Window::Impl::recorder() {
       ImGui::EndDisabled();ImGui::PopID();continue;
     }
 
+    if(isProfileRecord(step)) {
+      ImGui::Text("%zu. Captured Profile",i+1);ImGui::PushID(static_cast<int>(i));ImGui::BeginDisabled(owner.busy() || owner.documents_.empty());
+      if(ImGui::Button("Replay Profile"))guard([&]{owner.action("replay_profile",{{"record",step}});});observeControl("workflow.profile."+std::to_string(i)+".replay");ImGui::SameLine();
+      if(ImGui::Button("Rebind / Profile sampling..."))guard([&]{owner.action("show_profile_rebind",{{"record",step}});});observeControl("workflow.profile."+std::to_string(i)+".review");ImGui::EndDisabled();ImGui::PopID();continue;
+    }
     if(isMeasurementRecord(step)) {
       ImGui::Text("%zu. Captured Measure",i+1);ImGui::PushID(static_cast<int>(i));ImGui::BeginDisabled(owner.busy() || owner.documents_.empty());
       if(ImGui::Button("Replay Measure"))guard([&]{owner.action("replay_measurement",{{"record",step}});});observeControl("workflow.measurement."+std::to_string(i)+".replay");ImGui::SameLine();
@@ -12735,7 +12771,7 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
     ImGui::TextUnformatted(plot.payload->caption().c_str());
     ImGui::TextWrapped("Source: %s",plot.payload->source_title.empty()?"(untitled source)":plot.payload->source_title.c_str());
     if(!plot.payload->context_caption.empty())ImGui::TextWrapped("%s",plot.payload->context_caption.c_str());
-    if(ImGui::Button("Close plot")){plot.payload.reset();plot.source.reset();fitPlotDrag.reset();if(snapshot)snapshot->open=false;endPlot();return;}
+    if(ImGui::Button("Close plot")){plot.payload.reset();plot.source.reset();fitPlotDrag.reset();++plot.generation;if(snapshot)snapshot->open=false;endPlot();return;}
     observePlotControl("close",true,nullptr,nullptr,ImGui::GetCurrentWindow());
     if(ImGui::GetContentRegionAvail().x>180.f*guiScale)ImGui::SameLine();
     if(ImGui::Button("Export CSV")) {
@@ -14085,6 +14121,9 @@ void Window::Impl::dialogs() {
         dialog.controls["group_sizes"] = std::move(observed);
       }
     }
+    if(dialog.id=="profile_replay" && dialog.values.contains("sampling_caption")){
+      const auto& caption=dialog.values.at("sampling_caption").get_ref<const std::string&>();ImGui::TextWrapped("%s",caption.c_str());if(headlessDiagnostics){dialog.controls["sampling_caption"]=itemControl(false);dialog.controls["sampling_caption"]["read_only"]=true;dialog.controls["sampling_caption"]["text"]=caption;}
+    }
     if(dialog.id=="measurement_replay" && dialog.values.contains("manager_summary")){
       ImGui::TextUnformatted("ROI Manager rows to use for explicit rebind:");
       ImGui::BeginChild("Measure manager rows",{0,120},ImGuiChildFlags_Borders);
@@ -14752,7 +14791,7 @@ void Window::Impl::dialogs() {
     ImGui::EndPopup();
   }
   if(!dialog.open)dialog.calibrationCapture.reset();
-  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay")) {
+  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay")) {
     dialog.submit={};dialog.values=Json::object();dialog.schema=Json::array();dialog.text.clear();dialog.controls=Json::object();dialog.id.clear();
   }
   if(!dialog.open && dialog.id=="selection_enlargement"){dialog.enlargementSource.reset();dialog.submit={};}

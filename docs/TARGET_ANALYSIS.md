@@ -1230,7 +1230,7 @@ alone does not invalidate a saved record. Pixel/selection revisions and explicit
 owner/pose/threshold/composite/calibration contexts remain guarded. Saved intent
 retains no live source,provider,job or plot. Unknown versions refuse. Review
 currently bounds256open images/title4096; fingerprinting bounds1MiB,65536nodes
-and128levels. Full manager/Profile/live-plot/chained recording stays T04a.3;
+and128levels. Full manager and wider Profile/live-plot/chained recording stays T04a.3;
 non-area/type/constructor,table and platform/release residual owners are unchanged.
 
 
@@ -1269,5 +1269,50 @@ before index copies. Manager fingerprinting streams borrowed controls under a
 64MiB/1Mmetadata-node bound. Existing16MiB analysis-record and row/work limits
 still govern execution; a5000-index parser check is not large-manager performance
 qualification. V1's original bounds remain. Full MultiMeasure/Z/T M2b.3,
-Profile/live-plot/chained replay T04a.3,other types/constructors T06/T04 and full
+Wider Profile/live-plot/chained replay T04a.3,other types/constructors T06/T04 and full
 table/platform/commercial release obligations remain open.
+
+
+## Executable configured Profile recording
+
+[Scoped Profile evidence](parity/reviews/profile-replay-20261107.json) adds the
+closed `imagejxx.profile-command` V1 record to the existing private recorder.
+Its only root fields are `schema`, `version`, `source` and `profile_samples`.
+Sampling is 0 for the accepted automatic policy or integer2..1000000 per
+segment; Boolean/fraction/negative/1 and unknown grammar refuse. The existing
+bounded source descriptor binds consumed image/selection/pose/calibration and
+metadata. Manual threshold and composite presentation are not consumed here.
+No serialized record retains pixels, provider, plot or job pointers.
+
+Workflow Record captures supported current-plane thin line/polyline Profile.
+Save/Load preserves its immutable intent. `Editor.action(name,json_text)` and
+native `Window::action` share `replay_profile` and `show_profile_rebind`, with
+required `record`, optional booleans `rebind`/`restore_sampling`, and positive
+optional `document_id`. The existing single-record `run_workflow` opens review;
+row Replay defaults to recorded bindings. Replay starts the existing asynchronous
+Profile job; final output follows completion. Explicit rebind adopts the selected
+compatible current image/line/view after review is frozen and validated on Apply.
+
+The review defaults rebind off and sampling restoration on, showing saved/current
+counts and the automatic0 policy. Restoration visibly updates `profile_samples`
+and may remain if a later job fails. Without restoration, mismatched settings
+refuse. Saved intent remains unchanged. This tool sampling never changes Analyzer
+line measurement sampling or the published Measure V1/V2 grammar.
+
+The captured job guards sampling, recording flag, workflow extent and live plot
+data generation plus existing source/pose/calibration/cancel/resource ownership.
+Recorder capacity and payload/binding allocation precede creator publication;
+then plot and intent publish without a dummy document edit or second controller.
+Explicit Close advances plot generation, preventing pending work from recreating
+that window. Valid previous live output and independent snapshots survive a
+refused/cancelled job; stale source/calibration correctly invalidates live output.
+Presentation pan/zoom does not advance data generation.
+
+Both Windows hosts match the configured nine-point U8 local-calibration fixture,
+full raw/visible plot and CSV, four review refusals and nine job endpoints.
+49 installed cases include API0/3/5 sampling and affected recorder/Profile cases;
+two unrelated retired external-report readers remain explicitly unavailable.
+Workspace stores intent for explicit replay, not detached plot windows. Retained
+plot workspace persistence is next T04a.3; Z/time/thick/curved and wider source/
+calibration variants, general chained replay and platform/commercial release
+remain with their existing owners.

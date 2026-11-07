@@ -272,12 +272,12 @@ Json captureMeasurementRecord(const ResolvedTargetAnalysis& command,const Settin
   (void)decodeMeasurementRecord(value);return value;
 }
 MeasurementRecordSource captureMeasurementReplaySource(const ResolvedTarget& target,bool consumeComposite){return recordSource(target,consumeComposite);}
-void validateMeasurementReplaySource(const MeasurementRecordSource& expected,const ResolvedTarget& target,bool rebind,bool ignoreSelection) {
+void validateMeasurementReplaySource(const MeasurementRecordSource& expected,const ResolvedTarget& target,bool rebind,bool ignoreSelection,bool ignoreThreshold) {
   auto now=recordSource(target,expected.composite.has_value());recordRequire(now.shape.dimensions()==expected.shape.dimensions() && now.pixel_type==expected.pixel_type && target.source().data().dataset.sample_policy()==FloatingSamplePolicy::FiniteOnly,"Recorded Measure source shape/type differs; choose a compatible source");
   // Metadata revision also advances for our annotation output. Compare its
   // actual input fingerprint instead; retain pixel/selection revisions and all
   // captured pose/threshold/calibration/owner guards.
-  if(!rebind){auto binding=expected;now.revisions.metadata=0;binding.revisions.metadata=0;if(ignoreSelection)now.revisions.selection=binding.revisions.selection=0;recordRequire(sourceRecord(now)==sourceRecord(binding),"Recorded Measure source changed or closed; explicitly rebind to the selected source");}
+  if(!rebind){auto binding=expected;now.revisions.metadata=0;binding.revisions.metadata=0;if(ignoreSelection)now.revisions.selection=binding.revisions.selection=0;if(ignoreThreshold)now.threshold=binding.threshold=Json{};recordRequire(sourceRecord(now)==sourceRecord(binding),"Recorded Measure source changed or closed; explicitly rebind to the selected source");}
 }
 
 
@@ -304,5 +304,22 @@ std::string measurementManagerReview(const DocumentSnapshot& source,const std::v
   const auto bound=measurementManagerReviewBytes(source,indices);const auto& rois=source.data().rois;const auto count=indices.empty()?rois.size():indices.size();std::string text;text.reserve(bound);
   text=indices.empty()?"All current manager rows, in stored order:\n":"Current entries at the recorded indices, in recorded order:\n";
   const auto& view=source.display();for(std::size_t n=0;n<count;++n){const auto index=indices.empty()?n:indices[n];const auto& roi=rois[index];text+=std::to_string(n+1)+". ["+std::to_string(index+1)+"] "+Json(roi.name).dump()+" / "+Json(roi.selection.kind).dump()+" / T="+std::to_string(roi.t.value_or(view.t)+1)+" C="+std::to_string(roi.c.value_or(view.c)+1)+" Z="+std::to_string(roi.z.value_or(view.crosshair[2])+1)+" / "+std::to_string(roi.selection.points.size())+" points\n";}recordRequire(text.size()<=bound,"Manager review text exceeds admission");return text;
+}
+
+bool isProfileRecord(const Json& value){return value.is_object() && value.value("schema",Json{})=="imagejxx.profile-command";}
+ProfileRecord decodeProfileRecord(const Json& value){
+  measurementRecordWorkingBytes(value);recordFields(value,{"schema","version","source","profile_samples"});recordRequire(isProfileRecord(value) && recordUnsigned(value.at("version"))==1,"Unsupported Profile record schema/version");ProfileRecord out;out.source=decodeSource(value.at("source"));
+  recordRequire(out.source.threshold.is_null() && !out.source.composite,"Profile record cannot consume threshold/composite state");const auto count=recordUnsigned(value.at("profile_samples"));recordRequire(count<=1000000 && count!=1,"Invalid recorded Profile sample count");out.samples=std::size_t(count);return out;
+}
+MeasurementRecordSource captureProfileReplaySource(const ResolvedTarget& target){
+  recordRequire(captured_profile_available(target.source()),"Profile replay needs a supported current thin line or polyline");auto source=recordSource(target);source.threshold=Json{};return source;
+}
+Json captureProfileRecord(const ResolvedTargetAnalysis& command,const Settings& settings){
+  recordRequire(!command.options().statistics && !command.options().path.empty() && command.target().position_count()==1,"Profile recorder requires one captured path");
+  recordRequire(command.options().samples_per_segment==std::size_t(settings.integer("profile_samples")),"Profile record sampling differs from execution");
+  Json out={{"schema","imagejxx.profile-command"},{"version",1},{"source",sourceRecord(captureProfileReplaySource(command.target()))},{"profile_samples",settings.integer("profile_samples")}};(void)decodeProfileRecord(out);return out;
+}
+void validateProfileReplaySource(const MeasurementRecordSource& expected,const ResolvedTarget& target,bool rebind){
+  recordRequire(captured_profile_available(target.source()),"Profile replay needs a supported current thin line or polyline");validateMeasurementReplaySource(expected,target,rebind,false,true);
 }
 }

@@ -39,11 +39,17 @@ std::size_t measurementRecordWorkingBytes(const Json&);
 MeasurementRecord decodeMeasurementRecord(const Json&);
 Json captureMeasurementRecord(const ResolvedTargetAnalysis&,const Settings&);
 MeasurementRecordSource captureMeasurementReplaySource(const ResolvedTarget&,bool consumeComposite=false);
-void validateMeasurementReplaySource(const MeasurementRecordSource&,const ResolvedTarget&,bool rebind,bool ignoreSelection=false);
+void validateMeasurementReplaySource(const MeasurementRecordSource&,const ResolvedTarget&,bool rebind,bool ignoreSelection=false,bool ignoreThreshold=false);
 std::string measurementManagerFingerprint(const DocumentSnapshot&,const std::vector<std::size_t>&);
 void validateMeasurementManager(const MeasurementManagerRecord&,const DocumentSnapshot&,bool rebind);
 std::size_t measurementManagerReviewBytes(const DocumentSnapshot&,const std::vector<std::size_t>&);
 std::string measurementManagerReview(const DocumentSnapshot&,const std::vector<std::size_t>&);
 Json measurementSettingsJson(const Settings&);
+struct ProfileRecord {MeasurementRecordSource source;std::size_t samples=0;};
+bool isProfileRecord(const Json&);
+ProfileRecord decodeProfileRecord(const Json&);
+Json captureProfileRecord(const ResolvedTargetAnalysis&,const Settings&);
+MeasurementRecordSource captureProfileReplaySource(const ResolvedTarget&);
+void validateProfileReplaySource(const MeasurementRecordSource&,const ResolvedTarget&,bool rebind);
 
 }

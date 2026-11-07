@@ -1,0 +1,291 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T04a.3 configured current-plane Profile recording and rebind",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G070",
+    "G009",
+    "G085",
+    "G089"
+  ],
+  "commands": [
+    "profile",
+    "save_workflow",
+    "load_workflow",
+    "run_workflow",
+    "replay_profile",
+    "show_profile_rebind",
+    "export_plot_csv",
+    "keep_plot_snapshot"
+  ],
+  "scope": "Configured current-plane thin line/polyline Profile record/replay/rebind on existing finite scalar processing. Actual host comparison uses U8 local calibrated polyline; API automatic/3/5 sampling. This does not qualify every supported type/source/calibration or full T04a.3/G070.",
+  "aspects": {
+    "implemented": "Private closed Profile V1 record and bounded source binding; existing recorder/form/job/plot publication owner; explicit Close generation guard. No public core kernel, dependency, SDK or plot store added.",
+    "verified": "49 selected installed Windows cases pass, native Profile/Measure V1/V2 zero-read controls, full actual-host plot/CSV comparison; two old external readers explicitly deselected.",
+    "integrated": "Actual C++ and Python Windows ImGui Record/Profile/Save/Load/Replay/Run, sampling restore/rebind review, live/frozen CSV and workspace intent.",
+    "release_ready": false
+  },
+  "contract": {
+    "schema": "imagejxx.profile-command",
+    "version": 1,
+    "root_fields": [
+      "schema",
+      "version",
+      "source",
+      "profile_samples"
+    ],
+    "profile_samples": "0 automatic or integer 2..1000000 per segment; Boolean/fraction/negative/1/out-of-range rejected.",
+    "replay_parameters": {
+      "required": "record",
+      "optional": [
+        "rebind",
+        "restore_sampling",
+        "document_id"
+      ]
+    },
+    "default": "Bind recorded source/pixel/selection/pose/calibration/consumed metadata and sampling settings; manual threshold/composite display choices are not consumed.",
+    "explicit_rebind": "Adopt selected compatible current source/line/view after frozen review validation; saved intent unchanged.",
+    "restore_sampling": "Visible requested configuration update; may remain if a later job refuses, while source/history/plot publication remain guarded.",
+    "atomicity": "Reserve recorder before existing plot payload/binding publication; then publish record noexcept. Job consumes samples/recording/workflow size/live data generation plus existing target/cancel/resource guards.",
+    "live_vs_frozen": "Keep valid previous live output and independent frozen snapshots on refusal. Stale binding removes invalid live curves. Close increments generation so pending work cannot recreate a user-closed plot."
+  },
+  "verified": {
+    "installed_cases": 49,
+    "new_profile_cases": 11,
+    "measure_regression_cases": 15,
+    "manager_regression_cases": 21,
+    "mixed_workflow_regression_cases": 1,
+    "existing_profile_regression_cases": 1,
+    "deselected_external_readers": [
+      "test_standalone_measurement_replay_report",
+      "test_standalone_manager_measurement_replay_report"
+    ],
+    "external_report_scope": "Fresh Profile native report consumed by its reader. Two unrelated prior external reports retired; they are not passes and were not regenerated.",
+    "native_controls": "Profile codec/sample limits/threshold ignored/default binding/explicit rebind, plus published Measure V1/V2 controls; zero provider reads.",
+    "actual_hosts": {
+      "state": "matched_actual_profile_replay_hosts",
+      "samples": 9,
+      "review_refusals": 4,
+      "job_refusals": 9,
+      "csv_sha256": "c10773bfc8ff161b6278942b341f6780185c435390eacad4182373d5db6c4372",
+      "source_sha256": [
+        "5a1c05704056e3103c81f4f3605870abd34a1b09e50410a0a908512a43bb5346",
+        "6b4e7960bc3d70a9e5ce2e2cd483a8aecb2a2cdcc162a0611dc0462f3b472946"
+      ],
+      "normalization": "Onlyrecordsource.document_idand2plot.source_idfieldsafteractualsource/controlproof;payloadIDs,fullvisible/rawplotgeometry/style/arrays/units/caption,CSVand4/9refusalscomparedunchanged",
+      "paths": [
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\profile-replay-20261107\\scratch\\cpp011\\actual\\case.json",
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\profile-replay-20261107\\scratch\\python016\\pytest\\test_actual_profile_replay_con0\\actual\\case.json"
+      ]
+    },
+    "sample_x": [
+      0,
+      1.5,
+      3,
+      4.5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "sample_y": [
+      10,
+      10.5,
+      11,
+      11.5,
+      12,
+      12.75,
+      13.5,
+      14.25,
+      15
+    ],
+    "review_refusals": [
+      "pose",
+      "line",
+      "global",
+      "active_owner"
+    ],
+    "job_endpoints": [
+      "cancel",
+      "record_toggle",
+      "workflow_clear",
+      "sampling",
+      "plot_close",
+      "pose",
+      "line",
+      "global",
+      "source_close"
+    ],
+    "workspace": "Recorded intent restored for explicit replay; detached plot windows are not yet persisted.",
+    "source_and_history": "Protected through successful/rejected/cancelled routes; valid live/frozen payloads preserved as applicable; working reservations return to zero."
+  },
+  "source_sha256": {
+    "src/desktop/analysis_measurement.cpp": "3b44b8b7b248a4d816e2199f669020290f68a8aeef8905958aaf288c37f1d176",
+    "src/desktop/analysis_measurement.hpp": "b7dbbcfae0c9010ea36cf2ff1cda4018f0645576b86731a3f4b9cfa38ae6d169",
+    "src/desktop/window.cpp": "92db3c40578b2f07a4ce689a408a0466cd9f579e0934cc7fda5dd29aaec96cdd",
+    "src/desktop/effective_display_ui_probe.cpp": "bc67e26c4eec1b685528cf1f25aee994a84d02101171fd09cf6a3e2fb5e64969",
+    "src/desktop/effective_display_ui_probe.hpp": "2315119abf7a4a26c771c83acbfe58cf27a5c789dc2564fd70d30291abe58645",
+    "src/desktop/python.cpp": "139184dae05dbe160092b037700f6accae0946faa3c6bd4a4a5516ffd3554e1e",
+    "tests/native/test_display_actions.cpp": "defef1bc864deaeab86009175f165323c185aea8a1cf0c7c4840cd21f484d3db",
+    "tests/python/test_profile_replay.py": "f12362aa82ae4e9238101513de5b356fcaf28e1406f30f75d82fb779bdd7035c"
+  },
+  "installed_identities": [
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2",
+      "bytes": 84013
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5",
+      "bytes": 8688128
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "sha256": "73200d164da555ff060b2583e0f7035eabc71dfe945cc89e0206c0c58c3669ba",
+      "bytes": 21459968
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "sha256": "f0705c415380f1af8c7d7069846420aaae8fe59768e033b621dfe14d940c9a0b",
+      "bytes": 20845568
+    }
+  ],
+  "process_results": {
+    "build004.process.json": {
+      "exit_code": 1,
+      "seconds": 66.0776545999106,
+      "cleanup_complete": true
+    },
+    "build006.process.json": {
+      "exit_code": 0,
+      "seconds": 8.697761900024489,
+      "cleanup_complete": true
+    },
+    "cpp011.process.json": {
+      "exit_code": 0,
+      "seconds": 0.784203700022772,
+      "cleanup_complete": true
+    },
+    "install013.process.json": {
+      "exit_code": 0,
+      "seconds": 0.34700229996815324,
+      "cleanup_complete": true
+    },
+    "install014.process.json": {
+      "exit_code": 0,
+      "seconds": 0.31684840004891157,
+      "cleanup_complete": true
+    },
+    "native008.process.json": {
+      "exit_code": 0,
+      "seconds": 0.36949840001761913,
+      "cleanup_complete": true
+    },
+    "native009.process.json": {
+      "exit_code": 0,
+      "seconds": 0.0907833999954164,
+      "cleanup_complete": true
+    },
+    "native010.process.json": {
+      "exit_code": 0,
+      "seconds": 0.08909599995240569,
+      "cleanup_complete": true
+    },
+    "origins015.process.json": {
+      "exit_code": 0,
+      "seconds": 0.33060119999572635,
+      "cleanup_complete": true
+    },
+    "python016.process.json": {
+      "exit_code": 0,
+      "seconds": 6.548540399875492,
+      "cleanup_complete": true
+    },
+    "retain020.process.json": {
+      "exit_code": 0,
+      "seconds": 0.4706137999892235,
+      "cleanup_complete": true
+    },
+    "retain021.process.json": {
+      "exit_code": 0,
+      "seconds": 0.4410941998939961,
+      "cleanup_complete": true
+    }
+  },
+  "failures_and_corrections": [
+    {
+      "run": "build004",
+      "exit": 1,
+      "reason": "Native test lacked the direct manual_threshold.hpp include. Product _desktop/app targets built successfully.",
+      "correction": "Add declaring header in native consumer; build006 recompiles only that target.",
+      "retry_seconds": 8.697761900024489
+    },
+    {
+      "phase": "documentation edit",
+      "reason": "Single-line newline candidates duplicated an identical byte pattern; assertion stopped before write.",
+      "correction": "Deduplicate byte variants before unique-match replacement; no product run repeated."
+    }
+  ],
+  "build": {
+    "seconds_total": 74.77541649993509,
+    "compiler_failures": 1,
+    "retry_target": "imagejxx_display_actions_tests",
+    "unchanged_product_outputs_reused": true,
+    "cache": ".cache/native-verification/windows",
+    "runtime": ".cache/native-verification/runtime"
+  },
+  "retention": {
+    "scratch_absent": true,
+    "consumer_groups_retired": 5,
+    "source_bytes_removed": 728309,
+    "retained_archive_bytes": 137012,
+    "archive_sha256": "0dc73e6f83c0b7fd2d0cfcee634febc01e8b70fa7151a598e2c61be538553394",
+    "blockers": [],
+    "archive": ".tmp/manual-workflow-verification/profile-replay-20261107/evidence/phase020.zip",
+    "source_files": 119,
+    "review_before_retirement": "source_review018",
+    "verify_receipt": ".tmp/manual-workflow-verification/profile-replay-20261107/retain021.json",
+    "failure_diagnostics": "build004.log and build004.process.json retained; runtime cases passed.",
+    "active_compiler_runtime_sdk_preserved": true
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/profile-replay-entry003.json",
+    "after": ".tmp/manual-workflow-verification/profile-replay-after-retirement023.json",
+    "known_before_bytes": 7531709864,
+    "known_after_bytes": 7533882018,
+    "known_growth_bytes": 2172154,
+    "unavailable_subtrees": 214,
+    "full_budget_verified": false,
+    "incremental_allocation_bytes": 268435456,
+    "physical_free_before_build_bytes": 18432081920,
+    "last_physical_free_bytes": 17503240192,
+    "limitation": "Normalized scope includes .cache/.tmp/public evidence/dependency/runtime/Linux and inaccessible residual retired build remnants; unknown is not zero or headroom. No retired build tree recreated."
+  },
+  "reuse": "Accepted configured Profile numerical oracle and unchanged core/Linux/SDK evidence reused within scope; no numerical/public processing/SDK/dependency change. No general performance superiority claim.",
+  "residual_owners": {
+    "T04a.3/G038": "WiderZ/time/thick/curvedprofiles,plot/sessionpersistence,generalchainedreplay,chooserusability",
+    "M2b.3": "FullmanagerMultiMeasure/Z/T",
+    "T06/T04": "Othermeasurementtypes/non-areaRECT/COM/differing-XY",
+    "T08": "Foreign/brush/pointwise",
+    "T09": "Fulltable/AUTO/string/editing/delayedallocation",
+    "T12/T14/T00": "BroaderUI/platform/commercialrelease"
+  },
+  "waste_review": {
+    "delivered": "Configured Profile intent and explicit replay/rebind integrated in both Windows hosts.",
+    "measured_waste": "One missing test include cost an 8.698-second target-only retry; successful product outputs reused.",
+    "fixed": "Direct header before retry. Reused data-generation guard and existing atomic publication instead of a new controller. Full host comparison reused retained artifacts after review.",
+    "defer": "Detached plot workspace persistence is next T04a.3 increment. Wider profiles/chained replay retain their owners.",
+    "no_action": "No new kernel/store/controller/dependency/cache/runner or repeated green campaign; source, numerical, cancellation and license guarantees preserved.",
+    "cleanup": "All five groups retired after final source/ownership and archive verification; retained 137012 bytes, known growth 2172154 bytes, unknown scope remains unverified.",
+    "plan_feedback": "Freeze all PlotKind data and exact uint64 histogram counts before adding persistence; use current plotSnapshots/payload/session extension publication, not another plot store."
+  },
+  "local_task_record": ".tmp/manual-workflow-verification/profile-replay-20261107/entry.json"
+}

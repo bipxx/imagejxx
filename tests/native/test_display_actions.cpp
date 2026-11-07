@@ -5,6 +5,7 @@
 #include "analysis_measurement.hpp"
 #include <imagejxx/measurement_overlay.hpp>
 #include <imagejxx/channel_display.hpp>
+#include <imagejxx/manual_threshold.hpp>
 #include "point_raster_font.hpp"
 #include <filesystem>
 #include <fstream>
@@ -528,13 +529,29 @@ void managerMeasurementRecordCases(const std::filesystem::path& root) {
   }
   check(reader->reads==0,"Manager record/review acquired pixels");write(root/"record.json",raw);write(root/"summary.json",{{"state","observed"},{"plane_reads",reader->reads},{"strict_v2",true},{"ordered_manager_binding",true},{"large_indices",5000},{"active_selection_ignored",true},{"mask_path_bound",true}});
 }
+
+void profileRecordCases(const std::filesystem::path& root){
+  using namespace imagejxx::desktop;check(!std::filesystem::exists(root),"Fresh Profile record output required");std::filesystem::create_directories(root);
+  auto reader=std::make_shared<Source>(PixelType::UInt8,1);auto owner=std::make_shared<imagejxx::Document>(Dataset(reader));owner->select(Selection("line",{{0,0},{4,3}}));Application app;app.adopt(owner);Settings settings;settings.set("profile_samples",3);
+  TargetAnalysisOptions options;options.statistics=false;options.path=owner->snapshot().data().selection->points;options.samples_per_segment=3;const auto command=resolve_target_analysis(app.resolve_target(),options);const auto raw=captureProfileRecord(command,settings);const auto decoded=decodeProfileRecord(raw);check(decoded.samples==3 && isProfileRecord(raw),"Profile record lost sampling");validateProfileReplaySource(decoded.source,app.resolve_target(),false);
+  for(const auto& value:std::vector<Json>{true,-1,1,1000001,2.5,"3"}){auto bad=raw;bad["profile_samples"]=value;refuses([&]{decodeProfileRecord(bad);});}
+  auto bad=raw;bad["version"]=2;refuses([&]{decodeProfileRecord(bad);});bad=raw;bad["unknown"]=true;refuses([&]{decodeProfileRecord(bad);});
+  auto view=owner->snapshot().display();set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),{{10,20},{0,0,0}});owner->set_display(view);validateProfileReplaySource(decoded.source,app.resolve_target(),false);
+  view.crosshair[2]=1;owner->set_display(view);refuses([&]{validateProfileReplaySource(decoded.source,app.resolve_target(),false);});validateProfileReplaySource(decoded.source,app.resolve_target(),true);
+  owner->select(Selection("rectangle",{{0,0},{4,3}}));refuses([&]{validateProfileReplaySource(decoded.source,app.resolve_target(),true);});check(reader->reads==0,"Profile codec/review acquired pixels");write(root/"record.json",raw);write(root/"summary.json",{{"state","observed"},{"plane_reads",reader->reads},{"strict_profile",true},{"unused_threshold_ignored",true},{"rebind_checked",true}});
+}
 } // namespace
 int main(int argc,char **argv){try{
   if(argc==3 && std::string(argv[2])=="--manager-measurement-records") {managerMeasurementRecordCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
+  if(argc==3 && std::string(argv[2])=="--profile-records") {profileRecordCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
   if(argc==3 && std::string(argv[2])=="--measurement-records") {measurementRecordCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
   if(argc==3 && std::string(argv[2])=="--manager-measurement-replay") {
     Window w((std::filesystem::u8path(argv[1]).parent_path()/"manager-replay-preferences.json").u8string());
     imagejxx::desktop::managerMeasurementReplayUiCase(w,"imgui_cpp",argv[1]);return 0;
+  }
+  if(argc==3 && std::string(argv[2])=="--profile-replay") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"profile-replay-preferences.json").u8string());
+    imagejxx::desktop::profileReplayUiCase(w,"imgui_cpp",argv[1]);return 0;
   }
   if(argc==3 && std::string(argv[2])=="--measurement-replay") {
     Window w((std::filesystem::u8path(argv[1]).parent_path()/"replay-preferences.json").u8string());

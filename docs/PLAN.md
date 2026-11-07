@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); next is [configured Profile recording/rebind](#next-ready-increment-t04a3-profile-recording-and-rebind). Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); next is [retained numeric plot workspace persistence](#next-ready-increment-t04a3-retained-plot-workspace-persistence). Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -168,7 +168,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.2 M4: mixed measurement integration. | Both actual Windows hosts match110 rows/49 visible cells, overlays/table/CSV/reopen and composed lifecycle. All11 groups retired;24 Analyzer options reconciled. [Receipt](parity/reviews/mixed-measurement-20261106.json). Full M3/family/release remain open. |
 | Delivered scoped | T04a.3: current-selection Measure recording and explicit rebind. | 17 installed checks; actual both Windows hosts match4rows/72visiblecells,record/Replay/Run/rebind/settings,CSV/reopen and6review/10recorded-job refusals. All10 task scratch groups retired. [Receipt](parity/reviews/measurement-replay-20261106.json). Wider manager/Profile variants remain T04a.3. |
 | Delivered scoped | T04a.3: ordered ROI Manager Measure recording/rebind. | V2 all/subset/caller-order intent; actual both Windows hosts match32rows/84cells,read-only review,CSV/reopen and4review/11recorded-job refusals.36 installed API/regression passes plus2 corrected retained original/output readers; all5 scratch groups retired. [Receipt](parity/reviews/manager-measurement-replay-20261107.json). Full manager/Profile/chained/release remains open. |
-| Next ready | T04a.3: configured Profile recording/rebind. | Reuse startProfile,resolved analysis,profile_samples and existing plot/recorder publication. [Specification](#next-ready-increment-t04a3-profile-recording-and-rebind). Not implemented by manager replay. |
+| Delivered scoped | T04a.3: configured Profile recording/rebind. | 49 installed Windows checks; both actual hosts match9samples/visible plot/CSV,4review/9job endpoints and workspace intent. All5scratch groups retired. [Receipt](parity/reviews/profile-replay-20261107.json). Wider profile/chained/platform variants remain open. |
+| Next ready | T04a.3: retained numeric plot workspace persistence. | Preserve retained plot data, presentation and independent ownership through Save/Open using existing snapshots/session extensions. [Specification](#next-ready-increment-t04a3-retained-plot-workspace-persistence). |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1133,64 +1134,71 @@ clipped-row diagnostics are preserved; no numerical golden was changed. All five
 owned groups are retired. Full MultiMeasure/Z/T remains M2b.3, original delayed
 allocation remains T09, and Profile/chained/platform/release exits remain open.
 
-### Next ready increment: T04a.3 Profile recording and rebind
+<a id="next-ready-increment-t04a3-profile-recording-and-rebind"></a>
+### T04a.3 Profile recording and rebind: scoped delivered
 
-**User-visible exit.** Record a supported configured current-plane line/polyline
-Profile,Save/Load its intent,then Replay/Run or explicitly rebind to a compatible
-selected image/line/view. Matching distance/intensity arrays,visible plot and
-saved CSV appear in both ImGui hosts. Reopened workspace preserves the intent
-for explicit replay/rebind. A refusal/cancel/stale request preserves previous
-live/frozen plots and source/history. G070/G009/G085/G089 own this increment;
-G038 wider Z/time profiles remain separately owned. It is next ready,not active.
+[Scoped receipt](parity/reviews/profile-replay-20261107.json): 49 selected installed
+Windows cases, native zero-read Profile/Measure V1/V2 controls and both actual
+ImGui hosts. Nine configured samples, full visible/raw plot and CSV agree;
+four review and nine recorded-job endpoints protect applicable source/history,
+valid live output, frozen snapshots and reservations. Workspace retains intent
+for explicit replay; detached plot windows are not persisted by this increment.
+All five terminal groups retired after source/ownership review and hash verification.
+Keep default source binding, explicit sampling restoration and immutable intent;
+stale binding removes invalid live curves and pending work cannot recreate an
+explicitly closed plot. Full Profile/T04a.3 and release remain open.
 
-1. At entry inspect actual `startProfile`, `captured_profile_available`, the
-   Profile menu/control,plot diagnostics/export/snapshot paths,`JobResult` and
-   profile publication before editing. Freeze API signatures,timing,source/line/
-   pose/calibration/intensity ownership,owned files and applicable checks in its
-   existing task record. Existing profiles resolve one target with statistics
-   off,path from captured selection points,and `samples_per_segment` from
-   `profile_samples`; do not reinterpret Analyzer line sampling as Profile.
-2. Preserve `profile_samples`: default0 selects the existing automatic interval
-   policy; configured2..1000000 uses explicit samples per segment;1 is refused.
-   Reuse the actual settings validation and accepted configured Profile corpus.
-   Define default replay versus explicit restoration of authored sampling values
-   before coding; restoration is a visible configuration action,not a hidden
-   temporary global override. Preserve current measurement V1/V2 grammars.
-3. Extend the existing typed recorder family dispatch with a closed versioned
-   Profile intent,using proven private source/context bindings where consumed
-   semantics match. No live provider/job/plot pointer belongs in saved intent.
-   Default replay binds the recorded source/line/pose/calibration and settings;
-   explicit review adopts the selected compatible current line/view and shows
-   sampling choices. Freeze/revalidate review context before Apply; refuse wrong
-   shapes/types/lines,missing owners,invalid samples or versions before reads.
-   No new generic workflow-program variant,registry,controller or plot store.
-4. Reuse `resolve_target_analysis`,captured profile execution and existing numeric
-   plot ownership. Admit record/plot/source staging before copies; prepare plot
-   payload and recorder publication before changing live state so record+plot
-   publish together through the creator owner. Preserve prior frozen snapshots
-   and source/history on failure; avoid dummy document edits. Keep existing
-   cancel/stale-source/settings/owner-close/clear/resource guarantees.
-5. Reuse unchanged original/configured Profile numerical evidence and current
-   recorder evidence within scope. Add focused API and one shared actual both-host
-   Record/Save/Load/Replay/Run/rebind workflow,checking sample policy,raw arrays,
-   plot labels/units/visible output,CSV,workspace intent and previous live/frozen
-   plot protection. Include Apply/Cancel,changed review/job context and resource
-   release. Inspect caller/binding mutability,exceptions and probe input/receipt
-   schemas; batch related edits before one affected desktop build in active cache.
-   Install actual changed components and verify loaded paths/bytes before checks.
-6. Keep captures through final source/ownership review,then retain/hash and retire
-   terminal groups serially. Record measured checks/build/retries/generated bytes
-   and fix/defer/no-action waste decisions; update queue and canonical coverage
-   before a successor. Reuse completed evidence after a reader/probe-only fix.
-   Unknown214 storage subtrees keep the full8GiB budget unverified; existing
-   active compiler cache/runtime and cleanup ownership persist.
+<a id="next-ready-increment-t04a3-retained-plot-workspace-persistence"></a>
+### Next ready increment: T04a.3 retained numeric plot workspace persistence
 
-Wider Z/time/thick/curved Profile,plot-snapshot/session persistence and general
-chained replay remain explicitly T04a.3/G038 or their established owners; do not
-silently close them or make independent variants prerequisites for this workflow.
-Full manager MultiMeasure/Z/T M2b.3,non-area RECT/COM/differing-XY T06/T04,foreign
-T08,table AUTO/string/editing/delayed allocation T09 and platform/commercial
-release T12/T14/T00 remain open.
+**User-visible exit.** Keep numeric plot snapshots, save the workspace, reopen it,
+and recover their raw data, labels/units/captions, view/style and window order;
+CSV must agree before/after. Snapshots remain independent after source closure.
+Use existing `plotSnapshots`, immutable `CalibrationPlotPayload`, plot state,
+`sessionExtensions` and workspace publication. G070/G068/G069/G071/G089 and their
+T04a.3/T09/T15 owners apply; exact consumed fields/commands freeze at task entry.
+This is the only next-ready implementation, not a second queue.
+
+1. Inspect maintained keep/duplicate/close/export controls, `appendPlotSnapshot`,
+   payload/annotation/view/style structures, Save/Open and extension staging before
+   editing. Freeze actual signatures, return timing, resource ownership, installed
+   components and probe schemas. Check plot-only/zero-document session behavior
+   in the core before promising it; identify a concrete restriction if unsupported.
+2. Define one versioned bounded extension on the existing session owner. Inventory
+   all current PlotKind carriers: Profile, Histogram, Fit and CalibrationTable.
+   Preserve exact uint64 histogram counts/raw CSV, fit coefficients/annotation,
+   nonfinite values where accepted, curve/scatter arrays and labels. Do not flatten
+   counts into double or silently drop an unsupported kind/field. Unknown versions
+   and malformed/oversized data need explicit safe handling and compatibility.
+3. Serialize only retained snapshots, not live provider/job/document guards. Keep
+   original source provenance as descriptive data; restore detached payloads with
+   valid fresh runtime IDs and preserve shared payload identity where applicable.
+   Store view/style/window order and table/raw-CSV choices through existing carriers;
+   do not add another plot store, controller or generic serialization framework.
+4. Admit serialization/decoded payload/window staging before copying. Prepare and
+   validate all restored state before replacing the existing workspace publication;
+   malformed data, allocation failure and stale owner checks preserve current
+   documents/results/workflow/plots. Inspect existing eager/asynchronous open timing
+   and cancellation semantics rather than assuming a transaction boundary.
+5. Add focused codec/API cases and one shared real-control workflow for both Windows
+   hosts: create representative retained kinds, customize view/style, Save/Open,
+   inspect raw/visible/CSV agreement, duplicate/close and source-independent export.
+   Include repeated-open IDs/sharing, old workspace compatibility, malformed/version/
+   size refusal, resource release and relevant lifecycle cases. Use exact uint64
+   boundary values and fit/table metadata assertions; reuse unchanged numerics.
+6. Batch affected desktop edits before one coherent build in the active cache;
+   inspect declaring headers and actual probe/caller schemas before compiling.
+   Verify installed bytes/origins and run affected workspace/plot/regression checks.
+   Keep consumer scratch through final review, then hash-retain and retire terminal
+   groups with the existing tools. Record build/check time, retries, generated bytes
+   and brief waste disposition; update canonical coverage/queue before the successor.
+
+Wider Z/time/thick/curved profiles and general chained replay remain T04a.3/G038;
+full manager MultiMeasure/Z/T M2b.3, non-area RECT/COM/differing-XY T06/T04, foreign
+T08, table AUTO/string/editing/delayed allocation T09 and platform/commercial
+release T12/T14/T00 remain open. The214 inaccessible storage subtrees leave the
+full8GiB budget unverified; use the existing cache/runtime and measured bounded
+allocation, never unknown bytes as headroom or the retired build tree.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 
@@ -1393,7 +1401,9 @@ task; recording cleanup as future work does not complete it:
    entries. Update affected [coverage checklist](COVERAGE_CHECKLIST.md) items and
    their exact scoped receipt/platform limitations. Check off individual behavior
    exits only when their linked evidence supports them; leave pending verification
-   and wider variants open. Keep implementation,
+   and wider variants open. Refresh its current-WIP entry when observed state
+   changes during execution, including verification finished but publication
+   pending; follow its status and update rules without creating another queue. Keep implementation,
    verification, UI integration and release readiness separate; no per-task
    checklist copies or family-count completion percentage. Link detailed evidence once. Change dependency/order/validation only
    when the findings justify it; do not append another historical report here.
