@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); next is [bounded open-document mixed Batch](#next-ready-increment-t04a3-mixed-batch). Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); next is [Results sort/filter/view export](#next-ready-increment-t09-results-view). Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -174,7 +174,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.3: analysis and captured display-export chain. | Measure/PNG/Profile/PDF/Flatten;238distinct installed cases pass via234+4,24new; bothactualWindows hosts, nativeownership/currentmixed checks. All7groups+2prefs retired. [Receipt](parity/reviews/analysis-export-chain-20261107.json). |
 | Delivered scoped | T04a.3: ordinary-source editing/filter and analysis chain. | Gaussian/invert/Measure/Profile/PNG;391distinct scoped installed cases (30final edited+361unchanged), bothactualWindows hosts, history/UndoRedo/frozen owners/cancel and metadata admission. All10groups+3prefs retired. [Receipt](parity/reviews/edit-analysis-chain-20261107.json). |
 | Delivered scoped | T04a.3: mixed workflow editing/reorder/disable. | Idle draft, V2 persistence and authored enabled-subset mapping;427distinct installed cases via32new+395affected with2final strengthened readers, both actual Windows hosts, corrected native regressions and retirement.15groups+7prefs retired; [receipt](parity/reviews/workflow-editing-20261107.json). |
-| Next ready | T04a.3/T04b: bounded open-document mixed Batch. | Review an explicit source list and per-source output destinations, then run enabled work serially with per-item progress/results on the existing sequence/job owner. [Specification](#next-ready-increment-t04a3-mixed-batch). |
+| Delivered scoped | T04a.3/T04b: bounded open-document mixed Batch. | Ordered selected sources, global output review, one serial job owner, per-item progress/Profile snapshots/Cancel/stop-on-failure;455distinct installed cases via26+1+428, actual both Windows hosts and existing native regressions.14groups+8prefs retired; [receipt](parity/reviews/mixed-batch-20261107.json). |
+| Next ready | T09: Results sorting/filtering and view export. | Inspect/organize the produced rows and Copy/Save exactly the reviewed view using existing numeric provenance and CSV route. [Specification](#next-ready-increment-t09-results-view). |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1269,59 +1270,88 @@ Future native binding builds recompile them.214 inaccessible subtrees leave full
 budget unverified. Full T04a.3 and release remain open.
 
 <a id="next-ready-increment-t04a3-mixed-batch"></a>
-### Next ready: T04a.3/T04b bounded open-document mixed Batch
+### T04a.3/T04b open-document mixed Batch: scoped delivered
 
-**User-visible exit.** Choose an ordered list of already-open compatible images,
-review enabled edit/analysis/export commands and explicit per-source output
-paths, Apply to run serially, and see per-image and authored-step progress with
-completed/failed/canceled results. The same saved workflow must produce the
-manual pixels/history, rows, Profile data and files independently for each
-selected source. G085/G088/G089 and existing command-family owners apply.
+[Receipt](parity/reviews/mixed-batch-20261107.json),
+[coverage](COVERAGE_CHECKLIST.md#mixed-batch-current-wip). Review an ordered set of
+already-open images, explicit per-source paths and target/settings consent;
+Apply runs enabled authored commands serially through the existing mixed job
+owner. Global output conflicts/parents/font/layout validate before first effects.
+Current/future owners are guarded, per-item status keeps authored indices, and
+each Profile is retained through the existing snapshot owner. Earlier committed
+outputs/history survive cancellation or later failure. Review Cancel is inert.
 
-- At entry inspect actual recorder Batch routing, `NativeWorkflowPanel` batch
-  setup/job/result controls and the mixed cursor/rebind/export preflight. Freeze
-  real action signatures, return timing, installed consumers and result schema
-  in the existing task record before editing. Reuse controls where contracts
-  agree; do not send mixed analysis records to the operation-only native compiler.
-- Use one bounded reviewed source plan with stable IDs/order and current workflow
-  identity; reject duplicates, closed/incompatible sources and stale setup before
-  first effects. Require explicit per-source rebind and retain existing target,
-  calibration and settings consent. Keep strict saved V2 leaf records unchanged.
-  No automatic source discovery or hidden overwrite policy in this increment.
-- Preflight every enabled export's per-source authored index and absolute path,
-  parent/font policy and conflicts across the whole reviewed batch before work.
-  Disabled destinations are untouched. Show the actual source/path association;
-  reject ambiguous or missing overrides rather than writing every item to one
-  captured destination. File/folder naming variants remain assigned below.
-- Extend the current mixed sequence/job continuation for serial source plans;
-  keep one active processing job and the existing cancellation/publication owner.
-  Preserve per-item history and earlier committed rows/files on later failure.
-  Freeze pending consumed source/settings/cap context; no filtered workflow copy,
-  parallel batch scheduler, second engine, registry or new controller framework.
-- Make stop-on-failure and Cancel behavior explicit. Cancellation stops pending
-  work and prevents later sources from starting; successful earlier sources stay
-  committed and visible. Report source ID/title, execution ordinal, authored step,
-  completed count and terminal error independently; never call a partial batch
-  complete. Busy close/activation follows the existing pixel-lane contract.
-- Verify installed API and both actual hosts using at least two distinct sources,
-  a disabled export sentinel, reordered commands, per-source paths, raw rows/CSV,
-  literal pixels, Undo/Redo, Save/Load intent and independent reopened outputs.
-  Exercise later-source failure, Cancel during an item, stale/missing source,
-  duplicate/colliding outputs and zero final reservations. Inspect output capture
-  semantics and snapshot timing before writing assertions; this task exposed
-  two avoidable fixture assumptions there.
-- Own existing mixed/recorder/batch controls, bindings/probes/tests/docs only as
-  required by the inspected caller route. Batch core/header/binding/UI edits in
-  the active cache; choose affected checks and correct install components.
-  Inspect physical free space and full normalized storage first, retain terminal
-  groups serially after final review, and update canonical coverage at observed
-  checkpoints and closeout. No new cache/runtime or agents authorized.
+455distinct installed cases pass via26new+1corrected missing-source assertion+
+428affected/new bodies (28new,427regression overall), both actual Windows hosts,
+10existingnative routes and reentrant retirement. A native identity-field probe
+compile failure and one exception assertion failure are retained. Install004/005
+missed a fresh full process inventory; the actual lapse and successful inventories
+immediately before subsequent affected actions are recorded, without rerunning
+unchanged installs.14groups+8preferences/1126files/9697268B retired after final
+source review and verified2008902B retention; caches/runtime preserved. Known
+storage grew5457156B;214unknownsubtrees keep the complete budget unverified.
 
-General native-program Batch, filesystem/folder input, automatic naming/conversion,
-continue-on-error/resume policy and unsupported families remain T04b/T12/T10;
-wider All-Z/ROI/target/calibration/dtype/geometry/scientific/filter/point/manager/
-Profile/table/Fiji and platform/commercial/release exits retain existing owners.
-This successor is specified, not implemented or accepted.
+General native-program/folder/conversion/auto naming/resume/continue-on-error and
+unsupported variants stay T04b/T10/T12. Batch run status uses live IDs, not a new
+persisted setup format; workflow and retained output persistence keep existing
+owners. Broader source/type/target/ROI/All-Z/Profile/manager/table/Fiji and
+supported-platform/commercial/release exits remain open. This usable bounded
+workflow does not make all Batch variants a prerequisite for the next independent
+editing/analysis workflow.
+
+<a id="next-ready-increment-t09-results-view"></a>
+### Next ready: T09 Results sorting/filtering and view export
+
+**User-visible exit.** After Measure or Batch produces rows, choose a sort column
+and direction, filter the table, inspect the visible count/order, and Copy/Save
+exactly that reviewed view. Reset restores the original acquisition order and
+rows. Raw measurement values, numeric provenance and unrelated image/history
+remain unchanged. G071/G009/G089 and T09/T04/T12 own the scope.
+
+- At entry inspect `Impl::resultTable`, actual column/alias lookup, numeric-state
+  row ownership, `resultCsv`/Copy/Save routes, result publication and mutable
+  Python/C++ table consumers. The current table has scroll/resize/column paging,
+  with no sort/filter route in the inspected caller. Freeze actual action/getter
+  signatures, changed exports, defaults and concrete view invalidation behavior
+  in the existing task record before code; do not infer a read-only raw table.
+- Build the visible row-index projection on the existing results/numeric-state
+  owner and shared column resolver. Sort numeric values from raw typed cells,
+  not formatted display strings; preserve stable ties and define missing/null,
+  string, Boolean, nonfinite and signed-zero behavior explicitly. Keep IDs and
+  large unsigned integers exact. Default/reset remains acquisition order.
+- Provide useful numeric comparison and text filtering with explicit column,
+  operator and validated value; show applied criteria, visible/total count and
+  no-match state. Apply/Reset/invalid draft must be atomic and usable in both
+  ImGui hosts. Freeze case/locale and missing-value behavior against the owning
+  contract; do not add an expression language or generic query engine.
+- Use the same projection and numeric formatter for visible cells and reviewed
+  Copy/Save CSV, preserving quoting/newlines/precision/NaN policy/column choices.
+  Keep existing raw-result API/export compatibility explicit; label all-rows
+  versus current-view output clearly. Do not copy or reformat the entire raw
+  table independently in each UI/export path.
+- Define refresh when Measure/replay appends rows, Clear/replacement/workspace
+  changes the table, or a writable API mutates cells. Inspect actual mutation
+  routes before choosing invalidation; avoid speculative registries, repeated
+  full-table hash/serialization per frame or a second numeric provenance ledger.
+  Preserve legacy workspace defaults; freeze any necessary view persistence
+  fields/version/unknown-field handling before implementing their consumer.
+- Verify installed APIs and both physical hosts on mixed typed/raw rows and real
+  Measure/Batch output: stable sort/filter/reset, no matches, malformed inputs,
+  changing precision/columns, appended/replaced rows, source/history protection,
+  Copy equals Save/reopen and workspace behavior. Include strings with delimiters,
+  missing/nonfinite cells and exact large integer IDs; preserve old numerical
+  expectations. Match each test to inspected signatures/return timing.
+- Own results view/CSV/binding/UI/probes/tests/docs only where required. Use one
+  coherent active-cache build and correct install components, inspect live
+  processes immediately before each dependent action using successful enumerate/
+  filter commands, and record terminal ownership receipts. Retain reviewed
+  failure/success groups, verify hashes and retire scratch serially. Update
+  canonical coverage at observed checkpoints and closeout. No agents, new cache,
+  runner, scheduler or broad qualification campaign authorized.
+
+Import/cell editing/summary tools, full Java AUTO/string/delayed-column/per-column
+precision semantics and wider table/platform/clipboard/accessibility/release
+variants remain assigned T09/T12/T14. This successor is specified only.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 
@@ -1577,6 +1607,7 @@ feature or block unrelated ready work.
 | Two full double buffers in shared Python ingress | Fixed by T01 for image/stack conversion; inspect other binding paths when touched. | One owned destination, allocation regression and 168 layout/refusal cases. Six measured workloads; no general speed claim. |
 | Many temporary harness generations | T02: reuse existing drivers and data inputs; retire superseded scripts only with evidence identities preserved. | Prior audit counted 732 Python/171 PowerShell scripts; not every retained script is disposable. |
 | Shared headers/Make flags fanout | T02 plus source owners: batch coherent edits; inspect consumer dependencies before adding shared declarations and isolate only where measured reuse justifies it. | T04a.1 full batch: 109 compile entries/830.9 s; UI-only fix: one/38.3 s; smoke-only fix: one/17.4 s. Different workloads, not processing-speed comparisons. Core/SDK results reused for frontend-only fixes. NaN increment:102 logged desktop compilations/452.520s after required public Window declarations; targeted corrections35.168s and12.596s. Batch actual probe callers and inspect canonical metadata representations before the first expensive build; final probe-only changes reused142-case/core/SDK evidence appropriately. |
+| Repeated Batch guard scan | T04b: consolidate only at the next required cursor/guard change or when representative many-source profiling justifies it; preserve cancellation before transitioning items and all single-run guards. | Source review found a pre-transition check plus the existing subsequent same-state check. Cost unmeasured; defer rather than trigger a cleanup-only product build or claim a speed improvement. |
 | Local compiler/scratch accumulation | Cleaned on user request while implementation stays paused. Retain one configured cache and installed runtime/SDK; prune regenerable objects and obsolete verification binaries when disk pressure takes priority. | Initial cleanup removed compiler intermediates/obsolete binaries and retired23 paused scratch groups;16 raw groups compressed. Follow-up retired superseded captures and duplicate archives, compressed11 additional raw groups with live hash verification, and retired4 repeated source copies with identities. Current source changes and protected qualification archives hash-checked unchanged. No product build. T02 owns214 ACL-blocked directories: access denied under the current nonadministrator process; sizes unknown, no ACL takeover. Preserve EOLs before future builds. |
 | Narrow feature chains delay everyday workflows | Fix scheduling now: close existing B2b.1 WIP, then everyday editing and XYZ workflows; keep point/manager/print/platform residuals with their owners. Enforced in [AGENTS.md](../AGENTS.md#workflow-delivery-and-execution-efficiency); T00/T02 reconcile progress at existing task boundaries. | Review found recent commits concentrated on point/font/export ownership; shared builds measured379.047/723.093/830.9s on different batches, repeated caller/probe assumption retries and accumulated evidence. These are observed costs, not measured fractions of total delay. New task records use frozen user exits, batched changes and affected checks; evaluate actual elapsed/retry/storage results at closeout. Rule update checked for queue/link consistency and whitespace only; no product builds, generated scratch or new framework. No speedup claimed from documentation. |
 | Repeated calibration queries per draw | T07 owner: capture once per draw and derive spacing from that value when correct. | Confirm repeated validation calls; measure frame cost before claiming a speed gain. |

@@ -1435,3 +1435,13 @@ per-command publication/cancellation. Installed API and both Windows ImGui hosts
 have [scoped acceptance](parity/reviews/workflow-editing-20261107.json); broader
 Batch/source/type/analysis/platform variants remain with their existing owners.
 See [row compatibility](SESSION_FORMAT.md#edited-workflow-rows).
+
+Compatible recorded analysis now participates in bounded open-document mixed
+Batch: explicit ordered source/rebind/output review runs one existing job at a
+time, freezes pending owners, preserves committed outputs on later failure and
+reports each item's authored command indices. Each completed Profile is retained
+through the existing snapshot owner with a source/item association; later images
+do not overwrite its only numeric result. Both Windows hosts and installed API
+have [scoped acceptance](parity/reviews/mixed-batch-20261107.json). General Batch,
+source/type/analysis/platform/release variants remain open; the next independent
+workflow is [Results sort/filter/view export](PLAN.md#next-ready-increment-t09-results-view).

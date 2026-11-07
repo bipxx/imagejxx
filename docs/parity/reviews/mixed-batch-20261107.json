@@ -1,0 +1,169 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T04a.3/T04b bounded open-document mixed Batch",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G085",
+    "G088",
+    "G089",
+    "G083",
+    "G009",
+    "G042",
+    "G044",
+    "G045",
+    "G066",
+    "G070",
+    "G071",
+    "G079",
+    "G082"
+  ],
+  "scope": "Ordered reviewed already-open source list runs enabled mixed edit/analysis/export workflow serially; explicit per-source destinations preflight globally before first effects. Per-item and authored-step progress/results, stop-on-failure/Cancel, stale/busy/source guards, no lost earlier committed work. Installed API and both actual ImGui hosts compare manual pixels/history/rows/Profile/files and disabled sentinels.",
+  "aspects": {
+    "implemented": "Existing MixedReplay now retains one workflow + enabled slot vector + ordered item parameters, with one active job and existing modal/snapshot/creator publication owners. No new scheduler/registry/processing engine/public SDK header/dependency.",
+    "verified": "455distinct installed cases:27new pass via26+1missing-source assertion correction,428affected/new checks including one new Flatten batch case. Native real Batch and10existingroutes pass. Not a fresh455final campaign.",
+    "integrated": "Actual standalone C++ and optional Python Windows ImGui select/reorder sources, per-source paths/scroll, baseline consent, Apply/Cancel, visible results and independent pixel/CSV/PNG/workspace readers.",
+    "release_ready": false
+  },
+  "contract": {
+    "api": "show_mixed_batch() opens review. run_mixed_batch(items=[{document_id:positive_id,export_options:{authored_1based_slot:{path/font_path/font_directory}},redirect_id:optional}],rebind:true,restore_settings:bool,gaussian_rebind/rank_rebind:existingtypedtarget,use_destination_calibration:bool). Strict root/item fields and real types;1..32 unique open sources. File-export overrides require explicit per-source path; Flatten has no path. Single replay grammar remains unchanged.",
+    "ui": "Existing recorder Batch routes mixed/entry tables to same existing ask modal. Ordered checkbox/Up/Down source rows; actual source ID/title; source-specific authored export path fields and existing baseline/settings/target/calibration controls. No implicit selected sources/overwrite choice. Apply freezes only selected reviewed owners/table/cap and validates all per-source paths; Cancel no effects.",
+    "execution": "Extend existing MixedReplay with admitted bounded per-item parameters/status and one current item index; original saved rows/order once, one active job. Existing direct single replay unchanged. No nested controller, parallel scheduler, filtered record copy, new processing engine or registry.",
+    "guard": "Preflight all items without changing active owner. Freeze all consumed source/sampling owners at batch start (including read-only sequences) and check pending guards before dispatch/publication; refresh only matching completed own source. Busy activation/close rules retained; baseline selection switched internally only for current dispatch.",
+    "status": "Existing workflow_replay_info retains single-run exact shape; batch adds nested batch fields:1-based active_item, completed items,total,per-item document_id/title,state,completed command count,authored active_step/error. Stop-on-failure/cancel leaves lateritems pending/skipped explicitly; earlier outputs/history retained. Keep bounded terminal report after active guards are retired.",
+    "persistence": "Workflow Save/Load remains existing V1/V2 intent. Batch source plan is explicit runtime review of live IDs, not another persisted format or ledger. General native-program/folder/file-conversion/auto naming/continue-on-error/resume retain T04b/T10/T12.",
+    "admission": "Existing private metadata preflight and RenderMemory leases before copied workflow/params/guards/UI text. Bound32sources/256rows, <=256 displayed per-source export fields. Whole-scope/process/physical gates before build; use existing cache/runtime only."
+  },
+  "profile_results": {
+    "observed": "Existing live Profile output is replaced by the next source. The batch exit requires per-item Profile data; status-only results would lose earlier curves. Existing Impl::appendPlotSnapshot retains shared payload with independent view and session/CSV export; no new result store needed.",
+    "decision": "Keep each completed Batch Profile via existing snapshot owner, record authored-step/plot-id association in that item report, show retention policy in review. Charge bounded report associations; existing snapshot admission owns retained payload/window. Failure to retain stops the batch while preserving committed earlier output. No optional generalized output pipeline."
+  },
+  "verification": {
+    "distinct_installed_cases": 455,
+    "new_cases": 28,
+    "affected_regression_cases": 427,
+    "attempts": [
+      {
+        "receipt": "build001-owned.json",
+        "exit_code": 1,
+        "seconds": 4.546770700020716
+      },
+      {
+        "receipt": "build002-owned.json",
+        "exit_code": 0,
+        "seconds": 62.77886199997738
+      },
+      {
+        "receipt": "python006-owned.json",
+        "exit_code": 1,
+        "seconds": 1.5858943001367152
+      },
+      {
+        "receipt": "python007-owned.json",
+        "exit_code": 0,
+        "seconds": 0.8541229001712054
+      },
+      {
+        "receipt": "python018-owned.json",
+        "exit_code": 0,
+        "seconds": 13.850349799962714
+      }
+    ],
+    "native": "native003 current Batch + editing008/edit009/export010/mixed011/measure012/manager013/profile014/plot015/native016/retirement017 exit0 cleanuptrue.",
+    "unavailable_checks": [
+      "test_actual_export_record_replay_and_rebind_controls: old point annotation full capture reports retired",
+      "test_actual_floating_snapshot_lifecycle[imgui_cpp]: old standalone snapshot capture report retired; current Python host selected"
+    ],
+    "built_installed_pairs": [
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_native.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_desktop.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "sha256": "258dea77820a1215d0fe056083be1187d826b9a3dbcecfaa1ef7743eb50497fc"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/imagejxx.exe",
+        "installed": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+        "sha256": "1e3ab802200d6f3313b41ecf499e0b7a697b31c1e57b7e0d5ff58864d57ab804"
+      },
+      {
+        "built_or_source": "src/imagejxx/__init__.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/__init__.py",
+        "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/app.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/app.py",
+        "sha256": "2a6753fd74c6acd7fe9a38a626553edb74ce03dd82d3bf37b47988e35666fc66"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/workflows.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/workflows.py",
+        "sha256": "96bd8502428afaafbaaa6fddac5e5343905c5f99344edd95f2d74f44a8e7cb92"
+      }
+    ],
+    "loaded_origins": {
+      "imagejxx": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "imagejxx._native": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "imagejxx._desktop": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "imagejxx.ui.app": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py"
+    },
+    "source_sha256": {
+      "src/desktop/window.cpp": "789ab906e83aa1de9635b71584bf17ca9d38bbce70221c17112058b5a669962c",
+      "src/desktop/python.cpp": "90f0775132df5c31011b33b9c0240f2c293b0bea9e50123dd631ef4e9dcf2cde",
+      "src/desktop/effective_display_ui_probe.cpp": "a1fe95e0d4368035bb3927d682bbcfde74411f1b92d3040ba78b94c2024a2a9c",
+      "src/desktop/effective_display_ui_probe.hpp": "dcc9679cbbfd471ebf3594565800eff1fdc36aa35862bbbfa710a57ca51485da",
+      "tests/native/test_display_actions.cpp": "9b4e7004722e2804c529161afd29e7bd34ad2000dcdff6161a7aa137685acd73",
+      "tests/python/test_mixed_batch.py": "59023dd1efc4ecb3ed8ec7a1c22851da31d4b42a45dca3359660a0612386909e"
+    }
+  },
+  "retention": {
+    "entry": ".tmp/manual-workflow-verification/mixed-batch-20261107/entry.json",
+    "archive": ".tmp/manual-workflow-verification/mixed-batch-20261107/evidence019.zip",
+    "manifest": ".tmp/manual-workflow-verification/mixed-batch-20261107/evidence019-manifest.json",
+    "verify": ".tmp/manual-workflow-verification/mixed-batch-20261107/verify019.json",
+    "archive_sha256": "665f15e8da1f40eb8b144f3bb402d46a0f4660488d3bf0e15436b74716613d17",
+    "archive_bytes": 2008902,
+    "retired_groups": 14,
+    "retired_root_preferences": 8,
+    "retired_files": 1126,
+    "retired_bytes": 9697268,
+    "source_absent": true,
+    "owner": "root",
+    "limitations": "Local necessary captures retained, not a distributed full qualification set. Preserve historical expectations/fingerprints; raw retired groups require verified restoration."
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/mixed-batch-storage001.json",
+    "after": ".tmp/manual-workflow-verification/mixed-batch-storage005.json",
+    "known_before_bytes": 6649674539,
+    "known_after_bytes": 6655131695,
+    "growth_bytes": 5457156,
+    "unknown_subtrees": 214,
+    "full_budget_verified": false,
+    "allocation_bytes": 268435456,
+    "free_after_retirement": 6929989632,
+    "compiler_runtime_preserved": true
+  },
+  "process_checkpoint_lapse": {
+    "observed": "Install004/005 inspected current owned terminal receipts and cache identities, but did not issue a fresh full live process inventory after native003. Both installs exited0 cleanuptrue; no rerun is justified.",
+    "corrective_check": "Fresh CIM inventory immediately before006 now shows no imagejxx/cmake/ninja/cl/link producer; all current owned receipts terminal. Repeated process-inventory lapse is recorded, not called preflight compliance. Put the actual inventory immediately before the next build/install command as well."
+  },
+  "waste_review": {
+    "delivered": "Ordered open-document mixed Batch, global per-source explicit paths, pending guards, per-item status/Profile snapshots, stop/cancel and both-host controls/output.455distinct installed checks via26new+1corrected+428affected/new.",
+    "observed": "Wrong native Document id method caused4.547s compile failure, corrected from real field declaration; missing-document exception assertion failed1body and retriedonly1. Install004/005 reused owned receipts without fresh full process enumeration, recorded lapse; actual successful process inventories immediately before007 and each008..017 command provide corrective evidence. Get-Process -Name missing names returned1, stoppedbeforeexecution; successful enumerate/filter replaced it.",
+    "disposition": "Fix now: real identity/exception declarations checked and assertions corrected; explicit live successful enumerate/filter gates before next affected actions. Defer same-state duplicate Batch guard scan to T04b at next required cursor/guard change or representative many-source measurement; cost unmeasured, preserve pre-transition Cancel. No cleanup-only product rebuild, new runner/cache/controller or weakened expectations.",
+    "cleanup": "Final source review preceded hash-verified lossless retention and retirement of14groups+8rootpreferences/1126files/9697268B; retained2008902B archive. Existing compiler/runtime products preserved.214 inaccessible subtrees keep full budget unverified.",
+    "plan_feedback": "Next independent workflow is T09 Results sort/filter/view export based on inspected missing actual consumer; Batch variants remain assigned. Keep canonical coverage current, full-family/release boxes open."
+  },
+  "remaining": [
+    "General native-program/folder/conversion/auto naming/resume/continue-on-error and unsupported mixed variants retain T04b/T10/T12 owners.",
+    "Broader source/type/target/calibration/ROI/All-Z/point/manager/Profile/table/Fiji and supported-platform/commercial/release exits remain open.",
+    "Batch run status is runtime-only; workflow and retained output/session persistence remain the accepted owning formats."
+  ],
+  "next": "docs/PLAN.md#next-ready-increment-t09-results-view"
+}

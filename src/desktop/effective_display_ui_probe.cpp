@@ -1,3 +1,4 @@
+#include "workflow_entries.hpp"
 #include "effective_display_ui_probe.hpp"
 #include "headless_session_internal.hpp"
 #include "rendering.hpp"
@@ -2073,6 +2074,45 @@ Json workflowEditingUiCase(Window& w,const std::string& context,const std::strin
     require(readBytes((dir/"disabled.png").u8string())==sentinel && fs::exists(dir/"subset.png"),"Disabled destination overwritten");resources();report["disabled_destination_protected"]=true;report["status"]=w.workflowReplayInfo();report["pixels"]=values(clone);report["undo_steps"]=clone->undo_steps();report["rows"]=w.results;report["profile"]=last.at("plot");
     w.action("export_plot_csv",{{"path",(dir/"profile.csv").u8string()}});w.action("save_workspace",{{"path",(dir/"authored.ijx").u8string()}});
     require(w.workflow==intent && source->snapshot().shares_data(protectedSource) && source->undo_steps()==2,"Editing changed original source/history");report["workflow"]=intent;report["final_working_bytes"]=w.renderMemoryInfo().at("working_bytes");report["state"]="observed";session.close();writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last},{"status",w.workflowReplayInfo()}});throw;}
+}
+
+Json mixedBatchUiCase(Window& w,const std::string& context,const std::string& directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(directory));require(!fs::exists(dir),"Fresh mixed Batch capture required");fs::create_directories(dir);
+  Json report={{"contract","mixed-batch-ui.001"},{"context",context},{"acceptance_claim",false},{"controls",Json::array()},{"events",Json::array()}},last;std::atomic<bool> release{true},entered{false};
+  try {
+    auto fixture=[](const std::string& title,bool reversed=false){Image image(2,1,1,PixelType::UInt8);image.at(0,0)=reversed?255:0;image.at(1,0)=reversed?0:255;Stack images;images.push_back(std::move(image));auto document=std::make_shared<imagejxx::Document>(Dataset::from_stack(std::move(images)),title);document->select(Selection("line",{{0,0},{1,0}}));return document;};
+    auto source=fixture("Edit source"),clone=fixture("Edit clone");auto reverse=fixture("Reverse baseline",true);w.addNativeDocument(source);w.addNativeDocument(clone);w.addNativeDocument(reverse);w.setActiveIndex(0);w.updateSettings({{"measurements",{"Area","mean","Length"}},{"profile_samples",2}},true);
+    auto values=[](const std::shared_ptr<imagejxx::Document>& document){const auto image=document->snapshot().data().dataset.plane();return Json::array({Json::array({image->at(0,0),image->at(1,0)})});};
+    HeadlessInputSession session(w);const auto scheduler=session.fixtureApplication().job_scheduler();
+    auto frame=[&](const Json& inputs=Json::array()){require(report["events"].size()<1024,"Mixed Batch frame bound");last=session.frame(inputs);require(last.at("input_frame").at("raw_inputs")==inputs,"Mixed Batch raw input differs");report["events"].push_back(inputs);};
+    auto click=[&](Json control,const std::string& name){require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>(),"Mixed Batch control unavailable");report["controls"].push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};auto dialog=[&](const std::string& name){
+      for(int attempt=0;;++attempt){const auto item=last.at("dialog").at("controls").at(name);if(!item.contains("clip_rect")){click(item,"dialog."+name);break;}const auto rect=item.at("rect").get<std::array<float,4>>(),clip=item.at("clip_rect").get<std::array<float,4>>();if(rect[1]>=clip[1] && rect[3]<=clip[3]){click(item,"dialog."+name);break;}require(attempt<32,"Cannot expose Batch option");frame(Json::array({{{"type","position"},{"space","screen"},{"point",{clip[0]+2,(clip[1]+clip[3])*.5f}}}}));frame(Json::array({{{"type","wheel"},{"x",0},{"y",rect[3]>clip[3]?-3:3}}}));frame();frame();}
+    };
+    auto focus=[&](const char* name){auto* window=ImGui::FindWindowByName(name);require(window,"Mixed Batch panel missing");ImGui::FocusWindow(window);frame();};
+    auto text=[&](const std::string& value){for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));frame(Json::array({{{"type","text"},{"value",value}}}));frame();};
+    auto file=[&](const fs::path& path){click(last.at("file_browser").at("controls").at("path"),"file.path");text(path.u8string());click(last.at("file_browser").at("controls").at("submit"),"file.submit");frame();frame();};
+    auto acknowledge=[&]{frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();};
+    auto resources=[&]{require(w.renderMemoryInfo().at("working_bytes")==0 && scheduler->usage().reserved_bytes==0,"Mixed Batch resources leaked");};
+    frame();frame();frame();focus("Workflow");control("workflow.record");TargetRequest target;target.roi=RoiPolicy::WholePlane;w.applyGaussian(target,GaussianBlurCommandOptions{1,false});w.wait();frame();
+    w.applyOperation("invert",Json::object(),false,false);for(const auto* command:{"measure","profile"}){w.action(command);w.wait();frame();}
+    w.action("export_display",{{"path",(dir/"disabled.png").u8string()}});w.wait();frame();focus("Workflow");control("workflow.record");
+    const auto original=w.workflow;w.workflow=Json::array({workflowEntry(original[4],false),workflowEntry(original[0]),workflowEntry(original[1],false),workflowEntry(original[2]),workflowEntry(original[3]),workflowEntry(original[4])});
+    const auto intent=w.workflow;control("workflow.save");file(dir/"mixed.json");control("workflow.clear");control("workflow.load");file(dir/"mixed.json");require(w.workflow==intent,"Batch Save/Load changed authored workflow");
+    const std::vector<unsigned char> sentinel={'d','i','s','a','b','l','e','d'};writeBytes((dir/"disabled.png").u8string(),sentinel);const auto protectedSource=source->snapshot();
+    w.setActiveIndex(1);focus("Workflow");control("workflow.batch");dialog("source."+std::to_string(clone->id)+".enabled");dialog("cancel");require(clone->undo_steps()==0 && reverse->undo_steps()==0 && w.workflow==intent,"Batch Cancel changed source/intent");resources();report["cancel_preserved"]=true;
+    focus("Workflow");control("workflow.batch");dialog("source."+std::to_string(clone->id)+".enabled");dialog("source."+std::to_string(reverse->id)+".enabled");dialog("source."+std::to_string(reverse->id)+".up");
+    report["source_draft"]=last.at("dialog").at("controls").at("batch_draft");report["review"]=last.at("dialog").at("controls").at("sequence_summary");dialog("rebind");
+    for(const auto& pair:std::vector<std::pair<std::uint64_t,const char*>>{{reverse->id,"second.png"},{clone->id,"first.png"}}){dialog("batch_"+std::to_string(pair.first)+"_6_path");text((dir/pair.second).u8string());}
+    dialog("apply");w.wait();frame();require(w.error().empty() && w.workflowReplayInfo().at("state")=="completed","Physical Batch run failed");report["status"]=w.workflowReplayInfo();
+    require(report["status"].at("batch").at("completed")==2 && report["status"].at("batch").at("items")[0].at("document_id")==reverse->id,"Batch item order/result differs");
+    require(values(clone)==Json::array({Json::array({77,178})}) && values(reverse)==Json::array({Json::array({178,77})}),"Batch per-source literal pixels differ");require(clone->undo_steps()==1 && reverse->undo_steps()==1,"Batch history differs");
+    require(readBytes((dir/"disabled.png").u8string())==sentinel && fs::exists(dir/"first.png") && fs::exists(dir/"second.png"),"Batch disabled/output destinations differ");
+    report["first_pixels"]=values(clone);report["second_pixels"]=values(reverse);report["rows"]=w.results;report["disabled_destination_protected"]=true;report["workflow"]=w.workflow;report["snapshots"]=w.plotSnapshotsInfo();
+    std::size_t i=0;for(const auto& item:report["status"].at("batch").at("items")){const auto id=item.at("profile_plots")[0].at("plot_id");w.action("export_plot_csv",{{"plot_id",id},{"path",(dir/(++i==1?"second.csv":"first.csv")).u8string()}});}
+    focus("Workflow");report["visible_batch"]=last.at("host_controls").at("workflow.batch_report");w.action("undo");require(values(clone)==Json::array({Json::array({0,255})}),"Batch Undo failed");w.action("redo");require(values(clone)==Json::array({Json::array({77,178})}),"Batch Redo failed");report["history_roundtrip"]=true;
+    require(w.workflow==intent && source->snapshot().shares_data(protectedSource) && source->undo_steps()==2,"Batch altered original intent/source");resources();report["final_working_bytes"]=w.renderMemoryInfo().at("working_bytes");report["state"]="observed";w.action("save_workspace",{{"path",(dir/"batch.ijx").u8string()}});session.close();writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last},{"status",w.workflowReplayInfo()}});throw;}
 }
 

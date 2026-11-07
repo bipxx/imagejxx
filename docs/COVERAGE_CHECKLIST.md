@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining now has scoped both-host acceptance; ordinary-source editing/filter chaining now has scoped both-host acceptance; mixed workflow editing/reorder/disable now has scoped installed API and both-Windows-host acceptance; bounded open-document mixed Batch is next. Full ImageJ/Fiji and release remain open.
+Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining now has scoped both-host acceptance; ordinary-source editing/filter chaining now has scoped both-host acceptance; mixed workflow editing/reorder/disable now has scoped installed API and both-Windows-host acceptance; bounded open-document mixed Batch now has scoped both-host acceptance; Results sort/filter/view export is next. Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Analysis/display-export chaining has scoped both-host acceptance below. Ordinary-source edit/filter and analysis chaining has scoped both-host acceptance below. [Mixed workflow editing/reorder/disable](#workflow-editing-current-wip) now has scoped installed API and both-host acceptance. Next: bounded open-document mixed Batch. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-mixed-batch). |
+| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Analysis/display-export chaining has scoped both-host acceptance below. Ordinary-source edit/filter and analysis chaining has scoped both-host acceptance below. [Mixed workflow editing/reorder/disable](#workflow-editing-current-wip) now has scoped installed API and both-host acceptance. [Mixed Batch](#mixed-batch-current-wip) now has scoped both-host acceptance. Next: Results sort/filter/view export. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t09-results-view). |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -83,6 +83,32 @@ option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
 
+## Mixed Batch current WIP
+
+Owner: T04a.3/T04b / G085 G088 G089 G083 and command-family owners.
+[Current specification](PLAN.md#next-ready-increment-t04a3-mixed-batch).
+**Scoped accepted on Windows.** [Receipt](parity/reviews/mixed-batch-20261107.json).
+I: existing sequence/modal/API built and installed. V:455distinct installed cases
+pass via26new+1corrected missing-source assertion+428affected/new checks.
+UI: actual C++ and optional Python Windows ImGui Batch controls/output passed.
+R: open. No full-family or supported-platform release acceptance is implied.
+
+- [x] Strict1..32 ordered source items and explicit rebind/settings/target choices; reject duplicates, missing sources and invalid fields/types before effects.
+- [x] Global per-source authored export paths, parent/font policy and collision preflight; disabled destinations untouched and rejected inputs do not activate another source.
+- [x] One existing serial job/cursor, frozen consumed current/future sources and saved workflow; matching creator publication only, busy close/activation, Cancel and stop-on-failure preserve earlier work.
+- [x] Independent per-item progress, errors and not-started states; retain each completed Profile on the existing plot snapshot owner with authored-step/plot-ID association.
+- [x] Both real ImGui hosts: select/reorder sources, edit per-source outputs, review targets/settings, Apply/Cancel, visible results and Save/Load. Bounded options scroll with footer controls accessible.
+- [x] Two distinct baselines match literal pixels, history/UndoRedo, raw rows and per-item Profile CSV; independent PNG/workspace readers and disabled sentinels agree.
+- [x] Installed module paths/bytes, affected single replay/persistence and native reentrant retirement pass; source review precedes verified retention and terminal scratch retirement.
+- [ ] General native-program/folder/conversion/auto naming/resume/continue-on-error and unsupported variants retain existing owners; platform/commercial/release gates stay open.
+
+All14groups+8preferences/1126files/9697268B were retired after source review and
+hash-verified2008902B retention, including failures. Active cache/runtime products
+preserved;214inaccessible subtrees keep the full storage budget unverified.
+Next: [Results sort/filter/view export](PLAN.md#next-ready-increment-t09-results-view),
+specified only. Update its observed checkpoints and affected family residuals at
+closeout; no full-family box closes from this scoped workflow.
+
 ## Workflow editing current WIP
 
 Owner: T04a.3 / G083 G085 G089, with existing command-family owners.
@@ -114,8 +140,8 @@ All15groups+7preferences/1099files/9654215B were retired after source review and
 hash-verified1981929B retention, including failures.54regenerable native-binding
 compiler intermediates/907299447B were pressure-retired with cache and built/
 installed products preserved.214 inaccessible subtrees leave full budget unverified.
-Next: [bounded open-document mixed Batch](PLAN.md#next-ready-increment-t04a3-mixed-batch),
-specified only. Update its observed checkpoints here when it starts; update affected
+[Bounded open-document mixed Batch](#mixed-batch-current-wip) now has scoped acceptance.
+Next: [Results sort/filter/view export](PLAN.md#next-ready-increment-t09-results-view), specified only. Update its observed checkpoints here when it starts; update affected
 family residuals and evidence at every task closeout. No full-family box closes.
 
 ## Ordinary-source edit/filter chain scoped coverage
@@ -3178,6 +3204,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Focus/keyboard workflows, font scaling, accessible control descriptions, platform clipboard/file-dialog parity and supported-platform validation
 ### G085 Workflow recorder/batch
 
+- [x] [Bounded open-document mixed Batch](#mixed-batch-current-wip): ordered source/output review, one job owner, per-item status/Profile snapshots and Cancel/stop-on-failure have installed API/both-Windows-host acceptance. General folder/native-program/auto naming/conversion/resume variants remain open.
+
 - [ ] Complete full `G085` scope and supported release exits.
 
 **Required:** Record stack/metadata/ROI/display/file actions, parameter editing, reorder/disable steps, batch measurement/conversion, progress and per-item results; broader recorded actions and measurement/conversion workflows
@@ -3208,6 +3236,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Versioned native operation/panel extension interface, discovery/settings and commercial-license records for code, dependencies and assets
 ### G088 Job feedback
 
+- [x] [Scoped mixed Batch](#mixed-batch-current-wip) reports item/source and authored command progress with completed/failed/canceled/not-started states; pending source guards and zero final working reservations pass on the accepted Windows inputs.
+
 - [ ] Complete full `G088` scope and supported release exits.
 
 **Required:** Per-operation progress, cancellation checkpoints inside long kernels, queued/batch jobs and a useful log panel
@@ -3217,6 +3247,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Retain the shared native queue/cancel/resource lifecycle, recent-job/error panel and separate named phase/plane counts; finish all operation/reader/staging progress/checkpoints and measured latency coverage, automatic UI preview supersession, required event logs and batch controls.
 - [ ] Finish complete managed allocation/accounting, remaining publication/I/O failure coverage and full interaction/platform/performance evidence.
 ### G089 Python document control
+
+- [x] Installed `Editor.action` opens/runs the [scoped mixed Batch](#mixed-batch-current-wip); existing readonly replay status adds batch-only item/Profile associations. Single-run status stays compatible. No changed pure-Python processing exports.
 
 - [ ] Complete full `G089` scope and supported release exits.
 
@@ -3331,4 +3363,4 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ## Next update
 
-Follow the [next bounded open-document mixed Batch increment](PLAN.md#next-ready-increment-t04a3-mixed-batch). Workflow editing now has scoped acceptance above; Batch is specified only. Inspect the actual batch controls, mixed continuation and per-source output mapping before authoring. Keep strict original command schemas and busy/stale/history guarantees. Update this coverage at observed checkpoints and task closeout; wider targets/filter/Profile/manager/table/Fiji and supported-platform/commercial release retain owners. No agents are authorized by this update.
+Follow the [next Results sort/filter/view export increment](PLAN.md#next-ready-increment-t09-results-view). Workflow editing and bounded mixed Batch now have scoped acceptance above. Inspect the actual table, mutable row/numeric-state and Copy/Save consumers before authoring. Keep strict original command schemas and busy/stale/history guarantees. Update this coverage at observed checkpoints and task closeout; wider targets/filter/Profile/manager/table/Fiji and supported-platform/commercial release retain owners. No agents are authorized by this update.

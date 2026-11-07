@@ -1396,6 +1396,8 @@ struct Window::Impl {
   struct MixedReplay {
     RenderMemory::Lease memory;
     Json steps,parameters;
+    std::vector<Json> batch_parameters;
+    std::size_t item=0;
     std::vector<std::size_t> order;
     std::size_t completed=0;
     std::uint64_t job_id=0;
@@ -1406,6 +1408,8 @@ struct Window::Impl {
     std::map<std::uint64_t,MixedSourceGuard> guards;
   };
   std::optional<MixedReplay> mixedReplay;
+  RenderMemory::Lease mixedBatchReportMemory;
+  Json mixedBatchReport;
   struct WorkflowDraft {
     RenderMemory::Lease memory;
     Json original,entries;
@@ -5431,7 +5435,7 @@ struct Window::Impl {
     return {captureMeasurementReplaySource(target,true),target.source().revisions()};
   }
   void validateMixedGuards() const {
-    if(!mixedReplay || !mixedReplay->edited)return;
+    if(!mixedReplay || (!mixedReplay->edited && mixedReplay->batch_parameters.empty()))return;
     if(processingCap()!=mixedReplay->processing_cap)throw RevisionConflict();
     if(mixedReplay->job_id && job.valid() && (owner.documents_.empty() || owner.document()->id!=mixedReplay->job_source))throw RevisionConflict();
     for(const auto& [id,guard]:mixedReplay->guards) {
@@ -5543,9 +5547,9 @@ struct Window::Impl {
     const auto recorded=isDisplayExportRecord(step)?decodeDisplayExportRecord(step).source_id:isProfileRecord(step)?decodeProfileRecord(step).source.document_id:decodeMeasurementRecord(step).source.document_id;
     return mixedId(params,"document_id",mixedFlag(params,"rebind")?owner.document()->id:recorded);
   }
-  void validateMixedBindings(const Json& steps,const Json& params) const {
+  void validateMixedBindings(const Json& steps,const Json& params,bool batch=false,std::vector<std::filesystem::path>* outputs=nullptr) const {
     validateMixedParameters(params);const bool rebind=mixedFlag(params,"rebind"),restore=mixedFlag(params,"restore_settings");bool hasRedirect=false;
-    if(rebind && mixedId(params,"document_id",owner.document()->id)!=owner.document()->id)throw std::invalid_argument("Activate the selected image before explicit mixed rebind");
+    if(!batch && rebind && mixedId(params,"document_id",owner.document()->id)!=owner.document()->id)throw std::invalid_argument("Activate the selected image before explicit mixed rebind");
     if(params.contains("export_options")) {
       const auto& options=params.at("export_options");if(!options.is_object())throw std::invalid_argument("Mixed export_options must be an object");
       for(const auto& item:options.items()) {
@@ -5558,7 +5562,8 @@ struct Window::Impl {
         }
       }
     }
-    std::vector<std::filesystem::path> destinations;
+    std::vector<std::filesystem::path> localDestinations;
+    auto& destinations=outputs?*outputs:localDestinations;
     for(std::size_t index=0;index<steps.size();++index) {
       if(!workflowEnabled(steps[index]))continue;
       const auto& step=workflowRecord(steps[index]);const auto id=mixedSourceId(step,params);
@@ -5620,18 +5625,35 @@ struct Window::Impl {
   }
   Json mixedReplayInfo() const {
     const char* state=mixedReplayState==MixedReplayState::Running?"running":mixedReplayState==MixedReplayState::Completed?"completed":mixedReplayState==MixedReplayState::Canceled?"canceled":mixedReplayState==MixedReplayState::Failed?"failed":"idle";
-    return {{"state",state},{"completed",mixedReplay?mixedReplay->completed:mixedCompleted},{"total",mixedTotal},{"active_step",mixedReplay?(mixedReplay->completed<mixedReplay->order.size()?mixedReplay->order[mixedReplay->completed]+1:0):mixedStoppedStep},{"job_id",mixedReplay?mixedReplay->job_id:0},{"error",mixedError}};
+    Json result={{"state",state},{"completed",mixedReplay?mixedReplay->completed:mixedCompleted},{"total",mixedTotal},{"active_step",mixedReplay?(mixedReplay->completed<mixedReplay->order.size()?mixedReplay->order[mixedReplay->completed]+1:0):mixedStoppedStep},{"job_id",mixedReplay?mixedReplay->job_id:0},{"error",mixedError}};
+    if(!mixedBatchReport.is_null()) {
+      result["batch"]=mixedBatchReport;
+      if(mixedReplay && !mixedReplay->batch_parameters.empty()) {
+        auto& batch=result["batch"];batch["active_item"]=mixedReplay->item+1;
+        auto& item=batch["items"][mixedReplay->item];item["state"]="running";item["completed"]=mixedReplay->completed;item["active_step"]=result["active_step"];
+      }
+    }
+    return result;
   }
   void finishMixedReplay(MixedReplayState state,std::string error={}) {
     if(!mixedReplay)return;const auto done=mixedReplay->completed;const auto total=mixedReplay->order.size();
     std::string message=state==MixedReplayState::Completed?"Workflow completed":state==MixedReplayState::Canceled?"Workflow cancelled":"Workflow stopped";
     message+=": "+std::to_string(done)+" of "+std::to_string(total)+" commands completed";
+    if(!mixedReplay->batch_parameters.empty()) {
+      auto& item=mixedBatchReport["items"][mixedReplay->item];
+      item["state"]=state==MixedReplayState::Completed?"completed":state==MixedReplayState::Canceled?"canceled":"failed";
+      item["completed"]=done;item["active_step"]=state==MixedReplayState::Completed || done>=total?0:mixedReplay->order[done]+1;item["error"]=error;
+      mixedBatchReport["completed"]=mixedReplay->item+(state==MixedReplayState::Completed?1:0);
+      mixedBatchReport["active_item"]=state==MixedReplayState::Completed?0:mixedReplay->item+1;
+      for(std::size_t i=mixedReplay->item+1;i<mixedReplay->batch_parameters.size();++i)mixedBatchReport["items"][i]["state"]="not_started";
+      message="Batch "+std::to_string(mixedBatchReport["completed"].get<std::size_t>())+" of "+std::to_string(mixedReplay->batch_parameters.size())+" images; "+message;
+    }
     if(state==MixedReplayState::Failed)lastError=error;
     mixedCompleted=done;mixedTotal=total;mixedStoppedStep=state==MixedReplayState::Completed || done>=total?0:mixedReplay->order[done]+1;mixedError.swap(error);mixedReplayState=state;mixedReplay.reset();status.swap(message);
   }
   void checkMixedReplay() {
     if(!mixedReplay)return;
-    if(mixedReplay->edited)try{validateMixedGuards();}catch(const std::exception&){mixedReplay->stop_error="Mixed workflow baseline or calibration changed";mixedCancelRequested=true;}
+    if(mixedReplay->edited || !mixedReplay->batch_parameters.empty())try{validateMixedGuards();}catch(const std::exception&){mixedReplay->stop_error="Mixed workflow baseline or calibration changed";mixedCancelRequested=true;}
     if(owner.recording || owner.workflow!=mixedReplay->steps) {
       mixedReplay->stop_error=owner.recording?"Recording changed during mixed workflow":"Recorded workflow changed during mixed replay";
       mixedCancelRequested=true;
@@ -5643,20 +5665,29 @@ struct Window::Impl {
   }
   void advanceMixedReplay() {
     if(!mixedReplay)return;
-    if(!mixedReplay->job_id && mixedReplay->completed==mixedReplay->order.size()){finishMixedReplay(MixedReplayState::Completed);return;}
+    if(!mixedReplay->batch_parameters.empty() && !mixedReplay->job_id && mixedReplay->completed==mixedReplay->order.size() && mixedReplay->item+1==mixedReplay->batch_parameters.size()){finishMixedReplay(MixedReplayState::Completed);return;}
+    if(!mixedReplay->batch_parameters.empty()){checkMixedReplay();if(!mixedReplay || job.valid())return;}
+    if(!mixedReplay->job_id && mixedReplay->completed==mixedReplay->order.size()) {
+      if(!mixedReplay->batch_parameters.empty() && mixedReplay->item+1<mixedReplay->batch_parameters.size()) {
+        auto& item=mixedBatchReport["items"][mixedReplay->item];item["state"]="completed";item["completed"]=mixedReplay->completed;item["active_step"]=0;
+        ++mixedReplay->item;mixedReplay->completed=0;mixedBatchReport["completed"]=mixedReplay->item;
+      } else {finishMixedReplay(MixedReplayState::Completed);return;}
+    }
     checkMixedReplay();if(!mixedReplay || job.valid())return;
     try {
       if(mixedReplay->job_id)throw std::invalid_argument("Mixed workflow lost its active job");
-      const auto slot=mixedReplay->order.at(mixedReplay->completed);const auto& step=workflowRecord(mixedReplay->steps[slot]);const auto source=mixedSourceId(step,mixedReplay->parameters);
+      const auto& parameters=mixedReplay->batch_parameters.empty()?mixedReplay->parameters:mixedReplay->batch_parameters[mixedReplay->item];
+      const auto slot=mixedReplay->order.at(mixedReplay->completed);const auto& step=workflowRecord(mixedReplay->steps[slot]);const auto source=mixedSourceId(step,parameters);
       struct Dispatch {bool& flag;explicit Dispatch(bool& f):flag(f){flag=true;}~Dispatch(){flag=false;}} dispatch(mixedDispatch);
       const auto found=std::find_if(owner.documents_.begin(),owner.documents_.end(),[source](const auto& document){return document->id==source;});
       if(found==owner.documents_.end())throw std::invalid_argument("Mixed workflow source is closed");
       std::string message="Workflow command "+std::to_string(mixedReplay->completed+1)+" of "+std::to_string(mixedReplay->order.size())+" (authored step "+std::to_string(slot+1)+")";
       owner.setActiveIndex(int(found-owner.documents_.begin()));
-      if(mixedPixelRecord(step))startMixedPixel(step,mixedReplay->parameters,source);
-      else owner.action(isDisplayExportRecord(step)?"replay_display_export":isProfileRecord(step)?"replay_profile":"replay_measurement",mixedStepRequest(step,mixedReplay->parameters,slot));
+      if(mixedPixelRecord(step))startMixedPixel(step,parameters,source);
+      else owner.action(isDisplayExportRecord(step)?"replay_display_export":isProfileRecord(step)?"replay_profile":"replay_measurement",mixedStepRequest(step,parameters,slot));
       mixedReplay->job_source=source;
       if(!job.valid())throw std::invalid_argument("Mixed workflow command did not start its existing job");mixedReplay->job_id=job.info().id;
+      if(!mixedReplay->batch_parameters.empty())message="Batch image "+std::to_string(mixedReplay->item+1)+" of "+std::to_string(mixedReplay->batch_parameters.size())+"; "+message;
       status.swap(message);
     }catch(const std::exception& error){finishMixedReplay(MixedReplayState::Failed,std::string(error.what()).substr(0,2048));}
   }
@@ -5665,7 +5696,14 @@ struct Window::Impl {
     mixedReplay->job_id=0;
     if(terminal.state==JobState::Completed) {
       ++mixedReplay->completed;
-      if(mixedReplay->edited && mixedReplay->completed<mixedReplay->order.size())try {mixedReplay->guards.at(mixedReplay->job_source)=mixedSourceGuard(mixedReplay->job_source);}
+      if(!mixedReplay->batch_parameters.empty())try {
+        const auto slot=mixedReplay->order[mixedReplay->completed-1];
+        if(isProfileRecord(workflowRecord(mixedReplay->steps[slot]))) {
+          const auto id=appendPlotSnapshot(livePlot);
+          mixedBatchReport["items"][mixedReplay->item]["profile_plots"].push_back({{"authored_step",slot+1},{"plot_id",id}});
+        }
+      }catch(const std::exception& error){finishMixedReplay(MixedReplayState::Failed,std::string(error.what()).substr(0,2048));return;}
+      if((mixedReplay->edited || !mixedReplay->batch_parameters.empty()) && (mixedReplay->completed<mixedReplay->order.size() || mixedReplay->item+1<mixedReplay->batch_parameters.size()))try {mixedReplay->guards.at(mixedReplay->job_source)=mixedSourceGuard(mixedReplay->job_source);}
       catch(const std::exception& error){finishMixedReplay(MixedReplayState::Failed,std::string(error.what()).substr(0,2048));}
     }
     else finishMixedReplay(terminal.state==JobState::Canceled && !mixedReplay->stop_error?MixedReplayState::Canceled:MixedReplayState::Failed,mixedReplay->stop_error?mixedReplay->stop_error:terminal.error);
@@ -5792,6 +5830,128 @@ struct Window::Impl {
       beginMixedReplay(std::move(parameters));
     },std::move(fields),"mixed_replay");
   }
+  void showMixedBatch() {
+    if(owner.busy() || owner.recording || owner.documents_.empty() || dialog.open)throw std::invalid_argument("Choose idle images and stop recording before Batch review");
+    if(owner.documents_.size()>32)throw std::length_error("Batch review supports at most32open images");
+    auto bytes=mixedReplayBytes(owner.workflow);
+    for(const auto& document:owner.documents_)bytes=RenderMemory::add(bytes,mixedPixelMetadataBytes(document->nativeSnapshot()));
+    if(bytes>processingCap()/8)throw std::length_error("Batch review exceeds processing budget");
+    auto memory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(RenderMemory::mul(bytes,4)));
+    const auto steps=owner.workflow;const auto cap=processingCap();std::map<std::uint64_t,MixedSourceGuard> guards;
+    Json values={{"rebind",false},{"restore_settings",true},{"use_destination_calibration",false},{"batch_items",Json::array()}};
+    Json fields=Json::array({{{"name","rebind"},{"label","Use each selected image as an independent baseline"},{"kind","bool"}},{{"name","restore_settings"},{"label","Restore recorded Measure and Profile settings"},{"kind","bool"}},{{"name","use_destination_calibration"},{"label","Use each destination calibration for typed filters"},{"kind","bool"}}});
+    std::string summary;bool gaussian=false,rank=false;
+    for(std::size_t i=0;i<steps.size();++i) {
+      const auto& step=workflowRecord(steps[i]);summary+=std::to_string(i+1)+(workflowEnabled(steps[i])?". Enabled: ":". Disabled: ");
+      if(mixedPixelRecord(step)){const auto op=step.at("operation").get<std::string>();summary+=op;if(step.contains("schema_version")){if(op=="gaussian_blur_imagej")gaussian=true;else rank=true;}}
+      else summary+=step.value("schema",std::string("Command"));
+      summary+="\n";if(summary.size()>65536)throw std::length_error("Batch command summary exceeds65536bytes");
+    }
+    values["sequence_summary"]=summary;
+    const Json target={{"scope","current_plane"},{"roi","whole_plane"},{"mode","planes"},{"destination","in_place"}};
+    for(const auto* key:{"gaussian_rebind","rank_rebind"})if(std::string(key)=="gaussian_rebind"?gaussian:rank){values[key]=target;fields.push_back({{"name",key},{"label",std::string(key)=="gaussian_rebind"?"Gaussian target request":"Rank target request"},{"kind","json"}});}
+    bool redirected=false;for(const auto& row:steps)if(workflowEnabled(row) && isMeasurementRecord(workflowRecord(row)) && decodeMeasurementRecord(workflowRecord(row)).redirect)redirected=true;
+    Json samplingLabels=Json::array({"Choose sampling image"});std::vector<std::uint64_t> samplingIds;
+    for(const auto& document:owner.documents_){samplingIds.push_back(document->id);samplingLabels.push_back(std::to_string(document->id)+". "+document->nativeSnapshot().data().metadata.title);}
+    std::size_t outputFields=0;
+    for(const auto& document:owner.documents_) {
+      const auto id=document->id;const auto& title=document->nativeSnapshot().data().metadata.title;if(title.size()>4096)throw std::length_error("Batch title exceeds4096bytes");
+      guards.emplace(id,mixedSourceGuard(id));values["batch_items"].push_back({{"document_id",id},{"title",title},{"selected",false}});
+      if(redirected){const auto name="sampling_"+std::to_string(id);values[name]="Choose sampling image";fields.push_back({{"name",name},{"label","Image "+std::to_string(id)+": sampling image"},{"kind","choice"},{"choices",samplingLabels},{"batch_source",id}});}
+      for(std::size_t index=0;index<steps.size();++index)if(workflowEnabled(steps[index]) && isDisplayExportRecord(workflowRecord(steps[index]))) {
+        const auto record=decodeDisplayExportRecord(workflowRecord(steps[index]));
+        for(const auto* key:{"path","font_path","font_directory"}) {
+          if(record.action=="flatten" && std::string(key)=="path")continue;
+          if(++outputFields>256)throw std::length_error("Batch review supports at most256 per-image output fields");
+          const auto name="batch_"+std::to_string(id)+"_"+std::to_string(index+1)+"_"+key;
+          values[name]=std::string(key)=="path"?std::string{}:std::string(key)=="font_path"?record.font.default_path:record.font.directory.u8string();
+          fields.push_back({{"name",name},{"label","Image "+std::to_string(id)+", step "+std::to_string(index+1)+": "+key},{"kind","text"},{"batch_source",id}});
+        }
+      }
+    }
+    ask("Batch on open images",std::move(values),[this,memory,steps,guards,cap,redirected,samplingLabels,samplingIds](Json values) {
+      if(owner.workflow!=steps || processingCap()!=cap)throw std::invalid_argument("Workflow or budget changed; reopen Batch review");
+      Json parameters={{"rebind",values.at("rebind")},{"restore_settings",values.at("restore_settings")},{"use_destination_calibration",values.at("use_destination_calibration")},{"items",Json::array()}};
+      for(const auto* key:{"gaussian_rebind","rank_rebind"})if(values.contains(key))parameters[key]=values.at(key);
+      for(const auto& row:values.at("batch_items"))if(row.at("selected").get<bool>()) {
+        const auto id=row.at("document_id").get<std::uint64_t>();const auto& guard=guards.at(id);TargetRequest whole;whole.roi=RoiPolicy::WholePlane;const auto current=owner.controller_->resolve_target(whole,id);
+        if(!current.source().revisions().matches(guard.revisions,Change::All))throw RevisionConflict();validateMeasurementReplaySource(guard.source,current,false);
+        Json item={{"document_id",id}};
+        if(redirected) {
+          const auto choice=values.at("sampling_"+std::to_string(id));std::uint64_t sampling=0;
+          for(std::size_t i=0;i<samplingIds.size();++i)if(choice==samplingLabels[i+1])sampling=samplingIds[i];
+          if(!sampling)throw std::invalid_argument("Choose an explicit sampling image for every selected source");
+          const auto& binding=guards.at(sampling);const auto target=owner.controller_->resolve_target(whole,sampling);
+          if(!target.source().revisions().matches(binding.revisions,Change::All))throw RevisionConflict();validateMeasurementReplaySource(binding.source,target,false);item["redirect_id"]=sampling;
+        }
+        for(std::size_t index=0;index<steps.size();++index)if(workflowEnabled(steps[index]) && isDisplayExportRecord(workflowRecord(steps[index]))) {
+          const auto record=decodeDisplayExportRecord(workflowRecord(steps[index]));Json options=Json::object();
+          for(const auto* key:{"path","font_path","font_directory"})if(record.action!="flatten" || std::string(key)!="path")options[key]=values.at("batch_"+std::to_string(id)+"_"+std::to_string(index+1)+"_"+key);
+          item["export_options"][std::to_string(index+1)]=std::move(options);
+        }
+        parameters["items"].push_back(std::move(item));
+      }
+      beginMixedBatch(parameters);
+    },std::move(fields),"mixed_batch");
+  }
+  void beginMixedBatch(const Json& parameters) {
+    if(owner.busy() || owner.documents_.empty() || owner.recording)throw std::invalid_argument("Select idle images and stop recording before mixed Batch");
+    if(!parameters.is_object() || !parameters.contains("items") || !parameters.at("items").is_array() || parameters.at("items").empty() || parameters.at("items").size()>32)throw std::invalid_argument("Mixed Batch needs1..32 ordered image items");
+    for(const auto& field:parameters.items())if(field.key()!="items" && field.key()!="rebind" && field.key()!="restore_settings" && field.key()!="gaussian_rebind" && field.key()!="rank_rebind" && field.key()!="use_destination_calibration")throw std::invalid_argument("Unknown mixed Batch parameter");
+    if(!mixedFlag(parameters,"rebind"))throw std::invalid_argument("Mixed Batch requires explicit per-image rebind consent");
+    auto bytes=RenderMemory::add(mixedReplayBytes(owner.workflow),measurementRecordWorkingBytes(parameters));
+    std::vector<std::uint64_t> ids;ids.reserve(parameters.at("items").size());
+    for(const auto& item:parameters.at("items")) {
+      if(!item.is_object() || !item.contains("document_id"))throw std::invalid_argument("Batch item requires document_id");
+      for(const auto& field:item.items())if(field.key()!="document_id" && field.key()!="redirect_id" && field.key()!="export_options")throw std::invalid_argument("Unknown mixed Batch item field");
+      const auto id=mixedId(item,"document_id",0);if(std::find(ids.begin(),ids.end(),id)!=ids.end())throw std::invalid_argument("Duplicate mixed Batch source");
+      ids.push_back(id);bytes=RenderMemory::add(bytes,mixedPixelMetadataBytes(owner.nativeSnapshot(id)));
+      if(item.contains("redirect_id"))bytes=RenderMemory::add(bytes,mixedPixelMetadataBytes(owner.nativeSnapshot(mixedId(item,"redirect_id",0))));
+    }
+    if(bytes>processingCap()/8)throw std::length_error("Mixed Batch plan exceeds processing budget");
+    MixedReplay next;next.memory=renderMemory->acquire(RenderMemory::mul(bytes,4));
+    std::size_t profileCount=0;for(const auto& row:owner.workflow)if(workflowEnabled(row) && isProfileRecord(workflowRecord(row)))++profileCount;
+    const auto reportBytes=RenderMemory::add(8192,RenderMemory::mul(ids.size(),RenderMemory::add(32768,RenderMemory::mul(profileCount,2048))));
+    auto reportMemory=renderMemory->acquire(reportBytes);auto retainedReport=reportMemory.retain(reportBytes);
+    Json report={{"total",ids.size()},{"completed",0},{"active_item",1},{"items",Json::array()}};
+    Json common=parameters;common.erase("items");next.steps=owner.workflow;next.processing_cap=processingCap();
+    for(std::size_t i=0;i<next.steps.size();++i)if(workflowEnabled(next.steps[i]))next.order.push_back(i);
+    if(next.order.empty())throw std::invalid_argument("Mixed Batch has no enabled commands");
+    next.edited=std::any_of(next.order.begin(),next.order.end(),[&](std::size_t i){return mixedPixelRecord(workflowRecord(next.steps[i]));});
+    std::vector<std::filesystem::path> outputs;
+    for(const auto& item:parameters.at("items")) {
+      Json choices=common;for(const auto& field:item.items())choices[field.key()]=field.value();
+      const auto id=mixedId(choices,"document_id",0);const auto snapshot=owner.nativeSnapshot(id);
+      if(snapshot.data().metadata.title.size()>4096)throw std::length_error("Mixed Batch title exceeds4096bytes");
+      for(const auto index:next.order)if(isDisplayExportRecord(workflowRecord(next.steps[index]))) {
+        const auto record=decodeDisplayExportRecord(workflowRecord(next.steps[index]));const auto options=mixedExportOptions(choices,index);
+        if(record.action!="flatten") {
+          if(!options.contains("path") || !options.at("path").is_string())throw std::invalid_argument("Each Batch file export needs an explicit per-image output path");
+          const auto path=std::filesystem::u8path(options.at("path").get_ref<const std::string&>());
+          if(!path.is_absolute() || !std::filesystem::is_directory(path.parent_path()) || std::filesystem::is_directory(path))throw std::invalid_argument("Batch output needs an absolute file path in an existing directory");
+        }
+      }
+      validateMixedBindings(next.steps,choices,true,&outputs);
+      // Metadata/font/layout preflight only: no pixel rendering or source plane acquisition.
+      for(const auto index:next.order)if(isDisplayExportRecord(workflowRecord(next.steps[index]))) {
+        const auto record=decodeDisplayExportRecord(workflowRecord(next.steps[index]));const auto options=mixedExportOptions(choices,index);
+        DisplayExportFontPolicy font{options.value("font_path",record.font.default_path),std::filesystem::u8path(options.value("font_directory",record.font.directory.u8string()))};
+        std::vector<RenderMemory::Lease> reservations;std::size_t admitted=0;
+        PreparedExportImage prepared(snapshot.with_display(record.display),record.point_show_all,processingCap(),record.show_rois,
+          record.action=="flatten"?DisplayExportOutput::Document:DisplayExportOutput::Pixels,[&](std::size_t amount){if(amount>admitted){reservations.push_back(renderMemory->acquire(amount-admitted));admitted=amount;}},std::move(font));
+      }
+      next.guards.emplace(id,mixedSourceGuard(id));
+      for(const auto index:next.order)if(isMeasurementRecord(workflowRecord(next.steps[index]))) {
+        const auto record=decodeMeasurementRecord(workflowRecord(next.steps[index]));
+        if(record.redirect){const auto sampling=mixedId(choices,"redirect_id",record.redirect->document_id);next.guards.emplace(sampling,mixedSourceGuard(sampling));}
+      }
+      report["items"].push_back({{"document_id",id},{"title",snapshot.data().metadata.title},{"state","pending"},{"completed",0},{"active_step",0},{"error",""},{"profile_plots",Json::array()}});
+      next.batch_parameters.push_back(std::move(choices));
+    }
+    mixedBatchReport.swap(report);mixedBatchReportMemory=std::move(retainedReport);
+    mixedTotal=next.order.size();mixedCompleted=mixedStoppedStep=0;mixedError.clear();mixedReplay.emplace(std::move(next));mixedReplayState=MixedReplayState::Running;mixedCancelRequested=false;
+    advanceMixedReplay();
+  }
   void beginMixedReplay(Json parameters) {
     if(owner.busy() || owner.documents_.empty())throw std::invalid_argument("Select an idle image before mixed replay");
     if(owner.recording)throw std::invalid_argument("Stop recording before running a mixed workflow");
@@ -5810,6 +5970,7 @@ struct Window::Impl {
         const auto sampling=mixedId(next.parameters,"redirect_id",record.redirect->document_id);next.guards.emplace(sampling,mixedSourceGuard(sampling));
       }
     }
+    mixedBatchReport=Json{};mixedBatchReportMemory={};
     mixedTotal=next.order.size();mixedCompleted=mixedStoppedStep=0;mixedError.clear();mixedReplay.emplace(std::move(next));mixedReplayState=MixedReplayState::Running;mixedCancelRequested=false;
     advanceMixedReplay();
   }
@@ -7883,6 +8044,8 @@ void Window::action(const std::string &name, const Json &p) {
   }
   if(name=="workflow_move" || name=="workflow_remove" || name=="workflow_set_enabled"){impl->editWorkflowDraft(name,p);return;}
   if(name=="run_workflow" && workflow.is_array() && workflow.empty())throw std::invalid_argument("Workflow has no enabled commands");
+  if(name=="show_mixed_batch"){if(!p.is_object() || !p.empty())throw std::invalid_argument("Batch review takes no parameters");impl->showMixedBatch();return;}
+  if(name=="run_mixed_batch"){impl->beginMixedBatch(p);return;}
   if(name=="show_mixed_replay"){if(!p.is_object() || !p.empty())throw std::invalid_argument("Mixed review takes no parameters");impl->showMixedReplay();return;}
   if(name=="run_workflow" && impl->hasMixedAnalysis(workflow)) {
     if(p.empty())action("show_mixed_replay",p);else impl->beginMixedReplay(p);return;
@@ -12969,7 +13132,7 @@ void Window::Impl::recorder() {
   ImGui::BeginDisabled(owner.documents_.empty() || !owner.workflow.is_array() || owner.workflow.empty() ||
                        !actionAllowed("run_workflow"));
   const auto runWorkflow = [this](bool batch) {
-    if(!batch && hasMixedAnalysis(owner.workflow)){owner.action("run_workflow");return;}
+    if(hasMixedAnalysis(owner.workflow)){owner.action(batch?"show_mixed_batch":"run_workflow");return;}
     if(doc()->scientific()||needs_native_workflow_review(owner.workflow)){owner.action(batch?"batch":"run_workflow");return;}
     const bool typed = std::any_of(owner.workflow.begin(), owner.workflow.end(),
         [](const Json &step) { return step.is_object() && step.contains("schema_version"); });
@@ -13042,6 +13205,12 @@ void Window::Impl::recorder() {
   ImGui::SameLine();const bool sessionBatch=ImGui::Button("Session batch...");observeControl("workflow.session_batch");if(sessionBatch)guard([&]{owner.action("native_batch");});
   ImGui::EndDisabled();
   ImGui::Separator();
+  if(!mixedBatchReport.is_null()) {
+    const auto progress=mixedReplayInfo().at("batch");ImGui::Text("Batch: %zu of %zu images completed",progress.at("completed").get<std::size_t>(),progress.at("total").get<std::size_t>());
+    ImGui::BeginChild("Mixed Batch results",{0,120},ImGuiChildFlags_Borders);
+    for(const auto& item:progress.at("items")){ImGui::Text("Image %llu %s: %s (%zu commands)",static_cast<unsigned long long>(item.at("document_id").get<std::uint64_t>()),item.at("title").get_ref<const std::string&>().c_str(),item.at("state").get_ref<const std::string&>().c_str(),item.at("completed").get<std::size_t>());if(!item.at("error").get_ref<const std::string&>().empty())ImGui::TextWrapped("%s",item.at("error").get_ref<const std::string&>().c_str());}
+    ImGui::EndChild();if(headlessDiagnostics)hostControls["workflow.batch_report"]={{"read_only",true},{"report",progress}};
+  }
   if (!owner.workflow.is_array())
     ImGui::TextWrapped("Workflow data is invalid. Load a valid workflow before replaying.");
   const auto rowCount = owner.workflow.is_array() ? owner.workflow.size() : 0;
@@ -14763,6 +14932,21 @@ void Window::Impl::dialogs() {
         dialog.controls["group_sizes"] = std::move(observed);
       }
     }
+    if(dialog.id=="mixed_batch" && dialog.values.contains("batch_items")) {
+      ImGui::TextUnformatted("Choose images, then order them. Each selected image needs distinct file outputs.");
+      ImGui::TextWrapped("Each completed Profile is kept as an independent plot snapshot. Stop on failure preserves completed outputs.");
+      auto& rows=dialog.values["batch_items"].get_ref<Json::array_t&>();
+      ImGui::BeginChild("Batch source order",{0,160},ImGuiChildFlags_Borders);
+      for(std::size_t i=0;i<rows.size();++i) {
+        auto& row=rows[i];const auto id=row.at("document_id").get<std::uint64_t>();const auto prefix="source."+std::to_string(id)+".";ImGui::PushID(int(i));
+        bool selected=row.at("selected").get<bool>();if(ImGui::Checkbox("##selected",&selected))row["selected"]=selected;dialog.controls[prefix+"enabled"]=itemControl();dialog.controls[prefix+"enabled"]["checked"]=selected;
+        ImGui::SameLine();ImGui::BeginDisabled(i==0);const bool up=ImGui::SmallButton("Up");dialog.controls[prefix+"up"]=itemControl(i!=0);ImGui::EndDisabled();
+        ImGui::SameLine();ImGui::BeginDisabled(i+1==rows.size());const bool down=ImGui::SmallButton("Down");dialog.controls[prefix+"down"]=itemControl(i+1<rows.size());ImGui::EndDisabled();
+        ImGui::SameLine();ImGui::Text("%zu. Image %llu: %s",i+1,static_cast<unsigned long long>(id),row.at("title").get_ref<const std::string&>().c_str());ImGui::PopID();
+        if(up || down){std::swap(rows[i],rows[up?i-1:i+1]);break;}
+      }
+      ImGui::EndChild();if(headlessDiagnostics)dialog.controls["batch_draft"]={{"read_only",true},{"items",rows}};
+    }
     if(dialog.id=="workflow_editor" && workflowDraft) {
       auto draft=workflowDraft;
       ImGui::TextUnformatted("Move or remove commands; disabled rows remain saved and are skipped by Run.");
@@ -14780,7 +14964,7 @@ void Window::Impl::dialogs() {
       ImGui::EndChild();
       if(headlessDiagnostics)dialog.controls["draft"]={{"read_only",true},{"entries",draft->entries}};
     }
-    if(dialog.id=="mixed_replay" && dialog.values.contains("sequence_summary")) {
+    if((dialog.id=="mixed_replay" || dialog.id=="mixed_batch") && dialog.values.contains("sequence_summary")) {
       ImGui::BeginChild("Recorded command sequence",{0,140},ImGuiChildFlags_Borders);const auto& summary=dialog.values.at("sequence_summary").get_ref<const std::string&>();ImGui::TextUnformatted(summary.c_str(),summary.c_str()+summary.size());
       if(headlessDiagnostics){dialog.controls["sequence_summary"]=itemControl(false);dialog.controls["sequence_summary"]["read_only"]=true;dialog.controls["sequence_summary"]["text"]=summary;}ImGui::EndChild();
     }
@@ -14794,7 +14978,12 @@ void Window::Impl::dialogs() {
       if(headlessDiagnostics){dialog.controls["manager_summary"]=itemControl(false);dialog.controls["manager_summary"]["read_only"]=true;dialog.controls["manager_summary"]["text"]=summary;}
       ImGui::EndChild();
     }
+    if(dialog.id=="mixed_batch")ImGui::BeginChild("Batch parameters",{0,220},ImGuiChildFlags_Borders);
     for (const auto &p : dialog.schema) {
+      if(dialog.id=="mixed_batch" && p.contains("batch_source")) {
+        bool selected=false;for(const auto& row:dialog.values.at("batch_items"))if(row.at("document_id")==p.at("batch_source"))selected=row.at("selected").get<bool>();
+        if(!selected)continue;
+      }
       auto name = string(get(p, "name")), label = string(get(p, "label"), name),
            kind = string(get(p, "kind"));
       const auto &choices = get(p, "choices");
@@ -15031,10 +15220,12 @@ void Window::Impl::dialogs() {
               : ImVec2(float(number(fieldControl["point"][0])),
                        float(number(fieldControl["point"][1])));
       fieldControl["kind"] = kind;
+      if(dialog.id=="mixed_batch" && headlessDiagnostics){const auto clip=ImGui::GetCurrentWindowRead()->InnerClipRect;fieldControl["clip_rect"]={clip.Min.x,clip.Min.y,clip.Max.x,clip.Max.y};}
       fieldControl["point"] = {point.x, point.y};
       dialog.controls[name] = std::move(fieldControl);
       ImGui::PopID();
     }
+    if(dialog.id=="mixed_batch")ImGui::EndChild();
     if (dialog.operation && dialog.id == "convert_image")
       ImGui::TextDisabled(
           "Converts every slice; the active selection is preserved.");
@@ -15454,7 +15645,7 @@ void Window::Impl::dialogs() {
     ImGui::EndPopup();
   }
   if(!dialog.open)dialog.calibrationCapture.reset();
-  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay" || dialog.id=="mixed_replay" || dialog.id=="workflow_editor")) {
+  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay" || dialog.id=="mixed_replay" || dialog.id=="mixed_batch" || dialog.id=="workflow_editor")) {
     if(dialog.id=="workflow_editor")workflowDraft.reset();
     dialog.submit={};dialog.values=Json::object();dialog.schema=Json::array();dialog.text.clear();dialog.controls=Json::object();dialog.id.clear();
   }

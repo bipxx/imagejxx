@@ -447,3 +447,38 @@ completed/total count executed commands, while active-step and export override
 keys identify1-based authored rows. Empty/all-disabled execution refuses; one
 enabled command is supported. General native-program/Batch and unsupported
 families remain separate owning workflows. See the [scoped Windows receipt](parity/reviews/workflow-editing-20261107.json).
+
+## Open-document mixed Batch
+
+`Editor.action("show_mixed_batch")` opens the shared native review.
+`Editor.action("run_mixed_batch", items=[...], rebind=True, ...)` starts the same
+sequence directly. Items are an ordered array of1..32 unique live `document_id`
+values with optional `redirect_id` and `export_options`. Each enabled file export
+requires its own explicit path keyed by1-based authored row, including disabled
+rows in the numbering. Root choices are `rebind`, `restore_settings`, existing
+`gaussian_rebind`/`rank_rebind`, and `use_destination_calibration`. Unknown fields,
+invalid types, duplicate sources and output conflicts refuse before effects.
+Missing live source IDs raise the native lookup's Python `IndexError`; malformed
+choices raise `ValueError`/resource errors, while stale execution reports its
+terminal error through the existing wait/job contract.
+
+The review selects/reorders open sources, shows only selected sources' path/font/
+sampling controls and keeps Apply/Cancel outside scrolling options. Explicit
+baseline consent defaults off. Global parent/path/conflict and consumed font/
+layout preflight precedes jobs without rendering source pixels. One active job
+uses the existing creator publication/cancel owner; stop-on-failure preserves
+committed earlier history/rows/files and leaves later items not started.
+
+Single-replay `workflow_replay_info` keeps its existing fields. Batch additionally
+has `batch.total`, `completed`, `active_item` (1-based, zero after full success)
+and ordered `items` with `document_id`, `title`, `state`, command `completed`,
+authored `active_step`, `error`, and `profile_plots` associations of authored step
+to retained plot ID. Each completed Profile uses the existing snapshot owner,
+allowing independent CSV export and workspace persistence after later sources.
+This bounded report holds no source providers; working guards release at exit.
+
+The reviewed live-ID source plan and run report are runtime-only. Existing
+workflow V1/V2 and workspace row/plot formats remain the persisted intent/output
+owners; no new Batch setup format is implied. Folder/native-program/conversion/
+auto naming/continue-on-error/resume variants retain their owners. See the
+[scoped Windows receipt](parity/reviews/mixed-batch-20261107.json).
