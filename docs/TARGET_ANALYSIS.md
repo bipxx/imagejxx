@@ -1444,7 +1444,7 @@ through the existing snapshot owner with a source/item association; later images
 do not overwrite its only numeric result. Both Windows hosts and installed API
 have [scoped acceptance](parity/reviews/mixed-batch-20261107.json). General Batch,
 source/type/analysis/platform/release variants remain open; the next independent
-workflow is [reviewed Results CSV import](PLAN.md#next-ready-increment-t09-results-import); sorting/filtering/view export now has [scoped Windows acceptance](parity/reviews/results-view-20261107.json).
+workflow is [reviewed Results cell editing](PLAN.md#next-ready-increment-t09-results-cells); CSV import has [scoped acceptance](parity/reviews/results-import-20261107.json), and sorting/filtering/view export has [scoped Windows acceptance](parity/reviews/results-view-20261107.json).
 
 ## Results sorting, filtering and current-view export
 
@@ -1494,3 +1494,54 @@ Workspace and single-document saves retain the versioned presentation extension
 editing, summaries and wider platform/clipboard/accessibility/release variants
 remain assigned T09/T12/T14. Current verification and remaining closeout are
 tracked in the [coverage checklist](COVERAGE_CHECKLIST.md#results-view-current-wip).
+
+## Reviewed CSV Results import
+
+`Editor.action("show_results_import")` opens the Results CSV file browser.
+An optional sole `path` opens the review directly. `Editor.action("import_results",
+path=..., mode="replace", column_types={"id":"text","value":"number"},
+show_columns=True)` executes the same synchronous staged publication. Unknown
+fields, non-Boolean show_columns, invalid modes/policies and unknown column
+names refuse. Existing `Editor.action` supplies the Python interface; there is
+no new public Window header or separate table controller.
+
+The parser accepts UTF-8 (optional BOM), comma, LF/CRLF records, whole-field
+quotes, doubled embedded quotes and quoted newlines. Final newline is optional.
+A header is required; empty/duplicate/NUL headings, NUL anywhere, malformed UTF-8,
+quotes or inconsistent row widths refuse. Limits are16MiB input,1000000rows,
+1000000total cells,4096columns,4096-byte headings and1MiB decoded cells, further
+bounded by the configured shared processing budget. Header-only input imports
+an empty table. Input shape and peak old/new ownership are admitted before row
+copies; old Results and destinations are unchanged by import failures.
+
+Each column chooses Auto, Text or Number. Auto recognizes canonical JSON-style
+decimal tokens without whitespace or leading plus/zeros; integer tokens parse
+directly as signed/uint64, preserving64-bit IDs. Finite decimal/exponent tokens
+use the existing portable binary64 converter. Other tokens, including NaN,
+Infinity, overflow/underflow spellings and large out-of-range integers, remain
+text. Text preserves decoded bytes. Number requires that same finite decimal
+grammar and refuses bad/nonfinite/out-of-range values; it never silently falls
+back. Blank fields remain explicit empty strings in every mode. CSV does not
+recover null/missing distinctions or measurement provenance.
+
+The review shows counts and bounded first-row samples, Replace/Append and
+per-column conversion choices in a scrolling child with Apply/Cancel outside.
+Show imported columns is explicit: Replace selects heading order; Append unions
+new headings into the prior effective column choices. This stages the existing
+`measurements` preference atomically with rows; it does not automatically write
+preferences to disk. Existing display-choice limits (1024names,256bytes/name,
+non-whitespace names) apply when enabled; `show_columns=False` retains current
+choices and permits otherwise valid larger raw headings. Column preferences
+retain their existing preference persistence and workspace-independent scope.
+
+Replace resets the view; Append preserves criteria and refreshes derived rows.
+Imports are opaque `managed=false` groups in the existing numeric-state owner,
+so later Measure cannot invent imported-row defaults. Busy/pending measurement
+publication refuses without cancellation. Reviews freeze raw cells (including
+native IEEE NaNs), numeric state, current view and column choices; stale Apply
+refuses and Cancel releases draft storage. Fully staged conversion/state/memory
+precedes nonthrowing adoption. Source image pixels, history and unrelated
+settings remain unchanged. Session raw Results/default/view formats are reused;
+[coverage](COVERAGE_CHECKLIST.md#results-import-current-wip) records actual
+verification state. Full editing/summaries, other delimiters/formats and original
+Java AUTO/import compatibility/platform/release variants remain T09/T12/T14.

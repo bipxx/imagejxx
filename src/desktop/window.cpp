@@ -6,6 +6,8 @@
 #include "analysis_measurement.hpp"
 #include "workflow_entries.hpp"
 #include "results_view.hpp"
+#include "results_import.hpp"
+#include "admitted_file_io.hpp"
 #include <imagejxx/results_table_state.hpp>
 #include <imagejxx/measurement_overlay.hpp>
 #include <array>
@@ -4511,6 +4513,105 @@ struct Window::Impl {
     if(!resultsView.active() && !resultsView.criteria().descending){extensions.erase(resultsViewExtension);return;}
     auto memory=renderMemory->acquire(65536);auto record=resultsView.criteria().record();record["version"]=1;extensions[resultsViewExtension]=std::move(record);
   }
+  struct ResultsImportDraft {
+    RenderMemory::Lease memory;
+    ParsedResultsCsv parsed;
+    Json original,table,view,columns;
+    std::size_t original_bytes=0;
+  };
+  void requireResultsImportIdle() const {
+    if(owner.busy())throw std::invalid_argument("Wait for pending image/measurement publication before importing Results");
+  }
+  static const std::string& resultsImportPath(const Json& value) {
+    if(!value.is_string())throw std::invalid_argument("Results import requires a path");
+    const auto& path=value.get_ref<const std::string&>();
+    if(path.empty() || path.size()>131064 || path.find('\0')!=std::string::npos)throw std::invalid_argument("CSV path must be bounded nonempty text");
+    return path;
+  }
+  static void validateResultsImportOptions(const Json& parameters,bool review=false) {
+    if(!parameters.is_object())throw std::invalid_argument("Results import parameters must be an object");
+    for(const auto& field:parameters.items())if(field.key()!="path" && (review || (field.key()!="mode" && field.key()!="column_types" && field.key()!="show_columns")))throw std::invalid_argument("Unknown Results import field");
+    if(parameters.contains("path"))resultsImportPath(parameters.at("path"));
+    else if(!review)throw std::invalid_argument("Results import requires a path");
+    if(parameters.contains("mode") && (!parameters.at("mode").is_string() || (parameters.at("mode")!="replace" && parameters.at("mode")!="append")))throw std::invalid_argument("Results import mode must be replace or append");
+    if(parameters.contains("show_columns") && !parameters.at("show_columns").is_boolean())throw std::invalid_argument("show_columns must be Boolean");
+    if(parameters.contains("column_types")) {
+      const auto& types=parameters.at("column_types");if(!types.is_object() || types.size()>4096)throw std::invalid_argument("Column types must be a bounded object");
+      for(const auto& item:types.items())if(item.key().empty() || item.key().size()>4096 || item.key().find('\0')!=std::string::npos || !item.value().is_string() || (item.value()!="auto" && item.value()!="text" && item.value()!="number"))throw std::invalid_argument("Column policy must be auto, text or number");
+    }
+  }
+  std::shared_ptr<ResultsImportDraft> readResultsImport(const std::string& path) {
+    requireResultsImportIdle();RenderMemory::Lease inputMemory;
+    const auto bytes=readBytes(path,16*1024*1024,[&](std::size_t size){const auto bound=RenderMemory::add(65536,RenderMemory::mul(size,16));if(bound>processingCap())throw std::length_error("CSV input exceeds processing budget");inputMemory=renderMemory->acquire(bound);});
+    const std::string_view text(reinterpret_cast<const char*>(bytes.data()),bytes.size());
+    if(text.find('\0')!=std::string_view::npos)throw std::invalid_argument("CSV must contain no NUL");
+    try{(void)Json(std::string(text)).dump();}catch(const Json::exception&){throw std::invalid_argument("CSV must be strict UTF-8");}
+    const auto shape=scanResultsCsv(text,[](auto,auto,auto,auto,auto){});
+    const auto oldBytes=resultImportJsonBytes(owner.results);
+    const auto tableBytes=tableRecordWorkingBytes(owner.results.size());
+    const auto uiBytes=RenderMemory::add(RenderMemory::mul(path.size(),8),RenderMemory::add(RenderMemory::mul(shape.headings,16),RenderMemory::mul(shape.columns,4096)));
+    const auto bound=RenderMemory::add(RenderMemory::add(shape.ownedBytes(),oldBytes),RenderMemory::add(tableBytes,uiBytes));
+    if(bound>processingCap())throw std::length_error("CSV review exceeds processing budget");
+    auto memory=renderMemory->acquire(bound);auto draft=std::make_shared<ResultsImportDraft>();draft->memory=std::move(memory);
+    draft->parsed=parseResultsCsv(text,shape);draft->original=owner.results;draft->original_bytes=oldBytes;
+    draft->table=metadataJson(numericState.record());draft->view=resultsView.criteria().record();draft->columns=preferenceState.settings.strings("measurements");return draft;
+  }
+  void publishResultsImport(const ResultsImportDraft& draft,const Json& options) {
+    requireResultsImportIdle();validateResultsImportOptions(options);
+    const bool append=options.value("mode",std::string("replace"))=="append";
+    const Json emptyTypes=Json::object();const auto& types=options.contains("column_types")?options.at("column_types"):emptyTypes;
+    for(const auto& type:types.items())if(std::find(draft.parsed.columns.begin(),draft.parsed.columns.end(),type.key())==draft.parsed.columns.end())throw std::invalid_argument("Unknown CSV column policy name");
+    const auto count=RenderMemory::add(append?owner.results.size():0,draft.parsed.rows.size());
+    if(count>1000000)throw std::length_error("Imported Results exceed1000000rows");
+    std::size_t settingsBytes=65536;
+    for(const auto& item:preferenceState.settings.values()) {
+      settingsBytes=RenderMemory::add(settingsBytes,RenderMemory::add(128,RenderMemory::mul(item.first.size(),2)));
+      if(const auto* text=std::get_if<std::string>(&item.second))settingsBytes=RenderMemory::add(settingsBytes,RenderMemory::mul(text->size(),2));
+      if(const auto* list=std::get_if<std::vector<std::string>>(&item.second))for(const auto& text:*list)settingsBytes=RenderMemory::add(settingsBytes,RenderMemory::add(128,RenderMemory::mul(text.size(),2)));
+    }
+    const auto tableBytes=RenderMemory::add(tableWorkingBytes(count,0,0),settingsBytes);
+    const auto bound=RenderMemory::add(RenderMemory::add(draft.parsed.owned_bytes,append?draft.original_bytes:0),RenderMemory::add(tableBytes,65536));
+    if(bound>processingCap())throw std::length_error("CSV publication exceeds processing budget");
+    auto memory=renderMemory->acquire(bound);
+    if(!sameResultsImportJson(owner.results,draft.original) || metadataJson(numericState.record())!=draft.table || resultsView.criteria().record()!=draft.view || Json(preferenceState.settings.strings("measurements"))!=draft.columns)throw RevisionConflict();
+    auto nextSettings=preferenceState.settings;
+    if(options.value("show_columns",true)){auto columns=append?resultColumns(owner.results,preferenceState.settings):std::vector<std::string>{};for(const auto& name:draft.parsed.columns)if(std::find(columns.begin(),columns.end(),name)==columns.end())columns.push_back(name);nextSettings.set("measurements",std::move(columns));}
+    auto state=append?alignedTable(owner.results.size()):ResultsTableState{};
+    if(!draft.parsed.rows.empty())state.append_rows({ResultsTableRows{draft.parsed.rows.size(),{},false}},preferenceState.settings.boolean("measurement_nan_empty_cells"));
+    Json next=append?draft.original:Json::array();next.get_ref<Json::array_t&>().reserve(count);
+    for(const auto& row:draft.parsed.rows) {
+      Json converted=Json::object();
+      for(const auto& column:draft.parsed.columns){const auto it=types.find(column);converted[column]=resultImportCell(row.at(column).get_ref<const std::string&>(),it==types.end()?std::string("auto"):it->get<std::string>());}
+      next.push_back(std::move(converted));
+    }
+    std::string completed="Imported "+std::to_string(draft.parsed.rows.size())+" CSV rows ("+(append?"append":"replace")+")";
+    measurementRowMemory.reserve(measurementRowMemory.size()+1);
+    auto rowsMemory=memory.retain(draft.parsed.owned_bytes);auto stateMemory=memory.retain(state.estimated_bytes());
+    owner.results.swap(next);next.clear();numericState.swap(state);state.clear();numericStateMemory=std::move(stateMemory);
+    if(!append){measurementRowMemory.clear();resultsView=ResultsView{};resultsColumnPage=0;}else resultsView.invalidate();
+    measurementRowMemory.push_back(std::move(rowsMemory));preferenceState.settings.swap(nextSettings);status.swap(completed);
+  }
+  void showResultsImport(const Json& parameters,bool fromBrowser=false) {
+    requireResultsImportIdle();validateResultsImportOptions(parameters,true);
+    if(dialog.open || (browser.open && !fromBrowser))throw std::invalid_argument("Close the current review first");
+    if(!parameters.contains("path")) {
+      file("Import Results CSV",false,[this](std::string path){showResultsImport({{"path",std::move(path)}},true);});
+      browser.extensions={".csv"};browser.prompt="Choose a UTF-8 CSV table with a header";return;
+    }
+    auto draft=readResultsImport(resultsImportPath(parameters.at("path")));
+    Json values={{"mode","Replace"},{"show_columns",true},{"import_summary",std::to_string(draft->parsed.rows.size())+" rows, "+std::to_string(draft->parsed.columns.size())+" columns"}};
+    Json fields=Json::array({{{"name","mode"},{"label","Existing Results"},{"kind","choice"},{"choices",{"Replace","Append"}}},{{"name","show_columns"},{"label","Show imported columns (updates current column choices)"},{"kind","bool"}}});
+    for(std::size_t i=0;i<draft->parsed.columns.size();++i) {
+      const auto name="column_"+std::to_string(i);const auto& column=draft->parsed.columns[i];std::string sample;
+      if(!draft->parsed.rows.empty()){const auto& raw=draft->parsed.rows.at(0).at(column).get_ref<const std::string&>();auto n=std::min<std::size_t>(64,raw.size());while(n<raw.size() && n && (static_cast<unsigned char>(raw[n])&0xc0)==0x80)--n;sample=Json(raw.substr(0,n)).dump();if(n<raw.size())sample+="...";}
+      values[name]="Auto";fields.push_back({{"name",name},{"label",Json(column).dump()+"  sample: "+sample},{"kind","choice"},{"choices",{"Auto","Text","Number"}}});
+    }
+    const auto path=parameters.at("path");
+    ask("Import Results",std::move(values),[this,draft,path](Json values){
+      Json types=Json::object();for(std::size_t i=0;i<draft->parsed.columns.size();++i){auto policy=values.at("column_"+std::to_string(i)).get<std::string>();std::transform(policy.begin(),policy.end(),policy.begin(),[](unsigned char c){return char(std::tolower(c));});types[draft->parsed.columns[i]]=std::move(policy);}
+      publishResultsImport(*draft,{{"path",path},{"mode",values.at("mode")=="Append"?"append":"replace"},{"column_types",std::move(types)},{"show_columns",values.at("show_columns")}});
+    },std::move(fields),"results_import");
+  }
   void showResultsView() {
     if(dialog.open)throw std::invalid_argument("Close the current review first");
     auto memory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(65536));
@@ -8127,6 +8228,11 @@ void Window::action(const std::string &name, const Json &p) {
   }
   if(name=="workflow_move" || name=="workflow_remove" || name=="workflow_set_enabled"){impl->editWorkflowDraft(name,p);return;}
   if(name=="run_workflow" && workflow.is_array() && workflow.empty())throw std::invalid_argument("Workflow has no enabled commands");
+  if(name=="import_results") {
+    impl->requireResultsImportIdle();Impl::validateResultsImportOptions(p);
+    const auto draft=impl->readResultsImport(Impl::resultsImportPath(p.at("path")));impl->publishResultsImport(*draft,p);return;
+  }
+  if(name=="show_results_import"){impl->showResultsImport(p);return;}
   if(name=="set_results_view"){impl->setResultsView(p);return;}
   if(name=="show_results_view" || name=="reset_results_view") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Results view action takes no parameters");
@@ -13063,6 +13169,7 @@ void Window::Impl::resultTable() {
     }
   };
   ImGui::Text("%zu measurements", owner.results.size());
+  ImGui::BeginDisabled(owner.busy());if(ImGui::Button("Import CSV"))guard([&]{owner.action("show_results_import");});observed("import_csv");ImGui::EndDisabled();
   const bool save = ImGui::Button(resultsView.active()?"Save view CSV":"Save CSV");
   observed("save_csv");
   if (save)
@@ -15084,7 +15191,8 @@ void Window::Impl::dialogs() {
       if(headlessDiagnostics){dialog.controls["manager_summary"]=itemControl(false);dialog.controls["manager_summary"]["read_only"]=true;dialog.controls["manager_summary"]["text"]=summary;}
       ImGui::EndChild();
     }
-    if(dialog.id=="mixed_batch")ImGui::BeginChild("Batch parameters",{0,220},ImGuiChildFlags_Borders);
+    if(dialog.id=="results_import"){ImGui::TextUnformatted(dialog.values.at("import_summary").get_ref<const std::string&>().c_str());ImGui::TextWrapped("Replace resets the view. Append preserves it. Blank cells stay empty text. Auto preserves leading zeros and nonfinite spellings; Number requires finite decimal values.");}
+    if(dialog.id=="mixed_batch" || dialog.id=="results_import")ImGui::BeginChild(dialog.id=="mixed_batch"?"Batch parameters":"CSV column policies",{0,220},ImGuiChildFlags_Borders);
     for (const auto &p : dialog.schema) {
       if(dialog.id=="mixed_batch" && p.contains("batch_source")) {
         bool selected=false;for(const auto& row:dialog.values.at("batch_items"))if(row.at("document_id")==p.at("batch_source"))selected=row.at("selected").get<bool>();
@@ -15331,7 +15439,7 @@ void Window::Impl::dialogs() {
       dialog.controls[name] = std::move(fieldControl);
       ImGui::PopID();
     }
-    if(dialog.id=="mixed_batch")ImGui::EndChild();
+    if(dialog.id=="mixed_batch" || dialog.id=="results_import")ImGui::EndChild();
     if (dialog.operation && dialog.id == "convert_image")
       ImGui::TextDisabled(
           "Converts every slice; the active selection is preserved.");
@@ -15674,7 +15782,7 @@ void Window::Impl::dialogs() {
     }
     ImGui::BeginDisabled(!calibrationReady);
     const bool submitClicked = ImGui::Button(integerRange ? "Submit" :
-                                             dialog.operation ? "Apply" : "OK");
+                                             (dialog.operation || dialog.id=="results_import") ? "Apply" : "OK");
     dialog.controls["apply"] = itemControl(calibrationReady && extractionReady && (!spacingRange || spacingRenderReady) && (!slicerRange || slicerApplyReady));
     ImGui::EndDisabled();
     if (spacingRange || slicerRange || dialog.scientificExtraction || orientationRange)
@@ -15751,7 +15859,7 @@ void Window::Impl::dialogs() {
     ImGui::EndPopup();
   }
   if(!dialog.open)dialog.calibrationCapture.reset();
-  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay" || dialog.id=="mixed_replay" || dialog.id=="mixed_batch" || dialog.id=="results_view" || dialog.id=="workflow_editor")) {
+  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay" || dialog.id=="mixed_replay" || dialog.id=="mixed_batch" || dialog.id=="results_view" || dialog.id=="results_import" || dialog.id=="workflow_editor")) {
     if(dialog.id=="workflow_editor")workflowDraft.reset();
     dialog.submit={};dialog.values=Json::object();dialog.schema=Json::array();dialog.text.clear();dialog.controls=Json::object();dialog.id.clear();
   }

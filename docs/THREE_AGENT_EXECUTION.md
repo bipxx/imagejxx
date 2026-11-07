@@ -74,7 +74,7 @@ Windows hosts with affected native/installed Windows/Linux checks. M2b.2b now
 adds scoped explicit XY interchange, independent handoff/copy-back and
 point-specific ZIP integration; finish
 point-tool configuration/non-XY policy, then M2b.3 manager variants,
-M3 area/shape/options residuals. M4 now has [scoped mixed-workflow acceptance](parity/reviews/mixed-measurement-20261106.json); next is [reviewed Results CSV import](PLAN.md#next-ready-increment-t09-results-import), with Results view [scoped accepted](parity/reviews/results-view-20261107.json), with configured Profile replay [scoped accepted](parity/reviews/profile-replay-20261107.json) and wider profile/live-plot/chained replay still T04a.3. No full measurement/platform completion claim.
+M3 area/shape/options residuals. M4 now has [scoped mixed-workflow acceptance](parity/reviews/mixed-measurement-20261106.json); next is [reviewed Results cell editing](PLAN.md#next-ready-increment-t09-results-cells), with CSV import [scoped accepted](parity/reviews/results-import-20261107.json), with Results view [scoped accepted](parity/reviews/results-view-20261107.json), with configured Profile replay [scoped accepted](parity/reviews/profile-replay-20261107.json) and wider profile/live-plot/chained replay still T04a.3. No full measurement/platform completion claim.
 Use PLAN for concrete exits and the per-task waste decision/revisit trigger.
 Preserve the capture guard, physical-axis tests, resource
 leases and independent saved plots. Reuse original numeric references. Keep

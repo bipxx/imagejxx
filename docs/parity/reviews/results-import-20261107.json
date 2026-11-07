@@ -1,0 +1,188 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T09 reviewed Results CSV import",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G071",
+    "G089",
+    "G083",
+    "G009"
+  ],
+  "scope": "Import UTF-8 quoted CSV through installed strict actions and actual both Windows ImGui review; per-column Text/Number/Auto, Replace/Append, atomic invalid/Cancel/stale/resource refusal, inspect/sort/filter/CopySave/workspace roundtrip, preserve measurement defaults/source/history.",
+  "aspects": {
+    "implemented": "Private two-pass CSV shape/parse and exact Auto/Text/Number conversion; existing action router, file/review modal, Results/default/presentation owner and staged current column preferences. No new controller/ledger/dependency/public Window header or pure processing export.",
+    "verified": "436distinct installed passes:55new via20unchanged007+35corrected/strengthened012, plus381affected022. Two optionalGL skips and8unavailable historical standalone session-reader parameters are not passes. Current native009 and8affected native routes pass.",
+    "integrated": "Actual standalone C++ and optional Python Windows ImGui import browser, counts/samples, Replace/Append, conversion/Show-columns review, Apply/Cancel, invalid/stale refusal, exact uint64/nativeNaN snapshot, pending native Measure refusal without cancellation, visible cells and independent CSV/workspace readers.",
+    "release_ready": false
+  },
+  "contract": {
+    "actions": "import_results(path:str,mode:replace|append=replace,column_types:{header:auto|text|number}={},show_columns:bool=true) strict fields. show_results_import() opens existing file browser; optional sole path:str opens same reviewed draft. Synchronous Apply/direct import; no new Window public method or pure Python export.",
+    "csv": "UTF-8 optional BOM, comma, LF/CRLF, RFC-style quoted delimiters/newlines/doubledquotes, empty fields, final newline optional. Headers unique/nonempty/NUL-free <=4096bytes, <=4096columns, <=1000000rows and <=1000000cells, file<=16MiB, cell<=1MiB. Invalid UTF8/NUL/malformed quote/width refuses before publication. Header-only table allowed, empty file refused.",
+    "conversion": "DefaultAuto: strict canonical JSON decimal grammar only; signed/uint64 integer parse direct, finite binary64 decimal/exponent via existing portable converter; leadingzeros/+prefix/whitespace/NaN/Infinity/outofrange/blank remain literal text. Text preserves exact decoded field. Number accepts same finite decimal grammar, blank remains explicit empty string; other invalid/nonfinite/overflow refuses. No float coercion for out-of-range integer tokens, no missing/null/measurement provenance invented.",
+    "review": "Visible row/column counts, first-row bounded samples per column, explicit mode and per-column type choices. Existing scrollchild keeps Apply/Cancel outside. Failed conversion keeps draft/error, Cancel releases guards. Freeze raw Results,numeric state and applied criteria; refuse stale changes including mutable C++ cell edits (NaN-safe exact comparison). No active document needed.",
+    "publication": "Reject while owner.busy (pending Measure included). Stage fully converted rows/numeric state/admission before effects. Replace resets view/default owner, Append preserves old raw/defaults and current criteria; align imported opaque groups managed=false, no recaptured defaults. Reuse existing row-memory leases and numericStateMemory. No table Undo claim; images/history untouched.",
+    "persistence": "Use current raw Results and managed-default/session-view extensions; no new archive schema or persisted importer setup."
+  },
+  "visible_columns": {
+    "observed": "Real resultColumns returns configured measurements when nonempty, hiding newly imported arbitrary headings. Existing Settings measurement-column validator caps1024names/256bytes and rejects whitespace-only names. Header-only imports need a visible/exportable schema.",
+    "decision": "Add explicit show_columns:Boolean defaulttrue to import/review. Stage existing measurements preference to imported heading order on Replace, union prior effective columns on Append; publish via Settings swap with rows. Existing column-size limits apply only when show_columns=true; false imports larger supported raw headings while preserving current selection. Capture consumed columns for stale review. This is existing display configuration, not a new provenance/schema/controller. Wider workspace transfer of global column preferences remains its owning settings scope; raw data/current view persistence tested separately."
+  },
+  "documentation": [
+    "docs/TARGET_ANALYSIS.md#reviewed-csv-results-import",
+    "docs/SESSION_FORMAT.md#imported-csv-results"
+  ],
+  "verification": {
+    "distinct_installed_cases": 436,
+    "new_cases": 55,
+    "affected_regression_cases": 381,
+    "evidence_scope": {
+      "new_distinct": 55,
+      "new_evidence": "20unchanged passing007 +35corrected/strengthened012; not one55fresh final campaign",
+      "regression_passed": 381,
+      "regression_tests": 383,
+      "regression_skipped": 2,
+      "skipped_cases": [
+        "test_imgui_python_launch_and_render",
+        "test_settings_in_hidden_opengl_and_recreated_context"
+      ],
+      "unavailable": "8persistent-session standalone imgui_cpp reader parameters excluded because their full capture is retired; current Python headless sessions checked.",
+      "native": "Current new native009 plus8affected native routes014..021 all exit0cleanuptrue; original1950format and NaN reference hashes unchanged.",
+      "aspects": "Scoped Windows/API/both-host acceptance only; full-family/global-column workspace/import compatibility and supported release remain open."
+    },
+    "attempts": [
+      {
+        "receipt": "build002-owned.json",
+        "exit_code": 1,
+        "elapsed_seconds": 20.441880200058222,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "build003-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 50.24595480016433,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "build008-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 28.432903699809685,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python007-owned.json",
+        "exit_code": 1,
+        "elapsed_seconds": 3.100310100009665,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python012-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 1.3631919000763446,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python022-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 15.866770199965686,
+        "cleanup_complete": true
+      }
+    ],
+    "native": "native009 +view014/batch015/editing016/measure017/plot018/format019/nan020/native021 exit0cleanuptrue. Original1950format and NaN fixtures unchanged.",
+    "built_installed_pairs": [
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_native.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_desktop.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "sha256": "ce815017f298d01705ea92ce233495b2706d437a23bedcfe8daaa1b916e1be08"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/imagejxx.exe",
+        "installed": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+        "sha256": "97038b0e8ff2ccc25c81f4e601aac3abed0bce0778fbd124322ea5bd2b51765f"
+      },
+      {
+        "built_or_source": "src/imagejxx/__init__.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/__init__.py",
+        "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/app.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/app.py",
+        "sha256": "b207626e29150f4ac62fbd337480da5b283d84bec43ea9c3cf1ccee82915822b"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/workflows.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/workflows.py",
+        "sha256": "96bd8502428afaafbaaa6fddac5e5343905c5f99344edd95f2d74f44a8e7cb92"
+      }
+    ],
+    "loaded_origins": {
+      "imagejxx": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "imagejxx._native": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "imagejxx._desktop": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "imagejxx.ui.app": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py"
+    },
+    "source_sha256": {
+      "src/desktop/results_import.hpp": "dd16cd9dc545c47d439eee91c15c7213950b60bc0090ddba1198c5e0af29a43a",
+      "src/desktop/window.cpp": "63ea893baf61612f99c257f113902c6183087d0a68a4fabd4f02904939708bbf",
+      "src/desktop/effective_display_ui_probe.cpp": "a245603bf6b024b7d41baf3c03daf67182cdc3884badbc709b23ec3e6ede3f18",
+      "src/desktop/effective_display_ui_probe.hpp": "bf32544d2a044fba6f2aa69444c61346ab8d1e4851ccd28e474c20e87a505b34",
+      "src/desktop/python.cpp": "f3de922a7e6d5d0c60c331e27e560fad820866bb09a7d4527c723b41b091b7b4",
+      "tests/native/test_display_actions.cpp": "490400f8deb67348b6f178b23403eabaae56fb4793ff4edd4d370dceec582729",
+      "tests/python/test_results_import.py": "f5180b094dffb78cae3500b25338c3b56486cbb2afde87434137b0f60537c5a1"
+    },
+    "reference_pins": {
+      "tests/fixtures/result-format-imagej154r.json": "04438d36e1efe943775fc99b80d4ed1b4ecdda1173aeee5173ffcf5564716a3e",
+      "tests/fixtures/nan-empty-cells-imagej154r.json": "889c54904a8748b35e02ba48fe84911d58edb9947ea8fd8c10c72cc29e8c6404",
+      "tests/fixtures/mixed-measurements-imagej154r.json": "94e156f6227354263f27e755ce79d5e267733ec821ab87559d3cf9874bdb0b1a"
+    }
+  },
+  "retention": {
+    "task_record": ".tmp/manual-workflow-verification/results-import-20261107/entry.json",
+    "archive": ".tmp/manual-workflow-verification/results-import-20261107/evidence025.zip",
+    "manifest": ".tmp/manual-workflow-verification/results-import-20261107/evidence025-manifest.json",
+    "verify_receipt": ".tmp/manual-workflow-verification/results-import-20261107/verify026.json",
+    "state": "retired",
+    "source_absent": true,
+    "files": 1334,
+    "bytes": 101503932,
+    "groups": 13,
+    "root_preferences": 7,
+    "archive_bytes": 12080536,
+    "archive_sha256": "e697e3dc06bfcbbb88769f4bec2d2d899e193bb19e8d5263359cc09b8f867891",
+    "manifest_sha256": "d85e9c6f2cf3fe98a1d238307fe1cec0fd9855dda6688dfc23642360c3ff35ee",
+    "owner": "root",
+    "retained": "Existing root receipts/logs plus artifact inventory/manifest/losslesszip, including all failures. Active compiler/runtime/app products preserved."
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/results-import-storage001.json",
+    "after": ".tmp/manual-workflow-verification/results-import-storage028.json",
+    "known_before_bytes": 6662797626,
+    "known_after_bytes": 6678084439,
+    "growth_bytes": 15286813,
+    "unknown_subtrees": 214,
+    "full_budget_verified": false,
+    "allocation_bytes": 536870912,
+    "free_after_retirement": 7347990528,
+    "compiler_runtime_preserved": true
+  },
+  "waste_review": {
+    "delivered": "Reviewed CSV table import/ReplaceAppend/column conversion and visibility, default/view preservation and both-host outputs;436distinct scoped installed passes.",
+    "observed": "ReadBytes implementation was inspected but visible private overload declaration was missed, causing20.442s failedcompile002. Missing existing include fixed; coherent00350.246s passed. New tests assumed nonexistent pure table-state property and async scripted Measure, causing33failures/55 at007(22green). Actual binding getter and wait lambda were then read and corrected; probe-only00828.433s, native009 and35affected012 pass,20unchanged green cases reused. This repeats a known interface-check lapse; policy text/preflight assertions alone did not prevent it.",
+    "disposition": "Fix now: existing admitted_file_io declaration included and compiled, actual native getter used, synchronous Python Measure checked, native async pending/refusal verified in both actual-host probes. Next task must inspect exact declaring header, included translation-unit visibility and Python facade/native timing at the assertion site. Keep stable action/Window interface; no cleanup-only refactor/build or new harness/cache/controller.",
+    "cleanup": "Final source review023 preceded verified025/026lossless retention and027retirement of13groups+7preferences/1334files/101503932B;12080536B zip retained, including failures. Full budget remains unverified214unknown subtrees.",
+    "deferred": "T09 owns global-column/header-only transfer to a different preference profile, other delimiters/original import compatibility and large-table copy optimization only after a concrete measured consumer. Full editing/summaries/AUTO/per-column/platform/release retain owners. No speculative framework."
+  },
+  "remaining": [
+    "Global measurements column choices remain a preference, not a workspace table schema; header-only declared headings are not transported to an independent preference profile.",
+    "Show-columns selection uses existing1024names/256byte-name display limits; disabling it preserves raw wider headings/current choices.",
+    "Wider original ImageJ import compatibility, other delimiters/formats, full cell/row editing/summaries, Java AUTO/string/delayed-column/per-column semantics and OS/platform/commercial/release remain open."
+  ],
+  "next": "docs/PLAN.md#next-ready-increment-t09-results-cells"
+}

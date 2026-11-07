@@ -2116,6 +2116,41 @@ Json mixedBatchUiCase(Window& w,const std::string& context,const std::string& di
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last},{"status",w.workflowReplayInfo()}});throw;}
 }
 
+Json resultsImportUiCase(Window& w,const std::string& context,const std::string& directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(directory));require(!fs::exists(dir),"Fresh Results import capture required");fs::create_directories(dir);
+  Json report={{"contract","results-import-ui.001"},{"context",context},{"acceptance_claim",false},{"controls",Json::array()},{"events",Json::array()}},last;
+  try {
+    const auto csv=dir/"input.csv";const std::string input="Label,id,value\r\n\"alpha,\n\"\"quoted\"\"\",18446744073709551615,2.5\r\nbeta,001,1\r\n";writeBytes(csv.u8string(),{input.begin(),input.end()});
+    w.replaceResults(Json::array({{{"value",std::numeric_limits<double>::quiet_NaN()}}}));
+    w.action("import_results",{{"path",csv.u8string()},{"mode","append"},{"show_columns",false}});
+    require(std::isnan(w.results.at(0).at("value").get<double>()) && w.results.at(1).at("id").get<std::uint64_t>()==std::numeric_limits<std::uint64_t>::max() && w.results.at(2).at("id")=="001","Native NaN snapshot/exact uint64/leading-zero import differs");report["native_exact_vectors"]=true;
+    Image image(2,2,1,PixelType::UInt8);for(int y=0;y<2;++y)for(int x=0;x<2;++x)image.at(x,y)=3+x+2*y;Stack stack;stack.push_back(std::move(image));auto owner=std::make_shared<imagejxx::Document>(Dataset::from_stack(std::move(stack)),"Protected source");const auto protectedSource=owner->snapshot();w.addNativeDocument(owner);
+    w.action("measure");bool pendingRefused=false;
+    try{w.action("import_results",{{"path",csv.u8string()}});}catch(const std::invalid_argument&){pendingRefused=true;}
+    require(pendingRefused,"Pending native Measure allowed Results import");w.wait();require(!w.results.empty(),"Refused import canceled pending measurement");report["pending_preserved"]=true;
+    w.replaceResults(Json::array({{{"Label","original"},{"id",9},{"value",10}}}));w.updateSettings({{"measurements",{"Label","id","value"}},{"measurement_precision",3}},true);w.action("set_results_view",{{"sort_column","value"}});const auto original=w.results,originalView=w.resultsViewInfo();
+    HeadlessInputSession session(w);
+    auto frame=[&](const Json& inputs=Json::array()){require(report["events"].size()<1536,"Results import frame bound");last=session.frame(inputs);require(last.at("input_frame").at("raw_inputs")==inputs,"Results import input changed");report["events"].push_back(inputs);};
+    auto click=[&](const Json& item,const std::string& name){require(item.at("enabled").get<bool>() && item.at("id").get<std::uint64_t>(),"Import control unavailable");report["controls"].push_back({{"name",name},{"control",item}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",item.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};auto dialog=[&](const std::string& name){click(last.at("dialog").at("controls").at(name),"dialog."+name);};
+    auto text=[&](const std::string& value){for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));frame(Json::array({{{"type","text"},{"value",value}}}));frame();};
+    auto file=[&](const fs::path& path){click(last.at("file_browser").at("controls").at("path"),"file.path");text(path.u8string());click(last.at("file_browser").at("controls").at("submit"),"file.submit");frame();frame();};
+    auto focus=[&]{auto* window=ImGui::FindWindowByName("Results");require(window,"Results window missing");ImGui::FocusWindow(window);frame();};
+    auto open=[&]{focus();control("results.import_csv");file(csv);require(last.at("dialog").at("values").at("import_summary")=="2 rows, 3 columns","Import summary differs");};
+    auto choice=[&](const std::string& name,const std::string& value){dialog(name);dialog(name+".choice."+value);};
+    auto dismiss=[&]{frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();dialog("cancel");};
+    frame();frame();frame();open();dialog("cancel");require(w.results==original && w.resultsViewInfo()==originalView,"Canceled import changed Results");report["cancel_preserved"]=true;
+    open();choice("mode","Append");choice("column_2","Number");report["review"]=last.at("dialog");dialog("apply");require(w.error().empty() && w.results.size()==3 && w.results.at(1).at("id").get<std::uint64_t>()==std::numeric_limits<std::uint64_t>::max(),"Physical Append failed");report["append_rows"]=w.results;report["append_view"]=w.resultsViewInfo();require(report.at("append_view").at("source_rows")==Json::array({2,1,0}),"Append view not refreshed");report["visible_table"]=last.at("results_table");
+    focus();control("results.save_csv");file(dir/"view.csv");std::string copied;
+    {auto& platform=ImGui::GetPlatformIO();struct Restore{ImGuiPlatformIO& p;decltype(p.Platform_SetClipboardTextFn) fn;void* data;~Restore(){p.Platform_SetClipboardTextFn=fn;p.Platform_ClipboardUserData=data;}} restore{platform,platform.Platform_SetClipboardTextFn,platform.Platform_ClipboardUserData};platform.Platform_ClipboardUserData=&copied;platform.Platform_SetClipboardTextFn=[](ImGuiContext* c,const char* text){static_cast<std::string*>(c->PlatformIO.Platform_ClipboardUserData)->assign(text?text:"");};focus();control("results.copy_csv");}
+    const auto saved=readBytes((dir/"view.csv").u8string());require(copied==std::string(saved.begin(),saved.end()),"Import Copy/Save differs");report["copied_csv"]=copied;w.action("save_workspace",{{"path",(dir/"import.ijx").u8string()}});
+    open();choice("column_1","Number");const auto before=w.results;dialog("apply");require(!w.error().empty() && w.results==before,"Invalid Number import changed rows");dismiss();report["invalid_preserved"]=true;
+    open();w.results.at(0)["value"]=99;const auto changed=w.results;dialog("apply");require(!w.error().empty() && w.results==changed,"Stale draft replaced current edits");dismiss();w.results.at(0)["value"]=10;report["stale_preserved"]=true;
+    open();dialog("apply");require(w.error().empty() && w.results.size()==2 && !w.resultsViewInfo().at("active").get<bool>(),"Physical Replace did not reset view");report["replace_rows"]=w.results;report["replace_view"]=w.resultsViewInfo();
+    require(owner->snapshot().shares_data(protectedSource) && owner->undo_steps()==0,"Import changed image/history");require(w.renderMemoryInfo().at("working_bytes")==0,"Import draft working memory leaked");report["source_protected"]=true;report["final_working_bytes"]=w.renderMemoryInfo().at("working_bytes");report["state"]="observed";session.close();writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last}});throw;}
+}
+
 Json resultsViewUiCase(Window& w,const std::string& context,const std::string& directory) {
   namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(directory));require(!fs::exists(dir),"Fresh Results view capture required");fs::create_directories(dir);
   Json report={{"contract","results-view-ui.001"},{"context",context},{"acceptance_claim",false},{"controls",Json::array()},{"events",Json::array()}},last;

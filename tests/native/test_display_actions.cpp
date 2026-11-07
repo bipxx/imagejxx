@@ -617,6 +617,10 @@ void mixedReplayRetirementCase(const std::filesystem::path& root) {
 int main(int argc,char **argv){try{
   if(argc==3 && std::string(argv[2])=="--mixed-replay-retirement"){mixedReplayRetirementCase(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
 
+  if(argc==3 && std::string(argv[2])=="--results-import") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"results-import-preferences.json").u8string());
+    imagejxx::desktop::resultsImportUiCase(w,"imgui_cpp",argv[1]);return 0;
+  }
   if(argc==3 && std::string(argv[2])=="--results-view") {
     Window w((std::filesystem::u8path(argv[1]).parent_path()/"results-view-preferences.json").u8string());
     imagejxx::desktop::resultsViewUiCase(w,"imgui_cpp",argv[1]);return 0;

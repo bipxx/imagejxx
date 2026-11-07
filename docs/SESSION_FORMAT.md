@@ -503,3 +503,20 @@ cached indices. Raw Results and the existing managed numeric table extension
 remain their original owners, and unrelated session extensions are preserved.
 Generic C++/Python session I/O transports the metadata without executing desktop
 view logic or changing the session envelope version.
+
+## Imported CSV Results
+
+Reviewed CSV import publishes explicit raw Results cells and opaque
+`managed=false` row groups in the existing numeric-state extension. It does not
+create measurement provenance, infer null/missing state from blanks or execute
+image commands. Replace resets Results-view criteria; Append preserves them.
+Raw strings/exact integers/finite doubles and row order use existing session
+transport; Open/startup restore the same table/default/view state.
+
+Show imported columns updates the existing global `measurements` preference;
+its persistence remains the preferences contract. The import file's header order
+is selected there rather than stored as a second table schema. A header-only
+import has no raw rows: preserving its selected headings across a new preference
+profile remains a global-column/workspace compatibility gap. No archive envelope
+or import-setup extension is added. See [conversion and review](TARGET_ANALYSIS.md#reviewed-csv-results-import)
+and [current coverage](COVERAGE_CHECKLIST.md#results-import-current-wip).
