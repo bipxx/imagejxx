@@ -85,6 +85,7 @@ public:
   Json renderMemoryInfo() const;
   void clearResults();
   void replaceResults(Json rows);
+  Json resultsViewInfo() const;
   Json resultsTableState() const;
   Json resultsCell(std::size_t row, const std::string& column) const;
   Json plotSnapshotsInfo() const;

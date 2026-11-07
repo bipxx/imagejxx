@@ -119,6 +119,11 @@ class Editor:
         return json.loads(self._editor.workflow_replay_info)
 
     @property
+    def results_view_info(self):
+        """Detached current Results criteria and original row indices in visible order."""
+        return json.loads(self._editor.results_view_info)
+
+    @property
     def plot_snapshots_info(self):
         """List retained plot IDs and logical shared-payload/window memory."""
         return json.loads(self._editor.plot_snapshots_info())

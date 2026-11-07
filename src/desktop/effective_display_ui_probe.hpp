@@ -30,6 +30,7 @@ Json managerMeasurementReplayUiCase(Window&,const std::string&,const std::string
 Json profileReplayUiCase(Window&,const std::string&,const std::string&);
 Json mixedReplayUiCase(Window&,const std::string&,const std::string&);
 Json analysisExportChainUiCase(Window&,const std::string&,const std::string&);
+Json resultsViewUiCase(Window&,const std::string&,const std::string&);
 Json mixedBatchUiCase(Window&,const std::string&,const std::string&);
 Json workflowEditingUiCase(Window&,const std::string&,const std::string&);
 Json editAnalysisChainUiCase(Window&,const std::string&,const std::string&);

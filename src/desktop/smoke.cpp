@@ -197,7 +197,9 @@ int Window::smokeTest(const std::string &directory) {
   inputTest.action("paste_new");
   check(inputTest.document()->frame().width == 10 &&
             inputTest.results[0]["count"] == 100 &&
-            inputTest.workflow.size() == 1,
+            inputTest.results[0]["mean"] == 20 &&
+            inputTest.workflow.size() == 2 && inputTest.workflow[0].value("operation",std::string{})=="add" &&
+            inputTest.workflow[1].value("schema",std::string{})=="imagejxx.measurement-command",
         "ImGui ROI, measurements and clipboard");
   Window styleTest(directory + "/roi-style-input-prefs.json");
   auto styleOwner = std::make_shared<imagejxx::Document>(

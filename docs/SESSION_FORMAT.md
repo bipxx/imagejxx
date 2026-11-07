@@ -482,3 +482,24 @@ workflow V1/V2 and workspace row/plot formats remain the persisted intent/output
 owners; no new Batch setup format is implied. Folder/native-program/conversion/
 auto naming/continue-on-error/resume variants retain their owners. See the
 [scoped Windows receipt](parity/reviews/mixed-batch-20261107.json).
+
+## Results view presentation
+
+The native desktop stores an optional `imagejxx.results_view` extension with
+exactly `version`, `sort_column`, `descending` and `filter`. Version is1;
+`sort_column` is a string (empty means acquisition order), `descending` is a
+Boolean, and filter is null or an exact object containing `column`, `operator`
+and, for binary predicates only, `value`. Operator/type/size rules are the same
+as [the action contract](TARGET_ANALYSIS.md#results-sorting-filtering-and-current-view-export).
+Unknown fields, unsupported versions and malformed records refuse before desktop
+Open/startup publishes documents, rows, numeric state or the view. The candidate
+projection is admitted against incoming rows and numeric defaults before adoption.
+
+Both workspace and single-document saves retain presentation choices; an absent
+extension resets to the identity view for legacy sessions. Inactive default
+criteria omit the extension; an explicit descending choice roundtrips even when
+no sort/filter currently applies. The record stores criteria, not copied rows or
+cached indices. Raw Results and the existing managed numeric table extension
+remain their original owners, and unrelated session extensions are preserved.
+Generic C++/Python session I/O transports the metadata without executing desktop
+view logic or changing the session envelope version.

@@ -1,0 +1,197 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T09 Results sorting/filtering and current-view export",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G071",
+    "G009",
+    "G089",
+    "G083"
+  ],
+  "scope": "Sort/filter current Results with stable exact raw numeric semantics, visible/total counts and atomic Apply/Reset/refusal; table and Copy/Save view share one row-index projection and existing formatter. Raw APIs/history/data unaffected; live append/replacement/direct-cell changes and workspace persistence work. Installed API and actual both ImGui hosts prove cell/order/output equivalence.",
+  "aspects": {
+    "implemented": "One private derived scalar-key/index projection on existing Results/numeric-state owner, strict synchronous action/getter interface, shared modal/formatter/atomic writer and versioned session presentation. No new controller/query engine/processing dependency.",
+    "verified": "680 distinct installed cases:41focused+639affected, assembled from006/020/025/026 and strengthened final033 readers;13native regressions plus final native032 Results route. Not one680-pass final campaign.",
+    "integrated": "Actual standalone C++ and optional Python Windows ImGui View/Apply/Cancel/invalid draft/Reset, visible counts/source rows/cells, Copy/Save/all-rows and independent CSV/workspace readers. Both hosts include large string/compound/binary CSV admission refusal with unchanged destination/source.",
+    "release_ready": false
+  },
+  "contract": {
+    "api": "set_results_view(sort_column:string=\"\",descending:bool=false,filter:null|{column,operator,value?}) replaces criteria atomically. reset_results_view()/show_results_view() take no arguments. save_results_view(path) exports current projection; save_results unchanged all acquisition rows. Window::resultsViewInfo() and Python Editor.results_view_info readonly sync getter reports canonical criteria,source_row_count,visible_row_count,source_rows. Existing action returns None; creator-thread required.",
+    "filter": "Operators gt/ge/lt/le/eq/ne require finite numeric threshold preserving signed/unsigned exactness; contains/equals_text use literal case-sensitive UTF8 byte matching with bounded text; is_missing/is_null/is_nan take no value. No coercion of explicit strings/Booleans/compound JSON to numbers. Native managed numeric omissions use existing numericState defaults including numericNaN, independently of textual presentation.",
+    "sort": "Ascending total type order numbers(-Inf,finite,+Inf,NaN),UTF8 bytewise strings,Booleans(false/true),compound stable ties,null,opaque missing. Descending reverses total order; equal keys preserve current acquisition order, including signed zero/equal int/float. Exact signed/uint64/double cross-comparison avoids precision loss. Raw rows and numeric provenance remain owned by existing table.",
+    "invalidation": "One derived cache of at most two consumed scalar keys per source row plus one visible row-index vector. Borrow/equality-check only sort/filter cells to detect writable C++ cell edits and default-state changes; no full-table copy/hash/serialization each frame, no numeric provenance ledger. Rebuild only if consumed equivalence keys/count/criteria change. Compound values form stable type ties and never numeric/text match, so their payload is not copied. Draw/export always borrow current original rows by index. Default/reset has no projection cache and stays identity order.",
+    "ui": "Results View... opens existing ask modal with column text fields, human operator choices, literal text or parsed numeric threshold, descending and Apply/Cancel. Reset view restores acquisition projection; explicit visible/total counts and current criteria. Existing Copy/Save buttons export the displayed view with view-specific labels when active. Separate save_results API stays all rows; add explicit Save all CSV in active view. Shared formatter/column choices/quoting/NaN policy preserved.",
+    "persistence": "Existing session extension imagejxx.results_view with version1 and canonical sort_column/descending/filter; strict fields/version/types/limits and unknown unrelated extensions preserved. Prepare projection against incoming rows/numericState before atomic desktop publication. Absent extension restores identity/legacy behavior. Generic core session metadata transport unchanged.",
+    "admission": "Private results_view.hpp supports <=1000000 projected rows,4096-byte names/filter text, owned scalar-key/index estimates before copy/sort. Lease declared before payload; retain live cache, reserve rebuild/sort workspace, old cache remains valid on failure. Explicit getters/CSV receive bounded admission. Default raw identity imposes no new projection allocation.",
+    "public_header": "New readonly view-info getter requires one declaration in internal src/desktop/window.hpp plus native binding and optional pure-Python UI property; it is not an installed core SDK header change. Accept necessary desktop header fanout in one coherent build, measure cost. Install pure app export via processing-python; do not assume Unspecified installs it."
+  },
+  "documentation": [
+    "docs/TARGET_ANALYSIS.md#results-sorting-filtering-and-current-view-export",
+    "docs/SESSION_FORMAT.md#results-view-presentation"
+  ],
+  "verification": {
+    "distinct_installed_cases": 680,
+    "new_cases": 41,
+    "affected_regression_cases": 639,
+    "attempts": [
+      {
+        "receipt": "build001-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 489.8297543998342,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "build022-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 16.603650300065055,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "build029-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 47.81038310006261,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python006-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 2.1527966000139713,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python020-owned.json",
+        "exit_code": 1,
+        "elapsed_seconds": 17.874221300007775,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python025-owned.json",
+        "exit_code": 1,
+        "elapsed_seconds": 1.5145355998538435,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python026-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 0.7057252998929471,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python033-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 1.0295512999873608,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "smoke021-owned.json",
+        "exit_code": 1,
+        "elapsed_seconds": 0.24528450006619096,
+        "cleanup_complete": true
+      }
+    ],
+    "final_native": "native032-owned.json exit0cleanuptrue; exact signed/uint64/IEEE vector, direct C++ mutation and physical controls plus binary/compound/string admission",
+    "final_readers": "python033-owned.json:3pass, strengthened actual Python/C++ readers and small-budget coexistence. python025:2correctedpass; python026:1correctedpass. Earlier636green and38unchanged focused bodies reused within unchanged source/behavior scope.",
+    "unavailable_checks": [
+      "test_actual_export_record_replay_and_rebind_controls: two parameters use retired point annotation full reports",
+      "test_actual_floating_snapshot_lifecycle[imgui_cpp]: retired standalone snapshot full report; Python host selected",
+      "test_imgui_python_launch_and_render: optional hidden OpenGL opt-in not selected; report skip separately"
+    ],
+    "built_installed_pairs": [
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_native.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_desktop.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "sha256": "3020e3662c7d1d3d85c076d61284c553f0cb0c8081e0777244fad9993d0d483a"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/imagejxx.exe",
+        "installed": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+        "sha256": "e9fb8b4bd33156f25e2a4ae667f64df2de5b77dbc2536ab56d33f04eaeb66fac"
+      },
+      {
+        "built_or_source": "src/imagejxx/__init__.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/__init__.py",
+        "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/app.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/app.py",
+        "sha256": "b207626e29150f4ac62fbd337480da5b283d84bec43ea9c3cf1ccee82915822b"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/workflows.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/workflows.py",
+        "sha256": "96bd8502428afaafbaaa6fddac5e5343905c5f99344edd95f2d74f44a8e7cb92"
+      }
+    ],
+    "loaded_origins": {
+      "imagejxx": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "imagejxx._native": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "imagejxx._desktop": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "imagejxx.ui.app": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py"
+    },
+    "source_sha256": {
+      "src/desktop/results_view.hpp": "0b026f4774ef0c8398e3e5ee3894bbe1ae5987b9090596bc412587e5592265e9",
+      "src/desktop/window.cpp": "38558f7dc7f403180b7f29867757b3112467dd5520bee7e38e40bba08282be4b",
+      "src/desktop/window.hpp": "d7fbc361bda9437ca0f2205a0eb1f3cd08c564d6dcfa3c873f9f5e0aa54184ef",
+      "src/desktop/python.cpp": "21dcc94b26086f197a8c342bf253c49da4985915fd687156b542d2d7a5c11159",
+      "src/imagejxx/ui/app.py": "b207626e29150f4ac62fbd337480da5b283d84bec43ea9c3cf1ccee82915822b",
+      "src/desktop/effective_display_ui_probe.cpp": "70c524400f5494653bf50bfbb6133aca5d72b1f9e1ecd7fe482ad41dcfae42bb",
+      "src/desktop/effective_display_ui_probe.hpp": "3f1f6c48458f4eb3446888f659ee0005403d6c12db37706913dff5eb627b65df",
+      "tests/native/test_display_actions.cpp": "5582cd29bbc58ceada828063235898a452bbe486e08e0719b81374fef2eee116",
+      "tests/python/test_results_view.py": "fad8423f7525b9560ea900e8f8cc6ed4a65a6be7a272e49774a427d0181ed4a8",
+      "tests/python/test_desktop.py": "6cedd0c308408b709e19659966cd1d528c453e086bf89b923d03f0081be61648",
+      "tests/python/test_desktop_owner.py": "65dfcbac74c3cf1d025030333874119c6806fa2a1b7acd64c8b795bccc904844",
+      "src/desktop/smoke.cpp": "d349672454fbe85657d84cb3f3e32995ef59ca7121ad7dbe26ebdd8dd7e3807f"
+    }
+  },
+  "retention": {
+    "task_record": ".tmp/manual-workflow-verification/results-view-20261107/entry.json",
+    "archive": ".tmp/manual-workflow-verification/results-view-20261107/evidence036.zip",
+    "manifest": ".tmp/manual-workflow-verification/results-view-20261107/evidence036-manifest.json",
+    "verify_receipt": ".tmp/manual-workflow-verification/results-view-20261107/verify037.json",
+    "state": "retired",
+    "source_absent": true,
+    "files": 1344,
+    "bytes": 16279196,
+    "groups": 21,
+    "root_preferences": 11,
+    "archive_bytes": 2620566,
+    "archive_sha256": "cce8fd75bbbb7cbccf1ea8bb3922219347d030248de76d4233c05b4d4d174bd2",
+    "manifest_sha256": "9136a364a4ec3814eb84ab5004230c9b432ce9b08429bf770a79f2f94859b1ba",
+    "owner": "root",
+    "retained": "Existing root receipts/logs, artifact inventory, manifest and lossless zip; failure diagnostics included. Active cache/runtime preserved."
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/results-view-storage001.json",
+    "after": ".tmp/manual-workflow-verification/results-view-storage039.json",
+    "known_before_bytes": 6655226929,
+    "known_after_bytes": 6662697233,
+    "growth_bytes": 7470304,
+    "unknown_subtrees": 214,
+    "full_budget_verified": false,
+    "allocation_bytes": 536870912,
+    "allocation_revision": "Before initial build,256MiB revised to512MiB because measured desktoplib316140440B plus necessary header/link fanout; no silent overrun.",
+    "free_after_retirement": 7590891520,
+    "compiler_runtime_preserved": true
+  },
+  "waste_review": {
+    "delivered": "Sort/filter/inspect/CopySave reviewed Results without altering raw numeric provenance, source pixels/history; persisted presentation and both hosts.",
+    "observed": "Necessary one-method internal Window header addition cost489.830s coherent build001. Stale metadata/selection/recording consumer assumptions caused020/021 failures. Corrected Measure fixture supplied invaliddocument_id, causing025singlefailure; actual strict signature inspected before026pass. Concrete binary export admission gap fixed in existing guard, requiring47.810s incrementalbuild029; smoke-only incrementalbuild02216.604s. All failure diagnostics retained.",
+    "disposition": "Fix now: strict caller signatures and actual metadata/smoke expectations; native binary/string/compound admission and destination preservation. Keep stable action/getter interface in next increment to avoid header fanout. Defer full AUTO/string/import/edit/summaries/platform variants to T09/T12/T14; no cleanup-only rebuild or new runner/cache/controller.",
+    "cleanup": "Review034 preceded verified archive and manifest-byte/stat retirement038:21groups+11preferences,1344files/16279196B removed,2620566B zip retained. Full budget unverified due214inaccessible subtrees.",
+    "plan_feedback": "Next user workflow: reviewed CSV Results import through existing actions/Results ownership, with explicit conversion/append policy. Freeze actual strict signatures before assertions; use maintained both-host probes and narrow retries."
+  },
+  "remaining": [
+    "Full Java AUTO/string/delayed-column/per-column precision semantics, table CSV import/edit/summaries remain T09.",
+    "Explicit raw NaN strings remain text; serialized strings do not imply native IEEE/provenance recovery.",
+    "Wider supported-platform/OS clipboard/accessibility/commercial distribution/release and whole-family scope remain open."
+  ],
+  "next": "docs/PLAN.md#next-ready-increment-t09-results-import"
+}

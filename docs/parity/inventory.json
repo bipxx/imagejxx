@@ -3314,7 +3314,7 @@
       ],
       "name": "Results and tables",
       "remaining": [
-        "Scoped accepted subsets now include mixed measurement integration; see docs/parity/reviews/mixed-measurement-20261106.json and docs/TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff. Remaining owners: T09 import, sorting/filtering, editing/copy/summaries, full string/AUTO/per-column precision and original delayed-column allocation; T12/T14 OS clipboard/accessibility/platform; T04a.3 executable analysis replay. Full family required_work remains open."
+        "Scoped accepted subsets include mixed measurement integration and exact stable Results sorting/filtering/current-view Copy/Save with staged workspace presentation in both Windows hosts; see docs/parity/reviews/results-view-20261107.json. Remaining owners: T09 reviewed CSV import, editing/summaries, wider sort/filter/copy, full string/AUTO/per-column precision and original delayed-column allocation; T12/T14 OS clipboard/accessibility/platform; T04a.3 wider executable analysis replay. Full family required_work and release remain open."
       ],
       "required_work": "Table/CSV import, sorting/filtering, editing/copy, configurable columns and summaries",
       "status": "open",

@@ -132,12 +132,25 @@ def test_scientific_attachment_navigates_without_legacy_edits(editor):
     assert live.native_snapshot().shares_data(baseline)
     assert owner.undo_steps == 1 and owner.redo_steps == 0
     guarded = live.info
-    # Scientific threshold now has its own captured native command/UI contract
-    # (P06l); these remaining actions still use the guarded legacy lane.
-    for action in ("fill", "cut", "select_all", "measure"):
+    # Pixel-changing legacy lanes remain guarded. Native selection and captured
+    # current-plane analysis have independent scientific contracts.
+    for action in ("fill", "cut"):
         with pytest.raises(ValueError, match="[Ss]cientific"):
             editor.action(action, document_id=live.id)
         assert live.info == guarded and live.native_snapshot().shares_data(baseline)
+    editor.action("measure")
+    editor.wait()
+    assert editor.results[-1]["count"] == 20
+    assert editor.results[-1]["mean"] == float(pixels[1, 1].mean())
+    assert live.native_snapshot().shares_data(baseline) and owner.undo_steps == 1
+    editor.action("select_all", document_id=live.id)
+    selected = live.native_snapshot().selection
+    assert selected.kind == "rectangle"
+    np.testing.assert_array_equal(selected.points, [[0.0, 0.0], [5.0, 4.0]])
+    editor.action("select_none", document_id=live.id)
+    np.testing.assert_array_equal(live.native_snapshot().dataset.numpy("CZYX"), pixels)
+    assert owner.undo_steps == 1
+    baseline, guarded = live.native_snapshot(), live.info
     with pytest.raises(ValueError, match="[Ss]cientific"):
         live.begin_edit()
     with pytest.raises(ValueError, match="[Ss]cientific"):

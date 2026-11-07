@@ -228,7 +228,11 @@ def test_imgui_sessions_workflows_and_calibration(editor, tmp_path):
     editor.action("save_document", path=str(tmp_path / "python-imgui.ijx"))
     extensions = {}
     restored, rows, steps = load_session(tmp_path / "python-imgui.ijx", extensions=extensions)
-    assert extensions == {"imagejxx_workspace": {"version": 1, "active_index": 0}}
+    assert set(extensions) == {"imagejxx_workspace", "imagejxx.results_table_state"}
+    assert extensions["imagejxx_workspace"] == {"version": 1, "active_index": 0}
+    numeric = ij.ResultsTableState.from_record(extensions["imagejxx.results_table_state"])
+    assert numeric.row_count == len(rows) == 1
+    assert "imagejxx.results_view" not in extensions
     np.testing.assert_array_equal(restored[0].data, editor.document.data)
     assert rows == editor.results and steps == editor.workflow
     editor.action("selection_mask")

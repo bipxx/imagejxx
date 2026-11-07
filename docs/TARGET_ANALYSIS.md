@@ -1444,4 +1444,53 @@ through the existing snapshot owner with a source/item association; later images
 do not overwrite its only numeric result. Both Windows hosts and installed API
 have [scoped acceptance](parity/reviews/mixed-batch-20261107.json). General Batch,
 source/type/analysis/platform/release variants remain open; the next independent
-workflow is [Results sort/filter/view export](PLAN.md#next-ready-increment-t09-results-view).
+workflow is [reviewed Results CSV import](PLAN.md#next-ready-increment-t09-results-import); sorting/filtering/view export now has [scoped Windows acceptance](parity/reviews/results-view-20261107.json).
+
+## Results sorting, filtering and current-view export
+
+The Results **View...** dialog applies one optional sort column/direction and one
+filter. Apply validates before replacing the current projection; Cancel and
+invalid values preserve the applied view. Reset restores acquisition order and
+all rows. The active view shows visible/total counts; Copy view CSV and Save view
+CSV use the same row indices, selected columns and formatter as visible cells.
+Save all CSV and `save_results` retain acquisition-order export. Sorting/filtering
+changes neither raw cells, managed numeric defaults nor image/history state.
+
+`Editor.action("set_results_view", sort_column="mean", descending=False,
+filter={"column":"mean","operator":"gt","value":5})` is synchronous. Omitted
+sort is acquisition order; omitted/null filter means no filter. Supported numeric
+operators are `gt`, `ge`, `lt`, `le`, `eq`, `ne` with a finite numeric threshold;
+text operators are `contains`, `equals_text` with literal case-sensitive text;
+`is_missing`, `is_null`, `is_nan` take no value. Unknown fields/operators, invalid
+Boolean/types and unknown columns refuse. Text fields are NUL-free UTF-8 and
+bounded to4096bytes. Existing active column names remain usable after rows clear.
+`show_results_view()` and `reset_results_view()` accept no parameters.
+`save_results_view(path=...)` uses the existing atomic file writer; refusal before
+publication preserves an existing destination. It exports the current view even
+when the projection is inactive.
+
+The readonly `Editor.results_view_info` property returns detached `criteria`,
+`active`, `source_row_count`, `visible_row_count` and zero-based `source_rows`.
+The C++ desktop counterpart is `Window::resultsViewInfo() const`. Raw C++ Results
+remain mutable: refresh compares consumed scalar keys/defaults and row count,
+including append/replacement/Clear and direct cell edits. It stores at most two
+scalar keys per row and source indices, without copying whole rows or serializing
+the entire table on every frame. Active projections admit at most1000000rows;
+configuration, keys, getter and CSV copies share the existing processing budget.
+Failed admission preserves the applied view; Reset remains available.
+
+Ascending order is numeric (-Inf, finite, +Inf, NaN), UTF-8 bytewise text,
+Boolean false/true, compound values, explicit null, missing cell. Descending
+reverses this total order; equal keys retain acquisition order. Signed/unsigned
+integer and double comparison preserves exact64-bit integer identities. Numeric
+NaN never matches numeric comparison, including `ne`; `is_nan` selects it.
+Explicit raw strings such as `"NaN"` remain text, including serialized native
+value strings; they are not silently reinterpreted as IEEE values. Managed
+numeric defaults retain their existing provenance. This does not implement full
+Java AUTO/string/delayed-column/per-column semantics.
+
+Workspace and single-document saves retain the versioned presentation extension
+[described here](SESSION_FORMAT.md#results-view-presentation). Import, cell
+editing, summaries and wider platform/clipboard/accessibility/release variants
+remain assigned T09/T12/T14. Current verification and remaining closeout are
+tracked in the [coverage checklist](COVERAGE_CHECKLIST.md#results-view-current-wip).

@@ -2116,4 +2116,51 @@ Json mixedBatchUiCase(Window& w,const std::string& context,const std::string& di
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last},{"status",w.workflowReplayInfo()}});throw;}
 }
 
+Json resultsViewUiCase(Window& w,const std::string& context,const std::string& directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(directory));require(!fs::exists(dir),"Fresh Results view capture required");fs::create_directories(dir);
+  Json report={{"contract","results-view-ui.001"},{"context",context},{"acceptance_claim",false},{"controls",Json::array()},{"events",Json::array()}},last;
+  try {
+    const Json values=Json::array({std::numeric_limits<std::uint64_t>::max(),std::ldexp(1.,64),std::ldexp(1.,53),std::uint64_t(9007199254740993ULL),-std::numeric_limits<double>::infinity(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::infinity(),std::numeric_limits<std::int64_t>::min(),-0.0,0,"1",false,Json::array({1}),Json{{"k",1}},nullptr});
+    Json typed=Json::array();for(const auto& value:values)typed.push_back({{"value",value}});typed.push_back(Json::object());w.replaceResults(typed);w.action("set_results_view",{{"sort_column","value"}});
+    require(w.resultsViewInfo().at("source_rows")==Json::array({4,7,8,9,2,3,0,1,6,5,10,11,12,13,14,15}),"Native exact mixed/IEEE order differs");
+    w.action("set_results_view",{{"filter",{{"column","value"},{"operator","is_nan"}}}});require(w.resultsViewInfo().at("source_rows")==Json::array({5}),"Native NaN predicate differs");w.results[5]["value"]=2.;require(w.resultsViewInfo().at("source_rows").empty(),"Native direct cell edit did not refresh filter");
+    w.action("reset_results_view");w.replaceResults(Json::array());report["native_exact_vectors"]=true;
+    const auto oldCap=w.settings().integer("processing_memory_mb");
+    w.updateSettings({{"processing_memory_mb",1},{"measurements",{"value"}}},false);
+    const auto sentinel=dir/"refused.csv";writeBytes(sentinel.u8string(),{'k','e','e','p'});
+    for(const auto& cell:std::vector<Json>{std::string(300000,'x'),Json::array({std::string(300000,'x')}),Json::binary(std::vector<std::uint8_t>(300000,255))}) {
+      w.replaceResults(Json::array({{{"value",cell}}}));bool refused=false;
+      try{w.action("save_results_view",{{"path",sentinel.u8string()}});}catch(const std::length_error&){refused=true;}
+      require(refused && readBytes(sentinel.u8string())==std::vector<unsigned char>({'k','e','e','p'}) && w.results.at(0).at("value")==cell && w.renderMemoryInfo().at("working_bytes")==0,"Oversize Results CSV changed output/source or escaped admission");
+    }
+    w.replaceResults(Json::array());w.updateSettings({{"processing_memory_mb",oldCap}},false);report["csv_admission_preserved"]=true;
+    std::vector<std::shared_ptr<imagejxx::Document>> owners;std::vector<DocumentSnapshot> protectedSources;
+    for(const auto& input:std::vector<std::pair<const char*,int>>{{"First",0},{"V,\"two\nlines",10},{"Third",5}}) {
+      Image image(2,2,1,PixelType::UInt8);for(int y=0;y<2;++y)for(int x=0;x<2;++x)image.at(x,y)=input.second+x+2*y;
+      Stack stack;stack.push_back(std::move(image));auto source=std::make_shared<imagejxx::Document>(Dataset::from_stack(std::move(stack)),input.first);owners.push_back(source);protectedSources.push_back(source->snapshot());w.addNativeDocument(source);
+    }
+    w.updateSettings({{"measurements",{"Image","mean","count"}},{"measurement_precision",3}},true);
+    for(int i=0;i<3;++i){w.setActiveIndex(i);w.action("measure");w.wait();}const auto raw=w.results;
+    HeadlessInputSession session(w);
+    auto frame=[&](const Json& inputs=Json::array()){require(report["events"].size()<1024,"Results view frame bound");last=session.frame(inputs);require(last.at("input_frame").at("raw_inputs")==inputs,"Results view input changed");report["events"].push_back(inputs);};
+    auto click=[&](const Json& control,const std::string& name){require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>(),"Results view control unavailable");report["controls"].push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};auto dialog=[&](const std::string& name){click(last.at("dialog").at("controls").at(name),"dialog."+name);};
+    auto text=[&](const std::string& value){for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));frame(Json::array({{{"type","text"},{"value",value}}}));frame();};
+    auto file=[&](const fs::path& path){click(last.at("file_browser").at("controls").at("path"),"file.path");text(path.u8string());click(last.at("file_browser").at("controls").at("submit"),"file.submit");frame();frame();};
+    auto focus=[&]{auto* window=ImGui::FindWindowByName("Results");require(window,"Results window missing");ImGui::FocusWindow(window);frame();};
+    frame();frame();frame();focus();control("results.view");dialog("sort_column");text("mean");dialog("cancel");require(!w.resultsViewInfo().at("active").get<bool>() && w.results==raw,"Canceled view changed rows/criteria");report["cancel_preserved"]=true;
+    focus();control("results.view");dialog("sort_column");text("mean");dialog("filter_column");text("mean");dialog("match");dialog("match.choice.Greater than");dialog("value");text("5");dialog("apply");require(w.error().empty() && w.resultsViewInfo().at("source_rows")==Json::array({2,1}),"Physical sort/filter Apply differs");report["view"]=w.resultsViewInfo();report["visible_table"]=last.at("results_table");
+    control("results.save_csv");file(dir/"view.csv");std::string copied;
+    {auto& platform=ImGui::GetPlatformIO();struct Restore{ImGuiPlatformIO& p;decltype(p.Platform_SetClipboardTextFn) fn;void* data;~Restore(){p.Platform_SetClipboardTextFn=fn;p.Platform_ClipboardUserData=data;}} restore{platform,platform.Platform_SetClipboardTextFn,platform.Platform_ClipboardUserData};platform.Platform_ClipboardUserData=&copied;platform.Platform_SetClipboardTextFn=[](ImGuiContext* c,const char* text){static_cast<std::string*>(c->PlatformIO.Platform_ClipboardUserData)->assign(text?text:"");};focus();control("results.copy_csv");}
+    const auto bytes=readBytes((dir/"view.csv").u8string());require(copied==std::string(bytes.begin(),bytes.end()),"Copied and saved current view differ");report["copied_csv"]=copied;
+    focus();control("results.save_all_csv");file(dir/"all.csv");
+    w.results[0]["mean"]=20.5;require(w.resultsViewInfo().at("source_rows")==Json::array({2,1,0}),"Direct C++ cell mutation left stale projection");w.results[0]["mean"]=1.5;require(w.resultsViewInfo().at("source_rows")==Json::array({2,1}),"Restored raw cell did not refresh projection");report["direct_cell_refresh"]=true;
+    focus();control("results.view");dialog("value");text("not-a-number");dialog("apply");require(!w.error().empty() && w.resultsViewInfo().at("source_rows")==Json::array({2,1}),"Invalid draft changed active view");frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();dialog("cancel");report["invalid_preserved"]=true;
+    focus();control("results.reset_view");require(w.resultsViewInfo().at("source_rows")==Json::array({0,1,2}),"Physical reset lost acquisition order");report["reset_preserved"]=true;
+    w.action("set_results_view",{{"sort_column","mean"},{"filter",{{"column","mean"},{"operator","gt"},{"value",5}}}});w.action("save_workspace",{{"path",(dir/"view.ijx").u8string()}});
+    for(std::size_t i=0;i<owners.size();++i)require(owners[i]->snapshot().shares_data(protectedSources[i]) && owners[i]->undo_steps()==0,"View changed source/history");require(w.results==raw && w.renderMemoryInfo().at("working_bytes")==0,"View changed raw rows or leaked working storage");
+    report["raw_rows"]=raw;report["source_protected"]=true;report["final_working_bytes"]=w.renderMemoryInfo().at("working_bytes");report["state"]="observed";session.close();writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last}});throw;}
+}
+
 }

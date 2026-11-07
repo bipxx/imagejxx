@@ -5,6 +5,7 @@
 #include <imagejxx/point_presentation.hpp>
 #include "analysis_measurement.hpp"
 #include "workflow_entries.hpp"
+#include "results_view.hpp"
 #include <imagejxx/results_table_state.hpp>
 #include <imagejxx/measurement_overlay.hpp>
 #include <array>
@@ -933,33 +934,45 @@ const Json& resultCellValue(const Json& rows,std::size_t row,const std::string& 
   }
   fallback=nullptr;return fallback;
 }
-std::string resultCsv(const Json& rows,const Settings& current,const ResultsTableState& state) {
-  auto columns = resultColumns(rows, current);
-  auto escape = [](std::string s) {
-    std::string out = "\"";
-    for (char c : s) {
-      if (c == '\"')
-        out += '\"';
-      out += c;
+ResultViewCell resultViewCell(const Json& rows,std::size_t row,const std::string& column,const ResultsTableState& state) {
+  const auto& raw=rows.at(row);
+  if(raw.is_object()){const auto found=raw.find(column);if(found!=raw.end())return ResultViewCell::explicitValue(*found);}
+  if(state.row_count()<=rows.size() && row<state.row_count())if(const auto value=state.default_value(row,column))return {ResultViewKind::Number,nullptr,*value};
+  return {};
+}
+std::size_t csvJsonBound(const Json& value,std::size_t depth,std::size_t& nodes) {
+  if(depth>128 || ++nodes>1000000)throw std::length_error("Results CSV cell exceeds structural limits");
+  if(value.is_string())return RenderMemory::add(2,RenderMemory::mul(value.get_ref<const std::string&>().size(),6));
+  if(value.is_binary())return RenderMemory::add(512,RenderMemory::mul(value.get_binary().size(),5));
+  if(!value.is_structured())return 512;
+  std::size_t bytes=2;
+  for(auto item=value.begin();item!=value.end();++item){if(value.is_object())bytes=RenderMemory::add(bytes,RenderMemory::add(4,RenderMemory::mul(item.key().size(),6)));bytes=RenderMemory::add(bytes,RenderMemory::add(1,csvJsonBound(*item,depth+1,nodes)));}
+  return bytes;
+}
+std::string resultCsv(const Json& rows,const Settings& current,const ResultsTableState& state,
+    const std::vector<std::size_t>* projection=nullptr,ExportAdmission reserve={}) {
+  auto columns=resultColumns(rows,current);
+  auto escapedBytes=[](const std::string& text){return RenderMemory::add(RenderMemory::add(text.size(),std::count(text.begin(),text.end(),'"')),2);};
+  auto escape=[](std::string text){std::string out="\"";for(char c:text){if(c=='"')out+='"';out+=c;}return out+'"';};
+  std::size_t written=0,temporary=65536;
+  auto admit=[&](std::size_t output,std::size_t scratch=0){if(reserve){temporary=std::max(temporary,scratch);reserve(RenderMemory::add(RenderMemory::mul(output,4),temporary));}};
+  auto punctuation=[&](std::ostringstream& out,char c){if(reserve){admit(RenderMemory::add(written,1));++written;}out<<c;};
+  auto cell=[&](std::ostringstream& out,std::string text){if(reserve){const auto count=escapedBytes(text);admit(RenderMemory::add(written,count),RenderMemory::add(4096,RenderMemory::mul(text.size(),4)));written=RenderMemory::add(written,count);}out<<escape(std::move(text));};
+  std::ostringstream data;data.exceptions(std::ios::badbit|std::ios::failbit);
+  for(std::size_t k=0;k<columns.size();++k){if(k)punctuation(data,',');cell(data,columns[k]);}punctuation(data,'\n');
+  const auto count=projection?projection->size():rows.size();
+  for(std::size_t position=0;position<count;++position) {
+    const auto row=projection?projection->at(position):position;
+    for(std::size_t k=0;k<columns.size();++k) {
+      if(k)punctuation(data,',');Json fallback;const auto& value=resultCellValue(rows,row,columns[k],state,fallback);
+      if(value.is_null())continue;
+      if(reserve && (value.is_string() || value.is_structured() || value.is_binary())) {
+        std::size_t nodes=0;const auto bound=value.is_string()?value.get_ref<const std::string&>().size():csvJsonBound(value,0,nodes);
+        admit(RenderMemory::add(written,RenderMemory::add(2,RenderMemory::mul(bound,2))),RenderMemory::add(4096,RenderMemory::mul(bound,8)));
+      }
+      cell(data,resultText(value,current));
     }
-    return out + '\"';
-  };
-  std::ostringstream data;
-  for (size_t k = 0; k < columns.size(); ++k) {
-    if (k)
-      data << ',';
-    data << escape(columns[k]);
-  }
-  data << '\n';
-  for (std::size_t row=0;row<rows.size();++row) {
-    for (size_t k = 0; k < columns.size(); ++k) {
-      if (k)
-        data << ',';
-      Json fallback;const auto &v = resultCellValue(rows,row,columns[k],state,fallback);
-      if (!v.is_null())
-        data << escape(resultText(v, current));
-    }
-    data << '\n';
+    punctuation(data,'\n');
   }
   return data.str();
 }
@@ -1378,6 +1391,7 @@ struct Window::Impl {
   std::shared_ptr<std::optional<JobResult>> jobResult;
   RenderMemory::Lease numericStateMemory;
   ResultsTableState numericState;
+  ResultsView resultsView;
   RenderMemory::Lease measurementPendingMemory;
   std::uint64_t measurementRedirectDocument=0;
   std::vector<RenderMemory::Lease> measurementRowMemory;
@@ -4454,6 +4468,69 @@ struct Window::Impl {
   }
   // Before allocating copies, reserve for two state copies, eligibility growth,
   // all existing fill-range growth and at most64 bounded measurement keys/group.
+  static constexpr const char* resultsViewExtension="imagejxx.results_view";
+  void refreshResultsView() {
+    resultsView.refresh(owner.results.size(),[&](std::size_t row,const std::string& column){return resultViewCell(owner.results,row,column,numericState);},*renderMemory,processingCap());
+  }
+  bool knownResultsColumn(const std::string& name) const {
+    for(const auto& row:owner.results)if(row.is_object() && row.contains(name))return true;
+    const auto& columns=preferenceState.settings.strings("measurements");if(std::find(columns.begin(),columns.end(),name)!=columns.end())return true;
+    for(std::size_t row=0;row<std::min(numericState.row_count(),owner.results.size());++row)if(numericState.default_value(row,name))return true;
+    return false;
+  }
+  void setResultsView(const Json& parameters) {
+    auto memory=renderMemory->acquire(65536);auto criteria=ResultsViewCriteria::parse(parameters);
+    for(const auto& column:{criteria.sort_column,criteria.filter_column})if(!column.empty() && !knownResultsColumn(column) && column!=resultsView.criteria().sort_column && column!=resultsView.criteria().filter_column)throw std::invalid_argument("Unknown Results view column");
+    ResultsView candidate(std::move(criteria));candidate.refresh(owner.results.size(),[&](std::size_t row,const std::string& column){return resultViewCell(owner.results,row,column,numericState);},*renderMemory,processingCap());
+    std::swap(resultsView,candidate);
+  }
+  Json resultsViewInfo() {
+    refreshResultsView();const auto size=resultsView.active()?resultsView.rows().size():owner.results.size();
+    const auto bytes=RenderMemory::add(65536,RenderMemory::mul(size,64));if(bytes>processingCap())throw std::length_error("Results view report exceeds processing budget");
+    auto memory=renderMemory->acquire(bytes);Json rows=Json::array();rows.get_ref<Json::array_t&>().reserve(size);
+    for(std::size_t i=0;i<size;++i)rows.push_back(resultsView.active()?resultsView.rows()[i]:i);
+    return {{"criteria",resultsView.criteria().record()},{"active",resultsView.active()},{"source_row_count",owner.results.size()},{"visible_row_count",size},{"source_rows",std::move(rows)}};
+  }
+  struct ResultsCsv {std::vector<RenderMemory::Lease> memory;std::string text;};
+  ResultsCsv resultsViewCsv() {
+    refreshResultsView();ResultsCsv output;std::size_t base=65536;
+    const auto& selected=preferenceState.settings.strings("measurements");
+    if(selected.empty())for(const auto& row:owner.results)if(row.is_object())for(auto item=row.begin();item!=row.end();++item)base=RenderMemory::add(base,RenderMemory::add(64,RenderMemory::mul(item.key().size(),8)));
+    if(!selected.empty())for(const auto& name:selected)base=RenderMemory::add(base,RenderMemory::add(64,RenderMemory::mul(name.size(),8)));
+    std::size_t admitted=0;auto reserve=[&](std::size_t count){const auto requested=RenderMemory::add(base,count);if(requested>processingCap())throw std::length_error("Results view CSV exceeds processing budget");if(requested>admitted){const auto rounded=std::min(processingCap(),RenderMemory::add(requested,1048575)/1048576*1048576);const auto available=renderMemory->limit()-std::min(renderMemory->used(),renderMemory->limit());const auto target=rounded-admitted<=available?rounded:requested;output.memory.push_back(renderMemory->acquire(target-admitted));admitted=target;}};
+    reserve(0);output.text=resultCsv(owner.results,preferenceState.settings,numericState,resultsView.active()?&resultsView.rows():nullptr,reserve);return output;
+  }
+  ResultsView prepareResultsView(const Json& extensions,const Json& rows,const ResultsTableState& state) {
+    const auto found=extensions.find(resultsViewExtension);if(found==extensions.end())return {};
+    const auto& record=*found;
+    if(!record.is_object() || record.size()!=4 || !record.contains("version") || !record.at("version").is_number_integer() || record.at("version")!=1)throw std::invalid_argument("Unsupported Results view extension");
+    auto memory=renderMemory->acquire(65536);ResultsView result(ResultsViewCriteria::parse(record,true));
+    result.refresh(rows.size(),[&](std::size_t row,const std::string& column){return resultViewCell(rows,row,column,state);},*renderMemory,processingCap());return result;
+  }
+  void storeResultsView(Json& extensions) {
+    if(!resultsView.active() && !resultsView.criteria().descending){extensions.erase(resultsViewExtension);return;}
+    auto memory=renderMemory->acquire(65536);auto record=resultsView.criteria().record();record["version"]=1;extensions[resultsViewExtension]=std::move(record);
+  }
+  void showResultsView() {
+    if(dialog.open)throw std::invalid_argument("Close the current review first");
+    auto memory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(65536));
+    const auto& criteria=resultsView.criteria();
+    const std::vector<std::pair<std::string,std::string>> operators={{"","No filter"},{"gt","Greater than"},{"ge","At least"},{"lt","Less than"},{"le","At most"},{"eq","Numerically equal"},{"ne","Numerically different"},{"contains","Text contains"},{"equals_text","Text equals"},{"is_missing","Missing cell"},{"is_null","Explicit null"},{"is_nan","Numeric NaN"}};
+    Json labels=Json::array();std::string chosen="No filter";for(const auto& option:operators){labels.push_back(option.second);if(option.first==criteria.operation)chosen=option.second;}
+    Json values={{"sort_column",criteria.sort_column},{"descending",criteria.descending},{"filter_column",criteria.filter_column},{"match",chosen},{"value",criteria.value.is_string()?criteria.value.get<std::string>():criteria.value.is_null()?std::string{}:criteria.value.dump()}};
+    Json fields=Json::array({{{"name","sort_column"},{"label","Sort column (blank: acquisition order)"},{"kind","text"}},{{"name","descending"},{"label","Descending"},{"kind","bool"}},{{"name","filter_column"},{"label","Filter column"},{"kind","text"}},{{"name","match"},{"label","Match"},{"kind","choice"},{"choices",labels}},{{"name","value"},{"label","Value (number or literal text)"},{"kind","text"}}});
+    ask("Results view",std::move(values),[this,operators,memory](Json values){
+      std::string operation;for(const auto& option:operators)if(values.at("match")==option.second)operation=option.first;
+      Json criteria={{"sort_column",values.at("sort_column")},{"descending",values.at("descending")},{"filter",nullptr}};
+      if(!operation.empty()) {
+        Json filter={{"column",values.at("filter_column")},{"operator",operation}};
+        if(operation!="is_missing" && operation!="is_null" && operation!="is_nan")filter["value"]=(operation=="contains" || operation=="equals_text")?values.at("value"):Json::parse(values.at("value").get_ref<const std::string&>());
+        criteria["filter"]=std::move(filter);
+      }
+      setResultsView(criteria);
+    },std::move(fields),"results_view");
+    dialog.independentPlot=true; // Result presentation does not mutate pending image jobs.
+  }
   std::size_t tableWorkingBytes(std::size_t base,std::size_t added,std::size_t parents) const {
     auto bytes=RenderMemory::add(8192,RenderMemory::mul(numericState.estimated_bytes(),4));
     bytes=RenderMemory::add(bytes,RenderMemory::mul(RenderMemory::add(base,added),4));
@@ -4715,6 +4792,7 @@ struct Window::Impl {
         metadataObjectFromJson(sessionExtensions), std::size_t(0), 1);
     auto singleExtensions = metadataJson(presentation.extensions);
     storeResultsTable(singleExtensions);
+    storeResultsView(singleExtensions);
     auto plotRecord=storePlotWorkspace(singleExtensions);
     auto nextDiagnostics = startupDiagnostics;
     nextDiagnostics.insert(nextDiagnostics.end(), presentation.diagnostics.begin(), presentation.diagnostics.end());
@@ -6998,6 +7076,7 @@ void Window::executeStartup(StartupRequest request, bool retry) {
     stage = StartupStage::Validation;reason = StartupReason::UnsupportedDocument;
     impl->validateAuthoredWorkflow(nextWorkflow);
     auto table=impl->loadResultsTable(nextExtensions,nextResults.size());
+    auto resultsView=impl->prepareResultsView(nextExtensions,nextResults,table.state);
     auto plots=restorePlots?impl->preparePlotWorkspace(nextExtensions):Impl::PreparedPlotWorkspace{};
     if(restorePlots)nextExtensions.erase(plot_workspace_key);
     stage = StartupStage::Publication;
@@ -7017,6 +7096,7 @@ void Window::executeStartup(StartupRequest request, bool retry) {
     results.swap(nextResults);nextResults.clear();
     impl->measurementRowMemory.clear();
     impl->numericState.swap(table.state);std::swap(impl->numericStateMemory,table.memory);
+    impl->resultsView=std::move(resultsView);
     workflow.swap(nextWorkflow);
     impl->sessionExtensions.swap(nextExtensions);
     impl->publishPlotWorkspace(plots);
@@ -7244,12 +7324,13 @@ Json Window::renderMemoryInfo() const {
 void Window::clearResults() {
   checkThread();
   if(impl->analysisTask==Impl::ReadOnlyTask::Measurement && impl->job.valid())cancelJob(impl->job.info().id);
-  results=Json::array();impl->measurementRowMemory.clear();impl->numericState.clear();impl->numericStateMemory.reset();impl->resultsColumnPage=0;
+  results=Json::array();impl->measurementRowMemory.clear();impl->numericState.clear();impl->numericStateMemory.reset();impl->resultsColumnPage=0;impl->resultsView.invalidate();
 }
 void Window::replaceResults(Json rows) {
   checkThread();if(!rows.is_array())throw std::invalid_argument("Results must be an array");
   clearResults();results.swap(rows);
 }
+Json Window::resultsViewInfo() const {checkThread();return impl->resultsViewInfo();}
 Json Window::resultsTableState() const {
   checkThread();const auto bytes=impl->tableRecordWorkingBytes(results.size());
   if(bytes>impl->processingCap())throw std::invalid_argument("Results table snapshot exceeds processing budget");
@@ -7975,6 +8056,7 @@ void Window::openLegacyFile(const std::string &path) {
     auto opened = loadSession(path, rows, steps, &extensions);
     impl->validateAuthoredWorkflow(steps);
     auto table=impl->loadResultsTable(extensions,rows.size());
+    auto resultsView=impl->prepareResultsView(extensions,rows,table.state);
     auto plots=impl->preparePlotWorkspace(extensions);
     extensions.erase(plot_workspace_key);
     for (auto d : opened) {
@@ -7996,6 +8078,7 @@ void Window::openLegacyFile(const std::string &path) {
     results.swap(rows);rows.clear();
     impl->measurementRowMemory.clear();
     impl->numericState.swap(table.state);std::swap(impl->numericStateMemory,table.memory);
+    impl->resultsView=std::move(resultsView);
     workflow.swap(steps);
     impl->sessionExtensions.swap(extensions);
     impl->publishPlotWorkspace(plots);
@@ -8044,6 +8127,16 @@ void Window::action(const std::string &name, const Json &p) {
   }
   if(name=="workflow_move" || name=="workflow_remove" || name=="workflow_set_enabled"){impl->editWorkflowDraft(name,p);return;}
   if(name=="run_workflow" && workflow.is_array() && workflow.empty())throw std::invalid_argument("Workflow has no enabled commands");
+  if(name=="set_results_view"){impl->setResultsView(p);return;}
+  if(name=="show_results_view" || name=="reset_results_view") {
+    if(!p.is_object() || !p.empty())throw std::invalid_argument("Results view action takes no parameters");
+    if(name=="show_results_view")impl->showResultsView();else impl->resultsView=ResultsView{};return;
+  }
+  if(name=="save_results_view") {
+    if(!p.is_object() || p.size()!=1 || !p.contains("path"))throw std::invalid_argument("Save Results view requires path");
+    const auto& path=p.at("path");if(!path.is_string() || path.get_ref<const std::string&>().empty() || path.get_ref<const std::string&>().size()>131064 || path.get_ref<const std::string&>().find('\0')!=std::string::npos)throw std::invalid_argument("Results CSV path must be bounded nonempty text");
+    const auto output=impl->resultsViewCsv();writeBytes(path.get_ref<const std::string&>(),{output.text.begin(),output.text.end()});return;
+  }
   if(name=="show_mixed_batch"){if(!p.is_object() || !p.empty())throw std::invalid_argument("Batch review takes no parameters");impl->showMixedBatch();return;}
   if(name=="run_mixed_batch"){impl->beginMixedBatch(p);return;}
   if(name=="show_mixed_replay"){if(!p.is_object() || !p.empty())throw std::invalid_argument("Mixed review takes no parameters");impl->showMixedReplay();return;}
@@ -10207,6 +10300,7 @@ void Window::action(const std::string &name, const Json &p) {
         documents_.size());
     auto extensions = metadataJson(presentation.extensions);
     impl->storeResultsTable(extensions);
+    impl->storeResultsView(extensions);
     auto plotRecord=impl->storePlotWorkspace(extensions);
     auto diagnostics = impl->startupDiagnostics;
     diagnostics.insert(diagnostics.end(), presentation.diagnostics.begin(),
@@ -12969,19 +13063,18 @@ void Window::Impl::resultTable() {
     }
   };
   ImGui::Text("%zu measurements", owner.results.size());
-  const bool save = ImGui::Button("Save CSV");
+  const bool save = ImGui::Button(resultsView.active()?"Save view CSV":"Save CSV");
   observed("save_csv");
   if (save)
     file(
         "Save measurements", true,
-        [this](std::string p) { owner.action("save_results", {{"path", p}}); },
+        [this](std::string p) { owner.action(resultsView.active()?"save_results_view":"save_results", {{"path", p}}); },
         "results.csv");
   ImGui::SameLine();
   ImGui::BeginDisabled(owner.results.empty());
-  const bool copy = ImGui::Button("Copy CSV");
+  const bool copy = ImGui::Button(resultsView.active()?"Copy view CSV":"Copy CSV");
   observed("copy_csv");
-  if (copy)
-    ImGui::SetClipboardText(resultCsv(owner.results, preferenceState.settings,numericState).c_str());
+  if(copy)guard([&]{if(resultsView.active()){auto output=resultsViewCsv();ImGui::SetClipboardText(output.text.c_str());}else ImGui::SetClipboardText(resultCsv(owner.results,preferenceState.settings,numericState).c_str());});
   ImGui::EndDisabled();
   ImGui::SameLine();
   const bool clear = ImGui::Button("Clear");
@@ -12989,6 +13082,18 @@ void Window::Impl::resultTable() {
   if (clear) {
     owner.clearResults();
   }
+  if(ImGui::Button("View..."))guard([&]{owner.action("show_results_view");});observed("view");
+  ImGui::SameLine();ImGui::BeginDisabled(!resultsView.active());if(ImGui::Button("Reset view"))guard([&]{owner.action("reset_results_view");});observed("reset_view");ImGui::EndDisabled();
+  if(resultsView.active()) {
+    ImGui::SameLine();if(ImGui::Button("Save all CSV"))file("Save all measurements",true,[this](std::string path){owner.action("save_results",{{"path",path}});},"all-results.csv");observed("save_all_csv");
+  }
+  try{refreshResultsView();}catch(const std::exception& error){ImGui::TextWrapped("%s. Reset view to release its projection.",error.what());ImGui::End();return;}
+  const auto visibleRows=resultsView.active()?resultsView.rows().size():owner.results.size();
+  if(resultsView.active()) {
+    ImGui::Text("View: %zu of %zu measurements",visibleRows,owner.results.size());
+    const auto& criteria=resultsView.criteria();ImGui::TextDisabled("Sort: %s %s; filter: %s on %s",criteria.sort_column.empty()?"acquisition":criteria.sort_column.c_str(),criteria.descending?"descending":"ascending",criteria.operation.empty()?"none":criteria.operation.c_str(),criteria.filter_column.c_str());
+  }
+  if(headlessDiagnostics)resultsTableObservation["view"]={{"criteria",resultsView.criteria().record()},{"source_row_count",owner.results.size()},{"visible_row_count",visibleRows}};
   auto current = owner.settings();
   auto columns = resultColumns(owner.results, current);
   if (columns != resultsColumnNames) {
@@ -13073,19 +13178,20 @@ void Window::Impl::resultTable() {
       }
     }
     ImGuiListClipper clip;
-    clip.Begin(int(owner.results.size()));
+    clip.Begin(int(visibleRows));
     while (clip.Step())
       for (int row = clip.DisplayStart; row < clip.DisplayEnd; ++row) {
         ImGui::TableNextRow();
         for (auto c = firstColumn; c < endColumn; ++c) {
           ImGui::TableSetColumnIndex(static_cast<int>(c - firstColumn));
-          Json fallback;const auto &value = resultCellValue(owner.results,std::size_t(row),columns[c],numericState,fallback);
+          const auto sourceRow=resultsView.active()?resultsView.rows()[std::size_t(row)]:std::size_t(row);
+          Json fallback;const auto &value = resultCellValue(owner.results,sourceRow,columns[c],numericState,fallback);
           auto label = resultText(value, current);
           ImGui::TextUnformatted(label.c_str());
           if (headlessDiagnostics) {
             if (resultsTableObservation["cells"].size() < 256) {
               const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
-              resultsTableObservation["cells"].push_back({{"row", row}, {"column", c},
+              resultsTableObservation["cells"].push_back({{"row", row}, {"source_row",sourceRow}, {"column", c},
                   {"name", columns[c]}, {"text", label}, {"visible", ImGui::IsItemVisible()},
                   {"rect", {a.x, a.y, b.x, b.y}}});
             } else resultsTableObservation["truncated"] = true;
@@ -15645,7 +15751,7 @@ void Window::Impl::dialogs() {
     ImGui::EndPopup();
   }
   if(!dialog.open)dialog.calibrationCapture.reset();
-  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay" || dialog.id=="mixed_replay" || dialog.id=="mixed_batch" || dialog.id=="workflow_editor")) {
+  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay" || dialog.id=="mixed_replay" || dialog.id=="mixed_batch" || dialog.id=="results_view" || dialog.id=="workflow_editor")) {
     if(dialog.id=="workflow_editor")workflowDraft.reset();
     dialog.submit={};dialog.values=Json::object();dialog.schema=Json::array();dialog.text.clear();dialog.controls=Json::object();dialog.id.clear();
   }

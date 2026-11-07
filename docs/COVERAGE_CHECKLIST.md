@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining now has scoped both-host acceptance; ordinary-source editing/filter chaining now has scoped both-host acceptance; mixed workflow editing/reorder/disable now has scoped installed API and both-Windows-host acceptance; bounded open-document mixed Batch now has scoped both-host acceptance; Results sort/filter/view export is next. Full ImageJ/Fiji and release remain open.
+Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining now has scoped both-host acceptance; ordinary-source editing/filter chaining now has scoped both-host acceptance; mixed workflow editing/reorder/disable now has scoped installed API and both-Windows-host acceptance; bounded open-document mixed Batch now has scoped both-host acceptance; Results sort/filter/view export now has scoped Windows acceptance; reviewed CSV import is next. Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Analysis/display-export chaining has scoped both-host acceptance below. Ordinary-source edit/filter and analysis chaining has scoped both-host acceptance below. [Mixed workflow editing/reorder/disable](#workflow-editing-current-wip) now has scoped installed API and both-host acceptance. [Mixed Batch](#mixed-batch-current-wip) now has scoped both-host acceptance. Next: Results sort/filter/view export. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t09-results-view). |
+| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Analysis/display-export chaining has scoped both-host acceptance below. Ordinary-source edit/filter and analysis chaining has scoped both-host acceptance below. [Mixed workflow editing/reorder/disable](#workflow-editing-current-wip) now has scoped installed API and both-host acceptance. [Mixed Batch](#mixed-batch-current-wip) now has scoped both-host acceptance. Next: reviewed Results CSV import. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t09-results-import). |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -83,6 +83,36 @@ option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
 
+## Results view current WIP
+
+Owner: T09/T04/T12 / G071 G009 G089 G083.
+[Specification](PLAN.md#next-ready-increment-t09-results-view).
+**Scoped accepted on Windows.** [Receipt](parity/reviews/results-view-20261107.json).
+I: projection/actions/getter/binding/pure UI and persistence built/installed.
+V:680distinct installed cases pass via41focused+639affected, reusing unchanged
+results and retrying demonstrated failures; final strengthened readers pass.
+All13existing native routes and final Results route pass. UI: actual C++ and
+optional Python Windows ImGui controls/table/CSV/workspace pass. R: open.
+One optional GL case is skipped and3retired historical reader parameters remain
+unavailable; these are not passes. This is not one680-pass final campaign.
+
+- [x] Exact stable signed/uint64/double sorting and explicit type/nonfinite/missing order; literal text and numeric/unary filters, empty/no-match/reset/invalid atomicity.
+- [x] One derived row projection refreshes consumed scalar/default changes, Measure/Batch append, replacements/Clear and direct C++ cell mutations without copying/hash-serializing all raw rows each frame.
+- [x] Visible cells and Copy/Save current view share source row indices and existing formatter/columns/quoting/precision/NaN policy; all-rows export stays available and raw values/history unchanged.
+- [x] Native/Python readonly view-info API, bounded projection/getter/export resources, failed admission preserves current view, small budget shares cache and CSV; oversize string/compound/binary export refuses before replacing destination and releases working reservations.
+- [x] Versioned existing-session extension stages before publication, preserves raw rows and unrelated extensions, supports Open/startup and legacy defaults; malformed records leave current state untouched.
+- [x] Actual C++ and Python Windows hosts View/Apply/Cancel/invalid draft/Reset, sort/filter/count/cells, Copy/Save/all-rows and independent CSV/workspace readers agree.
+- [x] Correct native/pure/app install components and loaded bytes/origins, affected numerical/Results/replay/workspace/lifecycle checks, final source review and hash-verified scratch retirement close the scoped task.
+- [ ] Full table import/edit/summaries/Java AUTO/string/delayed-column/per-column semantics and wider platform/clipboard/accessibility/commercial/release variants retain existing owners. Explicit raw `"NaN"` strings remain text; no implicit native IEEE provenance recovery is claimed.
+
+All21groups+11preferences/1344files/16279196B retired after source review and
+verified2620566B lossless retention, including failed attempts. Active compiler/
+runtime products remain. Known after-retirement storage6662697233B;214inaccessible
+subtrees leave full budget unverified. The strict Measure fixture initially used
+an invalid parameter and was corrected against the actual signature; stale
+metadata/recording assumptions and binary CSV admission were fixed without
+changing original numerical expectations. Next: [reviewed Results CSV import](PLAN.md#next-ready-increment-t09-results-import).
+
 ## Mixed Batch current WIP
 
 Owner: T04a.3/T04b / G085 G088 G089 G083 and command-family owners.
@@ -105,7 +135,7 @@ R: open. No full-family or supported-platform release acceptance is implied.
 All14groups+8preferences/1126files/9697268B were retired after source review and
 hash-verified2008902B retention, including failures. Active cache/runtime products
 preserved;214inaccessible subtrees keep the full storage budget unverified.
-Next: [Results sort/filter/view export](PLAN.md#next-ready-increment-t09-results-view),
+Next: [reviewed Results CSV import](PLAN.md#next-ready-increment-t09-results-import),
 specified only. Update its observed checkpoints and affected family residuals at
 closeout; no full-family box closes from this scoped workflow.
 
@@ -141,7 +171,7 @@ hash-verified1981929B retention, including failures.54regenerable native-binding
 compiler intermediates/907299447B were pressure-retired with cache and built/
 installed products preserved.214 inaccessible subtrees leave full budget unverified.
 [Bounded open-document mixed Batch](#mixed-batch-current-wip) now has scoped acceptance.
-Next: [Results sort/filter/view export](PLAN.md#next-ready-increment-t09-results-view), specified only. Update its observed checkpoints here when it starts; update affected
+Next: [reviewed Results CSV import](PLAN.md#next-ready-increment-t09-results-import), specified only. Update its observed checkpoints here when it starts; update affected
 family residuals and evidence at every task closeout. No full-family box closes.
 
 ## Ordinary-source edit/filter chain scoped coverage
@@ -891,7 +921,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subsets:** Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
-- [ ] T04a.3 Measure/Profile replay; T06/T04 wider row/type/constructor and non-area RECT/COM; T09 full AUTO/per-column precision; T04b/T05/T15 plot axes/presentation/defaults; T14 platforms. [Accepted subsets and residual matrix](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff); full family remains open.
+- [ ] T04a.3 Measure/Profile replay; T06/T04 wider row/type/constructor and non-area RECT/COM; T09 full AUTO/per-column precision; T04b/T05/T15 plot axes/presentation/defaults; T14 platforms. [Accepted subsets and residual matrix](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff); full family remains open.- [x] Scoped Results sort/filter/view export preserves consumed defaults/raw provenance, exposes strict installed actions and readonly view information, and passes actual controls/output/workspace in both Windows hosts. [Evidence](#results-view-current-wip). Full-family and release exits stay open.
+
 ### G010 Resource settings
 
 - [ ] Complete full `G010` scope and supported release exits.
@@ -3067,7 +3098,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subsets:** Everyday PGM/rectangle/Gaussian preview-Apply/Undo-Redo/Measure-CSV/save-reopen; Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
-- [ ] T09 import/sort/filter/edit/copy/summaries, full string/AUTO/per-column precision and original delayed-column allocation; T12/T14 clipboard/accessibility/platform; T04a.3 analysis replay. [Accepted subsets and residual matrix](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff); full family remains open.
+- [ ] T09 import/edit/summaries and wider sort/filter/copy variants, full string/AUTO/per-column precision and original delayed-column allocation; T12/T14 clipboard/accessibility/platform; T04a.3 analysis replay. [Accepted subsets and residual matrix](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff); full family remains open.- [x] Scoped Results sort/filter/view export preserves consumed defaults/raw provenance, exposes strict installed actions and readonly view information, and passes actual controls/output/workspace in both Windows hosts. [Evidence](#results-view-current-wip). Full-family and release exits stay open.
+
 ### G072 Annotation utilities
 
 - [ ] Complete full `G072` scope and supported release exits.
@@ -3192,7 +3224,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subset:** Recorder Edit steps and enabled-subset review controls pass in both Windows hosts; see [scoped workflow editing](#workflow-editing-current-wip). This does not close general menus/window management.
 
-- [ ] Command search, configurable shortcuts, linked image windows, view/menu controls and complete help/tool documentation
+- [ ] Command search, configurable shortcuts, linked image windows, view/menu controls and complete help/tool documentation- [x] Scoped Results sort/filter/view export preserves consumed defaults/raw provenance, exposes strict installed actions and readonly view information, and passes actual controls/output/workspace in both Windows hosts. [Evidence](#results-view-current-wip). Full-family and release exits stay open.
+
 ### G084 Accessibility/platform UI
 
 - [ ] Complete full `G084` scope and supported release exits.
@@ -3261,6 +3294,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Finish broader non-pixel action/automation registration and recording, full script/macro/editor integration and versioned extension lifecycle contracts.
 
 ## Fiji viewing and commercially eligible workflows
+- [x] Scoped Results sort/filter/view export preserves consumed defaults/raw provenance, exposes strict installed actions and readonly view information, and passes actual controls/output/workspace in both Windows hosts. [Evidence](#results-view-current-wip). Full-family and release exits stay open.
 
 ### G090 BigDataViewer
 

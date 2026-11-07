@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); next is [Results sort/filter/view export](#next-ready-increment-t09-results-view). Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); Results sort/filter/view export has [scoped acceptance](parity/reviews/results-view-20261107.json); next is [reviewed Results CSV import](#next-ready-increment-t09-results-import). Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -40,7 +40,7 @@ This is the
 authoritative current queue and completion policy.
 The [coverage checklist](COVERAGE_CHECKLIST.md) tracks detailed family/option
 residuals and scoped implementation/verification/UI/release coverage. Update its
-affected entries at task closeout and revise its [current mixed-replay WIP](COVERAGE_CHECKLIST.md#ordered-mixed-replay-current-wip) at meaningful observed
+affected entries at task closeout and revise its [current Results-view WIP](COVERAGE_CHECKLIST.md#results-view-current-wip) at meaningful observed
 implementation/verification checkpoints. Its acceptance dimensions cover API, both
 ImGui hosts, configuration, processing, selection/history, XYZ, output, lifecycle,
 platform and commercial/release scope; it is a coverage view, not another queue.
@@ -175,7 +175,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.3: ordinary-source editing/filter and analysis chain. | Gaussian/invert/Measure/Profile/PNG;391distinct scoped installed cases (30final edited+361unchanged), bothactualWindows hosts, history/UndoRedo/frozen owners/cancel and metadata admission. All10groups+3prefs retired. [Receipt](parity/reviews/edit-analysis-chain-20261107.json). |
 | Delivered scoped | T04a.3: mixed workflow editing/reorder/disable. | Idle draft, V2 persistence and authored enabled-subset mapping;427distinct installed cases via32new+395affected with2final strengthened readers, both actual Windows hosts, corrected native regressions and retirement.15groups+7prefs retired; [receipt](parity/reviews/workflow-editing-20261107.json). |
 | Delivered scoped | T04a.3/T04b: bounded open-document mixed Batch. | Ordered selected sources, global output review, one serial job owner, per-item progress/Profile snapshots/Cancel/stop-on-failure;455distinct installed cases via26+1+428, actual both Windows hosts and existing native regressions.14groups+8prefs retired; [receipt](parity/reviews/mixed-batch-20261107.json). |
-| Next ready | T09: Results sorting/filtering and view export. | Inspect/organize the produced rows and Copy/Save exactly the reviewed view using existing numeric provenance and CSV route. [Specification](#next-ready-increment-t09-results-view). |
+| Delivered scoped | T09: Results sorting/filtering and view export. | Exact stable projection, shared visible/Copy/Save output and staged workspace state;680distinct installed passes via scoped/reused checks, both Windows hosts,21groups+11prefs retired. [Receipt](parity/reviews/results-view-20261107.json). |
+| Next ready: specified only | T09: reviewed Results CSV import. | Review Replace/Append and column conversion, publish atomically into existing Results, then inspect/sort/filter/export/reopen. [Specification](#next-ready-increment-t09-results-import). |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1300,7 +1301,7 @@ workflow does not make all Batch variants a prerequisite for the next independen
 editing/analysis workflow.
 
 <a id="next-ready-increment-t09-results-view"></a>
-### Next ready: T09 Results sorting/filtering and view export
+### Scoped accepted: T09 Results sorting/filtering and view export
 
 **User-visible exit.** After Measure or Batch produces rows, choose a sort column
 and direction, filter the table, inspect the visible count/order, and Copy/Save
@@ -1351,7 +1352,69 @@ remain unchanged. G071/G009/G089 and T09/T04/T12 own the scope.
 
 Import/cell editing/summary tools, full Java AUTO/string/delayed-column/per-column
 precision semantics and wider table/platform/clipboard/accessibility/release
-variants remain assigned T09/T12/T14. This successor is specified only.
+variants remain assigned T09/T12/T14. This increment has [scoped Windows acceptance](parity/reviews/results-view-20261107.json):680distinct installed passes,13native regressions and final resource/both-host readers;21groups+11preferences retired after verified retention. Full-family/release gates remain open.
+
+<a id="next-ready-increment-t09-results-import"></a>
+### Next ready: T09 reviewed Results CSV import
+
+**User-visible exit.** Open a CSV table, review columns/conversion and Replace or
+Append, apply once, then inspect/sort/filter/Copy/Save and reopen the imported
+Results in both ImGui hosts. Invalid input and Cancel preserve current rows,
+numeric defaults, active view and images/history. G071/G089/G083; owners T09/T12.
+
+- **Entry/actual routes:** use `Impl::resultTable`, existing file/review modal,
+  `Window::action`, `replaceResults` and `ResultsTableState::append_rows` opaque
+  groups. Inspect actual row-memory/default/publication and pending-Measure
+  behavior before writing. The calibration parser is a different one/two-column
+  Float32/whitespace contract; reuse neither its tokenization nor its rounding.
+  Keep the existing action surface to avoid another Window header fanout.
+- **Input contract:** bounded UTF-8 CSV with header; support comma, CRLF/LF,
+  quoted delimiters/newlines/doubled quotes, empty fields, final newline/no
+  newline and optional UTF-8 BOM. Reject malformed quoting, duplicate/empty/NUL
+  headings, invalid UTF-8 and inconsistent widths before publication. Bound
+  bytes/rows/columns/cells and charge raw bytes, decoded fields, draft/display,
+  staged rows/state and peak old+new ownership before copies. Retain failures.
+- **Conversion review:** expose explicit per-column Text/Number/Auto policy,
+  clear defaults and sample/count preview. Preserve text identifiers/leading
+  zeros, literal strings and exact signed/uint64 integers; do not route integer
+  tokens through double. Auto conversion and numeric error/nonfinite/overflow
+  policy must be frozen from actual supported contracts at entry, tested with
+  independent expectations and shown in review. CSV cannot recover null versus
+  missing versus blank or original measurement provenance; never invent them.
+  Do not silently coerce a failed explicit Number conversion to zero or text.
+- **Actions/UI:** define strict `import_results` path/mode/conversion fields and
+  the shared `show_results_import` review before code. Apply is synchronous and
+  atomic after admitted staging; reject while pending measurement publication
+  or make its existing cancellation contract explicit before choosing behavior.
+  Invalid drafts remain recoverable; Cancel releases reservations. Both hosts
+  expose Import CSV and visible mode/type/row/column review with accessible
+  Apply/Cancel. No image document is required to import a table.
+- **Ownership/persistence:** Replace adopts only the staged table and resets
+  presentation explicitly in review. Append preserves existing rows/defaults
+  and refreshes its current projection; imported rows are opaque, not captured
+  measurements. Append numeric-state groups with `managed=false` to preserve
+  future Measure/default alignment. Refuse stale draft/table changes. Keep
+  raw rows, existing session extension and source image/history owners; no
+  second table controller, provenance ledger or generic importer registry.
+- **Verification:** installed strict actions and both real hosts cover review,
+  Cancel/Apply/refusal, Replace/Append, quoted UTF-8/newlines/empty data, exact
+  64-bit IDs, invalid numeric/overflow cases, configured columns/precision,
+  active sort/filter refresh, Save/Copy equality and session Open/startup.
+  Check Measure-before/import/Measure-after defaults and failed cap admission
+  against unchanged rows/history/destination; verify changed source/install
+  bytes and origins. Use local literal CSV oracles and independent readers;
+  no retired reference is needed for this scoped transport workflow. Preserve
+  wider original-import compatibility as an explicit residual if unverified.
+- **Efficient closeout:** one coherent desktop build in current cache, correct
+  component installs, narrow changed parser/API/host checks and affected row/
+  session/lifecycle regressions. Keep consumer scratch through final source
+  review, then hash-retain/retire and update canonical coverage/waste/queue.
+  Reuse unchanged Results sorting/numeric oracle evidence; no new environment,
+  runner or full-family certification campaign. No agents are authorized.
+
+Full cell editing/summaries, other delimiters/formats and original Java AUTO/
+string/delayed-column/per-column semantics remain T09/T12/T14. This next increment
+is specified only; no imported-table implementation or acceptance is claimed.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 
