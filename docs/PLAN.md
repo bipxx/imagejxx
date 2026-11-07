@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. Next ready is [M4 mixed measurement integration](#next-ready-increment-m4-mixed-measurement-integration). Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); next is [T04a.3 Measure recording and rebind](#next-ready-increment-t04a3-measure-recording-and-rebind). Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -165,8 +165,9 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.2 M3: Display label. | Captured labels, name/plane/redirect policy, actual settings/table/Copy CSV/Save CSV/persistence and lifecycle guards. 2,606 distinct installed Python passes, both Windows hosts and Windows/Linux native/installed C++ clients; all 10 owned groups retired. Two external C++ report readers remain unavailable. [Receipt](parity/reviews/display-label-20261106.json). |
 | Delivered scoped | T04a.2 M3: Invert Y coordinates. | Default-off captured report-only Y/YM/BY, unchanged physical geometry and scalar/Feret outputs. 3,330 distinct installed Python passes (870 new); two matching Windows host pairs and current Windows/Linux native/settings/installed C++ clients. All thirteen owned groups retired. Differing-XY bypass and wider M3 remain open. [Receipt](parity/reviews/invert-y-20261106.json). |
 | Delivered scoped | T04a.2 M3/T08: Add to overlay. | Native/Python captured clone/state/publication; actual both-Windows-host labels/zoom/export/history/persistence/lifecycle and Windows/Linux native/installed C++ clients. All15 groups retired. [Receipt](parity/reviews/add-to-overlay-20261106.json); foreign/brush/pointwise/table/platform/release exits retain owners. |
-| Next ready | T04a.2 M4: mixed measurement integration. | Compose accepted settings and representative current/whole/manager/redirect outputs with one bounded original corpus and both hosts. Reconcile each residual owner and hand stable contracts to T04a.3; reuse unchanged API/numerical evidence. [Specification](#next-ready-increment-m4-mixed-measurement-integration). |
-| Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
+| Delivered scoped | T04a.2 M4: mixed measurement integration. | Both actual Windows hosts match110 rows/49 visible cells, overlays/table/CSV/reopen and composed lifecycle. All11 groups retired;24 Analyzer options reconciled. [Receipt](parity/reviews/mixed-measurement-20261106.json). Full M3/family/release remain open. |
+| Next ready | T04a.3: Measure recording and explicit rebind. | Save/load executable current-area/redirect intent, review/rebind and Run in both hosts using stable M4 contracts; retain wider manager/Profile variants. [Specification](#next-ready-increment-t04a3-measure-recording-and-rebind). |
+| Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
 engine. T00 reference recovery and T02 demonstrated overhead fixes remain bounded
@@ -259,7 +260,7 @@ workflow-first queue or make every analysis residual a prerequisite for editing.
   | M2b.2b — Active: interchange and remaining point-tool configuration | Explicit XY promotion/projection, independent editor/manager handoff and point-specific ZIP controls are scoped integrated on existing owners. Finish point-tool configuration and non-XY policies with T06/T10/T15. | Actual ROI/ZIP import/export/save/reopen and required tool options work in both hosts. Versioned compatibility preserves old envelopes; no silent metadata loss or implicit XZ/YZ/extent reinterpretation. |
   | M2b.3 — Remaining manager commands | Reconcile original required MultiMeasure/Z/T layouts/options and implement on the current owner, not another batching engine. | Every required manager layout/target/append-label option has native/Python/actual UI consumers, references, bounded output and lifecycle checks. |
   | M3 — Required area/shape/measurement options | Reconcile Analyzer columns and every owning option/key against inventory and `TARGET_ANALYSIS.md`. Reuse existing masks/statistics and fused bounds; add missing geometry kernels only once. Specify threshold/redirect source capture and admission before implementing those consumers. | Every required column/option has supported behavior, default, validation, units/precision, API and UI consumer, and an independent reference. Cross-source/threshold failure and lifecycle checks pass where applicable. Any numerical work deferred to T09 has explicit requirement IDs and blocks a claim of complete measurement scope. |
-  | M4 — Measurement integration reconciliation | Exercise representative whole/area/line/path/angle/point and manager workflows together using the existing capture reader. Audit formatter/CSV, settings, source/history and result memory; reuse unchanged numerical evidence. | No unowned command/option residual; scoped integration receipt names platforms and missing evidence. Hand stable command/options/state contracts to T04a.3. Do not run a second full reference suite solely to refresh counts. |
+  | M4 — Measurement integration reconciliation | Scoped accepted supported workflow in both Windows hosts; existing capture/formatter/CSV/table/overlay owners reused. | [Receipt](parity/reviews/mixed-measurement-20261106.json) records exact scope,24 option owners and stable T04a.3 handoff; wider M3/family/release exits remain open. |
 
 - **Current handoff:** captured finite-scalar areas/lines and grouped manager
   rows are scoped integrated in both Windows hosts. [Command/key gaps](TARGET_ANALYSIS.md#measurement-consumer-handoff)
@@ -1080,80 +1081,72 @@ first phase before/after 7,489,386,548/7,477,055,487B; corrective phase before/a
 budget unverified. Sixteen product build commands sum 258.902 s; four SDK builds are
 separate. These are command sums, not critical-path duration or runtime speed.
 
-### Next ready increment: M4 mixed measurement integration
+<a id="next-ready-increment-m4-mixed-measurement-integration"></a>
+### M4 mixed measurement integration (scoped accepted)
 
-Add to overlay is [scoped accepted](parity/reviews/add-to-overlay-20261106.json):1403 distinct installed Python checks plus142 affected regressions, both actual Windows ImGui hosts,406 rendering/export controls and current Windows/Linux native/installed C++ consumers. All15 scratch groups are retired. This does not close M3, the99 families or release. No agents are authorized.
+[Scoped acceptance](parity/reviews/mixed-measurement-20261106.json): the seven-case
+independent Analyzer corpus and installed API workflows pass; both actual Windows
+ImGui hosts match110 raw rows,49 visible cells,tablecapacity200,three overlays,
+Copy/Save CSV and reopened preferences/workspace. Captured flag/column/pose
+refusals, live presentation, cancel/owner-close/clear and reservations pass.
+All11 owned scratch groups are safely retired; no processing/API contract changed.
+The [24-option reconciliation](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff)
+assigns each residual; full M3/family/release scope remains open. Non-area RECT/COM,
+cached-constructor angles and differing-XY/foreign/brush/pointwise variants remain
+with T06/T04/T08. T09 retains full AUTO/string/editing/delayed-column behavior.
+This scoped exit hands stable command/options/row/table/overlay contracts to T04a.3.
 
-**User-visible exit.** One mixed measurement workflow composes the accepted
-options through real controls and preserves rows, overlays, history, CSV and
-workspace. Use accepted finite scalar/equal-XY inputs and supported ROI variants;
-keep120 differing-XY bypass cases, foreign/brush/pointwise variants, full table
-AUTO/string/editing and broader platform exits with T06/T08/T09/T14. Do not make
-those variants prerequisites for this independently usable integration.
+### Next ready increment: T04a.3 Measure recording and rebind
 
-1. **Freeze the real routes before editing.** In the existing next task record,
-   map G009/G025/G066/G071 and every consumed option to its actual declaration,
-   control, producer/reader and residual owner. Read current settings.cpp,
-   analysis_measurement.cpp, Window startMeasurement/poll, existing actual
-   measurement probes and TARGET_ANALYSIS.md. Python SelectionEditor takes
-   shape[height,width]; native document properties arrive under native_properties;
-   save_document writes a native bundle and export_display is asynchronous.
-   Inspect these actual contracts, not a summary or command name. Reuse the
-   current installed runtime for an early fixture/caller check when possible.
-2. **Keep a bounded composition corpus.** Start with the existing UInt8 scalar
-   TCZ/equal-XY fixtures and a small reviewed original Analyzer observer. Reset
-   original global flags/state between cases; use Analyzer.run when observing
-   Add to overlay and preserve the ROI Manager mask distinction. Reuse matching
-   per-feature golden evidence. Add only the few independently observed combined
-   cases needed to expose interactions, with exact pixel/ROI/threshold/redirect
-   inputs and field-specific tolerances; no all-options Cartesian campaign.
-3. **Compose the existing options.** Exercise Label, Invert Y, NaN empty cells,
-   Add to overlay, scientific presentation/precision, LIMIT, redirect and the
-   %Area/Skew/Kurt choices together. Verify source versus sampling ownership,
-   independent full/geometric/limited populations, raw values versus formatting,
-   final-counter overlay names and captured setting semantics. Include one
-   default-off control, one late-column/capacity boundary and representative
-   current-area, whole-image and ordered-manager area/line/polyline/angle/point
-   rows using already accepted variants. Capture scientific T/C/Z rather than
-   guessing process-local IDs or silently changing targets.
-4. **Easiest implementation path: reuse callers.** Extend the maintained shared
-   probe/capture path in effective_display_ui_probe.cpp/.hpp, its two real
-   consumers in desktop/python.cpp and test_display_actions.cpp, and a focused
-   Python integration test. Use existing Settings, resolved analysis, overlay
-   transaction, ResultsTableState, formatter/CSV and session APIs. No new kernel,
-   registry, scheduler, Window.hpp/desktop.hpp type or generic runner is expected.
-   Expand product code only for a concrete failing composed consumer and record
-   that reason before editing; inspect any changed binding/ownership paths.
-5. **Verify usable output and lifecycle.** Actual both-host controls must yield
-   matching table/CSV/overlay output and reopened preferences/workspace. Check
-   source/history preservation and applicable cancel/stale/owner-close/clear
-   behavior for the composed request. Bind random redirect IDs to the selected
-   controls before normalization. A missing unrelated report blocks only its
-   dependent claim; do not recreate retired references or repeat recovery scans.
-6. **Reconcile traceability and handoff.** Map every required remaining Analyzer
-   command/option to an accepted contract or explicit residual owner in existing
-   inventory/checklist records; do not infer M3 completion from a small list of
-   checked settings. Hand stable command/options/state contracts to T04a.3 only
-   with this scoped integration receipt. Full table/operation-intent replay stays
-   T09/T04a.3 and broader release stays T14/T00.
-7. **Keep the build/check path narrow.** Reuse .cache/native-verification/windows,
-   the recorded Linux cache and active runtime. Python installs target the exact
-   existing runtime/Lib/site-packages prefix, not the runtime root; verify loaded
-   paths and source/built/installed bytes. Batch probe/caller edits before one
-   affected desktop build; avoid shared-header fanout. Reuse unchanged API,
-   numerical and installed-client evidence; changed public/ownership contracts
-   still require affected regressions and installed consumers.
-8. **Close before the successor.** Retain SDK configs through final review,
-   hash-verify necessary evidence and retire each terminal scratch group under
-   its existing receipts. Record measured build/check time, retries and storage,
-   including unknown roots; update coverage/queue and the brief waste decision.
-   Check whether the concrete entry checks above prevented this increment's
-   repeated adapter/wire/serializer/prefix failures. Publishing this plan alone
-   is not evidence that execution improved.
+**User-visible exit.** Record a supported current-area or redirected Measure in
+the existing workflow recorder; save/load that intent, explicitly bind source
+and optional sampling owners in the existing review, then Run to append matching
+rows/overlays and produce matching selected-column CSV. Both ImGui hosts must
+expose the workflow. Original documents, previous rows/history and canceled or
+stale publication remain protected. This first increment does not complete all
+T04a.3 manager/Profile/live-plot variants or any full family.
 
-The successor is the bounded T04a.3 consumer of these stable contracts; detail it
-when M4 supplies actual findings. No second active increment, extra audit ledger
-or speculative infrastructure is authorized by this specification.
+1. At entry freeze G009/G066/G071/G085/G089, the actual recorder/Run/rebind
+   controls, authored fields/defaults, API signatures/versions and publication
+   ownership in the existing task record. Inspect Window startMeasurement/poll,
+   NativeWorkflowProgram serialization/execution, NativeWorkflowPanel review,
+   session extension handling and their maintained tests. Diagnostic
+   ResolvedTargetAnalysis.record is provenance, not executable intent; do not
+   silently replay it or reinterpret historical schemas.
+2. Extend the existing typed workflow program/owner with the smallest supported
+   Measure intent, preserving unknown/older-version refusal and source data.
+   Reuse resolved target analysis, overlay transaction, ResultsTableState and the
+   shared formatter/publication path. Freeze ROI/pose, consumed measurement
+   choices, LIMIT/threshold/redirect context, calibration policy and relevant
+   presentation values. Specify authored-versus-current settings and guard rules
+   before editing; normal live jobs retain M4's accepted presentation semantics.
+   Do not add another registry, scheduler, recorder, result store or controller.
+3. Start from M4's accepted finite U8/equal-XY TCZ rectangle and redirected
+   fixtures. Check actual Record, save/load, explicit source/sampling rebind,
+   review and Run through each host; verify raw values, labels, final-counter
+   overlay names, allocation-time empty defaults, selected-column formatting,
+   copied/saved CSV and reopened workspace. Validate clicked process-local IDs
+   before comparison. Reuse M4 numerical/original evidence; add independent
+   cases only for a new consumed behavior or a concrete failure.
+4. Reject missing/closed/wrong-shape or ambiguous owners before reads. Preserve
+   exact refusal/cancel/stale behavior and publish rows/table/overlay once via
+   the existing creator owner. Cover source/sampling changes between review and
+   Run, cancellation, clear/owner-close and resource release; failed requests
+   must leave prior results/history intact. Keep saved intent independent of
+   retained live image/job/plot objects and avoid dummy document edits.
+5. Inspect all changed bindings/mutability/exceptions and batch contract/core/
+   binding/UI edits before one affected build per platform in the recorded
+   active cache. Install changed modules using their actual component and exact
+   runtime/Lib/site-packages prefix; verify source/built/installed bytes and
+   loaded origins. Public/ownership changes require affected lifecycle and
+   installed consumers; unrelated missing references/platforms block only
+   dependent claims. Reuse green unchanged evidence, not another full campaign.
+6. Bound and measure allocation before substantial verification, retain/verify
+   and retire terminal groups serially, then close out in the existing receipt
+   with measured time/retries/bytes and a fix/defer/no-action waste decision.
+   Update coverage, residual owners and this queue before a successor. Wider
+   manager/Profile/plot persistence/replay remains explicitly T04a.3, full table
+   operations T09 and broader UI/platform/commercial-release T12/T14/T00.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 

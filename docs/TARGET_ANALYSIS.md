@@ -1130,3 +1130,63 @@ can be undone/redone without removing numerical rows; stale/canceled/closed
 requests must publish neither partial rows nor an overlay.
 
 [Scoped acceptance](parity/reviews/add-to-overlay-20261106.json) and [coverage limits](COVERAGE_CHECKLIST.md#add-to-overlay-scoped-coverage):1403 distinct new installed Windows Python checks plus142 affected regressions,406 rendering/export controls, both actual Windows ImGui hosts and current native/settings/installed-only C++ clients on Windows/Linux. All15 scratch groups are retired with7 verified lossless archives and SDK identities retained. The core snapshot/parser contracts are unchanged outside the additive helper. Foreign/raw/out-of-grid headers, brush/tool selection-removal, wider pointwise behavior, Java font pixel/AA, broader platform UI and release qualification retain their existing owners; full M3 remains open.
+
+## Analyzer option reconciliation and M4 handoff
+
+The original ImageJ1.54r Analyzer checkbox list contains the 24 flags below.
+Every flag has an accepted bounded contract or an explicit residual owner; this
+is not full-family acceptance. Numeric columns use the shared `measurements`
+choice list. Scalar statistics already computed in raw rows are distinct from
+optional geometry/moments/label requests and visible/exported column choices.
+[M4 composition evidence](parity/reviews/mixed-measurement-20261106.json) qualifies
+the stated finite scalar/equal-XY workflow in both Windows ImGui hosts.
+
+| Original flag | Existing control / API route | Accepted scope / evidence | Remaining owner |
+|---|---|---|---|
+| `AREA` | Area; statistics/area | [Scalar/geometry population](CALIBRATED_ANALYSIS.md) | T06/T04 wider row/type variants |
+| `MEAN` | mean; statistics/mean | [Scalar population](CALIBRATED_ANALYSIS.md) | T06/T04 wider types/populations |
+| `STD_DEV` | stddev; statistics/stddev | [Sample standard deviation](CALIBRATED_ANALYSIS.md) | T06/T04 wider types/populations |
+| `MODE` | Mode; statistics/mode_value | [Explicit existing-statistic column](parity/reviews/statistic-columns-20261106.json) | T06/T04 wider histogram/type variants |
+| `MIN_MAX` | minimum,maximum; statistics | [Existing scalar extrema](CALIBRATED_ANALYSIS.md) | T06/T04 wider types/populations |
+| `CENTROID` | X,Y; centroid_world/reported_y | [Qualified source/sampling geometry](parity/reviews/area-centroid-20261106.json) | T06 constructor/cached-angle variants |
+| `CENTER_OF_MASS` | XM,YM; center_of_mass_world | [Qualified ordinary-area weighted population](parity/reviews/center-of-mass-20261106.json) | T06/T04 non-area COM and wider populations |
+| `PERIMETER` | Perim.; captured perimeter/units | [Qualified area/path/whole-image units](parity/reviews/analytic-perimeter-20261106.json) | T06 other constructors/ROI geometries |
+| `RECT` | BX,BY,Width,Height; bounding_rectangle | [Ordinary-area processor rectangle](parity/reviews/rectangle-measurements-20261106.json) | T06/T04 non-area rectangle composition; explicit refusal remains |
+| `ELLIPSE` | Major,Minor,Angle; ellipse | [Qualified ordinary-area fit](parity/reviews/ellipse-measurements-20261106.json) | T06 other constructors/spacing/fits |
+| `SHAPE_DESCRIPTORS` | Circ.,AR,Round,Solidity; shape_descriptors | [Qualified ordinary-area descriptors](parity/reviews/shape-descriptors-20261106.json) | T06 nonordinary/compound/constructor variants |
+| `FERET` | Feret,MinFeret,FeretAngle,FeretX,FeretY; feret | [Qualified ordinary-area five-column set](parity/reviews/feret-measurements-20261106.json) | T06 nonordinary/constructor variants |
+| `INTEGRATED_DENSITY` | IntDen,RawIntDen; scalar statistics | [Calibrated/raw populations kept distinct](parity/reviews/statistic-columns-20261106.json) | T06/T04 wider populations/types |
+| `MEDIAN` | median; statistics/median | [Existing scalar median](CALIBRATED_ANALYSIS.md) | T06/T04 wider types/populations |
+| `SKEWNESS` | Skew; moments | [Captured ordered moment pair, separate visible choice](parity/reviews/moment-measurements-20261106.json) | T06 wider types/constructors/populations |
+| `KURTOSIS` | Kurt; moments | [Captured excess kurtosis, separate visible choice](parity/reviews/moment-measurements-20261106.json) | T06 wider types/constructors/populations |
+| `AREA_FRACTION` | %Area; area_fraction | [Raw membership independent of LIMIT/density](parity/reviews/area-fraction-measurements-20261106.json) | T06 wider constructors/type/position variants |
+| `STACK_POSITION` | T,C,Z,Slice; captured row position | [Raw native positions available independently of visibility](parity/reviews/statistic-columns-20261106.json) | T08 pointwise/foreign positions; T09 original column-allocation differences |
+| `LIMIT` | measurement_limit_to_threshold; limit_to_threshold | [Captured manual threshold and independent populations](parity/reviews/threshold-measurements-20261106.json) | T06 cross-plane/type/constructor variants |
+| `LABELS` | Label; display_label | [Captured title/name/plane, redirected title](parity/reviews/display-label-20261106.json) | T08 wider rename/interchange; T14 unavailable external readers |
+| `INVERT_Y` | measurement_invert_y; invert_y | [Captured report Y/YM/BY, physical geometry preserved](parity/reviews/invert-y-20261106.json) | T06 differing-XY bypass and wider constructors |
+| `SCIENTIFIC_NOTATION` | measurement_scientific; shared formatter | [Scoped native JSON-kind table/Copy/Save CSV](parity/reviews/result-format-20261106.json) | T09 full AUTO/per-column/integer-kind original presentation |
+| `ADD_TO_OVERLAY` | measurement_add_to_overlay; MeasurementOverlayOptions | [Captured current-selection clone; manager/no-selection no-op](parity/reviews/add-to-overlay-20261106.json) | T08 foreign/brush/pointwise; T10/T14 wider export/font/platform |
+| `NaN_EMPTY_CELLS` | measurement_nan_empty_cells; ResultsTableState.append_rows | [Allocation-time numeric defaults](parity/reviews/nan-empty-cells-20261106.json) | T09 string/AUTO/editing and raw mutation tracking |
+
+Related controls are also assigned: `measurement_precision` (-1..15 native key)
+uses the accepted shared formatter and original scientific clamp/mapping; full
+AUTO/per-column precision stays T09. `measurement_redirect` is the session-local
+source selector and `TargetAnalysisOptions.redirect`, with explicit two-owner
+capture; differing-XY bypass remains T06. `reflex_angle` maps to captured
+`TargetAnalysisOptions.reflex_angle`; this preserves the refreshed calibrated
+angle policy, not a programmatically constructed PolygonRoi's cached angle.
+`profile_samples` belongs to configured Profile, not Analyzer line sampling.
+T04a.3 owns executable Measure/Profile intent and rebind; T15 owns wider settings
+audit and T12/T14/T00 owns wider UI/platform/commercial release exits.
+
+The M4 handoff keeps numeric row values, ResultsTableState allocation defaults,
+source versus sampling ownership, captured geometry/options and live presentation
+semantics separate. Presentation changes during a captured job are allowed;
+consumed Label/%Area/moment choices, LIMIT/Invert Y/NaN/overlay flags and source
+pose changes refuse stale publication. Existing workspace results/overlays and
+preferences reopen in both hosts; diagnostic target-analysis records are still
+provenance, not executable replay instructions. The next T04a.3 consumer must use
+the existing workflow program/review/publication owner and explicit target rebind,
+preserving prior versions and owner/resource/cancellation guarantees. Full table
+editing, original delayed centroid-column allocation and wider variants above
+remain open.

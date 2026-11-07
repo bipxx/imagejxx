@@ -27,6 +27,7 @@
 namespace imagejxx::desktop {
 namespace {
 void require(bool value,const char* message) {if(!value)throw std::runtime_error(message);}
+Json wireOverlays(const std::vector<MetadataObject>& rows) {Json out=Json::array();for(const auto& row:rows)out.push_back(metadataJson(row));return out;}
 GlobalCalibration global(double x=.5) {
   SpatialCalibration cal;cal.spacing={x,1.25,2};cal.origin={11,-7,19};
   cal.direction={0,-1,0,1,0,0,0,0,1};cal.unit="um";
@@ -1587,7 +1588,6 @@ Json nanEmptyCellsUiCase(Window& w,const std::string& context,const std::string&
 }
 
 Json measurementOverlayUiCase(Window& w,const std::string& context,const std::string& fresh_directory) {
-  const auto wireOverlays=[](const auto& rows){Json out=Json::array();for(const auto& row:rows)out.push_back(metadataJson(row));return out;};
   namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
   require(!fs::exists(dir) && w.documents().empty(),"Fresh overlay fixture required");fs::create_directories(dir);
   Json report={{"context",context},{"events",Json::array()},{"controls",Json::array()}};Json last;
@@ -1687,6 +1687,76 @@ Json measurementOverlayUiCase(Window& w,const std::string& context,const std::st
     require(wireOverlays(reopened.documents()[0]->nativeSnapshot().data().overlays)==report["overlays"],"Overlay workspace geometry lost");
     reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(readBytes((dir/"reopened.csv").u8string())==raw,"Overlay reopened CSV differs");
     report["workspace_preserved"]=true;report["state"]="observed";require(report.dump().size()<8*1024*1024,"Overlay report bound");writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
+}
+
+
+Json mixedMeasurementUiCase(Window& w,const std::string& context,const std::string& fresh_directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
+  require(!fs::exists(dir) && w.documents().empty(),"Fresh mixed fixture required");fs::create_directories(dir);
+  Json report={{"context",context},{"events",Json::array()},{"controls",Json::array()}};Json last;
+  std::atomic<bool> entered=false,release=false;
+  try {
+    const Selection rectangle("rectangle",{{1,1},{7,5}});
+    const std::vector<Selection> selections={rectangle,Selection("line",{{1.25,1.5},{5.5,3.25}}),Selection("polyline",{{1,1},{5,3},{6,2}}),Selection("angle",{{1,1},{5,3},{6,2}}),Selection("point",{{2.5,1.25}}),Selection("multipoint",{{1.25,1.5},{5.5,3.25}})};
+    auto fixture=[&](bool redirected) {
+      Stack planes;std::vector<std::string> labels;
+      for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z) {
+        const int n=t*4+z*2+c;Image image(8,6,1,PixelType::UInt8);
+        for(int y=0;y<6;++y)for(int x=0;x<8;++x)image.at(x,y)=x+2*y+1+n+(redirected?20:0);
+        planes.push_back(std::move(image));labels.push_back("plane"+std::to_string(n)+".tif\nignored");
+      }
+      SpatialCalibration spatial;spatial.spacing=redirected?std::array<double,3>{.75,2,1}:std::array<double,3>{2,.5,1};if(redirected)spatial.origin={0,-8.5,0};spatial.unit="um";
+      auto owner=std::make_shared<imagejxx::Document>(Dataset::from_planes({2,2,2,6,8,1},std::move(planes),spatial),redirected?"sample,title":"source,title");
+      auto edit=owner->begin_edit();edit.set_property("plane_labels",labels);owner->commit(edit);owner->select(rectangle);
+      auto view=owner->snapshot().display();view.t=view.c=1;view.crosshair={4,3,1};set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),{{redirected?31.:11.,redirected?37.:17.},{1,1,1}});owner->set_display(view);return owner;
+    };
+    auto source=fixture(false),sample=fixture(true);auto edit=source->begin_edit();std::vector<Roi> seed;
+    for(int i=0;i<99;++i)seed.push_back({"seed-"+std::to_string(i),rectangle,{},{},{},{}});edit.set_rois(std::move(seed));source->commit(edit);
+    w.addNativeDocument(source);w.addNativeDocument(sample);w.setActiveIndex(0);
+    w.updateSettings({{"measurements",Json::array({"mean"})},{"measurement_precision",3},{"measurement_scientific",false},{"measurement_invert_y",false},{"measurement_nan_empty_cells",false},{"measurement_add_to_overlay",false},{"measurement_limit_to_threshold",false},{"reflex_angle",false}},false);
+    HeadlessInputSession session(w);
+    auto frame=[&](const Json& events=Json::array()){require(report["events"].size()<1024,"Mixed frame bound");last=session.frame(events);require(last.at("input_frame").at("raw_inputs")==events,"Mixed raw input receipt differs");report["events"].push_back(events);};
+    auto click=[&](const Json& item,const std::string& name){require(item.at("enabled").get<bool>() && item.at("id").get<std::uint64_t>()!=0,"Mixed control unavailable");report["controls"].push_back({{"name",name},{"control",item}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",item.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};
+    auto widget=[&](const std::string& name){click(last.at("preferences_panel").at("widget_controls").at(name),"preferences."+name);};
+    auto text=[&](const std::string& value){for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}})}}}));frame(Json::array({{{"type","text"},{"value",value}}}));for(bool down:{true,false})frame(Json::array({{{"type","key"},{"name","Enter"},{"down",down}}}));frame();};
+    auto search=[&](const std::string& value){widget("search");text(value);};
+    auto measure=[&](bool manager=false){control("menu.Analyze");control(manager?"menu.action.measure_rois":"menu.action.measure");w.wait();frame();require(w.error().empty(),"Mixed measure failed");};
+    auto acknowledge=[&](){if(w.error().empty())return;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();};
+    frame();frame();frame();const auto preferencesPath=last.at("preferences_path").get<std::string>();const auto baseline=source->snapshot();measure(true);
+    require(w.results.size()==99 && source->snapshot().shares_data(baseline),"Mixed baseline changed source");const auto seedRows=w.results;
+    edit=source->begin_edit();std::vector<Roi> manager;for(std::size_t i=0;i<selections.size();++i)manager.push_back({"stored-"+std::to_string(i),selections[i],{},{},{},{}});edit.set_rois(std::move(manager));source->commit(edit);source->mark_saved();
+    const auto original=source->snapshot(),sampleBefore=sample->snapshot();const auto undo=source->undo_steps();
+    const std::vector<std::pair<std::string,std::string>> switches={{"measurement_invert_y","Invert Y coordinates"},{"measurement_nan_empty_cells","NaN empty cells"},{"measurement_add_to_overlay","Add to overlay"},{"measurement_scientific","Scientific notation"},{"measurement_limit_to_threshold","Limit to threshold"}};
+    auto flags=[&](){for(const auto& [key,label]:switches){search(label);click(last.at("preferences_panel").at("fields").at(key).at("control"),"preferences."+key);require(last.at("preferences_panel").at("draft").at(key)==true && !w.settings().boolean(key),"Mixed draft applied early");}};
+    control("menu.Edit");control("menu.Edit.Preferences");flags();search("Decimal places");click(last.at("preferences_panel").at("fields").at("measurement_precision"),"preferences.precision");text("2");widget("revert");require(last.at("preferences_panel").at("draft").at("measurement_precision")==3,"Mixed Revert failed");flags();search("Results columns");
+    for(const auto* name:{"Label","%Area","Skew","Kurt","Y","Length"})for(int attempt=0;;++attempt){const auto item=last.at("preferences_panel").at("fields").at("measurements").at("choices").at(name);const auto rect=item.at("rect").get<std::array<float,4>>(),clip=item.at("clip_rect").get<std::array<float,4>>();if(item.at("visible").get<bool>() && rect[1]>=clip[1] && rect[3]<=clip[3]){click(item,std::string("preferences.column.")+name);break;}require(attempt<24,"Mixed column not exposed");frame(Json::array({{{"type","position"},{"space","screen"},{"point",{clip[0]+2,(clip[1]+clip[3])*.5f}}}}));frame(Json::array({{{"type","wheel"},{"x",0},{"y",rect[3]>clip[3]?-3:3}}}));}
+    widget("apply");for(const auto& [key,label]:switches)require(w.settings().boolean(key),"Mixed Apply lost flag");widget("defaults");for(const auto& [key,label]:switches)require(last.at("preferences_panel").at("draft").at(key)==false,"Mixed Defaults failed");require(last.at("preferences_panel").at("draft").at("measurements").empty(),"Mixed Defaults lost columns");widget("revert");widget("close_button");measure();
+    require(w.results.size()==100 && w.results.back().at("Area")==15 && source->snapshot().data().overlays.size()==1,"Mixed current differs");report["current"]=w.results.back();report["late_column_default"]=w.resultsCell(0,"Skew");require(report["late_column_default"]=="NaN" && w.resultsTableState().at("capacity")==200,"Mixed late-column/capacity differs");require(wireOverlays(source->snapshot().data().overlays)[0].at("name")=="100","Mixed counter differs");
+    const auto beforeManager=source->snapshot();measure(true);require(w.results.size()==107 && source->snapshot().shares_data(beforeManager),"Mixed manager changed source");report["manager"]=Json::array();for(std::size_t i=100;i<107;++i)report["manager"].push_back(w.results[i]);
+    source->select(std::nullopt);const auto beforeWhole=source->snapshot();measure();require(w.results.size()==108 && source->snapshot().shares_data(beforeWhole),"Mixed whole changed source");report["whole"]=w.results.back();
+    source->select(rectangle);frame();control("menu.Analyze");control("menu.measurement_redirect");const auto redirectControl=last.at("host_controls").at("measurement_redirect."+std::to_string(sample->id));click(redirectControl,"measurement_redirect."+std::to_string(sample->id));measure();
+    require(w.results.size()==109 && w.results.back().at("Redirect document")==sample->id && sample->snapshot().shares_data(sampleBefore),"Mixed redirect ownership differs");report["redirect"]=w.results.back();report["selected_redirect"]={{"document_id",sample->id},{"control",redirectControl}};
+    require(source->snapshot().data().overlays.size()==2 && wireOverlays(source->snapshot().data().overlays)[1].at("name")=="109","Mixed overlay name differs");for(std::size_t i=0;i<99;++i)require(w.results[i]==seedRows[i],"Mixed prior rows changed");
+    for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z)require(source->snapshot().data().dataset.plane({t,c,z})->pixels==original.data().dataset.plane({t,c,z})->pixels,"Mixed source pixels changed");
+    auto start=[&](){entered=false;release=false;session.fixtureWorkerGate([&](const JobContext& job){entered=true;while(!release){job.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}});w.action("measure");const auto until=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered && std::chrono::steady_clock::now()<until)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered,"Mixed worker timeout");};
+    start();w.updateSettings({{"measurement_scientific",false},{"measurement_precision",2}},false);release=true;w.wait();require(w.error().empty() && w.results.size()==110 && w.results.back().at("mean")==report["redirect"].at("mean"),"Mixed live presentation blocked publication");session.fixtureWorkerGate({});w.updateSettings({{"measurement_scientific",true},{"measurement_precision",3}},true);report["live_presentation"]=true;
+    const auto rows=w.results;const auto table=w.resultsTableState();const auto current=source->snapshot();w.action("undo");frame();require(source->snapshot().data().overlays.size()==2 && w.results==rows,"Mixed Undo changed rows");w.action("redo");frame();require(source->snapshot().shares_data(current) && w.results==rows,"Mixed Redo lost state");require(source->undo_steps()==undo+3,"Mixed history differs");
+    w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});const auto raw=readBytes((dir/"measure.csv").u8string());const std::string csv(raw.begin(),raw.end());std::string copied;
+    {auto& platform=ImGui::GetPlatformIO();struct Restore{ImGuiPlatformIO& p;decltype(p.Platform_SetClipboardTextFn) fn;void* data;~Restore(){p.Platform_SetClipboardTextFn=fn;p.Platform_ClipboardUserData=data;}} restore{platform,platform.Platform_SetClipboardTextFn,platform.Platform_ClipboardUserData};platform.Platform_ClipboardUserData=&copied;platform.Platform_SetClipboardTextFn=[](ImGuiContext* c,const char* text){static_cast<std::string*>(c->PlatformIO.Platform_ClipboardUserData)->assign(text?text:"");};control("results.copy_csv");require(copied==csv,"Mixed copied CSV differs");}
+    report["results_table"]=last.at("results_table");w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});
+    const auto memory=w.renderMemoryInfo();const auto reserved=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;auto resources=[&](){require(w.renderMemoryInfo().at("working_bytes")==memory.at("working_bytes") && session.fixtureApplication().job_scheduler()->usage().reserved_bytes==reserved,"Mixed reservation leak");};auto preserved=[&](){require(w.results==rows && w.resultsTableState()==table && source->snapshot().shares_data(current),"Mixed rejected job published");resources();};
+    report["stale_settings"]=Json::array();for(const auto* key:{"measurement_invert_y","measurement_limit_to_threshold","measurement_nan_empty_cells","measurement_add_to_overlay"}){start();w.updateSettings({{key,false}},false);release=true;w.wait();require(!w.error().empty(),"Mixed stale flag accepted");preserved();acknowledge();session.fixtureWorkerGate({});w.updateSettings({{key,true}},true);report["stale_settings"].push_back(key);}
+    const auto columns=w.settings().strings("measurements");report["stale_columns"]=Json::array();
+    for(const auto* name:{"Label","%Area","moments"}){auto changedColumns=columns;changedColumns.erase(std::remove_if(changedColumns.begin(),changedColumns.end(),[&](const std::string& key){return std::string(name)=="moments"?(key=="Skew" || key=="Kurt"):key==name;}),changedColumns.end());start();w.updateSettings({{"measurements",changedColumns}},false);release=true;w.wait();require(!w.error().empty(),"Mixed stale column accepted");preserved();acknowledge();session.fixtureWorkerGate({});w.updateSettings({{"measurements",columns}},true);report["stale_columns"].push_back(name);}
+    const auto display=source->snapshot().display();start();auto moved=display;moved.crosshair[2]=0;source->set_display(moved);release=true;w.wait();require(!w.error().empty(),"Mixed stale pose accepted");preserved();source->set_display(display);acknowledge();session.fixtureWorkerGate({});
+    start();w.cancel();release=true;w.wait();preserved();acknowledge();session.fixtureWorkerGate({});start();w.closeDocument(sample->id,true);release=true;w.wait();preserved();acknowledge();session.fixtureWorkerGate({});
+    w.action("measurement_redirect",{{"document_id",0}});start();w.clearResults();release=true;w.wait();require(w.results.empty() && source->snapshot().shares_data(current),"Mixed clear published");resources();acknowledge();session.fixtureWorkerGate({});start();w.closeDocument(source->id,true);release=true;w.wait();require(w.results.empty() && source->snapshot().shares_data(current),"Mixed closed source published");resources();acknowledge();session.fixtureWorkerGate({});
+    report["rows"]=rows;report["table_state"]=table;report["csv"]=csv;report["copied_csv"]=copied;report["overlays"]=wireOverlays(current.data().overlays);
+    report["source_preserved"]=report["undo_redo"]=report["cancel_preserved"]=report["stale_pose_refused"]=report["sampling_close_preserved"]=report["source_close_preserved"]=report["clear_preserved"]=report["resource_guards"]=true;
+    session.close();Window reopened(preferencesPath);for(const auto& [key,label]:switches)require(reopened.settings().boolean(key),"Mixed reopened preference lost");reopened.openLegacyFile((dir/"measured.ijx").u8string());require(reopened.results==rows && reopened.resultsTableState()==table,"Mixed reopened table differs");require(wireOverlays(reopened.documents()[0]->nativeSnapshot().data().overlays)==report["overlays"],"Mixed reopened overlays differ");reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(readBytes((dir/"reopened.csv").u8string())==raw,"Mixed reopened CSV differs");
+    report["workspace_preserved"]=true;report["state"]="observed";require(report.dump().size()<8*1024*1024,"Mixed report bound");writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
 }
 

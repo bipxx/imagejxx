@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Add to overlay has scoped native/Python, both-Windows-host workflow and Windows/Linux installed C++ coverage; all15 owned scratch groups are retired. [Accepted scope](#add-to-overlay-scoped-coverage). Next ready: M4 mixed measurement integration. Full ImageJ/Fiji and release scope remain open.
+Updated 2026-11-06. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Next: T04a.3 Measure recording/rebind. Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-06. Add to overlay has scoped native/Python, both-Windows-host w
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Next integration increment | [M4 mixed measurement integration](PLAN.md#next-ready-increment-m4-mixed-measurement-integration) combines accepted options and workflows; Add to overlay now has scoped acceptance below. |
+| Next integration increment | [T04a.3 Measure recording and rebind](PLAN.md#next-ready-increment-t04a3-measure-recording-and-rebind) consumes accepted M4 command/options/row/table/overlay contracts. Wider manager/Profile replay remains with T04a.3. |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -59,6 +59,33 @@ Each family has its required behavior, owner and remaining work. Registered
 option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
+
+<a id="next-increment-mixed-measurement-integration"></a>
+## Mixed measurement integration scoped coverage
+
+Owner: T04a.2 M4 / G009 G025 G066 G071. **Scoped accepted.** [Receipt](parity/reviews/mixed-measurement-20261106.json) preserves original fields, failures/corrections, installed identities, host comparison and all11 scratch retirements. I: existing core/frontends compose; V: seven API cases plus one new actual-host Python case and one affected overlay regression; UI: standalone C++ and optional Python Windows ImGui; R: open. Both hosts match110 rows,49 visible cells,capacity200,overlays100/109/110 and CSV/reopen. [All24 Analyzer flags and residual owners](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff).
+
+Checked boxes apply only to this finite scalar/equal-XY supported-row workflow. Original angle observations explicitly refresh calibrated geometry. Mixed manager excludes unqualified non-area RECT/COM (T06/T04); pre-existing native centroid cells retain raw values rather than original delayed-column NaNs (T09). Full M3/family/platform/commercial release remains open.
+
+Use accepted finite scalar/equal-XY inputs and supported ROI variants. Update each box with the existing task receipt's exact case/observed outcome and platform; authored probes and planned runs leave boxes open. This is a coverage breakdown of the current queue item, not another queue or verification campaign.
+
+- [x] Freeze the consumed controls/settings, actual API signatures, source/sampling ownership and producer-to-reader routes in the existing M4 task record before implementation.
+- [x] Establish a small independent original Analyzer composition corpus with exact pixels, ROI, threshold, redirect and tolerances; reset original global state, use Analyzer.run for overlay behavior and respect ROI Manager masking. Reuse matching per-option evidence.
+- [x] Default-off control preserves accepted baseline columns, raw results, source, overlays and history.
+- [x] Combined Label, Invert Y, NaN empty cells, Add to overlay, scientific/precision, LIMIT, redirect and %Area/Skew/Kurt choices produce the expected independent raw populations and formatted outputs.
+- [x] Current-area and whole-image rows use captured C/Z/T and correct source versus sampling geometry, label, calibration and intensity ownership.
+- [x] Ordered-manager area, line, polyline, angle and point rows preserve accepted row order, geometry-specific cells, names and positions; manager/no-selection overlay exceptions remain correct.
+- [x] Late-column creation and an allocation-capacity boundary preserve zero/NaN defaults at allocation time, existing cells and final-row-counter overlay names.
+- [x] Standalone Windows C++ ImGui: actual controls, Apply/Revert/Defaults and Measure produce the expected visible rows, overlays and preferences.
+- [x] Optional Windows Python ImGui: the same actual controls and workflow produce matching results; bind redirect IDs to clicked controls before normalizing them for host comparison.
+- [x] Visible table, Copy CSV and Save CSV agree while retaining raw numeric values; reopened preferences/workspace restore the supported composed state.
+- [x] Source pixels and unrelated metadata/history survive the workflow; applicable overlay Undo/Redo preserves appended table rows.
+- [x] Captured settings/pose, cancel, stale-result refusal, selection/sampling-owner close and clear preserve the prior publication and release owned reservations for the combined request.
+- [x] Record artifact/platform identities and run only affected regressions/installed consumers; explicitly identify reused unchanged evidence and unavailable checks.
+- [x] Reconcile every remaining Analyzer command/option to accepted scope or an explicit residual owner; hand stable command/options/state contracts to T04a.3 with a scoped integration receipt.
+- [x] Hash-verify retained evidence, retire terminal owned scratch and record observed storage/cleanup and a brief fix/defer/no-action waste decision before advancing the queue.
+
+Residuals remain open: differing-XY bypass and unsupported constructor/type variants (T06); foreign/brush/pointwise ROI behavior and interchange (T08); full AUTO/string/per-column/editing table state (T09); operation-intent persistence/replay (T04a.3); wider UI/platform/commercial-release qualification (T12/T14/T00). Composition acceptance closes none of these by implication.
 
 ## Display label scoped coverage
 
@@ -155,7 +182,7 @@ Owner: T04a.2 M3/T08, G009/G025/G066; history T03/T06, persistence T04a.3/T09 an
 - [x] Actual stale setting/pose/composite, cancellation, sampling-owner close, selection-owner close and clear guards preserve publication/resource state; applicable no-op paths remain usable.
 - [x] Verify current source/built/installed bytes and loaded origins, including processing-python exports and optional desktop module. Execute current Windows/Linux native controls and independent installed-only C++ clients; keep SDK configs through final source/allocation review.
 - [x] Safely retire all15 owned Windows/Linux scratch groups and the mistaken32MB runtime-root install copy. Retain7 verified lossless archives, root diagnostics and SDK product identities; preserve active caches/runtime/installed SDK/app. Complete local budget remains unverified:214 inaccessible subtrees are unknown.
-- [ ] M4: reconcile mixed measurement options/workflows and the full remaining M3 command/option inventory; scoped feature breadth is not full-family completion.
+- [x] M4: reconcile the supported mixed workflow and all24 Analyzer option owners. [Scoped acceptance](#mixed-measurement-integration-scoped-coverage) preserves full remaining M3/family/release residuals.
 - [ ] T06/T08: qualify the source brush/tool selection-removal special case, foreign/raw single-plane or out-of-grid headers, wider pointwise/constructor/interchange behavior and unsampled geometry. Keep strict native extent guards.
 - [ ] T09/T04a.3/T12/T14/T00: complete full string/AUTO/per-column table/editing/import/replay, Java font pixel/AA and supported-platform UI/accessibility/clipboard/commercial/release exits.
 
@@ -623,7 +650,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subsets:** Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
-- [ ] Complete remaining measurement options, wider label variants, full AUTO/per-column precision and configurable plot axes/profile sampling. [Scientific presentation and copied/exported results](parity/reviews/result-format-20261106.json) are scoped delivered; LIMIT/redirect/%Area/Skew/Kurt retain their own evidence. Wider types/positions/cross-plane/replay and platforms remain with their owners.
+- [ ] T04a.3 Measure/Profile replay; T06/T04 wider row/type/constructor and non-area RECT/COM; T09 full AUTO/per-column precision; T04b/T05/T15 plot axes/presentation/defaults; T14 platforms. [Accepted subsets and residual matrix](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff); full family remains open.
 ### G010 Resource settings
 
 - [ ] Complete full `G010` scope and supported release exits.
@@ -1276,7 +1303,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Owner:** T06; interchange also T10. **Recorded family state:** `open`. [Contract and evidence index](parity/inventory.json).
 
-- [ ] Edit/reorder/hide individual elements, image overlays, labels/styles, ROI-manager conversion and stack flattening
+- [ ] T08 individual editing/reorder/hide, image overlays, wider labels/styles/manager conversion and foreign/brush/pointwise variants; T10/T14 stack flatten/output/platform qualification. [Accepted subsets and residual matrix](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff); full family remains open.
 
 ## Stacks, slicing, XYZ viewing and channels
 
@@ -2721,7 +2748,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subsets:** Everyday PGM/rectangle/Gaussian preview-Apply/Undo-Redo/Measure-CSV/save-reopen; Editable spline initial/refit/straighten/remove and scoped Measure lifecycle; Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
-- [ ] Set Measurements controls, calibrated centroid/shape/Feret statistics, threshold-limited/redirected intensity and precision/labels
+- [ ] T06/T04 non-area RECT/COM, cached angles/constructors, differing-XY bypass and wider types/positions/shape/threshold; T08 foreign/brush/pointwise/manager interchange; T04a.3 executable replay; T14/T00 release. [Accepted subsets and residual matrix](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff); full family remains open.
 ### G067 Particle analysis
 
 - [ ] Complete full `G067` scope and supported release exits.
@@ -2799,7 +2826,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subsets:** Everyday PGM/rectangle/Gaussian preview-Apply/Undo-Redo/Measure-CSV/save-reopen; Qualified captured perimeter and explicit pixel/physical units; Geometric area centroid X/Y through captured affine and both-host output; Weighted XM/YM with density/NaN/Inf and separate geometry population; Explicit Circ./AR/Round/Solidity for qualified area and manager rows; Feret/MinFeret/FeretAngle/FeretX/FeretY and subtype units; BX/BY/Width/Height processor ROI and full native rectangle vectors; qualified Major/Minor/Angle and shared fitted-center composition. Use their receipts above; full-family coverage remains open.
 
-- [ ] Table/CSV import, sorting/filtering, editing/copy, configurable columns and summaries
+- [ ] T09 import/sort/filter/edit/copy/summaries, full string/AUTO/per-column precision and original delayed-column allocation; T12/T14 clipboard/accessibility/platform; T04a.3 analysis replay. [Accepted subsets and residual matrix](TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff); full family remains open.
 ### G072 Annotation utilities
 
 - [ ] Complete full `G072` scope and supported release exits.
@@ -3086,6 +3113,4 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ## Next update
 
-Next ready: [M4 mixed measurement integration](PLAN.md#next-ready-increment-m4-mixed-measurement-integration), combining accepted measurement options and representative current/whole/manager/redirect workflows. Add to overlay is scoped accepted above; full M3, table state, differing-XY/constructor/brush/pointwise variants and supported release remain open with their owners. No new implementation or agent run is implied by this coverage update.
-
-At every task closeout, update existing behavior/residual rows, I/V/UI/R states, exact input/platform evidence, unavailable checks and cleanup outcomes. Keep PLAN as the execution queue and this file as the single coverage view.
+Next ready: [T04a.3 Measure recording and rebind](PLAN.md#next-ready-increment-t04a3-measure-recording-and-rebind). Update its existing task record and affected boxes at observed checkpoints and closeout. M4 is scoped accepted above; full M3, table state, differing-XY/constructor/brush/pointwise variants, wider manager/Profile replay and supported release remain open with their owners. No agents are authorized by this update.

@@ -1,0 +1,505 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M4 mixed measurement integration",
+  "date": "2026-11-06",
+  "state": "scoped_verified_closeout",
+  "full_goal_complete": false,
+  "requirements": [
+    "G009",
+    "G025",
+    "G066",
+    "G071"
+  ],
+  "implemented": "Existing processing/editor owners compose the accepted mixed workflow; added one shared real-input ImGui probe, both real host consumers, independent original observer/fixture and installed tests. No processing kernel/public native contract, dependency, registry, scheduler or controller added.",
+  "verified": {
+    "platform": "Windows installed Python and actual standalone C++/Python ImGui; unchanged native/installed SDK Windows/Linux scope explicitly reused, no new Linux/macOS UI claim",
+    "tests": 9,
+    "original_groups": 7,
+    "original_rows": 26,
+    "final_receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python015.process.json",
+    "junit": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python015.xml",
+    "fixture_sha256": "94e156f6227354263f27e755ce79d5e267733ec821ab87559d3cf9874bdb0b1a",
+    "observer_sha256": "995c97ac451ba54de91b6f1dfab8b79050035fe6d6e26c4b7217021e516a4c0b",
+    "original": "Reviewed ImageJ1.54r, source.zip SHA25609e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665; explicit calibrated_refresh angle policy, consumed global state reset.",
+    "behaviors": [
+      "Baseline/current/whole/redirect and ordered manager area/line/polyline/angle/point/multipoint rows",
+      "Label, Invert Y, NaN defaults, scientific precision3, LIMIT, %Area/Skew/Kurt, redirect sampling/source ownership",
+      "99 seed rows then mixed7 and current1:107 total, capacity200, overlayname107; preserved seed rows",
+      "Raw values against independent original; selected floating presentation against original; CSV/workspace roundtrip",
+      "All eight source TCZ planes unchanged; sample snapshot protected; overlay Undo/Redo preserves rows/history"
+    ],
+    "reuse": "No changed product bytes. Three current source/built/installed identities and loaded paths checked in task python_preflight005; reuse unchanged native/numerical/installed SDK evidence from prior accepted feature receipts. No product build/install or broad regression campaign.",
+    "process_receipts": [
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\build026.process.json",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "seconds": 3.8600000001024455
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\build028.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 36.10899999993853
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\cpp-reader033.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.43700000015087426
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\cpp030.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 1.1879999998491257
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\install031.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.1410000000614673
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\install032.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.46899999980814755
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\java003.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.2339999999385327
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\java004.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.2190000000409782
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\java010.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.2339999999385327
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\java012.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.23499999986961484
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\javac002.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.625
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\javac004.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.7650000001303852
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\javac010.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.625
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\javac012.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.625
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python005.process.json",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "seconds": 0.8279999999795109
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python006.process.json",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "seconds": 0.7810000001918525
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python007.process.json",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "seconds": 0.8129999998491257
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python008.process.json",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "seconds": 0.9849999998696148
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python011.process.json",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "seconds": 0.8909999998286366
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python013.process.json",
+        "exit_code": 1,
+        "cleanup_complete": true,
+        "seconds": 0.9529999999795109
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python014.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.9059999999590218
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python015.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 1.0940000000409782
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python034.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 2.6870000001508743
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\retain017.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.39000000013038516
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\retain018.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.2190000000409782
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\retain038.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.23500000010244548
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\retain039.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 0.1410000000614673
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\storage001.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 7.281999999890104
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\storage025.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 5.875
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\storage029.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 5.7649999998975545
+      },
+      {
+        "receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\storage041.process.json",
+        "exit_code": 0,
+        "cleanup_complete": true,
+        "seconds": 3.594000000040978
+      }
+    ],
+    "new_distinct_python_tests": 8,
+    "affected_regression_tests": 1,
+    "actual_hosts": {
+      "cpp_receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\cpp030.process.json",
+      "cpp_reader": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\cpp-reader033.process.json",
+      "python_receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\python034.process.json",
+      "comparison": {
+        "state": "matched_scoped",
+        "paths": [
+          ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\scratch\\cpp030\\actual\\case.json",
+          ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\scratch\\python034\\pytest\\test_actual_mixed_controls_out0\\actual\\case.json"
+        ],
+        "case_sha256": [
+          "9a2701c2d0d950744dfe9a5dd19459de0123041ac9f0f9ad9e14b31ea1faaa87",
+          "8beca31861825c05183c03bd5254b3a2b2c119413254ea76effc28e3cd07d33c"
+        ],
+        "rows": 110,
+        "manager_rows": 7,
+        "overlays": [
+          "100",
+          "109",
+          "110"
+        ],
+        "table_capacity": 200,
+        "visible_cells": 49,
+        "csv_sha256": "6130a22dc2fc42f8b410ef1ff4105d8f3c79687855784351eadf56e5ec8cab2b",
+        "normalization": "Only Redirect document fields after exact actual clicked control binding; raw captures retained unchanged.",
+        "limitations": "Windows two-host scope; no full-family/platform/commercial release closure."
+      },
+      "captured_behavior": "110rows,99baseline,7ordered manager,whole/current/redirect,overlay100/109/110,capacity200,new-columnNaN; actual five flag controls plus six column controls and precision/Revert/Apply/Defaults; two-owner captured output,table/Copy/Save CSV/reopen/history",
+      "lifecycle": "Four stale flags plus three consumed column sets, capturedZpose,cancel,sampling/sourceclose,clear,reservations; live scientific/precision changes do not stale captured job."
+    },
+    "installed_identities": [
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+        "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2",
+        "bytes": 84013
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+        "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5",
+        "bytes": 8688128
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+        "sha256": "34033cb8bfc7708eeff8c704103d39307251b0c2aa999fbdbf44a25bcf3a62b6",
+        "bytes": 21222400
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+        "sha256": "a323c539c895943cf8f5d251a6df69dc2387187dbc7acbfd5a2d9a757d64be39",
+        "bytes": 20745728
+      }
+    ]
+  },
+  "integration": "Scoped accepted actual five-option preferences/column selection/Measure/MeasureROIs/redirect,matching table/Copy CSV/Save CSV,overlays,preferences/workspace and composed lifecycle in both Windows ImGui hosts. Full M3/family/release scope remains open.",
+  "release_ready": false,
+  "residuals": {
+    "T06/T04": "Non-area RECT/COM composition remains unqualified; current contract explicitly refuses non-area bounding rectangles. Original per-case RECT/COM requested only for ordinary-area groups. Cached-constructor versus refreshed angle remain distinct.",
+    "T09": "Native always-populated raw centroid columns differ from original delayed column creation; preserve existing raw values. Full original AUTO/per-column/integer-kind formatting remains open.",
+    "T08": "Foreign/brush/pointwise constructors/interchange",
+    "T04a.3": "Full command/options/state persistence/replay",
+    "T12/T14/T00": "Wider UI/platform, commercial inventory and release qualification"
+  },
+  "commercial_scope": "Only owned test/reference observer and documentation additions; no product dependency, plugin, model or asset incorporated. Full commercial inventory remains open.",
+  "cleanup": {
+    "scratch_absent": true,
+    "groups_retired": 2,
+    "total_task_groups_retired": 11,
+    "source_bytes_removed": 731234,
+    "retained_ui_archive_bytes": 40395,
+    "total_archive_bytes": 107189,
+    "blockers": []
+  },
+  "retained": {
+    "archive": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\evidence\\phase-api017.zip",
+    "sha256": "d2dcf25d99e6392f178d293eaac9ceffaf19c8b99320655cf25dc36aded7a7da",
+    "verified_receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\retain018.json",
+    "compiler_identity": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\reference-classes016.identity.json",
+    "failure_diagnostics": "All raw root logs/JUnit/process receipts retained; failed captures losslessly archived.",
+    "ui_archive": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\evidence\\phase-ui038.zip",
+    "ui_archive_sha256": "12bb19001ac1f539a681c1f056ba7215c6e8f8002b516ce503dff95138e8be54",
+    "ui_verified_receipt": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\retain039.json",
+    "total_archive_bytes": 107189
+  },
+  "storage": {
+    "entry_snapshot": ".tmp/manual-workflow-verification/mixed-entry001.json",
+    "entry_known_bytes": 7522963131,
+    "budget_verified": false,
+    "inaccessible_subtrees": 214,
+    "owned_scratch_bytes_retired": 879278,
+    "retained_archive_bytes": 107189,
+    "allocation_bytes": 268435456,
+    "physical_free_at_retirement": 43191623680,
+    "after_retirement_snapshot": ".tmp/manual-workflow-verification/mixed-after-retirement041.json",
+    "after_retirement_known_bytes": 7524900921,
+    "known_scope_net_growth_bytes": 1937790,
+    "limitation": "214 inaccessible subtrees remain unknown; snapshot before final closeout prose. No complete budget-compliance or RSS claim."
+  },
+  "waste_review": {
+    "decision": "Reuse corrected original fixture and shared numerical/public contracts; no core build fanout or repeated native/SDK campaign. Shared exact overlay JSON adapter replaces probe-local duplication; affected existing overlay real-host regression passes. All terminal captures retained/hash-verified/retired.",
+    "measured": "Reference compiler and focused test runs take seconds, not processing-speed evidence. Several avoidable metadata/constructor assertion retries occurred; no expensive compilation. Exact process times retained above.",
+    "remaining": "Before actual UI authoring inspect current control/state schema and reuse these exact accepted fixtures; do not recreate numerical corpus or run unchanged numerical campaigns.",
+    "build_seconds": 39.969,
+    "build_retries": 1,
+    "observed": "One helper-scope compiler failure3.86s,corrected affected desktop build36.109s; both actual UI hosts passed first attempt. Parent reader optional-NumPy bootstrap corrected before target launch. Initial fixture/assertion retries are retained in prior receipts, not counted as product regressions or silently omitted.",
+    "next_prevention": "Before authored replay edits, inspect actual workflow variant/serializer/consumer and helper scopes/defaults, then batch public/binding/UI changes. Compare source/current bytes before writing; preserve mixed endings with exact local anchors. Existing schemas/expectations remain unchanged.",
+    "compilexx_note": "../compilexx/docs/notes/imagejxx-plan-inefficiencies.md; existing prefix406322B SHA verified,append1995B; no sibling commit/push."
+  },
+  "task_record": ".tmp\\manual-workflow-verification\\mixed-measurement-20261106\\entry.json",
+  "analyzer_option_reconciliation": [
+    {
+      "original_flag": "AREA",
+      "control_api": "Area; statistics/area",
+      "accepted_scope": "Scalar/geometry population",
+      "evidence": "docs/CALIBRATED_ANALYSIS.md",
+      "remaining_owner": "T06/T04 wider row/type variants"
+    },
+    {
+      "original_flag": "MEAN",
+      "control_api": "mean; statistics/mean",
+      "accepted_scope": "Scalar population",
+      "evidence": "docs/CALIBRATED_ANALYSIS.md",
+      "remaining_owner": "T06/T04 wider types/populations"
+    },
+    {
+      "original_flag": "STD_DEV",
+      "control_api": "stddev; statistics/stddev",
+      "accepted_scope": "Sample standard deviation",
+      "evidence": "docs/CALIBRATED_ANALYSIS.md",
+      "remaining_owner": "T06/T04 wider types/populations"
+    },
+    {
+      "original_flag": "MODE",
+      "control_api": "Mode; statistics/mode_value",
+      "accepted_scope": "Explicit existing-statistic column",
+      "evidence": "docs/parity/reviews/statistic-columns-20261106.json",
+      "remaining_owner": "T06/T04 wider histogram/type variants"
+    },
+    {
+      "original_flag": "MIN_MAX",
+      "control_api": "minimum,maximum; statistics",
+      "accepted_scope": "Existing scalar extrema",
+      "evidence": "docs/CALIBRATED_ANALYSIS.md",
+      "remaining_owner": "T06/T04 wider types/populations"
+    },
+    {
+      "original_flag": "CENTROID",
+      "control_api": "X,Y; centroid_world/reported_y",
+      "accepted_scope": "Qualified source/sampling geometry",
+      "evidence": "docs/parity/reviews/area-centroid-20261106.json",
+      "remaining_owner": "T06 constructor/cached-angle variants"
+    },
+    {
+      "original_flag": "CENTER_OF_MASS",
+      "control_api": "XM,YM; center_of_mass_world",
+      "accepted_scope": "Qualified ordinary-area weighted population",
+      "evidence": "docs/parity/reviews/center-of-mass-20261106.json",
+      "remaining_owner": "T06/T04 non-area COM and wider populations"
+    },
+    {
+      "original_flag": "PERIMETER",
+      "control_api": "Perim.; captured perimeter/units",
+      "accepted_scope": "Qualified area/path/whole-image units",
+      "evidence": "docs/parity/reviews/analytic-perimeter-20261106.json",
+      "remaining_owner": "T06 other constructors/ROI geometries"
+    },
+    {
+      "original_flag": "RECT",
+      "control_api": "BX,BY,Width,Height; bounding_rectangle",
+      "accepted_scope": "Ordinary-area processor rectangle",
+      "evidence": "docs/parity/reviews/rectangle-measurements-20261106.json",
+      "remaining_owner": "T06/T04 non-area rectangle composition; explicit refusal remains"
+    },
+    {
+      "original_flag": "ELLIPSE",
+      "control_api": "Major,Minor,Angle; ellipse",
+      "accepted_scope": "Qualified ordinary-area fit",
+      "evidence": "docs/parity/reviews/ellipse-measurements-20261106.json",
+      "remaining_owner": "T06 other constructors/spacing/fits"
+    },
+    {
+      "original_flag": "SHAPE_DESCRIPTORS",
+      "control_api": "Circ.,AR,Round,Solidity; shape_descriptors",
+      "accepted_scope": "Qualified ordinary-area descriptors",
+      "evidence": "docs/parity/reviews/shape-descriptors-20261106.json",
+      "remaining_owner": "T06 nonordinary/compound/constructor variants"
+    },
+    {
+      "original_flag": "FERET",
+      "control_api": "Feret,MinFeret,FeretAngle,FeretX,FeretY; feret",
+      "accepted_scope": "Qualified ordinary-area five-column set",
+      "evidence": "docs/parity/reviews/feret-measurements-20261106.json",
+      "remaining_owner": "T06 nonordinary/constructor variants"
+    },
+    {
+      "original_flag": "INTEGRATED_DENSITY",
+      "control_api": "IntDen,RawIntDen; scalar statistics",
+      "accepted_scope": "Calibrated/raw populations kept distinct",
+      "evidence": "docs/parity/reviews/statistic-columns-20261106.json",
+      "remaining_owner": "T06/T04 wider populations/types"
+    },
+    {
+      "original_flag": "MEDIAN",
+      "control_api": "median; statistics/median",
+      "accepted_scope": "Existing scalar median",
+      "evidence": "docs/CALIBRATED_ANALYSIS.md",
+      "remaining_owner": "T06/T04 wider types/populations"
+    },
+    {
+      "original_flag": "SKEWNESS",
+      "control_api": "Skew; moments",
+      "accepted_scope": "Captured ordered moment pair, separate visible choice",
+      "evidence": "docs/parity/reviews/moment-measurements-20261106.json",
+      "remaining_owner": "T06 wider types/constructors/populations"
+    },
+    {
+      "original_flag": "KURTOSIS",
+      "control_api": "Kurt; moments",
+      "accepted_scope": "Captured excess kurtosis, separate visible choice",
+      "evidence": "docs/parity/reviews/moment-measurements-20261106.json",
+      "remaining_owner": "T06 wider types/constructors/populations"
+    },
+    {
+      "original_flag": "AREA_FRACTION",
+      "control_api": "%Area; area_fraction",
+      "accepted_scope": "Raw membership independent of LIMIT/density",
+      "evidence": "docs/parity/reviews/area-fraction-measurements-20261106.json",
+      "remaining_owner": "T06 wider constructors/type/position variants"
+    },
+    {
+      "original_flag": "STACK_POSITION",
+      "control_api": "T,C,Z,Slice; captured row position",
+      "accepted_scope": "Raw native positions available independently of visibility",
+      "evidence": "docs/parity/reviews/statistic-columns-20261106.json",
+      "remaining_owner": "T08 pointwise/foreign positions; T09 original column-allocation differences"
+    },
+    {
+      "original_flag": "LIMIT",
+      "control_api": "measurement_limit_to_threshold; limit_to_threshold",
+      "accepted_scope": "Captured manual threshold and independent populations",
+      "evidence": "docs/parity/reviews/threshold-measurements-20261106.json",
+      "remaining_owner": "T06 cross-plane/type/constructor variants"
+    },
+    {
+      "original_flag": "LABELS",
+      "control_api": "Label; display_label",
+      "accepted_scope": "Captured title/name/plane, redirected title",
+      "evidence": "docs/parity/reviews/display-label-20261106.json",
+      "remaining_owner": "T08 wider rename/interchange; T14 unavailable external readers"
+    },
+    {
+      "original_flag": "INVERT_Y",
+      "control_api": "measurement_invert_y; invert_y",
+      "accepted_scope": "Captured report Y/YM/BY, physical geometry preserved",
+      "evidence": "docs/parity/reviews/invert-y-20261106.json",
+      "remaining_owner": "T06 differing-XY bypass and wider constructors"
+    },
+    {
+      "original_flag": "SCIENTIFIC_NOTATION",
+      "control_api": "measurement_scientific; shared formatter",
+      "accepted_scope": "Scoped native JSON-kind table/Copy/Save CSV",
+      "evidence": "docs/parity/reviews/result-format-20261106.json",
+      "remaining_owner": "T09 full AUTO/per-column/integer-kind original presentation"
+    },
+    {
+      "original_flag": "ADD_TO_OVERLAY",
+      "control_api": "measurement_add_to_overlay; MeasurementOverlayOptions",
+      "accepted_scope": "Captured current-selection clone; manager/no-selection no-op",
+      "evidence": "docs/parity/reviews/add-to-overlay-20261106.json",
+      "remaining_owner": "T08 foreign/brush/pointwise; T10/T14 wider export/font/platform"
+    },
+    {
+      "original_flag": "NaN_EMPTY_CELLS",
+      "control_api": "measurement_nan_empty_cells; ResultsTableState.append_rows",
+      "accepted_scope": "Allocation-time numeric defaults",
+      "evidence": "docs/parity/reviews/nan-empty-cells-20261106.json",
+      "remaining_owner": "T09 string/AUTO/editing and raw mutation tracking"
+    }
+  ],
+  "next_ready": "T04a.3 Measure recording and explicit source/sampling rebind; wider manager/Profile replay stays T04a.3, no parent closure."
+}

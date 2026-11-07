@@ -452,7 +452,7 @@
       ],
       "name": "Measurement/plot defaults",
       "remaining": [
-        "Visible/exported result columns, decimal formatting and profile sampling defaults are consumed. Complete selected measurement computation, threshold limits, redirect images and configurable plot axes/presentation remain."
+        "Scoped accepted subsets now include mixed measurement integration; see docs/parity/reviews/mixed-measurement-20261106.json and docs/TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff. Remaining owners: T04a.3 Measure/Profile persistence/replay; T06/T04 unsupported row/type/constructor and non-area RECT/COM; T04b/T05/T15 remaining plot axes/presentation/default consumers; T14 platforms. Full family required_work remains open."
       ],
       "required_work": "Measurement selection, threshold limits, redirect image, precision, axis ranges and profile sampling options",
       "status": "in_progress",
@@ -1225,7 +1225,7 @@
       ],
       "name": "Text and overlays",
       "remaining": [
-        "Edit/reorder/hide individual elements, image overlays, labels/styles, ROI-manager conversion and stack flattening"
+        "Scoped accepted subsets now include mixed measurement integration; see docs/parity/reviews/mixed-measurement-20261106.json and docs/TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff. Remaining owners: T08 individual edit/reorder/hide, image overlays, wider labels/styles/manager conversion and foreign/brush/pointwise variants; T10/T14 broader stack flatten/output/platform qualification. Full family required_work remains open."
       ],
       "required_work": "Edit/reorder/hide individual elements, image overlays, labels/styles, ROI-manager conversion and stack flattening",
       "status": "open",
@@ -3084,7 +3084,7 @@
       ],
       "name": "Image/ROI measurements",
       "remaining": [
-        "Set Measurements controls, calibrated centroid/shape/Feret statistics, threshold-limited/redirected intensity and precision/labels"
+        "Scoped accepted subsets now include mixed measurement integration; see docs/parity/reviews/mixed-measurement-20261106.json and docs/TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff. Remaining owners: T06/T04 non-area RECT/COM, cached-angle/other constructors, differing-XY bypass, wider types/positions/shape/threshold; T08 foreign/brush/pointwise/manager interchange; T04a.3 executable persistence/replay; T14/T00 wider platforms/release. Full family required_work remains open."
       ],
       "required_work": "Set Measurements controls, calibrated centroid/shape/Feret statistics, threshold-limited/redirected intensity and precision/labels",
       "status": "open",
@@ -3314,7 +3314,7 @@
       ],
       "name": "Results and tables",
       "remaining": [
-        "Table/CSV import, sorting/filtering, editing/copy, configurable columns and summaries"
+        "Scoped accepted subsets now include mixed measurement integration; see docs/parity/reviews/mixed-measurement-20261106.json and docs/TARGET_ANALYSIS.md#analyzer-option-reconciliation-and-m4-handoff. Remaining owners: T09 import, sorting/filtering, editing/copy/summaries, full string/AUTO/per-column precision and original delayed-column allocation; T12/T14 OS clipboard/accessibility/platform; T04a.3 executable analysis replay. Full family required_work remains open."
       ],
       "required_work": "Table/CSV import, sorting/filtering, editing/copy, configurable columns and summaries",
       "status": "open",
