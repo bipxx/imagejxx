@@ -285,6 +285,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_fit_circle_area_ui_case",[](Window& window,const std::string& directory) {
         return fitCircleWorkflowUiCase(window,"imgui_python",directory,true).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_results_cells_ui_case",[](Window& window,const std::string& directory) {
+        py::gil_scoped_release release;return resultsCellsUiCase(window,"imgui_python",directory).dump();
+      })
       .def("_results_import_ui_case",[](Window& window,const std::string& directory) {
         py::gil_scoped_release release;return resultsImportUiCase(window,"imgui_python",directory).dump();
       })

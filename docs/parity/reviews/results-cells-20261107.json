@@ -1,0 +1,231 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T09 reviewed Results cell editing",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G071",
+    "G089",
+    "G083",
+    "G009"
+  ],
+  "scope": "Correct a projected Results cell through reviewed/direct strict actions, preserve source row/default provenance/other cells/imagehistory, exact number/text/bool/null/missing/keep semantics, ApplyCancelinvalidstalebusyresource behavior, refresh sort/filter/CSV/session in both actual Windows hosts.",
+  "aspects": {
+    "implemented": "Existing action/router/review and literal per-source-cell controls; one targeted row candidate, NaN-safe row/default/view guard and replaceable edited-row lease. Existing exact CSV decimal converter reused, no new table controller/history/public Window header/pure export/dependency.",
+    "verified": "479distinct installed passes:43new006 +436affected018, final7targeted025replace strengthened busy-Cancel/current-reader/guard checks. Current native cell021/import024 and10affected native routes pass. Not one479-pass final campaign.",
+    "integrated": "Actual C++/Python Windows ImGui cell click under sort/filter, moved/hidden source rows, literal multiline text, Apply/Cancel/invalid/stale refusal, exact IDs, implicit default override/removal and independent CSV/workspace readers. Existing worker gate holds native Measure while physical Cancel releases only the cell draft, allowing Measure to finish.",
+    "release_ready": false
+  },
+  "contract": {
+    "actions": "show_result_cell_editor(row:int,column:str); edit_result_cell(row:int,column:str,kind:keep|text|number|boolean|null|missing,value?). Strict keys, nonnegative raw source-row index and current object row, known bounded column. Synchronous owner-thread actions before document requirement. Number value is canonical finite decimal TEXT, preserving exact signed/uint64 boundaries; no ambiguous out-of-range Python integer JSON conversion. Text requires UTF8/NUL-free <=1MiB; Boolean realbool; null/missing/keep forbidvalue.",
+    "default": "Keep preserves compound/nonfinite and implicit cells without coercion. Missing erases explicit key only; managed existing default may reappear, opaque imported rows remain missing. No numeric-state metadata change. Explicit null remains distinct.",
+    "review": "Source-row/column and explicit/implicit/missing summary; kind selector + multiline Text/Number field +Boolean checkbox. Physical cell control uses literal displayed text and projected source_row, bounded observed control per visible cell. Invalid draft keeps review/error, Cancel releases captured row.",
+    "stale": "Freeze affected raw row, total row count, consumed per-cell numeric fallback and current view criteria; NaN-safe exact typed comparison. Reject pending native publication (scripted Measure is synchronous). Unrelated rows/config not consumed need not block.",
+    "ownership": "Admit row/draft/new payload before copies; stage only affected object row, validate types then noexcept swap. One replaceable per-source-row RenderMemory lease in Impl, preserve existing base groups; clear on whole-table replacement/startup/open/clear/empty poll. After jobs drain, Window destructor retires raw Results before Impl leases. No new controller/table history/ledger or public header.",
+    "scope": "Existing image history unchanged. No new table UndoRedo, row CRUD/range/clipboard/summary/structured or direct nonfinite-value authoring; Keep preserves their current native cells. Wider owners remain T09/T12/T14."
+  },
+  "documentation": [
+    "docs/TARGET_ANALYSIS.md#reviewed-results-cell-editing",
+    "docs/SESSION_FORMAT.md#edited-results-cells"
+  ],
+  "verification": {
+    "distinct_installed_cases": 479,
+    "new_cases": 43,
+    "affected_regression_cases": 436,
+    "scope": {
+      "distinct_installed_cases": 479,
+      "new_cases": 43,
+      "affected_regression_cases": 436,
+      "attempts": {
+        "python006": {
+          "tests": 43,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "python018": {
+          "tests": 438,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 2
+        },
+        "python025": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "scope": "43new006 and436affected018; final7targeted025replace strengthened actual readers/guard paths. Not one479-pass final campaign. Newnative003/current021 plus10native regressions008..017 and current import024 pass.",
+      "unavailable": "2optionalGL skips;8historical persistent-session imgui_cpp parameters explicitly excluded due retired captures. Current Python session cases passed; supported-platform/release gates remain open."
+    },
+    "attempts": [
+      {
+        "receipt": "build002-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 64.35883089993149,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "build020-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 49.31579449959099,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python006-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 1.2347621000371873,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python018-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 17.18226009979844,
+        "cleanup_complete": true
+      },
+      {
+        "receipt": "python025-owned.json",
+        "exit_code": 0,
+        "elapsed_seconds": 1.4182488997466862,
+        "cleanup_complete": true
+      }
+    ],
+    "native": "Native003 and strengthened021; current view008/import009/batch010/editing011/measure012/plot013/format014/nan015/retirement016/native017 and import024 all exit0cleanuptrue. Numerical1950format and NaN expectations unchanged.",
+    "built_installed_pairs": [
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_native.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_desktop.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "sha256": "28773ba6eec5416b54128f4912dc139fa88172d93933b5b821cbccc9c1df875f"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/imagejxx.exe",
+        "installed": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+        "sha256": "89e14be07ce6e8fa161444cdb8d65d4278aadadf4e4279501ebddce2317229ff"
+      },
+      {
+        "built_or_source": "src/imagejxx/__init__.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/__init__.py",
+        "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/app.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/app.py",
+        "sha256": "b207626e29150f4ac62fbd337480da5b283d84bec43ea9c3cf1ccee82915822b"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/workflows.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/workflows.py",
+        "sha256": "96bd8502428afaafbaaa6fddac5e5343905c5f99344edd95f2d74f44a8e7cb92"
+      }
+    ],
+    "loaded_origins": {
+      "imagejxx": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "imagejxx._native": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "imagejxx._desktop": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "imagejxx.ui.app": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py"
+    },
+    "source_sha256": {
+      "src/desktop/window.cpp": "1e6f1107a0771cf9808e249b630b8a575e80be5ccd3a1a32e93ea8912f774cbe",
+      "src/desktop/effective_display_ui_probe.cpp": "26747acc2a5cf9a7d8931bebebd171354d51d29e0764493031872cc4aac062d5",
+      "src/desktop/effective_display_ui_probe.hpp": "d5b66bce301c8fe041dfbca36dd49384caab7037a5039eaeab19bec9efc06432",
+      "src/desktop/python.cpp": "736db31c13d7049d71de31ecf1f724225e731b79cd80e029340a8afe2930d009",
+      "tests/native/test_display_actions.cpp": "9c2ba0c88294d1b4440e6cbea7a8df5e36f6e1378d31acf9a472f317ea0f8b66",
+      "tests/python/test_results_cells.py": "eee576c8647a04bc4b5def5bcf632ecad23e059c4f2ec851d0eb2f64bbcb048d"
+    },
+    "reference_pins": {
+      "tests/fixtures/result-format-imagej154r.json": "04438d36e1efe943775fc99b80d4ed1b4ecdda1173aeee5173ffcf5564716a3e",
+      "tests/fixtures/nan-empty-cells-imagej154r.json": "889c54904a8748b35e02ba48fe84911d58edb9947ea8fd8c10c72cc29e8c6404",
+      "tests/fixtures/mixed-measurements-imagej154r.json": "94e156f6227354263f27e755ce79d5e267733ec821ab87559d3cf9874bdb0b1a"
+    }
+  },
+  "retention": {
+    "task_record": ".tmp/manual-workflow-verification/results-cells-20261107/entry.json",
+    "archive": ".tmp/manual-workflow-verification/results-cells-20261107/evidence029.zip",
+    "manifest": ".tmp/manual-workflow-verification/results-cells-20261107/evidence029-manifest.json",
+    "verify_receipt": ".tmp/manual-workflow-verification/results-cells-20261107/verify030.json",
+    "state": "retired",
+    "source_absent": true,
+    "files": 1352,
+    "bytes": 101863671,
+    "groups": 16,
+    "root_preferences": 8,
+    "archive_bytes": 12125775,
+    "archive_sha256": "3fa6178cb272f48de1c3f631abd355681b055c888d99777bd310ebe45025c66c",
+    "manifest_sha256": "028e6c077c57854c3ad40669de699dc05fac65b5c827c183633b182ae3d7df43",
+    "owner": "root",
+    "retained": "All success/earlier captures inside verified lossless zip; small root logs/receipts and artifactmanifest retained, caches/runtime preserved."
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/results-cells-storage001.json",
+    "after": ".tmp/manual-workflow-verification/results-cells-storage032.json",
+    "known_before_bytes": 6678183571,
+    "known_after_bytes": 6693442405,
+    "growth_bytes": 15258834,
+    "unknown_subtrees": 214,
+    "full_budget_verified": false,
+    "overall_allocation_bytes": 536870912,
+    "group_estimate_lapse": {
+      "observed": "Before any further storage-growing action, current full storage027known6781965202B/214unknown; fresh physical free measured 7135838208B. All verification terminal. Existing snapshot gives task scratch 101863671B; python018 98113673B versus its stated <=32MiB estimate. Overall512MiB task allocation has not been exceeded, but the per-group estimate was wrong.",
+      "lapses": "The substantial018regression reused earlier build physical-free evidence instead of recording a fresh value at that launch. Its32MiB group estimate was exceeded by persistent-headless-session captures (file-level attribution033 corrects the earlier atomic-fixture assumption), not explicitly reconciled before later020..025actions. Full scope020 measured the actual task growth before020build and stayed under512MiB, but that did not make the earlier per-group prediction correct. These are lapses, not retroactive preflight passes.",
+      "corrective_action": "Stop further product verification (it is complete); current physical free/full scope/snapshot measured and all source review/ownership checks complete. Use measured128MiB maximum raw group and bounded<=192MiB existing archive limit for terminal retention within unchanged512MiB task allowance; retain/hashverify then retire now. Next task reuses unchanged generic persistent-headless-session captures unless renderer/gesture/session inputs change, plus unchanged atomic-writer checks unless publication inputs change; reuse current green evidence plus changed cell/workspace consumers.",
+      "group_bytes": {
+        "batch010": 39737,
+        "cpp003": 35152,
+        "cpp021": 36588,
+        "editing011": 40987,
+        "format-preferences.json": 2630,
+        "format014": 61083,
+        "import009": 44446,
+        "import024": 44446,
+        "measure012": 124904,
+        "mixed-batch-preferences.json": 2647,
+        "nan-preferences.json": 2630,
+        "nan015": 121871,
+        "native017": 2659284,
+        "plot013": 354483,
+        "python006": 44365,
+        "python018": 98113673,
+        "python025": 87809,
+        "replay-preferences.json": 2833,
+        "results-cells-preferences.json": 2644,
+        "results-import-preferences.json": 2644,
+        "results-view-preferences.json": 2646,
+        "retirement016": 292,
+        "view008": 33230,
+        "workflow-editing-preferences.json": 2647
+      },
+      "raw_source_bytes": 101863671,
+      "revised_terminal_retention_bound_bytes": 201326592,
+      "overall_task_allocation_bytes": 536870912,
+      "decision": "Proceed only with ownership-checked, hash-verified terminal retention/retirement after fresh process gate; no more builds/tests or silent allocation relabeling."
+    },
+    "free_after_retirement": 7090262016,
+    "compiler_runtime_preserved": true,
+    "file_attribution": {
+      "observed": "File-level retained manifest identifies89448397B in eight Python persistent-headless-session groups, out of98113673B python018total. Largest members are repeated case.json/case-unverified.json captures, not atomic-session save fixtures.",
+      "superseded_assumption": "Earlier028and draft next-plan attributed the group growth to atomic-session fixtures without a file-level breakdown; that attribution was incorrect. Total/group byte measurements were correct.",
+      "correction": "Next history task reuses unchanged generic renderer/provider/gesture/session capture evidence and unchanged atomic-writer checks; verify changed Results controls/default/lifecycle/workspace paths directly. Revisit full session capture campaign only for its changed inputs, failures or release gates. Do not delete required duplicate capture evidence or change historical fingerprints ad hoc; retention-copy optimization remains T12 owner."
+    }
+  },
+  "waste_review": {
+    "delivered": "Targeted reviewed cells with default/source-row preservation, exact scalar types, repeated lease replacement and both hosts;479distinct scoped installed passes.",
+    "observed": "First coherent build00264.359s,43new tests passed first run after actual declaration/facade/timing inspection. Final interaction review found busy draft Cancel disabled by shared modal; local review flag/strict pending-handle guard fixed, deterministic existing worker gate verifies Cancel retains Measure. Incremental02049.316s and only7affected final readers/guards ran. One in-memory edit assertion stopped before writes because a broad replacement gained a second match; specific contexts fixed it.",
+    "disposition": "Fix now: current cell names and Number decimal-text contract, direct source-row lookup before global column discovery, one replacing row lease, payload-before-lease shutdown, usable busy Cancel. Keep action surface stable and original numerical oracles. No speculative refactor/cache/runner/history engine.",
+    "storage_waste": "python018 produced98113673B versus stated32MiB; total task512MiB bound stayed intact. File-level manifest attributes89448397B to repeated persistent-headless-session captures; the earlier atomic-fixture attribution was incorrect;018also missed fresh physical-free capture. Exact current group/full/free measurements and revised terminal retention bound are recorded in corrective028 before029/030/031. These are lapses, not retroactive preflight passes.",
+    "next_prevention": "Reuse unchanged renderer/provider/gesture/session capture and atomic-writer evidence; run changed Results row/history/default/workspace controls directly. Fresh physical-free measurement immediately before substantial groups, group bounds from actual source sizes, and reconcile overruns before another allocation.",
+    "cleanup": "Final source review026 preceded verified029/030lossless retention and031retirement:16groups+8prefs/1352files/101863671B removed,12125775B zip retained. Active compiler/runtime preserved;214unknown subtrees keep full budget unverified."
+  },
+  "remaining": [
+    "Table cell Undo/Redo, row/range/clipboard editing, summaries and structured/nonfinite authoring retain T09/T12/T14. Keep preserves existing native values; no new arbitrary IEEE authoring or full Java AUTO semantics claimed.",
+    "Existing base row-group reservations remain conservative until table retirement; no whole-process/RSS or arbitrary raw C++ mutation admission claim.",
+    "Full ImageJ/Fiji family, original compatibility, larger-layout/accessibility/platform/commercial distribution and release remain open."
+  ],
+  "next": "docs/PLAN.md#next-ready-increment-t09-results-history"
+}

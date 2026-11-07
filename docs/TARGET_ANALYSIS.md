@@ -1444,7 +1444,7 @@ through the existing snapshot owner with a source/item association; later images
 do not overwrite its only numeric result. Both Windows hosts and installed API
 have [scoped acceptance](parity/reviews/mixed-batch-20261107.json). General Batch,
 source/type/analysis/platform/release variants remain open; the next independent
-workflow is [reviewed Results cell editing](PLAN.md#next-ready-increment-t09-results-cells); CSV import has [scoped acceptance](parity/reviews/results-import-20261107.json), and sorting/filtering/view export has [scoped Windows acceptance](parity/reviews/results-view-20261107.json).
+workflow is [Results cell Undo/Redo](PLAN.md#next-ready-increment-t09-results-history); cell editing has [scoped acceptance](parity/reviews/results-cells-20261107.json), CSV import has [scoped acceptance](parity/reviews/results-import-20261107.json), and sorting/filtering/view export has [scoped Windows acceptance](parity/reviews/results-view-20261107.json).
 
 ## Results sorting, filtering and current-view export
 
@@ -1545,3 +1545,46 @@ settings remain unchanged. Session raw Results/default/view formats are reused;
 [coverage](COVERAGE_CHECKLIST.md#results-import-current-wip) records actual
 verification state. Full editing/summaries, other delimiters/formats and original
 Java AUTO/import compatibility/platform/release variants remain T09/T12/T14.
+
+## Reviewed Results cell editing
+
+Click a visible Results cell to review its raw source-row address and explicit,
+implicit numeric-default or missing state. Apply edits that source row even if
+sorting moves it or filtering subsequently hides it. Cancel and invalid/stale
+input preserve the table. Text/Number entry is multiline; Boolean has a real
+checkbox, with separate Null, Missing and Keep choices. Literal displayed text
+has a control ID independent of its content (including ImGui label markers).
+
+`Editor.action("show_result_cell_editor", row=0, column="value")` opens the
+review; `Editor.action("edit_result_cell", row=0, column="value", kind="number",
+value="18446744073709551615")` executes the same synchronous staged edit.
+Indices are zero-based raw rows, not projected positions, and rows must be
+objects. Known column names are bounded to4096bytes/NUL-free. Strict kinds are
+`text`, `number`, `boolean`, `null`, `missing`, `keep`; the last three forbid
+value. Text accepts NUL-free UTF-8 up to1MiB. Number deliberately accepts decimal
+text (up to4096bytes), using the exact finite CSV converter: integers do not
+pass through double and invalid/nonfinite/out-of-range spellings refuse.
+Boolean requires a real Boolean. This avoids ambiguous large Python integer
+rounding through a generic JSON number. There is no new Window public header.
+
+Missing erases only the explicit key. It can reveal an existing default in a
+managed measurement row, while an opaque imported row stays missing. Null is
+explicit; Keep preserves the raw state, including existing compound/nonfinite
+cells. Implicit and compound/nonfinite reviews default to Keep. Numeric table
+allocation metadata is preserved, never regenerated from edited cells.
+
+The draft owns only the affected row plus its count/default/view guard. It uses
+NaN-safe exact typed comparisons and refuses changed consumed input or pending
+publication. Python scripted Measure already waits; native actions remain async.
+Only the affected row is staged and swapped, with one replaceable lease per
+edited source row. Superseded payloads retire before their leases; Clear/full
+replacement/Open/startup and final Window destruction retire the owned data.
+No-op edits acquire no persistent extra row lease. Existing base allocation
+leases remain conservatively charged until their owning table is retired.
+
+The current view criteria persist and dependent keys refresh after edits.
+Visible rows, Copy/Save and existing raw/default/view session transport share the
+same values; image pixels/history and unrelated fields/settings remain unchanged.
+Actual verification is recorded in the [coverage view](COVERAGE_CHECKLIST.md#results-cells-current-wip).
+This does not add table Undo/Redo, row/range/clipboard editing, structured or
+nonfinite value authoring, summaries or full original Java AUTO semantics.

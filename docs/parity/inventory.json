@@ -3314,7 +3314,7 @@
       ],
       "name": "Results and tables",
       "remaining": [
-        "Scoped accepted subsets include mixed measurement integration, exact Results sorting/filtering/current-view Copy/Save and reviewed CSV import with Auto/Text/Number/visible-column choices, opaque numeric-default alignment and atomic Replace/Append in both Windows hosts; see docs/parity/reviews/results-import-20261107.json. Remaining owners: T09 cell/row editing/summaries, global-column/header-only workspace transfer and wider import/sort/filter/copy/original compatibility, full string/AUTO/per-column precision and delayed-column allocation; T12/T14 clipboard/accessibility/platform; T04a.3 wider analysis replay. Full family required_work and release remain open."
+        "Scoped accepted subsets include mixed measurements, exact Results sorting/filtering/current-view export, reviewed CSV import and targeted scalar cell editing with explicit/default provenance, source-row identity, usable busy Cancel and both Windows hosts; see docs/parity/reviews/results-cells-20261107.json. Remaining owners: T09 Results cell UndoRedo, row/range/clipboard editing/summaries, structured/nonfinite authoring, global-column/header-only workspace transfer and wider original compatibility, full string/AUTO/per-column precision/delayed allocation; T12/T14 shortcuts/clipboard/accessibility/platform; T04a.3 wider analysis replay. Full family required_work and release remain open."
       ],
       "required_work": "Table/CSV import, sorting/filtering, editing/copy, configurable columns and summaries",
       "status": "open",

@@ -520,3 +520,20 @@ import has no raw rows: preserving its selected headings across a new preference
 profile remains a global-column/workspace compatibility gap. No archive envelope
 or import-setup extension is added. See [conversion and review](TARGET_ANALYSIS.md#reviewed-csv-results-import)
 and [current coverage](COVERAGE_CHECKLIST.md#results-import-current-wip).
+
+## Edited Results cells
+
+Cell edits change only an explicit raw row value. Existing session Results
+transport retains exact integers, strings, Boolean and null; Missing removes
+the explicit key without changing the existing numeric-state allocation record.
+On a managed row, reopening can therefore reveal its original default; on an
+opaque imported row it remains missing. Current view criteria continue to use
+the existing presentation extension and refresh against restored cells/defaults.
+No cell-kind record, copied projection, table-history or archive version is added.
+
+Clear, replacement/import Replace and desktop Open/startup retire current edited
+row reservations when publishing the replacement. Append keeps source-row order
+and existing ownership. Temporary cell-review guards are runtime-only and do not
+execute on reopen. Global column choices and table-specific Undo/Redo retain
+their separate owning scope. See [cell action semantics](TARGET_ANALYSIS.md#reviewed-results-cell-editing)
+and [scoped coverage](COVERAGE_CHECKLIST.md#results-cells-current-wip).

@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); Results sort/filter/view export has [scoped acceptance](parity/reviews/results-view-20261107.json); reviewed CSV import has [scoped acceptance](parity/reviews/results-import-20261107.json); next is [reviewed Results cell editing](#next-ready-increment-t09-results-cells). Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); Results sort/filter/view export has [scoped acceptance](parity/reviews/results-view-20261107.json); reviewed CSV import has [scoped acceptance](parity/reviews/results-import-20261107.json); cell editing has [scoped acceptance](parity/reviews/results-cells-20261107.json); next is [Results cell Undo/Redo](#next-ready-increment-t09-results-history). Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -177,7 +177,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.3/T04b: bounded open-document mixed Batch. | Ordered selected sources, global output review, one serial job owner, per-item progress/Profile snapshots/Cancel/stop-on-failure;455distinct installed cases via26+1+428, actual both Windows hosts and existing native regressions.14groups+8prefs retired; [receipt](parity/reviews/mixed-batch-20261107.json). |
 | Delivered scoped | T09: Results sorting/filtering and view export. | Exact stable projection, shared visible/Copy/Save output and staged workspace state;680distinct installed passes via scoped/reused checks, both Windows hosts,21groups+11prefs retired. [Receipt](parity/reviews/results-view-20261107.json). |
 | Delivered scoped | T09: reviewed Results CSV import. | Auto/Text/Number, exact IDs, Replace/Append/visible-column review, opaque default alignment and both-host output;436distinct installed passes,13groups+7prefs retired. [Receipt](parity/reviews/results-import-20261107.json). |
-| Next ready: specified only | T09: reviewed Results cell editing. | Correct one visible cell through source-row mapping, preserve explicit/default distinctions and refresh view/output atomically. [Specification](#next-ready-increment-t09-results-cells). |
+| Delivered scoped | T09: reviewed Results cell editing. | Exact scalar edits/source-row mapping/default preservation, usable busy Cancel and both-host output;479distinct installed passes,16groups+8prefs retired. [Receipt](parity/reviews/results-cells-20261107.json). |
+| Next ready: specified only | T09: Results cell Undo/Redo. | Undo/Redo committed cell changes through Results controls/actions, with bounded history and guarded source/default identity. [Specification](#next-ready-increment-t09-results-history). |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1417,13 +1418,13 @@ Full cell editing/summaries, other delimiters/formats and original Java AUTO/
 string/delayed-column/per-column semantics remain T09/T12/T14. This increment has [scoped Windows acceptance](parity/reviews/results-import-20261107.json):436distinct installed passes, actual both hosts and9native routes. All13groups+7preferences retired after verified retention; full-family/release gates stay open.
 
 <a id="next-ready-increment-t09-results-cells"></a>
-### Next ready: T09 reviewed Results cell editing
+### Scoped accepted: T09 reviewed Results cell editing
 
 **User-visible exit.** Select a visible Results cell, review its current raw or
 implicit value, edit it, Apply or Cancel, then observe the refreshed sort/filter
 and Copy/Save/workspace output. Correct imported or measured values without
 changing other cells, numeric allocation provenance or image pixels/history.
-G071/G089/G083/G009; owners T09/T12. This successor is specified only.
+G071/G089/G083/G009; owners T09/T12. [Scoped Windows acceptance](parity/reviews/results-cells-20261107.json):479distinct installed passes via43new+436affected/current targeted readers, actual both hosts,16groups+8preferences retired after verified retention. Full-family/release remain open.
 
 - **Actual caller first:** inspect `Impl::resultTable` projected `source_row`,
   native `results_cell`/`Window::resultsCell`, raw explicit/default lookup,
@@ -1478,6 +1479,76 @@ Structured/nonfinite cell editing, row insertion/deletion, range/multi-cell or
 clipboard editing, table-specific Undo/Redo, summaries and original Java AUTO/
 string/per-column semantics remain T09/T12/T14. The existing image Undo history
 is not evidence of table-edit history support. Full-family/release stays open.
+
+<a id="next-ready-increment-t09-results-history"></a>
+### Next ready: T09 Results cell Undo/Redo
+
+**User-visible exit.** Undo and redo committed Results cell edits from dedicated
+Results controls and installed actions, preserving exact prior explicit/missing
+state, numeric defaults and current sort/filter presentation. Image Undo/history
+is independent. G071/G089/G083/G009; T09/T12 own this specified-only successor.
+
+- **Inspect real owners:** start at `publishResultsCell`, per-row lease replacement,
+  current default lookup, no-op detection, source-row controls and whole-table
+  replacement/append/Measure publication paths. Existing `undo`/`redo` operate on
+  the active image; never repurpose them silently. Read actual C++ declaration
+  visibility, native/Python wrapper/timing and probe receipt schemas before
+  assertions. Freeze each added signature and its consumer before compilation.
+- **Small history contract:** record only successful changed cell edits, with raw
+  source-row/column identity, old/new explicit-presence and exact typed values,
+  plus consumed default/context guards. Keep/identical/invalid/canceled/stale/
+  denied operations do not consume a history slot or discard redo. A new
+  committed edit after Undo discards its superseded redo branch. Do not copy the
+  whole table for each step or add a generic document/history controller.
+- **Actions and status:** use distinct `undo_results_cell`/`redo_results_cell`
+  actions and reachable Results buttons with enabled/disabled availability,
+  depth and useful conflict/empty status. Provide the smallest maintained
+  readonly API needed by real automation; do not hide history in unrelated view
+  or memory getters. If one internal Window declaration is required, batch the
+  actual consumed API/binding/UI changes once and budget its real build fanout.
+  No image document should be needed for Results history.
+- **Default/data correctness:** Undo a newly explicit override by restoring its
+  prior absence; reveal the same managed numeric default, not a reconstructed
+  zero/NaN. Redo restores the exact integer/double/text/Boolean/null value. Opaque
+  imported rows stay opaque. Preserve all other cells, current view criteria,
+  configuration, source pixels and image Undo/Redo. Refresh dependent view keys
+  so an undone value can move or reappear in the current filter.
+- **Topology and conflicts:** freeze explicit policies for Clear, raw replacement,
+  import Replace/Append, Open/startup and Measure append. Replacements invalidate
+  old-table history; nonconflicting append must not silently overwrite or rebind
+  an old cell. Check consumed current value/default/source topology before
+  restoring, and refuse stale external C++ changes without advancing the cursor.
+  History is runtime state unless an explicit persistence consumer requires
+  more; existing session formats save the current data/default/view state.
+- **Atomic bounded ownership:** admit delta values, retained history and candidate
+  row before mutation, stage one target row, then publish data/cursor together
+  without a throwing tail. Evict/retire superseded redo and old bounded entries
+  safely, preserving failure diagnostics and current values on admission denial.
+  Define an explicit entry/byte-cap policy and UI indication; only add a setting
+  with an actual consumer. Reuse existing RenderMemory/history-policy primitives
+  where their semantics apply. Do not retain one full row/table copy per step
+  unnecessarily or accumulate dead row leases through repeated Undo/Redo.
+- **Verification:** installed strict actions and both actual hosts cover multiple
+  edits/Undo/Redo, exact64-bit boundaries, multiline text, Boolean/null/missing,
+  measured-default versus imported rows, sort movement/filter reappearance,
+  branch truncation, no-op/error nonrecording, empty/stale/busy/resource refusal,
+  eviction/clear/replacement and source/image-history protection. Check released
+  working/retired memory and session current-data reopening independently.
+  Preserve existing original numerical expectations.
+- **Efficiency/storage:** reuse this increment's unchanged atomic-session writer
+  evidence and generic renderer/provider/gesture session captures; repeated
+  headless-session reports accounted89448397B of the98113673B regression group.
+  Run new history/row/default/workspace consumers directly, broadening
+  only for changed writer/publication dependencies or failures. Immediately
+  measure physical free and complete normalized scope before substantial groups;
+  bound groups from actual predecessor sizes, reconcile overrun before another
+  allocation and retain/retire serially. One existing-cache coherent build and
+  correct component/origin/byte checks; no new runner/cache/agents.
+
+Row/range/clipboard editing, summaries, whole-table import/clear Undo and wider
+original/platform/shortcut/history-persistence variants remain with T09/T12/T14.
+Do not claim global Ctrl+Z routing from table buttons; preserve text-entry Undo
+and image focus behavior when the owning shortcut workflow addresses them.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 
