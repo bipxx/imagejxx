@@ -84,10 +84,21 @@ struct OverlayVisual {
     Rect bounds;
     RoiColor color;
   };
+  struct Caption {
+    std::string text;
+    std::array<double,4> bounds{}; // image-space left, top, right, bottom
+    int point_size=-1;
+    RoiColor color{255,255,255,255};
+    bool background=false;
+  };
   std::size_t index = 0;
   std::string kind;
   std::optional<RoiVisual> styled;
   std::vector<Span> raster;
+  std::optional<Caption> caption;
+  mutable float gui_scale=1,caption_font_size=0;
+  mutable std::array<double,4> caption_screen_bounds{};
+  mutable bool caption_drawn=false;
 };
 // Mixed annotations retain metadata order. Legacy geometry and text remain
 // image-pixel rasters while styled outlines use device-space coverage.

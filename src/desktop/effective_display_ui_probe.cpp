@@ -1586,4 +1586,108 @@ Json nanEmptyCellsUiCase(Window& w,const std::string& context,const std::string&
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
 }
 
+Json measurementOverlayUiCase(Window& w,const std::string& context,const std::string& fresh_directory) {
+  const auto wireOverlays=[](const auto& rows){Json out=Json::array();for(const auto& row:rows)out.push_back(metadataJson(row));return out;};
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
+  require(!fs::exists(dir) && w.documents().empty(),"Fresh overlay fixture required");fs::create_directories(dir);
+  Json report={{"context",context},{"events",Json::array()},{"controls",Json::array()}};Json last;
+  std::atomic<bool> entered=false,release=false;
+  try {
+    Image image(96,80,1,PixelType::UInt8);std::fill(image.pixels.begin(),image.pixels.end(),32);
+    Selection selection("rectangle",{{20,20},{70,60}});
+    selection=with_roi_style(selection,{{"stroke_color",std::string("#00ff00")},{"stroke_width",2.5}});
+    auto source=std::make_shared<imagejxx::Document>(Dataset::from_stack({image,image}),"overlay source");source->select(selection);
+    Json old={{"kind","roi"},{"selection",selectionJson(Selection("rectangle",{{5,5},{16,16}}))},{"name","old"},{"color","#ff0000"}};
+    auto edit=source->begin_edit();edit.set_overlays({metadataObjectFromJson(old)});edit.set_rois({{"saved",selection,{},{},{},{}}});source->commit(edit);
+    auto display=source->snapshot().display();display.crosshair[2]=1;source->set_display(display);source->mark_saved();
+    auto sample=image;std::fill(sample.pixels.begin(),sample.pixels.end(),128);
+    auto other=std::make_shared<imagejxx::Document>(Dataset::from_stack({sample}),"sampling source");
+    w.addNativeDocument(source);w.addNativeDocument(other);w.setActiveIndex(0);
+    const auto before=source->snapshot(),otherBefore=other->snapshot();const auto undo=source->undo_steps();
+    w.updateSettings({{"measurements",Json::array({"mean"})},{"measurement_add_to_overlay",false},{"measurement_precision",3}},false);
+    HeadlessInputSession session(w);
+    auto frame=[&](const Json& events=Json::array()){require(report["events"].size()<320,"Overlay frame bound");last=session.frame(events);report["events"].push_back(events);};
+    auto click=[&](const Json& control,const std::string& name){
+      require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"Overlay control unavailable");report["controls"].push_back({{"name",name},{"control",control}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+    };
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};
+    auto widget=[&](const std::string& name){click(last.at("preferences_panel").at("widget_controls").at(name),"preferences."+name);};
+    auto acknowledge=[&](){if(w.error().empty())return;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();};
+    auto measure=[&](){control("menu.Analyze");control("menu.action.measure");w.wait();frame();require(w.error().empty(),"Overlay measure failed");};
+    frame();frame();frame();const auto preferencesPath=last.at("preferences_path").get<std::string>();measure();
+    require(w.results.size()==1 && source->snapshot().shares_data(before),"Default overlay modified document");
+    control("menu.Edit");control("menu.Edit.Preferences");widget("search");
+    for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}})}}}));
+    frame(Json::array({{{"type","text"},{"value","Add to overlay"}}}));
+    auto choice=[&](){click(last.at("preferences_panel").at("fields").at("measurement_add_to_overlay").at("control"),"preferences.measurement_add_to_overlay");};
+    choice();widget("revert");require(last.at("preferences_panel").at("draft").at("measurement_add_to_overlay")==false,"Overlay Revert failed");
+    choice();widget("apply");require(w.settings().boolean("measurement_add_to_overlay"),"Overlay Apply failed");
+    widget("defaults");require(last.at("preferences_panel").at("draft").at("measurement_add_to_overlay")==false,"Overlay Defaults failed");widget("revert");widget("close_button");measure();
+    require(w.results.size()==2 && source->snapshot().data().overlays.size()==2 && source->undo_steps()==undo+1,"Overlay did not publish with rows");
+    const auto committed=source->snapshot();const auto overlays=wireOverlays(committed.data().overlays);
+    require(overlays[0]==old && overlays[1].at("name")=="2" && overlays[1].at("z")==1 && committed.data().selection==before.data().selection,"Overlay clone/name/position/source selection differs");
+    const auto layers=last.at("ordinary_canvas").at("overlay_layers");require(layers.size()==2,"Overlay layered route missing");
+    require(layers[0].at("caption").at("text")=="old" && layers[1].at("caption").at("text")=="2" && layers[1].at("caption").at("drawn")==true,"Overlay captions not visibly drawn");
+    report["visible_layers"]=layers;
+    w.action("view",{{"linked_zoom",true},{"zoom",1.0}});frame();
+    const auto atOne=last.at("ordinary_canvas").at("overlay_layers");const auto dpi=last.at("gui_scale").get<double>();
+    require(atOne[1].at("caption").at("font_size_device")==std::round(12*dpi),"Wide-only ROI did not select large font");
+    w.action("view",{{"zoom",2.0}});frame();const auto atTwo=last.at("ordinary_canvas").at("overlay_layers");
+    const auto one=atOne[0].at("caption").at("screen_bounds").get<std::array<double,4>>(),two=atTwo[0].at("caption").at("screen_bounds").get<std::array<double,4>>();
+    require(std::abs((one[2]-one[0])-(two[2]-two[0]))<.001,"Overlay font scaled with image zoom");
+    w.action("view",{{"zoom",.5}});frame();require(last.at("ordinary_canvas").at("overlay_layers")[1].at("caption").at("font_size_device")==std::round(9*dpi),"Small ROI did not select small font");
+    w.action("view",{{"zoom",1.0}});frame();report["zoom_correct_labels"]=true;
+    const auto measured=w.results;
+    w.action("undo");frame();require(source->snapshot().data().overlays.size()==1 && w.results==measured,"Overlay Undo changed rows");
+    w.action("redo");frame();require(source->snapshot().data().overlays.size()==2 && w.results==measured,"Overlay Redo lost clone");
+    w.action("measure_rois");w.wait();frame();require(w.error().empty() && w.results.size()==3 && source->snapshot().data().overlays.size()==2,"Manager unexpectedly added overlay");
+    control("menu.Analyze");control("menu.measurement_redirect");control("measurement_redirect."+std::to_string(other->id));measure();
+    require(w.results.size()==4 && w.results.back().at("mean")==128 && w.results[0].at("mean")==32 && source->snapshot().data().overlays.size()==3 && other->snapshot().shares_data(otherBefore),"Redirect overlay changed sampling owner or ignored target pixels");
+    const auto rows=w.results;const auto overlayBefore=source->snapshot();const auto table=w.resultsTableState();
+    w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});const auto raw=readBytes((dir/"measure.csv").u8string());std::string csv(raw.begin(),raw.end()),copied;
+    {
+      auto& platform=ImGui::GetPlatformIO();struct Restore {ImGuiPlatformIO& p;decltype(p.Platform_SetClipboardTextFn) fn;void* data;~Restore(){p.Platform_SetClipboardTextFn=fn;p.Platform_ClipboardUserData=data;}} restore{platform,platform.Platform_SetClipboardTextFn,platform.Platform_ClipboardUserData};
+      platform.Platform_ClipboardUserData=&copied;platform.Platform_SetClipboardTextFn=[](ImGuiContext* c,const char* text){static_cast<std::string*>(c->PlatformIO.Platform_ClipboardUserData)->assign(text?text:"");};control("results.copy_csv");require(copied==csv,"Overlay copied/saved CSV differ");
+    }
+    w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});
+    const auto count=w.documents().size();
+    control("menu.Image");control("menu.Image.Overlays");control("menu.action.flatten");w.wait();frame();
+    require(w.error().empty() && w.documents().size()==count+1 && source->snapshot().shares_data(overlayBefore),"Overlay Flatten changed source or failed");
+    w.action("export_display",{{"path",(dir/"flattened.png").u8string()}});w.wait();require(w.error().empty(),"Overlay PNG export failed");const auto flattened=readImages((dir/"flattened.png").u8string());
+    require(flattened.size()==1 && flattened[0].pixels==w.document()->frame().pixels,"Overlay export reader differs");
+    report["flattened"]={{"shape",{flattened[0].height,flattened[0].width,flattened[0].channels}},{"pixels",flattened[0].pixels}};
+    w.setActiveIndex(0);frame();
+    auto start=[&](const char* action="measure"){entered=false;release=false;session.fixtureWorkerGate([&](const JobContext& c){entered=true;while(!release){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}});w.action(action);const auto end=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered && std::chrono::steady_clock::now()<end)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered,"Overlay gate timeout");};
+    const auto memoryBefore=w.renderMemoryInfo();const auto reserved=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
+    auto resources=[&](){require(w.renderMemoryInfo().at("working_bytes")==memoryBefore.at("working_bytes") && session.fixtureApplication().job_scheduler()->usage().reserved_bytes==reserved,"Overlay worker reservation leak");};
+    auto preserved=[&](){require(w.results==rows && w.resultsTableState()==table && source->snapshot().shares_data(overlayBefore),"Rejected overlay published partial rows/metadata");resources();};
+    start();w.updateSettings({{"measurement_add_to_overlay",false}},false);release=true;w.wait();require(!w.error().empty(),"Stale overlay option accepted");preserved();acknowledge();w.updateSettings({{"measurement_add_to_overlay",true}},true);
+    const auto originalDisplay=source->snapshot().display();
+    start();auto movedDisplay=originalDisplay;movedDisplay.crosshair[2]=0;source->set_display(movedDisplay);release=true;w.wait();require(!w.error().empty(),"Stale overlay pose accepted");preserved();source->set_display(originalDisplay);acknowledge();session.fixtureWorkerGate({});
+    ChannelDisplayState channels;channels.channels.resize(1);
+    start();source->set_display(with_channel_display(originalDisplay,source->snapshot().data().dataset,channels));release=true;w.wait();require(!w.error().empty(),"Stale composite overlay pose accepted");preserved();source->set_display(originalDisplay);acknowledge();session.fixtureWorkerGate({});
+    start();w.cancel();release=true;w.wait();preserved();acknowledge();session.fixtureWorkerGate({});
+    start();w.closeDocument(other->id,true);release=true;w.wait();preserved();acknowledge();session.fixtureWorkerGate({});
+    w.action("measurement_redirect",{{"document_id",0}});
+    start();w.clearResults();release=true;w.wait();require(w.results.empty() && source->snapshot().shares_data(overlayBefore),"Clear published pending overlay");resources();acknowledge();session.fixtureWorkerGate({});
+    // An option not consumed by manager/no-selection jobs cannot make them stale.
+    start("measure_rois");w.updateSettings({{"measurement_add_to_overlay",false}},false);release=true;w.wait();require(w.error().empty() && w.results.size()==1 && source->snapshot().shares_data(overlayBefore),"Unconsumed manager option made job stale");resources();session.fixtureWorkerGate({});
+    source->select(std::nullopt);const auto noSelection=source->snapshot();
+    start();w.updateSettings({{"measurement_add_to_overlay",true}},true);release=true;w.wait();require(w.error().empty() && w.results.size()==2 && source->snapshot().shares_data(noSelection),"Unconsumed no-selection option made job stale");resources();session.fixtureWorkerGate({});
+    const auto beforeCloseRows=w.results;
+    start();w.closeDocument(source->id,true);release=true;w.wait();require(w.results==beforeCloseRows && source->snapshot().shares_data(noSelection),"Closed selection owner published overlay rows");resources();acknowledge();session.fixtureWorkerGate({});
+    report["rows"]=rows;report["table_state"]=table;report["csv"]=csv;report["copied_csv"]=copied;
+    report["source_close_preserved"]=report["stale_pose_refused"]=report["stale_composite_refused"]=true;
+    report["overlays"]=wireOverlays(overlayBefore.data().overlays);report["source_selection"]=selectionJson(*overlayBefore.data().selection);
+    report["undo_redo"]=report["redirect_owner"]=report["manager_noop"]=report["no_selection_noop"]=true;
+    report["stale_setting_refused"]=report["cancel_preserved"]=report["sampling_close_preserved"]=report["clear_preserved"]=report["resource_guards"]=true;
+    session.close();Window reopened(preferencesPath);require(reopened.settings().boolean("measurement_add_to_overlay"),"Overlay saved preference lost");
+    reopened.openLegacyFile((dir/"measured.ijx").u8string());require(reopened.results==rows && reopened.resultsTableState()==table,"Overlay workspace rows lost");
+    require(wireOverlays(reopened.documents()[0]->nativeSnapshot().data().overlays)==report["overlays"],"Overlay workspace geometry lost");
+    reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(readBytes((dir/"reopened.csv").u8string())==raw,"Overlay reopened CSV differs");
+    report["workspace_preserved"]=true;report["state"]="observed";require(report.dump().size()<8*1024*1024,"Overlay report bound");writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
+}
+
 }

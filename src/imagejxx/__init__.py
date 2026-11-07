@@ -12,6 +12,8 @@ from os import fspath as _fspath
 import numpy as np
 from . import _native
 from ._native import Dataset as Dataset, SpatialCalibration as SpatialCalibration
+from ._native import (MeasurementOverlayOptions, MeasurementOverlayLimits, MeasurementOverlayPresentation,
+                     ResolvedMeasurementOverlay, resolve_measurement_overlay, prepare_measurement_overlay, measurement_overlay_presentation)
 from ._native import ResultsTableState, ResultsTableStateLimits, ResultsTableRows
 from ._native import (
     PointStyle, PointMarker, PointPresentationOptions, PointPresentationLimits,

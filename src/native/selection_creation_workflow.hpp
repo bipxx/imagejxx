@@ -2,6 +2,9 @@
 #include <imagejxx/native_workflow.hpp>
 
 namespace imagejxx::detail {
+// Borrowed control metadata bound for a staged DocumentTransaction. No pixels
+// or rasters are copied; consumers admit this before allocating staged controls.
+std::size_t document_control_copy_bytes(const DocumentSnapshot&,std::size_t cap);
 // Closed, source-independent choices; bounds admission precedes owned codecs.
 std::size_t selection_creation_request_bytes(const SelectionCreationRequest &,
                                              std::size_t cap);

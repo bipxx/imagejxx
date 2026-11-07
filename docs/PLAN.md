@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Next ready: Add to overlay. Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. Next ready is [M4 mixed measurement integration](#next-ready-increment-m4-mixed-measurement-integration). Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -40,7 +40,10 @@ This is the
 authoritative current queue and completion policy.
 The [coverage checklist](COVERAGE_CHECKLIST.md) tracks detailed family/option
 residuals and scoped implementation/verification/UI/release coverage. Update its
-affected entries at task closeout; it is a coverage view, not another queue.
+affected entries at task closeout and revise current WIP at meaningful observed
+implementation/verification checkpoints. Its acceptance dimensions cover API, both
+ImGui hosts, configuration, processing, selection/history, XYZ, output, lifecycle,
+platform and commercial/release scope; it is a coverage view, not another queue.
 [Inventory](parity/inventory.json) owns the 99 capability families and their
 remaining requirements; [command inventory](parity/commands.json) and
 [Fiji component inventory](parity/fiji-components.json) supply option/eligibility
@@ -161,7 +164,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.2 M3: scientific notation/numeric presentation. | Default-off scientific setting, precision mapping, raw values preserved and one shared table/copied/exported CSV route. 1,950 original observations, 63 distinct affected/reused installed Python passes/1 optional GL skip; native settings Windows/Linux and actual both-Windows-host workflows. All 12 owned groups retired. [Receipt](parity/reviews/result-format-20261106.json). |
 | Delivered scoped | T04a.2 M3: Display label. | Captured labels, name/plane/redirect policy, actual settings/table/Copy CSV/Save CSV/persistence and lifecycle guards. 2,606 distinct installed Python passes, both Windows hosts and Windows/Linux native/installed C++ clients; all 10 owned groups retired. Two external C++ report readers remain unavailable. [Receipt](parity/reviews/display-label-20261106.json). |
 | Delivered scoped | T04a.2 M3: Invert Y coordinates. | Default-off captured report-only Y/YM/BY, unchanged physical geometry and scalar/Feret outputs. 3,330 distinct installed Python passes (870 new); two matching Windows host pairs and current Windows/Linux native/settings/installed C++ clients. All thirteen owned groups retired. Differing-XY bypass and wider M3 remain open. [Receipt](parity/reviews/invert-y-20261106.json). |
-| Next ready | T04a.2 M3/T08: Add to overlay. | Observe actual Analyzer/ROI-manager clone/name/style/position/redirect semantics; reuse native overlay transactions and captured measurement publication for one atomic results/overlay workflow. Actual controls, display/export, history and persistence in both hosts; full table/string/AUTO/editing and wider variants retain owners. |
+| Delivered scoped | T04a.2 M3/T08: Add to overlay. | Native/Python captured clone/state/publication; actual both-Windows-host labels/zoom/export/history/persistence/lifecycle and Windows/Linux native/installed C++ clients. All15 groups retired. [Receipt](parity/reviews/add-to-overlay-20261106.json); foreign/brush/pointwise/table/platform/release exits retain owners. |
+| Next ready | T04a.2 M4: mixed measurement integration. | Compose accepted settings and representative current/whole/manager/redirect outputs with one bounded original corpus and both hosts. Reconcile each residual owner and hand stable contracts to T04a.3; reuse unchanged API/numerical evidence. [Specification](#next-ready-increment-m4-mixed-measurement-integration). |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1076,57 +1080,80 @@ first phase before/after 7,489,386,548/7,477,055,487B; corrective phase before/a
 budget unverified. Sixteen product build commands sum 258.902 s; four SDK builds are
 separate. These are command sums, not critical-path duration or runtime speed.
 
-### Next ready: Add to overlay
+### Next ready increment: M4 mixed measurement integration
 
-NaN empty cells has [scoped accepted evidence](parity/reviews/nan-empty-cells-20261106.json). Its native/Python numeric allocation state, both-host preference/table/CSV/workspace paths and Windows/Linux installed clients pass; all ten groups are retired. String/AUTO/clone/editing/import/replay variants remain T09. This is the next ready increment, not an implementation start or agent authorization.
+Add to overlay is [scoped accepted](parity/reviews/add-to-overlay-20261106.json):1403 distinct installed Python checks plus142 affected regressions, both actual Windows ImGui hosts,406 rendering/export controls and current Windows/Linux native/installed C++ consumers. All15 scratch groups are retired. This does not close M3, the99 families or release. No agents are authorized.
 
-1. Freeze the complete user workflow in its existing task record: default-off
-   **Add to overlay**, current and ordered-manager Measure, redirect, visible
-   overlay, existing results/table/CSV, Apply/Revert/Defaults, persistence and
-   applicable Undo/Redo. Map G009/G025/G066, settings and actual C++/Python APIs,
-   consumed source/style/position and the affected display/export readers.
-2. Observe first using the existing reviewed Analyzer/ROI-manager runtime. Source
-   inspection shows `Analyzer.addRoiToOverlay()` clones the selection, returns
-   when none exists, assigns result-count names only to unnamed ROIs, captures
-   classic stack or hyperstack positions and enables overlay label/name/background
-   presentation. These are source facts, not executed parity evidence. Observe
-   default-off/on, existing named/styled/positioned overlays, current/manager,
-   redirect ownership, supported area/line/angle/point/compound subtypes and the
-   selection-brush special case. Keep unrelated unsupported constructors owned.
-3. Easiest native path: inspect `DocumentData.overlays`,
-   `DocumentTransaction::set_overlays(std::vector<MetadataObject>)` and current
-   overlay serializer/render/export consumers. The legacy `add_overlay` action
-   currently clones frontend selection JSON and commits metadata; reuse accepted
-   native geometry/style/metadata primitives for scientific documents instead
-   of routing captured measurement through legacy pixel copies. Freeze actual
-   signatures and limits before adding a small helper only where required.
-4. Preserve pure numerical analysis and disabled behavior. Capture the setting,
-   selection/manager row provenance, naming and applicable style/position before
-   worker execution. Admit bounded overlay/schema/transaction copies with current
-   job/RenderMemory policies before allocation; no extra provider read is needed
-   for an overlay clone. Inspect binding mutability, exceptions and native record
-   representation before assertions or expensive builds.
-5. Prepare overlay metadata and history transaction before publication. Existing
-   `Window::poll` reserves row storage before final source validation; extend its
-   one coherent publication so failures/cancel/stale/owner-close cannot publish
-   only rows or only overlays. Reuse existing native transaction/history commit
-   and allocation-free row/state swaps. Record the concrete commit failure and
-   retirement paths; avoid a new scheduler, registry or publication framework.
-6. Batch shared setting/schema, core/frontend/helper/binding and both actual probe
-   callers before one affected-platform build. Exercise actual Apply/Revert/
-   Defaults, current/manager/redirect, named/styled/preexisting overlays, visible
-   labels/positions and one maintained display/export consumer in each host.
-   Verify saved preferences/workspace and applicable Undo/Redo without changing
-   pixel values, unrelated overlays or numerical measurement results.
-7. Select original/native/installed checks from changed behavior and ownership.
-   Explicitly verify output provenance, bounded metadata admission, source and
-   setting stale guards, cancellation and resource retirement. Reuse unchanged
-   NaN allocation and numerical kernel evidence. Use recorded caches/runtimes;
-   keep installed-consumer configs through final review and retire groups serially.
-8. Close with scoped I/V/UI/R, exact evidence/platform limits, verified cleanup,
-   waste decision and coverage/queue reconciliation. T09 retains table variants;
-   T06/T08 retain unqualified constructors/interchange, and T14 retains platforms,
-   accessibility/OS clipboard and release. Detail only the next ready successor.
+**User-visible exit.** One mixed measurement workflow composes the accepted
+options through real controls and preserves rows, overlays, history, CSV and
+workspace. Use accepted finite scalar/equal-XY inputs and supported ROI variants;
+keep120 differing-XY bypass cases, foreign/brush/pointwise variants, full table
+AUTO/string/editing and broader platform exits with T06/T08/T09/T14. Do not make
+those variants prerequisites for this independently usable integration.
+
+1. **Freeze the real routes before editing.** In the existing next task record,
+   map G009/G025/G066/G071 and every consumed option to its actual declaration,
+   control, producer/reader and residual owner. Read current settings.cpp,
+   analysis_measurement.cpp, Window startMeasurement/poll, existing actual
+   measurement probes and TARGET_ANALYSIS.md. Python SelectionEditor takes
+   shape[height,width]; native document properties arrive under native_properties;
+   save_document writes a native bundle and export_display is asynchronous.
+   Inspect these actual contracts, not a summary or command name. Reuse the
+   current installed runtime for an early fixture/caller check when possible.
+2. **Keep a bounded composition corpus.** Start with the existing UInt8 scalar
+   TCZ/equal-XY fixtures and a small reviewed original Analyzer observer. Reset
+   original global flags/state between cases; use Analyzer.run when observing
+   Add to overlay and preserve the ROI Manager mask distinction. Reuse matching
+   per-feature golden evidence. Add only the few independently observed combined
+   cases needed to expose interactions, with exact pixel/ROI/threshold/redirect
+   inputs and field-specific tolerances; no all-options Cartesian campaign.
+3. **Compose the existing options.** Exercise Label, Invert Y, NaN empty cells,
+   Add to overlay, scientific presentation/precision, LIMIT, redirect and the
+   %Area/Skew/Kurt choices together. Verify source versus sampling ownership,
+   independent full/geometric/limited populations, raw values versus formatting,
+   final-counter overlay names and captured setting semantics. Include one
+   default-off control, one late-column/capacity boundary and representative
+   current-area, whole-image and ordered-manager area/line/polyline/angle/point
+   rows using already accepted variants. Capture scientific T/C/Z rather than
+   guessing process-local IDs or silently changing targets.
+4. **Easiest implementation path: reuse callers.** Extend the maintained shared
+   probe/capture path in effective_display_ui_probe.cpp/.hpp, its two real
+   consumers in desktop/python.cpp and test_display_actions.cpp, and a focused
+   Python integration test. Use existing Settings, resolved analysis, overlay
+   transaction, ResultsTableState, formatter/CSV and session APIs. No new kernel,
+   registry, scheduler, Window.hpp/desktop.hpp type or generic runner is expected.
+   Expand product code only for a concrete failing composed consumer and record
+   that reason before editing; inspect any changed binding/ownership paths.
+5. **Verify usable output and lifecycle.** Actual both-host controls must yield
+   matching table/CSV/overlay output and reopened preferences/workspace. Check
+   source/history preservation and applicable cancel/stale/owner-close/clear
+   behavior for the composed request. Bind random redirect IDs to the selected
+   controls before normalization. A missing unrelated report blocks only its
+   dependent claim; do not recreate retired references or repeat recovery scans.
+6. **Reconcile traceability and handoff.** Map every required remaining Analyzer
+   command/option to an accepted contract or explicit residual owner in existing
+   inventory/checklist records; do not infer M3 completion from a small list of
+   checked settings. Hand stable command/options/state contracts to T04a.3 only
+   with this scoped integration receipt. Full table/operation-intent replay stays
+   T09/T04a.3 and broader release stays T14/T00.
+7. **Keep the build/check path narrow.** Reuse .cache/native-verification/windows,
+   the recorded Linux cache and active runtime. Python installs target the exact
+   existing runtime/Lib/site-packages prefix, not the runtime root; verify loaded
+   paths and source/built/installed bytes. Batch probe/caller edits before one
+   affected desktop build; avoid shared-header fanout. Reuse unchanged API,
+   numerical and installed-client evidence; changed public/ownership contracts
+   still require affected regressions and installed consumers.
+8. **Close before the successor.** Retain SDK configs through final review,
+   hash-verify necessary evidence and retire each terminal scratch group under
+   its existing receipts. Record measured build/check time, retries and storage,
+   including unknown roots; update coverage/queue and the brief waste decision.
+   Check whether the concrete entry checks above prevented this increment's
+   repeated adapter/wire/serializer/prefix failures. Publishing this plan alone
+   is not evidence that execution improved.
+
+The successor is the bounded T04a.3 consumer of these stable contracts; detail it
+when M4 supplies actual findings. No second active increment, extra audit ledger
+or speculative infrastructure is authorized by this specification.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 
@@ -1389,6 +1416,7 @@ feature or block unrelated ready work.
 | Capability/menu/dispatch drift on scientific sources | Fixed for M2b.2a by shared native property publication and matching gate; next consumer task checks the complete route before broad validation. | Original gate/legacy-publication failures retained. Supported point route and stale-draft handling pass in both hosts; unsupported scientific area route still refuses. |
 | Late probe/wrapper contract mistakes | T02 plus next validation owner: inspect maintained InputInt observations, physical text-event schema and capture helper return value before extending them. | M2b.2a reused settings IDs, corrected text `value` and command-wrapper naming; capture-helper return mistake reused successful capture without regeneration. No new harness. Revisit on another contract-assumption retry; do not claim policy alone prevents recurrence. |
 | Legacy plan-checker shape | T02, next traceability-tool change: adapt existing `scripts/check_plan.py::validate_inventory` to the current roadmap/inventory contract; do not restore 99 duplicate prose rows or add a second checker. | Static inspection shows it expects historical per-G table rows absent from the current guide. Exit: the maintained checker covers all inventory IDs and flags a deliberately omitted mapping; this documentation task used scoped in-memory coverage/link/hash checks instead. |
+| Unrelated SDK carrier dependency | T02, next installed-harness contract change: remove the global calibration-carrier prerequisite for clients that do not consume it; retain strict calibration-client missing-input checks and imported SDK isolation. | Overlay clients required the723580B carrier on both platforms but never read it; each producer cost about0.14s. This is demonstrated contract coupling, not a measured runtime bottleneck. See [scoped closeout](parity/reviews/add-to-overlay-20261106.json); no harness rewrite inside M4 composition. |
 | Accumulated duplicate large UI captures exceeded the normal budget | Fix execution order now: retain/retire one large terminal UI group before another; T02 owns reviewing unnecessary private/reader payload duplication in the existing capture helper. | Observed pre-retirement known storage 9,040,925,635 B versus 8 GiB normal limit; one report is 51,619,575 B in both producer and reader paths. After verified retirement: 8,429,126,334 known B plus 214 unknown subtrees. Next large group records copies/admission and immediate retention; do not mark the overall budget verified. |
 | Private helper and observation-schema assumptions | T02/next consumer owner: search all callers, including probes, before a signature change; inspect binding registration order and each surface's actual diagnostic shape before extension. | This packet missed one private probe caller, eagerly constructed an unregistered binding default, and confused import-array/export-object bounds and clipped visibility. Narrow corrections pass; all failures retained, unchanged SDK/core checks reused for probe-only corrections. Recurrence remains a process issue. |
 | Shared-header/API integration fanout | T02/M3: at the next required numeric-format fix, move the existing private formatter into an existing focused results/measurement source and give it a narrow consumer before further tail changes. Do not invalidate the green batch for cleanup alone. Public-header changes still need coherent bindings/installed-client checks. | M3 formatter corrective Window.cpp compiles measured 29.859/33.884 s before the later required Copy CSV completion; full task 20 product commands sum 237.518 s. These are build costs, not processing speed. Current Copy/Save share one serializer; no new controller/registry or compiler generation. |

@@ -1,16 +1,43 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Invert Y has scoped native/Python report-coordinate and both-Windows-host coverage; all thirteen owned groups are retired. [Accepted scope](#invert-y-scoped-coverage). NaN empty cells now has scoped native/Python state, both-Windows-host table/CSV/workspace coverage and Windows/Linux installed C++ evidence; all ten owned groups are retired. [Accepted scope](#nan-empty-cells-scoped-coverage). Next ready: Add to overlay. Prior accepted subsets retain their evidence below; full ImageJ/Fiji and release scope remain open.
+Updated 2026-11-06. Add to overlay has scoped native/Python, both-Windows-host workflow and Windows/Linux installed C++ coverage; all15 owned scratch groups are retired. [Accepted scope](#add-to-overlay-scoped-coverage). Next ready: M4 mixed measurement integration. Full ImageJ/Fiji and release scope remain open.
 
-This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
+| Tracked scope | Current meaning |
+|---|---|
+| 99 ImageJ/Fiji feature families | All inventory families have a required-behavior entry, owner and residual work below. All full-family acceptance boxes remain open. |
+| 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
+| 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
+| Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
+| Next integration increment | [M4 mixed measurement integration](PLAN.md#next-ready-increment-m4-mixed-measurement-integration) combines accepted options and workflows; Add to overlay now has scoped acceptance below. |
+| Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
-## Reading and updating the checklist
+## Acceptance detail for each behavior
 
-- I = implemented; V = verified for stated inputs/platforms; UI = integrated in stated hosts; R = release-ready. Keep these four aspects separate.
-- A checked scoped workflow below means its accepted receipt supports I/V/UI for that bounded workflow. It does not close the family, imply a fresh run today, or approve a release.
-- Leave a family/child checkbox open until its complete required scope and supported release gates have evidence. `Partial`, `unverified`, `unavailable` and `not applicable` are different states.
-- At every task closeout, update the affected existing scope row and residual items, link the exact receipt, state remaining platforms/variants, and update current WIP. For each newly checked item, identify delivered behavior, verification inputs/platforms, both-host integration where applicable, and remaining release obligations in the linked receipt; preserve failures and unavailable checks. If verification is pending, leave the acceptance item open and describe the implemented subset. Reconcile stale inventory labels when warranted; preserve historical failures, fingerprints and expectations.
-- Test totals and family counts are evidence/coverage indexes, not an overall completion percentage. Retired build references are unavailable, not passing checks. No general speed advantage follows from scoped checks.
+Apply these dimensions to the affected family/option entry and its existing task
+receipt. Record exact applicable inputs and observed outcomes; use `pending`,
+`unavailable` or a reasoned `not applicable` instead of silently omitting a
+required dimension. These are coverage criteria, not another execution queue.
+
+| Dimension | Required detail before claiming coverage |
+|---|---|
+| User workflow | Starting document/selection, actual control or command, expected visible output, refusal behavior and owning requirement IDs. |
+| C++ core and Python API | Actual signatures, defaults, return timing, mutability/ownership, exceptions and independently installed consumers of changed public contracts. |
+| Standalone C++ ImGui and optional Python ImGui | Real control input through each maintained host, enabled/disabled state, preview/Apply/Cancel where applicable, visible output and keyboard/focus behavior. One host does not qualify the other. |
+| Configuration | Every consumed setting and unit, factory default, Apply/Revert/Defaults, persistence/reopen, invalid-value handling and compatibility of existing preferences. |
+| Image/filter semantics | Supported types/channels, borders, nonfinite/empty inputs, calibration, ROI write extent, processing target and numerical tolerances against the identified original or independent oracle. |
+| Selection and history | Tool/geometry variants, ROI manager order, position/name/style preservation, source protection, atomic publication, changed/no-op behavior and applicable Undo/Redo. |
+| Slicing and XYZ views | Captured C/Z/T, XY/XZ/YZ orientation, linked coordinates, physical spacing, anisotropy, channel presentation and exported/reopened transforms for the supported route. |
+| Outputs and persistence | Agreement between visible image/table, copied/saved output and reopened session/workspace; preserve raw values, metadata and unrelated user state. |
+| Lifecycle and resources | Relevant stale input/setting/target guards, cancellation, source close, allocation/admission limits, retained ownership and actual scratch retirement evidence. |
+| Platforms and performance | Exact built/installed/loaded artifacts and platform scope; unavailable checks remain open. Speed claims require equivalent outputs/settings and measured workloads, not implementation language or test totals. |
+| Commercial eligibility and release | Reviewed incorporated code/dependency/asset identities and licenses, remaining notices/distribution obligations and supported-platform release gates. Scoped implementation does not imply release approval. |
+
+Keep updates incremental: at a meaningful implementation or verification
+checkpoint, revise the existing current-WIP row when its observed state changes.
+At every task closeout, reconcile affected behavior boxes, I/V/UI/R states,
+residual owners and exact receipt links before starting the successor. Preserve
+failed attempts and unavailable evidence in the existing receipt; do not turn
+an authored test or a planned run into a checked item.
 
 ## Find a coverage area
 
@@ -104,17 +131,33 @@ Owner: T04a.2 M3/T09; settings T15, persistence T04a.3/T09 and platforms T14. [S
 - [x] Complete final source/allocation review while SDK configs remain available; verify seven lossless archives and retire all ten owned Windows/Linux groups. Preserve compiler identities and reusable active products.214 inaccessible subtrees leave complete storage compliance unverified.
 - [ ] T09: complete full string-column, AUTO/per-column formatting, table editing/import/filtering/summaries and direct public JSON row-mutation tracking. Maintained bulk replacement uses `replaceResults`; arbitrary in-place public row editing has no allocation-tracking qualification.
 - [ ] T09: qualify original clone unused-capacity behavior separately; original clone zeros unused slots, while native value snapshots deliberately preserve normal continuation. No full Java ResultsTable parity claim.
-- [ ] M3/T14: complete Add to overlay, wider replay/platform/clipboard/accessibility and supported-release exits. Existing differing-XY and constructor variants retain their owners.
+- [ ] M3/T14: complete mixed integration and wider replay/platform/clipboard/accessibility/release exits. Add to overlay has scoped acceptance below; differing-XY and constructor variants retain their owners.
 
-## Next ready coverage: Add to overlay
+## Add to overlay scoped coverage
 
-Owner: T04a.2 M3/T08, G009/G025/G066; history T03/T06, persistence T04a.3/T09 and platform T14. [PLAN handoff](PLAN.md#next-ready-add-to-overlay) owns execution order. No implementation or acceptance is claimed yet.
+Owner: T04a.2 M3/T08, G009/G025/G066; history T03/T06, persistence T04a.3/T09 and platform T14. [Scoped receipt](parity/reviews/add-to-overlay-20261106.json) preserves original facts, failed attempts, current installed identities, exact reuse and cleanup. This accepts the stated workflow; full M3/families/release remain open.
 
-- [ ] Observe original Analyzer/ROI-manager selection cloning, naming, styling, plane positions, redirect ownership, no-selection and supported subtype behavior using the reviewed runtime.
-- [ ] Freeze actual native overlay/transaction APIs and shared default-off setting; keep bounded metadata staging and atomic results/overlay publication under existing ownership/history/cancel guarantees.
-- [ ] Qualify actual preference Apply/Revert/Defaults, current/manager/redirect measurements and visible overlays in both hosts; preserve numerical rows, selection state and unrelated overlays.
-- [ ] Verify session/reopen, applicable Undo/Redo and overlay display/export consumers, strict admission, consumed-setting stale, cancellation and source-close behavior.
-- [ ] Complete affected native/Python/installed checks, waste review and safe retirement; retain wider subtype/replay/platform variants with explicit owners.
+| Aspect | Observed state | Scope / remaining exit |
+|---|---|---|
+| I | Delivered, scoped | Immutable bounded C++/Python overlay plan, default-off shared setting, metadata-only preparation, guarded rows/table/overlay publication, native history and generic session property persistence. |
+| V | Passed, scoped |1403 distinct installed Windows Python passes (1400 original-field cases,2 API controls,1 actual host), plus142 affected regressions;406 rendering/export controls.44 layout controls plus classic/hyper point-metadata and settings controls pass on Windows/Linux, as do fresh installed-only C++ clients. |
+| UI | Windows C++ and Python ImGui | Matching rows/table state, visible labels, CSV and flattened pixels; actual preferences, current/manager/redirect, fixed-zoom label size, Undo/Redo, PNG reader, workspace and14 workflow/lifecycle flags per host. Only process-local redirect IDs are normalized, after checking actual selected controls. |
+| R | Open | Foreign/raw/out-of-grid and wider point/brush variants, Java font/AA pixels, broader platform UI, replay/table/accessibility and commercial/release qualification remain open. |
+
+- [x] Freeze1408 original facts including8 explicit refusals and22 actual static multi-measure calls. Source/old overlay/pixel and clone facts remain available; field-specific native checks do not turn the refusals into passes.
+- [x] Observe Analyzer.run with only the displayResults GUI sink overridden. Confirm ordinary ROI Manager masks ADD_TO_OVERLAY and execute masked Analyzer/static multi-measure no-op controls; no original ROI Manager GUI qualification is claimed.
+- [x] Reuse native control-copy admission and overlay/history transactions. Clone once, preserve native geometry/style/counters and unrelated attributes, name only unnamed ROIs by final counter, capture effective scientific position and perform no extra provider read for cloning.
+- [x] Rebind each classic-stack cloned point to the captured plane; preserve independent hyperstack point positions. Distinguish the parent audit slot from PointRoi's derived multipoint getter, and check representable point counters/positions separately.
+- [x] Verify installed Python exports, readonly values, owned options, strict counts/metadata, working/name/row/count admission and atomic refusal. Exact1402 API/field union reuses039+041; final actual host052 adds the1403rd distinct check.
+- [x] Actual default-off preference Apply/Revert/Defaults, current/ordered-manager/redirect and no-selection behavior; rows/state/metadata commit together. Manager/no-selection jobs ignore toggles of the unconsumed flag. Distinct source32/target128 values prove redirect sampling ownership.
+- [x] Draw zoom/DPI-correct names/backgrounds through the canonical native_properties facade route, preserve old overlay metadata, and render native path/region geometry. Capture admitted immutable font coverage before export reads; no font asset/dependency is added.
+- [x] Match both-host visible layers, table state, copied/saved CSV and Flatten/PNG reader pixels. Preserve overlay Undo/Redo without deleting numerical rows, saved preferences and workspace/reopened outputs.
+- [x] Actual stale setting/pose/composite, cancellation, sampling-owner close, selection-owner close and clear guards preserve publication/resource state; applicable no-op paths remain usable.
+- [x] Verify current source/built/installed bytes and loaded origins, including processing-python exports and optional desktop module. Execute current Windows/Linux native controls and independent installed-only C++ clients; keep SDK configs through final source/allocation review.
+- [x] Safely retire all15 owned Windows/Linux scratch groups and the mistaken32MB runtime-root install copy. Retain7 verified lossless archives, root diagnostics and SDK product identities; preserve active caches/runtime/installed SDK/app. Complete local budget remains unverified:214 inaccessible subtrees are unknown.
+- [ ] M4: reconcile mixed measurement options/workflows and the full remaining M3 command/option inventory; scoped feature breadth is not full-family completion.
+- [ ] T06/T08: qualify the source brush/tool selection-removal special case, foreign/raw single-plane or out-of-grid headers, wider pointwise/constructor/interchange behavior and unsampled geometry. Keep strict native extent guards.
+- [ ] T09/T04a.3/T12/T14/T00: complete full string/AUTO/per-column table/editing/import/replay, Java font pixel/AA and supported-platform UI/accessibility/clipboard/commercial/release exits.
 
 ## Numeric presentation and Copy CSV
 
@@ -3043,6 +3086,6 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ## Next update
 
-Next ready: Add to overlay, as detailed in PLAN and the acceptance exits above. NaN empty cells has scoped native/Python, both-Windows-host and Windows/Linux installed-client evidence; all ten owned groups are retired. Full string/AUTO/per-column table state, editing/import/replay and wider M3/T06/T08/T14 exits retain owners. Full M3 remains open.
+Next ready: [M4 mixed measurement integration](PLAN.md#next-ready-increment-m4-mixed-measurement-integration), combining accepted measurement options and representative current/whole/manager/redirect workflows. Add to overlay is scoped accepted above; full M3, table state, differing-XY/constructor/brush/pointwise variants and supported release remain open with their owners. No new implementation or agent run is implied by this coverage update.
 
 At every task closeout, update existing behavior/residual rows, I/V/UI/R states, exact input/platform evidence, unavailable checks and cleanup outcomes. Keep PLAN as the execution queue and this file as the single coverage view.

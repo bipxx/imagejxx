@@ -74,6 +74,7 @@ void bind_auto_contrast(py::module_& module);
 void bind_contrast_apply(py::module_& module);
 void bind_session(py::module_& module);
 void bind_target_analysis(py::module_& module);
+void bind_measurement_overlay(py::module_&);
 void bind_results_table_state(py::module_& module);
 namespace {
 int dimension(const py::array& a, int axis) {
@@ -300,6 +301,7 @@ PYBIND11_MODULE(_native, m) {
     bind_session(m);
     bind_target_analysis(m);
     bind_results_table_state(m);
+    bind_measurement_overlay(m);
     m.doc() = "C++17 imagejxx processing kernels";
     m.attr("__version__") = "0.2.0";
     m.def("convert_image", [](const py::array& a, const std::string& dtype, ConversionOptions options) {

@@ -22,7 +22,7 @@ add_library(imagejxx_core STATIC
   src/native/segmentation.cpp src/native/analysis.cpp src/native/frequency.cpp src/native/binary.cpp src/native/conversion.cpp
   src/native/dataset.cpp src/native/dataset_projection.cpp src/native/dataset_projection_command.cpp src/native/imagej_projection_numeric.cpp src/native/imagej_dataset_projection.cpp src/native/imagej_intensity_calibration.cpp src/native/calibrated_analysis.cpp src/native/imagej_projection_document.cpp src/native/imagej_projection_command.cpp src/native/settings.cpp src/native/preferences.cpp src/native/document.cpp src/native/axis_remap.cpp src/native/axis_region_remap.cpp src/native/z_subset_command.cpp src/native/manual_threshold.cpp src/native/manual_threshold_command.cpp src/native/selection_edit.cpp src/native/selection_boolean.cpp src/native/selection_region_boolean.cpp src/native/selection_region_rotation.cpp src/native/roi_style.cpp src/native/application.cpp src/native/metadata.cpp src/native/session_metadata.cpp src/native/operations.cpp src/native/targets.cpp src/native/execution.cpp src/native/jobs.cpp src/native/kernel_control.cpp)
 add_library(imagejxx::core ALIAS imagejxx_core)
-target_sources(imagejxx_core PRIVATE src/native/results_table_state.cpp src/native/target_analysis.cpp src/native/point_annotations.cpp src/native/point_presentation.cpp src/native/point_raster.cpp src/native/selection_transform.cpp)
+target_sources(imagejxx_core PRIVATE src/native/measurement_overlay.cpp src/native/results_table_state.cpp src/native/target_analysis.cpp src/native/point_annotations.cpp src/native/point_presentation.cpp src/native/point_raster.cpp src/native/selection_transform.cpp)
 set(IMAGEJXX_PRIVATE_ZLIB_SOURCES
   third_party/zlib/adler32.c third_party/zlib/compress.c
   third_party/zlib/crc32.c third_party/zlib/deflate.c
@@ -156,7 +156,7 @@ if(IMAGEJXX_BUILD_PYTHON)
   target_sources(_native PRIVATE src/native/auto_contrast_bindings.cpp src/native/contrast_apply_bindings.cpp)
   target_sources(_native PRIVATE src/native/shortcuts_bindings.cpp)
   target_sources(_native PRIVATE src/native/startup_bindings.cpp)
-  target_sources(_native PRIVATE src/native/target_analysis_bindings.cpp src/native/results_table_state_bindings.cpp)
+  target_sources(_native PRIVATE src/native/target_analysis_bindings.cpp src/native/results_table_state_bindings.cpp src/native/measurement_overlay_bindings.cpp)
   target_link_libraries(_native PRIVATE imagejxx_core)
   target_include_directories(_native SYSTEM PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nlohmann_json/include)
@@ -1127,6 +1127,9 @@ if(BUILD_TESTING)
     ${CMAKE_CURRENT_SOURCE_DIR}/src/native)
   add_test(NAME native_kernel_control_reentry COMMAND imagejxx_kernel_control_reentry_tests)
   set_tests_properties(native_kernel_control_reentry PROPERTIES TIMEOUT 30)
+  add_executable(imagejxx_measurement_overlay_tests tests/native/test_measurement_overlay.cpp)
+  target_link_libraries(imagejxx_measurement_overlay_tests PRIVATE imagejxx::core)
+  add_test(NAME native_measurement_overlay COMMAND imagejxx_measurement_overlay_tests)
   add_executable(imagejxx_results_table_state_tests tests/native/test_results_table_state.cpp)
   target_link_libraries(imagejxx_results_table_state_tests PRIVATE imagejxx::core)
   add_test(NAME native_results_table_state COMMAND imagejxx_results_table_state_tests)

@@ -16,6 +16,8 @@
 #include <cmath>
 #include <cstdlib>
 #include <imagejxx/manual_threshold.hpp>
+#include <imagejxx/measurement_overlay.hpp>
+#include <imagejxx/composite_path.hpp>
 #include <imgui.h>
 #include <limits>
 #define STBTT_malloc(n,u) imagejxx::desktop::point_font_detail::allocate(n,u)
@@ -753,6 +755,122 @@ void text(Image &image, const Json &o,
     x += advance * scale;
   }
 }
+bool selectionProperty(const Json& selection,const char* key) {
+  return selection.contains(key) || get(selection,"attributes").contains(key);
+}
+bool typedOverlay(const Json& overlay,const Json& selection) {
+  return overlay.contains(measurement_overlay_row) || selectionProperty(selection,roi_style_attribute) ||
+      selectionProperty(selection,point_style_attribute) || string(get(selection,"kind"))=="path" ||
+      string(get(selection,"kind"))=="region";
+}
+MeasurementOverlayPresentation overlayPresentation(const Json& metadata) {
+  const auto& properties=get(metadata,"native_properties");
+  const auto it=properties.find(measurement_overlay_property);
+  if(it==properties.end())return {};
+  // Bound the only converted object before calling the authoritative native
+  // decoder. Never convert/copy arbitrary image metadata just to read flags.
+  const auto& value=*it;
+  if(!value.is_object() || value.size()!=5 || !get(value,"version").is_number_integer() ||
+      !get(value,"draw_labels").is_boolean() || !get(value,"draw_names").is_boolean() ||
+      !get(value,"draw_backgrounds").is_boolean() || !get(value,"label_color").is_array() ||
+      get(value,"label_color").size()!=4)
+    throw std::invalid_argument("Invalid measurement overlay presentation");
+  for(const auto& channel:value.at("label_color"))
+    if(!channel.is_number_integer() || channel<0 || channel>255)
+      throw std::invalid_argument("Invalid measurement overlay label color");
+  return measurement_overlay_presentation({{measurement_overlay_property,metadataFromJson(value)}});
+}
+std::optional<OverlayVisual::Caption> overlayCaption(const Json& overlay,std::size_t index,
+    const MeasurementOverlayPresentation& presentation) {
+  const auto kind=string(get(overlay,"kind"));
+  if(!presentation.present || !presentation.draw_labels || kind.empty() || kind=="text")return {};
+  const auto& wire=kind=="roi"?get(overlay,"selection"):overlay;
+  if(!wire.is_object())return {};
+  OverlayVisual::Caption result;
+  const auto& name=get(overlay,"name").is_string()?get(overlay,"name"):
+      (get(wire,"imagej_roi_name").is_string()?get(wire,"imagej_roi_name"):get(get(wire,"attributes"),"imagej_roi_name"));
+  if(presentation.draw_names) {
+    if(!name.is_string())return {};
+    const auto& text=name.get_ref<const std::string&>();
+    if(text.size()>4096)throw std::length_error("Overlay label exceeds4096 bytes");
+    result.text=text;
+  } else result.text=std::to_string(index+1);
+  if(result.text.empty())return {};
+  const auto selection=selectionFromJson(wire);
+  if(selection.is_path())result.bounds=selection.path_geometry().bounds();
+  else if(selection.is_mask()) {
+    const auto origin=selection.mask_origin();
+    result.bounds={double(origin[0]),double(origin[1]),double(origin[0])+selection.mask_width(),double(origin[1])+selection.mask_height()};
+  } else if(const auto frame=selection.box_frame())result.bounds=frame->bounds(selection.kind=="rotated_ellipse");
+  else {
+    if(selection.points.empty())return {};
+    result.bounds={selection.points[0][0],selection.points[0][1],selection.points[0][0],selection.points[0][1]};
+    for(const auto& point:selection.points)for(unsigned d=0;d<2;++d) {
+      result.bounds[d]=std::min(result.bounds[d],point[d]);result.bounds[d+2]=std::max(result.bounds[d+2],point[d]);
+    }
+  }
+  for(auto coordinate:result.bounds)if(!std::isfinite(coordinate))throw std::invalid_argument("Overlay label bounds must be finite");
+  if(selection.kind=="point" || selection.kind=="multipoint") {
+    const auto style=point_style(selection);result.point_size=int(style?style->size:1);
+  }
+  result.color=presentation.label_color;result.background=presentation.draw_backgrounds;return result;
+}
+struct CaptionPlacement {double x,y;int size;bool centered;};
+CaptionPlacement captionPlacement(const OverlayVisual::Caption& caption,std::array<double,2> origin,
+    std::array<double,2> scale,double dpi=1) {
+  const auto& b=caption.bounds;
+  int size=(b[2]-b[0])*scale[0]>40 || (b[3]-b[1])*scale[1]>40?12:9;
+  if(caption.point_size>=0)size=caption.point_size<2?9:(caption.point_size<4?10:12);
+  size=std::max(1,int(std::round(size*dpi)));
+  const double x=origin[0]+(b[0]+b[2])*.5*scale[0],y=origin[1]+(b[1]+b[3])*.5*scale[1];
+  const double baseline=y+std::max(size/2.,6*dpi)-2*dpi;
+  if(caption.point_size>=0)return {x+(6+caption.point_size)*dpi,
+      baseline+size+(caption.point_size-6)*dpi,size,true};
+  return {x,baseline,size,true};
+}
+struct CaptionGlyph {std::shared_ptr<const PointRasterGlyph> glyph;double x,y;};
+struct CaptionPixels {
+  std::vector<CaptionGlyph> glyphs;
+  std::array<double,4> bounds{};
+};
+CaptionPixels prepareCaptionPixels(const OverlayVisual::Caption& caption,PointRasterFontCache& font) {
+  const auto placement=captionPlacement(caption,{0,0},{1,1});
+  CaptionPixels out;out.glyphs.reserve(caption.text.size());
+  double x=0,y=std::floor(placement.y),width=0;std::size_t lines=1;
+  for(std::size_t i=0;i<caption.text.size();) {
+    kernel_checkpoint_periodic();
+    unsigned cp=static_cast<unsigned char>(caption.text[i++]);int continuation=0;
+    if(cp>=0xf0){cp&=7;continuation=3;}else if(cp>=0xe0){cp&=15;continuation=2;}else if(cp>=0xc0){cp&=31;continuation=1;}
+    for(int k=0;k<continuation && i<caption.text.size();++k)cp=(cp<<6)|(static_cast<unsigned char>(caption.text[i++])&63);
+    if(cp=='\n'){width=std::max(width,x);x=0;y+=placement.size;++lines;continue;}
+    const auto glyph=font.textGlyph(placement.size,cp);
+    out.glyphs.push_back({glyph,std::trunc(x)+glyph->offset_x,y+glyph->offset_y});x+=float(glyph->advance);
+  }
+  width=std::max(width,x);
+  const double left=placement.x-(placement.centered?width*.5:0);
+  for(auto& glyph:out.glyphs)glyph.x=std::trunc(glyph.x+left);
+  out.bounds={left-1,placement.y-font.textBaseline(placement.size)-1,left+width+1,
+      placement.y-font.textBaseline(placement.size)+placement.size*lines+1};
+  return out;
+}
+void paintCaptionPixels(Image& image,const OverlayVisual::Caption& caption,const CaptionPixels& pixels) {
+  auto clipped=[](double value,int maximum){return int(std::clamp(value,0.,double(maximum)));};
+  if(caption.background) {
+    const auto& b=pixels.bounds;
+    for(int y=clipped(std::floor(b[1]),image.height);y<clipped(std::ceil(b[3]),image.height);++y)
+      for(int x=clipped(std::floor(b[0]),image.width);x<clipped(std::ceil(b[2]),image.width);++x) {
+        kernel_checkpoint_periodic();blend(image,x,y,{0,0,0,255});
+      }
+  }
+  for(const auto& placed:pixels.glyphs) {
+    const auto& glyph=*placed.glyph;
+    for(int y=clipped(placed.y,image.height);y<clipped(placed.y+glyph.height,image.height);++y)
+      for(int x=clipped(placed.x,image.width);x<clipped(placed.x+glyph.width,image.width);++x) {
+        kernel_checkpoint_periodic();const auto gx=std::size_t(x-placed.x),gy=std::size_t(y-placed.y);
+        blend(image,x,y,caption.color,glyph.coverage[gy*glyph.width+gx]/255.);
+      }
+  }
+}
 bool visibleOverlay(const Json &overlay, const Json &metadata,
                     std::optional<PlanePosition> position) {
   const auto &slice = get(overlay, "slice_index");
@@ -780,7 +898,7 @@ void paintOverlay(Image &result, const Json &o,
   auto selection = kind == "roi" ? get(o, "selection") : o;
   selection["width"] = number(get(selection, "width"), 1);
   kind = string(get(selection, "kind"));
-  if (selection.contains(point_style_attribute)) {
+  if (selectionProperty(selection,point_style_attribute)) {
     if(result.channels!=3)throw std::invalid_argument("Point flatten needs RGB display pixels");
     const auto typed=selectionFromJson(selection);
     const auto resolved=resolve_roi_style(typed,rgba);
@@ -805,7 +923,7 @@ void paintOverlay(Image &result, const Json &o,
     result=detail::raster_point_style(result,prepared,font);
     return;
   }
-  if (selection.contains(roi_style_attribute)) {
+  if (typedOverlay(o,selection)) {
     result = render_roi_style(result, selectionFromJson(selection), rgba);
     return;
   }
@@ -826,6 +944,7 @@ bool hasStyledOverlays(const Json &metadata) {
 }
 bool hasStyledOverlays(const Json &metadata,
                        std::optional<PlanePosition> position) {
+  const auto presentation=overlayPresentation(metadata);
   for (const auto &overlay : get(metadata, "overlays")) {
     if (!visibleOverlay(overlay, metadata, position) ||
         string(get(overlay, "kind")) == "text")
@@ -833,7 +952,7 @@ bool hasStyledOverlays(const Json &metadata,
     const auto &selection = string(get(overlay, "kind")) == "roi"
                                 ? get(overlay, "selection")
                                 : overlay;
-    if (selection.contains(roi_style_attribute) || selection.contains(point_style_attribute))
+    if (typedOverlay(overlay,selection) || (presentation.present && presentation.draw_labels))
       return true;
   }
   return false;
@@ -846,7 +965,8 @@ std::vector<OverlayVisual>
 overlayVisuals(const Json &metadata, int width, int height,
                std::optional<PlanePosition> position) {
   std::vector<OverlayVisual> layers;
-  std::size_t index = 0;
+  const auto presentation=overlayPresentation(metadata);
+  std::size_t label_bytes=0,index = 0;
   for (const auto &overlay : get(metadata, "overlays")) {
     const auto originalIndex = index++;
     if (!visibleOverlay(overlay, metadata, position))
@@ -856,7 +976,7 @@ overlayVisuals(const Json &metadata, int width, int height,
     layer.kind = string(get(overlay, "kind"));
     const auto &selection =
         layer.kind == "roi" ? get(overlay, "selection") : overlay;
-    if (layer.kind != "text" && (selection.contains(roi_style_attribute) || selection.contains(point_style_attribute))) {
+    if (layer.kind != "text" && typedOverlay(overlay,selection)) {
       layer.styled = roiVisual(selection, width, height,
                                color(string(get(overlay, "color"), "#ffcc00")));
     } else {
@@ -883,6 +1003,11 @@ overlayVisuals(const Json &metadata, int width, int height,
         }
       }
     }
+    layer.caption=overlayCaption(overlay,originalIndex,presentation);
+    if(layer.caption) {
+      label_bytes=RenderMemory::add(label_bytes,layer.caption->text.size());
+      if(label_bytes>1048576)throw std::length_error("Overlay labels exceed view text limit");
+    }
     layers.push_back(std::move(layer));
   }
   return layers;
@@ -890,10 +1015,8 @@ overlayVisuals(const Json &metadata, int width, int height,
 void drawOverlayVisual(const OverlayVisual &visual, ImDrawList *draw,
                        std::array<float, 2> origin,
                        std::array<float, 2> scale,std::optional<PlanePosition> current,Plane plane) {
-  if (visual.styled) {
-    drawRoiVisual(*visual.styled, draw, origin, scale,current,plane);
-    return;
-  }
+  visual.caption_drawn=false;
+  if (visual.styled)drawRoiVisual(*visual.styled, draw, origin, scale,current,plane);
   const auto low = draw->GetClipRectMin(), high = draw->GetClipRectMax();
   for (float value :
        {origin[0], origin[1], scale[0], scale[1], low.x, low.y, high.x, high.y})
@@ -915,6 +1038,23 @@ void drawOverlayVisual(const OverlayVisual &visual, ImDrawList *draw,
           {float(x0), float(y0)}, {float(x1), float(y1)},
           IM_COL32(span.color[0], span.color[1], span.color[2], span.color[3]));
   }
+  if(visual.caption && plane==Plane::XY) {
+    const auto& caption=*visual.caption;const double dpi=visual.gui_scale;
+    if(!std::isfinite(dpi) || dpi<=0 || dpi>16)throw std::invalid_argument("Unsupported overlay caption DPI");
+    auto placed=captionPlacement(caption,{origin[0],origin[1]},{scale[0],scale[1]},dpi);
+    auto* font=ImGui::GetFont();
+    if(caption.point_size>=0)placed.y+=(font->Ascent-font->Descent)*placed.size/font->FontSize-placed.size;
+    const auto extent=font->CalcTextSizeA(float(placed.size),FLT_MAX,0,caption.text.c_str());
+    const double x=placed.x-(placed.centered?extent.x*.5:0),y=placed.y-font->Ascent*placed.size/font->FontSize;
+    const std::array<double,4> bounds{x-dpi,y-dpi,x+extent.x+dpi,y+extent.y+dpi};
+    for(auto coordinate:bounds)if(!std::isfinite(coordinate))return;
+    visual.caption_font_size=float(placed.size);visual.caption_screen_bounds=bounds;
+    if(bounds[2]>low.x && bounds[0]<high.x && bounds[3]>low.y && bounds[1]<high.y) {
+      if(caption.background)draw->AddRectFilled({float(bounds[0]),float(bounds[1])},{float(bounds[2]),float(bounds[3])},IM_COL32(0,0,0,255));
+      draw->AddText(font,float(placed.size),{float(x),float(y)},IM_COL32(caption.color[0],caption.color[1],caption.color[2],caption.color[3]),caption.text.c_str());
+      visual.caption_drawn=true;
+    }
+  }
 }
 Json overlayVisualJson(const OverlayVisual &visual) {
   Json result = visual.styled ? roiVisualJson(*visual.styled) : Json::object();
@@ -923,6 +1063,9 @@ Json overlayVisualJson(const OverlayVisual &visual) {
   result["kind"] = visual.kind;
   result["styled"] = bool(visual.styled);
   result["raster_spans"] = visual.raster.size();
+  if(visual.caption)result["caption"]={{"text",visual.caption->text},{"image_bounds",visual.caption->bounds},
+      {"background",visual.caption->background},{"color",visual.caption->color},{"point_size",visual.caption->point_size},
+      {"font_size_device",visual.caption_font_size},{"screen_bounds",visual.caption_screen_bounds},{"drawn",visual.caption_drawn}};
   return result;
 }
 Image renderImage(const Image &image, const Json &meta, bool includeOverlays) {
@@ -949,9 +1092,18 @@ void paintDisplayOverlays(Image& image,const Json& metadata,
   PointRasterFontCache fonts;
   if(!position && get(metadata,"slice_index").is_number_integer())
     position=PlanePosition{0,0,integer(get(metadata,"slice_index"))};
-  for (const auto &overlay : get(metadata, "overlays"))
-    if (visibleOverlay(overlay, metadata, position))
+  const auto presentation=overlayPresentation(metadata);
+  std::size_t index=0;
+  for (const auto &overlay : get(metadata, "overlays")) {
+    const auto original=index++;
+    if (visibleOverlay(overlay, metadata, position)) {
       paintOverlay(image, overlay,position,&fonts,show_all);
+      if(const auto caption=overlayCaption(overlay,original,presentation)) {
+        fonts.open(annotationFontPath(string(get(overlay,"font_path"))));
+        paintCaptionPixels(image,*caption,prepareCaptionPixels(*caption,fonts));
+      }
+    }
+  }
 }
 }
 void renderDisplayOverlays(Image &image, const Json &metadata) {
@@ -1019,6 +1171,8 @@ struct PreparedExportImage::State {
   struct Row {
     Json wire;
     std::vector<TextGlyph> text;
+    std::optional<OverlayVisual::Caption> caption;
+    CaptionPixels caption_pixels;
     RoiColor text_color{};
     bool text_row=false;
     std::optional<Selection> selection;
@@ -1095,7 +1249,8 @@ struct PreparedExportImage::State {
       output_calibration.origin=output_calibration.voxel_to_world({0,0,double(position.z)});
       output_calibration.time_origin=output_calibration.time(position.t);
     }
-    struct Input {const MetadataObject* overlay;const Selection* selection;const char* color;};
+    const auto overlay_presentation=measurement_overlay_presentation(source.data().metadata.properties);
+    struct Input {const MetadataObject* overlay;const Selection* selection;const char* color;std::size_t overlay_index=0;};
     std::vector<Input> inputs;
     auto admitSelection=[&](const Selection& selection,const char* color) {
       exportCharge(used,1,sizeof(Input)+sizeof(Row)+1024,limit,admit);
@@ -1106,12 +1261,14 @@ struct PreparedExportImage::State {
       inputs.push_back({nullptr,&selection,color});
     };
     // ImageCanvas paints overlays, the visible manager list, then the active ROI.
+    std::size_t overlay_index=0;
     for(const auto& row:source.data().overlays) {
+      const auto original_index=overlay_index++;
       kernel_checkpoint_periodic();exportWork(work,1);
       if(!exportVisible(row,position))continue;
       exportCharge(used,1,sizeof(Input)+sizeof(Row)+256,limit,admit);
       for(const auto& field:row){exportCharge(used,field.first.size(),4,limit,admit);exportMetadataCharge(field.second,used,limit,work,admit);}
-      inputs.push_back({&row,nullptr,nullptr});
+      inputs.push_back({&row,nullptr,nullptr,original_index});
     }
     const auto overlay_count=inputs.size();
     if(show_rois)for(const auto& roi:source.data().rois) {
@@ -1132,7 +1289,7 @@ struct PreparedExportImage::State {
     rows.reserve(inputs.size());
     struct Fonts {
       std::map<double,std::shared_ptr<const PointRasterFont>> points;
-      std::vector<std::size_t> text_rows;
+      std::vector<std::size_t> text_rows,caption_rows;
     };
     std::map<std::string,Fonts> fonts;
     auto fontPath=[&](std::string configured) {
@@ -1174,7 +1331,7 @@ struct PreparedExportImage::State {
         }
       } else {
         const auto& wire=kind=="roi"?get(row.wire,"selection"):row.wire;
-        if(wire.contains(point_style_attribute)) {
+        if(selectionProperty(wire,point_style_attribute)) {
           row.selection=selectionFromJson(wire);
           const auto style=resolve_roi_style(*row.selection,color(string(get(row.wire,"color"),"#ffcc00")));
           PointPresentationOptions options;options.position=position;options.show_all=show_all;
@@ -1193,12 +1350,23 @@ struct PreparedExportImage::State {
           }
         }
       }
+      if(input.overlay)row.caption=overlayCaption(row.wire,input.overlay_index,overlay_presentation);
+      if(row.caption) {
+        exportCharge(used,row.caption->text.size(),sizeof(CaptionGlyph)+8,limit,admit);
+        exportWork(work,row.caption->text.size(),8);
+        const auto configured=string(get(row.wire,"font_path"));
+        std::string path;
+        if(configured.empty()){if(!default_font)default_font=fontPath({});path=*default_font;}
+        else path=fontPath(configured);
+        exportCharge(used,path.size(),3,limit,admit);
+        fonts[path].caption_rows.push_back(rows.size());
+      }
       rows.push_back(std::move(row));
     }
     peak=used;
     for(auto& file:fonts) {
       const auto base=used;
-      const auto allowance=std::min<std::size_t>((file.second.text_rows.empty()?8:64)*1048576,limit-used);
+      const auto allowance=std::min<std::size_t>((file.second.text_rows.empty() && file.second.caption_rows.empty()?8:64)*1048576,limit-used);
       if(allowance<65536)throw std::length_error("Annotation font exceeds configured processing memory budget");
       PointRasterFontCache owner(allowance,work_limit-work,[&](std::size_t bytes) {
         const auto total=RenderMemory::add(base,bytes);if(admit)admit(total);peak=std::max(peak,total);
@@ -1236,12 +1404,27 @@ struct PreparedExportImage::State {
         }
         row.wire=Json();
       }
+      for(auto index:file.second.caption_rows) {
+        auto& row=rows[index];row.caption_pixels=prepareCaptionPixels(*row.caption,owner);
+        for(const auto& placed:row.caption_pixels.glyphs) {
+          const auto& glyph=*placed.glyph;
+          const auto width=std::max(0.,std::min(double(shape.x),placed.x+glyph.width)-std::max(0.,placed.x));
+          const auto height=std::max(0.,std::min(double(shape.y),placed.y+glyph.height)-std::max(0.,placed.y));
+          exportWork(work,std::size_t(std::ceil(width)),std::size_t(std::ceil(height)));
+        }
+        if(row.caption->background) {
+          const auto& b=row.caption_pixels.bounds;
+          const auto width=std::max(0.,std::min(double(shape.x),std::ceil(b[2]))-std::max(0.,std::floor(b[0])));
+          const auto height=std::max(0.,std::min(double(shape.y),std::ceil(b[3]))-std::max(0.,std::floor(b[1])));
+          exportWork(work,std::size_t(width),std::size_t(height));
+        }
+      }
       exportCharge(used,owner.text_bytes(),1,limit,admit);
       exportWork(work,owner.working_work());
       peak=std::max({peak,used,RenderMemory::add(base,owner.working_bytes())});
     }
     for(auto& row:rows)if(row.selection) {
-      if(row.layout.primitives.empty()){row.skip=true;row.selection.reset();continue;}
+      if(row.layout.primitives.empty()){row.skip=!row.caption;row.wire=Json();row.selection.reset();continue;}
       if(row.font_size)row.font=fonts.at(row.font_path).points.at(row.font_size);
       PointPresentationOptions options;options.position=position;options.show_all=show_all;
       // Layout already owns the exact resolved colors/options. Raster uses only
@@ -1309,6 +1492,7 @@ Image PreparedExportImage::render(const ExecutionControl& control) const {
         blend(output,x,y,row.text_color,glyph.coverage[gy*glyph.width+gx]/255.);
       }
     } else paintOverlay(output,row.wire,state_->position,nullptr,state_->show_all);
+    if(row.caption)paintCaptionPixels(output,*row.caption,row.caption_pixels);
   }
   kernel_checkpoint();imagejxx::detail::without_execution_callbacks([]{kernel_checkpoint();});return output;
 }

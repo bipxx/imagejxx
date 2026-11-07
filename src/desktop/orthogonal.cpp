@@ -1038,6 +1038,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
                           cache.origin.y + cache.height * cache.scale.y},
                          true);
       for (const auto &overlay : cache.overlays) {
+        overlay.gui_scale=input.annotation_gui_scale;
         drawOverlayVisual(overlay, draw, {cache.origin.x, cache.origin.y},
                           {cache.scale.x, cache.scale.y});
         auto summary = overlayVisualJson(overlay);

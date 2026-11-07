@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <imagejxx/point_raster.hpp>
+#include <imagejxx/measurement_overlay.hpp>
 #include <imagejxx/jobs.hpp>
 #include <optional>
 #include <algorithm>
@@ -287,6 +288,67 @@ int main() {
         success.complete([]{});held.reset();retained.reset();check(scheduler.usage().reserved_bytes==0);
         std::cout<<"Admitted export preparation: pre-read font refusal, allocator exception recovery, one-read render and retained release passed\n";
       }
+    }
+    {
+      const auto font_path=annotationFontPath();std::ifstream font_available(std::filesystem::u8path(font_path),std::ios::binary);
+      if(font_available) {
+        font_available.close();Image image(96,80,3,PixelType::UInt8);std::fill(image.pixels.begin(),image.pixels.end(),64);
+        const Json presentation={{"version",1},{"draw_labels",true},{"draw_names",true},{"draw_backgrounds",true},{"label_color",{255,255,255,255}}};
+        auto path=Selection::from_path({0,20,20,1,70,20,1,70,60,1,20,60,4});
+        auto region=Selection::from_packed_region(2,2,{0xf0},{3,4});
+        Selection points("multipoint",{{40,40},{55,50}});PointStyle style;style.labels=false;style.size=3;points=with_point_style(points,style);
+        Json overlays=Json::array({
+          {{"kind","roi"},{"name","path,\"name"},{"selection",selectionJson(path)},{measurement_overlay_row,{{"version",1}}}},
+          {{"kind","roi"},{"name","region"},{"selection",selectionJson(region)},{measurement_overlay_row,{{"version",1}}}},
+          {{"kind","roi"},{"name","point\n\xce\xbc"},{"selection",selectionJson(points)},{"z",1}},
+          {{"kind","rectangle"},{"points",{{1,1},{10,10}}},{"name","legacy"}},
+          {{"kind","roi"},{"name",""},{"selection",selectionJson(Selection("line",{{0,10},{12,10}}))}}
+        });
+        Json metadata={{"overlays",overlays},{"slice_index",1},{"native_properties",{{measurement_overlay_property,presentation}}}};
+        const auto visual=overlayVisuals(metadata,96,80,PlanePosition{0,0,1});
+        check(hasStyledOverlays(metadata,PlanePosition{0,0,1}) && visual.size()==5);
+        check(visual[0].styled && visual[1].styled && visual[2].styled && visual[3].caption && !visual[4].caption);
+        check(visual[0].caption->bounds==std::array<double,4>{20,20,70,60} && visual[0].caption->text=="path,\"name");
+        check(visual[1].caption->bounds==std::array<double,4>{3,4,5,6} && visual[2].caption->point_size==3);
+        check(overlayVisuals(metadata,96,80,PlanePosition{0,0,0}).size()==4);
+        check(overlayVisualJson(visual[0]).at("caption").at("background")==true);
+        auto wire_owner=std::make_shared<imagejxx::Document>(Dataset::from_stack({image,image}));
+        auto wire_edit=wire_owner->begin_edit();std::vector<MetadataObject> wire_rows;
+        for(const auto& row:overlays)wire_rows.push_back(metadataObjectFromJson(row));
+        wire_edit.set_overlays(std::move(wire_rows));wire_edit.set_property(measurement_overlay_property,metadataFromJson(presentation));wire_owner->commit(wire_edit);
+        imagejxx::desktop::Document facade(wire_owner,true);
+        check(facade.state().metadata.at("native_properties").at(measurement_overlay_property)==presentation);
+        check(overlayVisuals(facade.state().metadata,96,80,PlanePosition{0,0,1})[0].caption->text=="path,\"name");
+        auto hidden=metadata;hidden["native_properties"][measurement_overlay_property]["draw_labels"]=false;
+        check(!overlayVisuals(hidden,96,80,PlanePosition{0,0,1})[0].caption);
+        auto malformed=metadata;malformed["native_properties"][measurement_overlay_property]["version"]=2;
+        refuses([&]{(void)overlayVisuals(malformed,96,80);});
+        malformed["native_properties"][measurement_overlay_property]["version"]=1;malformed["native_properties"][measurement_overlay_property]["draw_labels"]=1;
+        refuses([&]{(void)hasStyledOverlays(malformed);});
+        auto unnamed=metadata;unnamed["overlays"][0].erase("name");
+        check(!overlayVisuals(unnamed,96,80,PlanePosition{0,0,1})[0].caption);
+        auto numbered=metadata;numbered["native_properties"][measurement_overlay_property]["draw_names"]=false;
+        check(overlayVisuals(numbered,96,80,PlanePosition{0,0,1})[0].caption->text=="1");
+        // Capture complete labels before reads; render with no available font
+        // afterwards. This proves the worker consumes captured coverage only.
+        DatasetReadObserver reads;DocumentData data{Dataset::from_stack({image,image}).observe_reads(reads)};
+        for(const auto& row:overlays)data.overlays.push_back(metadataObjectFromJson(row));
+        data.metadata.properties[measurement_overlay_property]=metadataFromJson(presentation);
+        imagejxx::Document owner(std::move(data));auto view=owner.snapshot().display();view.crosshair[2]=1;owner.set_display(view);
+        const auto before=owner.snapshot();PreparedExportImage prepared(before,false,16*1048576);
+        check(reads.counts().plane_reads==0 && prepared.working_bytes()<16*1048576);
+        auto expected=image;renderDisplayOverlays(expected,metadata,PlanePosition{0,0,1});
+        {FontEnvironment environment;environment.replace("/missing/captured-label-font.ttf");
+          const auto result=prepared.render();check(result.pixels==expected.pixels && reads.counts().plane_reads==1);
+        }
+        auto no_labels=image;renderDisplayOverlays(no_labels,hidden,PlanePosition{0,0,1});check(expected.pixels!=no_labels.pixels);
+        bool denied=false;try{PreparedExportImage too_small(before,false,1);}catch(const std::length_error&){denied=true;}
+        check(denied && reads.counts().plane_reads==1 && owner.snapshot().shares_data(before));
+        ExecutionControl cancel;cancel.cancellation=std::make_shared<CancellationToken>();cancel.cancellation->cancel();
+        bool cancelled=false;try{(void)prepared.render(cancel);}catch(const OperationCancelled&){cancelled=true;}
+        check(cancelled && reads.counts().plane_reads==1);
+        std::cout<<"Measurement overlay captions: typed path/region, global names, positions, pre-read fonts, captured worker and refusal passed\n";
+      } else std::cout<<"UNAVAILABLE measurement overlay font test: "<<font_path<<'\n';
     }
     {
       namespace fs=std::filesystem;

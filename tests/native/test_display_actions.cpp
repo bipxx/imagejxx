@@ -478,6 +478,10 @@ void circleJobs(const std::filesystem::path& root) {
 }
 } // namespace
 int main(int argc,char **argv){try{
+  if(argc==3 && std::string(argv[2])=="--measurement-overlay") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"overlay-preferences.json").u8string());
+    imagejxx::desktop::measurementOverlayUiCase(w,"imgui_cpp",argv[1]);return 0;
+  }
   if(argc==3 && std::string(argv[2])=="--nan-empty-cells") {
     Window w((std::filesystem::u8path(argv[1]).parent_path()/"nan-preferences.json").u8string());
     imagejxx::desktop::nanEmptyCellsUiCase(w,"imgui_cpp",argv[1]);return 0;

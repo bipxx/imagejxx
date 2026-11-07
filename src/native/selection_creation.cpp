@@ -1523,4 +1523,8 @@ DocumentTransaction prepare_selection_enlargement(const ResolvedSelectionEnlarge
   finish_progress();return transaction;
 }
 
+std::size_t detail::document_control_copy_bytes(const DocumentSnapshot& source,std::size_t cap) {
+  SelectionCreationLimits limits;limits.max_working_bytes=cap;
+  return data_copy_size(source,limits);
+}
 } // namespace imagejxx

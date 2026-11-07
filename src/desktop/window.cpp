@@ -5,6 +5,7 @@
 #include <imagejxx/point_presentation.hpp>
 #include "analysis_measurement.hpp"
 #include <imagejxx/results_table_state.hpp>
+#include <imagejxx/measurement_overlay.hpp>
 #include <array>
 #include <string_view>
 #include <imagejxx/stack_projection.hpp>
@@ -1312,6 +1313,9 @@ struct Window::Impl {
     std::optional<ResultsTableState> table_state;
     std::size_t table_base_rows=0,table_workspace=0;
     bool table_nan=false;
+    RenderMemory::Lease overlay_memory; // staged transaction retires before this lease
+    std::optional<ResolvedMeasurementOverlay> overlay_plan;
+    std::optional<DocumentTransaction> overlay_transaction;
     // Destroy export payloads before the reservation member releases its lease.
     std::optional<DisplayExportResult> display_export;
     std::shared_ptr<RenderMemory::Lease> selection_capture_memory;
@@ -4520,16 +4524,24 @@ struct Window::Impl {
     if(!owner.results.is_array())throw std::invalid_argument("Results must be an array");
     const auto& rois=target.source().data().rois;
     const auto parents=manager?(indices.empty()?rois.size():indices.size()):target.position_count();
+    MeasurementOverlayOptions overlayOptions;overlayOptions.enabled=preferenceState.settings.boolean("measurement_add_to_overlay");
+    if(overlayOptions.enabled && !manager && target.source().data().selection && target.source().data().dataset.shape().plane_count()>1)
+      overlayOptions.composite=bool(recognized_channel_display(target.source().display(),target.source().data().dataset));
+    MeasurementOverlayLimits overlayLimits;overlayLimits.max_working_bytes=limits.max_working_bytes;
+    const auto overlay=resolve_measurement_overlay(command,base,overlayOptions,overlayLimits);
     const auto tableBytes=tableWorkingBytes(base,command.estimate().row_count,parents);
-    const auto workspace=RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,rows),tableBytes);
+    const auto workspace=RenderMemory::add(RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,rows),tableBytes),overlay.working_bytes());
     if(workspace>processingCap())throw std::invalid_argument("Measurement exceeds current processing memory budget");
     auto memory=renderMemory->acquire(rows);
+    std::shared_ptr<RenderMemory::Lease> overlayMemory;
+    if(overlay.working_bytes())overlayMemory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(overlay.working_bytes()));
     auto tableMemory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(tableBytes));
     auto table=std::make_shared<ResultsTableState>(alignedTable(base));
     const bool nan=preferenceState.settings.boolean("measurement_nan_empty_cells");
     measurementPendingMemory=memory.retain(rows);
     try {
-      start([command,cap=limits.max_working_bytes,table,tableMemory,base,parents,nan,tableBytes]{
+      start([command,cap=limits.max_working_bytes,table,tableMemory,base,parents,nan,tableBytes,overlay,overlayMemory]{
+        auto overlayTransaction=prepare_measurement_overlay(overlay,cap);
         auto result=execute_target_analysis(command,{},cap);
         auto rows=captured_measurement_rows(command,result);
         auto groups=measurementTableGroups(rows,parents);
@@ -4539,6 +4551,8 @@ struct Window::Impl {
         completed.table_state.emplace(std::move(*table));
         tableMemory->reset();
         completed.table_base_rows=base;completed.table_nan=nan;completed.table_workspace=tableBytes;
+        completed.overlay_plan.emplace(overlay);completed.overlay_transaction=std::move(overlayTransaction);
+        if(overlayMemory)completed.overlay_memory=std::move(*overlayMemory);
         return completed;
       },facade,false,"Measurement","Measurement",workspace,{},true);
       analysisTask=ReadOnlyTask::Measurement;
@@ -7265,11 +7279,15 @@ void Window::action(const std::string &name, const Json &p) {
   if((name=="measure" || name=="measure_rois") && !documents_.empty()) {
     const auto facade=document();
     const bool manager=name=="measure_rois";
-    if(impl->measurementRedirectDocument && !(manager?captured_roi_measurement_available(facade->nativeSnapshot()):captured_measurement_available(facade->nativeSnapshot())))
+    const auto measurementSource=facade->nativeSnapshot();
+    const bool measurementSupported=manager?captured_roi_measurement_available(measurementSource):captured_measurement_available(measurementSource);
+    if(!manager && measurementSource.data().selection && impl->preferenceState.settings.boolean("measurement_add_to_overlay") && !measurementSupported)
+      throw std::invalid_argument("Add to overlay requires supported finite scalar Measure");
+    if(impl->measurementRedirectDocument && !measurementSupported)
       throw std::invalid_argument("Redirect measurement requires supported finite scalar source and selection");
-    if(manager && p.is_object() && !p.empty() && !captured_roi_measurement_available(facade->nativeSnapshot()))
+    if(manager && p.is_object() && !p.empty() && !measurementSupported)
       throw std::invalid_argument("Selected ROI measurement requires finite scalar storage");
-    if(manager?captured_roi_measurement_available(facade->nativeSnapshot()):captured_measurement_available(facade->nativeSnapshot())) {
+    if(measurementSupported) {
       if(!p.is_object() || (!manager && !p.empty()))throw std::invalid_argument("Measurement uses the current captured selection and plane");
       std::vector<std::size_t> indices;
       if(manager) {
@@ -10651,7 +10669,8 @@ void Window::poll() {
             (current.display().t!=captured.display().t ||
             current.display().c!=captured.display().c ||
             current.display().crosshair[2]!=captured.display().crosshair[2])))throw RevisionConflict();
-        if(RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command)),completed.table_workspace)>impl->processingCap())
+        const auto overlayBytes=completed.overlay_plan?completed.overlay_plan->working_bytes():0;
+        if(RenderMemory::add(RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command)),completed.table_workspace),overlayBytes)>impl->processingCap())
           throw std::invalid_argument("Analysis exceeds current processing memory budget");
         if(completed.analysis_profile) {
           auto& profile=*completed.analysis_profile;
@@ -10667,6 +10686,13 @@ void Window::poll() {
           impl->publishNumericPlot(std::move(payload),captured,&command.target());++impl->nextPlotPayloadId;
           impl->status.swap(status);return;
         }
+        if(!completed.overlay_plan)throw std::logic_error("Measurement overlay capture is missing");
+        if(command.options().measurement==TargetMeasurementMode::Selection && captured.data().selection) {
+          const auto options=completed.overlay_plan->options();
+          if(impl->preferenceState.settings.boolean("measurement_add_to_overlay")!=options.enabled)throw RevisionConflict();
+          if(options.enabled && captured.data().dataset.shape().plane_count()>1 &&
+              bool(recognized_channel_display(current.display(),current.data().dataset))!=options.composite)throw RevisionConflict();
+        }
         if(!completed.table_state || results.size()!=completed.table_base_rows ||
             impl->preferenceState.settings.boolean("measurement_nan_empty_cells")!=completed.table_nan)throw RevisionConflict();
         auto* array=OutputPublication::reserve(results,completed.analysis_rows.size(),"Results");
@@ -10674,6 +10700,7 @@ void Window::poll() {
         std::string status="Measurement complete";
         controller_->validate_target(command.target());command.validate_source(nativeSnapshot());
         static_assert(std::is_nothrow_move_constructible_v<Json>);
+        if(completed.overlay_transaction)controller_->commit(*completed.overlay_transaction);
         for(auto& row:completed.analysis_rows)array->push_back(std::move(row));
         impl->measurementRowMemory.push_back(std::move(impl->measurementPendingMemory));
         impl->numericState.swap(*completed.table_state);
@@ -13316,6 +13343,7 @@ void Window::Impl::canvas(Pane &pane) {
                       pane.origin.y + f.height * pane.zoom * pane.aspectY},
                      true);
   for (const auto &overlay : pane.overlays) {
+    overlay.gui_scale=guiScale;
     if(overlay.styled && overlay.styled->pointVisual){overlay.styled->pointVisual->show_all_override=preferenceState.settings.boolean("point_show_all");overlay.styled->pointVisual->gui_scale=guiScale;}
     drawOverlayVisual(overlay, draw, {pane.origin.x, pane.origin.y},
                       {pane.zoom, pane.zoom * pane.aspectY},pane.doc->position());

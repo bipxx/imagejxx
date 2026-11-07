@@ -24,6 +24,7 @@ Json redirectMeasurementUiCase(Window&,const std::string&,const std::string&,int
 Json displayLabelUiCase(Window&,const std::string&,const std::string&);
 Json invertYUiCase(Window&,const std::string&,const std::string&);
 Json nanEmptyCellsUiCase(Window&,const std::string&,const std::string&);
+Json measurementOverlayUiCase(Window&,const std::string&,const std::string&);
 Json resultFormattingUiCase(Window&,const std::string&,const std::string&,const std::string& reference_path);
 Json interpolationRepeatUiCase(Window&,const std::string&,const std::string&,bool opened,bool high_zoom);
 }

@@ -1073,3 +1073,60 @@ both-Windows-host preferences/output/workspace/resource paths and Windows/Linux
 native/settings/installed C++ clients. All ten owned scratch groups are retired
 with seven verified lossless capture archives and compiler identities retained.
 Full table/M3/platform/release scope remains open.
+
+## Captured measurement overlays
+
+The default-off `measurement_add_to_overlay` preference controls current-selection
+Measure. `MeasurementOverlayOptions{enabled,composite,draw_labels}` supplies the
+same behavior to C++ and Python. `resolve_measurement_overlay(analysis,
+results_before,options,limits)` returns an immutable `ResolvedMeasurementOverlay`;
+`prepare_measurement_overlay(plan,max_working_bytes=0)` returns an optional
+`DocumentTransaction`. A zero preparation cap uses the captured limit. The plan
+exposes value options, `will_add`, final `result_count`, `working_bytes` and
+`validate_source(snapshot)`. Python rejects Boolean/non-integer result counts;
+negative/overflowing counts refuse before native preparation.
+
+Disabled requests, ROI Manager Measure and an absent active selection produce no
+overlay transaction. An enabled request otherwise requires one captured XY
+Selection measurement. It clones one selection, including a multipoint ROI,
+preserving geometry, style, counters and unrelated attributes. Classic stack
+positioning rebinds each cloned point to the captured plane; hyperstack positioning
+preserves independent point positions. An unnamed
+ROI receives the final result counter as its name; empty and nonempty names are
+preserved. The source selection, pixels, earlier rows and earlier overlay records
+remain unchanged. Redirected measurements add to the selection owner, never the
+sampling document. Manager measurements deliberately ignore this option.
+
+For a stack with one nontrivial C/Z/T axis, the clone is visible at the captured
+position on that axis. Multiaxis or composite stacks bind Z/T and leave C a
+wildcard. A single-plane native clone is unpositioned. The owned
+`imagejxx.measurement_overlay_row` audit record stores version1, the original-style
+classic flat position (or zero), and the hyperstack flag; effective native C/Z/T
+fields control visibility. This is the parent legacy slot; a multipoint
+`PointRoi.getPosition()` may instead derive a nonzero slot from its individual
+points. Those point positions/counters are checked separately. Foreign single-plane parent headers and the observed
+original out-of-range inputs do not establish a broader native parity claim.
+
+The strict version1 `imagejxx.measurement_overlay` document property contains
+`version`, Boolean `draw_labels`, `draw_names`, `draw_backgrounds`, and four
+integer RGBA `label_color` components. The native getter
+`measurement_overlay_presentation(properties)` returns default absence or a
+validated value; Python takes a `DocumentSnapshot`. Successful addition preserves
+an existing true label flag, enables names/backgrounds and sets label color to
+white. Presentation applies to existing eligible overlay rows as well as the
+clone. Device-space labels follow the viewport transform while retaining a
+screen-size font; typed path/region geometry avoids a legacy decoding fallback.
+The display-export preparation captures admitted glyph coverage before reading
+pixels and reuses the established font owner, rather than opening files in the
+render worker. No font asset is added.
+
+Limits default to100,000 overlays,1,000,000 final result rows,4,096 name bytes and
+64MiB working storage. Metadata/control-copy admission and UTF-8 validation occur
+before numerical provider reads. The editor captures this plan with the numerical
+request, stages a transaction in its worker and commits only after source,
+redirect, consumed-option, table-state and resource guards pass. Rows/state and
+owned reservations publish after that guarded commit. Overlay history changes
+can be undone/redone without removing numerical rows; stale/canceled/closed
+requests must publish neither partial rows nor an overlay.
+
+[Scoped acceptance](parity/reviews/add-to-overlay-20261106.json) and [coverage limits](COVERAGE_CHECKLIST.md#add-to-overlay-scoped-coverage):1403 distinct new installed Windows Python checks plus142 affected regressions,406 rendering/export controls, both actual Windows ImGui hosts and current native/settings/installed-only C++ clients on Windows/Linux. All15 scratch groups are retired with7 verified lossless archives and SDK identities retained. The core snapshot/parser contracts are unchanged outside the additive helper. Foreign/raw/out-of-grid headers, brush/tool selection-removal, wider pointwise behavior, Java font pixel/AA, broader platform UI and release qualification retain their existing owners; full M3 remains open.

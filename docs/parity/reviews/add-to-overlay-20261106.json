@@ -1,0 +1,179 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "task": "T04a.2 M3/T08 Add to overlay",
+  "date": "2026-11-06",
+  "state": "scoped_verified_closeout",
+  "full_goal_complete": false,
+  "requirements": [
+    "G009",
+    "G025",
+    "G066"
+  ],
+  "commercial_scope": "Owned native implementation; existing reviewed dependencies/font resource policy reused. No new dependency, shipped font/model/asset or upstream Fiji processing component incorporated. Full commercial inventory/release review remains open.",
+  "implemented": [
+    "Default-off measurement_add_to_overlay shared preference; bounded immutable C++/Python overlay plan, options/limits and strict V1 presentation getter.",
+    "Current captured selection Measure clones one ROI, preserves native geometry/style/counters and unrelated metadata, assigns final row-count names only when unnamed, captures classic/native C/Z/T or hyperstack wildcard C. Classic point clones rebind point positions; hyperstack clones retain independent point positions.",
+    "ROI Manager Measure and no-selection paths ignore the unconsumed option; redirected measurement adds only to the selection owner.",
+    "Prepare admitted metadata/history transaction before numerical provider reads; reserve table/rows before guarded metadata commit and no-throw result/state/lease publication. Reuse existing control-copy walker, scheduler, history and table paths.",
+    "Global visible labels/names/backgrounds with canonical native_properties wire adapter, zoom/DPI-aware device text, typed native path/region rendering and admitted immutable export font coverage.",
+    "Actual both Windows ImGui hosts: Apply/Revert/Defaults, current/manager/redirect, table/Copy CSV/Save CSV, Flatten/PNG readback, Undo/Redo, preferences/workspace reopen, stale setting/pose/composite, cancel, selection/sampling owner close, clear and reservation/no-op guards."
+  ],
+  "verification": {
+    "original": {
+      "reference": "ImageJ1.54r",
+      "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+      "source_zip_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+      "observer": "tests/reference/ObserveMeasurementOverlays.java",
+      "fixture": "tests/fixtures/measurement-overlay-imagej154r.json",
+      "fixture_sha256": "da605c9222d06f5b3118d71523565ae6c5f625386b0f416a1011d1f67c08aebe",
+      "facts": 1408,
+      "explicit_original_refusals": 8,
+      "actual_static_multi_measure_calls": 22,
+      "scope": "Analyzer.run with only displayResults GUI sink overridden; source mask inspection plus executed masked Analyzer and actual static multiMeasure facts. Not original ROI Manager GUI or blanket numerical/font parity."
+    },
+    "python": {
+      "new_distinct_passed": 1403,
+      "field_scoped_cases": 1400,
+      "api_controls": 2,
+      "actual_host": 1,
+      "reused_union_receipts": [
+        "python039.xml",
+        "python041.xml",
+        "python052.xml"
+      ],
+      "union_identity": "entry.api_union044",
+      "affected_regressions_passed": 142,
+      "regression_receipt": "regression054.xml",
+      "scope": "Installed Windows runtime; exact loaded origins/built/source/installed bytes. 8 original refusals are retained facts, not native passing parity. Parent audit distinguished from derived PointRoi getter."
+    },
+    "native": {
+      "helper": "44 original-derived layout/name/presentation controls plus explicit classic/hyper point-counter/position controls, no-op/admission/stale/history/zero-provider-read controls",
+      "platforms": [
+        "Windows",
+        "Linux"
+      ],
+      "view_export_controls": 406,
+      "settings": "Windows and Linux",
+      "installed_only_cpp_clients": [
+        "Windows measurement_overlay_api",
+        "Linux measurement_overlay_api"
+      ],
+      "client_carrier": "Existing harness requires 723580B pinned calibration carrier; overlay client does not consume it. No calibration campaign claim."
+    },
+    "ui": {
+      "platform": "Windows",
+      "hosts": [
+        "C++ Dear ImGui",
+        "Python Dear ImGui"
+      ],
+      "comparison": "host-comparison053.json",
+      "rows": 4,
+      "overlays": 3,
+      "matching": [
+        "table_state",
+        "CSV",
+        "copied CSV",
+        "overlays",
+        "source selection",
+        "flattened pixels/shape",
+        "visible layers"
+      ],
+      "row_identity_normalization": "Only Redirect document process-local IDs, first verified against actual clicked measurement_redirect.<ID> controls.",
+      "workflow_lifecycle_checks_per_host": 14
+    },
+    "identities": "installed-identities051.json; linux-receipts063/installed-identities061.json; origin051.log"
+  },
+  "cleanup": {
+    "owner": "root",
+    "all_owned_scratch_groups_retired": 15,
+    "windows_task_scratch_absent": true,
+    "linux_task_scratch_absent": true,
+    "lossless_archives": [
+      {
+        "path": ".tmp/manual-workflow-verification/add-to-overlay-20261106/evidence/cpp045-failure.zip",
+        "bytes": 20910,
+        "sha256": "87a5f3de7066ce3d8ddda7c7ef5d0de6a0dfcde7904975e36f2c80f370d665ba"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/add-to-overlay-20261106/evidence/cpp050.zip",
+        "bytes": 9051,
+        "sha256": "5448d3eadb3cd9291e59b7c28189d75731b9aaff9def39d56892628cefc26ddd"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/add-to-overlay-20261106/evidence/python041-failure.zip",
+        "bytes": 20023,
+        "sha256": "332b63d4e003a3e4ef3416a683467f3e6415795534cfb955ec715d36c91d793a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/add-to-overlay-20261106/evidence/python052.zip",
+        "bytes": 9760,
+        "sha256": "d9be8fda1715086b092a3d759baf37edf9b57bf0214e1a4fcfdb8c3c86e9c2d4"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/add-to-overlay-20261106/evidence/reference002.zip",
+        "bytes": 8150,
+        "sha256": "18629386688bea41208fbe747327cde54e24071c6fd124e08da5f0c9821a11f6"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/add-to-overlay-20261106/evidence/reference006.zip",
+        "bytes": 25055,
+        "sha256": "e4e7dd163c66f7dc752e538d4fb50077d492dd06875ecf3135670a43240b9db6"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/add-to-overlay-20261106/evidence/regression054.zip",
+        "bytes": 48879,
+        "sha256": "9d123c739ba52414271d5063f70ea4cc2be556fe2e5b334ac33ed7d4cbeac863"
+      }
+    ],
+    "sdk_compiler_products": "Identity manifests only; configurations retained through final review then retired. Active compiler caches/runtime/SDK/app preserved.",
+    "mistaken_runtime_root_copy": {
+      "retired_bytes": 32115250,
+      "receipt": "entry.misplaced_retirement030",
+      "correct_prefix": ".cache/native-verification/runtime/Lib/site-packages"
+    },
+    "scope_measurements": {
+      "entry_known_bytes": 7495223198,
+      "before_sdk_known_bytes": 7518639809,
+      "after_retirement_known_bytes": 7522846053,
+      "net_working_footprint_growth_bytes": 27622855,
+      "unknown_subtrees": 214,
+      "complete_budget_verified": false,
+      "snapshot": ".tmp/manual-workflow-verification/add-to-overlay-after-retirement068.json",
+      "note": "Working-footprint deltas, not cumulative write I/O/RSS. Inaccessible roots remain unknown; unrelated projects untouched.",
+      "physical_free_bytes_at_retirement": 51589591040
+    }
+  },
+  "waste_review": {
+    "receipt": "entry.waste_review069",
+    "windows_header_batch_seconds": 675.494023000123,
+    "targeted_rebuilds": 5,
+    "targeted_rebuild_seconds": 186.22614209982567,
+    "fixes": "Actual source conditions, per-point semantics, binding constructor shape, canonical producer/reader mapping, command serialization/async timing, lifecycle probe completeness and exact install prefix corrected; no new runner/cache/controller.",
+    "deferred_owner": "T02: unrelated global calibration-carrier requirement in installed_core harness.",
+    "next_entry_check": "Inspect actual maintained constructor/wire/serializer/timing routes and exercise reusable fixture routes before broad build; M4 composition should reuse APIs without shared-header changes. Assess improvement from subsequent execution.",
+    "compilexx_note": "../compilexx/docs/notes/imagejxx-plan-inefficiencies.md (bounded append; pre-existing dirty changes preserved; not committed or pushed by imagejxx publication)"
+  },
+  "remaining": [
+    {
+      "owner": "M4/M3",
+      "gap": "Mixed measurement-option/workflow reconciliation; full M3 not closed."
+    },
+    {
+      "owner": "T06/T08",
+      "gap": "Unqualified constructors, source brush/tool selection-removal special case, foreign/raw single-plane/out-of-grid headers and wider per-point/interchange variants."
+    },
+    {
+      "owner": "T09/T04a.3",
+      "gap": "Full string/AUTO/per-column table state/editing/import/filtering/summaries and operation-intent replay/persistence variants."
+    },
+    {
+      "owner": "T12/T14/T00",
+      "gap": "Wider supported-platform UI/installed qualification, Java font pixel/AA, OS clipboard/accessibility, full commercial enumeration and release/performance claims."
+    }
+  ],
+  "task_record": {
+    "path": ".tmp/manual-workflow-verification/add-to-overlay-20261106/entry.json",
+    "sha256": "8aaa47fa666f8f6de4a05ce99d33be9efc7b0c16608f7e1b79c7d1d0d8e74051"
+  },
+  "next_ready": "T04a.2 M4 mixed measurement integration; docs/PLAN.md#next-ready-increment-m4-mixed-measurement-integration"
+}
