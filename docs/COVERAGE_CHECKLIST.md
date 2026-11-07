@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. Invert Y has scoped native/Python report-coordinate and both-Windows-host coverage; all thirteen owned groups are retired. [Accepted scope](#invert-y-scoped-coverage). Next ready: NaN empty cells. Prior accepted subsets retain their evidence below; full ImageJ/Fiji and release scope remain open.
+Updated 2026-11-06. Invert Y has scoped native/Python report-coordinate and both-Windows-host coverage; all thirteen owned groups are retired. [Accepted scope](#invert-y-scoped-coverage). NaN empty cells now has scoped native/Python state, both-Windows-host table/CSV/workspace coverage and Windows/Linux installed C++ evidence; all ten owned groups are retired. [Accepted scope](#nan-empty-cells-scoped-coverage). Next ready: Add to overlay. Prior accepted subsets retain their evidence below; full ImageJ/Fiji and release scope remain open.
 
 This is the single user-requested coverage checklist. [PLAN.md](PLAN.md) remains the execution queue. The [family inventory](parity/inventory.json) and [option contracts](parity/commands.json) retain authoritative IDs and historical evidence. Update this view at each task closeout; do not create task-specific copies, a new acceptance runner or another progress percentage.
 
@@ -56,7 +56,7 @@ Scope: T04a.2 M3, G009/G066/G071; ROI naming owner T08, preferences owner T15, w
 - [x] Retain/hash-verify eight lossless archives, including failure diagnostics; retire all ten owned scratch groups. Observer classes and SDK consumer products retain identities only; active caches/runtime/SDK prefixes remain reusable.
 - [ ] T08: complete stored-row rename synchronization with an independently active selection and wider ROI interchange variants; accepted selection/Update behavior above does not close them.
 - [ ] T00/T14: qualify unavailable external C++ point handoff/ZIP report readers and wider platforms; absent inputs are not passes. Full storage budget remains unverified because214 inaccessible subtrees are unknown.
-- [ ] M3/T09: complete NaN empty cells and other Analyzer options, full AUTO/per-column ResultsTable state and wider table workflows; T12/T14 retains OS clipboard/accessibility/keyboard/release obligations.
+- [ ] M3/T09: complete remaining Analyzer options and full string/AUTO/per-column ResultsTable state and wider table workflows; numeric NaN defaults have scoped acceptance below; T12/T14 retains OS clipboard/accessibility/keyboard/release obligations.
 
 ## Invert Y scoped coverage
 
@@ -81,15 +81,40 @@ Owner: T04a.2 M3; calibration T04/T06, settings T15, tables T09 and platform T14
 - [ ] M3/T06: close120 original accepted differing-XY point/line/angle redirect bypass variants. 216 native guard cases include 96 original refusals; do not count those controls as864-case coordinate parity. Existing unsupported auxiliary columns retain owners too.
 - [ ] T09/M3/T14: finish allocation/AUTO table state, remaining Analyzer options, replay/platform/clipboard/accessibility and release obligations. 214 inaccessible storage subtrees leave complete budget unverified.
 
-## Next ready coverage: NaN empty cells
+## NaN empty cells scoped coverage
 
-Owner: T04a.2 M3/T09; settings T15, table persistence T04a.3/T09 and platform T14. [PLAN handoff](PLAN.md#next-ready-nan-empty-cells) owns execution order. These acceptance exits do not create another queue.
+Owner: T04a.2 M3/T09; settings T15, persistence T04a.3/T09 and platforms T14. [Scoped receipt](parity/reviews/nan-empty-cells-20261106.json) preserves exact contracts, inputs, platform evidence, corrective reviews and cleanup. This accepts numeric allocation defaults through the maintained measurement workflow; full table/M3/release scope remains open.
 
-- [ ] Observe original column creation, capacity growth, row counter, numeric/string/label cells and setting toggles; distinguish absent, explicit null, nonfinite and initialized zero/NaN.
-- [ ] Implement the smallest required native/Python table-state contract through real append/import/clear/output consumers. Preserve original allocation-time semantics rather than rewriting every missing cell using the current render setting.
-- [ ] Deliver actual shared preference Apply/Revert/Defaults, mixed measurement rows, table/Copy CSV/Save CSV and saved table/preferences/workspace behavior, including unchanged existing cells after toggles.
-- [ ] Verify numerical/type/ownership/admission/publication and affected installed consumers; reuse unrelated geometry and pixel evidence.
-- [ ] Review waste, retain necessary diagnostics, retire owned scratch and reconcile coverage/queue with scoped platform/variant evidence. Full AUTO/table editing and Add to overlay stay assigned.
+| Aspect | Observed state | Scope / remaining exit |
+|---|---|---|
+| I | Delivered, scoped | Bounded C++ allocation state, Python API, default-off shared preference, captured measurement publication, one table/Copy CSV/Save CSV lookup, clear/replacement and versioned workspace state. |
+| V | Passed, scoped |120 original numeric cases and2 reset cases;142 distinct installed Windows Python passes (131 new), Windows/Linux native state/settings controls and independently configured installed C++ state clients. Native snapshots qualify normal continuation; original string/clone facts remain separate. |
+| UI | Windows C++ and Python ImGui | Actual Apply/Revert/Defaults, current/manager/redirect,102-row matching table/CSV outputs, preferences/workspace/future defaults, stale/cancel/source-close/clear and reservation controls. Shared formatting/Label/Invert Y regressions pass in installed Windows Python. |
+| R | Open | Full string/AUTO/table editing/import/replay, direct mutable-row tracking, OS clipboard/accessibility, wider platforms, commercial inventory and release qualification remain open. |
+
+- [x] Observe column creation, counter-driven100/200 capacity growth, setting toggles and reset; verify120 numeric cases and2 reset cases on both native platforms and installed clients.
+- [x] Preserve allocation-time zero/NaN fills across toggles; late columns initialize existing allocated slots, and growth initializes the new tail with the captured flag. Avoid per-frame whole-table copies.
+- [x] Expose bounded `ResultsTableState`, limits and row groups through C++/Python; verify detached records, normal future defaults, opaque rows, strict types, malformed/canonical-empty metadata, name/row/column/working limits and atomic refusal.
+- [x] Capture `measurement_nan_empty_cells=false` at launch; admit state/schema copies before allocation and publish rows/state/leases together after current source/settings guards. Own final state once, separate from retained row batches.
+- [x] Actual shared preference Apply/Revert/Defaults in both hosts; current, ordered manager and redirect publication, capacity boundaries and existing-row preservation pass.
+- [x] One lookup serves table, Copy CSV and Save CSV; both hosts produce identical102-row CSV with `NaN` and `0.000` at the99/100 boundary. Explicit null, raw strings/nonfinite values, booleans, compounds and integer identifiers retain their own representation.
+- [x] `Window::replaceResults(Json)` and the Python setter invalidate managed state for arbitrary bulk replacement; clear cancels pending work and releases row/state reservations. C++ opaque replacement and stale/cancel/source-close/clear counters pass in both final host probes.
+- [x] Version1 `imagejxx.results_table_state` preserves allocation/future defaults with raw rows on workspace/session reopen. Malformed owned records refuse before document adoption; legacy absence remains opaque and unrelated extensions survive.
+- [x] Install changed pure exports with `processing-python`; verify source/built/installed bytes and loaded origins. Refresh the launchable Windows app and current SDKs; execute new installed-only C++ clients on Windows/Linux.
+- [x] Complete final source/allocation review while SDK configs remain available; verify seven lossless archives and retire all ten owned Windows/Linux groups. Preserve compiler identities and reusable active products.214 inaccessible subtrees leave complete storage compliance unverified.
+- [ ] T09: complete full string-column, AUTO/per-column formatting, table editing/import/filtering/summaries and direct public JSON row-mutation tracking. Maintained bulk replacement uses `replaceResults`; arbitrary in-place public row editing has no allocation-tracking qualification.
+- [ ] T09: qualify original clone unused-capacity behavior separately; original clone zeros unused slots, while native value snapshots deliberately preserve normal continuation. No full Java ResultsTable parity claim.
+- [ ] M3/T14: complete Add to overlay, wider replay/platform/clipboard/accessibility and supported-release exits. Existing differing-XY and constructor variants retain their owners.
+
+## Next ready coverage: Add to overlay
+
+Owner: T04a.2 M3/T08, G009/G025/G066; history T03/T06, persistence T04a.3/T09 and platform T14. [PLAN handoff](PLAN.md#next-ready-add-to-overlay) owns execution order. No implementation or acceptance is claimed yet.
+
+- [ ] Observe original Analyzer/ROI-manager selection cloning, naming, styling, plane positions, redirect ownership, no-selection and supported subtype behavior using the reviewed runtime.
+- [ ] Freeze actual native overlay/transaction APIs and shared default-off setting; keep bounded metadata staging and atomic results/overlay publication under existing ownership/history/cancel guarantees.
+- [ ] Qualify actual preference Apply/Revert/Defaults, current/manager/redirect measurements and visible overlays in both hosts; preserve numerical rows, selection state and unrelated overlays.
+- [ ] Verify session/reopen, applicable Undo/Redo and overlay display/export consumers, strict admission, consumed-setting stale, cancellation and source-close behavior.
+- [ ] Complete affected native/Python/installed checks, waste review and safe retirement; retain wider subtype/replay/platform variants with explicit owners.
 
 ## Numeric presentation and Copy CSV
 
@@ -111,7 +136,7 @@ Scope: T04a.2 M3 / G009 G066 G071; settings owner T15, table owner T04/T09, wide
 - [x] Verify current source/built/installed artifacts and loaded Python origins; reuse unaffected core/settings/numerical checks explicitly rather than restarting pixel reference campaigns.
 - [x] Retain/hash-verify necessary captures and diagnostics, retire all 12 owned scratch groups and preserve reusable active compiler/runtime/SDK products. [Receipts](parity/reviews/result-format-20261106.json); complete budget is unverified because214 inaccessible subtrees remain unknown.
 - [ ] Complete Java ResultsTable AUTO/per-column precision/column state beyond native JSON-kind presentation (M3/T09); scientific scope above does not close it.
-- [ ] Complete NaN empty cells (next ready M3/T09/T15), remaining Analyzer options and OS clipboard/platform/accessibility/keyboard qualification (T12/T14).
+- [ ] Complete remaining Analyzer options and full table state; numeric NaN defaults have scoped acceptance above. OS clipboard/platform/accessibility/keyboard qualification remains T12/T14.
 
 ## Skew/Kurt scoped coverage (T04a.2 M3)
 
@@ -137,7 +162,7 @@ Detailed behavior within the current scope:
 - [x] Rebuild affected bindings and verify installed module/header/library identities and Windows/Linux C++ consumers after the public struct changes.
 - [x] Required evidence retained/hash-verified, all eight owned scratch groups retired, active caches/runtime/installed SDKs preserved. Known bytes before/after retirement: 7,473,446,484 / 7,459,706,257, before final docs. [Exact receipts](parity/reviews/moment-measurements-20261106.json). Complete budget remains unverified: 214 inaccessible subtrees are unknown.
 - [x] Reconcile [API contract](TARGET_ANALYSIS.md), PLAN, coverage and [scoped receipt](parity/reviews/moment-measurements-20261106.json); preserve numerical failures/corrections and remaining platform/variant limits.
-- [ ] Finish residual M3 options, including NaN empty cells and full AUTO/per-column formatting state, under their existing owners; the separately accepted numeric presentation workflow does not close M3.
+- [ ] Finish residual M3 options and full string/AUTO/per-column formatting state under their existing owners; numeric NaN defaults have scoped acceptance above; the separately accepted numeric presentation workflow does not close M3.
 
 ## Accepted scoped workflows
 
@@ -532,6 +557,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Two buffers are reused across iterations; admission is an estimate, not certified global memory or measured latency/cancellation coverage.
 - [ ] Remaining configuration groups, real DPI/keyboard-only/assistive access and macOS/Linux installed-platform checks remain required; no family or milestone is complete.
 ### G009 Measurement/plot defaults
+
+**NaN numeric defaults accepted subset:** [Allocation timing, native/Python state, both-host output/workspace and exact limits](#nan-empty-cells-scoped-coverage). Full-family exits remain open.
 
 **Invert Y accepted subset:** [Native report coordinates, actual controls/outputs and exact limits](#invert-y-scoped-coverage). Full-family exits remain open.
 
@@ -2607,6 +2634,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ### G066 Image/ROI measurements
 
+**NaN numeric defaults accepted subset:** [Allocation timing, native/Python state, both-host output/workspace and exact limits](#nan-empty-cells-scoped-coverage). Full-family exits remain open.
+
 **Invert Y accepted subset:** [Native report coordinates, actual controls/outputs and exact limits](#invert-y-scoped-coverage). Full-family exits remain open.
 
 **Numeric presentation accepted subset:** [Table, Copy CSV, Save CSV, controls and exact limits](#numeric-presentation-and-copy-csv). Full-family exits remain open.
@@ -2695,6 +2724,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [ ] Thick-line and rectangular averages, configurable interpolation/sampling, live profiles, Z/T profiles and fixed plot axes
 ### G071 Results and tables
+
+**NaN numeric defaults accepted subset:** [Allocation timing, native/Python state, both-host output/workspace and exact limits](#nan-empty-cells-scoped-coverage). Full-family exits remain open.
 
 **Invert Y accepted subset:** [Native report coordinates, actual controls/outputs and exact limits](#invert-y-scoped-coverage). Full-family exits remain open.
 
@@ -3008,10 +3039,10 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Reconcile stale family/child labels against exact scoped receipts without rewriting historical outcomes or treating partial references as full certification.
 - [ ] Keep missing reference paths and producer/reader mappings with T00; recover only from a new plausible source and never recreate retired build generations.
 - [ ] Keep every deferred gap with its T00–T15 owner; queue changes do not close unfinished formats, point/manager, analysis, Fiji or platform variants.
-- [ ] Keep cleanup claims evidence-based: the latest [Invert Y closeout](parity/reviews/invert-y-20261106.json) records all13 owned groups retired with verified necessary captures;214 inaccessible storage subtrees leave the complete local budget unverified. Historical receipts keep their own scope. Reconcile actual task receipts at every closeout; instruction text is not an automatic filesystem guard.
+- [ ] Keep cleanup claims evidence-based: the latest [NaN empty cells closeout](parity/reviews/nan-empty-cells-20261106.json) records all10 owned groups retired with verified necessary captures;214 inaccessible storage subtrees leave the complete local budget unverified. Historical receipts keep their own scope. Reconcile actual task receipts at every closeout; instruction text is not an automatic filesystem guard.
 
 ## Next update
 
-Next ready: NaN empty cells, as detailed in PLAN and the acceptance exits above. Observe original allocation/growth/toggle semantics before table-state/API freeze; include actual preferences, table, **Copy CSV and Save CSV**, persistence and publication guards. Display label and Invert Y have scoped accepted evidence; full AUTO/per-column table state and wider M3/T06/T08/T14 variants retain owners. Full M3 remains open.
+Next ready: Add to overlay, as detailed in PLAN and the acceptance exits above. NaN empty cells has scoped native/Python, both-Windows-host and Windows/Linux installed-client evidence; all ten owned groups are retired. Full string/AUTO/per-column table state, editing/import/replay and wider M3/T06/T08/T14 exits retain owners. Full M3 remains open.
 
 At every task closeout, update existing behavior/residual rows, I/V/UI/R states, exact input/platform evidence, unavailable checks and cleanup outcomes. Keep PLAN as the execution queue and this file as the single coverage view.

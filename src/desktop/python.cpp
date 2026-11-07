@@ -281,6 +281,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_fit_circle_area_ui_case",[](Window& window,const std::string& directory) {
         return fitCircleWorkflowUiCase(window,"imgui_python",directory,true).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_nan_empty_cells_ui_case",[](Window& window,const std::string& directory) {
+        return nanEmptyCellsUiCase(window,"imgui_python",directory).dump();
+      })
       .def("_invert_y_ui_case",[](Window& window,const std::string& directory) {
         return invertYUiCase(window,"imgui_python",directory).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
@@ -1104,9 +1107,10 @@ PYBIND11_MODULE(_desktop, m) {
             auto rows = Json::parse(s);
             if (!rows.is_array())
               throw std::invalid_argument("Results must be an array");
-            if(rows.empty()){w.clearResults();return;}
-            w.results = std::move(rows);
+            w.replaceResults(std::move(rows));
           })
+      .def_property_readonly("results_table_state",[](const Window& w){return w.resultsTableState().dump();})
+      .def("results_cell",[](const Window& w,std::size_t row,const std::string& column){return w.resultsCell(row,column).dump();},py::arg("row"),py::arg("column"))
       .def_property(
           "workflow",
           [](const Window &w) {

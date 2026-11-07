@@ -23,6 +23,7 @@ Json subtypeMeasurementUiCase(Window&,const std::string&,const std::string&,int 
 Json redirectMeasurementUiCase(Window&,const std::string&,const std::string&,int profile);
 Json displayLabelUiCase(Window&,const std::string&,const std::string&);
 Json invertYUiCase(Window&,const std::string&,const std::string&);
+Json nanEmptyCellsUiCase(Window&,const std::string&,const std::string&);
 Json resultFormattingUiCase(Window&,const std::string&,const std::string&,const std::string& reference_path);
 Json interpolationRepeatUiCase(Window&,const std::string&,const std::string&,bool opened,bool high_zoom);
 }

@@ -1,0 +1,247 @@
+{
+  "schema": "imagejxx.scoped-delivery.001",
+  "state": "scoped-integrated",
+  "date": "2026-11-06",
+  "task": "T04a.2 M3/T09 NaN empty cells",
+  "requirements": [
+    "G009",
+    "G066",
+    "G071"
+  ],
+  "overall_goal_complete": false,
+  "full_family_closed": false,
+  "implemented": {
+    "scope": "Bounded numeric allocation defaults through native/Python state and captured measurement/UI/table/CSV/session consumers.",
+    "setting": {
+      "key": "measurement_nan_empty_cells",
+      "default": false,
+      "label": "NaN empty cells"
+    },
+    "native_contract": {
+      "header": "include/imagejxx/results_table_state.hpp",
+      "types": [
+        "ResultsTableStateLimits",
+        "ResultsTableRows",
+        "ResultsTableState"
+      ],
+      "defaults": {
+        "max_rows": 1000000,
+        "max_columns": 4096,
+        "max_name_bytes": 4096,
+        "max_working_bytes": 67108864
+      },
+      "methods": [
+        "append_working_bytes(groups,external_working_bytes=0)",
+        "append_rows(groups,nan_empty_cells,external_working_bytes=0)",
+        "default_value(row,column)->optional<double>",
+        "record()->MetadataObject",
+        "from_record(record,limits,external_working_bytes=0)",
+        "clear() noexcept",
+        "swap() noexcept"
+      ],
+      "ownership": "Allocation fills/managed eligibility only;explicit values and images stay with caller. Strong append failure guarantee; native copies/records preserve normal continuation."
+    },
+    "ui_contract": "Floating numeric measurement columns only; explicit raw values/null/strings/nonfinite/bools/compounds/integer IDs win. Bulk raw replacement uses Window::replaceResults/Python setter; arbitrary direct mutable-row editing has no tracking qualification.",
+    "persistence": "Version1 owned imagejxx.results_table_state extension. Bounded parse before adoption, matching raw row count, legacy absence opaque, unknown unrelated extensions preserved."
+  },
+  "verified": {
+    "original": {
+      "version": "ImageJ1.54r",
+      "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+      "source_zip_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+      "fixture": "tests/fixtures/nan-empty-cells-imagej154r.json",
+      "fixture_sha256": "889c54904a8748b35e02ba48fe84911d58edb9947ea8fd8c10c72cc29e8c6404",
+      "numeric_cases": 120,
+      "reset_cases": 2,
+      "separate_string_facts": 2,
+      "facts": "Creation fills all allocated slots; counter grows capacity at100/200; toggles preserve allocated fills; normal future defaults persist; reset clears columns/counter/cap100 and preserves flag. Original clone zeros unused slots; full string/clone behavior not accepted."
+    },
+    "installed_python": {
+      "platform": "Windows",
+      "distinct_passed": 142,
+      "new_distinct_passed": 131,
+      "attempt_passes": 143,
+      "reports": [
+        "python016.xml",
+        "python018.xml",
+        "python023.xml"
+      ],
+      "source_loaded_identity": "origin015.log andorigin022.log",
+      "selection": "122 original numeric/reset plus native API strict/canonical-empty/limits/atomicity, actual rows/table/CSV/workspace/manager growth/legacy/malformed-state controls; actualNaN and affected formatting/Label/InvertY consumers. One actualNaN case repeated after final resource assertions; counts deduplicated."
+    },
+    "native": {
+      "Windows": [
+        "native012.process.json",
+        "settings012.process.json"
+      ],
+      "Linux": [
+        "linux013-retained/native013.process.json",
+        "linux013-retained/settings013.process.json"
+      ]
+    },
+    "installed_cpp": {
+      "Windows": "sdk-run020.process.json",
+      "Linux": "linux-sdk021-retained/run021.process.json",
+      "scope": "Independently configured installed-only results_table_state_api, original122 and additional record/default/opaque/bound/atomicity controls; source-header/static-library bytes matched installed artifacts. Carrier needed by existing harness; no calibration rerun claim."
+    },
+    "reuse": "Unchanged image geometry/pixel/3330-case InvertY campaigns reused; no inference of fresh full-family/platform certification or general speed superiority."
+  },
+  "integrated": {
+    "platforms": [
+      "Windows C++ Dear ImGui",
+      "Windows Python Dear ImGui"
+    ],
+    "final_actual_receipts": [
+      "ui-cpp022.process.json",
+      "python023.process.json"
+    ],
+    "workflow": [
+      "Apply/Revert/Defaults",
+      "current/98-row manager/redirect",
+      "102-row identical both-host table/CopyCSV/SaveCSV",
+      "99/100 capacity NaN versus0.000 boundary",
+      "preferences/workspace/reopen/future defaults",
+      "stale setting/cancel/sampling-owner close/clear",
+      "resource counters/no partial rows-state publication",
+      "native and Python bulk opaque replacement/source/history preservation"
+    ],
+    "clipboard": "Owned restored sink; actual OS interoperability remains open.",
+    "launchable_app": "Built and desktop-installed current imagejxx.exe; current built/installed bytes match. This is artifact freshness,not release qualification."
+  },
+  "release_ready": false,
+  "remaining": [
+    {
+      "owner": "T09",
+      "scope": "Full string/AUTO/per-column formatting, clone unused-capacity behavior, editing/import/filter/summaries/replay, direct mutable raw-row tracking."
+    },
+    {
+      "owner": "M3/T08",
+      "scope": "Add to overlay nextready; wider constructors/manager/interchange variants retain their prior owners."
+    },
+    {
+      "owner": "T00/T14/T15",
+      "scope": "Unrelated missing external report readers, supported-platform/UI/clipboard/accessibility/commercial-inventory/performance/release gates."
+    }
+  ],
+  "cleanup": {
+    "owned_groups": 10,
+    "all_retired": true,
+    "windows_groups": 8,
+    "linux_groups": 2,
+    "necessary_lossless_archives": 7,
+    "archives": [
+      {
+        "path": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/reference002.zip",
+        "bytes": 3902,
+        "sha256": "63f7f01214e92750c6133b77316c1b2cab0be698e2e0276e7697412a2394d842",
+        "manifest": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/reference002.manifest.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/reference004.zip",
+        "bytes": 3967,
+        "sha256": "871becf4852592ce43cff9d2983261ef918e704207cd2651c93d94ac118dfa12",
+        "manifest": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/reference004.manifest.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/python016.zip",
+        "bytes": 6786,
+        "sha256": "cc6fb3de879ae974220643ecfaacb52772b4188c5ec33e478b20552a59f5a096",
+        "manifest": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/python016.manifest.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/ui-cpp017.zip",
+        "bytes": 7405,
+        "sha256": "6ae484c7f89e785f24838a6574f1ef58b92cd722606f9198d8fe9481244c8ff5",
+        "manifest": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/ui-cpp017.manifest.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/python018.zip",
+        "bytes": 42138,
+        "sha256": "a6f3da97919ab2008b651134969bb254258ef4169eb8ab2280ec43a681e172b0",
+        "manifest": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/python018.manifest.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/ui-cpp022.zip",
+        "bytes": 7438,
+        "sha256": "97e78adb987ed34b03665d51a6c5a6bb62bc53f0b2b849405180cbbdec9a4681",
+        "manifest": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/ui-cpp022.manifest.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/python023.zip",
+        "bytes": 8143,
+        "sha256": "fc3fb1bf4b4783d3aca4754aef6bb2d1870b2b05bfcd67cd0bb33d186a276695",
+        "manifest": ".tmp/manual-workflow-verification/nan-empty-20261106/evidence/python023.manifest.json"
+      }
+    ],
+    "compiler_evidence": "Reference classes and Windows/Linux installed consumer/compiler/carrier products retain exact identities only; active compiler/runtime/SDK/app prefixes remain reusable. SDK configs held through final review024.",
+    "local_windows_scratch_absent": true,
+    "linux_retirements": [
+      "linux-retire019-outer.process.json",
+      "linux-sdk-retire025-outer.process.json"
+    ],
+    "before_known_bytes": 7499086844,
+    "after_known_bytes": 7495130630,
+    "snapshots": [
+      ".tmp/manual-workflow-verification/nan-empty-precleanup024.json",
+      ".tmp/manual-workflow-verification/nan-empty-postcleanup026.json"
+    ],
+    "complete_budget_verified": false,
+    "unknown_subtrees": 214,
+    "physical_free_after_bytes": 94345162752,
+    "allocation": "256MiB incremental task bound; measured known-scope change remains below allocation. Unknown214 subtrees are not zero/headroom; no complete peak/RSS claim."
+  },
+  "waste_review": {
+    "fix_now": [
+      "Correctedmixedline-endingchurn beforebuild; finaldiffnarrow.",
+      "Canonicalempty-array decoder tested through actual Python/native metadata representation, strictplain-container admission guards verified.",
+      "Schema names borrowed perrow, owned only peradjacent parentgroup; no per-cell table materialization or new controller.",
+      "Necessary captures compressed/verified; all10 owned groupsretired,activeproductsretained."
+    ],
+    "measured": "InitialWindowheader batch compiled102logged sources in452.520s; subsequenttargeteddesktop corrections35.168s and12.596s. These are compile costs,not imageprocessing speed. 142distinctinstalled passes reusedratherthan3330casecampaign.",
+    "defer": "T02/sharedheaderowners:preserve batch discipline and include actual probe callers/decoder representation before expensive build; no newframework. T09ownsfullstring/AUTO/clone/import/editing/directmutableJSONrowtracking. No unrelatedoptimization."
+  },
+  "corrections": [
+    "Mixed-line-ending normalization corrected before compilation.",
+    "Canonical empty metadata array representation fixed and tested; custom callback containers refused before preflight/copy.",
+    "Initial build omitted newactual probe callers; targeted followup only,recordedbatching lapse.",
+    "Linux outer launch WinError2 beforechild; retry absolute wsl path,oldcache unchanged.",
+    "App artifact identity read guessed targetname; corrected to observed imagejxx.exe without repeating successful build/install.",
+    "Final resource/opaque assertions strengthened probe only; core/SDK/configs preserved and evidence reused."
+  ],
+  "implementation_sha256": {
+    "include/imagejxx/results_table_state.hpp": "002743ab4956eeabc6f7919d1d030ea407235422906f96c1573aa4b50036bb43",
+    "src/native/results_table_state.cpp": "d6b994f013ea5a452e9588976989743cb51479b651d7e82b00192ac98bb301f4",
+    "src/native/results_table_state_bindings.cpp": "4d8d4f91b80c5811a6e514503637756c3173f5c3a9e1a7835e4e38e3e11c4562",
+    "src/native/bindings.cpp": "e405ea4948fd72fb5fc757ac4fac58ad686b86c69bd995f19d6a0076cf931fa3",
+    "src/native/settings.cpp": "81af5326cdc4fb0c890654f4c975870266aaa401fce4b22ede14b7bed5581a9c",
+    "src/imagejxx/__init__.py": "bbb8facf27bbb5e91148512feb74768f1360dd42ca0f846d39d0de89e60367cd",
+    "src/desktop/window.hpp": "d0467768fd68c58a52157c602aa8057524cf3f28fec8d082cd8e0dd92ebf53bd",
+    "src/desktop/window.cpp": "7036b722d697734f65f74f040af3f08e02a3964d86be386bd9f60aa39633e373",
+    "src/desktop/python.cpp": "60025745d4a421d475bf72ba86367a618e044988aafdf2ef50b24c17338b83f4",
+    "src/desktop/effective_display_ui_probe.cpp": "c03daf5c8f86ec4c8bf0d0716665d65a9a969dfc422554890023bb3a96bb76a8",
+    "src/desktop/effective_display_ui_probe.hpp": "fcbf85450f7773880cd483c02c2fa21bf50566060c91818595da954a264ed5fa",
+    "tests/native/test_results_table_state.cpp": "b75929c0c69bd5c858675d594ac45b4f8ec16ab521c8899813137b595d121748",
+    "tests/native/test_display_actions.cpp": "2793f5bdb044095fc919142f61df47cc42dcba24d1cc4e0405380c7bf3083dfe",
+    "tests/python/test_nan_empty_cells.py": "89a51d76e933f0f2afd14148c5075376327f3e465015114aa8cbe55f3e9b6262",
+    "tests/reference/ObserveNaNEmptyCells.java": "61d91d4bb8f31eca578f682796ac8cd9d7da9594f1842b8518d2d0073bf238ec",
+    "tests/fixtures/nan-empty-cells-imagej154r.json": "889c54904a8748b35e02ba48fe84911d58edb9947ea8fd8c10c72cc29e8c6404",
+    "tests/installed_core/CMakeLists.txt": "56018b59b00c930e86a7835e60ff3f02ebd696770fe72536e415546c9279ebd7",
+    "CMakeLists.txt": "56aba4c64c31592e25b9f586f9e7c70a9a980d0e5cf1103441855a5d7b77cd1e"
+  },
+  "task_record": {
+    "path": ".tmp/manual-workflow-verification/nan-empty-20261106/entry.json",
+    "sha256": "6d71914ed14f52df18c4cae5e5c63bead65f9b1e212d518434d2cb629062c2a7"
+  },
+  "publication": {
+    "record": ".tmp/manual-workflow-verification/nan-empty-20261106/published028.json",
+    "scope": "Authorized ci2-platform-integration commit/push and exact remote verification; task receipt remains immutable."
+  },
+  "documentation_checks": {
+    "local_links": "all changed-doc filelinks exist",
+    "coverage": "99unique families,85unique optionchildren;full-family completion checkboxes remain open",
+    "new_anchors": "NaN accepted scope and Addtooverlay nextready resolve",
+    "protected_inputs": "4original hashes unchanged",
+    "whitespace": "git diff --check passed",
+    "product_build_for_docs": false
+  }
+}

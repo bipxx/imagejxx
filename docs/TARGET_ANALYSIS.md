@@ -1029,3 +1029,47 @@ native/settings/installed C++ clients pass; 3,330 distinct installed Python chec
 include 870 new cases and two matching Windows host pairs (Invert Y and Label).
 Thirteen owned scratch groups are retired with eight verified lossless archives.
 Full M3, table state, wider variants/platforms and release remain open.
+
+## Numeric allocation defaults
+
+`ResultsTableState` owns bounded allocation/default metadata, separate from
+explicit cell values and images. `ResultsTableRows{rows,numeric_columns,managed}`
+feeds `append_rows(groups,nan_empty_cells,external_working_bytes=0)`;
+`default_value(row,column)` returns an optional zero/NaN allocation default.
+C++ also exposes limits, row/capacity/column queries, `clear()`, `record()`, strict
+`from_record(...)` and noexcept swap. Python exports the three corresponding
+classes with owned inputs and read-only count/capacity/name/default queries.
+Plain containers keep binding preflight and conversion over the same payload.
+
+The default-off shared setting `measurement_nan_empty_cells` appears as **NaN
+empty cells**. Captured measurement rows register floating numeric columns;
+integer IDs/counts, strings/labels, explicit null and arbitrary compound JSON
+remain literal. New columns initialize all allocated slots, while counter-driven
+capacity growth initializes only the new tail. Toggling leaves allocated fills
+unchanged. The table, Copy CSV and Save CSV use one missing-cell lookup: explicit
+values win, managed numeric omissions use `NaN` or the ordinary zero formatter,
+and opaque rows remain blank. No whole-table expansion runs per frame.
+
+The worker stages row groups and next state under existing bounds/reservations;
+final publication swaps rows/state/leases after current source/setting checks.
+Clear cancels pending measurement and releases owned rows/state before leases.
+`Window::replaceResults(Json)` and the Python results setter explicitly invalidate
+managed defaults for bulk raw replacement. Arbitrary direct in-place mutation
+of public C++ row JSON has no automatic tracking qualification; full editing and
+import workflows remain T09. `resultsTableState()` / `resultsCell(row,column)`
+provide owner-thread C++ queries; Python exposes `results_table_state` and
+`results_cell` as JSON, consistent with its existing editor surfaces.
+
+The version1 `imagejxx.results_table_state` session extension preserves managed
+ranges, column fill ranges and future defaults without rewriting raw rows.
+Bounded parsing precedes document adoption; malformed/unsupported owned state
+refuses atomically, legacy absence stays opaque and unrelated extensions survive.
+Native copy/record preserves normal continuation. Original ImageJ clone zeros
+unused capacity; full clone/string/AUTO/per-column behavior retains T09 ownership.
+
+[Scoped evidence](parity/reviews/nan-empty-cells-20261106.json):120 original numeric
+cases plus2 reset cases,142 distinct installed Windows Python checks, actual
+both-Windows-host preferences/output/workspace/resource paths and Windows/Linux
+native/settings/installed C++ clients. All ten owned scratch groups are retired
+with seven verified lossless capture archives and compiler identities retained.
+Full table/M3/platform/release scope remains open.

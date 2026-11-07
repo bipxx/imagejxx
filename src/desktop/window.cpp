@@ -4,6 +4,9 @@
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
 #include "analysis_measurement.hpp"
+#include <imagejxx/results_table_state.hpp>
+#include <array>
+#include <string_view>
 #include <imagejxx/stack_projection.hpp>
 #include <imagejxx/imagej_projection_command.hpp>
 #include <imagejxx/calibrated_command.hpp>
@@ -895,7 +898,22 @@ std::string resultText(const Json &value, const Settings &settings) {
   }
   return value.dump();
 }
-std::string resultCsv(const Json& rows,const Settings& current) {
+// Explicit raw values, including null, always win. Only managed numeric
+// omissions consult the allocation state; opaque legacy rows remain untouched.
+const Json& resultCellValue(const Json& rows,std::size_t row,const std::string& column,
+    const ResultsTableState& state,Json& fallback) {
+  const auto& raw=rows.at(row);
+  if(raw.is_object()) {
+    const auto it=raw.find(column);if(it!=raw.end())return *it;
+  }
+  if(state.row_count()<=rows.size() && row<state.row_count()) {
+    if(const auto value=state.default_value(row,column)) {
+      fallback=std::isnan(*value)?Json("NaN"):Json(*value);return fallback;
+    }
+  }
+  fallback=nullptr;return fallback;
+}
+std::string resultCsv(const Json& rows,const Settings& current,const ResultsTableState& state) {
   auto columns = resultColumns(rows, current);
   auto escape = [](std::string s) {
     std::string out = "\"";
@@ -913,11 +931,11 @@ std::string resultCsv(const Json& rows,const Settings& current) {
     data << escape(columns[k]);
   }
   data << '\n';
-  for (const auto &r : rows) {
+  for (std::size_t row=0;row<rows.size();++row) {
     for (size_t k = 0; k < columns.size(); ++k) {
       if (k)
         data << ',';
-      const auto &v = get(r, columns[k].c_str());
+      Json fallback;const auto &v = resultCellValue(rows,row,columns[k],state,fallback);
       if (!v.is_null())
         data << escape(resultText(v, current));
     }
@@ -1290,6 +1308,10 @@ struct Window::Impl {
     std::optional<ResolvedTargetAnalysis> analysis_command;
     std::optional<TargetAnalysisResult> analysis_profile;
     Json analysis_rows;
+    RenderMemory::Lease table_memory; // state dies before its reservation
+    std::optional<ResultsTableState> table_state;
+    std::size_t table_base_rows=0,table_workspace=0;
+    bool table_nan=false;
     // Destroy export payloads before the reservation member releases its lease.
     std::optional<DisplayExportResult> display_export;
     std::shared_ptr<RenderMemory::Lease> selection_capture_memory;
@@ -1327,6 +1349,8 @@ struct Window::Impl {
   bool headlessSessionReadback = false;
   bool headlessSessionActive = false;
   std::shared_ptr<std::optional<JobResult>> jobResult;
+  RenderMemory::Lease numericStateMemory;
+  ResultsTableState numericState;
   RenderMemory::Lease measurementPendingMemory;
   std::uint64_t measurementRedirectDocument=0;
   std::vector<RenderMemory::Lease> measurementRowMemory;
@@ -4369,6 +4393,94 @@ struct Window::Impl {
     }
     status = "Processing...";
   }
+  // Before allocating copies, reserve for two state copies, eligibility growth,
+  // all existing fill-range growth and at most64 bounded measurement keys/group.
+  std::size_t tableWorkingBytes(std::size_t base,std::size_t added,std::size_t parents) const {
+    auto bytes=RenderMemory::add(8192,RenderMemory::mul(numericState.estimated_bytes(),4));
+    bytes=RenderMemory::add(bytes,RenderMemory::mul(RenderMemory::add(base,added),4));
+    if(added)bytes=RenderMemory::add(bytes,64*4096);
+    return RenderMemory::add(bytes,RenderMemory::mul(parents,64*128));
+  }
+  ResultsTableState alignedTable(std::size_t base) const {
+    ResultsTableState next=numericState;
+    if(next.row_count()>base)next.clear();
+    if(next.row_count()<base)next.append_rows({ResultsTableRows{base-next.row_count(),{},false}},next.nan_empty_cells());
+    return next;
+  }
+  static std::vector<ResultsTableRows> measurementTableGroups(const Json& rows,std::size_t parents) {
+    std::vector<ResultsTableRows> groups;groups.reserve(parents);
+    for(const auto& row:rows) {
+      kernel_checkpoint_periodic();
+      std::array<std::string_view,64> names;std::size_t count=0;
+      for(const auto& item:row.items()) {
+        const auto& value=item.value();const auto& name=item.key();
+        const bool text=name=="Image" || name=="Label" || name=="Unit" || name=="Value unit" ||
+            name=="Coordinate unit" || name=="Perim. unit" || name=="Feret unit" ||
+            name=="Feret coordinate unit" || name=="Redirect image" || name=="ROI" || name=="ROI kind";
+        const bool numeric=value.is_number_float() || (!text && value.is_string() &&
+            (value=="nan" || value=="inf" || value=="-inf"));
+        if(numeric) {
+          if(count==64 || name.size()>64)throw std::invalid_argument("Measurement numeric schema exceeds admitted bounds");
+          names[count++]=name;
+        }
+      }
+      const auto same=!groups.empty() && groups.back().numeric_columns.size()==count &&
+          std::equal(names.begin(),names.begin()+count,groups.back().numeric_columns.begin());
+      if(same)++groups.back().rows;
+      else {
+        if(groups.size()==parents)throw std::invalid_argument("Measurement schema groups exceed captured parent count");
+        std::vector<std::string> owned;owned.reserve(count);
+        for(std::size_t i=0;i<count;++i)owned.emplace_back(names[i]);
+        groups.push_back({1,std::move(owned),true});
+      }
+    }
+    return groups;
+  }
+  struct LoadedResultsTable {
+    RenderMemory::Lease memory;
+    ResultsTableState state;
+  };
+  static constexpr const char* tableExtension="imagejxx.results_table_state";
+  static std::size_t tableJsonBytes(const Json& value,std::size_t limit,unsigned depth=0) {
+    if(depth>16)throw std::invalid_argument("Results table state nesting exceeds limit");
+    std::size_t bytes=128;
+    if(value.is_string())bytes=RenderMemory::add(bytes,RenderMemory::mul(value.get_ref<const std::string&>().size(),4));
+    if(value.is_structured())for(auto it=value.begin();it!=value.end();++it) {
+      if(value.is_object())bytes=RenderMemory::add(bytes,RenderMemory::mul(it.key().size(),4));
+      bytes=RenderMemory::add(bytes,tableJsonBytes(*it,limit,depth+1));
+      if(bytes>limit)throw std::invalid_argument("Results table state exceeds metadata working limit");
+    }
+    if(bytes>limit)throw std::invalid_argument("Results table state exceeds metadata working limit");
+    return bytes;
+  }
+  LoadedResultsTable loadResultsTable(const Json& extensions,std::size_t rows) {
+    LoadedResultsTable out;
+    const auto it=extensions.find(tableExtension);
+    if(it==extensions.end())return out;
+    if(!it->is_object() || !it->contains("rows") || !it->at("rows").is_number_integer() ||
+        it->at("rows")!=rows)throw std::invalid_argument("Results table state differs from raw row count");
+    ResultsTableStateLimits limits;limits.max_working_bytes=std::min(limits.max_working_bytes,processingCap());
+    const auto input=tableJsonBytes(*it,limits.max_working_bytes);
+    const auto bound=RenderMemory::add(8192,RenderMemory::add(RenderMemory::mul(input,4),RenderMemory::mul(rows,2)));
+    if(bound>limits.max_working_bytes)throw std::invalid_argument("Results table state exceeds processing budget");
+    auto working=renderMemory->acquire(bound);
+    auto state=ResultsTableState::from_record(metadataObjectFromJson(*it),limits,input);
+    out.memory=working.retain(state.estimated_bytes());out.state.swap(state);
+    return out;
+  }
+  std::size_t tableRecordWorkingBytes(std::size_t rows) const {
+    return RenderMemory::add(tableWorkingBytes(rows,0,0),
+        RenderMemory::add(RenderMemory::mul(numericState.estimated_bytes(),32),RenderMemory::mul(rows,512)));
+  }
+  void storeResultsTable(Json& extensions) {
+    // No managed table means legacy arbitrary JSON remains exactly opaque.
+    if(!numericState.row_count()) {extensions.erase(tableExtension);return;}
+    const auto bound=tableRecordWorkingBytes(owner.results.size());
+    if(bound>processingCap())throw std::invalid_argument("Results table snapshot exceeds processing budget");
+    auto working=renderMemory->acquire(bound);
+    auto state=alignedTable(owner.results.size());
+    extensions[tableExtension]=metadataJson(state.record());
+  }
   void startMeasurement(const std::shared_ptr<Document>& facade,bool manager=false,
       const std::vector<std::size_t>& indices={}) {
     if(owner.busy())throw std::invalid_argument("Wait for the current edit to finish");
@@ -4404,14 +4516,30 @@ struct Window::Impl {
     }
     const auto command=resolve_target_analysis(target,options,limits);
     const auto rows=captured_measurement_row_bytes(command);
-    const auto workspace=RenderMemory::add(command.estimate().working_bytes,rows);
+    const auto base=owner.results.size();
+    if(!owner.results.is_array())throw std::invalid_argument("Results must be an array");
+    const auto& rois=target.source().data().rois;
+    const auto parents=manager?(indices.empty()?rois.size():indices.size()):target.position_count();
+    const auto tableBytes=tableWorkingBytes(base,command.estimate().row_count,parents);
+    const auto workspace=RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,rows),tableBytes);
     if(workspace>processingCap())throw std::invalid_argument("Measurement exceeds current processing memory budget");
     auto memory=renderMemory->acquire(rows);
+    auto tableMemory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(tableBytes));
+    auto table=std::make_shared<ResultsTableState>(alignedTable(base));
+    const bool nan=preferenceState.settings.boolean("measurement_nan_empty_cells");
     measurementPendingMemory=memory.retain(rows);
     try {
-      start([command,cap=limits.max_working_bytes]{
+      start([command,cap=limits.max_working_bytes,table,tableMemory,base,parents,nan,tableBytes]{
         auto result=execute_target_analysis(command,{},cap);
-        return JobResult(command,captured_measurement_rows(command,result));
+        auto rows=captured_measurement_rows(command,result);
+        auto groups=measurementTableGroups(rows,parents);
+        table->append_rows(groups,nan);
+        JobResult completed(command,std::move(rows));
+        completed.table_memory=tableMemory->retain(table->estimated_bytes());
+        completed.table_state.emplace(std::move(*table));
+        tableMemory->reset();
+        completed.table_base_rows=base;completed.table_nan=nan;completed.table_workspace=tableBytes;
+        return completed;
       },facade,false,"Measurement","Measurement",workspace,{},true);
       analysisTask=ReadOnlyTask::Measurement;
     }catch(...){measurementPendingMemory.reset();throw;}
@@ -4503,7 +4631,8 @@ struct Window::Impl {
             "choose a different document path.");
     const auto presentation = with_workspace_presentation(
         metadataObjectFromJson(sessionExtensions), std::size_t(0), 1);
-    const auto singleExtensions = metadataJson(presentation.extensions);
+    auto singleExtensions = metadataJson(presentation.extensions);
+    storeResultsTable(singleExtensions);
     auto nextDiagnostics = startupDiagnostics;
     nextDiagnostics.insert(nextDiagnostics.end(), presentation.diagnostics.begin(), presentation.diagnostics.end());
     saveNativeSession(path, {d}, owner.results, owner.workflow, singleExtensions);
@@ -6103,6 +6232,8 @@ void Window::executeStartup(StartupRequest request, bool retry) {
       nextPreferences["recent"] = std::move(recent);
     }
     std::string status = opened.empty() ? "empty" : "loaded";
+    stage = StartupStage::Validation;reason = StartupReason::UnsupportedDocument;
+    auto table=impl->loadResultsTable(nextExtensions,nextResults.size());
     stage = StartupStage::Publication;
     reason = StartupReason::PublicationFailed;
     // Keep retired providers alive until every facade and workspace table is
@@ -6117,7 +6248,9 @@ void Window::executeStartup(StartupRequest request, bool retry) {
     static_assert(std::is_nothrow_move_assignable_v<StartupPlan>);
     static_assert(noexcept(results.swap(nextResults)));
     static_assert(noexcept(impl->sessionSizes.swap(nextSizes)));
-    results.swap(nextResults);
+    results.swap(nextResults);nextResults.clear();
+    impl->measurementRowMemory.clear();
+    impl->numericState.swap(table.state);std::swap(impl->numericStateMemory,table.memory);
     workflow.swap(nextWorkflow);
     impl->sessionExtensions.swap(nextExtensions);
     impl->sessionSizes.swap(nextSizes);
@@ -6341,7 +6474,20 @@ Json Window::renderMemoryInfo() const {
 void Window::clearResults() {
   checkThread();
   if(impl->analysisTask==Impl::ReadOnlyTask::Measurement && impl->job.valid())cancelJob(impl->job.info().id);
-  results=Json::array();impl->measurementRowMemory.clear();impl->resultsColumnPage=0;
+  results=Json::array();impl->measurementRowMemory.clear();impl->numericState.clear();impl->numericStateMemory.reset();impl->resultsColumnPage=0;
+}
+void Window::replaceResults(Json rows) {
+  checkThread();if(!rows.is_array())throw std::invalid_argument("Results must be an array");
+  clearResults();results.swap(rows);
+}
+Json Window::resultsTableState() const {
+  checkThread();const auto bytes=impl->tableRecordWorkingBytes(results.size());
+  if(bytes>impl->processingCap())throw std::invalid_argument("Results table snapshot exceeds processing budget");
+  auto memory=impl->renderMemory->acquire(bytes);
+  return metadataJson(impl->alignedTable(results.size()).record());
+}
+Json Window::resultsCell(std::size_t row,const std::string& column) const {
+  checkThread();Json fallback;return resultCellValue(results,row,column,impl->numericState,fallback);
 }
 Json Window::plotSnapshotsInfo() const {checkThread();return impl->plotSnapshotsInfo();}
 Json Window::plotSampleAt(const Json& parameters) const {
@@ -7057,6 +7203,7 @@ void Window::openLegacyFile(const std::string &path) {
   if (extension(path) == ".ijx") {
     Json rows, steps, extensions;
     auto opened = loadSession(path, rows, steps, &extensions);
+    auto table=impl->loadResultsTable(extensions,rows.size());
     for (auto d : opened) {
       d->path = opened.size() == 1 ? path : "";
     }
@@ -7073,7 +7220,9 @@ void Window::openLegacyFile(const std::string &path) {
     addSessionDocuments(opened);
     impl->sessionSizes.swap(sizes);
     impl->preferences.swap(preferences);
-    results.swap(rows);
+    results.swap(rows);rows.clear();
+    impl->measurementRowMemory.clear();
+    impl->numericState.swap(table.state);std::swap(impl->numericStateMemory,table.memory);
     workflow.swap(steps);
     impl->sessionExtensions.swap(extensions);
     return;
@@ -9162,6 +9311,7 @@ void Window::action(const std::string &name, const Json &p) {
                            : std::optional<std::size_t>(activeIndex()),
         documents_.size());
     auto extensions = metadataJson(presentation.extensions);
+    impl->storeResultsTable(extensions);
     auto diagnostics = impl->startupDiagnostics;
     diagnostics.insert(diagnostics.end(), presentation.diagnostics.begin(),
                        presentation.diagnostics.end());
@@ -9174,7 +9324,7 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (name == "save_results") {
-    const auto text = resultCsv(results, settings());
+    const auto text = resultCsv(results, settings(),impl->numericState);
     writeBytes(string(get(p, "path")), {text.begin(), text.end()});
     return;
   }
@@ -10501,7 +10651,7 @@ void Window::poll() {
             (current.display().t!=captured.display().t ||
             current.display().c!=captured.display().c ||
             current.display().crosshair[2]!=captured.display().crosshair[2])))throw RevisionConflict();
-        if(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command))>impl->processingCap())
+        if(RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command)),completed.table_workspace)>impl->processingCap())
           throw std::invalid_argument("Analysis exceeds current processing memory budget");
         if(completed.analysis_profile) {
           auto& profile=*completed.analysis_profile;
@@ -10517,6 +10667,8 @@ void Window::poll() {
           impl->publishNumericPlot(std::move(payload),captured,&command.target());++impl->nextPlotPayloadId;
           impl->status.swap(status);return;
         }
+        if(!completed.table_state || results.size()!=completed.table_base_rows ||
+            impl->preferenceState.settings.boolean("measurement_nan_empty_cells")!=completed.table_nan)throw RevisionConflict();
         auto* array=OutputPublication::reserve(results,completed.analysis_rows.size(),"Results");
         impl->measurementRowMemory.reserve(impl->measurementRowMemory.size()+1);
         std::string status="Measurement complete";
@@ -10524,6 +10676,8 @@ void Window::poll() {
         static_assert(std::is_nothrow_move_constructible_v<Json>);
         for(auto& row:completed.analysis_rows)array->push_back(std::move(row));
         impl->measurementRowMemory.push_back(std::move(impl->measurementPendingMemory));
+        impl->numericState.swap(*completed.table_state);
+        std::swap(impl->numericStateMemory,completed.table_memory);
         impl->status.swap(status);return;
       }
       if (completed.prepared) {
@@ -11888,7 +12042,7 @@ void Window::Impl::resultTable() {
   const bool copy = ImGui::Button("Copy CSV");
   observed("copy_csv");
   if (copy)
-    ImGui::SetClipboardText(resultCsv(owner.results, preferenceState.settings).c_str());
+    ImGui::SetClipboardText(resultCsv(owner.results, preferenceState.settings,numericState).c_str());
   ImGui::EndDisabled();
   ImGui::SameLine();
   const bool clear = ImGui::Button("Clear");
@@ -11986,7 +12140,7 @@ void Window::Impl::resultTable() {
         ImGui::TableNextRow();
         for (auto c = firstColumn; c < endColumn; ++c) {
           ImGui::TableSetColumnIndex(static_cast<int>(c - firstColumn));
-          const auto &value = get(owner.results[row], columns[c].c_str());
+          Json fallback;const auto &value = resultCellValue(owner.results,std::size_t(row),columns[c],numericState,fallback);
           auto label = resultText(value, current);
           ImGui::TextUnformatted(label.c_str());
           if (headlessDiagnostics) {

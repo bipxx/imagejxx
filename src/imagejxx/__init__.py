@@ -12,6 +12,7 @@ from os import fspath as _fspath
 import numpy as np
 from . import _native
 from ._native import Dataset as Dataset, SpatialCalibration as SpatialCalibration
+from ._native import ResultsTableState, ResultsTableStateLimits, ResultsTableRows
 from ._native import (
     PointStyle, PointMarker, PointPresentationOptions, PointPresentationLimits,
     PointPrimitiveKind, PointPrimitive, PointGlyph, PointPresentation,

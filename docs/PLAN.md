@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. Next ready: NaN empty cells. Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Next ready: Add to overlay. Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -161,7 +161,7 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.2 M3: scientific notation/numeric presentation. | Default-off scientific setting, precision mapping, raw values preserved and one shared table/copied/exported CSV route. 1,950 original observations, 63 distinct affected/reused installed Python passes/1 optional GL skip; native settings Windows/Linux and actual both-Windows-host workflows. All 12 owned groups retired. [Receipt](parity/reviews/result-format-20261106.json). |
 | Delivered scoped | T04a.2 M3: Display label. | Captured labels, name/plane/redirect policy, actual settings/table/Copy CSV/Save CSV/persistence and lifecycle guards. 2,606 distinct installed Python passes, both Windows hosts and Windows/Linux native/installed C++ clients; all 10 owned groups retired. Two external C++ report readers remain unavailable. [Receipt](parity/reviews/display-label-20261106.json). |
 | Delivered scoped | T04a.2 M3: Invert Y coordinates. | Default-off captured report-only Y/YM/BY, unchanged physical geometry and scalar/Feret outputs. 3,330 distinct installed Python passes (870 new); two matching Windows host pairs and current Windows/Linux native/settings/installed C++ clients. All thirteen owned groups retired. Differing-XY bypass and wider M3 remain open. [Receipt](parity/reviews/invert-y-20261106.json). |
-| Next ready | T04a.2 M3/T09: NaN empty cells. | Observe original per-column allocation/growth/toggle semantics before minimal table-state/API freeze; actual preference, mixed rows, table/Copy CSV/Save CSV and persistence. Full AUTO/table editing, Add to overlay and wider variants retain owners. |
+| Next ready | T04a.2 M3/T08: Add to overlay. | Observe actual Analyzer/ROI-manager clone/name/style/position/redirect semantics; reuse native overlay transactions and captured measurement publication for one atomic results/overlay workflow. Actual controls, display/export, history and persistence in both hosts; full table/string/AUTO/editing and wider variants retain owners. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3/M4, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1076,56 +1076,57 @@ first phase before/after 7,489,386,548/7,477,055,487B; corrective phase before/a
 budget unverified. Sixteen product build commands sum 258.902 s; four SDK builds are
 separate. These are command sums, not critical-path duration or runtime speed.
 
-### Next ready: NaN empty cells
+### Next ready: Add to overlay
 
-1. Freeze a complete M3/T09 workflow in the existing task record: choose **NaN
-   empty cells**, create mixed current/manager/redirect measurement rows and new
-   numeric columns, view table, **Copy CSV and Save CSV**, Apply/Revert/Defaults,
-   clear/save/reopen and preferences/workspace. Map G009/G066/G071, settings,
-   native/Python interfaces, concrete writers/readers and lifecycle exits before
-   edits. Preserve separate implementation, verification, UI and release states.
-2. Observe the original first using the existing reviewed ResultsTable/Analyzer
-   classes and JDK. Inspected `ResultsTable.setNaNEmptyCells(bool)` controls
-   initialization of newly allocated numeric columns and newly grown capacity;
-   it does not rewrite existing allocated cells. Observe toggles before/after
-   column creation, unused capacity and row growth boundaries, late columns,
-   empty tables, row increments, numeric/string/label fields, explicit values and
-   save/reopen. Record original zero/NaN spellings and precision/scientific output.
-   A current-setting replacement of every missing displayed cell is insufficient.
-3. Easiest core/API path: inspect the maintained Results writers, publication,
-   import/clear/edit and persistence routes before freezing a small explicit
-   table-state contract. `Window::poll` appends captured rows through
-   `OutputPublication::reserve`; preserve its admission/atomicity. Keep numerical
-   image analysis separate and reuse the existing native row formatter/CSV
-   serializer. If original allocation timing requires retained column/capacity
-   state, add only that demonstrated state and native/Python access, with a
-   versioned persistence adapter; do not create a generic registry/controller.
-4. Define absent numeric cells, explicit null, actual NaN/Inf, strings/labels,
-   native integer IDs, booleans and compound JSON separately. Freeze compatibility
-   for existing arbitrary-JSON results and legacy workspaces; do not silently
-   reinterpret all missing/native values as original numeric table cells. A
-   qualified adapter may be necessary; make its real consumer/API explicit before
-   implementation. Existing rows/allocated defaults must survive a later toggle.
-5. Reuse shared Settings/preferences for the single default-off choice. Decide
-   exactly when table state captures it from observed allocation semantics,
-   including concurrent measurement publication and Cancel/stale/clear. Verify
-   both actual hosts, Apply/Revert/Defaults, mixed rows/new columns, table text,
-   copied/saved CSV, saved preferences and reopened workspace/table state. Inspect
-   probe report schemas and one-shot gate timing before writing assertions.
-6. Put bounded original/native state cases before expensive links: old/new
-   columns, toggles and capacity boundaries, typed missing values, precision,
-   empty/clear and persistence. Charge retained table state, simultaneous staging
-   and output under existing limits before allocation/publication. Select affected
-   native/Python/installed clients by the actual public contract; verify install
-   components/loaded paths/bytes and all consumed reference/report inputs. Reuse
-   unchanged image geometry/pixel evidence and retain SDK configuration until
-   final review, without restarting every family campaign.
-7. Close with exact scoped evidence, canonical coverage/queue updates and brief
-   waste review. Hash-verify necessary diagnostics and retire terminal scratch
-   before a successor. Keep full AUTO/per-column formatting/editing/import/filter/
-   summary variants, Add to overlay, differing-XY bypass and platform/release
-   exits with their existing owners. Detail only the next ready successor after
-   this coherent workflow closes; missing unrelated references block their claims.
+NaN empty cells has [scoped accepted evidence](parity/reviews/nan-empty-cells-20261106.json). Its native/Python numeric allocation state, both-host preference/table/CSV/workspace paths and Windows/Linux installed clients pass; all ten groups are retired. String/AUTO/clone/editing/import/replay variants remain T09. This is the next ready increment, not an implementation start or agent authorization.
+
+1. Freeze the complete user workflow in its existing task record: default-off
+   **Add to overlay**, current and ordered-manager Measure, redirect, visible
+   overlay, existing results/table/CSV, Apply/Revert/Defaults, persistence and
+   applicable Undo/Redo. Map G009/G025/G066, settings and actual C++/Python APIs,
+   consumed source/style/position and the affected display/export readers.
+2. Observe first using the existing reviewed Analyzer/ROI-manager runtime. Source
+   inspection shows `Analyzer.addRoiToOverlay()` clones the selection, returns
+   when none exists, assigns result-count names only to unnamed ROIs, captures
+   classic stack or hyperstack positions and enables overlay label/name/background
+   presentation. These are source facts, not executed parity evidence. Observe
+   default-off/on, existing named/styled/positioned overlays, current/manager,
+   redirect ownership, supported area/line/angle/point/compound subtypes and the
+   selection-brush special case. Keep unrelated unsupported constructors owned.
+3. Easiest native path: inspect `DocumentData.overlays`,
+   `DocumentTransaction::set_overlays(std::vector<MetadataObject>)` and current
+   overlay serializer/render/export consumers. The legacy `add_overlay` action
+   currently clones frontend selection JSON and commits metadata; reuse accepted
+   native geometry/style/metadata primitives for scientific documents instead
+   of routing captured measurement through legacy pixel copies. Freeze actual
+   signatures and limits before adding a small helper only where required.
+4. Preserve pure numerical analysis and disabled behavior. Capture the setting,
+   selection/manager row provenance, naming and applicable style/position before
+   worker execution. Admit bounded overlay/schema/transaction copies with current
+   job/RenderMemory policies before allocation; no extra provider read is needed
+   for an overlay clone. Inspect binding mutability, exceptions and native record
+   representation before assertions or expensive builds.
+5. Prepare overlay metadata and history transaction before publication. Existing
+   `Window::poll` reserves row storage before final source validation; extend its
+   one coherent publication so failures/cancel/stale/owner-close cannot publish
+   only rows or only overlays. Reuse existing native transaction/history commit
+   and allocation-free row/state swaps. Record the concrete commit failure and
+   retirement paths; avoid a new scheduler, registry or publication framework.
+6. Batch shared setting/schema, core/frontend/helper/binding and both actual probe
+   callers before one affected-platform build. Exercise actual Apply/Revert/
+   Defaults, current/manager/redirect, named/styled/preexisting overlays, visible
+   labels/positions and one maintained display/export consumer in each host.
+   Verify saved preferences/workspace and applicable Undo/Redo without changing
+   pixel values, unrelated overlays or numerical measurement results.
+7. Select original/native/installed checks from changed behavior and ownership.
+   Explicitly verify output provenance, bounded metadata admission, source and
+   setting stale guards, cancellation and resource retirement. Reuse unchanged
+   NaN allocation and numerical kernel evidence. Use recorded caches/runtimes;
+   keep installed-consumer configs through final review and retire groups serially.
+8. Close with scoped I/V/UI/R, exact evidence/platform limits, verified cleanup,
+   waste decision and coverage/queue reconciliation. T09 retains table variants;
+   T06/T08 retain unqualified constructors/interchange, and T14 retains platforms,
+   accessibility/OS clipboard and release. Detail only the next ready successor.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 
@@ -1378,7 +1379,7 @@ feature or block unrelated ready work.
 | Repeated fitted-source extraction during interpolation | T02: remaining reconstruction needs a measured large-control consumer; retain validation and current admission. | Local extra vector/metadata copy is fixed in the subtype Measure core touch by holding the optional state and borrowing controls. Existing spline/interpolation checks pass; no additional performance campaign or bound relaxation. Full validation/reconstruction remains; no observed cap failure or measured bottleneck justifies another optimization-only rebuild. |
 | Two full double buffers in shared Python ingress | Fixed by T01 for image/stack conversion; inspect other binding paths when touched. | One owned destination, allocation regression and 168 layout/refusal cases. Six measured workloads; no general speed claim. |
 | Many temporary harness generations | T02: reuse existing drivers and data inputs; retire superseded scripts only with evidence identities preserved. | Prior audit counted 732 Python/171 PowerShell scripts; not every retained script is disposable. |
-| Shared headers/Make flags fanout | T02 plus source owners: batch coherent edits; inspect consumer dependencies before adding shared declarations and isolate only where measured reuse justifies it. | T04a.1 full batch: 109 compile entries/830.9 s; UI-only fix: one/38.3 s; smoke-only fix: one/17.4 s. Different workloads, not processing-speed comparisons. Core/SDK results reused for frontend-only fixes. |
+| Shared headers/Make flags fanout | T02 plus source owners: batch coherent edits; inspect consumer dependencies before adding shared declarations and isolate only where measured reuse justifies it. | T04a.1 full batch: 109 compile entries/830.9 s; UI-only fix: one/38.3 s; smoke-only fix: one/17.4 s. Different workloads, not processing-speed comparisons. Core/SDK results reused for frontend-only fixes. NaN increment:102 logged desktop compilations/452.520s after required public Window declarations; targeted corrections35.168s and12.596s. Batch actual probe callers and inspect canonical metadata representations before the first expensive build; final probe-only changes reused142-case/core/SDK evidence appropriately. |
 | Local compiler/scratch accumulation | Cleaned on user request while implementation stays paused. Retain one configured cache and installed runtime/SDK; prune regenerable objects and obsolete verification binaries when disk pressure takes priority. | Initial cleanup removed compiler intermediates/obsolete binaries and retired23 paused scratch groups;16 raw groups compressed. Follow-up retired superseded captures and duplicate archives, compressed11 additional raw groups with live hash verification, and retired4 repeated source copies with identities. Current source changes and protected qualification archives hash-checked unchanged. No product build. T02 owns214 ACL-blocked directories: access denied under the current nonadministrator process; sizes unknown, no ACL takeover. Preserve EOLs before future builds. |
 | Narrow feature chains delay everyday workflows | Fix scheduling now: close existing B2b.1 WIP, then everyday editing and XYZ workflows; keep point/manager/print/platform residuals with their owners. Enforced in [AGENTS.md](../AGENTS.md#workflow-delivery-and-execution-efficiency); T00/T02 reconcile progress at existing task boundaries. | Review found recent commits concentrated on point/font/export ownership; shared builds measured379.047/723.093/830.9s on different batches, repeated caller/probe assumption retries and accumulated evidence. These are observed costs, not measured fractions of total delay. New task records use frozen user exits, batched changes and affected checks; evaluate actual elapsed/retry/storage results at closeout. Rule update checked for queue/link consistency and whitespace only; no product builds, generated scratch or new framework. No speedup claimed from documentation. |
 | Repeated calibration queries per draw | T07 owner: capture once per draw and derive spacing from that value when correct. | Confirm repeated validation calls; measure frame cost before claiming a speed gain. |

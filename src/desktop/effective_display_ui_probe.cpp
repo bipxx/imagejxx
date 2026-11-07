@@ -1510,4 +1510,80 @@ static Json measurementOptionUiCase(Window& w,const std::string& context,const s
 Json displayLabelUiCase(Window& w,const std::string& context,const std::string& path) {return measurementOptionUiCase(w,context,path,false);}
 Json invertYUiCase(Window& w,const std::string& context,const std::string& path) {return measurementOptionUiCase(w,context,path,true);}
 
+Json nanEmptyCellsUiCase(Window& w,const std::string& context,const std::string& fresh_directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
+  require(!fs::exists(dir) && w.documents().empty(),"Fresh NaN fixture required");fs::create_directories(dir);
+  Json report={{"context",context},{"events",Json::array()},{"controls",Json::array()}};Json last;
+  std::atomic<bool> entered=false,release=false;
+  try {
+    Image image(8,6,1,PixelType::UInt8);for(std::size_t i=0;i<image.pixels.size();++i)image.pixels[i]=double(i);
+    auto source=std::make_shared<imagejxx::Document>(Dataset::from_stack({image}),"numeric source");
+    const Selection selection("rectangle",{{0,0},{4,2}});source->select(selection);
+    std::vector<Roi> rois;for(int i=0;i<98;++i)rois.push_back({"row"+std::to_string(i),selection,{},{},{},{}});
+    auto edit=source->begin_edit();edit.set_rois(std::move(rois));source->commit(edit);source->mark_saved();
+    auto other=std::make_shared<imagejxx::Document>(Dataset::from_stack({image}),"sampling source");
+    w.addNativeDocument(source);w.addNativeDocument(other);w.setActiveIndex(0);
+    const auto before=source->snapshot(),otherBefore=other->snapshot();const auto undo=source->undo_steps();
+    w.updateSettings({{"measurements",Json::array({"mean"})},{"measurement_nan_empty_cells",false},{"measurement_precision",3}},false);
+    HeadlessInputSession session(w);
+    auto frame=[&](const Json& events=Json::array()){require(report["events"].size()<256,"NaN frame bound");last=session.frame(events);report["events"].push_back(events);};
+    auto click=[&](const Json& control,const std::string& name){
+      require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()!=0,"NaN control unavailable");report["controls"].push_back({{"name",name},{"control",control}});
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+    };
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};
+    auto widget=[&](const std::string& name){click(last.at("preferences_panel").at("widget_controls").at(name),"preferences."+name);};
+    auto acknowledge=[&](){if(w.error().empty())return;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();};
+    auto measure=[&](){control("menu.Analyze");control("menu.action.measure");w.wait();frame();require(w.error().empty(),"NaN measurement failed");};
+    frame();frame();frame();const auto preferencesPath=last.at("preferences_path").get<std::string>();measure();
+    control("menu.Edit");control("menu.Edit.Preferences");widget("search");
+    for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}})}}}));
+    frame(Json::array({{{"type","text"},{"value","NaN empty cells"}}}));
+    auto choice=[&](){click(last.at("preferences_panel").at("fields").at("measurement_nan_empty_cells").at("control"),"preferences.measurement_nan_empty_cells");};
+    choice();widget("revert");require(last.at("preferences_panel").at("draft").at("measurement_nan_empty_cells")==false,"NaN Revert failed");
+    choice();widget("apply");require(w.settings().boolean("measurement_nan_empty_cells"),"NaN Apply failed");
+    widget("defaults");require(last.at("preferences_panel").at("draft").at("measurement_nan_empty_cells")==false,"NaN Defaults failed");widget("revert");widget("close_button");
+    w.updateSettings({{"measurements",Json::array({"mean","Skew"})}},false);measure();
+    require(w.resultsCell(0,"Skew")=="NaN" && w.results[0].contains("Skew")==false,"Late numeric column did not initialize old rows");
+    w.updateSettings({{"measurements",Json::array({"mean"})},{"measurement_nan_empty_cells",false}},false);measure();
+    w.action("measure_rois");w.wait();frame();require(w.error().empty() && w.results.size()==101,"Manager numeric append failed");
+    require(w.resultsCell(99,"Skew")=="NaN" && w.resultsCell(100,"Skew")==0.0,"Allocated capacity defaults changed retroactively");
+    w.updateSettings({{"measurements",Json::array({"mean","Skew"})}},false);frame();
+    bool rendered=false;for(const auto& cell:last.at("results_table").at("cells"))if(cell.at("row")==0 && cell.at("name")=="Skew"){require(cell.at("text")=="NaN","NaN table text differs");rendered=true;}require(rendered,"NaN table cell missing");
+    report["results_table"]=last.at("results_table");
+    // Capture a redirect row without adding optional Skew to the new schema.
+    w.updateSettings({{"measurements",Json::array({"mean"})}},false);
+    control("menu.Analyze");control("menu.measurement_redirect");control("measurement_redirect."+std::to_string(other->id));measure();
+    require(w.results.size()==102 && w.resultsCell(101,"Skew")==0.0,"Redirect default tail changed");
+    w.updateSettings({{"measurements",Json::array({"mean","Skew"})}},true);
+    const auto rows=w.results,state=w.resultsTableState();
+    const auto memoryBefore=w.renderMemoryInfo();const auto reservedBefore=session.fixtureApplication().job_scheduler()->usage().reserved_bytes;
+    auto resources=[&](){const auto memory=w.renderMemoryInfo();require(memory.at("working_bytes")==memoryBefore.at("working_bytes") && memory.at("retained_bytes")<=memoryBefore.at("retained_bytes") && session.fixtureApplication().job_scheduler()->usage().reserved_bytes==reservedBefore,"NaN publication leaked reservations");};
+    w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});const auto raw=readBytes((dir/"measure.csv").u8string());std::string csv(raw.begin(),raw.end()),copied;
+    {
+      auto& platform=ImGui::GetPlatformIO();struct Restore {ImGuiPlatformIO& p;decltype(p.Platform_SetClipboardTextFn) fn;void* data;~Restore(){p.Platform_SetClipboardTextFn=fn;p.Platform_ClipboardUserData=data;}} restore{platform,platform.Platform_SetClipboardTextFn,platform.Platform_ClipboardUserData};
+      platform.Platform_ClipboardUserData=&copied;platform.Platform_SetClipboardTextFn=[](ImGuiContext* c,const char* text){static_cast<std::string*>(c->PlatformIO.Platform_ClipboardUserData)->assign(text?text:"");};control("results.copy_csv");require(copied==csv,"NaN copied/saved CSV differ");
+    }
+    auto start=[&](){entered=false;release=false;session.fixtureWorkerGate([&](const JobContext& c){entered=true;while(!release){c.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}});w.action("measure");const auto end=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered && std::chrono::steady_clock::now()<end)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered,"NaN gate timeout");};
+    start();w.updateSettings({{"measurement_nan_empty_cells",true}},false);release=true;w.wait();require(!w.error().empty() && w.results==rows && w.resultsTableState()==state,"Stale NaN setting published");resources();acknowledge();w.updateSettings({{"measurement_nan_empty_cells",false}},true);
+    start();w.cancel();release=true;w.wait();require(w.results==rows && w.resultsTableState()==state,"Canceled NaN state published");resources();acknowledge();session.fixtureWorkerGate({});
+    require(source->snapshot().shares_data(before) && other->snapshot().shares_data(otherBefore) && source->undo_steps()==undo && other->undo_steps()==0,"NaN changed source/history");
+    w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});
+    start();w.closeDocument(other->id,true);release=true;w.wait();require(w.results==rows && w.resultsTableState()==state,"Closed sampling owner published NaN state");resources();acknowledge();session.fixtureWorkerGate({});
+    w.action("measurement_redirect",{{"document_id",0}});
+    start();w.clearResults();release=true;w.wait();require(w.results.empty() && w.resultsTableState().at("rows")==0,"Clear published pending NaN rows");resources();require(w.renderMemoryInfo().at("retained_bytes")<memoryBefore.at("retained_bytes"),"Clear retained numeric row/state reservations");acknowledge();session.fixtureWorkerGate({});
+    report["rows"]=rows;report["table_state"]=state;report["csv"]=csv;report["copied_csv"]=copied;
+    report["stale_setting_refused"]=report["cancel_preserved"]=report["sampling_close_preserved"]=report["clear_preserved"]=report["source_unchanged"]=true;
+    session.close();Window reopened(preferencesPath);require(!reopened.settings().boolean("measurement_nan_empty_cells"),"Saved NaN preference lost");
+    reopened.openLegacyFile((dir/"measured.ijx").u8string());require(reopened.results==rows && reopened.resultsTableState()==state,"NaN workspace state lost");
+    reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(readBytes((dir/"reopened.csv").u8string())==raw,"NaN reopened CSV differs");
+    reopened.updateSettings({{"measurements",Json::array({"mean"})}},false);reopened.action("measure");reopened.wait();require(reopened.error().empty() && reopened.resultsCell(102,"Skew")==0.0,"NaN reopened future defaults lost");
+    reopened.replaceResults(Json::array({Json{{"Skew",nullptr}},Json{{"mean",true}},Json{{"mean",Json{{"x",1}}}}}));
+    require(reopened.resultsCell(0,"Skew").is_null() && reopened.resultsCell(1,"Skew").is_null() && reopened.resultsCell(1,"mean")==true && reopened.resultsCell(2,"mean")==Json{{"x",1}},"Native raw replacement changed opaque values/defaults");
+    report["resource_guards"]=report["opaque_replacement_preserved"]=true;
+    report["workspace_preserved"]=true;report["state"]="observed";
+    require(report.dump().size()<8*1024*1024,"NaN report bound");writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
+}
+
 }
