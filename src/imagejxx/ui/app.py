@@ -124,6 +124,11 @@ class Editor:
         return json.loads(self._editor.results_view_info)
 
     @property
+    def results_history_info(self):
+        """Detached Results-only Undo/Redo availability, conflicts and retained limits."""
+        return json.loads(self._editor.results_history_info)
+
+    @property
     def plot_snapshots_info(self):
         """List retained plot IDs and logical shared-payload/window memory."""
         return json.loads(self._editor.plot_snapshots_info())

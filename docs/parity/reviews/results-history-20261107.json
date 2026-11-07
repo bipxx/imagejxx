@@ -1,0 +1,268 @@
+{
+  "schema": "imagejxx.scoped-workflow-review.001",
+  "date": "2026-11-07",
+  "scope": "T09 Results cell Undo/Redo",
+  "state": "scoped_verified",
+  "requirements": [
+    "G071",
+    "G089",
+    "G083",
+    "G009"
+  ],
+  "owners": [
+    "T09",
+    "T12"
+  ],
+  "full_family_acceptance": false,
+  "release_ready": false,
+  "platform": "Windows; standalone C++ and optional Python Dear ImGui",
+  "contract": {
+    "actions": "undo_results_cell(),redo_results_cell(),clear_results_cell_history(): strict empty objects. Existing edit_result_cell records only successful changed edits. New readonly native/Python results_history_info via one internal Window::resultsHistoryInfo() const declaration. Getter returns depths,can flags,busy,conflicts,targets,retained_bytes,step_limit,byte_limit,evicted_steps,external_resets. No new installed core SDK signature.",
+    "storage": "Private bounded cell delta entries: row,column,min_rows,before/after explicit presence+exact typed Json values, consumed numeric default. At most history_limit (existing1..128/default8), history estimated bytes<=processingCap at recording/config trim. One shared expected full-row guard per referenced row; peak row reservation conservative across undo chain, no full row copy per entry or whole table copy. Leases precede payloads. Candidate history container copies only shared pointers, stages before data/cursor adoption.",
+    "topology": "Clear/API raw replacement/importReplace/Open/startup invalidate history; importAppend/Measure append preserve nonconflicting source rows/defaults. Check expected guarded row, explicit target value, consumed default and min_rows before UndoRedo, refuse stale without moving cursor. A successful new edit on a row whose prior guard was externally changed restarts history explicitly (external_resets), never silently rebinds old history. Invalid/no-op/Keep/cancel/denied edits do not alter history or redo.",
+    "limits": "Current validated history_limit applies independently to image documents and the Results table; processing_memory_mb caps Results retained history. Do not use history_memory_mb pixel budget for table metadata. Cap trim drops farthest redo then oldest applied entries; if remaining one cannot fit after explicit cap reduction, clear history only, preserve current data. Admission failure before a new edit/travel preserves prior data/cursor/branch. No new setting.",
+    "undo": "Restore prior raw key absence rather than a synthesized default; restore typed integer/double/text/bool/null and even prior compound/nonfinite raw cells exactly. Current view criteria/other fields/settings/imagehistory unchanged. Keep global image Undo and text-widget Undo routes; new buttons/actions only.",
+    "persistence": "Runtime history only, existing session raw/default/view records store current values; reopening starts empty Results edit history.",
+    "ui": "Dedicated Undo cell/Redo cell/Clear cell history controls, enabled/depth/limit/eviction/conflict status and bounded headless metadata. Readonly status does not create GUI context. Both Windows hosts physically exercise edit/undo/redo/branch/default and protected source/image Undo."
+  },
+  "settings": [
+    "history_limit (per Results table consumer, existing default8/range1..128)",
+    "processing_memory_mb and existing shared RenderMemory budget",
+    "existing measurement defaults and current sort/filter/precision for restored output; no recapture"
+  ],
+  "implementation": {
+    "source_sha256": {
+      "src/desktop/results_history.hpp": "8636ec03a8c8e86599ed5b42f65af57afcac04752b5153a40402566debdbe6fd",
+      "src/desktop/window.cpp": "1e777846c48d008803e63c5a39c1c641c1032084ee83d822b8e9d6689f34ad05",
+      "src/desktop/window.hpp": "2edfe42b997fae77ed4ea600b070f72ec3b5d21cda196d87bba82d9eb034de16",
+      "src/desktop/python.cpp": "97c51eb8d74d063ac038148406ba21e9d4531434f2f7fda9edcd7cc4f6d90bf0",
+      "src/desktop/effective_display_ui_probe.cpp": "1da87218c28bd3a09aa4034ea77902743b593dda8484647f78f0d1ac5b49ffb1",
+      "src/desktop/effective_display_ui_probe.hpp": "17d9318321311be8136b3d99d9d7131e9a165e4d860f6624761933aa39465414",
+      "src/imagejxx/ui/app.py": "ac22c458a99b08bc9e0c945c6c16178c7fe5b9749fd48e007e8af02c0b73c259",
+      "tests/native/test_display_actions.cpp": "fe05487cbae0ced047663e41e76d4056282ca71b6639678be41d9a37c629a263",
+      "tests/python/test_results_history.py": "52f11a340e32f1baa0617b5c7c4ce1d26d8bd78ec55248ada59a6c196d865f22",
+      "tests/python/test_results_cells.py": "2af961bb08b35d066ef8b7177155b3015b19cfa13d9aed5f05b981661412f82b"
+    },
+    "installed_byte_pairs": [
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_native.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_desktop.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "sha256": "9c772d6ad1c597e1f0ecd32b6ea958fafaf0f3cb5e446d3279c0f880ce118691"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/imagejxx.exe",
+        "installed": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+        "sha256": "d9d142dedabb827c64a6e053598b6484964d1ca59579b4ae4d6146b8b613ddac"
+      },
+      {
+        "built_or_source": "src/imagejxx/__init__.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/__init__.py",
+        "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/app.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/app.py",
+        "sha256": "ac22c458a99b08bc9e0c945c6c16178c7fe5b9749fd48e007e8af02c0b73c259"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/workflows.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/workflows.py",
+        "sha256": "96bd8502428afaafbaaa6fddac5e5343905c5f99344edd95f2d74f44a8e7cb92"
+      }
+    ],
+    "status": "C++ core/frontend actions and pure Python readonly property built/installed; no public processing SDK ABI change or dependency addition.",
+    "toolbar": "One row-count/history-button line; tooltip exposes depths, caps, retained bytes, evictions, conflicts and external resets."
+  },
+  "verification": {
+    "distinct_installed_passes": 390,
+    "new": {
+      "passed": 33,
+      "composition": "31python009 + corrected caller python010 + direct open-review policy python020; matching green cases reused, not one final33-case campaign"
+    },
+    "regressions": {
+      "passed": 357,
+      "composition": "356python016 + installed application interoperability python017"
+    },
+    "skipped": [
+      {
+        "scope": "optional hidden OpenGL rendering",
+        "count": 2
+      }
+    ],
+    "native_passes": [
+      "native004 history workflow",
+      "native011 cells",
+      "native012 CSV import",
+      "native013 view",
+      "native014 lifecycle/resource actions"
+    ],
+    "hosts": "New actual Windows history workflows pass independently in native004 and python009, including exact native IEEE/uint64 vectors, physical controls and output/default/protection guards.",
+    "failures_preserved": [
+      "native002 toolbar clipped cell; cpp fix built003 and rerun004 passed",
+      "python008 dependency import before bootstrap, zero collected tests",
+      "python009 invented clear_results action; maintained results=[] caller corrected, sole parameter retried"
+    ],
+    "reused": "Unchanged generic renderer/provider/gesture/full-headless-session and atomic-writer parent evidence; no fresh pass count assigned.",
+    "owned_runs": {
+      "build001-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 539.329233800061
+      },
+      "build003-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 35.21487030014396
+      },
+      "install005-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.470630900003016
+      },
+      "install006-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.24045659974217415
+      },
+      "install007-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.3436427996493876
+      },
+      "native002-owned": {
+        "exit_code": 1,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.1534171998500824
+      },
+      "native004-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.4106290000490844
+      },
+      "native011-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.36872810032218695
+      },
+      "native012-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.39144030027091503
+      },
+      "native013-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.3164098998531699
+      },
+      "native014-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 15.743302300106734
+      },
+      "python008-owned": {
+        "exit_code": 1,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.09756630007177591
+      },
+      "python009-owned": {
+        "exit_code": 1,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 2.0965362996794283
+      },
+      "python010-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.7519764001481235
+      },
+      "python016-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 6.464901800267398
+      },
+      "python017-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 1.3616446000523865
+      },
+      "python020-owned": {
+        "exit_code": 0,
+        "target_completed": true,
+        "cleanup_complete": true,
+        "elapsed_seconds": 0.8027379997074604
+      }
+    }
+  },
+  "retention": {
+    "task_record": ".tmp\\manual-workflow-verification\\results-history-20261107\\entry.json",
+    "pack": ".tmp\\manual-workflow-verification\\results-history-20261107\\pack018.json",
+    "live_verify": ".tmp\\manual-workflow-verification\\results-history-20261107\\verify018.json",
+    "state": "retired",
+    "deleted_files": 731,
+    "deleted_bytes": 7447030,
+    "scratch_absent": true,
+    "retained_archive": {
+      "bytes": 1290216,
+      "path": ".tmp/manual-workflow-verification/results-history-20261107/evidence018.zip",
+      "sha256": "d7c5634e2d01d687af3078cfffc58a738439347f9fd778360de139ec2da95339"
+    },
+    "physical_free_bytes": 6602416128,
+    "cleanup_blockers": [],
+    "before_storage": ".tmp/manual-workflow-verification/results-history-storage004.json",
+    "after_storage": ".tmp/manual-workflow-verification/results-history-storage005.json",
+    "known_after_bytes": 6697712883,
+    "unknown_subtree_count": 214,
+    "budget_verified": false,
+    "final_policy_assertion": {
+      "state": "retired",
+      "files": 2,
+      "bytes": 1276,
+      "scratch_absent": true,
+      "archive": {
+        "bytes": 1187,
+        "path": ".tmp/manual-workflow-verification/results-history-20261107/evidence021.zip",
+        "sha256": "b07941735ffd14449b88cbef3edc4cad60f1f60574960b2299de20299845af15"
+      },
+      "cleanup_blockers": []
+    },
+    "total_deleted_files": 733,
+    "total_deleted_bytes": 7448306
+  },
+  "waste_review": {
+    "delivered": "Exact bounded Results cell Undo/Redo actions/status and compact toolbar in both Windows hosts, current-view/output/session composition, preserving source/image history.",
+    "checks": "390distinct installed passes=33new(31+1correctedcaller+1finalpolicy)+356affected+1installed application interoperability; two optionalGLskips. Five passing native consumer routes.",
+    "cleanup": "733files/7448306B retired after live SHA retention; evidence018.zip1290216B plus evidence021.zip final2file assertion; active compiler products preserved. Complete005known6697712883B,214unknown; budget unverified.",
+    "fix": "Native first run revealed toolbar clipping; compact existing header fixes actual UI regression. Dependency-only bootstrap order and invented clear_results test caller corrected without rebuild/green campaign restart.",
+    "defer": "T12 owns existing Window shared-header compile fanout and optional GL/platform gates; 539.329s header build measured,35.215s concrete cpp correction. Do not speculative-refactor header architecture in this task. T09/T12/T14 retain row/range, summaries, whole-table Undo and wider release scope.",
+    "next_prevention": "Inspect actual panel clip bounds and registered action caller before test assertions; retain narrow Results regressions and generic/writer evidence reuse. Current scratch7.45MB vs prior cells101.86MB are differing check scopes, not a general speed benchmark.",
+    "final_review_correction": "Checklist reconciliation found missing direct open-review policy assertion after initial retention. Added one case, reused all green evidence, retained/retired only its fresh1276B scratch. Keep final criterion-to-test reconciliation before initial retention next time."
+  },
+  "remaining": [
+    "Row/range/clipboard editing and summaries",
+    "Whole-table import/Clear Undo and persisted history",
+    "Global shortcut/focus compatibility",
+    "Wider original behavior and supported-platform release gates"
+  ],
+  "commercial": "No new code dependency/model/font/asset incorporated; existing commercial eligibility and distribution obligations remain.",
+  "next": "docs/PLAN.md#next-ready-increment-t09-results-range"
+}

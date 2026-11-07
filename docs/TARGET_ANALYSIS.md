@@ -1444,7 +1444,7 @@ through the existing snapshot owner with a source/item association; later images
 do not overwrite its only numeric result. Both Windows hosts and installed API
 have [scoped acceptance](parity/reviews/mixed-batch-20261107.json). General Batch,
 source/type/analysis/platform/release variants remain open; the next independent
-workflow is [Results cell Undo/Redo](PLAN.md#next-ready-increment-t09-results-history); cell editing has [scoped acceptance](parity/reviews/results-cells-20261107.json), CSV import has [scoped acceptance](parity/reviews/results-import-20261107.json), and sorting/filtering/view export has [scoped Windows acceptance](parity/reviews/results-view-20261107.json).
+workflow is [Results range selection/copy/paste](PLAN.md#next-ready-increment-t09-results-range); cell editing has [scoped acceptance](parity/reviews/results-cells-20261107.json), CSV import has [scoped acceptance](parity/reviews/results-import-20261107.json), and sorting/filtering/view export has [scoped Windows acceptance](parity/reviews/results-view-20261107.json).
 
 ## Results sorting, filtering and current-view export
 
@@ -1588,3 +1588,46 @@ same values; image pixels/history and unrelated fields/settings remain unchanged
 Actual verification is recorded in the [coverage view](COVERAGE_CHECKLIST.md#results-cells-current-wip).
 This does not add table Undo/Redo, row/range/clipboard editing, structured or
 nonfinite value authoring, summaries or full original Java AUTO semantics.
+
+## Results cell Undo/Redo
+
+Scoped Windows acceptance is recorded in the [receipt](parity/reviews/results-history-20261107.json); exact status is tracked in the
+[coverage checklist](COVERAGE_CHECKLIST.md#results-cell-history-current-wip).
+Dedicated synchronous `Editor.action("undo_results_cell")`,
+`Editor.action("redo_results_cell")` and
+`Editor.action("clear_results_cell_history")` take no parameters. The C++ desktop
+counterpart uses the same `Window::action` names; the internal frontend adds
+`Json Window::resultsHistoryInfo() const`. Native `results_history_info` returns
+JSON text; the pure Python property returns a detached dictionary. These are
+Results controls, independent of image Undo/Redo and global shortcut routing.
+
+Status includes `undo_steps`, `redo_steps`, `can_undo`, `can_redo`, `busy`,
+`review_open`, `undo_conflict`, `redo_conflict`, `undo_target`, `redo_target`,
+`retained_bytes`, `step_limit`, `byte_limit`, `evicted_steps` and `external_resets`.
+Targets are null or zero-based raw `{row,column}` addresses. Availability checks
+semantic guards and busy/review state; allocation admission can still refuse.
+Empty, changed row/count/cell/default conflicts preserve table and cursor.
+
+Only changed committed cell edits record history. No-op, Keep, invalid, canceled,
+stale or refused edits preserve redo; a new committed edit after Undo branches.
+Deltas preserve exact explicit presence/value and the consumed implicit default.
+One shared current row guard per referenced source row detects external C++
+changes; it conservatively reserves the peak row size across that history chain.
+An accepted new edit on an externally changed guarded row explicitly resets old
+history and increments `external_resets`. Other cells and image history remain
+independent. Sort/filter criteria stay current and derived keys refresh.
+
+Existing `history_limit` (default8, range1..128) applies separately to table steps;
+`processing_memory_mb` bounds logical retained history and operation workspace.
+The pixel-specific `history_memory_mb` is not reused. Trimming drops farthest
+redo, then oldest applied edits. Explicit cap reduction may retire all history
+while preserving current values. Oversized new edits/restores refuse atomically.
+Clear releases delta/guard ownership, keeping current edited-row ownership.
+
+Busy/pending jobs refuse mutations. Travel also refuses open dialogs/browsers;
+idle Clear may retire history during an open review without changing table data.
+Clear/raw replacement/import Replace/Open/startup reset history; nonconflicting
+CSV/Measure append preserves it. Runtime history is not serialized; reopening
+retains current raw/default/view state with empty table history. Row/range/
+clipboard editing, summaries, whole-table Undo and wider platform/shortcut/
+persistence compatibility remain T09/T12/T14; no full-family acceptance claim.

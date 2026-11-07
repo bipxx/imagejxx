@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining now has scoped both-host acceptance; ordinary-source editing/filter chaining now has scoped both-host acceptance; mixed workflow editing/reorder/disable now has scoped installed API and both-Windows-host acceptance; bounded open-document mixed Batch now has scoped both-host acceptance; Results sort/filter/view export now has scoped Windows acceptance; reviewed CSV import now has scoped Windows acceptance; Results cell editing now has scoped Windows acceptance; cell Undo/Redo is next. Full ImageJ/Fiji and release remain open.
+Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining now has scoped both-host acceptance; ordinary-source editing/filter chaining now has scoped both-host acceptance; mixed workflow editing/reorder/disable now has scoped installed API and both-Windows-host acceptance; bounded open-document mixed Batch now has scoped both-host acceptance; Results sort/filter/view export now has scoped Windows acceptance; reviewed CSV import now has scoped Windows acceptance; Results cell editing and cell Undo/Redo now have scoped Windows acceptance. See [history coverage](#results-cell-history-current-wip). Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Analysis/display-export chaining has scoped both-host acceptance below. Ordinary-source edit/filter and analysis chaining has scoped both-host acceptance below. [Mixed workflow editing/reorder/disable](#workflow-editing-current-wip) now has scoped installed API and both-host acceptance. [Mixed Batch](#mixed-batch-current-wip) now has scoped both-host acceptance. Next: Results cell Undo/Redo. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t09-results-history). |
+| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Analysis/display-export chaining has scoped both-host acceptance below. Ordinary-source edit/filter and analysis chaining has scoped both-host acceptance below. [Mixed workflow editing/reorder/disable](#workflow-editing-current-wip) now has scoped installed API and both-host acceptance. [Mixed Batch](#mixed-batch-current-wip) now has scoped both-host acceptance. [Results cell Undo/Redo](#results-cell-history-current-wip) is scoped accepted. Next: Results range selection/copy/paste. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t09-results-range). |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -83,6 +83,41 @@ option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
 
+## Results cell history current WIP
+
+Owner: T09/T12 / G071 G089 G083 G009.
+[Specification](PLAN.md#next-ready-increment-t09-results-history).
+**Scoped accepted on Windows.** [Receipt](parity/reviews/results-history-20261107.json).
+I: bounded native actions/status, pure Python property and compact Results toolbar
+built/installed. V:390 distinct installed passes via33new (31+1corrected caller+
+1final policy assertion) and357affected; two optional OpenGL skips remain open.
+UI: actual standalone C++ and optional Python Windows ImGui workflows pass.
+R:open. Initial clipping/bootstrap/caller failures remain retained. All733files/
+7448306B of owned scratch retired after live hash verification; compiler products
+preserved. No claim of one390-pass campaign or full-family completion.
+
+Checked behavior is limited to the scoped Windows evidence above:
+
+- [x] Installed `undo_results_cell`, `redo_results_cell` and `clear_results_cell_history` enforce empty arguments; readonly `results_history_info` exposes detached depths, targets, conflicts, limits and availability without an image or GUI context.
+- [x] Restore exact signed/unsigned 64-bit and floating values, multiline UTF-8 text, Boolean/null and explicit absence; preserve compound/nonfinite originals and unrelated fields.
+- [x] Missing managed cells reveal their existing numeric defaults; opaque imported rows remain distinct and changed consumed defaults refuse travel.
+- [x] Current sort/filter uses raw source-row identity: Undo/Redo moves, hides or restores rows and visible/Copy CSV/Save CSV outputs agree.
+- [x] Changed edits record steps; Keep/identical/invalid/Cancel/stale/denied edits preserve cursor and redo. A changed edit after Undo discards the superseded branch.
+- [x] External guarded-row changes refuse travel atomically; a successful new edit reports an explicit history reset.
+- [x] Existing `history_limit` (default 8, range 1..128) bounds table steps independently of image history; cap reduction/eviction preserves current values and reports dropped steps.
+- [x] `processing_memory_mb` bounds history/workspace; refusal preserves data/cursor, repeated travel releases retired row ownership, and Clear releases history data.
+- [x] Busy/pending work and open review states refuse incompatible actions; Clear follows the frozen idle/review policy.
+- [x] Clear/raw replacement/import Replace/Open/startup invalidate history; nonconflicting CSV/Measure append preserves it.
+- [x] Workspace saves current raw/default/view state and reopens with empty runtime table history; source pixels and image Undo/Redo remain protected.
+- [x] Actual standalone C++ Windows ImGui controls cover availability, edits/Undo/Redo, branching, defaults/text, pending refusal, eviction/Clear and CSV/reopen.
+- [x] Optional Python Windows ImGui independently covers that workflow; installed changed native modules and pure exports match built/source bytes.
+- [x] Closeout records exact scoped receipts, failures/exclusions, safe scratch retirement and waste decision; wider platform/release exits remain open.
+
+Residual owners: row/range/clipboard editing, summaries and whole-table import/
+Clear Undo stay T09/T12. Wider original/platform/shortcut/persisted-history
+variants stay T09/T12/T14. No global Ctrl+Z routing claim. This is acceptance
+coverage; [PLAN](PLAN.md) remains the execution queue.
+
 ## Results cells current WIP
 
 Owner: T09/T12 / G071 G089 G083 G009.
@@ -112,7 +147,7 @@ evidence at launch. Actual scope/group/free measurements and corrected terminal
 retention bounds precede retirement; these are recorded lapses. Next work reuses
 unchanged renderer/gesture/session and atomic-writer evidence; file-level sizing
 attributes89448397B to headless captures, correcting the earlier atomic-fixture assumption.
-Next: [Results cell Undo/Redo](PLAN.md#next-ready-increment-t09-results-history).
+Next: [Results range selection/copy/paste](PLAN.md#next-ready-increment-t09-results-range).
 
 ## Results import current WIP
 
@@ -170,7 +205,7 @@ runtime products remain. Known after-retirement storage6662697233B;214inaccessib
 subtrees leave full budget unverified. The strict Measure fixture initially used
 an invalid parameter and was corrected against the actual signature; stale
 metadata/recording assumptions and binary CSV admission were fixed without
-changing original numerical expectations. Next: [Results cell Undo/Redo](PLAN.md#next-ready-increment-t09-results-history).
+changing original numerical expectations. Next: [Results range selection/copy/paste](PLAN.md#next-ready-increment-t09-results-range).
 
 ## Mixed Batch current WIP
 
@@ -194,8 +229,8 @@ R: open. No full-family or supported-platform release acceptance is implied.
 All14groups+8preferences/1126files/9697268B were retired after source review and
 hash-verified2008902B retention, including failures. Active cache/runtime products
 preserved;214inaccessible subtrees keep the full storage budget unverified.
-Next: [Results cell Undo/Redo](PLAN.md#next-ready-increment-t09-results-history),
-specified only. Update its observed checkpoints and affected family residuals at
+Next: [Results range selection/copy/paste](PLAN.md#next-ready-increment-t09-results-range),
+scoped accepted on Windows. Update affected family residuals at
 closeout; no full-family box closes from this scoped workflow.
 
 ## Workflow editing current WIP
@@ -230,7 +265,7 @@ hash-verified1981929B retention, including failures.54regenerable native-binding
 compiler intermediates/907299447B were pressure-retired with cache and built/
 installed products preserved.214 inaccessible subtrees leave full budget unverified.
 [Bounded open-document mixed Batch](#mixed-batch-current-wip) now has scoped acceptance.
-Next: [Results cell Undo/Redo](PLAN.md#next-ready-increment-t09-results-history), specified only. Update its observed checkpoints here when it starts; update affected
+Next: [Results range selection/copy/paste](PLAN.md#next-ready-increment-t09-results-range), specified only. Update its observed checkpoints here when it starts; update affected
 family residuals and evidence at every task closeout. No full-family box closes.
 
 ## Ordinary-source edit/filter chain scoped coverage
@@ -3068,7 +3103,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [x] 1,437 ordinary original cases plus six independent Float32 overflow-boundary observations; actual API/editor failure corrected and retained. Existing 597LIMIT/549redirect expectations unchanged.
 - [x] Actual %Area checkbox/Apply, stale preference refusal, table/CSV precision, saved preferences/workspace and 28 matching affected Windows host pairs. Native and installed C++ clients pass on Windows/Linux; wider UI platforms remain open.
 - [x] Final delta checked without repeating unchanged campaigns; all ten scratch groups retired, four necessary archives verified, active compiler/runtime/SDK products preserved. Complete storage budget remains unverified because 214 subtrees are inaccessible.
-- [ ] Next: complete Skew/Kurt through one shared moment traversal, captured APIs and actual controls/output/persistence under M3.
+- [x] Scoped Skew/Kurt traversal, captured APIs and actual controls/output/persistence under M3 have [Windows/Linux and both-Windows-host evidence](parity/reviews/moment-measurements-20261106.json); full-family exits remain open.
 - [ ] Keep unsampled constructor/positioned/cross-plane threshold/replay/RGB/legacy-type/platform variants assigned to M3/T06/T14. Preserve default-off native extensions and reference limits.
 
 - [x] Qualified ELLIPSE Major/Minor/Angle and implicit Shape fitted-center composition, including empty/outside selections:333original observations,68exact Windows host pairs, installed API/SDK and affected Windows/Linux native checks. Wider variants and release gates remain open; see the scoped receipt above.
@@ -3127,6 +3162,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 - [ ] Thick-line and rectangular averages, configurable interpolation/sampling, live profiles, Z/T profiles and fixed plot axes
 ### G071 Results and tables
+
+**Latest accepted scope:** [Results cell Undo/Redo](#results-cell-history-current-wip) has installed API/both-Windows-host evidence; full-family and release exits stay open.
 
 **NaN numeric defaults accepted subset:** [Allocation timing, native/Python state, both-host output/workspace and exact limits](#nan-empty-cells-scoped-coverage). Full-family exits remain open.
 
@@ -3464,4 +3501,9 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ## Next update
 
-Follow the [next Results sort/filter/view export increment](PLAN.md#next-ready-increment-t09-results-view). Workflow editing and bounded mixed Batch now have scoped acceptance above. Inspect the actual table, mutable row/numeric-state and Copy/Save consumers before authoring. Keep strict original command schemas and busy/stale/history guarantees. Update this coverage at observed checkpoints and task closeout; wider targets/filter/Profile/manager/table/Fiji and supported-platform/commercial release retain owners. No agents are authorized by this update.
+Follow [Results range selection/copy/paste](PLAN.md#next-ready-increment-t09-results-range).
+Cell editing, cell Undo/Redo, CSV import and sort/filter/view export retain scoped
+Windows receipts. Freeze actual range/control/action and transactional-history
+consumers before authoring. Update WIP at observed checkpoints and reconcile
+families/options, evidence/platform limits and cleanup at every closeout.
+Full-family/release exits remain open; no agents are authorized by this checklist.

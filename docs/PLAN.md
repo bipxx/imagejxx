@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); Results sort/filter/view export has [scoped acceptance](parity/reviews/results-view-20261107.json); reviewed CSV import has [scoped acceptance](parity/reviews/results-import-20261107.json); cell editing has [scoped acceptance](parity/reviews/results-cells-20261107.json); next is [Results cell Undo/Redo](#next-ready-increment-t09-results-history). Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); Results sort/filter/view export has [scoped acceptance](parity/reviews/results-view-20261107.json); reviewed CSV import has [scoped acceptance](parity/reviews/results-import-20261107.json); cell editing has [scoped acceptance](parity/reviews/results-cells-20261107.json); cell Undo/Redo has [scoped acceptance](parity/reviews/results-history-20261107.json); next is [Results range selection/copy/paste](#next-ready-increment-t09-results-range). Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -178,7 +178,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T09: Results sorting/filtering and view export. | Exact stable projection, shared visible/Copy/Save output and staged workspace state;680distinct installed passes via scoped/reused checks, both Windows hosts,21groups+11prefs retired. [Receipt](parity/reviews/results-view-20261107.json). |
 | Delivered scoped | T09: reviewed Results CSV import. | Auto/Text/Number, exact IDs, Replace/Append/visible-column review, opaque default alignment and both-host output;436distinct installed passes,13groups+7prefs retired. [Receipt](parity/reviews/results-import-20261107.json). |
 | Delivered scoped | T09: reviewed Results cell editing. | Exact scalar edits/source-row mapping/default preservation, usable busy Cancel and both-host output;479distinct installed passes,16groups+8prefs retired. [Receipt](parity/reviews/results-cells-20261107.json). |
-| Next ready: specified only | T09: Results cell Undo/Redo. | Undo/Redo committed cell changes through Results controls/actions, with bounded history and guarded source/default identity. [Specification](#next-ready-increment-t09-results-history). |
+| Delivered scoped | T09: Results cell Undo/Redo. | Exact bounded deltas, current view/output/default guards and compact controls;390distinct installed passes, both actual Windows hosts,733files/7448306B scratch retired. [Receipt](parity/reviews/results-history-20261107.json). |
+| Next ready: specified only | T09: Results range selection/copy/paste. | Select a visible rectangle, copy TSV and review an atomic in-bounds paste with one range Undo/Redo. [Specification](#next-ready-increment-t09-results-range). |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1481,12 +1482,15 @@ string/per-column semantics remain T09/T12/T14. The existing image Undo history
 is not evidence of table-edit history support. Full-family/release stays open.
 
 <a id="next-ready-increment-t09-results-history"></a>
-### Next ready: T09 Results cell Undo/Redo
+### Scoped accepted: T09 Results cell Undo/Redo
 
 **User-visible exit.** Undo and redo committed Results cell edits from dedicated
 Results controls and installed actions, preserving exact prior explicit/missing
 state, numeric defaults and current sort/filter presentation. Image Undo/history
-is independent. G071/G089/G083/G009; T09/T12 own this specified-only successor.
+is independent. G071/G089/G083/G009; T09/T12 own this scoped increment. Native/Python actions and both Windows hosts
+pass390distinct installed checks with2optionalGLskips;733files/7448306B scratch
+retired after verified retention. [Receipt](parity/reviews/results-history-20261107.json).
+[Acceptance checklist](COVERAGE_CHECKLIST.md#results-cell-history-current-wip).
 
 - **Inspect real owners:** start at `publishResultsCell`, per-row lease replacement,
   current default lookup, no-op detection, source-row controls and whole-table
@@ -1549,6 +1553,60 @@ Row/range/clipboard editing, summaries, whole-table import/clear Undo and wider
 original/platform/shortcut/history-persistence variants remain with T09/T12/T14.
 Do not claim global Ctrl+Z routing from table buttons; preserve text-entry Undo
 and image focus behavior when the owning shortcut workflow addresses them.
+
+<a id="next-ready-increment-t09-results-range"></a>
+### Next ready: T09 Results range selection/copy/paste
+
+**User-visible exit.** Select a rectangular range of current visible Results
+cells, copy it as tab-separated text, and review/Apply an in-bounds rectangular
+paste atomically. One table Undo/Redo restores the entire committed paste;
+Cancel/error/stale/refused input preserves table, selection and history. Owners
+T09/T12, G071/G083/G089; wider platform/commercial exits T14/existing owners.
+This successor is specified only; it is not implemented by the history receipt.
+
+- **Inspect/freeze first:** current literal cell IDs, source-row projection,
+  multiline edit review, CSV parser/finite exact converter, table/default state,
+  existing clipboard callbacks and Results history guard/lease publication.
+  Freeze actual range gesture/modifier/focus behavior and API declarations in
+  the existing task record before edits; inspect real callers, not invented
+  action names. Existing single-cell editing remains usable.
+- **Selection contract:** anchor/extend a rectangle in visible row/column order;
+  preserve ordered raw source-row/column addresses for copy/paste review. Expose
+  visible selection/highlight and smallest readonly status needed by a real
+  automation consumer. Define invalidation on sort/filter/column/topology changes
+  explicitly; never silently retarget a reviewed paste to different raw cells.
+  Support both actual ImGui hosts; do not repurpose image/ROI selection.
+- **Copy/paste path:** Copy selection emits rectangular TSV through the existing
+  owned clipboard route. Preview paste dimensions, exact target addresses and
+  Auto/Text/Number conversion, reusing accepted finite/exact conversion rules.
+  Preserve quoted tabs/newlines and explicit empty text. Strictly refuse malformed,
+  ragged, oversized or out-of-bounds blocks; no implicit row/column creation.
+  Provide deterministic text arguments for installed API tests and actual UI
+  clipboard read/review/Apply/Cancel. Proposed action names are frozen only after
+  checking the current dispatcher/bindings at task entry.
+- **Atomic history/ownership:** prepare changed rows, default/topology guards,
+  bounded payloads and one transaction before publication; do not call scalar
+  edit repeatedly and expose partial paste or consume one undo slot per cell.
+  Extend existing private delta history minimally for a grouped transaction,
+  retaining shared per-row guards and existing step/byte limits. Preserve exact
+  missing/default/typed prior values, image history and current raw row ownership.
+  No new generic transaction controller or whole-table copy per edit.
+- **Verification exit:** strict installed range schema; exact large integers,
+  multiline/UTF-8 text and empty cells; sorted/filtered source mapping; no-op,
+  invalid/stale/busy/cancel/admission refusal; branch/cap/one-step range UndoRedo;
+  repeated ownership retirement; visible/copied/saved/reopened values; physical
+  range gestures and clipboard review in each Windows host. Reuse unchanged
+  numerical/original renderer/writer evidence; broaden only for changed inputs.
+- **Waste/storage prevention:** test compact panel clip bounds and actual action
+  names before compilation. Batch any truly necessary shared-header/binding/UI
+  edits once; prior header build539.329s versus cpp-only correction35.215s.
+  Reuse active cache/runtime, bound source/capture groups from observed sizes,
+  retain failure evidence and safely retire scratch before a successor.
+
+Row insertion/deletion, clipboard/image interchange, whole-table import/Clear
+Undo, formulas/summaries, original Java compatibility variants and wider release
+platforms retain T09/T12/T14 owners. Advancing this workflow does not close them.
+
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 

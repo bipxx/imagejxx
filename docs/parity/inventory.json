@@ -182037,6 +182037,19 @@
         "total": 33915
       },
       "scope": "The main shared ImGui brightness/contrast panel now exposes ImageJ entire-stack RGB preview and Apply to standalone C++ and optional Python launches. It composes compact typed current-plane promotions and current draft, preserves compatible mode/metadata changes, reads Auto from the promoted private baseline, and reuses the exact READY native stack job for guarded paired publication and complete capture recording. One compact whole-TCZ target selects ordinary and XYZ preview planes without duplicate display mapping. All 2646 manual ImageJ 1.54r reference rows (seven endpoint pairs, seven components, nine selection forms, three anchors, optional promoted prefix) pass panel active-preview hash, READY job ID reuse, full-stack Apply hash, complete original capture, portable replay and Undo/Redo. Nine actual promoted Auto reference cases preserve measured range, active whole-plane policy and complete three-stage captures. Four eager/virtual XY/XYZ cases check source/rendered readbacks and complete output; mode/cancellation/close/new intent/compatible metadata/source guard cases, exact Boolean controls, no ignored uniform targets, explicit editor replay/rebind and cumulative admission pass. A successful 64-stage compact frontend sequence and rejected 65th promotion preserve READY intent. A prototype line-selection regression demonstrated mode conversion could reinterpret promoted masks; final production guards reject incompatible non-area masks in both directions and noncurrent/positioned promotions before retiring old state. Native fixtures click actual stack, component and Apply widgets, check nonuniform active/other TCZ pixels and paired history, and prove blocked stack reads occur on workers and cancel/refresh/close without publication or residual reservations. Stack promotions use bounded typed stages rather than a full legacy record per component; expansion to uniform mode is admitted using shared worst-case probes before allocating legacy captures. Promoted Auto currently composes a private admitted stack baseline and samples only its active plane; composition may read other planes and active-only work is still an optimization. Source/provider caches, frontend copies, history/publication staging and total RSS remain external to estimates. Windows/Linux each pass 22 native suites, three existing full C++ workflow/batch/RGB UI probes, installed SDK consumer, ten background repetitions, four hidden GL contexts and 33915 installed Python checks (2680 new), zero failure/error/skip. Both complete suites use actual disposable venv interpreters; actual sources/module origins and 5475 native Linux test/config/fixture files are pinned. Exact owned scratch is CRC/member-SHA archived before confined removal, retaining final installs/probes and useful caches. ImageJ snapshot/selection/navigation transitions, slider/log-plot/Set/reset/calibration, workflow stage-choice editing and broad G057/ImageJ/Fiji/platform/resource acceptance remain open. No existing scalar/uniform-RGB/stack wire profile, general registration, dependency inventory or original 99 requirement/status triple changes; the old Auto producer-source gate is unchanged."
+    },
+    {
+      "id": "results-history-20261107",
+      "date": "2026-11-07",
+      "platform": "Windows C++ and Python ImGui",
+      "acceptance": "scoped; full families/release open",
+      "complete_requirement_coverage": false,
+      "identity": "docs/parity/reviews/results-history-20261107.json",
+      "python": {
+        "distinct_passed": 390,
+        "optional_gl_skipped": 2
+      },
+      "scope": "Bounded exact Results cell Undo/Redo, guards/defaults/view/output and both host controls.733files/7448306B scratch safely retired after verified retention; no whole-table Undo or release closure."
     }
   ]
 }

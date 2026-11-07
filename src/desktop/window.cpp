@@ -7,6 +7,7 @@
 #include "workflow_entries.hpp"
 #include "results_view.hpp"
 #include "results_import.hpp"
+#include "results_history.hpp"
 #include "admitted_file_io.hpp"
 #include <imagejxx/results_table_state.hpp>
 #include <imagejxx/measurement_overlay.hpp>
@@ -1395,6 +1396,7 @@ struct Window::Impl {
   ResultsTableState numericState;
   ResultsView resultsView;
   std::map<std::size_t,RenderMemory::Lease> resultsCellMemory;
+  ResultsCellHistory resultsHistory;
   RenderMemory::Lease measurementPendingMemory;
   std::uint64_t measurementRedirectDocument=0;
   std::vector<RenderMemory::Lease> measurementRowMemory;
@@ -1720,6 +1722,7 @@ struct Window::Impl {
     }
     renderMemory->setLimit(nextRenderBytes);
     viewCache->setBudget(nextCacheBytes);
+    resultsHistory.trim(static_cast<std::size_t>(historyLimit),processingCap());
     shortcutsRearmed = false;
   }
   void consumeSettings() { applyPreferences(preferenceState, false); }
@@ -4589,7 +4592,7 @@ struct Window::Impl {
     measurementRowMemory.reserve(measurementRowMemory.size()+1);
     auto rowsMemory=memory.retain(draft.parsed.owned_bytes);auto stateMemory=memory.retain(state.estimated_bytes());
     owner.results.swap(next);next.clear();numericState.swap(state);state.clear();numericStateMemory=std::move(stateMemory);
-    if(!append){measurementRowMemory.clear();resultsCellMemory.clear();resultsView=ResultsView{};resultsColumnPage=0;}else resultsView.invalidate();
+    if(!append){measurementRowMemory.clear();resultsCellMemory.clear();resultsHistory.clear();resultsView=ResultsView{};resultsColumnPage=0;}else resultsView.invalidate();
     measurementRowMemory.push_back(std::move(rowsMemory));preferenceState.settings.swap(nextSettings);status.swap(completed);
   }
   void showResultsImport(const Json& parameters,bool fromBrowser=false) {
@@ -4657,7 +4660,7 @@ struct Window::Impl {
     const auto& kind=parameters.at("kind").get_ref<const std::string&>();
     const auto payload=parameters.contains("value")?resultImportJsonBytes(parameters.at("value")):128;
     const auto bound=RenderMemory::add(65536,RenderMemory::add(RenderMemory::mul(draft.bytes,2),RenderMemory::mul(payload,8)));
-    if(bound>processingCap())throw std::length_error("Results cell publication exceeds processing budget");
+    if(RenderMemory::add(bound,draft.memory.bytes())>processingCap())throw std::length_error("Results cell publication exceeds processing budget");
     auto memory=renderMemory->acquire(bound);
     if(owner.results.size()!=draft.count || draft.row>=owner.results.size() || !sameResultsImportJson(owner.results.at(draft.row),draft.original) || !sameResultsImportJson(resultsCellImplicit(draft.row,draft.column),draft.implicit) || resultsView.criteria().record()!=draft.view)throw RevisionConflict();
     if(kind=="keep")return;
@@ -4668,10 +4671,42 @@ struct Window::Impl {
       const auto value=resultImportNumber(parameters.at("value").get_ref<const std::string&>());if(!value)throw std::invalid_argument("Number cell requires an exact finite decimal");next[draft.column]=*value;
     }else {if(kind=="text")(void)parameters.at("value").dump();next[draft.column]=parameters.at("value");}
     if(sameResultsImportJson(next,draft.original))return;
+    auto history=resultsHistory.recorded(draft.row,owner.results.size(),draft.column,draft.original,next,draft.implicit,*renderMemory,static_cast<std::size_t>(historyLimit),processingCap(),RenderMemory::add(bound,draft.memory.bytes()));
     const auto retained=resultImportJsonBytes(next);auto lease=memory.retain(retained);
     std::string completed="Edited Results source row "+std::to_string(draft.row+1)+", column "+draft.column;
     auto position=resultsCellMemory.try_emplace(draft.row).first;
-    owner.results.at(draft.row).swap(next);next.clear();position->second=std::move(lease);resultsView.invalidate();status.swap(completed);
+    owner.results.at(draft.row).swap(next);next.clear();position->second=std::move(lease);resultsHistory.swap(history);resultsView.invalidate();status.swap(completed);
+  }
+  struct ResultsHistoryStatus {bool busy,review;const char* undo;const char* redo;};
+  ResultsHistoryStatus resultsHistoryStatus() const {
+    const auto implicit=[&](std::size_t row,const std::string& name){return resultsCellImplicit(row,name);};
+    return {owner.busy() || job.valid(),dialog.open || browser.open,resultsHistory.conflict(owner.results,false,implicit),resultsHistory.conflict(owner.results,true,implicit)};
+  }
+  Json resultsHistoryInfo() const {
+    auto memory=renderMemory->acquire(65536);const auto state=resultsHistoryStatus();
+    auto target=[&](bool redo)->Json{const auto* entry=resultsHistory.target(redo);return entry?Json{{"row",entry->row},{"column",entry->column}}:Json(nullptr);};
+    return {{"undo_steps",resultsHistory.undoSteps()},{"redo_steps",resultsHistory.redoSteps()},
+      {"can_undo",!state.busy && !state.review && !*state.undo},{"can_redo",!state.busy && !state.review && !*state.redo},{"busy",state.busy},{"review_open",state.review},
+      {"undo_conflict",state.undo},{"redo_conflict",state.redo},{"undo_target",target(false)},{"redo_target",target(true)},
+      {"retained_bytes",resultsHistory.bytes()},{"step_limit",historyLimit},{"byte_limit",processingCap()},
+      {"evicted_steps",resultsHistory.evicted()},{"external_resets",resultsHistory.resets()}};
+  }
+  void travelResultsHistory(bool redo) {
+    requireResultsImportIdle();
+    if(dialog.open || browser.open)throw std::invalid_argument("Close the current review before using Results history");
+    const auto reason=resultsHistory.conflict(owner.results,redo,[&](std::size_t row,const std::string& name){return resultsCellImplicit(row,name);});
+    if(*reason)throw std::invalid_argument(std::string("Results history cannot restore: ")+reason);
+    const auto* entry=resultsHistory.target(redo);const auto& cell=redo?entry->after:entry->before;
+    const auto estimated=RenderMemory::add(resultImportJsonBytes(owner.results.at(entry->row)),RenderMemory::add(8192,cell.present?resultImportJsonBytes(cell.value):128));
+    const auto bound=RenderMemory::add(65536,RenderMemory::mul(estimated,4));
+    if(bound>processingCap())throw std::length_error("Results history row exceeds processing budget");
+    auto memory=renderMemory->acquire(bound);Json next=owner.results.at(entry->row);
+    if(cell.present)next[entry->column]=cell.value;else next.erase(entry->column);
+    auto history=resultsHistory.travelled(redo,next,*renderMemory,processingCap(),bound);
+    auto lease=memory.retain(resultImportJsonBytes(next));
+    std::string completed=std::string(redo?"Redid":"Undid")+" Results source row "+std::to_string(entry->row+1)+", column "+entry->column;
+    auto position=resultsCellMemory.try_emplace(entry->row).first;
+    owner.results.at(entry->row).swap(next);next.clear();position->second=std::move(lease);resultsHistory.swap(history);resultsView.invalidate();status.swap(completed);
   }
   void showResultsCell(const Json& parameters) {
     if(dialog.open || browser.open)throw std::invalid_argument("Close the current review first");
@@ -7273,7 +7308,7 @@ void Window::executeStartup(StartupRequest request, bool retry) {
     static_assert(noexcept(results.swap(nextResults)));
     static_assert(noexcept(impl->sessionSizes.swap(nextSizes)));
     results.swap(nextResults);nextResults.clear();
-    impl->measurementRowMemory.clear();impl->resultsCellMemory.clear();
+    impl->measurementRowMemory.clear();impl->resultsCellMemory.clear();impl->resultsHistory.clear();
     impl->numericState.swap(table.state);std::swap(impl->numericStateMemory,table.memory);
     impl->resultsView=std::move(resultsView);
     workflow.swap(nextWorkflow);
@@ -7503,13 +7538,14 @@ Json Window::renderMemoryInfo() const {
 void Window::clearResults() {
   checkThread();
   if(impl->analysisTask==Impl::ReadOnlyTask::Measurement && impl->job.valid())cancelJob(impl->job.info().id);
-  results=Json::array();impl->measurementRowMemory.clear();impl->resultsCellMemory.clear();impl->numericState.clear();impl->numericStateMemory.reset();impl->resultsColumnPage=0;impl->resultsView.invalidate();
+  results=Json::array();impl->measurementRowMemory.clear();impl->resultsCellMemory.clear();impl->resultsHistory.clear();impl->numericState.clear();impl->numericStateMemory.reset();impl->resultsColumnPage=0;impl->resultsView.invalidate();
 }
 void Window::replaceResults(Json rows) {
   checkThread();if(!rows.is_array())throw std::invalid_argument("Results must be an array");
   clearResults();results.swap(rows);
 }
 Json Window::resultsViewInfo() const {checkThread();return impl->resultsViewInfo();}
+Json Window::resultsHistoryInfo() const {checkThread();return impl->resultsHistoryInfo();}
 Json Window::resultsTableState() const {
   checkThread();const auto bytes=impl->tableRecordWorkingBytes(results.size());
   if(bytes>impl->processingCap())throw std::invalid_argument("Results table snapshot exceeds processing budget");
@@ -8255,7 +8291,7 @@ void Window::openLegacyFile(const std::string &path) {
     impl->sessionSizes.swap(sizes);
     impl->preferences.swap(preferences);
     results.swap(rows);rows.clear();
-    impl->measurementRowMemory.clear();impl->resultsCellMemory.clear();
+    impl->measurementRowMemory.clear();impl->resultsCellMemory.clear();impl->resultsHistory.clear();
     impl->numericState.swap(table.state);std::swap(impl->numericStateMemory,table.memory);
     impl->resultsView=std::move(resultsView);
     workflow.swap(steps);
@@ -8306,6 +8342,11 @@ void Window::action(const std::string &name, const Json &p) {
   }
   if(name=="workflow_move" || name=="workflow_remove" || name=="workflow_set_enabled"){impl->editWorkflowDraft(name,p);return;}
   if(name=="run_workflow" && workflow.is_array() && workflow.empty())throw std::invalid_argument("Workflow has no enabled commands");
+  if(name=="undo_results_cell" || name=="redo_results_cell" || name=="clear_results_cell_history") {
+    if(!p.is_object() || !p.empty())throw std::invalid_argument("Results history actions take no parameters");
+    if(name=="clear_results_cell_history"){impl->requireResultsImportIdle();impl->resultsHistory.clear();}
+    else impl->travelResultsHistory(name=="redo_results_cell");return;
+  }
   if(name=="edit_result_cell"){const auto draft=impl->readResultsCell(p,true);impl->publishResultsCell(*draft,p);return;}
   if(name=="show_result_cell_editor"){impl->showResultsCell(p);return;}
   if(name=="import_results") {
@@ -11753,7 +11794,7 @@ void Window::poll() {
   if(impl->mixedReplay && impl->mixedPolling)return;
   struct PollScope {bool& flag;bool previous;explicit PollScope(bool& value):flag(value),previous(value){flag=true;}~PollScope(){flag=previous;}} polling(impl->mixedPolling);
   impl->checkMixedReplay();
-  if(results.is_array() && results.empty()){impl->measurementRowMemory.clear();impl->resultsCellMemory.clear();}
+  if(results.is_array() && results.empty()){impl->measurementRowMemory.clear();impl->resultsCellMemory.clear();impl->resultsHistory.clear();}
   // This lane is exclusive for publication. Defer unrelated preview/panel
   // polling so idle consumers do not clone live display metadata outside the
   // export capture allowance. Existing jobs keep their own native resources.
@@ -13248,7 +13289,22 @@ void Window::Impl::resultTable() {
       resultsTableObservation["controls"][name] = item;
     }
   };
-  ImGui::Text("%zu measurements", owner.results.size());
+  ImGui::Text("%zu rows", owner.results.size());ImGui::SameLine();
+  guard([&]{
+    const auto state=resultsHistoryStatus();
+    const auto historyObserved=[&](const char* name){
+      observed(name);
+      if(ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))ImGui::SetTooltip(
+        "Cell history: %zu undo / %zu redo\nLimit: %d steps / %zu bytes; %zu retained; %zu evicted\nUndo: %s; Redo: %s\nExternal resets: %zu",
+        resultsHistory.undoSteps(),resultsHistory.redoSteps(),historyLimit,processingCap(),resultsHistory.bytes(),resultsHistory.evicted(),
+        state.busy?"busy":state.review?"close review":*state.undo?state.undo:"available",
+        state.busy?"busy":state.review?"close review":*state.redo?state.redo:"available",resultsHistory.resets());
+    };
+    ImGui::BeginDisabled(state.busy || state.review || *state.undo);if(ImGui::Button("Undo cell"))guard([&]{travelResultsHistory(false);});historyObserved("undo_cell");ImGui::EndDisabled();
+    ImGui::SameLine();ImGui::BeginDisabled(state.busy || state.review || *state.redo);if(ImGui::Button("Redo cell"))guard([&]{travelResultsHistory(true);});historyObserved("redo_cell");ImGui::EndDisabled();
+    ImGui::SameLine();ImGui::BeginDisabled(state.busy || (!resultsHistory.undoSteps() && !resultsHistory.redoSteps()));if(ImGui::Button("Clear cell history"))resultsHistory.clear();historyObserved("clear_cell_history");ImGui::EndDisabled();
+    if(headlessDiagnostics){try{resultsTableObservation["history"]=resultsHistoryInfo();}catch(const std::invalid_argument& error){resultsTableObservation["history"]={{"state","unavailable"},{"error",error.what()}};}}
+  });
   ImGui::BeginDisabled(owner.busy());if(ImGui::Button("Import CSV"))guard([&]{owner.action("show_results_import");});observed("import_csv");ImGui::EndDisabled();
   const bool save = ImGui::Button(resultsView.active()?"Save view CSV":"Save CSV");
   observed("save_csv");

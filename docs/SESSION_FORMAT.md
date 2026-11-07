@@ -537,3 +537,12 @@ and existing ownership. Temporary cell-review guards are runtime-only and do not
 execute on reopen. Global column choices and table-specific Undo/Redo retain
 their separate owning scope. See [cell action semantics](TARGET_ANALYSIS.md#reviewed-results-cell-editing)
 and [scoped coverage](COVERAGE_CHECKLIST.md#results-cells-current-wip).
+
+## Results cell history runtime state
+
+The scoped Results Undo/Redo workflow adds no session record or archive version.
+Saves retain current raw cells, managed defaults and view criteria using the
+existing owners. Open/startup begins with empty Results cell history; runtime
+row guards, deltas, eviction/reset counters and cursor do not execute on reopen.
+Image history remains independent. See the [action contract](TARGET_ANALYSIS.md#results-cell-undoredo)
+and [current acceptance status](COVERAGE_CHECKLIST.md#results-cell-history-current-wip).

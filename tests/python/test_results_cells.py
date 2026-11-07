@@ -119,6 +119,9 @@ def test_repeated_edit_lease_is_replaced_and_noop_is_free(tmp_path):
     editor = make_editor(tmp_path)
     editor.update_settings(processing_memory_mb=1, persist=False)
     edit(editor, kind="text", value="x" * 64)
+    # Warm through bounded history eviction before checking per-row replacement.
+    for i in range(editor.results_history_info["step_limit"] + 2):
+        edit(editor, kind="text", value=("x" if i % 2 else "y") * 64)
     retained = editor.render_memory_info["retained_bytes"]
     for i in range(50):
         edit(editor, kind="text", value=("x" if i % 2 else "y") * 64)
