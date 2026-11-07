@@ -1,6 +1,7 @@
 #pragma once
 #include "desktop.hpp"
 #include <imagejxx/target_analysis.hpp>
+#include <imagejxx/settings.hpp>
 
 namespace imagejxx::desktop {
 bool captured_measurement_available(const DocumentSnapshot&);
@@ -9,4 +10,30 @@ bool captured_profile_available(const DocumentSnapshot&);
 // Extra frontend row storage, separately admitted before any source acquisition.
 std::size_t captured_measurement_row_bytes(const ResolvedTargetAnalysis&);
 Json captured_measurement_rows(const ResolvedTargetAnalysis&,const TargetAnalysisResult&);
+// Portable recorder intent; no retained source, provider, target or result objects.
+struct MeasurementRecordSource {
+  std::uint64_t document_id=0;
+  Revisions revisions;
+  DatasetShape shape;
+  PixelType pixel_type=PixelType::UInt8;
+  PlanePosition position;
+  Json threshold;
+  std::string input_fingerprint;
+  std::optional<bool> composite;
+  std::uint64_t global_generation=0,bypass_generation=0;
+  bool uses_global=false,ignores_global=false;
+};
+struct MeasurementRecord {
+  MeasurementRecordSource source;
+  std::optional<MeasurementRecordSource> redirect;
+  Settings settings;
+};
+bool isMeasurementRecord(const Json&);
+std::size_t measurementRecordWorkingBytes(const Json&);
+MeasurementRecord decodeMeasurementRecord(const Json&);
+Json captureMeasurementRecord(const ResolvedTargetAnalysis&,const Settings&);
+MeasurementRecordSource captureMeasurementReplaySource(const ResolvedTarget&,bool consumeComposite=false);
+void validateMeasurementReplaySource(const MeasurementRecordSource&,const ResolvedTarget&,bool rebind);
+Json measurementSettingsJson(const Settings&);
+
 }

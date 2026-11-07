@@ -2,6 +2,9 @@
 #include "window.hpp"
 #include "headless_session_internal.hpp"
 #include "effective_display_ui_probe.hpp"
+#include "analysis_measurement.hpp"
+#include <imagejxx/measurement_overlay.hpp>
+#include <imagejxx/channel_display.hpp>
 #include "point_raster_font.hpp"
 #include <filesystem>
 #include <fstream>
@@ -476,8 +479,37 @@ void circleJobs(const std::filesystem::path& root) {
   }
   std::cout<<"PASS area Fit Circle asynchronous lifecycle, stale guards and zero sample reads/resources\n";
 }
+
+void measurementRecordCases(const std::filesystem::path& root) {
+  using namespace imagejxx::desktop;
+  check(!std::filesystem::exists(root),"Fresh measurement record output required");std::filesystem::create_directories(root);
+  auto reader=std::make_shared<Source>(PixelType::UInt8,1);auto owner=std::make_shared<imagejxx::Document>(Dataset(reader));
+  owner->select(Selection("rectangle",{{1,1},{4,3}}));auto view=owner->snapshot().display();view.crosshair[2]=1;owner->set_display(view);
+  Application app;app.adopt(owner);TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::Selection;
+  const auto command=resolve_target_analysis(app.resolve_target(),options);Settings settings;
+  const auto raw=captureMeasurementRecord(command,settings);const auto decoded=decodeMeasurementRecord(raw);
+  check(isMeasurementRecord(raw) && measurementRecordWorkingBytes(raw)<65536,"Record declaration/allowance differs");validateMeasurementReplaySource(decoded.source,app.resolve_target(),false);
+  for(const auto& patch:std::vector<std::pair<std::string,Json>>{{"version",2},{"version",true},{"schema","foreign"},{"settings",Json::object()},{"redirect",false}}){auto bad=raw;bad[patch.first]=patch.second;refuses([&]{decodeMeasurementRecord(bad);});}
+  for(const auto& patch:std::vector<std::pair<std::string,Json>>{{"document_id",false},{"document_id",0},{"position",{0,0,99}},{"shape",{1,1,2,4,5,3}},{"pixel_type",3}}){auto bad=raw;bad["source"][patch.first]=patch.second;refuses([&]{decodeMeasurementRecord(bad);});}
+  auto unknown=raw;unknown["extra"]=1;refuses([&]{decodeMeasurementRecord(unknown);});auto text=raw;text["extra"]=std::string(131065,'a');refuses([&]{measurementRecordWorkingBytes(text);});
+  settings.set("measurement_add_to_overlay",true);const auto withOverlay=captureMeasurementRecord(command,settings);const auto expected=decodeMeasurementRecord(withOverlay);
+  check(expected.source.input_fingerprint.size()==64,"Input fingerprint missing");validateMeasurementReplaySource(expected.source,app.resolve_target(),false);
+  MeasurementOverlayOptions overlay;overlay.enabled=true;auto transaction=prepare_measurement_overlay(resolve_measurement_overlay(command,0,overlay));check(bool(transaction),"Expected overlay transaction");owner->commit(*transaction);validateMeasurementReplaySource(expected.source,app.resolve_target(),false);
+  const auto repeated=resolve_target_analysis(app.resolve_target(),options);auto second=prepare_measurement_overlay(resolve_measurement_overlay(repeated,1,overlay));check(bool(second),"Second overlay transaction missing");owner->commit(*second);validateMeasurementReplaySource(expected.source,app.resolve_target(),false);
+  auto changed=owner->snapshot().begin_edit();changed.set_title("Changed label");owner->commit(changed);refuses([&]{validateMeasurementReplaySource(expected.source,app.resolve_target(),false);});owner->undo();validateMeasurementReplaySource(expected.source,app.resolve_target(),false);
+  auto property=owner->snapshot().begin_edit();property.set_property("slice_labels",std::vector<std::string>{"a","b"});owner->commit(property);refuses([&]{validateMeasurementReplaySource(expected.source,app.resolve_target(),false);});owner->undo();validateMeasurementReplaySource(expected.source,app.resolve_target(),false);
+  auto calibration=owner->snapshot().data().dataset.calibration();calibration.spacing[0]=2;auto calibrated=owner->snapshot().begin_edit();calibrated.set_calibration(calibration);owner->commit(calibrated);refuses([&]{validateMeasurementReplaySource(expected.source,app.resolve_target(),false);});owner->undo();validateMeasurementReplaySource(expected.source,app.resolve_target(),false);
+  const auto originalDisplay=owner->snapshot().display();ChannelDisplayState channels;channels.channels.resize(1);owner->set_display(with_channel_display(originalDisplay,owner->snapshot().data().dataset,channels));refuses([&]{validateMeasurementReplaySource(expected.source,app.resolve_target(),false);});validateMeasurementReplaySource(expected.source,app.resolve_target(),true);owner->set_display(originalDisplay);
+  auto moved=owner->snapshot().display();moved.crosshair[2]=0;owner->set_display(moved);refuses([&]{validateMeasurementReplaySource(expected.source,app.resolve_target(),false);});validateMeasurementReplaySource(expected.source,app.resolve_target(),true);
+  check(reader->reads==0,"Record/decode/rebind acquired source pixels");write(root/"record.json",withOverlay);write(root/"summary.json",{{"state","observed"},{"plane_reads",reader->reads},{"repeated_own_overlay",true},{"metadata_input_stale_guards",true},{"strict_grammar",true},{"explicit_rebind",true}});
+}
 } // namespace
 int main(int argc,char **argv){try{
+  if(argc==3 && std::string(argv[2])=="--measurement-records") {measurementRecordCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
+  if(argc==3 && std::string(argv[2])=="--measurement-replay") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"replay-preferences.json").u8string());
+    imagejxx::desktop::measurementReplayUiCase(w,"imgui_cpp",argv[1]);return 0;
+  }
   if(argc==3 && std::string(argv[2])=="--mixed-measurements") {
     Window w((std::filesystem::u8path(argv[1]).parent_path()/"mixed-preferences.json").u8string());
     imagejxx::desktop::mixedMeasurementUiCase(w,"imgui_cpp",argv[1]);return 0;

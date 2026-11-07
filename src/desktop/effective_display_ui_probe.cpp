@@ -27,6 +27,19 @@
 namespace imagejxx::desktop {
 namespace {
 void require(bool value,const char* message) {if(!value)throw std::runtime_error(message);}
+std::shared_ptr<imagejxx::Document> mixedMeasurementFixture(bool redirected) {
+  const Selection rectangle("rectangle",{{1,1},{7,5}});
+  Stack planes;std::vector<std::string> labels;
+  for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z) {
+    const int n=t*4+z*2+c;Image image(8,6,1,PixelType::UInt8);
+    for(int y=0;y<6;++y)for(int x=0;x<8;++x)image.at(x,y)=x+2*y+1+n+(redirected?20:0);
+    planes.push_back(std::move(image));labels.push_back("plane"+std::to_string(n)+".tif\nignored");
+  }
+  SpatialCalibration spatial;spatial.spacing=redirected?std::array<double,3>{.75,2,1}:std::array<double,3>{2,.5,1};if(redirected)spatial.origin={0,-8.5,0};spatial.unit="um";
+  auto owner=std::make_shared<imagejxx::Document>(Dataset::from_planes({2,2,2,6,8,1},std::move(planes),spatial),redirected?"sample,title":"source,title");
+  auto edit=owner->begin_edit();edit.set_property("plane_labels",labels);owner->commit(edit);owner->select(rectangle);
+  auto view=owner->snapshot().display();view.t=view.c=1;view.crosshair={4,3,1};set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),{{redirected?31.:11.,redirected?37.:17.},{1,1,1}});owner->set_display(view);return owner;
+}
 Json wireOverlays(const std::vector<MetadataObject>& rows) {Json out=Json::array();for(const auto& row:rows)out.push_back(metadataJson(row));return out;}
 GlobalCalibration global(double x=.5) {
   SpatialCalibration cal;cal.spacing={x,1.25,2};cal.origin={11,-7,19};
@@ -1699,19 +1712,7 @@ Json mixedMeasurementUiCase(Window& w,const std::string& context,const std::stri
   try {
     const Selection rectangle("rectangle",{{1,1},{7,5}});
     const std::vector<Selection> selections={rectangle,Selection("line",{{1.25,1.5},{5.5,3.25}}),Selection("polyline",{{1,1},{5,3},{6,2}}),Selection("angle",{{1,1},{5,3},{6,2}}),Selection("point",{{2.5,1.25}}),Selection("multipoint",{{1.25,1.5},{5.5,3.25}})};
-    auto fixture=[&](bool redirected) {
-      Stack planes;std::vector<std::string> labels;
-      for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z) {
-        const int n=t*4+z*2+c;Image image(8,6,1,PixelType::UInt8);
-        for(int y=0;y<6;++y)for(int x=0;x<8;++x)image.at(x,y)=x+2*y+1+n+(redirected?20:0);
-        planes.push_back(std::move(image));labels.push_back("plane"+std::to_string(n)+".tif\nignored");
-      }
-      SpatialCalibration spatial;spatial.spacing=redirected?std::array<double,3>{.75,2,1}:std::array<double,3>{2,.5,1};if(redirected)spatial.origin={0,-8.5,0};spatial.unit="um";
-      auto owner=std::make_shared<imagejxx::Document>(Dataset::from_planes({2,2,2,6,8,1},std::move(planes),spatial),redirected?"sample,title":"source,title");
-      auto edit=owner->begin_edit();edit.set_property("plane_labels",labels);owner->commit(edit);owner->select(rectangle);
-      auto view=owner->snapshot().display();view.t=view.c=1;view.crosshair={4,3,1};set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),{{redirected?31.:11.,redirected?37.:17.},{1,1,1}});owner->set_display(view);return owner;
-    };
-    auto source=fixture(false),sample=fixture(true);auto edit=source->begin_edit();std::vector<Roi> seed;
+    auto source=mixedMeasurementFixture(false),sample=mixedMeasurementFixture(true);auto edit=source->begin_edit();std::vector<Roi> seed;
     for(int i=0;i<99;++i)seed.push_back({"seed-"+std::to_string(i),rectangle,{},{},{},{}});edit.set_rois(std::move(seed));source->commit(edit);
     w.addNativeDocument(source);w.addNativeDocument(sample);w.setActiveIndex(0);
     w.updateSettings({{"measurements",Json::array({"mean"})},{"measurement_precision",3},{"measurement_scientific",false},{"measurement_invert_y",false},{"measurement_nan_empty_cells",false},{"measurement_add_to_overlay",false},{"measurement_limit_to_threshold",false},{"reflex_angle",false}},false);
@@ -1757,6 +1758,86 @@ Json mixedMeasurementUiCase(Window& w,const std::string& context,const std::stri
     report["source_preserved"]=report["undo_redo"]=report["cancel_preserved"]=report["stale_pose_refused"]=report["sampling_close_preserved"]=report["source_close_preserved"]=report["clear_preserved"]=report["resource_guards"]=true;
     session.close();Window reopened(preferencesPath);for(const auto& [key,label]:switches)require(reopened.settings().boolean(key),"Mixed reopened preference lost");reopened.openLegacyFile((dir/"measured.ijx").u8string());require(reopened.results==rows && reopened.resultsTableState()==table,"Mixed reopened table differs");require(wireOverlays(reopened.documents()[0]->nativeSnapshot().data().overlays)==report["overlays"],"Mixed reopened overlays differ");reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(readBytes((dir/"reopened.csv").u8string())==raw,"Mixed reopened CSV differs");
     report["workspace_preserved"]=true;report["state"]="observed";require(report.dump().size()<8*1024*1024,"Mixed report bound");writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
+}
+
+Json measurementReplayUiCase(Window& w,const std::string& context,const std::string& fresh_directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(fresh_directory));
+  require(!fs::exists(dir) && w.documents().empty(),"Fresh Measure replay fixture required");fs::create_directories(dir);
+  Json report={{"context",context},{"events",Json::array()},{"controls",Json::array()},{"review_refusals",Json::array()},{"job_refusals",Json::array()}};Json last;
+  std::atomic<bool> entered=false,release=false;
+  try {
+    auto source=mixedMeasurementFixture(false),sample=mixedMeasurementFixture(true),rebound=mixedMeasurementFixture(false),sampling=mixedMeasurementFixture(true);
+    for(const auto& owner:{source,sample,rebound,sampling})w.addNativeDocument(owner);w.setActiveIndex(0);
+    const auto original=source->snapshot(),sampleBefore=sample->snapshot();const auto undo=source->undo_steps();
+    const Json columns=Json::array({"Label","Area","mean","X","Y","XM","YM","BX","BY","Width","Height","%Area","Skew","Kurt","Length","T","C","Z"});
+    w.updateSettings({{"measurements",columns},{"measurement_precision",3},{"measurement_scientific",true},{"measurement_invert_y",true},{"measurement_nan_empty_cells",true},{"measurement_add_to_overlay",true},{"measurement_limit_to_threshold",true},{"reflex_angle",false}},true);
+    HeadlessInputSession session(w);auto& app=session.fixtureApplication();auto scheduler=app.job_scheduler();
+    auto frame=[&](const Json& events=Json::array()){require(report["events"].size()<1024,"Measure replay frame bound");last=session.frame(events);require(last.at("input_frame").at("raw_inputs")==events,"Measure replay input receipt differs");report["events"].push_back(events);};
+    auto click=[&](const Json& observed,const std::string& name){const auto item=observed;require(item.at("enabled").get<bool>() && item.at("id").get<std::uint64_t>()!=0,"Measure replay control unavailable");report["controls"].push_back({{"name",name},{"control",item}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",item.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};
+    auto dialog=[&](const std::string& name){auto item=last.at("dialog").at("controls").at(name);if(name=="sampling"){item["reported_point"]=item.at("point");item["point"][0]=item.at("rect")[0].get<float>()+20;}click(item,"dialog."+name);};
+    auto focus=[&](){auto* panel=ImGui::FindWindowByName("Workflow");require(panel,"Measure Workflow panel missing");ImGui::SetWindowPos(panel,{20,20});ImGui::SetWindowSize(panel,{950,700});ImGui::FocusWindow(panel);frame();};
+    auto acknowledge=[&](){if(w.error().empty())return;frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();};
+    auto closed=[&](){require(!last.at("dialog").at("open").get<bool>(),"Measure dialog remained open");};
+    auto resources=[&](){require(w.renderMemoryInfo().at("working_bytes")==0 && scheduler->usage().reserved_bytes==0,"Measure replay retained working reservation");};
+    frame();frame();frame();const auto preferences=last.at("preferences_path").get<std::string>();focus();
+    control("workflow.record");require(w.recording,"Measure Record checkbox did not toggle");
+    control("menu.Analyze");control("menu.measurement_redirect");const auto redirect=last.at("host_controls").at("measurement_redirect."+std::to_string(sample->id));click(redirect,"measurement_redirect."+std::to_string(sample->id));
+    control("menu.Analyze");control("menu.action.measure");w.wait();frame();require(w.error().empty() && w.results.size()==1 && w.workflow.size()==1,"Actual recorded Measure failed");
+    const auto step=w.workflow[0];const auto first=w.results[0];require(step.at("schema")=="imagejxx.measurement-command" && step.at("source").at("document_id")==source->id && step.at("redirect").at("document_id")==sample->id && first.at("Redirect document")==sample->id,"Recorded Measure owners differ");
+    report["recorded_owners"]={{"source",source->id},{"sampling",sample->id},{"control",redirect}};
+    focus();control("workflow.record");require(!w.recording,"Measure Record did not stop");resources();
+    w.action("save_workflow",{{"path",(dir/"measure-workflow.json").u8string()}});control("workflow.clear");require(w.workflow.empty(),"Measure Clear control failed");w.action("load_workflow",{{"path",(dir/"measure-workflow.json").u8string()}});frame();require(w.workflow==Json::array({step}),"Saved Measure intent lost");
+    control("workflow.measurement.0.replay");w.wait();frame();require(w.error().empty() && w.results==Json::array({first,first}),"Actual default Measure replay differs");resources();
+    control("workflow.measurement.0.review");require(last.at("dialog").at("values").at("rebind")==false && last.at("dialog").at("values").at("restore_settings")==true,"Measure review defaults differ");dialog("cancel");closed();resources();require(w.results.size()==2 && w.workflow==Json::array({step}),"Canceled review published");
+    w.updateSettings({{"measurement_precision",1}},false);focus();control("workflow.run");dialog("restore_settings");dialog("apply");require(!w.error().empty() && w.results.size()==2,"Unrequested settings restore accepted");acknowledge();dialog("cancel");closed();resources();
+    focus();control("workflow.run");dialog("apply");w.wait();frame();closed();require(w.error().empty() && w.results==Json::array({first,first,first}) && w.settings().integer("measurement_precision")==3,"Actual Run/settings restore differs");resources();
+    const auto sourceCurrent=source->snapshot();require(sourceCurrent.data().overlays.size()==3 && source->undo_steps()==undo+3 && sample->snapshot().shares_data(sampleBefore),"Recorded output/history ownership differs");
+    w.action("undo");frame();require(source->snapshot().data().overlays.size()==2 && w.results.size()==3,"Replay Undo changed rows");w.action("redo");frame();require(source->snapshot().shares_data(sourceCurrent),"Replay Redo lost overlay");
+    w.setActiveIndex(2);frame();focus();control("workflow.measurement.0.review");dialog("rebind");dialog("sampling");const std::string chosen="Image 4: "+sampling->snapshot().data().metadata.title;const auto samplingControl=last.at("dialog").at("controls").at("sampling.choice."+chosen);click(samplingControl,"dialog.sampling.choice."+chosen);require(last.at("dialog").at("values").at("sampling")==chosen,"Clicked sampling choice differs");dialog("apply");w.wait();frame();closed();
+    require(w.error().empty() && w.results.size()==4 && w.workflow==Json::array({step}) && w.results.back().at("Redirect document")==sampling->id && rebound->snapshot().data().overlays.size()==1,"Actual explicit Measure rebind differs");
+    auto expected=first;expected["Redirect document"]=sampling->id;require(w.results.back()==expected && source->snapshot().shares_data(sourceCurrent),"Rebound row/input ownership differs");resources();
+    report["rebound_owners"]={{"source",rebound->id},{"sampling",sampling->id},{"choice",chosen},{"control",samplingControl}};
+    const auto rows=w.results,table=w.resultsTableState(),workflow=w.workflow;const auto reboundBefore=rebound->snapshot();
+    report["rows"]=rows;report["table_state"]=table;report["record"]=step;report["source_overlays"]=wireOverlays(sourceCurrent.data().overlays);report["rebound_overlays"]=wireOverlays(reboundBefore.data().overlays);
+    w.action("save_results",{{"path",(dir/"measure.csv").u8string()}});const auto raw=readBytes((dir/"measure.csv").u8string());const std::string csv(raw.begin(),raw.end());std::string copied;
+    {auto& platform=ImGui::GetPlatformIO();struct Restore{ImGuiPlatformIO& p;decltype(p.Platform_SetClipboardTextFn) fn;void* data;~Restore(){p.Platform_SetClipboardTextFn=fn;p.Platform_ClipboardUserData=data;}} restore{platform,platform.Platform_SetClipboardTextFn,platform.Platform_ClipboardUserData};platform.Platform_ClipboardUserData=&copied;platform.Platform_SetClipboardTextFn=[](ImGuiContext* c,const char* text){static_cast<std::string*>(c->PlatformIO.Platform_ClipboardUserData)->assign(text?text:"");};control("results.copy_csv");require(copied==csv,"Measure replay copied CSV differs");}
+    report["csv"]=csv;report["copied_csv"]=copied;report["results_table"]=last.at("results_table");w.action("save_workspace",{{"path",(dir/"measured.ijx").u8string()}});
+    // Review freezes each chosen owner's actual input context, not just its ID.
+    for(const auto* name:{"source_pose","sampling_pose","source_threshold","sampling_threshold","global_calibration","active_owner"}){
+      focus();control("workflow.measurement.0.review");dialog("rebind");dialog("sampling");dialog("sampling.choice."+chosen);
+      const auto sourceView=rebound->snapshot().display(),sampleView=sampling->snapshot().display();
+      if(std::string(name)=="source_pose"){auto v=sourceView;v.crosshair[2]=0;rebound->set_display(v);}
+      if(std::string(name)=="sampling_pose"){auto v=sampleView;v.crosshair[2]=0;sampling->set_display(v);}
+      if(std::string(name)=="source_threshold"){auto v=sourceView;set_manual_threshold_state(v,rebound->snapshot().data().dataset.shape(),{{10.,18.},{1,1,1}});rebound->set_display(v);}
+      if(std::string(name)=="sampling_threshold"){auto v=sampleView;set_manual_threshold_state(v,sampling->snapshot().data().dataset.shape(),{{30.,38.},{1,1,1}});sampling->set_display(v);}
+      if(std::string(name)=="global_calibration")app.set_global_calibration(global());
+      if(std::string(name)=="active_owner")w.setActiveIndex(0);
+      dialog("apply");require(!w.error().empty() && !w.busy() && w.results==rows && w.workflow==workflow && rebound->snapshot().shares_data(reboundBefore),"Stale Measure review published");
+      acknowledge();dialog("cancel");closed();resources();rebound->set_display(sourceView);sampling->set_display(sampleView);if(std::string(name)=="global_calibration")app.clear_global_calibration();w.setActiveIndex(2);frame();report["review_refusals"].push_back(name);
+    }
+    // Record publication must join row/table/overlay atomicity on every endpoint.
+    focus();control("workflow.record");require(w.recording,"Record restart failed");
+    const auto start=[&](){entered=false;release=false;session.fixtureWorkerGate([&](const JobContext& job){entered=true;while(!release){job.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}});w.action("measure");const auto until=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered && std::chrono::steady_clock::now()<until)std::this_thread::sleep_for(std::chrono::milliseconds(1));require(entered,"Recorded Measure worker timeout");};
+    for(const auto* name:{"cancel","record_toggle","workflow_clear","source_pose","sampling_threshold","global_calibration","settings","results_clear","sampling_close","source_close"}){
+      w.recording=true;w.workflow=workflow;const auto oldRows=w.results,oldTable=w.resultsTableState();const auto before=rebound->snapshot();const auto sourceView=before.display(),sampleView=sampling->snapshot().display();start();frame();require(!last.at("host_controls").at("workflow.record").at("enabled").get<bool>() && !last.at("host_controls").at("workflow.clear").at("enabled").get<bool>(),"Recorder controls enabled while busy");
+      const std::string mode=name;
+      if(mode=="cancel")w.cancel();if(mode=="record_toggle")w.recording=false;if(mode=="workflow_clear")w.workflow=Json::array();
+      if(mode=="source_pose"){auto v=sourceView;v.crosshair[2]=0;rebound->set_display(v);}
+      if(mode=="sampling_threshold"){auto v=sampleView;set_manual_threshold_state(v,sampling->snapshot().data().dataset.shape(),{{30.,38.},{1,1,1}});sampling->set_display(v);}
+      if(mode=="global_calibration")app.set_global_calibration(global());if(mode=="settings")w.updateSettings({{"measurement_invert_y",false}},false);
+      if(mode=="results_clear")w.clearResults();if(mode=="sampling_close")w.closeDocument(sampling->id,true);if(mode=="source_close")w.closeDocument(rebound->id,true);
+      release=true;w.wait();frame();session.fixtureWorkerGate({});
+      if(mode=="record_toggle" || mode=="workflow_clear" || mode=="source_pose" || mode=="sampling_threshold" || mode=="global_calibration" || mode=="settings")require(!w.error().empty(),"Stale recorded Measure lacked visible refusal");
+      require(rebound->snapshot().shares_data(before) && w.workflow==(mode=="workflow_clear"?Json::array():workflow),"Rejected recorded Measure published history/intent");
+      require(w.results==(mode=="results_clear"?Json::array():oldRows),"Rejected recorded Measure published rows");if(mode!="results_clear")require(w.resultsTableState()==oldTable,"Rejected recorded Measure published table");resources();acknowledge();
+      rebound->set_display(sourceView);if(mode!="sampling_close" && mode!="source_close")sampling->set_display(sampleView);if(mode=="global_calibration")app.clear_global_calibration();if(mode=="settings")w.updateSettings({{"measurement_invert_y",true}},false);if(mode=="sampling_close")w.action("measurement_redirect",{{"document_id",0}});report["job_refusals"].push_back(mode);
+    }
+    w.recording=false;w.workflow=workflow;session.close();Window reopened(preferences);reopened.openLegacyFile((dir/"measured.ijx").u8string());require(reopened.results==rows && reopened.workflow==workflow && reopened.resultsTableState()==table,"Measure replay workspace lost rows/intent/table");
+    require(wireOverlays(reopened.documents()[0]->nativeSnapshot().data().overlays)==report["source_overlays"] && wireOverlays(reopened.documents()[2]->nativeSnapshot().data().overlays)==report["rebound_overlays"],"Measure replay workspace lost overlays");reopened.action("save_results",{{"path",(dir/"reopened.csv").u8string()}});require(readBytes((dir/"reopened.csv").u8string())==raw,"Measure replay reopened CSV differs");
+    for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z)require(source->snapshot().data().dataset.plane({t,c,z})->pixels==original.data().dataset.plane({t,c,z})->pixels,"Recorded Measure changed original pixels");
+    report["saved_loaded"]=report["settings_review"]=report["review_cancel"]=report["undo_redo"]=report["workspace_preserved"]=report["resource_guards"]=report["source_preserved"]=true;report["state"]="observed";require(report.dump().size()<8*1024*1024,"Measure replay report bound");writeJson((dir/"case.json").u8string(),report);return report;
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"editor_error",w.error()},{"rendered",last},{"report",report}});throw;}
 }
 

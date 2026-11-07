@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-06. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Next: T04a.3 Measure recording/rebind. Full ImageJ/Fiji and release remain open.
+Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection Measure recording/rebind now has scoped both-Windows-host acceptance; next is ordered ROI Manager recording/rebind. Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-06. M4 mixed measurement integration has scoped original/API and
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Next integration increment | [T04a.3 Measure recording and rebind](PLAN.md#next-ready-increment-t04a3-measure-recording-and-rebind) consumes accepted M4 command/options/row/table/overlay contracts. Wider manager/Profile replay remains with T04a.3. |
+| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Next: ordered ROI Manager Measure recording/rebind; Profile/live-plot/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-roi-manager-measure-recording-and-rebind). |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -59,6 +59,24 @@ Each family has its required behavior, owner and remaining work. Registered
 option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
+
+<a id="measure-recording-and-rebind-current-wip"></a>
+## Measure recording and rebind scoped coverage
+
+Owner: T04a.3 / G009 G066 G071 G085 G089. **Scoped accepted.** [Receipt](parity/reviews/measurement-replay-20261106.json), [remaining queue](PLAN.md#next-ready-increment-t04a3-roi-manager-measure-recording-and-rebind). I: typed private C++ current-selection Measure record and existing recorder/publication; V:17 installed Windows checks,metadata-only native controls and scoped original M4 corpus; UI: actual standalone C++ and optional Python Windows ImGui; R: open. No public processing kernel/API/dependency added. Neither full T04a.3 nor full ImageJ/Fiji is closed.
+
+- [x] Bounded typed V1 validation,unknown version/type/shape/fingerprint/closed-owner refusal and zero native provider reads; shape-compatible explicit source/sampling rebind.
+- [x] Actual Record checkbox and Measure publish saved intent with successful rows/overlay through the existing creator owner; no/self/foreign sampling API modes pass.
+- [x] Save/Load,actual repeated Replay and Run preserve the immutable record; input fingerprinting allows own overlays while native label/calibration/pose/composite guards and pixel/selection revisions protect inputs.
+- [x] Actual review defaults,rebind checkbox,explicit sampling choice,settings refusal/requested restoration and Cancel work in both hosts. Actual clicked process-local sampling identities are proved before comparison.
+- [x] Six review-time refusals: source/sampling pose and threshold,global calibration and active owner changes; prior rows/history/intent remain protected and dialog leases release on Cancel/Apply.
+- [x] Ten recorded-job terminal cases: cancel,record toggle,workflow clear,source pose,sampling threshold,global calibration,consumed settings,results clear,sampling close and source close. Busy recorder controls disable; rejected jobs do not publish records/rows/table/history; working reservations return to zero.
+- [x] Hosts match4rawrows/72visiblecells,table state,overlay names1/2/3/4 and Copy/Save CSV; Undo/Redo and reopened workspace preserve the recorded output/intent. External native capture and Python host use the same original-corpus/output assertion.
+- [x] Correct installed components and source/built/installed bytes/loaded origins checked; final source/ownership review completed before hash-retiring captures. All9consumer groups plus1diagnostic group retired across3verified lossless archives (155167B).
+- [ ] Ordered ROI Manager recording/rebind: next ready under G021/T04a.3; manager content/order/indices need explicit bindings and actual controls. Existing manager numerical/UI evidence does not close recorder coverage.
+- [ ] Profile/live-plot/general chained replay,all source/type/platform variants and release acceptance remain with their existing owners.
+
+Known complete-scope storage grew4087140B from task entry to final retirement;214 inaccessible subtrees keep the full8GiB budget unverified. Active compiler/runtime products are preserved. Current sampling review is bounded to256images/title4096 and metadata fingerprinting to1MiB/65536nodes/128depth; broader chooser usability stays T04a.3. Non-area RECT/COM/differing-XY T06/T04,foreign/brush/pointwise T08,table AUTO/string/editing T09 and platform/commercial release T12/T14/T00 remain open. All99 full-family boxes remain open.
 
 <a id="next-increment-mixed-measurement-integration"></a>
 ## Mixed measurement integration scoped coverage
@@ -3113,4 +3131,4 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ## Next update
 
-Next ready: [T04a.3 Measure recording and rebind](PLAN.md#next-ready-increment-t04a3-measure-recording-and-rebind). Update its existing task record and affected boxes at observed checkpoints and closeout. M4 is scoped accepted above; full M3, table state, differing-XY/constructor/brush/pointwise variants, wider manager/Profile replay and supported release remain open with their owners. No agents are authorized by this update.
+Continue the [active T04a.3 Measure recording/rebind increment](PLAN.md#active-increment-t04a3-measure-recording-and-rebind). Correct its own-output/review-context gaps,then verify actual new controls in both hosts. Update the existing task record and affected boxes at observed checkpoints and closeout. Full M3,table state,differing-XY/constructor/brush/pointwise variants,wider manager/Profile replay and supported release remain open with their owners. No agents are authorized by this update.

@@ -1296,6 +1296,8 @@ struct Window::Impl {
   struct JobResult {
     // Declared first so every staged/native payload retires before its lease.
     std::shared_ptr<const void> reservation;
+    std::shared_ptr<RenderMemory::Lease> measurement_record_memory;
+    std::size_t measurement_workflow_size=0,measurement_record_bytes=0;
     State state;
     ComponentCounts components;
     std::optional<PreparedOperation> prepared;
@@ -4519,6 +4521,12 @@ struct Window::Impl {
       options.ellipse=area;
     }
     const auto command=resolve_target_analysis(target,options,limits);
+    const bool recordStep=owner.recording;const auto workflowSize=owner.workflow.size();
+    if(recordStep && !owner.workflow.is_array())throw std::invalid_argument("Workflow must be an array");
+    const auto recordBytes=recordStep?RenderMemory::add(131072,RenderMemory::mul(RenderMemory::add(workflowSize,1),sizeof(Json)*2)):0;
+    std::shared_ptr<RenderMemory::Lease> recordMemory;MetadataObject measurementRecord;
+    if(recordStep){recordMemory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(recordBytes));const auto value=captureMeasurementRecord(command,preferenceState.settings);if(measurementRecordWorkingBytes(value)>65536)throw std::length_error("Measure record exceeds captured record allowance");measurementRecord=metadataObjectFromJson(value);}
+
     const auto rows=captured_measurement_row_bytes(command);
     const auto base=owner.results.size();
     if(!owner.results.is_array())throw std::invalid_argument("Results must be an array");
@@ -4530,7 +4538,7 @@ struct Window::Impl {
     MeasurementOverlayLimits overlayLimits;overlayLimits.max_working_bytes=limits.max_working_bytes;
     const auto overlay=resolve_measurement_overlay(command,base,overlayOptions,overlayLimits);
     const auto tableBytes=tableWorkingBytes(base,command.estimate().row_count,parents);
-    const auto workspace=RenderMemory::add(RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,rows),tableBytes),overlay.working_bytes());
+    const auto workspace=RenderMemory::add(RenderMemory::add(RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,rows),tableBytes),overlay.working_bytes()),recordBytes);
     if(workspace>processingCap())throw std::invalid_argument("Measurement exceeds current processing memory budget");
     auto memory=renderMemory->acquire(rows);
     std::shared_ptr<RenderMemory::Lease> overlayMemory;
@@ -4540,13 +4548,14 @@ struct Window::Impl {
     const bool nan=preferenceState.settings.boolean("measurement_nan_empty_cells");
     measurementPendingMemory=memory.retain(rows);
     try {
-      start([command,cap=limits.max_working_bytes,table,tableMemory,base,parents,nan,tableBytes,overlay,overlayMemory]{
+      start([command,cap=limits.max_working_bytes,table,tableMemory,base,parents,nan,tableBytes,overlay,overlayMemory,recordStep,recordBytes,workflowSize,recordMemory,measurementRecord=std::move(measurementRecord)]() mutable {
         auto overlayTransaction=prepare_measurement_overlay(overlay,cap);
         auto result=execute_target_analysis(command,{},cap);
         auto rows=captured_measurement_rows(command,result);
         auto groups=measurementTableGroups(rows,parents);
         table->append_rows(groups,nan);
         JobResult completed(command,std::move(rows));
+        completed.recorded=recordStep;completed.record=std::move(measurementRecord);completed.measurement_record_memory=std::move(recordMemory);completed.measurement_workflow_size=workflowSize;completed.measurement_record_bytes=recordBytes;
         completed.table_memory=tableMemory->retain(table->estimated_bytes());
         completed.table_state.emplace(std::move(*table));
         tableMemory->reset();
@@ -7268,6 +7277,71 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+
+  if(name=="run_workflow" && workflow.is_array() && workflow.size()==1 && isMeasurementRecord(workflow[0])) {
+    if(!p.is_object())throw std::invalid_argument("Measure workflow parameters must be an object");
+    Json request=p;request["record"]=workflow[0];action(p.empty()?"show_measurement_rebind":"replay_measurement",request);return;
+  }
+  if(name=="show_measurement_rebind" || name=="replay_measurement") {
+    if(busy() || documents_.empty())throw std::invalid_argument("Select an idle image before replaying Measure");
+    if(!p.is_object() || !p.contains("record"))throw std::invalid_argument("Measure replay requires a captured record");
+    for(const auto& field:p.items())if(field.key()!="record" && (name=="show_measurement_rebind" || (field.key()!="rebind" && field.key()!="document_id" && field.key()!="redirect_id" && field.key()!="restore_settings")))throw std::invalid_argument("Unknown Measure replay parameter");
+    const auto bytes=measurementRecordWorkingBytes(p.at("record"));
+    if(bytes>impl->processingCap()/4)throw std::length_error("Measure record exceeds processing budget");
+    auto memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(bytes*4));
+    const auto decoded=decodeMeasurementRecord(p.at("record"));
+    if(name=="show_measurement_rebind") {
+      const auto selected=document()->id;const auto reviewed=captureMeasurementReplaySource(controller_->resolve_target({},selected),decoded.source.composite.has_value());
+      Json values={{"rebind",false},{"restore_settings",true}},fields=Json::array({
+        {{"name","rebind"},{"label","Use selected image's current selection and view"},{"kind","bool"}},
+        {{"name","restore_settings"},{"label","Restore saved measurement settings"},{"kind","bool"}}});
+      Json choices=Json::array({"Choose sampling image"});std::vector<std::uint64_t> ids;std::vector<MeasurementRecordSource> reviewedSampling;
+      std::shared_ptr<RenderMemory::Lease> choiceMemory;
+      if(decoded.redirect){
+        if(documents_.size()>256)throw std::length_error("Too many open images for Measure source review");
+        std::size_t choiceBytes=0;
+        for(const auto& facade:documents_){const auto snapshot=facade->nativeSnapshot();if(snapshot.data().metadata.title.size()>4096)throw std::length_error("Image title exceeds Measure source review allowance");choiceBytes=RenderMemory::add(choiceBytes,RenderMemory::add(4096,RenderMemory::mul(snapshot.data().metadata.title.size(),4)));}
+        if(choiceBytes>impl->processingCap()/4)throw std::length_error("Measure source choices exceed processing budget");
+        choiceMemory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(choiceBytes));
+        for(std::size_t i=0;i<documents_.size();++i){
+          const auto snapshot=documents_[i]->nativeSnapshot();const auto& dataset=snapshot.data().dataset;
+          if(dataset.shape().dimensions()!=decoded.redirect->shape.dimensions() || dataset.pixel_type()!=decoded.redirect->pixel_type || dataset.sample_policy()!=FloatingSamplePolicy::FiniteOnly)continue;
+          TargetRequest whole;whole.roi=RoiPolicy::WholePlane;
+          auto binding=captureMeasurementReplaySource(controller_->resolve_target(whole,documents_[i]->id));
+          choices.push_back("Image "+std::to_string(i+1)+": "+documents_[i]->title());ids.push_back(documents_[i]->id);reviewedSampling.push_back(std::move(binding));
+        }
+        values["sampling"]=choices[0];fields.push_back({{"name","sampling"},{"label","Sampling image for explicit rebind"},{"kind","choice"},{"choices",choices}});
+      }
+      impl->ask("Replay Measure",std::move(values),[this,memory,choiceMemory,record=p.at("record"),selected,reviewed,choices,ids,reviewedSampling](Json values){
+        Json request={{"record",record},{"rebind",values.at("rebind")},{"restore_settings",values.at("restore_settings")}};
+        if(values.at("rebind").get<bool>()) {
+          if(documents_.empty() || document()->id!=selected)throw std::invalid_argument("Selected source changed; reopen Measure review");
+          validateMeasurementReplaySource(reviewed,controller_->resolve_target({},selected),false);
+          request["document_id"]=selected;
+          if(!ids.empty()){std::size_t found=0;for(std::size_t i=1;i<choices.size();++i)if(choices[i]==values.at("sampling"))found=i;if(!found)throw std::invalid_argument("Choose a sampling image for explicit Measure rebind");TargetRequest whole;whole.roi=RoiPolicy::WholePlane;validateMeasurementReplaySource(reviewedSampling[found-1],controller_->resolve_target(whole,ids[found-1]),false);request["redirect_id"]=ids[found-1];}
+        }
+        action("replay_measurement",request);
+      },std::move(fields),"measurement_replay");return;
+    }
+    auto boolean=[&](const char* key){if(!p.contains(key))return false;if(!p.at(key).is_boolean())throw std::invalid_argument("Measure replay choices must be boolean");return p.at(key).get<bool>();};
+    const bool rebind=boolean("rebind"),restore=boolean("restore_settings");
+    auto id=[&](const char* key,std::uint64_t fallback){if(!p.contains(key))return fallback;const auto& value=p.at(key);if(!value.is_number_integer() || (!value.is_number_unsigned() && value.get<std::int64_t>()<=0) || (value.is_number_unsigned() && !value.get<std::uint64_t>()))throw std::invalid_argument("Measure replay requires a positive image ID");return value.get<std::uint64_t>();};
+    const auto sourceId=id("document_id",rebind?document()->id:decoded.source.document_id);
+    if(!rebind && sourceId!=decoded.source.document_id)throw std::invalid_argument("Changing Measure source requires explicit rebind");
+    if(document()->id!=sourceId)throw std::invalid_argument("Activate the recorded image or explicitly rebind Measure");
+    const auto source=controller_->resolve_target({},sourceId);validateMeasurementReplaySource(decoded.source,source,rebind);
+    std::uint64_t samplingId=0;
+    if(decoded.redirect){
+      if(rebind && !p.contains("redirect_id"))throw std::invalid_argument("Explicit Measure rebind needs a sampling image");
+      samplingId=id("redirect_id",decoded.redirect->document_id);if(!rebind && samplingId!=decoded.redirect->document_id)throw std::invalid_argument("Changing sampling image requires explicit rebind");
+      TargetRequest whole;whole.roi=RoiPolicy::WholePlane;const auto sampled=controller_->resolve_target(whole,samplingId);validateMeasurementReplaySource(*decoded.redirect,sampled,rebind);
+    }else if(p.contains("redirect_id"))throw std::invalid_argument("Recorded Measure has no sampling redirect");
+    const auto authored=measurementSettingsJson(decoded.settings);if(!restore && measurementSettingsJson(settings())!=authored)throw std::invalid_argument("Measurement settings differ; explicitly restore saved settings in review");
+    // Configuration restoration is a visible requested action; no hidden temporary
+    // override, and no source/row/history publication occurs before worker guards.
+    if(restore)updateSettings(authored,false);impl->measurementRedirectDocument=samplingId;
+    impl->startMeasurement(documentById(sourceId));return;
+  }
   if(name=="measurement_redirect") {
     if(!p.contains("document_id") || !p.at("document_id").is_number_integer() ||
         (p.at("document_id").is_number_integer() && !p.at("document_id").is_number_unsigned() && p.at("document_id").get<std::int64_t>()<0))
@@ -9347,6 +9421,7 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (name == "save_workflow") {
+    if(workflow.is_array())for(const auto& step:workflow)if(isMeasurementRecord(step))(void)decodeMeasurementRecord(step);
     if(workflow.is_array()&&workflow.size()==1&&workflow[0].value("schema",std::string{})=="imagejxx.native-workflow-program"){
       auto cap=std::size_t(settings().integer("processing_memory_mb"))*1048576;if(!cap)cap=256*1048576;
       auto text=native_workflow_program_from_record(metadataObjectFromJson(workflow[0]),desktop_workflow_program_limits(cap)).json();
@@ -9368,6 +9443,7 @@ void Window::action(const std::string &name, const Json &p) {
     if (get(root, "format") != "imagejxx-workflow" ||
         get(root, "version") != 1 || !get(root, "steps").is_array())
       throw std::invalid_argument("Invalid workflow file");
+    for(const auto& step:root.at("steps"))if(isMeasurementRecord(step))(void)decodeMeasurementRecord(step);
     workflow = get(root, "steps");
     return;
   }
@@ -10670,7 +10746,7 @@ void Window::poll() {
             current.display().c!=captured.display().c ||
             current.display().crosshair[2]!=captured.display().crosshair[2])))throw RevisionConflict();
         const auto overlayBytes=completed.overlay_plan?completed.overlay_plan->working_bytes():0;
-        if(RenderMemory::add(RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command)),completed.table_workspace),overlayBytes)>impl->processingCap())
+        if(RenderMemory::add(RenderMemory::add(RenderMemory::add(RenderMemory::add(command.estimate().working_bytes,captured_measurement_row_bytes(command)),completed.table_workspace),overlayBytes),completed.measurement_record_bytes)>impl->processingCap())
           throw std::invalid_argument("Analysis exceeds current processing memory budget");
         if(completed.analysis_profile) {
           auto& profile=*completed.analysis_profile;
@@ -10687,6 +10763,7 @@ void Window::poll() {
           impl->status.swap(status);return;
         }
         if(!completed.overlay_plan)throw std::logic_error("Measurement overlay capture is missing");
+        if(completed.recorded!=recording || (completed.recorded && (!workflow.is_array() || workflow.size()!=completed.measurement_workflow_size)))throw RevisionConflict();
         if(command.options().measurement==TargetMeasurementMode::Selection && captured.data().selection) {
           const auto options=completed.overlay_plan->options();
           if(impl->preferenceState.settings.boolean("measurement_add_to_overlay")!=options.enabled)throw RevisionConflict();
@@ -10698,12 +10775,14 @@ void Window::poll() {
         auto* array=OutputPublication::reserve(results,completed.analysis_rows.size(),"Results");
         impl->measurementRowMemory.reserve(impl->measurementRowMemory.size()+1);
         std::string status="Measurement complete";
+        OutputPublication recordedOutput(results,workflow,{},"",completed.recorded?metadataJson(completed.record):Json{});
         controller_->validate_target(command.target());command.validate_source(nativeSnapshot());
         static_assert(std::is_nothrow_move_constructible_v<Json>);
         if(completed.overlay_transaction)controller_->commit(*completed.overlay_transaction);
         for(auto& row:completed.analysis_rows)array->push_back(std::move(row));
         impl->measurementRowMemory.push_back(std::move(impl->measurementPendingMemory));
         impl->numericState.swap(*completed.table_state);
+        recordedOutput.publish();
         std::swap(impl->numericStateMemory,completed.table_memory);
         impl->status.swap(status);return;
       }
@@ -12300,6 +12379,13 @@ void Window::Impl::recorder() {
       observeControl("workflow.contrast_apply."+std::to_string(i)+".replay");ImGui::SameLine();
       if(ImGui::Button("Rebind Apply..."))guard([&]{owner.action("show_contrast_apply_rebind",{{"record",step}});});
       observeControl("workflow.contrast_apply."+std::to_string(i)+".rebind");
+      ImGui::EndDisabled();ImGui::PopID();continue;
+    }
+
+    if(isMeasurementRecord(step)) {
+      ImGui::Text("%zu. Captured Measure",i+1);ImGui::PushID(static_cast<int>(i));ImGui::BeginDisabled(owner.busy() || owner.documents_.empty());
+      if(ImGui::Button("Replay Measure"))guard([&]{owner.action("replay_measurement",{{"record",step}});});observeControl("workflow.measurement."+std::to_string(i)+".replay");ImGui::SameLine();
+      if(ImGui::Button("Rebind / measurement settings..."))guard([&]{owner.action("show_measurement_rebind",{{"record",step}});});observeControl("workflow.measurement."+std::to_string(i)+".review");
       ImGui::EndDisabled();ImGui::PopID();continue;
     }
     if(isDisplayExportRecord(step)) {
@@ -14652,7 +14738,7 @@ void Window::Impl::dialogs() {
     ImGui::EndPopup();
   }
   if(!dialog.open)dialog.calibrationCapture.reset();
-  if(!dialog.open && dialog.id=="display_export_replay") {
+  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay")) {
     dialog.submit={};dialog.values=Json::object();dialog.schema=Json::array();dialog.text.clear();dialog.controls=Json::object();dialog.id.clear();
   }
   if(!dialog.open && dialog.id=="selection_enlargement"){dialog.enlargementSource.reset();dialog.submit={};}

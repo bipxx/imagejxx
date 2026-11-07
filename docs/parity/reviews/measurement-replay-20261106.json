@@ -1,0 +1,570 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T04a.3 Measure recording and explicit source/sampling rebind",
+  "started": "2026-11-06",
+  "checkpoint_date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G009",
+    "G066",
+    "G071",
+    "G085",
+    "G089"
+  ],
+  "implemented": "Typed private C++ Measure record with strict bounded V1 draft grammar; captured settings/source/sampling context,atomic recorder+rows+overlay publication,Save/Load validation,existing Run/Replay/Rebind form/actions. Existing recorder/job owner reused; no core processing/public workflow variant/dependency/controller added.",
+  "verified": {
+    "installed_python_passes": 17,
+    "api_cases": 14,
+    "actual_python_replay_workflow": 1,
+    "native_capture_original_output_reader": 1,
+    "affected_m4_python_regression": 1,
+    "native": "Metadata-only010andcorrected029zero-readrecordcontrols; actual056sharedworkflow",
+    "host_comparison": {
+      "state": "matched_actual_measurement_replay_hosts",
+      "rows": 4,
+      "visible_cells": 72,
+      "review_refusals": [
+        "source_pose",
+        "sampling_pose",
+        "source_threshold",
+        "sampling_threshold",
+        "global_calibration",
+        "active_owner"
+      ],
+      "job_refusals": [
+        "cancel",
+        "record_toggle",
+        "workflow_clear",
+        "source_pose",
+        "sampling_threshold",
+        "global_calibration",
+        "settings",
+        "results_clear",
+        "sampling_close",
+        "source_close"
+      ],
+      "source_sha256": [
+        "c71be4f0e68c82d03609ef18a73a8c609623123a2e2bbe506efab93622bce8b4",
+        "52acc34b7548dfa784c673080fd5cd42ccfe7ead27eb2687f980a1201ec3b408"
+      ],
+      "csv_sha256": "00746db7dbfa20aa51147a054053e4d6af88ac50983013808e69718d2b4fa67c",
+      "normalization": "Only recordedsource/redirect document_ids and rowsRedirectdocument after actualclickedowneridentityproof; allotherraw/table/CSV/overlay/cells unchanged"
+    },
+    "scope": "Exactcurrentconsumer/coreinputs andoriginalM4corpus; no new processingkernel/publicSDK/thirdpartydependency. Prior numerical/nativeSDK/Linux evidence reused forunchangedcontracts; remainingplatformreleasegatesopen."
+  },
+  "identities": [
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2",
+      "bytes": 84013
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5",
+      "bytes": 8688128
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "sha256": "03f1c9c9439d69ec9ed007fc32c0c3dcf9ccadd54fac0ecf7a67f5471d3710a4",
+      "bytes": 21324800
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "sha256": "dae7cd46ebbda9a302cf84362206f14f3ab2fa3045d0600143e30da512b39631",
+      "bytes": 20798976
+    }
+  ],
+  "process_receipts": [
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\build006.process.json",
+      "state": "exited",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "seconds": 2.75
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\build008.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 47.57799999997951
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\cpp015.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 1.4370000001508743
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\install011.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.14000000013038516
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\install012.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.4690000000409782
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\native010.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.125
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\python013.process.json",
+      "state": "exited",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "seconds": 1.375
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\python014.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 2.7660000000614673
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\retain018.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.3440000000409782
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\retain019.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.2190000000409782
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\storage005.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 7.5
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\storage009.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 6.516000000061467
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\storage021.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 8.485000000102445
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/build028.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 40.902076500002295
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/native029.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.1577131999656558
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/link031.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 11.978632199810818
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/install032.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.37669990002177656
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/install033.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.6901555000804365
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/python035.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 2.4816311998292804
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/retain037.process.json",
+      "state": "exited",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "seconds": 0.11634840001352131
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/retain039.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.22159550013020635
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/retain040.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.15807819995097816
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/build049.process.json",
+      "state": "exited",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "seconds": 4.920993900159374
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/build051.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 72.19777339999564
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/cpp053.process.json",
+      "state": "exited",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "seconds": 0.3602058000396937
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/build055.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 17.269088899949566
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/cpp056.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 1.0887005000840873
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/link058.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 10.644303299952298
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/install059.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.1431411998346448
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/install060.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.13837480009533465
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/origins061.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.29572419985197484
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/python062.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 3.1865462998393923
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/retain066.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.24034109991043806
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/retain067.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.1548006997909397
+    }
+  ],
+  "integration": "Scoped accepted inbothWindowsImGuihosts after061freshinstalledbyte/originchecks and06217cases. Actual4rows/72visiblecells,table/CSV/overlays/reopen and6review/10recorded-jobrefusalsmatch063. Nofullmanager/Profile/chained/platformreleaseclaim.",
+  "architecture": {
+    "observed": "NativeWorkflowProgram/prepare_native_workflow has one detached source; redirected Measure requires two live Application targets. Existing display-export recorder already uses typed command-family dispatch and same Save/Load/Replay controls.",
+    "decision": "Use typed Measure command grammar in existing analysis_measurement module plus existing recorder/ask/async publication owner. Do not add fifth core program variant plus generic external-source binding solely for this consumer. Preserve same user-visible exit. Chained general-program/manager/Profile replay remains T04a.3, not closed.",
+    "rebind": "Default replay validates recorded owners and relevant pixel/selection/pose/threshold/calibration/label context. Explicit rebind takes selected current source selection/view/threshold/calibration and explicitly selected sampling owner; original saved record immutable. Relevant-context guard must allow the recording action own added-overlay metadata/history.",
+    "settings": "Review explicitly offers restore authored measurement settings; direct replay must explicitly request restoration or require current consumed settings match. Restoration is a separate visible configuration action, no temporary hidden global override; source/rows/history stay atomic. Freeze exact chosen semantics before integration tests."
+  },
+  "cleanup": {
+    "scratch_absent": true,
+    "consumer_groups_retired": 9,
+    "diagnostic_groups_retired": 1,
+    "source_bytes_removed": 1909418,
+    "retained_archive_bytes": 155167,
+    "blockers": [],
+    "decisions": [
+      "entry.json retirement020",
+      "entry.json retirement041",
+      "entry.json retirement068"
+    ]
+  },
+  "retained": {
+    "archives": [
+      {
+        "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/evidence/phase-api018.zip",
+        "bytes": 49648,
+        "sha256": "d80574c3e4383436494917902b3fea64d010b8ac4d41ebe9a997668b43df81a6",
+        "verify_receipt": "retain019.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/evidence/phase-binding039.zip",
+        "bytes": 32144,
+        "sha256": "95720e9db550d24921a697d817ce747ccd0484195c3665c927da363375e3d10b",
+        "verify_receipt": "retain040.json"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/measurement-replay-20261106/evidence/phase-ui066.zip",
+        "bytes": 73375,
+        "sha256": "b7c23c43a6ba24b0c7e82661d612b707343225c68718443da7fa110ba6863494",
+        "verify_receipt": "retain067.json"
+      }
+    ],
+    "scope": "Losslessnecessarycaptures/receipts/failurediagnostics only; no compiler/runtime/SDKarchives. Failed013longpytest-IDsetup and053physicalcomboclick preserved. Old retired paths are unavailable outside retainedarchives,notmissingproof warranting reruns."
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/measurement-replay-entry005.json",
+    "before_known_bytes": 7525016740,
+    "after": ".tmp/manual-workflow-verification/measurement-replay-after-ui-retirement069.json",
+    "after_known_bytes": 7529103880,
+    "net_known_growth_bytes": 4087140,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "allocation_bytes": 268435456,
+    "last_physical_free_bytes": 25103523840,
+    "scope": "Complete normalized scanner;unknownbytesremainunknown. Snapshotafterretirement precedessmallcloseoutprose. Physicalfreechangesincludeunrelateddiskactivity; actualtaskretirement1909418B,notphysicaldiskdelta."
+  },
+  "waste_review": {
+    "decision": "Fixnow:existingtyped-familydispatchavoidsgenericmulti-ownerprocessingprogram; fixed-storageborrowedinputfingerprintallowsownoutputwhileguardinginputs; existingformterminalcleanupreleasesleases. ExactM4fixtureextractionsharesaccepteddata. No newrunner/controller/cache/environment/dependency. Nextorderedmanagerrecordingusesexistingowner.",
+    "measured_build_seconds": 208.241,
+    "compiler_failure_retries": 2,
+    "observed_failures": "006missingSettingsinclude2.75s;049extraEOFbrace4.921s;053samplingreportedcenterwasexternal-labelarea0.360s. Correctedscopedinputsbeforesamereuse,failedcapturespreserved.013longparameterIDsetupfailure requiredshortstableIDs,notproductchange.037retentionabsolutepathsrefused;039relativepathretrypassedwithoutproductrerun.",
+    "verification_reuse": "No unchangednumerical/SDK/Linuxcampaign; test-ID-only fixreusedtenpassedcases. Separate17currentcases062 requalifychangedcontract/formcleanup andnewactualroute.17.269snativeprobe-onlyretry preceded10.644sconsumerrelink.",
+    "deferred": "Fullmanager/Profile/chained,broaderchooserusability T04a.3;non-areaRECT/COM/differing-XYT06/T04,foreign/brush/pointwiseT08,tableT09,platform/commercialT12/T14/T00. No fullaudit/speculativerewrite.",
+    "cleanup": "All10terminalgroupssafelyretired afterrequiredreview;155167Bverifiedarchives preserveevidence. Activecompilerproductsretained,fullbudgetunknown.",
+    "scope": "Build/checkcostsnotimageprocessingperformanceresults; no speed-superiorityclaim."
+  },
+  "remaining_owners": {
+    "T04a.3": "Wider manager/Profile/liveplot/chained workflow recording/replay",
+    "T06/T04": "Non-areaRECT/COM,differingXY,unsupported constructors/types",
+    "T08": "Foreign/brush/pointwise/interchange",
+    "T09": "Full table AUTO/string/edit/sort/filter/import",
+    "T12/T14/T00": "Broader UI/platform/commercial release"
+  },
+  "task_record": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\entry.json",
+  "original_api_phase": {
+    "verified": {
+      "current_new_cases": 12,
+      "affected_python_regression": 1,
+      "total_distinct_python_passes": 13,
+      "reuse": "013passes three source/self/foreign modes plus seven short malformed cases;014passes fixed-ID text-limit,closed-owner/load and M4 actual regression. Parameter-ID-only byte reversal matches original prebuild source SHA,so test bodies/inputs unchanged.",
+      "native": "010 zero-provider-read grammar/context/own-overlay/composite/rebind controls pass",
+      "cpp_regression": "015 existing M4 actual control workflow passes;016compares both hosts110rows/49visiblecells/table/CSV/overlays after redirect control proof",
+      "remaining": {
+        "review_time_context": "Before actual-host qualification,freeze/revalidate selected source and sampling contexts through the existing MeasurementRecordSource model. Current form callback checks source Data/TCZ but does not pin sampling/threshold/calibration state when the review opens.",
+        "repeat_own_overlay": "API phase proved one default replay after a recorded Add-to-overlay by anticipating its initial metadata increment; its next default replay currently refuses its own second overlay metadata change. This is a usability gap in the active outcome,not completion. Replace revision-only metadata binding with bounded relevant-input/context protection that permits repeated own overlay outputs while still refusing pixel/selection/calibration/label/threshold changes. Reuse existing metadata/control admission or hashing primitives if available;no generic source registry/controller.",
+        "decision": "Keep both gaps in current T04a.3 increment and correct before claiming actual both-host Record/Replay/Rebind acceptance. Preserve these API evidence inputs and failed/superseded contracts; no unchanged campaign merely to refresh counts."
+      }
+    },
+    "identities": [
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+        "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2",
+        "bytes": 84013
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+        "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5",
+        "bytes": 8688128
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+        "sha256": "25aa5114d6c59fa370d79b9fae2cc1bba7eabbe5ff8b995831466e7ac7ef81b7",
+        "bytes": 21270016
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+        "sha256": "c61635cfbdc49a793199a5317e23e9a237d576f86668846b6922e3592d02ba53",
+        "bytes": 20793344
+      }
+    ],
+    "draft_binding": "Current exact revision binding anticipates initial own-overlay commit; repeated own-overlay replay currently needs rebind and must be improved in this active increment. Saved command grammar is unpublished WIP,not a released portable contract.",
+    "cleanup": {
+      "scratch_absent": true,
+      "consumer_groups_retired": 4,
+      "diagnostic_group_retired": 1,
+      "source_bytes_removed": 1100447,
+      "retained_archive_bytes": 49648,
+      "blockers": []
+    },
+    "retained": {
+      "archive": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\evidence\\phase-api018.zip",
+      "sha256": "d80574c3e4383436494917902b3fea64d010b8ac4d41ebe9a997668b43df81a6",
+      "verified_receipt": ".tmp\\manual-workflow-verification\\measurement-replay-20261106\\retain019.json",
+      "diagnostics": "Long-ID pytest failure log/JUnit moved underdiagnostics017 then losslessly archived;originalroot paths retired. Mapping and hashes in task retention017."
+    },
+    "storage": {
+      "before": ".tmp/manual-workflow-verification/measurement-replay-entry005.json",
+      "before_known_bytes": 7525016740,
+      "after": ".tmp/manual-workflow-verification/measurement-replay-after-phase021.json",
+      "after_known_bytes": 7527086501,
+      "net_known_growth_bytes": 2069761,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "allocation_bytes": 268435456,
+      "last_physical_free_bytes": 25603641344,
+      "scope": "Complete normalized scanner,unknown paths not zero;after snapshot precedes this small prose checkpoint."
+    },
+    "waste_review": {
+      "decision": "Fix now: direct Settings header include,short stable pytest IDs and lease/capture API errors before expensive retry. Reuse ten passed bodies after ID-only fix; avoid core/public variant fanout and unchanged numerical/SDK campaigns. Next: correct own-output stale binding and review source guards in same increment,then batch actual-host probe changes before affected build.",
+      "build_seconds": 50.328,
+      "compiler_retries": 1,
+      "observed_failure": "006missing Settings declaration2.75s;008desktop build47.578s;013Windowspytest parameter-ID environment failure before two remaining cases;014only unexecuted checks passes. Full failed diagnostics retained.",
+      "scope": "Native/desktop test timing is verification cost,not processing-speed evidence. All phase scratch retired;task itself still active."
+    }
+  },
+  "corrected_api_phase": {
+    "verified": {
+      "current_new_cases": 12,
+      "affected_python_regression": 1,
+      "total_distinct_python_passes": 13,
+      "native": "029 corrected binding controls pass withzero provider reads; repeated annotations and title/labels/calibration/pose/composite guards.",
+      "python": "035 all12Measure record cases plus existing M4 actual-host Python regression pass under freshly installed corrected desktop. Three no/self/foreign redirect modes replay same immutable record repeatedly then explicitly rebind.",
+      "receipts": [
+        ".tmp/manual-workflow-verification/measurement-replay-20261106/native029.process.json",
+        ".tmp/manual-workflow-verification/measurement-replay-20261106/python035.process.json"
+      ],
+      "remaining": [
+        "Actual Record/Replay/Rebind/Run/settings/source choices in both hosts",
+        "Actual review-time selected-source/sampling/threshold/calibration guards",
+        "New recorded-job cancel/stale/record-toggle/clear/owner-close/resource qualification",
+        "Final source review,installed identities,retirement and waste reconciliation before scoped acceptance"
+      ]
+    },
+    "identities": [
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+        "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2",
+        "bytes": 84013
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+        "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5",
+        "bytes": 8688128
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+        "sha256": "54f99f8831d8df1f650620037a048afe8a4a97cde9bf78b1402e09230998cdb7",
+        "bytes": 21277184
+      },
+      {
+        "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+        "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+        "sha256": "e6b311c86bf5438b258a01eebab51f8de834820d6876498be6f1458a9a5c7975",
+        "bytes": 20800512
+      }
+    ],
+    "draft_binding": "Unpublished V1 requires a64lowercasehex input_fingerprint. Fixed-storage existing SHA256 streams borrowed title/properties except measurement_overlay output/extensions/layout/local+effective spatial calibration;1MiB/65536nodes/128depth limits. Compare pixel/selection revisions,owners,shape/type,TCZ,threshold,composite/calibration contexts; metadata revision remains diagnostic. No full metadata copy/provider read/output-overlay pin. Historical phase018 evidence retains prior grammar.",
+    "cleanup": {
+      "scratch_absent": true,
+      "groups_retired": [
+        "native029",
+        "python035"
+      ],
+      "source_bytes_removed": 230739,
+      "archive_bytes": 32144,
+      "archive_sha256": "95720e9db550d24921a697d817ce747ccd0484195c3665c927da363375e3d10b",
+      "blockers": []
+    },
+    "retained": {
+      "archive": ".tmp/manual-workflow-verification/measurement-replay-20261106/evidence/phase-binding039.zip",
+      "sha256": "95720e9db550d24921a697d817ce747ccd0484195c3665c927da363375e3d10b",
+      "verified_receipt": ".tmp/manual-workflow-verification/measurement-replay-20261106/retain040.json",
+      "prior_api": "Original phase018archive and019verify retained unchanged; seeoriginal_api_phase"
+    },
+    "storage": {
+      "before": ".tmp/manual-workflow-verification/measurement-replay-before-native027.json",
+      "before_known_bytes": 7527174267,
+      "after": ".tmp/manual-workflow-verification/measurement-replay-after-binding042.json",
+      "after_known_bytes": 7527641088,
+      "net_known_growth_bytes": 466821,
+      "unknown_subtrees": 214,
+      "budget_verified": false,
+      "allocation_bytes": 268435456,
+      "last_physical_free_bytes": 11716034560,
+      "scope": "Complete normalized scanner;214inaccessible subtrees remainunknown. Physical free measured before11.979slink; not processing-speed evidence."
+    },
+    "waste_review": {
+      "decision": "Fix now: input/output distinction using borrowed streaming hash avoids metadata copies or new owner registry. Native correctness gate first40.902s,then existing consumer relink11.979s; no compiler retry. Next batch actual-host probe and consumer edits. Defer manager/Profile/liveplot/chained replay to existing T04a.3owner.",
+      "checks": "native0.158s,installed13cases2.482s;6producer commands exit0cleanuptrue. Retention037 absolute-path refusal recorded,preserved; corrected039relative-path pack and040verify pass. No product rerun for receipt correction.",
+      "cleanup": "Two terminal groups230739B retired after review/hash verification;32144B archive,activecompiler products preserved. Full8GiBbudgetunverified.",
+      "scope": "Active increment checkpoint only; full task closeout still required."
+    }
+  },
+  "aspects": {
+    "implemented": "Typed V1 current-selection Measure record and existing Window/Python recorder/replay/rebind actions",
+    "verified": "17selectedinstalledPythonchecks plusmetadata-onlynativecontrols; originalM4corpusreused forchangedoutputconsumer",
+    "integrated": "ActualC++/PythonWindowsImGuiRecord/Replay/Run/settings/source/sampling,Copy/SaveCSV/workspace/history and6review/10recorded-jobrefusals",
+    "release_ready": false
+  },
+  "scope": "Current-selection/redirect finite scalar/equal-XY supported-area workflow,including no/self/foreignsamplingAPI modes. Scopedincrementaccepted; fullT04a.3,all99families andfullImageJ/Fijigoal remainopen.",
+  "record_contract": "Typed V1 requires a64lowercasehex input_fingerprint. Fixed-storage existing SHA256 streams borrowed title/properties except measurement_overlay output/extensions/layout/local+effective spatial calibration;1MiB/65536nodes/128depth limits. Compare pixel/selection revisions,owners,shape/type,TCZ,threshold,composite/calibration contexts; metadata revision remains diagnostic. No full metadata copy/provider read/output-overlay pin. Historical phase018 evidence retains prior grammar.",
+  "source_sha256": {
+    "src/desktop/analysis_measurement.cpp": "e04c9971f285d6f68459418ff6bb8511d6c6f9749a2e65ad0d600e6697c52a0a",
+    "src/desktop/analysis_measurement.hpp": "61eaa51ca956fbad3f9d24e9543920487caf35e371a9d74665c37c2a3e334adb",
+    "src/desktop/window.cpp": "4b6f4d15e6127ee03044e884f32f62179cdef5146f0d032fd0e2dc9af291674f",
+    "src/desktop/effective_display_ui_probe.cpp": "76fb11c50973f5bcaf5ab8d2fd11231897ec0a2051fc46640ec3e28efe00d2c7",
+    "src/desktop/effective_display_ui_probe.hpp": "5cfedfaba42580a2da4ea6eb06799d125e4084d378498111414c8bc1e78c00e5",
+    "src/desktop/python.cpp": "836f51daf40dc17130475779aefcce4841209f99014c83ce8d4847e6de0e0467",
+    "tests/native/test_display_actions.cpp": "1c41bce51b08f431d65f46e500e46bf0b5ab0a09c9a8822dc68492beefcd0ac9",
+    "tests/python/test_measurement_replay.py": "57ded35fae3d4a6f329a3bc81d92c0c9c295c5a1951f1508d4a28dfecae3aef9"
+  },
+  "next_ready": "T04a.3 ordered ROI Manager Measure recording/rebind; detailedonlynextsuccessor inPLAN. ParentT04a.3stillopen."
+}

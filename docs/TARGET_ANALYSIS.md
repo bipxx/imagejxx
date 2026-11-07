@@ -1190,3 +1190,45 @@ the existing workflow program/review/publication owner and explicit target rebin
 preserving prior versions and owner/resource/cancellation guarantees. Full table
 editing, original delayed centroid-column allocation and wider variants above
 remain open.
+
+
+## Executable current-selection Measure recording
+
+The existing recorder now supports one typed `imagejxx.measurement-command`
+V1 intent for the scoped current-selection/redirect Measure workflow.
+[Both-Windows-host evidence](parity/reviews/measurement-replay-20261106.json).
+Use Workflow Record,Analyze Measure,then stop recording. Save/Load preserves
+that intent. Replay uses the recorded owners; Run or the row's review opens
+explicit source/settings choices. Select the current image and check rebind to
+adopt its current selection/view/threshold/calibration; redirected records also
+require an explicit sampling image. Default replay refuses changed inputs or
+closed owners. Rebinding leaves the original saved intent unchanged.
+
+`Window::action` and Python `Editor.action(name,json_text)` share
+`save_workflow`, `load_workflow`, `run_workflow`, `replay_measurement` and
+`show_measurement_rebind`. Direct replay requires `record`; optional booleans
+are `rebind` and `restore_settings`, with positive `document_id` and,for a
+redirected explicit rebind,`redirect_id`. Run supplies the single saved record.
+A replay starts the existing asynchronous measurement job; wait for completion
+before reading final rows. Form Apply errors preserve the review; Cancel closes
+without publishing. Record publication joins the existing guarded row/table/
+overlay publication rather than a dummy document edit.
+
+The record captures `measurements`, `measurement_precision`,
+`measurement_scientific`, `measurement_invert_y`, `measurement_nan_empty_cells`,
+`measurement_add_to_overlay`, `measurement_limit_to_threshold` and `reflex_angle`.
+Current choices must match unless restoration is explicitly requested. The
+review defaults restoration on and rebind off. Restoration is a visible
+configuration action and can remain applied if a later job fails; rows/source/
+history still publish atomically. Existing live non-replay presentation rules
+remain unchanged.
+
+The closed V1 parser bounds structure/text and validates shape,type,pose,
+threshold and settings. Relevant metadata uses a bounded streaming fingerprint;
+measurement overlays/presentation are output,so repeated annotation output
+alone does not invalidate a saved record. Pixel/selection revisions and explicit
+owner/pose/threshold/composite/calibration contexts remain guarded. Saved intent
+retains no live source,provider,job or plot. Unknown versions refuse. Review
+currently bounds256open images/title4096; fingerprinting bounds1MiB,65536nodes
+and128levels. Full manager/Profile/live-plot/chained recording stays T04a.3;
+non-area/type/constructor,table and platform/release residual owners are unchanged.
