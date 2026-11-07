@@ -1345,3 +1345,29 @@ Save/Open supports plot-only sessions. Runtime consumes the serialized extension
 rather than retaining a second array store; closing all detached windows releases
 their payloads. Unrelated extensions survive. Broader OS/ImGui layout geometry,
 source request replay, mixed chained workflows and release remain separate exits.
+
+## Ordered mixed recorded analysis replay
+
+[Scoped evidence](parity/reviews/mixed-replay-20261107.json) qualifies2..256
+Measure V1/manager V2/Profile V1 records on the existing creator-owned job lane.
+`action("run_workflow", rebind, restore_settings, document_id, redirect_id)`
+validates known grammar/bindings before effects, then advances only after matching
+job completion and full result/provider/lease cleanup. Default activates each
+exact declared source; explicit rebind fixes the selected source for the sequence
+and requires an explicit sampling image when redirected Measure consumes it.
+`restore_settings` maps to Measure settings or Profile sampling per step.
+Saved intent remains immutable; cancellation/refusal preserves earlier committed
+outputs, with no whole-sequence rollback promise.
+
+`Window::workflowReplayInfo() const` returns JSON; `_desktop.Editor` exposes
+readonly JSON `workflow_replay_info`, and optional Python UI returns a detached
+dict. Fields: `state` (idle/running/completed/canceled/failed), `completed`,
+`total`, 1-based `active_step` (0 on successful terminal), `job_id`, `error`.
+Busy spans the full sequence. Recorder mutation cancels continuation; real
+recorder controls disable while busy. Reentrant poll/wait during creator cleanup
+cannot publish another step or recursively drain provider retirement.
+
+Both actual Windows hosts qualify read-only review, source/sampling choices,
+settings restoration/refusal, active/terminal progress, Cancel, table/CSV/Profile
+and workspace behavior. Compatible export/editing/general chains, broader Profile
+and manager variants and supported-platform release remain separate owned gaps.

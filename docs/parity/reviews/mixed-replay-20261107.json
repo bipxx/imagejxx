@@ -1,0 +1,268 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T04a.3 ordered mixed recorded workflow replay",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G009",
+    "G066",
+    "G070",
+    "G071",
+    "G085",
+    "G089"
+  ],
+  "commands": [
+    "run_workflow",
+    "show_mixed_replay",
+    "replay_measurement",
+    "replay_profile",
+    "save_workflow",
+    "load_workflow"
+  ],
+  "scope": "Save/Load and run compatible ordered current-selection Measure, manager Measure and configured Profile sequence through existing replay/job/publication owners. Matching manual raw rows/table/plots/CSV/workspace in both hosts; explicit default/rebind/settings review, active-step outcome/cancel, immutable intent and prior successful publications. Other inspected incompatible families refuse before side effects and retain owners.",
+  "aspects": {
+    "implemented": "Bounded2..256-command private sequence in existing Window creator owner, existing MeasureV1/V2/ProfileV1 jobs/publication; no second engine, kernel, dependency or runtime.",
+    "verified": "121selected installed Windows tests pass in one9.383s run, including20newmixed cases and independently asserted actual host outputs; native creator-retirement control passes.",
+    "integrated": "Actual standaloneC++ and optionalPython Windows ImGui Record/Save/Clear/Load/Run/review/rebind/settings/cancel; rawrows/table/CopySaveCSV/Profile/workspace and active/terminal status.",
+    "release_ready": false
+  },
+  "contract": {
+    "api": "Window::workflowReplayInfo()const ->Json; _desktop.Editor.workflow_replay_info readonlyJSON; Python UI Editor.workflow_replay_info detacheddict. Existing action(run_workflow, rebind/restore_settings/document_id/redirect_id).",
+    "settings": [
+      "All existing measurementSettingsJson choices/reflex_angle",
+      "profile_samples",
+      "processing/render memory bounds"
+    ],
+    "binding": "Default each exact recordedsource; explicit selectedsource rebind, explicit redirected sampling selection, optional per-step savedsettings restoration. Savedintent immutable.",
+    "publication": "All known grammar/bindings checked before firsteffect; each existing job still validates capturedcontext. MatchjobID and wait full creatorcleanup before nextstep. Earliercompletedsteps remain committed; no sequence rollbackclaim.",
+    "lifecycle": "Stop atcancel/workflowmutate/recordtoggle/stale sampling/sourceclose. Disabledrecord controls whilebusy; reentrantpoll/wait safe duringproviderretirement, job/result/provider/memory released before nextstep.",
+    "bounds": "2..256commands; sum of existingmetadata estimates bounded byprocessingcap/8,4xlease; review<=256documents/title4096/summary65536 and measuredcontextallowance."
+  },
+  "verification": {
+    "process": "python029.process.json",
+    "passed": 121,
+    "new_mixed_cases": 20,
+    "exit_code": 0,
+    "cleanup_complete": true,
+    "elapsed_seconds": 9.382828899892047,
+    "native_report": "scratch/cpp023/case.json",
+    "python_report": "scratch\\python029\\pytest\\test_actual_python_mixed_repla0\\actual\\case.json",
+    "comparison": "Independent raw rows, visible table, statuses, Profile CSV, summary and source/history/zero-work/workspace outcomes equal after exact integer source/clone mapping, proved clicked sampling control first. Per-host readers independently require Copy==Save CSV, expected raw rows/curve and actual control identity. No float ID normalization.",
+    "remaining": "Other editing/export/native-program chains, broader Profile/manager/platform/commercial/release remain open."
+  },
+  "source_review": {
+    "reviewed": [
+      "MixedReplay lease before immutable payloads: reverse destruction releases payloads before admission",
+      "record count2..256 and byte caps; review256docs/title4096/summary65536 and context allowance",
+      "all known bindings/grammar preflight before effects; per-step existing source/settings/stale validation and publication remain authoritative",
+      "job ID match, advance after full job/result/document/memory cleanup, completed steps committed, cancel/workflow/record-toggle stop",
+      "poll reentrancy guard and wait return during creator publication; native013 source retirement proves no recursive drain",
+      "Window destructor cancels/waits current producer; dialog callback leases reset through existing close path",
+      "private additive status method and Editor binding; pure UI installed component and exact bytes verified"
+    ],
+    "decision": "No further product correction found for scoped sequence. Keep earlier failures; proceed to hash-retention and safe retirement using existing tool.",
+    "source_sha256": {
+      "src\\desktop\\window.cpp": "8ded61c407682925b1466f3a8323301016beb46bc84d4e2d169cbd8b7934bccf",
+      "src\\desktop\\window.hpp": "1cf003306711b1bf2386f5f5d55938c1ace2c1e0e8721417a1ea31b49c5ce372",
+      "src\\desktop\\python.cpp": "8bf33c53b69800bf30211cf7cd0e50a4770f08f9546a2c9a805dff5d453c4963",
+      "src\\imagejxx\\ui\\app.py": "2a6753fd74c6acd7fe9a38a626553edb74ce03dd82d3bf37b47988e35666fc66",
+      "src\\desktop\\effective_display_ui_probe.cpp": "773d3e62a991fda093c1a8321dffa6bb192643104a29f71a4bf6f71a3493de73",
+      "src\\desktop\\effective_display_ui_probe.hpp": "c7b34dca94671a635c7cb4b24e28584279dd5284cc0813408c7ed2c02949b5b6",
+      "tests\\native\\test_display_actions.cpp": "4acb2cb80ce6d4df74a802a6e37dd79a117629b5dcacde5f94f6a23161514d8c",
+      "tests\\python\\test_mixed_replay.py": "18bb18d06a877ed1aa398bebd6fd07c466a2d46b5fcfe850d1137d2d85dc3df7"
+    }
+  },
+  "installed_bytes": [
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "bytes": 8688128,
+      "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5"
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "bytes": 21630976,
+      "sha256": "480905044c808145db83b741d31ed342f1d374e8f09e55fe04d3b8a336fe11b0"
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "bytes": 20939264,
+      "sha256": "dc5a35f8bd75d83f775cc7ab86abb7b53704fd3d085a16a3e61c2ddbf75f95aa"
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "bytes": 84013,
+      "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2"
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\ui\\app.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py",
+      "bytes": 32259,
+      "sha256": "2a6753fd74c6acd7fe9a38a626553edb74ce03dd82d3bf37b47988e35666fc66"
+    }
+  ],
+  "runs": [
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/build005.process.json",
+      "exit_code": 1,
+      "elapsed_seconds": 688.8246551998891,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/build011.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 60.959820500109345,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/build016.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 39.77619290002622,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/build019.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 14.442007599864155,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/build022.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 13.134349500061944,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/build026.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 9.269950299989432,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/cpp014.process.json",
+      "exit_code": 1,
+      "elapsed_seconds": 0.4289323999546468,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/cpp017.process.json",
+      "exit_code": 1,
+      "elapsed_seconds": 3.5185795999132097,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/cpp020.process.json",
+      "exit_code": 1,
+      "elapsed_seconds": 0.5832615999970585,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/cpp023.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5994308998342603,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/install0270.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.29305940004996955,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/install0271.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.21474090008996427,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/install0272.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3168821001891047,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/native013.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.14941049995832145,
+      "cleanup_complete": true
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/python029.process.json",
+      "exit_code": 0,
+      "elapsed_seconds": 9.382828899892047,
+      "cleanup_complete": true
+    }
+  ],
+  "failures_and_corrections": {
+    "build005": "688.825s failed atnewprobe schedulername; necessary Window.hpp consumerfanout mostlycompiled and reused. CorrectedexistingfixtureApplication scheduler; build01160.960s. Notall688s wasted.",
+    "cpp014": "Explicit sampling combo center landed onlonglabel; concise local Samplingimage label fixesactualclick; build01639.776s. Genericcontrolgeometry residual T12.",
+    "cpp017": "One-shot workerhook incorrectly treatedaspersistent; inspect std::exchange and usefirst-jobgate+creatorstepcount. Probe-onlynativebuild01914.442s.",
+    "cpp020": "Reopenedfixture hadno persistedsettingsfile, correctlyusedfactoryCSVcolumns. Persistinitialfixturechoices; nativebuild02213.134s.",
+    "origin_probes": "Reuseddependency NumPypath initiallyomitted, then privateprobe checkedonmodule ratherthanEditor. Correctinstalledorigins/method proofwithoutproductrebuild.",
+    "retention": "032omittedrootpreferencesfile; packfailedbeforearchive.033internal verification returnedwithoutCLIreceipt; deletioncheckpointstopped. CLI035persistedverification,036retiredafterlivehashchecks. No prematuredeletion."
+  },
+  "cleanup": {
+    "state": "retired",
+    "groups": [
+      "cpp014",
+      "cpp017",
+      "cpp020",
+      "cpp023",
+      "native013",
+      "python029"
+    ],
+    "additional_file": "mixed-replay-preferences.json",
+    "source_bytes": 6254408,
+    "file_count": 259,
+    "archive": {
+      "bytes": 922973,
+      "path": ".tmp/manual-workflow-verification/mixed-replay-20261107/evidence033.zip",
+      "sha256": "18d1732313b566dc54bc98d1e11747a03aed6ab98bb00cb2e741fe87d5d53086"
+    },
+    "source_absent": true,
+    "retained": "All process/log and failed032 receipts, verify035/artifact/manifest outside scratch; active cache/runtime preserved."
+  },
+  "retained_evidence": {
+    "task_entry": ".tmp/manual-workflow-verification/mixed-replay-20261107/entry.json",
+    "manifest": ".tmp/manual-workflow-verification/mixed-replay-20261107/evidence033.manifest.json",
+    "verify_receipt": ".tmp/manual-workflow-verification/mixed-replay-20261107/verify035.json",
+    "archive": {
+      "bytes": 922973,
+      "path": ".tmp/manual-workflow-verification/mixed-replay-20261107/evidence033.zip",
+      "sha256": "18d1732313b566dc54bc98d1e11747a03aed6ab98bb00cb2e741fe87d5d53086"
+    },
+    "local_only": true
+  },
+  "storage": {
+    "entry_known_bytes": 7539058944,
+    "before_retirement_known_bytes": 7547810152,
+    "after_retirement_known_bytes": 7543004765,
+    "known_net_growth_bytes": 3945821,
+    "inaccessible_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_at_closeout_bytes": 9163898880,
+    "scope_snapshots": [
+      ".tmp/manual-workflow-verification/mixed-replay-entry004.json",
+      ".tmp/manual-workflow-verification/mixed-replay-before-retire031.json",
+      ".tmp/manual-workflow-verification/mixed-replay-after-retire037.json"
+    ],
+    "normal_budget_bytes": 8589934592,
+    "bounded_incremental_allocation_bytes": 268435456
+  },
+  "waste_review": {
+    "fix_now": "Reuse existing continuation/job/status; native-first probe corrections thenone9.270s Python/applink. Stable statusAPI avoids anotherheaderdeclaration percommand. Retain259fileslosslessly922973B and retire6groups/preferences. Correctstale canonicalcoverage/nextlinks inplace.",
+    "defer": "T12 generic longlabelcombo groupcenter/framegeometry: revisitwithanotherdemonstratedconsumer. T04a.3 compatibleediting/export chains; existing fullProfile/manager/table/platformowners unchanged.",
+    "no_action": "No extra scheduler/controller/registry/runner/ledger/cache/env; no unchangedgreen campaign repeated aftertest/probecorrections. Fullstoragebudgetunverified, notcompliantfromknownbytes."
+  },
+  "remaining": [
+    "Compatible editing/export/native-program/generalmixed replay andBatch",
+    "Workflowediting/reorder/disable andbroader source/type/ProfileZtime/thickcurved/managerMultiMeasure",
+    "Fulltable/point/foreign/differingXY/constructorvariants with existingowners",
+    "Supportedplatform/macOS/LinuxUI/commercialdistribution/performance/release exits"
+  ],
+  "next": "T04a.3 compatible analysis and captured display-export chain; retain editing/nativeprogram/Batch owners, qualify source-changingedit lineage separately."
+}

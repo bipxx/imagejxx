@@ -7,6 +7,7 @@
 #include "plot_snapshot_ui_probe.hpp"
 #include "generic_plot_payload.hpp"
 #include <cstring>
+#include <atomic>
 #include <imagejxx/measurement_overlay.hpp>
 #include <imagejxx/channel_display.hpp>
 #include <imagejxx/manual_threshold.hpp>
@@ -580,8 +581,45 @@ void plotWorkspaceCodecCases(const std::filesystem::path& root) {
   refuses([&]{decodePlotWorkspace(record.value,memory,std::numeric_limits<std::uint64_t>::max());});
   write(root/"summary.json",{{"state","observed"},{"kinds",4},{"windows",5},{"shared_payload",true},{"exact_uint64_csv",true},{"ieee_words",true},{"plot_only_native_session",true},{"malformed_cases",9},{"budget_refusal",true},{"provider_reads",0}});
 }
+void mixedReplayRetirementCase(const std::filesystem::path& root) {
+  check(!std::filesystem::exists(root),"Fresh mixed retirement output required");std::filesystem::create_directories(root);
+  Window window((root/"preferences.json").u8string());
+  struct Observed {Window* window;std::thread::id creator;int calls=0;bool owner_thread=false,busy=false;std::string error;};
+  auto observed=std::make_shared<Observed>();observed->window=&window;observed->creator=std::this_thread::get_id();
+  struct Provider final:PlaneSource {
+    std::shared_ptr<Observed> observed;bool armed=false;
+    explicit Provider(std::shared_ptr<Observed> state):observed(std::move(state)){}
+    DatasetShape shape()const override{return {1,1,1,2,3,1};}
+    PixelType pixel_type()const override{return PixelType::UInt8;}
+    std::shared_ptr<const Image> read_plane(PlanePosition)const override {auto plane=std::make_shared<Image>(3,2,1,PixelType::UInt8);plane->pixels={0,1,2,3,4,5};return plane;}
+    ~Provider() override {
+      if(!armed)return;++observed->calls;observed->owner_thread=std::this_thread::get_id()==observed->creator;
+      try {observed->busy=observed->window->busy();observed->window->poll();observed->window->wait();(void)observed->window->workflowReplayInfo();}
+      catch(const std::exception& error){observed->error=error.what();}
+    }
+  };
+  auto provider=std::make_shared<Provider>(observed);auto owner=std::make_shared<imagejxx::Document>(Dataset(provider));owner->select(Selection("line",{{0,0},{2,1}}));window.addVirtualDocument(owner);
+  window.recording=true;window.action("measure");window.wait();window.action("profile");window.wait();window.recording=false;
+  check(window.error().empty() && window.workflow.size()==2,"Retirement fixture did not record two commands");const auto rows=window.results;
+  window.action("run_workflow",{{"restore_settings",true}});const auto until=std::chrono::steady_clock::now()+std::chrono::seconds(3);
+  while(window.jobInfo() && window.jobInfo()->state!=JobState::Ready && std::chrono::steady_clock::now()<until)std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  check(window.jobInfo() && window.jobInfo()->state==JobState::Ready,"Retirement fixture did not reach Ready");
+  provider->armed=true;std::weak_ptr<Provider> weak=provider;window.closeDocument(owner->snapshot().id(),true);owner.reset();provider.reset();
+  check(!weak.expired(),"Provider capture retired before controlled creator cleanup");window.wait();
+  check(weak.expired() && observed->calls==1 && observed->owner_thread && observed->busy && observed->error.empty(),"Mixed capture retirement did not re-enter safely on its creator");
+  const auto outcome=window.workflowReplayInfo();check(outcome.at("state")=="canceled" && outcome.at("completed")==0 && outcome.at("active_step")==1 && window.results==rows && !window.busy(),"Retirement advanced or discarded mixed output");
+  check(window.renderMemoryInfo().at("working_bytes")==0,"Retirement leaked mixed staging");
+  write(root/"summary.json",{{"state","observed"},{"provider_retired",weak.expired()},{"owner_thread",observed->owner_thread},{"reentrant_poll_wait",observed->error.empty()},{"busy_during_retirement",observed->busy},{"outcome",outcome}});
+}
 } // namespace
 int main(int argc,char **argv){try{
+  if(argc==3 && std::string(argv[2])=="--mixed-replay-retirement"){mixedReplayRetirementCase(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
+
+  if(argc==3 && std::string(argv[2])=="--mixed-replay") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"mixed-replay-preferences.json").u8string());
+    imagejxx::desktop::mixedReplayUiCase(w,"imgui_cpp",argv[1]);return 0;
+  }
+
   if(argc==3 && std::string(argv[2])=="--plot-workspace") {
     Window w((std::filesystem::u8path(argv[1]).parent_path()/"plot-workspace-preferences.json").u8string());
     imagejxx::desktop::plotWorkspaceUiCase(w,"imgui_cpp",argv[1]);return 0;

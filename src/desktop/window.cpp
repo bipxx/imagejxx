@@ -1372,6 +1372,21 @@ struct Window::Impl {
   Json jobStep;
   bool jobPreview = false, jobSkip = false;
   std::atomic<bool> cancelled{false};
+  enum class MixedReplayState {Idle,Running,Completed,Canceled,Failed};
+  struct MixedReplay {
+    RenderMemory::Lease memory;
+    Json steps,parameters;
+    std::size_t completed=0;
+    std::uint64_t job_id=0;
+    const char* stop_error=nullptr;
+  };
+  std::optional<MixedReplay> mixedReplay;
+  std::atomic<bool> mixedCancelRequested{false};
+  bool mixedDispatch=false,mixedPolling=false;
+  MixedReplayState mixedReplayState=MixedReplayState::Idle;
+  std::size_t mixedCompleted=0,mixedTotal=0,mixedStoppedStep=0;
+  std::string mixedError;
+
   bool fitShowPlot = true; // interactive session preference, never numeric provenance
   std::shared_ptr<const CalibrationPoints> fitStandards; // bounded numeric session state; no source owner
   std::string calibrationUnit="Gray Value";
@@ -5297,6 +5312,205 @@ struct Window::Impl {
     fitShowPlot=show;calibrationUnit.swap(rememberedUnit);
     if(payload){livePlot.payload.swap(payload);livePlot.source.swap(binding);focusLivePlot();livePlot.view={};livePlot.drag.reset();++livePlot.generation;}
   }
+  bool hasMixedAnalysis(const Json& steps) const {
+    return steps.is_array() && steps.size()>1 && std::any_of(steps.begin(),steps.end(),[](const Json& step){return isMeasurementRecord(step)||isProfileRecord(step);});
+  }
+  std::size_t mixedReplayBytes(const Json& steps) const {
+    if(!steps.is_array() || steps.size()<2 || steps.size()>256)throw std::invalid_argument("Mixed workflow requires2..256 commands");
+    std::size_t bytes=8192;
+    for(const auto& step:steps) {
+      if(!isMeasurementRecord(step) && !isProfileRecord(step))throw std::invalid_argument("This mixed workflow contains an unsupported command family; replay it individually");
+      bytes=RenderMemory::add(bytes,measurementRecordWorkingBytes(step));
+    }
+    if(bytes>processingCap()/8)throw std::length_error("Mixed workflow exceeds processing budget");return bytes;
+  }
+  static bool mixedFlag(const Json& params,const char* key) {
+    if(!params.contains(key))return false;if(!params.at(key).is_boolean())throw std::invalid_argument("Mixed workflow choices must be boolean");return params.at(key).get<bool>();
+  }
+  static std::uint64_t mixedId(const Json& params,const char* key,std::uint64_t fallback) {
+    if(!params.contains(key))return fallback;const auto& j=params.at(key);
+    if(!j.is_number_integer() || (!j.is_number_unsigned() && j.get<std::int64_t>()<=0) || (j.is_number_unsigned() && !j.get<std::uint64_t>()))throw std::invalid_argument("Mixed workflow requires a positive image ID");return j.get<std::uint64_t>();
+  }
+  void validateMixedParameters(const Json& params) const {
+    if(!params.is_object())throw std::invalid_argument("Mixed workflow parameters must be an object");
+    for(const auto& item:params.items())if(item.key()!="rebind" && item.key()!="restore_settings" && item.key()!="document_id" && item.key()!="redirect_id")throw std::invalid_argument("Unknown mixed workflow parameter");
+    (void)mixedFlag(params,"rebind");(void)mixedFlag(params,"restore_settings");
+    if(params.contains("document_id"))(void)mixedId(params,"document_id",0);if(params.contains("redirect_id"))(void)mixedId(params,"redirect_id",0);
+  }
+  Json mixedStepRequest(const Json& step,const Json& params) const {
+    const bool rebind=mixedFlag(params,"rebind"),restore=mixedFlag(params,"restore_settings");
+    Json request={{"record",step},{"rebind",rebind}};
+    if(params.contains("document_id"))request["document_id"]=params.at("document_id");
+    if(isProfileRecord(step))request["restore_sampling"]=restore;
+    else {
+      request["restore_settings"]=restore;const auto record=decodeMeasurementRecord(step);
+      if(record.redirect && params.contains("redirect_id"))request["redirect_id"]=params.at("redirect_id");
+    }
+    return request;
+  }
+  std::uint64_t mixedSourceId(const Json& step,const Json& params) const {
+    const auto recorded=isProfileRecord(step)?decodeProfileRecord(step).source.document_id:decodeMeasurementRecord(step).source.document_id;
+    return mixedId(params,"document_id",mixedFlag(params,"rebind")?owner.document()->id:recorded);
+  }
+  void validateMixedBindings(const Json& steps,const Json& params) const {
+    validateMixedParameters(params);const bool rebind=mixedFlag(params,"rebind"),restore=mixedFlag(params,"restore_settings");bool hasRedirect=false;
+    if(rebind && mixedId(params,"document_id",owner.document()->id)!=owner.document()->id)throw std::invalid_argument("Activate the selected image before explicit mixed rebind");
+    for(const auto& step:steps) {
+      const auto id=mixedSourceId(step,params);
+      if(isProfileRecord(step)) {
+        const auto record=decodeProfileRecord(step);if(!rebind && id!=record.source.document_id)throw std::invalid_argument("Changing mixed source requires explicit rebind");
+        validateProfileReplaySource(record.source,owner.controller_->resolve_target({},id),rebind);
+        if(!restore && std::size_t(preferenceState.settings.integer("profile_samples"))!=record.samples)throw std::invalid_argument("Profile sampling differs; explicitly restore recorded mixed settings");
+      } else {
+        const auto record=decodeMeasurementRecord(step);if(!rebind && id!=record.source.document_id)throw std::invalid_argument("Changing mixed source requires explicit rebind");
+        TargetRequest request;if(record.manager)request.roi=RoiPolicy::WholePlane;const auto source=owner.controller_->resolve_target(request,id);
+        validateMeasurementReplaySource(record.source,source,rebind,bool(record.manager));if(record.manager)validateMeasurementManager(*record.manager,source.source(),rebind);
+        if(record.redirect) {
+          hasRedirect=true;if(rebind && !params.contains("redirect_id"))throw std::invalid_argument("Explicit mixed rebind needs a sampling image for redirected Measure");
+          const auto sampling=mixedId(params,"redirect_id",record.redirect->document_id);if(!rebind && sampling!=record.redirect->document_id)throw std::invalid_argument("Changing mixed sampling requires explicit rebind");
+          TargetRequest whole;whole.roi=RoiPolicy::WholePlane;validateMeasurementReplaySource(*record.redirect,owner.controller_->resolve_target(whole,sampling),rebind,bool(record.manager));
+        }
+        if(!restore && measurementSettingsJson(preferenceState.settings)!=measurementSettingsJson(record.settings))throw std::invalid_argument("Measurement settings differ; explicitly restore recorded mixed settings");
+      }
+    }
+    if(params.contains("redirect_id") && !hasRedirect)throw std::invalid_argument("Mixed workflow has no sampling redirect");
+  }
+  Json mixedReplayInfo() const {
+    const char* state=mixedReplayState==MixedReplayState::Running?"running":mixedReplayState==MixedReplayState::Completed?"completed":mixedReplayState==MixedReplayState::Canceled?"canceled":mixedReplayState==MixedReplayState::Failed?"failed":"idle";
+    return {{"state",state},{"completed",mixedReplay?mixedReplay->completed:mixedCompleted},{"total",mixedTotal},{"active_step",mixedReplay?mixedReplay->completed+1:mixedStoppedStep},{"job_id",mixedReplay?mixedReplay->job_id:0},{"error",mixedError}};
+  }
+  void finishMixedReplay(MixedReplayState state,std::string error={}) {
+    if(!mixedReplay)return;const auto done=mixedReplay->completed;const auto total=mixedReplay->steps.size();
+    std::string message=state==MixedReplayState::Completed?"Workflow completed":state==MixedReplayState::Canceled?"Workflow cancelled":"Workflow stopped";
+    message+=": "+std::to_string(done)+" of "+std::to_string(total)+" commands completed";
+    if(state==MixedReplayState::Failed)lastError=error;
+    mixedCompleted=done;mixedTotal=total;mixedStoppedStep=state==MixedReplayState::Completed?0:done+1;mixedError.swap(error);mixedReplayState=state;mixedReplay.reset();status.swap(message);
+  }
+  void checkMixedReplay() {
+    if(!mixedReplay)return;
+    if(owner.recording || owner.workflow!=mixedReplay->steps) {
+      mixedReplay->stop_error=owner.recording?"Recording changed during mixed workflow":"Recorded workflow changed during mixed replay";
+      mixedCancelRequested=true;
+    }
+    if(mixedCancelRequested) {
+      if(job.valid())job.cancel();cancelled=true;
+      if(!job.valid())finishMixedReplay(mixedReplay->stop_error?MixedReplayState::Failed:MixedReplayState::Canceled,mixedReplay->stop_error?mixedReplay->stop_error:"");
+    }
+  }
+  void advanceMixedReplay() {
+    if(!mixedReplay)return;
+    if(!mixedReplay->job_id && mixedReplay->completed==mixedReplay->steps.size()){finishMixedReplay(MixedReplayState::Completed);return;}
+    checkMixedReplay();if(!mixedReplay || job.valid())return;
+    try {
+      if(mixedReplay->job_id)throw std::invalid_argument("Mixed workflow lost its active job");
+      const auto& step=mixedReplay->steps[mixedReplay->completed];auto request=mixedStepRequest(step,mixedReplay->parameters);const auto source=mixedSourceId(step,mixedReplay->parameters);
+      struct Dispatch {bool& flag;explicit Dispatch(bool& f):flag(f){flag=true;}~Dispatch(){flag=false;}} dispatch(mixedDispatch);
+      const auto found=std::find_if(owner.documents_.begin(),owner.documents_.end(),[source](const auto& document){return document->id==source;});
+      if(found==owner.documents_.end())throw std::invalid_argument("Mixed workflow source is closed");
+      std::string message="Workflow command "+std::to_string(mixedReplay->completed+1)+" of "+std::to_string(mixedReplay->steps.size());
+      owner.setActiveIndex(int(found-owner.documents_.begin()));owner.action(isProfileRecord(step)?"replay_profile":"replay_measurement",request);
+      if(!job.valid())throw std::invalid_argument("Mixed workflow command did not start its existing job");mixedReplay->job_id=job.info().id;
+      status.swap(message);
+    }catch(const std::exception& error){finishMixedReplay(MixedReplayState::Failed,std::string(error.what()).substr(0,2048));}
+  }
+  void completeMixedReplay(const JobInfo& terminal) {
+    if(!mixedReplay || mixedReplay->job_id!=terminal.id)return;
+    mixedReplay->job_id=0;
+    if(terminal.state==JobState::Completed)++mixedReplay->completed;
+    else finishMixedReplay(terminal.state==JobState::Canceled && !mixedReplay->stop_error?MixedReplayState::Canceled:MixedReplayState::Failed,mixedReplay->stop_error?mixedReplay->stop_error:terminal.error);
+  }
+  struct MixedReviewGuard {
+    MeasurementRecordSource source;
+    bool profile=false,ignore_selection=false;
+    //0 recorded source,1 selected source,2 recorded redirect,3 redirect candidate.
+    int role=0;
+    std::optional<std::vector<std::size_t>> manager_indices;
+    std::string manager_fingerprint;
+  };
+  void showMixedReplay() {
+    if(owner.busy() || owner.documents_.empty())throw std::invalid_argument("Select an idle image before mixed review");
+    if(owner.recording)throw std::invalid_argument("Stop recording before running a mixed workflow");
+    const auto bytes=mixedReplayBytes(owner.workflow);
+    if(owner.documents_.size()>256)throw std::length_error("Mixed review supports at most256open images");
+    const auto extra=RenderMemory::mul(RenderMemory::mul(owner.workflow.size(),owner.documents_.size()+3),4096);
+    const auto allowance=RenderMemory::add(RenderMemory::add(RenderMemory::mul(bytes,4),extra),4*65536);
+    if(allowance>processingCap())throw std::length_error("Mixed review exceeds processing budget; reduce its commands or open images");
+    auto memory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(allowance));
+    Json steps=owner.workflow;const auto selected=owner.document()->id;std::vector<MixedReviewGuard> guards;
+    std::vector<std::uint64_t> choices;Json labels=Json::array({"Recorded sampling"});std::string summary;bool redirected=false;
+    auto capture=[&](std::uint64_t id,bool profile,bool ignoreSelection,int role,const std::optional<MeasurementManagerRecord>& manager={}) {
+      if(!owner.controller_->contains(id))return;
+      TargetRequest request;if(ignoreSelection || role>=2)request.roi=RoiPolicy::WholePlane;
+      const auto target=owner.controller_->resolve_target(request,id);MixedReviewGuard guard;
+      guard.source=captureMeasurementReplaySource(target,!profile);if(profile)guard.source.threshold=Json{};
+      guard.profile=profile;guard.ignore_selection=ignoreSelection;guard.role=role;
+      if(manager){guard.manager_indices=manager->indices;try{guard.manager_fingerprint=measurementManagerFingerprint(target.source(),manager->indices);}catch(const std::invalid_argument&){/*Apply must still refuse an incompatible explicit manager rebind.*/}}
+      guards.push_back(std::move(guard));
+    };
+    for(std::size_t index=0;index<steps.size();++index) {
+      const auto& step=steps[index];summary+=std::to_string(index+1)+". ";
+      if(isProfileRecord(step)) {
+        const auto record=decodeProfileRecord(step);summary+="Profile; samples per segment: "+std::to_string(record.samples)+" (0 automatic)";
+        capture(record.source.document_id,true,false,0);capture(selected,true,false,1);
+      } else {
+        const auto record=decodeMeasurementRecord(step);summary+=record.manager?"Measure saved ROI Manager rows":"Measure current selection";
+        if(record.manager)summary+="; "+(record.manager->indices.empty()?std::string("all rows"):std::to_string(record.manager->indices.size())+" ordered rows");
+        capture(record.source.document_id,false,bool(record.manager),0,record.manager);capture(selected,false,bool(record.manager),1,record.manager);
+        if(record.redirect) {
+          redirected=true;summary+="; redirected sampling";capture(record.redirect->document_id,false,bool(record.manager),2);
+          for(const auto& document:owner.documents_)capture(document->id,false,bool(record.manager),3);
+        }
+      }
+      summary+="\n";if(summary.size()>65536)throw std::length_error("Mixed review summary is too large");
+    }
+    auto appendManager=[&](std::uint64_t id,const MeasurementManagerRecord& manager,const char* heading) {
+      summary+="\n";summary+=heading;summary+="\n";
+      if(!owner.controller_->contains(id)){summary+="Image is closed; select a compatible image and explicitly rebind.\n";return;}
+      const auto snapshot=owner.nativeSnapshot(id);
+      const auto& title=snapshot.data().metadata.title;if(title.size()>4096)throw std::length_error("Mixed review image title exceeds4096bytes");
+      summary+=title;summary+="\n";
+      try {
+        const auto bound=measurementManagerReviewBytes(snapshot,manager.indices);if(bound>65536 || summary.size()>65536-bound)throw std::length_error("Mixed manager summary exceeds65536bytes; review fewer commands");
+        summary+=measurementManagerReview(snapshot,manager.indices);
+      }catch(const std::invalid_argument&){summary+="Required saved row indices are unavailable; this binding cannot run.\n";}
+    };
+    for(const auto& step:steps)if(isMeasurementRecord(step)) {
+      const auto record=decodeMeasurementRecord(step);if(!record.manager)continue;
+      appendManager(record.source.document_id,*record.manager,record.source.document_id==selected?"Recorded and selected image's ROI Manager entries:":"Recorded image's ROI Manager entries:");
+      if(record.source.document_id!=selected)appendManager(selected,*record.manager,"Selected image's ROI Manager entries for explicit rebind:");
+      if(summary.size()>65536)throw std::length_error("Mixed review summary exceeds65536bytes");
+    }
+    if(redirected)for(const auto& document:owner.documents_) {
+      const auto snapshot=document->nativeSnapshot();const auto& title=snapshot.data().metadata.title;if(title.size()>4096)throw std::length_error("Mixed review image title exceeds4096bytes");
+      choices.push_back(document->id);labels.push_back(std::to_string(choices.size())+". "+(title.empty()?"Untitled":title));
+    }
+    Json values={{"rebind",false},{"restore_settings",true},{"sequence_summary",summary}};
+    Json fields=Json::array({{{"name","rebind"},{"label","Use selected image for all source commands"},{"kind","bool"}},{{"name","restore_settings"},{"label","Restore recorded Measure and Profile settings at each step"},{"kind","bool"}}});
+    if(redirected){values["sampling"]="Recorded sampling";fields.push_back({{"name","sampling"},{"label","Sampling image"},{"kind","choice"},{"choices",labels}});}
+    ask("Run recorded workflow",std::move(values),[this,memory,steps=std::move(steps),guards=std::move(guards),choices=std::move(choices),labels,selected,redirected](Json values) {
+      if(owner.workflow!=steps)throw std::invalid_argument("Recorded workflow changed; reopen mixed review");
+      if(owner.documents_.empty() || owner.document()->id!=selected)throw std::invalid_argument("Selected source changed; reopen mixed review");
+      const bool rebind=values.at("rebind").get<bool>();std::uint64_t redirect=0;
+      if(redirected && rebind){const auto label=values.at("sampling");const auto it=std::find(labels.begin(),labels.end(),label);if(it==labels.end() || it==labels.begin())throw std::invalid_argument("Choose a sampling image for explicit redirected rebind");redirect=choices[std::size_t(it-labels.begin())-1];}
+      for(const auto& guard:guards) {
+        if((guard.role==0 || guard.role==2)?rebind:!rebind)continue;
+        if(guard.role==3 && guard.source.document_id!=redirect)continue;
+        TargetRequest request;if(guard.ignore_selection || guard.role>=2)request.roi=RoiPolicy::WholePlane;const auto current=owner.controller_->resolve_target(request,guard.source.document_id);
+        if(guard.profile)validateProfileReplaySource(guard.source,current,false);else validateMeasurementReplaySource(guard.source,current,false,guard.ignore_selection);
+        if(guard.manager_indices && (guard.manager_fingerprint.empty() || measurementManagerFingerprint(current.source(),*guard.manager_indices)!=guard.manager_fingerprint))throw std::invalid_argument("Reviewed ROI Manager changed; reopen mixed review");
+      }
+      Json parameters={{"rebind",rebind},{"restore_settings",values.at("restore_settings")}};if(rebind)parameters["document_id"]=selected;if(redirect)parameters["redirect_id"]=redirect;beginMixedReplay(std::move(parameters));
+    },std::move(fields),"mixed_replay");
+  }
+  void beginMixedReplay(Json parameters) {
+    if(owner.busy() || owner.documents_.empty())throw std::invalid_argument("Select an idle image before mixed replay");
+    if(owner.recording)throw std::invalid_argument("Stop recording before running a mixed workflow");
+    const auto bytes=mixedReplayBytes(owner.workflow);MixedReplay next;next.memory=renderMemory->acquire(RenderMemory::mul(bytes,4));
+    validateMixedBindings(owner.workflow,parameters);next.steps=owner.workflow;next.parameters=std::move(parameters);
+    if(mixedFlag(next.parameters,"rebind"))next.parameters["document_id"]=mixedId(next.parameters,"document_id",owner.document()->id);
+    mixedTotal=next.steps.size();mixedCompleted=mixedStoppedStep=0;mixedError.clear();mixedReplay.emplace(std::move(next));mixedReplayState=MixedReplayState::Running;mixedCancelRequested=false;
+    advanceMixedReplay();
+  }
   void focusLivePlot() noexcept {
     livePlot.focus=true;for(auto& snapshot:plotSnapshots)snapshot->state.focus=false;
   }
@@ -7324,9 +7538,10 @@ void Window::openLegacyFile(const std::string &path) {
   }
   impl->recent(path);
 }
+Json Window::workflowReplayInfo() const {checkThread();return impl->mixedReplayInfo();}
 bool Window::busy() const {
   checkThread();
-  return (!impl->launchPublishing && !impl->pendingLaunch.empty()) || impl->workflowOtherBusy() || impl->nativeWorkflowPanel.visible() || impl->nativeWorkflowPanel.working()
+  return (impl->mixedReplay && !impl->mixedDispatch) || (!impl->launchPublishing && !impl->pendingLaunch.empty()) || impl->workflowOtherBusy() || impl->nativeWorkflowPanel.visible() || impl->nativeWorkflowPanel.working()
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
       || (!impl->scientificIoPublishing && (impl->startupTiffs || impl->scientificIoPanel.visible() || impl->scientificIoPanel.working() || !impl->pendingFileOpens.empty()))
 #endif
@@ -7346,6 +7561,11 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+  if(name=="show_mixed_replay"){if(!p.is_object() || !p.empty())throw std::invalid_argument("Mixed review takes no parameters");impl->showMixedReplay();return;}
+  if(name=="run_workflow" && impl->hasMixedAnalysis(workflow)) {
+    if(p.empty())action("show_mixed_replay",p);else impl->beginMixedReplay(p);return;
+  }
+
 
   if(name=="run_workflow" && workflow.is_array() && workflow.size()==1 && isProfileRecord(workflow[0])){
     if(!p.is_object())throw std::invalid_argument("Profile workflow parameters must be an object");Json request=p;request["record"]=workflow[0];action(p.empty()?"show_profile_rebind":"replay_profile",request);return;
@@ -10665,6 +10885,7 @@ void Window::action(const std::string &name, const Json &p) {
   throw std::invalid_argument("Unknown desktop action: " + name);
 }
 void Window::cancel() {
+  impl->mixedCancelRequested=true;
   impl->shadowDemo.request_cancel();
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
   impl->scientificIoPanel.request_cancel();
@@ -10752,6 +10973,9 @@ Json HistogramAsyncUiProbeAccess::diagnostics(Window &w){w.checkThread();return 
 void MovieExportUiProbeAccess::worker_gate(Window &window,std::function<void()> gate){window.checkThread();window.impl->movieExportPanel.worker_gate(std::move(gate));}
 void Window::poll() {
   checkThread();
+  if(impl->mixedReplay && impl->mixedPolling)return;
+  struct PollScope {bool& flag;bool previous;explicit PollScope(bool& value):flag(value),previous(value){flag=true;}~PollScope(){flag=previous;}} polling(impl->mixedPolling);
+  impl->checkMixedReplay();
   if(results.is_array() && results.empty())impl->measurementRowMemory.clear();
   // This lane is exclusive for publication. Defer unrelated preview/panel
   // polling so idle consumers do not clone live display metadata outside the
@@ -10776,8 +11000,7 @@ void Window::poll() {
   impl->pollThreshold();
   impl->pollGaussian();
   }
-  if (!impl->legacyBusy() || !impl->job.ready())
-    return;
+  if (!impl->legacyBusy() || !impl->job.ready()){impl->advanceMixedReplay();return;}
   const auto replayLineage = impl->workflowReplayLineage &&
       impl->workflowReplayLineage->associatedWith(impl->job)
           ? impl->workflowReplayLineage : nullptr;
@@ -10951,6 +11174,7 @@ void Window::poll() {
   }
   if (replayLineage)
     replayLineage->terminal(impl->job);
+  const auto mixedTerminal=impl->mixedReplay?std::optional<JobInfo>{impl->job.info()}:std::nullopt;
   {
     std::lock_guard<std::mutex> lock(impl->jobMutex);
     impl->job = {};
@@ -10959,9 +11183,13 @@ void Window::poll() {
   impl->jobDocument.reset();
   impl->measurementPendingMemory.reset();
   impl->analysisTask=Impl::ReadOnlyTask::None;
+  if(mixedTerminal)impl->completeMixedReplay(*mixedTerminal);
+  impl->advanceMixedReplay();
 }
 void Window::wait() {
   checkThread();
+  if(impl->mixedReplay && impl->mixedPolling)return;
+  do {
   impl->movieExportPanel.wait();
   impl->shadowDemo.wait();
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
@@ -10985,6 +11213,7 @@ void Window::wait() {
   if (const auto apply = impl->gaussianJobs.apply_job())
     apply->wait();
   poll();
+  } while(impl->mixedReplay);
 }
 void Window::applyGaussian(const TargetRequest &request,
                            const GaussianBlurCommandOptions &options,
@@ -12367,6 +12596,12 @@ void Window::Impl::resultTable() {
 }
 void Window::Impl::recorder() {
   ImGui::Begin("Workflow");
+  if(mixedReplayState!=MixedReplayState::Idle) {
+    const auto info=mixedReplayInfo();ImGui::Text("Recorded workflow: %zu of %zu completed",std::size_t(info.at("completed")),mixedTotal);
+    if(mixedReplay){ImGui::SameLine();if(ImGui::Button("Cancel replay"))owner.cancel();observeControl("workflow.cancel_replay");}
+    else if(!mixedError.empty())ImGui::TextWrapped("%s",mixedError.c_str());
+    if(headlessDiagnostics)workflowControls["replay_status"]=info;
+  }
   ImGui::BeginDisabled(owner.busy());
   ImGui::Checkbox("Record actions", &owner.recording);
   observeControl("workflow.record");
@@ -12393,6 +12628,7 @@ void Window::Impl::recorder() {
   ImGui::BeginDisabled(owner.documents_.empty() || !owner.workflow.is_array() || owner.workflow.empty() ||
                        !actionAllowed("run_workflow"));
   const auto runWorkflow = [this](bool batch) {
+    if(!batch && hasMixedAnalysis(owner.workflow)){owner.action("run_workflow");return;}
     if(doc()->scientific()||needs_native_workflow_review(owner.workflow)){owner.action(batch?"batch":"run_workflow");return;}
     const bool typed = std::any_of(owner.workflow.begin(), owner.workflow.end(),
         [](const Json &step) { return step.is_object() && step.contains("schema_version"); });
@@ -14185,6 +14421,10 @@ void Window::Impl::dialogs() {
         dialog.controls["group_sizes"] = std::move(observed);
       }
     }
+    if(dialog.id=="mixed_replay" && dialog.values.contains("sequence_summary")) {
+      ImGui::BeginChild("Recorded command sequence",{0,140},ImGuiChildFlags_Borders);const auto& summary=dialog.values.at("sequence_summary").get_ref<const std::string&>();ImGui::TextUnformatted(summary.c_str(),summary.c_str()+summary.size());
+      if(headlessDiagnostics){dialog.controls["sequence_summary"]=itemControl(false);dialog.controls["sequence_summary"]["read_only"]=true;dialog.controls["sequence_summary"]["text"]=summary;}ImGui::EndChild();
+    }
     if(dialog.id=="profile_replay" && dialog.values.contains("sampling_caption")){
       const auto& caption=dialog.values.at("sampling_caption").get_ref<const std::string&>();ImGui::TextWrapped("%s",caption.c_str());if(headlessDiagnostics){dialog.controls["sampling_caption"]=itemControl(false);dialog.controls["sampling_caption"]["read_only"]=true;dialog.controls["sampling_caption"]["text"]=caption;}
     }
@@ -14855,7 +15095,7 @@ void Window::Impl::dialogs() {
     ImGui::EndPopup();
   }
   if(!dialog.open)dialog.calibrationCapture.reset();
-  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay")) {
+  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay" || dialog.id=="mixed_replay")) {
     dialog.submit={};dialog.values=Json::object();dialog.schema=Json::array();dialog.text.clear();dialog.controls=Json::object();dialog.id.clear();
   }
   if(!dialog.open && dialog.id=="selection_enlargement"){dialog.enlargementSource.reset();dialog.submit={};}
@@ -15799,6 +16039,7 @@ Json Window::Impl::headlessReport() {
     result["plot"] = livePlot.payload && !livePlot.payload->calibration()?fitPlotObservation:Json(nullptr);
     result["plot_image_export"] = plotImageExportObservation;
     result["plot_snapshots"] = snapshotPlotObservations;
+    result["workflow_replay"] = mixedReplayInfo();
     result["results_columns"] = resultColumns(owner.results, owner.settings());
     result["results_table"] = resultsTableObservation;
     result["shadow_demo"] = shadowDemo.diagnostics();

@@ -284,6 +284,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_fit_circle_area_ui_case",[](Window& window,const std::string& directory) {
         return fitCircleWorkflowUiCase(window,"imgui_python",directory,true).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_mixed_replay_ui_case",[](Window& window,const std::string& directory) {
+        py::gil_scoped_release release;return mixedReplayUiCase(window,"imgui_python",directory).dump();
+      })
       .def("_profile_replay_ui_case",[](Window& window,const std::string& directory) {
         return profileReplayUiCase(window,"imgui_python",directory).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
@@ -1127,6 +1130,7 @@ PYBIND11_MODULE(_desktop, m) {
               throw std::invalid_argument("Results must be an array");
             w.replaceResults(std::move(rows));
           })
+      .def_property_readonly("workflow_replay_info",[](const Window& w){return w.workflowReplayInfo().dump();})
       .def_property_readonly("results_table_state",[](const Window& w){return w.resultsTableState().dump();})
       .def("results_cell",[](const Window& w,std::size_t row,const std::string& column){return w.resultsCell(row,column).dump();},py::arg("row"),py::arg("column"))
       .def_property(

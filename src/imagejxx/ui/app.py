@@ -114,6 +114,11 @@ class Editor:
         return json.loads(self._editor.render_memory_info())
 
     @property
+    def workflow_replay_info(self):
+        """Current mixed replay step and terminal outcome, detached from its owner."""
+        return json.loads(self._editor.workflow_replay_info)
+
+    @property
     def plot_snapshots_info(self):
         """List retained plot IDs and logical shared-payload/window memory."""
         return json.loads(self._editor.plot_snapshots_info())

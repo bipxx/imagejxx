@@ -145,6 +145,7 @@ public:
   void applyRank(const TargetRequest &request,
                  const RankFilterCommandOptions &options,
                  std::uint64_t documentId = 0);
+  Json workflowReplayInfo() const;
   bool busy() const;
   std::optional<JobInfo> jobInfo() const;
   std::vector<JobInfo> jobs() const;

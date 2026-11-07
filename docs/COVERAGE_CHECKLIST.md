@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded workflow replay is next. Full ImageJ/Fiji and release remain open.
+Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining is next. Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Next: ordered mixed recorded workflow replay. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-ordered-mixed-replay). |
+| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Next: compatible analysis/display-export chain. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-ordered-mixed-replay). |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -82,6 +82,27 @@ Each family has its required behavior, owner and remaining work. Registered
 option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
+
+## Ordered mixed replay current WIP
+
+Owner: T04a.3 / G009 G066 G070 G071 G085 G089. **Scoped accepted.**
+[Receipt](parity/reviews/mixed-replay-20261107.json).
+I: existing C++ replay/job/publication owner and additive Python status interface.
+V:121 installed Windows cases pass in one run (20newmixed), native creator-retirement
+and independent real-host readers. UI: standalone C++ and optional Python Windows
+ImGui. R: open. This does not close full T04a.3 or any full-family box.
+
+- [x] Save/Load and ordered Run Measure V1, manager Measure V2 and configured Profile V1,2..256commands, bounded immutable intent and active/terminal step status.
+- [x] Default exact declared source owners; explicit selected-source and redirected sampling rebind, saved settings restore/refusal and read-only ordered manager/Profile summary.
+- [x] Both real hosts Record/Save/Clear/Load/Run/Apply/Cancel; clicked sampling owner proved before comparison.12rawrows, visible table, Copy/Save CSV, Profile curve and workspace reopen/replay agree.
+- [x] Cancel, workflow mutation, record-toggle, later Profile failure and source-close cases preserve earlier committed outputs, source/history and saved intent; zero final working reservations. Native reentrant source-retirement control passes.
+- [x] Built/installed/loaded native extensions, app and pure Python exports verified in the existing runtime with correct installation components.
+- [x] Existing single-step and plot/workspace regressions pass in selected121checks; four older standalone readers and old C++ snapshot parameter explicitly excluded because their retired full captures are unavailable.
+- [x] Source/ownership review completed before retention.6scratch groups+preferences/259files/6254408B retired after hash-verifying the922973B archive; failures retained. Active compiler/runtime products preserved.
+- [x] Scoped receipt, queue, canonical coverage and waste feedback reconciled. Known storage grew3945821B;214 inaccessible subtrees leave full budget unverified.
+- [ ] T04a.3: [compatible analysis/display-export chaining](PLAN.md#next-ready-increment-t04a3-analysis-export-chain), editing/filter chains, workflow edit/reorder/disable and Batch.
+- [ ] Existing owners: wider ProfileZ/time/thick/curved, manager MultiMeasure, full table and other source/type variants.
+- [ ] T12/T14/T00: other supported platforms, commercial/distribution and release gates.
 
 ## Retained numeric plot workspace scoped coverage
 
@@ -3225,8 +3246,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 - [ ] Reconcile stale family/child labels against exact scoped receipts without rewriting historical outcomes or treating partial references as full certification.
 - [ ] Keep missing reference paths and producer/reader mappings with T00; recover only from a new plausible source and never recreate retired build generations.
 - [ ] Keep every deferred gap with its T00–T15 owner; queue changes do not close unfinished formats, point/manager, analysis, Fiji or platform variants.
-- [ ] Keep cleanup claims evidence-based: the latest [NaN empty cells closeout](parity/reviews/nan-empty-cells-20261106.json) records all10 owned groups retired with verified necessary captures;214 inaccessible storage subtrees leave the complete local budget unverified. Historical receipts keep their own scope. Reconcile actual task receipts at every closeout; instruction text is not an automatic filesystem guard.
+- [ ] Keep cleanup claims evidence-based: the latest accepted [plot workspace closeout](parity/reviews/plot-workspace-20261107.json) records all six owned groups retired with verified necessary captures; mixed replay now records all six groups+preferences retired in its [scoped closeout](parity/reviews/mixed-replay-20261107.json);214 inaccessible storage subtrees leave the complete local budget unverified. Historical receipts keep their own scope. Reconcile actual task receipts at every closeout; instruction text is not an automatic filesystem guard.
 
 ## Next update
 
-Continue the [active T04a.3 Measure recording/rebind increment](PLAN.md#active-increment-t04a3-measure-recording-and-rebind). Correct its own-output/review-context gaps,then verify actual new controls in both hosts. Update the existing task record and affected boxes at observed checkpoints and closeout. Full M3,table state,differing-XY/constructor/brush/pointwise variants,wider manager/Profile replay and supported release remain open with their owners. No agents are authorized by this update.
+Follow the [next ready analysis/display-export chain](PLAN.md#next-ready-increment-t04a3-analysis-export-chain). Reuse the accepted mixed sequence/status owner and inspect actual export timing, destinations and staged publication before implementation. Update this view at observed checkpoints and affected behavior/status/residual entries at closeout. Wider editing/filter chains, Profile variants, table state and supported-platform/commercial release retain their owners. No agents are authorized by this update.
