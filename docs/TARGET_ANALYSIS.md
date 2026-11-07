@@ -1316,3 +1316,32 @@ Workspace stores intent for explicit replay, not detached plot windows. Retained
 plot workspace persistence is next T04a.3; Z/time/thick/curved and wider source/
 calibration variants, general chained replay and platform/commercial release
 remain with their existing owners.
+
+
+## Retained numeric plot workspace output
+
+[Scoped workspace evidence](parity/reviews/plot-workspace-20261107.json) stores
+retained snapshot output under session extension `retained_numeric_plots` with
+schema `imagejxx.retained-numeric-plots`, version1, `payloads` and `windows`.
+This is detached plotted output, not a live analysis request. Profile/Histogram/
+Fit/CalibrationTable use their existing immutable payloads; shared windows refer
+to one saved payload. Restore allocates fresh runtime IDs and detached windows,
+keeping ordinal order, view/style and descriptive source title/ID/caption.
+
+Double/Float32 sample arrays store unsigned IEEE words, retaining signed zero
+and nonfinite fit/table curve gaps. Histogram bins preserve exact uint64 counts
+and edge values/raw-CSV choice; no source ROI or rerunnable histogram request is
+retained. Fit annotation/formula/coefficients/objective/metrics, bounds and units
+persist. The private codec caps256windows/payloads,1Mnodes,1MiBperstring/depth12;
+native SessionLimits and render admission still apply independently. Unknown
+versions/kinds/fields and malformed arrays/indices/styles/views refuse explicitly.
+
+Both synchronous Open and startup prepare decoded payload/window leases and
+complete vector capacity before document adoption, then publish by pointer swaps.
+Incoming snapshots append with new IDs; old workspaces without the extension
+preserve current snapshots. Existing snapshot render slots get explicit first-draw
+focus in saved ordinal order, so cached ImGui Z-order cannot misdirect controls.
+Save/Open supports plot-only sessions. Runtime consumes the serialized extension
+rather than retaining a second array store; closing all detached windows releases
+their payloads. Unrelated extensions survive. Broader OS/ImGui layout geometry,
+source request replay, mixed chained workflows and release remain separate exits.

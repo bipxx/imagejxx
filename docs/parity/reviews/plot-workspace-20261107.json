@@ -1,0 +1,223 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T04a.3 retained numeric plot workspace persistence",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G070",
+    "G068",
+    "G069",
+    "G071",
+    "G089"
+  ],
+  "scope": "Detached retained numeric plot output through current workspace Save/Open and startup. Four current PlotKinds, shared payloads, ordinal window order/view/style, exact stored sample bits and CSV. Source request execution, external ImGui layout/OS geometry, wider replay/profile/platform release remain separate.",
+  "aspects": {
+    "implemented": "Private closed versioned plotted-output extension and existing snapshot/session creator publication; no second plot store/controller/publickernel/dependency.",
+    "verified": "102distinct selected installed cases eventuallypass:88 in016,12 corrected API in018,2 startup in020. Native codec/session transport checks and shared actual hosts. This is not a freshly green102-case campaign.",
+    "integrated": "Actual C++ and optional Python Windows ImGui keep/duplicate/style/File Save/Open/close;5windows,4unique payloads,plot-only workspace,detached CSV and zero finalretained/working plot reservations.",
+    "release_ready": false
+  },
+  "contract": {
+    "extension": "retained_numeric_plots",
+    "schema": "imagejxx.retained-numeric-plots",
+    "version": 1,
+    "fields": [
+      "schema",
+      "version",
+      "payloads",
+      "windows"
+    ],
+    "kinds": [
+      "fit",
+      "calibration_table",
+      "profile",
+      "histogram"
+    ],
+    "samples": "Double/Float32 arrays encode exact unsigned IEEE words, preserving signed zero/nonfinite curve gaps. Histogram plotted bin edges/counts and raw-CSV choice persist, counts remain uint64. Fit annotation/formula/coefficients/objective/optionalmetrics and bounds/labels persist.",
+    "windows": "Each refers to a deduplicated payload and owns fractions/manual limits/log/grid/ticks/nice/minor flags and valid style. New monotonic runtime IDs on restore; incoming windows append to current snapshots and focus in saved ordinal order.",
+    "ownership": "No live source/provider/job binding serialized. Runtime consumes/removes the known extension JSON after decode and reconstructs it only for save, avoiding duplicated persistent arrays. Unrelated extensions preserved.",
+    "publication": "Decode/admit/stage all payloads/window leases/vector storage before document adoption; pointer-vector swaps/counters/focus publish afterward without allocation. Both synchronous open and startup paths covered; plot-only sessions supported.",
+    "bounds": "256windows/payloads,1Mnodes,1MiBperstring,depth12 plus existing native SessionLimits and render memory cap. Unknown versions/kinds/fields, malformed indices/arrays/styles/views refuse safely."
+  },
+  "verified": {
+    "unique_selected_cases_eventually_passed": 102,
+    "initial_attempt": {
+      "selected": 102,
+      "passed": 88,
+      "fixture_failures": 14
+    },
+    "focused_api_retry": {
+      "selected": 14,
+      "passed": 12,
+      "startup_fixture_failures": 2
+    },
+    "startup_retry": {
+      "selected": 2,
+      "passed": 2
+    },
+    "new_cases": 16,
+    "unchanged_regression_cases": 86,
+    "reused_green_scope": "Source changes after016 were only test fixture mapping/defaultstartup override. Both actual hosts and86regression bodies remained unchanged and were not rerun. Native codec008 unchanged after Windowfocus fix.",
+    "unavailable": "Four old external readers/context: snapshot imgui_cpp, standalone Profile, Measure and manager report readers explicitly deselected. Fresh plot-workspace standalone report012 supplied to its reader; all selected Python contexts pass.",
+    "actual_hosts": {
+      "state": "matched_actual_retained_plot_workspace_hosts",
+      "windows": 5,
+      "unique_payloads": 4,
+      "kinds": [
+        "calibration_table",
+        "fit",
+        "profile",
+        "histogram"
+      ],
+      "captured_semantic_fields": [
+        "kind",
+        "function",
+        "value_unit",
+        "measured",
+        "known",
+        "curve_x",
+        "curve_y",
+        "series_x",
+        "series_y",
+        "bin_edges",
+        "bin_counts",
+        "limits",
+        "view_limits",
+        "viewport",
+        "log_x",
+        "log_y",
+        "grid",
+        "ticks",
+        "nice_ticks",
+        "minor_ticks",
+        "annotation",
+        "style",
+        "x_label",
+        "y_label",
+        "source_title",
+        "context_caption"
+      ],
+      "visible_checks": "Five decoded visible plots/axes/style/annotation/raw arrays/bins and before-after CSV agree; real keep/duplicate/style/Save/Open/close controls match.",
+      "normalization": "Descriptive process-local source_id excluded after same fixture title/actual control/source-release proof; fresh monotonic plot and payload identities tested within each host.",
+      "source_reports": [
+        {
+          "path": ".tmp\\manual-workflow-verification\\plot-workspace-20261107\\scratch\\cpp012\\case.json",
+          "sha256": "621431348b2e43f3eff32bd385a5bcbfd1faff4b6ecd57f4887aed5e3075af15"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\plot-workspace-20261107\\scratch\\python016\\pytest\\test_actual_python_plot_worksp0\\actual\\case.json",
+          "sha256": "d7b9e7c4eb63d0e319da0698e2cca9bc589da296ed09b40ff4e4d0b2cf962dc2"
+        }
+      ],
+      "csv_sha256": [
+        "49a6fb9fc8144e0b8df1e93611ee70fa67dbe0df048be64029f82994eb0b25a7",
+        "49a6fb9fc8144e0b8df1e93611ee70fa67dbe0df048be64029f82994eb0b25a7",
+        "ae478423b63bc78bfe7d5c46ba0dd6147f70cec038380e43a286f7848c10503b",
+        "ab280082475284b3dc250f9c123e7911946da69890c2f2a2c56ca5bbd754b4c5",
+        "926b01bb22c9be3883d0c204b8b1b5bb641f55cca533f21416c31c952499e490"
+      ]
+    },
+    "native": "0084kinds/5windows/4sharedpayloads/exactuint64including2^53+1andUINT64_MAX/IEEE words,plot-only native session transport,9malformed,budget and IDoverflow controls; no provider reads.",
+    "api": "Open/startup withandwithoutdocuments; allkinds/rawvisibleCSV/shared identity/source-independent export/repeatedopenfreshIDs/oldworkspacecompatibility/unknownextensionpreservation;9malformedrefusals protect current documents/results/workflow/history/plots and release work."
+  },
+  "source_sha256": {
+    "CMakeLists.txt": "ea1a1a47602887e09151883d925fd9cfa28101c260d550e09b3cd250425a8693",
+    "src/desktop/plot_workspace.hpp": "7382da5406367a77e9b20013b5a637ae9edc1fee8084cd03cdaa9b7e652154d1",
+    "src/desktop/plot_workspace.cpp": "727139d20f83682f26f50d857b1a00e7a91950b787e2fe9d8c77f5f77accf9c5",
+    "src/desktop/window.cpp": "ba54d11c42748ba63b1371860cf425202bc0d5513d16076b7bf799cf47c92f81",
+    "src/desktop/plot_snapshot_ui_probe.cpp": "86977a12706b470a270053e48725d3b584f8fa07c85efaecb956f42af4106c2a",
+    "src/desktop/plot_snapshot_ui_probe.hpp": "2c0efe42e334333d4f89da977bdb9f717d46cd85eabf0e74b47688cac87614d3",
+    "src/desktop/python.cpp": "247682ddb50a0c9d36887db875c0877276a0c38d886c4bc291ae72a409e164fa",
+    "tests/native/test_display_actions.cpp": "f96539ababc9e7e0c01710f5ac1473db5ec1b15400620b7648314153233f966d",
+    "tests/python/test_plot_workspace.py": "4834f8a22b59a2371063bb24544b4058488afedc2abf930e994c30300e827ca4"
+  },
+  "installed_identities": [
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2",
+      "bytes": 84013
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\ui\\app.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py",
+      "sha256": "b171b7f2b1680d9d9a88945b1b4955307fb6d5496ca7668dae6f7fdb66737e69",
+      "bytes": 32060
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5",
+      "bytes": 8688128
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "sha256": "63ef0a2eb0ef75995cf039a1c119cf82b6955770fe066e2e8974b0aa5d9c3740",
+      "bytes": 21539840
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "sha256": "b350965323b49116e0dde10e3e9d8a7771abdcc478ccb14a1bfff8469e3560b1",
+      "bytes": 20892672
+    }
+  ],
+  "failures_and_corrections": {
+    "build004": "18.242s failed: local integer reader collided with desktop default-argument helper; probe used native id field as method. Renamed readUnsigned/readFinite and used inspected snapshot.id accessor;006passed61.390s.",
+    "cpp009": "Plot-only restore and CSV passed, then real close controls exposed cached ImGui slot Z-order.010Window incoming focus-order fix;011desktop rebuild38.553s,012actualUI passed. No codec/kernel changes.",
+    "python016": "14fixturefailures: optional UI select expects model or mapping, not native Selection. Changed to explicit kind/points mapping;88passing cases retained.",
+    "python018": "2startupfixturefailures: explicit workspace conflicts with suppressed restore. Removed suppression to match existing startup parser; reran only2cases020."
+  },
+  "build": {
+    "seconds_total": 118.18520840001293,
+    "compiler_failures": 1,
+    "consumer_correctness_rebuilds": 1,
+    "cache": ".cache/native-verification/windows",
+    "runtime": ".cache/native-verification/runtime",
+    "no_new_generation": true
+  },
+  "retention": {
+    "scratch_absent": true,
+    "consumer_groups_retired": 6,
+    "source_bytes_removed": 6521479,
+    "retained_archive_bytes": 968604,
+    "archive_sha256": "9c4c9a31e8b4685b5bee5a31adbe931e32b02f96d35a8b9d65ead214ab2ea01b",
+    "blockers": [],
+    "archive": ".tmp/manual-workflow-verification/plot-workspace-20261107/evidence/phase024.zip",
+    "files": 247,
+    "verify_receipt": ".tmp/manual-workflow-verification/plot-workspace-20261107/retain025.json",
+    "failure_diagnostics": "All failed UI/API/JUnit captures retained losslessly; root compiler/process/test logs preserved.",
+    "active_compiler_runtime_sdk_preserved": true
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/plot-workspace-entry003.json",
+    "after": ".tmp/manual-workflow-verification/plot-workspace-after-retirement027.json",
+    "known_before_bytes": 7533995959,
+    "known_after_bytes": 7538948466,
+    "known_growth_bytes": 4952507,
+    "unavailable_subtrees": 214,
+    "full_budget_verified": false,
+    "incremental_allocation_bytes": 268435456,
+    "last_physical_free_bytes": 15905300480,
+    "scope": "Complete normalized .cache/.tmp/public evidence/dependency/runtime/Linux scope including unknown residual retired build remnants. Unknowns are not zero/headroom; no retired tree recreated."
+  },
+  "waste_review": {
+    "delivered": "Keep/save/reopen retained plot outputs withdetachedownership in both hosts.",
+    "fixed": "Removed duplicate runtime serialized arrays before first build. Actual cached-slot order bug corrected in existing focus path; no new controller.",
+    "measured_waste": "One compilefailure18.242s plus real-consumer Windowrebuild38.553s; two test-only fixture corrections reran14then2cases instead of green88cases/UI campaign.",
+    "defer": "Full source/type/profile/chained replay and platform releases retain owners. NextT04a.3ordered mixed recorded workflow replay uses existing dispatch/publication.",
+    "no_action": "No new numerics/publicSDK/dependencies/runner/cache/env or speculative framework. Retained exact counts/IEEE/source/history/admission guarantees.",
+    "cleanup": "All6groups6521479Bretired after finalreview/hash verification;968604B archive retained; known growth4952507B,214unknown/fullbudgetunverified.",
+    "feedback": "Check visible UI window order, not only restored IDs/CSV. Inspect actual Python model-vs-native bindings and startup override conflicts before fixtures. Keep truthful failed-run provenance and reuse unchanged greens."
+  },
+  "residual_owners": {
+    "T04a.3/G038": "WiderProfile/Ztime/thick/curved and generalchainedreplay/chooser",
+    "T09": "FulltableAUTO/string/editing/delayedallocation",
+    "M2b.3": "FullmanagerMultiMeasure/ZT",
+    "T06/T04/T08": "Othermeasurementtypes/constructors/foreign/brush/pointwise",
+    "T12/T14/T00": "BroaderUI/platform/commercialrelease"
+  },
+  "local_task_record": ".tmp\\manual-workflow-verification\\plot-workspace-20261107\\entry.json"
+}

@@ -3,6 +3,10 @@
 #include "headless_session_internal.hpp"
 #include "effective_display_ui_probe.hpp"
 #include "analysis_measurement.hpp"
+#include "plot_workspace.hpp"
+#include "plot_snapshot_ui_probe.hpp"
+#include "generic_plot_payload.hpp"
+#include <cstring>
 #include <imagejxx/measurement_overlay.hpp>
 #include <imagejxx/channel_display.hpp>
 #include <imagejxx/manual_threshold.hpp>
@@ -540,8 +544,50 @@ void profileRecordCases(const std::filesystem::path& root){
   view.crosshair[2]=1;owner->set_display(view);refuses([&]{validateProfileReplaySource(decoded.source,app.resolve_target(),false);});validateProfileReplaySource(decoded.source,app.resolve_target(),true);
   owner->select(Selection("rectangle",{{0,0},{4,3}}));refuses([&]{validateProfileReplaySource(decoded.source,app.resolve_target(),true);});check(reader->reads==0,"Profile codec/review acquired pixels");write(root/"record.json",raw);write(root/"summary.json",{{"state","observed"},{"plane_reads",reader->reads},{"strict_profile",true},{"unused_threshold_ignored",true},{"rebind_checked",true}});
 }
+void plotWorkspaceCodecCases(const std::filesystem::path& root) {
+  using namespace imagejxx::desktop;
+  check(!std::filesystem::exists(root),"Fresh plot workspace output required");std::filesystem::create_directories(root);
+  RenderMemory memory(128ULL*1024*1024);std::vector<PlotWorkspaceEntry> entries;
+  ImageJIntensityFitPlot data;data.function="test fit";data.value_unit="HU";data.objective="least squares";data.measured={0.,1.};data.known={2.,3.};data.curve_x={0,1};data.curve_y={-0.f,0};const std::uint32_t nan=0x7fc12345;std::memcpy(&data.curve_y[1],&nan,4);data.x_max=1;data.y_max=3;
+  CalibrationPlotAnnotation note;note.model=true;note.formula="y = a + b*x";note.coefficients="a=2; b=1";note.rmse=0;note.r_squared=1;note.fit=true;
+  auto fit=retain_calibration_plot(memory,data,note,false,71,1,"source fit","captured view");entries.push_back({fit,{},{}});
+  auto table=retain_calibration_plot(memory,data,note,true,72,2,"source table");entries.push_back({table,{},{}});
+  auto profile=retain_profile_plot(memory,{0,2},{1,4},"Profile","um",73,3,"source profile");entries.push_back({profile,{},{}});entries.push_back(entries.back());
+  entries.back().view.set_limits({0,1,1,2});entries.back().view.fractions={.25,.75,.25,.75};entries.back().style.curve_color=0xabcdef;entries.back().style.annotation_visible=true;
+  auto histogram=std::make_shared<DatasetHistogramResult>();histogram->histogram.edges={0,1,2};histogram->histogram.counts={9007199254740993ULL,std::numeric_limits<std::uint64_t>::max()};
+  auto hist=retain_histogram_plot(memory,histogram,74,4,"source histogram");entries.push_back({hist,{},{}});
+  auto record=encodePlotWorkspace(entries,memory);check(record.value.at("payloads").size()==4 && record.value.at("windows").size()==5,"Shared plot payload not deduplicated");
+  auto decoded=decodePlotWorkspace(record.value,memory,100);check(decoded.entries.size()==5 && decoded.next_payload_id==104,"Fresh payload IDs incorrect");check(decoded.entries[2].payload==decoded.entries[3].payload,"Restored duplicate payload not shared");
+  check(encodePlotWorkspace(decoded.entries,memory).value==record.value,"Plot codec changed IEEE words/annotation/view/style/counts");
+  check(decoded.entries.back().payload->csv()==hist->csv(),"Exact uint64 histogram CSV changed");check(decoded.entries[0].payload->annotation.canvas_text==fit->annotation.canvas_text,"Fit annotation changed");
+  Json extensions={{plot_workspace_key,record.value}};saveNativeSession((root/"plots.ijx").u8string(),{},Json::array(),Json::array(),extensions);
+  Json rows,steps,restored;const auto documents=loadNativeSession((root/"plots.ijx").u8string(),rows,steps,&restored);check(documents.empty(),"Plot-only workspace gained an image");
+  auto transported=decodePlotWorkspace(restored.at(plot_workspace_key),memory,200);check(encodePlotWorkspace(transported.entries,memory).value==record.value,"Native session metadata bridge changed plot bits");
+  for(int kind=0;kind<9;++kind) {
+    auto bad=record.value;
+    if(kind==0)bad["version"]=2;
+    if(kind==1)bad["windows"][0]["payload"]=true;
+    if(kind==2)bad["windows"][0]["payload"]=99;
+    if(kind==3)bad["payloads"][0]["data"]["curve_y"].push_back(0);
+    if(kind==4)bad["payloads"][3]["histogram"]["counts"][0]=-1;
+    if(kind==5)bad["payloads"][0]["kind"]="future";
+    if(kind==6)bad["windows"][0]["style"]["line_width"]=0;
+    if(kind==7)bad["windows"][0]["view"]["fractions"]={1,0,0,1};
+    if(kind==8)bad["extra"]=true;
+    const auto retained=memory.retained(),working=memory.working();refuses([&]{decodePlotWorkspace(bad,memory,300);});check(memory.retained()==retained && memory.working()==working,"Refused plot workspace leaked admission");
+  }
+  RenderMemory tiny(16);refuses([&]{decodePlotWorkspace(record.value,tiny,1);});check(tiny.used()==0,"Budget refusal leaked memory");
+  refuses([&]{decodePlotWorkspace(record.value,memory,std::numeric_limits<std::uint64_t>::max());});
+  write(root/"summary.json",{{"state","observed"},{"kinds",4},{"windows",5},{"shared_payload",true},{"exact_uint64_csv",true},{"ieee_words",true},{"plot_only_native_session",true},{"malformed_cases",9},{"budget_refusal",true},{"provider_reads",0}});
+}
 } // namespace
 int main(int argc,char **argv){try{
+  if(argc==3 && std::string(argv[2])=="--plot-workspace") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"plot-workspace-preferences.json").u8string());
+    imagejxx::desktop::plotWorkspaceUiCase(w,"imgui_cpp",argv[1]);return 0;
+  }
+
+  if(argc==3 && std::string(argv[2])=="--plot-workspace-codec"){plotWorkspaceCodecCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
   if(argc==3 && std::string(argv[2])=="--manager-measurement-records") {managerMeasurementRecordCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
   if(argc==3 && std::string(argv[2])=="--profile-records") {profileRecordCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
   if(argc==3 && std::string(argv[2])=="--measurement-records") {measurementRecordCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}

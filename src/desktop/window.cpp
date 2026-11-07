@@ -28,6 +28,7 @@
 #include "calibration_plot_annotation.hpp"
 #include "calibration_plot_payload.hpp"
 #include "calibration_plot_style.hpp"
+#include "plot_workspace.hpp"
 #include "calibration_plot_drawing.hpp"
 #include "generic_plot_payload.hpp"
 #include "plot_context.hpp"
@@ -4663,6 +4664,7 @@ struct Window::Impl {
         metadataObjectFromJson(sessionExtensions), std::size_t(0), 1);
     auto singleExtensions = metadataJson(presentation.extensions);
     storeResultsTable(singleExtensions);
+    auto plotRecord=storePlotWorkspace(singleExtensions);
     auto nextDiagnostics = startupDiagnostics;
     nextDiagnostics.insert(nextDiagnostics.end(), presentation.diagnostics.begin(), presentation.diagnostics.end());
     saveNativeSession(path, {d}, owner.results, owner.workflow, singleExtensions);
@@ -5346,6 +5348,58 @@ struct Window::Impl {
     const auto id=snapshot->id;plotSnapshots.push_back(std::move(snapshot));++nextPlotSnapshotId;
     livePlot.focus=false;for(auto& existing:plotSnapshots)existing->state.focus=existing->id==id;
     return id;
+  }
+  PlotWorkspaceRecord storePlotWorkspace(Json& extensions) {
+    auto staging=renderMemory->acquire(RenderMemory::mul(plotSnapshots.size(),sizeof(PlotWorkspaceEntry)));
+    std::vector<PlotWorkspaceEntry> entries;entries.reserve(plotSnapshots.size());
+    for(const auto& snapshot:plotSnapshots)if(snapshot->open && snapshot->state.payload)
+      entries.push_back({snapshot->state.payload,snapshot->state.view,snapshot->state.style});
+    if(entries.empty()){extensions.erase(plot_workspace_key);return {};}
+    auto record=encodePlotWorkspace(entries,*renderMemory);
+    extensions[plot_workspace_key]=std::move(record.value);return record;
+  }
+  struct PreparedPlotWorkspace {
+    std::vector<std::unique_ptr<PlotSnapshot>> windows;
+    std::uint64_t next_snapshot=0,next_payload=0;
+    RenderMemory::Lease memory,record_memory;
+    bool present=false;
+  };
+  PreparedPlotWorkspace preparePlotWorkspace(const Json& extensions) {
+    PreparedPlotWorkspace next;
+    if(!extensions.contains(plot_workspace_key)){next.memory=renderMemory->acquire(RenderMemory::mul(plotSnapshots.size(),sizeof(std::unique_ptr<PlotSnapshot>)));next.present=true;next.next_snapshot=nextPlotSnapshotId;next.next_payload=nextPlotPayloadId;next.windows.resize(plotSnapshots.size());return next;}
+    auto decoded=decodePlotWorkspace(extensions.at(plot_workspace_key),*renderMemory,nextPlotPayloadId);
+    if(decoded.entries.size()>std::numeric_limits<std::uint64_t>::max()-nextPlotSnapshotId)
+      throw std::overflow_error("Plot snapshot IDs exhausted");
+    auto windowsMemory=renderMemory->acquire(RenderMemory::mul(plotSnapshots.size()+decoded.entries.size(),sizeof(std::unique_ptr<PlotSnapshot>)+sizeof(PlotSnapshot)+1024));
+    next.windows.reserve(plotSnapshots.size()+decoded.entries.size());
+    // Empty prefix receives existing windows only after native publication.
+    for(std::size_t i=0;i<plotSnapshots.size();++i)next.windows.emplace_back();
+    auto id=nextPlotSnapshotId;std::size_t slot=0;
+    for(auto& entry:decoded.entries) {
+      for(;;++slot){bool occupied=false;for(const auto& old:plotSnapshots)if(old->renderSlot==slot){occupied=true;break;}if(!occupied)break;}
+      auto snapshot=std::make_unique<PlotSnapshot>();snapshot->id=id++;snapshot->renderSlot=slot++;
+      snapshot->title="Plot snapshot "+std::to_string(snapshot->id)+"###PlotSnapshotSlot"+std::to_string(snapshot->renderSlot);
+      snapshot->controlId=std::to_string(snapshot->id);
+      snapshot->state.payload=std::move(entry.payload);snapshot->state.view=entry.view;snapshot->state.style=entry.style;
+      snapshot->state.generation=1;snapshot->state.focus=true;
+      const auto bytes=RenderMemory::add(sizeof(PlotSnapshot)+256,RenderMemory::add(snapshot->title.capacity()+1,snapshot->controlId.capacity()+1));
+      auto memory=renderMemory->acquire(bytes);snapshot->memory=memory.retain(bytes);
+      next.windows.push_back(std::move(snapshot));
+    }
+    if(!decoded.entries.empty())next.windows.back()->state.focus=true;
+    next.next_snapshot=id;next.next_payload=decoded.next_payload_id;
+    next.memory=std::move(windowsMemory);next.record_memory=std::move(decoded.memory);next.present=true;return next;
+  }
+  void publishPlotWorkspace(PreparedPlotWorkspace& next) noexcept {
+    if(!next.present)return;
+    const auto existing=plotSnapshots.size();
+    for(std::size_t i=0;i<existing;++i)next.windows[i].swap(plotSnapshots[i]);
+    plotSnapshots.swap(next.windows);nextPlotSnapshotId=next.next_snapshot;nextPlotPayloadId=next.next_payload;
+    // Explicitly focus incoming windows in saved order on their first draw.
+    // Reused ImGui slots otherwise retain an unrelated old display Z order.
+    if(plotSnapshots.size()>existing) {
+      livePlot.focus=false;for(std::size_t i=0;i<existing;++i)plotSnapshots[i]->state.focus=false;
+    }
   }
   void publishNumericPlot(std::shared_ptr<const CalibrationPlotPayload> payload,const DocumentSnapshot& source,
       const ResolvedTarget* calibration=nullptr) {
@@ -6187,6 +6241,7 @@ void Window::executeStartup(StartupRequest request, bool retry) {
   std::vector<bool> defaults;
   auto nextResults = results, nextWorkflow = workflow;
   auto nextExtensions = impl->sessionExtensions;
+  bool restorePlots=false;
   auto nextPreferences = impl->preferences;
   auto nextSizes = impl->sessionSizes;
   std::optional<std::size_t> active;
@@ -6230,6 +6285,7 @@ void Window::executeStartup(StartupRequest request, bool retry) {
         nextResults = startupTable(decoded.results);
         nextWorkflow = startupTable(decoded.workflow);
         nextExtensions = metadataJson(decoded.extensions);
+        restorePlots=true;
         const auto target = std::filesystem::u8path(path);
         for (auto &[existing, size] : nextSizes)
           if (samePath(existing, target)) size = decoded.documents.size();
@@ -6264,6 +6320,8 @@ void Window::executeStartup(StartupRequest request, bool retry) {
     std::string status = opened.empty() ? "empty" : "loaded";
     stage = StartupStage::Validation;reason = StartupReason::UnsupportedDocument;
     auto table=impl->loadResultsTable(nextExtensions,nextResults.size());
+    auto plots=restorePlots?impl->preparePlotWorkspace(nextExtensions):Impl::PreparedPlotWorkspace{};
+    if(restorePlots)nextExtensions.erase(plot_workspace_key);
     stage = StartupStage::Publication;
     reason = StartupReason::PublicationFailed;
     // Keep retired providers alive until every facade and workspace table is
@@ -6283,6 +6341,7 @@ void Window::executeStartup(StartupRequest request, bool retry) {
     impl->numericState.swap(table.state);std::swap(impl->numericStateMemory,table.memory);
     workflow.swap(nextWorkflow);
     impl->sessionExtensions.swap(nextExtensions);
+    impl->publishPlotWorkspace(plots);
     impl->sessionSizes.swap(nextSizes);
     impl->preferences.swap(nextPreferences);
     impl->startupRequest = std::move(request);
@@ -7234,6 +7293,8 @@ void Window::openLegacyFile(const std::string &path) {
     Json rows, steps, extensions;
     auto opened = loadSession(path, rows, steps, &extensions);
     auto table=impl->loadResultsTable(extensions,rows.size());
+    auto plots=impl->preparePlotWorkspace(extensions);
+    extensions.erase(plot_workspace_key);
     for (auto d : opened) {
       d->path = opened.size() == 1 ? path : "";
     }
@@ -7255,6 +7316,7 @@ void Window::openLegacyFile(const std::string &path) {
     impl->numericState.swap(table.state);std::swap(impl->numericStateMemory,table.memory);
     workflow.swap(steps);
     impl->sessionExtensions.swap(extensions);
+    impl->publishPlotWorkspace(plots);
     return;
   } else {
     auto d = std::make_shared<Document>(readImages(path), filename(path));
@@ -9440,10 +9502,12 @@ void Window::action(const std::string &name, const Json &p) {
         documents_.size());
     auto extensions = metadataJson(presentation.extensions);
     impl->storeResultsTable(extensions);
+    auto plotRecord=impl->storePlotWorkspace(extensions);
     auto diagnostics = impl->startupDiagnostics;
     diagnostics.insert(diagnostics.end(), presentation.diagnostics.begin(),
                        presentation.diagnostics.end());
     saveNativeSession(path, documents_, results, workflow, extensions);
+    extensions.erase(plot_workspace_key);
     impl->sessionExtensions.swap(extensions);
     impl->startupDiagnostics.swap(diagnostics);
     impl->startupNoticesDismissed = false;

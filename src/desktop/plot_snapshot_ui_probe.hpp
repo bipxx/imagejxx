@@ -3,4 +3,5 @@
 namespace imagejxx::desktop {
 class Window;
 Json plotSnapshotUiCase(Window&,const std::string& context,const std::string& directory);
+Json plotWorkspaceUiCase(Window&,const std::string& context,const std::string& directory);
 }

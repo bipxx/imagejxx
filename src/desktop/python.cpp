@@ -243,6 +243,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_generic_plot_ui_case",[](Window& window,const std::string& directory) {
         py::gil_scoped_release release;return genericPlotUiCase(window,"imgui_python",directory).dump();
       })
+      .def("_plot_workspace_ui_case",[](Window& window,const std::string& directory) {
+        py::gil_scoped_release release;return plotWorkspaceUiCase(window,"imgui_python",directory).dump();
+      })
       .def("_plot_snapshots_ui_case",[](Window& window,const std::string& directory) {
         py::gil_scoped_release release;return plotSnapshotUiCase(window,"imgui_python",directory).dump();
       })

@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; next is retained numeric plot workspace persistence. Full ImageJ/Fiji and release remain open.
+Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded workflow replay is next. Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Next: retained numeric plot workspace persistence. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-retained-plot-workspace-persistence). |
+| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Next: ordered mixed recorded workflow replay. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-ordered-mixed-replay). |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -83,6 +83,32 @@ option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
 
+## Retained numeric plot workspace scoped coverage
+
+Owner: T04a.3 / G070 G068 G069 G071 G089; shared T09/T15 state. **Scoped accepted.**
+[Receipt](parity/reviews/plot-workspace-20261107.json),
+[next queue](PLAN.md#next-ready-increment-t04a3-ordered-mixed-replay).
+I: private plotted-output codec and existing snapshot/session publication.
+V:102 distinct installed Windows cases eventually pass via88+12+2; native codec/
+plot-only session checks. UI: actual C++ and Python Windows ImGui. R: open.
+
+- [x] Save/Open and startup restore Fit, CalibrationTable, Profile and Histogram, including zero-document plot-only workspaces and independent export after source closure.
+- [x] Preserve exact unsigned IEEE sample words, signed zero/nonfinite curve gaps and uint64 histogram counts (native2^53+1/UINT64_MAX controls), raw-CSV choice, fit annotation/coefficients, labels/units/captions and bounds.
+- [x] Restore shared payload identity, fresh monotonic IDs, ordinal window order and independent view/style/log/tick/grid choices; duplicate/close and repeated open preserve correct ownership.
+- [x] Both real hosts keep five windows/four payloads, customize style, File Save/Open, export matching CSV and close restored windows with zero final retained/working plot reservations. Raw/visible fields agree across hosts.
+- [x] Reject unknown version/kind/fields, bad indices/arrays/counts/style/view and bounded resource/ID failures before current workspace publication. Nine installed malformed cases preserve documents/results/workflow/history/plots and release staged memory.
+- [x] Old workspaces preserve existing snapshots; unrelated extensions survive. Runtime consumes the known plot extension and retains only existing immutable plot carriers, avoiding a second persistent JSON copy.
+- [x] Correct installed bytes/origins verified. Final source/ownership review precedes retirement of all six terminal groups (6521479B);247 files retained losslessly in one verified968604B archive, including failures.
+- [ ] T04a.3: ordered mixed replay/chained operation and broader chooser workflows; single-step acceptance does not qualify them.
+- [ ] G038/T04a.3: wider Profile variants; T09 full table state; T12/T14/T00 supported-platform/commercial/release exits.
+
+The first installed run had88 passes/14 fixture failures; corrected API retry had
+12 passes/2 invalid-startup fixture failures; final two startup cases pass. This
+is not a fresh102-pass run. First build failed on two signature/name assumptions;
+real UI later exposed cached slot Z-order, fixed through existing focus before
+rechecking. Known normalized storage grew4952507B;214 inaccessible subtrees leave
+the full budget unverified. No new kernel/dependency/cache/runner was added.
+
 <a id="profile-recording-and-rebind-current-wip"></a>
 ## Profile recording and rebind scoped coverage
 
@@ -91,7 +117,7 @@ existing job/recorder/plot publication owner. V: 49 installed Windows checks
 passed; two unrelated historical external-report readers explicitly deselected.
 UI: actual standalone C++ and optional Python Windows ImGui. R: open.
 [Scoped receipt](parity/reviews/profile-replay-20261107.json),
-[next queue](PLAN.md#next-ready-increment-t04a3-retained-plot-workspace-persistence).
+[next queue](PLAN.md#next-ready-increment-t04a3-ordered-mixed-replay).
 The receipt preserves exact source/installed identities, failures, scope and
 local evidence paths; historical captures are retained locally, not shipped.
 
@@ -104,7 +130,8 @@ local evidence paths; historical captures are retained locally, not shipped.
 - [x] Workspace retains Profile intent for explicit replay after reopening; live/frozen CSV agrees through the tested route. This does not persist detached plot windows themselves.
 - [x] Built/installed bytes and loaded origins checked; source/ownership review precedes retirement. All five terminal scratch groups retired; 728309 bytes retained losslessly in a verified 137012-byte archive.
 - [x] Publish the scoped receipt and reconcile coverage/contracts/live guides with the next-ready queue; full-family and release exits remain open.
-- [ ] T04a.3: retained numeric plot/session persistence, wider chained replay and chooser usability.
+- [x] Retained numeric plot workspace persistence has scoped acceptance above.
+- [ ] T04a.3: wider chained replay and chooser usability.
 - [ ] T04a.3/G038: Z/time, thick/curved profiles and wider source/type/geometry/calibration variants.
 - [ ] T12/T14/T00: remaining host/platform/accessibility, commercial eligibility and release exits. Full family boxes remain open.
 
@@ -117,7 +144,7 @@ budget unverified. Active compiler/runtime products are preserved.
 <a id="roi-manager-recording-and-rebind-current-wip"></a>
 ## ROI Manager recording and rebind scoped coverage
 
-Owner: T04a.3 / G021 G009 G066 G071 G085 G089. **Scoped accepted.** [Receipt](parity/reviews/manager-measurement-replay-20261107.json), [next queue](PLAN.md#next-ready-increment-t04a3-profile-recording-and-rebind). I: V2 manager intent on existing C++ recorder/analysis/publication; V:36 installed API/regression passes plus2 corrected retained host-output readers,native zero-read V1/V2 controls; UI: actual standalone C++ and optional Python Windows ImGui; R: open. This does not close full T04a.3 or G021.
+Owner: T04a.3 / G021 G009 G066 G071 G085 G089. **Scoped accepted.** [Receipt](parity/reviews/manager-measurement-replay-20261107.json), [next queue](PLAN.md#next-ready-increment-t04a3-ordered-mixed-replay). I: V2 manager intent on existing C++ recorder/analysis/publication; V:36 installed API/regression passes plus2 corrected retained host-output readers,native zero-read V1/V2 controls; UI: actual standalone C++ and optional Python Windows ImGui; R: open. This does not close full T04a.3 or G021.
 
 - [x] V2 all/subset/caller-order grammar and consumed row name/index/geometry/positions/attributes/mask/path bindings;5000-index parser check and zero provider reads. Published V1 root/bounds remain compatible.
 - [x] Installed API no/self/foreign sampling,Record/Save/Load/repeated replay/explicit manager rebind and settings persistence; invalid/duplicate/out-of-range/Boolean indices,fingerprint and changed-manager refusal preserve stated data/history/intent. Unconsumed active selection and unused subset rows do not invalidate default replay.
@@ -133,7 +160,7 @@ The V2 record admits up to100000indices/104096nodes; manager geometry hashes bor
 <a id="measure-recording-and-rebind-current-wip"></a>
 ## Measure recording and rebind scoped coverage
 
-Owner: T04a.3 / G009 G066 G071 G085 G089. **Scoped accepted.** [Receipt](parity/reviews/measurement-replay-20261106.json), [remaining queue](PLAN.md#next-ready-increment-t04a3-roi-manager-measure-recording-and-rebind). I: typed private C++ current-selection Measure record and existing recorder/publication; V:17 installed Windows checks,metadata-only native controls and scoped original M4 corpus; UI: actual standalone C++ and optional Python Windows ImGui; R: open. No public processing kernel/API/dependency added. Neither full T04a.3 nor full ImageJ/Fiji is closed.
+Owner: T04a.3 / G009 G066 G071 G085 G089. **Scoped accepted.** [Receipt](parity/reviews/measurement-replay-20261106.json), [next queue](PLAN.md#next-ready-increment-t04a3-ordered-mixed-replay). I: typed private C++ current-selection Measure record and existing recorder/publication; V:17 installed Windows checks,metadata-only native controls and scoped original M4 corpus; UI: actual standalone C++ and optional Python Windows ImGui; R: open. No public processing kernel/API/dependency added. Neither full T04a.3 nor full ImageJ/Fiji is closed.
 
 - [x] Bounded typed V1 validation,unknown version/type/shape/fingerprint/closed-owner refusal and zero native provider reads; shape-compatible explicit source/sampling rebind.
 - [x] Actual Record checkbox and Measure publish saved intent with successful rows/overlay through the existing creator owner; no/self/foreign sampling API modes pass.
