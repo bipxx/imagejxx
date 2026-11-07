@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); next is [ROI Manager Measure recording/rebind](#next-ready-increment-t04a3-roi-manager-measure-recording-and-rebind). Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); next is [configured Profile recording/rebind](#next-ready-increment-t04a3-profile-recording-and-rebind). Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -167,7 +167,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.2 M3/T08: Add to overlay. | Native/Python captured clone/state/publication; actual both-Windows-host labels/zoom/export/history/persistence/lifecycle and Windows/Linux native/installed C++ clients. All15 groups retired. [Receipt](parity/reviews/add-to-overlay-20261106.json); foreign/brush/pointwise/table/platform/release exits retain owners. |
 | Delivered scoped | T04a.2 M4: mixed measurement integration. | Both actual Windows hosts match110 rows/49 visible cells, overlays/table/CSV/reopen and composed lifecycle. All11 groups retired;24 Analyzer options reconciled. [Receipt](parity/reviews/mixed-measurement-20261106.json). Full M3/family/release remain open. |
 | Delivered scoped | T04a.3: current-selection Measure recording and explicit rebind. | 17 installed checks; actual both Windows hosts match4rows/72visiblecells,record/Replay/Run/rebind/settings,CSV/reopen and6review/10recorded-job refusals. All10 task scratch groups retired. [Receipt](parity/reviews/measurement-replay-20261106.json). Wider manager/Profile variants remain T04a.3. |
-| Next ready | T04a.3: ordered ROI Manager Measure recording/rebind. | Reuse current typed recorder,manager analysis and publication owners; freeze manager order/geometry/positions/selected indices and explicit rebind semantics before editing. [Specification](#next-ready-increment-t04a3-roi-manager-measure-recording-and-rebind). Not implemented or closed by the preceding current-selection increment. |
+| Delivered scoped | T04a.3: ordered ROI Manager Measure recording/rebind. | V2 all/subset/caller-order intent; actual both Windows hosts match32rows/84cells,read-only review,CSV/reopen and4review/11recorded-job refusals.36 installed API/regression passes plus2 corrected retained original/output readers; all5 scratch groups retired. [Receipt](parity/reviews/manager-measurement-replay-20261107.json). Full manager/Profile/chained/release remains open. |
+| Next ready | T04a.3: configured Profile recording/rebind. | Reuse startProfile,resolved analysis,profile_samples and existing plot/recorder publication. [Specification](#next-ready-increment-t04a3-profile-recording-and-rebind). Not implemented by manager replay. |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1115,57 +1116,81 @@ uses the existing typed recorder family; diagnostic analysis records remain
 provenance. Relevant-input fingerprinting permits own-overlay outputs without
 weakening pixel/selection/pose/threshold/calibration/label protection.
 
-### Next ready increment: T04a.3 ROI Manager Measure recording and rebind
+<a id="next-ready-increment-t04a3-roi-manager-measure-recording-and-rebind"></a>
+<a id="active-increment-t04a3-roi-manager-measure-recording-and-rebind"></a>
+### Scoped delivered: ordered ROI Manager Measure recording and rebind
 
-**User-visible exit.** Record one supported ordered-manager Measure command,
-Save/Load it, review the selected image's ordered manager and explicit sampling
-owner, then Replay/Run the same supported rows and selected-column CSV through
-both ImGui hosts. Explicit rebind adopts the reviewed current manager; default
-replay refuses changed manager geometry/order/names/positions or missing owners.
-Keep existing rows/history and original intent protected. G021/G009/G066/G071/
-G085/G089 own this increment. It is next ready, not another active implementation.
+[Scoped evidence](parity/reviews/manager-measurement-replay-20261107.json)
+qualifies V2 all/subset/caller-order intent without changing published V1 records.
+Both Windows ImGui hosts drive Record,Measure all,physical Ctrl row selection/
+Measure selected,Save/Load,Replay/Run and explicit manager/sampling rebind.32 raw
+rows,84 visible cells,read-only ordered summaries,table,Copy/Save CSV and workspace
+agree; four manager-review changes and eleven recorded-job endpoints preserve
+stated inputs/history/intent and release working reservations.36 installed API/
+regression cases pass; two retained host-output readers pass after adopting the
+existing M4 raw-TCZ versus original delayed-table-NaN policy. Failed readers and
+clipped-row diagnostics are preserved; no numerical golden was changed. All five
+owned groups are retired. Full MultiMeasure/Z/T remains M2b.3, original delayed
+allocation remains T09, and Profile/chained/platform/release exits remain open.
 
-1. At entry inspect actual `measure_rois`, selected-row parameters,
-   `TargetMeasurementMode::RoiManager`, `TargetAnalysisOptions::roi_indices`,
-   `startMeasurement`, record codec and real manager controls. Freeze exact
-   command signatures, defaults/indices/append/position rules, consumed settings,
-   owned files and checks in its existing task record before editing. Start from
-   M4's accepted supported ordered-manager fixture/columns, not another kernel.
-2. Extend the existing typed Measure grammar with an explicitly versioned manager
-   mode and ordered index policy; preserve released V1 current-selection records.
-   Default replay binds the actual consumed manager entries and source/sampling
-   context. Include names,geometry,positions/order and applicable ROI attributes
-   in bounded admission before copies; metadata revision alone is insufficient.
-   Own measurement annotation output remains separate from manager input.
-3. Reuse the existing source/settings form and explicitly review current ordered
-   rows/indices plus sampling owner for rebind. Refuse invalid/out-of-range or
-   ambiguous owner/index choices before reads; do not silently substitute the
-   first image,drop rows/columns or reinterpret a stale ordinal. Freeze/revalidate
-   the reviewed manager and source/sampling context between review and Apply.
-4. Dispatch to existing manager analysis/table/CSV and atomic creator publication.
-   Preserve the accepted manager Add-to-overlay exception and captured T/C/Z,
-   calibration/threshold/redirect semantics. Retain bounded record/row/table work
-   and cancel/stale/clear/owner-close guarantees; no second batch engine, result
-   store, registry, scheduler or public processing-program variant without a
-   demonstrated consumer need.
-5. Reuse existing original M4 manager rows and current-selection replay evidence
-   for unchanged inputs. Add focused API and one shared actual both-host manager
-   route: Record,Save/Load,Replay/Run,rebind,ordered raw/visible rows,Copy/Save CSV,
-   workspace and changed-manager/source/settings refusal/cancel/resource cases.
-   Inspect binding mutability,exceptions,timing and input/receipt schemas first;
-   batch required edits before one affected desktop build in the active cache.
-   Install actual changed components and verify loaded origins/bytes.
-6. Keep bounded owned groups through final source/ownership review,retain/hash and
-   retire terminal scratch serially. Close out with measured checks/build/retries/
-   bytes and fix/defer/no-action waste decisions; update this queue and canonical
-   coverage before a successor. Normal8GiB budget remains unverified while214
-   subtrees are inaccessible; current active cache/runtime identities persist.
+### Next ready increment: T04a.3 Profile recording and rebind
 
-Full manager MultiMeasure/Z/T variants remain M2b.3; Profile/live-plot/chained
-replay remains T04a.3. Non-area RECT/COM,differing-XY/constructors remain T06/T04;
-foreign/brush/pointwise T08,table AUTO/string/editing T09 and platform/commercial
-release T12/T14/T00 remain open. Do not make these independent variants a
-prerequisite for the supported manager-recording workflow or silently close them.
+**User-visible exit.** Record a supported configured current-plane line/polyline
+Profile,Save/Load its intent,then Replay/Run or explicitly rebind to a compatible
+selected image/line/view. Matching distance/intensity arrays,visible plot and
+saved CSV appear in both ImGui hosts. Reopened workspace preserves the intent
+for explicit replay/rebind. A refusal/cancel/stale request preserves previous
+live/frozen plots and source/history. G070/G009/G085/G089 own this increment;
+G038 wider Z/time profiles remain separately owned. It is next ready,not active.
+
+1. At entry inspect actual `startProfile`, `captured_profile_available`, the
+   Profile menu/control,plot diagnostics/export/snapshot paths,`JobResult` and
+   profile publication before editing. Freeze API signatures,timing,source/line/
+   pose/calibration/intensity ownership,owned files and applicable checks in its
+   existing task record. Existing profiles resolve one target with statistics
+   off,path from captured selection points,and `samples_per_segment` from
+   `profile_samples`; do not reinterpret Analyzer line sampling as Profile.
+2. Preserve `profile_samples`: default0 selects the existing automatic interval
+   policy; configured2..1000000 uses explicit samples per segment;1 is refused.
+   Reuse the actual settings validation and accepted configured Profile corpus.
+   Define default replay versus explicit restoration of authored sampling values
+   before coding; restoration is a visible configuration action,not a hidden
+   temporary global override. Preserve current measurement V1/V2 grammars.
+3. Extend the existing typed recorder family dispatch with a closed versioned
+   Profile intent,using proven private source/context bindings where consumed
+   semantics match. No live provider/job/plot pointer belongs in saved intent.
+   Default replay binds the recorded source/line/pose/calibration and settings;
+   explicit review adopts the selected compatible current line/view and shows
+   sampling choices. Freeze/revalidate review context before Apply; refuse wrong
+   shapes/types/lines,missing owners,invalid samples or versions before reads.
+   No new generic workflow-program variant,registry,controller or plot store.
+4. Reuse `resolve_target_analysis`,captured profile execution and existing numeric
+   plot ownership. Admit record/plot/source staging before copies; prepare plot
+   payload and recorder publication before changing live state so record+plot
+   publish together through the creator owner. Preserve prior frozen snapshots
+   and source/history on failure; avoid dummy document edits. Keep existing
+   cancel/stale-source/settings/owner-close/clear/resource guarantees.
+5. Reuse unchanged original/configured Profile numerical evidence and current
+   recorder evidence within scope. Add focused API and one shared actual both-host
+   Record/Save/Load/Replay/Run/rebind workflow,checking sample policy,raw arrays,
+   plot labels/units/visible output,CSV,workspace intent and previous live/frozen
+   plot protection. Include Apply/Cancel,changed review/job context and resource
+   release. Inspect caller/binding mutability,exceptions and probe input/receipt
+   schemas; batch related edits before one affected desktop build in active cache.
+   Install actual changed components and verify loaded paths/bytes before checks.
+6. Keep captures through final source/ownership review,then retain/hash and retire
+   terminal groups serially. Record measured checks/build/retries/generated bytes
+   and fix/defer/no-action waste decisions; update queue and canonical coverage
+   before a successor. Reuse completed evidence after a reader/probe-only fix.
+   Unknown214 storage subtrees keep the full8GiB budget unverified; existing
+   active compiler cache/runtime and cleanup ownership persist.
+
+Wider Z/time/thick/curved Profile,plot-snapshot/session persistence and general
+chained replay remain explicitly T04a.3/G038 or their established owners; do not
+silently close them or make independent variants prerequisites for this workflow.
+Full manager MultiMeasure/Z/T M2b.3,non-area RECT/COM/differing-XY T06/T04,foreign
+T08,table AUTO/string/editing/delayed allocation T09 and platform/commercial
+release T12/T14/T00 remain open.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 

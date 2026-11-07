@@ -1232,3 +1232,42 @@ retains no live source,provider,job or plot. Unknown versions refuse. Review
 currently bounds256open images/title4096; fingerprinting bounds1MiB,65536nodes
 and128levels. Full manager/Profile/live-plot/chained recording stays T04a.3;
 non-area/type/constructor,table and platform/release residual owners are unchanged.
+
+
+## Executable ordered ROI Manager Measure recording
+
+[Scoped V2 evidence](parity/reviews/manager-measurement-replay-20261107.json)
+adds manager intent to the existing `imagejxx.measurement-command` family.
+Published V1 current-selection records keep their closed root and behavior.
+V2 adds the closed `manager` object with `indices`, `total` and `fingerprint`.
+`indices` is the existing zero-based distinct ordered row vector; empty means
+all stored rows in order. `total` records the original manager extent for index
+validation/description. Default subset replay compares its consumed entries,
+so changes to unused entries need not invalidate it; all-row hashes include the
+whole current list. No saved record retains live ROI/provider/job objects.
+
+Workflow Record now covers Analyze Measure ROIs and the ROI manager's Measure
+all/Measure selected. Existing Save/Load/Replay/Run and Python `Editor.action`
+replay parameters apply. Explicit rebind preserves the saved index policy and
+adopts the selected image's current entries at those ordinals after read-only
+review of names,kinds,order and resolved T/C/Z. Out-of-range/duplicate/ambiguous
+indices or owners refuse; no first-image or dropped-row fallback occurs.
+Original intent remains unchanged. Default replay binds used entry names,
+geometry,positions and attributes,including native masks and paths; source/
+sampling pixel,pose,threshold and calibration guards remain. Unrelated active
+selection is ignored for manager whole-plane sampling.
+
+Current-manager review is frozen when opened and revalidated on Apply. Record,
+rows and table use the existing atomic creator publication; the accepted manager
+Add-to-overlay no-op and read-only document/history behavior remain. Cancel,
+clear,record toggle,changed manager/settings and owner-close protect outputs and
+release work. Original raw captured T/C/Z values are retained; original Analyzer
+delayed table-column NaNs remain the separately owned T09 contract.
+
+V2 validates up to100000indices/104096nodes; its declared capture allowance grows
+before index copies. Manager fingerprinting streams borrowed controls under a
+64MiB/1Mmetadata-node bound. Existing16MiB analysis-record and row/work limits
+still govern execution; a5000-index parser check is not large-manager performance
+qualification. V1's original bounds remain. Full MultiMeasure/Z/T M2b.3,
+Profile/live-plot/chained replay T04a.3,other types/constructors T06/T04 and full
+table/platform/commercial release obligations remain open.

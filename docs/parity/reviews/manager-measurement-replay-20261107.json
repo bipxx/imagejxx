@@ -1,0 +1,248 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T04a.3 ordered ROI Manager Measure recording and explicit rebind",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G021",
+    "G009",
+    "G066",
+    "G071",
+    "G085",
+    "G089"
+  ],
+  "scope": "Supported finite U8/equal-XY ordered-manager recording and replay. All/subset/caller-order API with no/self/foreign sampling; shared Windows ImGui workflow. Full T04a.3, G021 and ImageJ/Fiji remain open.",
+  "aspects": {
+    "implemented": "Typed manager V2 codec, bounded consumed-entry binding, read-only review and existing Window recorder/job/publication dispatch. V1 current-selection grammar preserved.",
+    "verified": "36 installed API/regression cases plus two corrected readers of retained actual-host captures; V1/V2 zero-read native controls. Original M4 manager corpus reused within its stated raw-versus-table scope.",
+    "integrated": "Actual C++ and Python Windows ImGui controls: all/selected rows, Record, Save/Load, Replay/Run, manager/sampling rebind, table/CSV/workspace and lifecycle.",
+    "release_ready": false
+  },
+  "verified": {
+    "installed_api_regression_passes": 36,
+    "new_manager_api_cases": 20,
+    "affected_v1_cases": 15,
+    "affected_m4_regression": 1,
+    "corrected_retained_host_readers": 2,
+    "not_a_fresh_38_pass_pytest_run": true,
+    "native_controls": "008 V2 and 009 V1 controls pass with zero provider reads; ordered name/index/geometry/position/attribute and mask/path binding, unused-subset/active-selection behavior and 5000-index parsing.",
+    "actual_hosts": {
+      "state": "matched_actual_manager_replay_hosts",
+      "rows": 32,
+      "original_rows": 7,
+      "visible_cells": 84,
+      "review_refusals": 4,
+      "job_refusals": 11,
+      "source_sha256": [
+        "1e735fb660b7982e1d885afbbcdb0899ff0a579e2c75ac3307401bd580cc7552",
+        "df9c4599486a74a99140be41d5ef3739a994911c3a0b18c8e84bc26e5e3d3328"
+      ],
+      "csv_sha256": "86348fd2b594f6436debc037e872d97c40618ca9f42303a5619045243d85b7a7",
+      "normalization": "Only3recordsource/redirectdocument_ids and32rowRedirectdocument fields afteractualsample/selectedindices/sourceproof; allotherraw/table/CSV/summary/cellfieldscomparedunchanged"
+    },
+    "reader_correction": {
+      "observed": "019terminalexit1cleanuptrue5.355s:36API/V1/M4casespass;2newactual-hostreaderassertions failedafterbothnative/Pythonactualprobesreturnedobserved. ExactmismatchesonlyCh/Slice/Frame=2versusoriginaldelayedtableNaNinfirst4managerrows. Allotheroriginalnumericfieldsagree. Existingtest_mixed_measurements readeralreadyexplicitlykeepscapturednativeTCZanddoesnotreinterpretoriginaltableNaN.",
+      "decision": "CorrectnewsharedreaderonlytoreuseexistingM4/T09policy; explicitlyassertcapturedTCZ2onoriginalNaNcases. Preservegoldens/fixturesandproductsource. Reusebothrawactualcapturesand36passedcases; runcorrectedmaintainedassertionagainstthoseexactretainedartifactsininstalledruntime,notanotherunchangedUI/numericalcampaign.",
+      "test_sha256": "7f99e96d2248b6a696c66590f77e8ca13cb289d0e93a65c621d1086c5947c861",
+      "api_scope": "20newmanagerAPIcases +15affectedV1cases +1M4regression pass. OriginaloldV1externalreaderexplicitlydeselected/unavailable. Bothactualhostcases needcorrectedartifactreaders beforeacceptance,notblanket38pytestpassclaim."
+    },
+    "reuse_proof": "Current reader byte reversal matches frozen003 test source; 36 passed API/regression bodies and both producer bodies unchanged.021 reruns only maintained pure assertions on exact native/Python artifacts with installed origins checked.",
+    "unavailable": "Old V1 external report reader explicitly deselected because its capture is retired; prior acceptance retained in measurement-replay-20261106.json. No replacement or repinning."
+  },
+  "contracts": {
+    "schema": "imagejxx.measurement-command: published V1 closed root unchanged; V2 adds manager{indices,total,fingerprint}. Empty indices means all stored rows; nonempty vector preserves caller order and unique ordinal identities. total describes original extent; subset comparison binds consumed entries.",
+    "source": "V2 whole-plane manager sampling ignores unrelated active-selection revisions. Pixel/pose/threshold/calibration/shape/type and metadata guards stay; consumed manager data is separately hashed, excluding unrelated output overlays.",
+    "manager_hash": "Fixed-storage existing SHA streams borrowed names, ordinal, selection kind/width/points/attributes, row attributes, optional TCZ, native path commands and packed mask/origin/extents. 64 MiB/1M metadata nodes; no full ROI serialization or provider reads.",
+    "admission": "V2 up to100000 indices/104096 nodes; captured record allowance admits131072 +512 per requested index +workflow slots before copies. Existing16 MiB analysis-record, row/work limits still govern actual execution. V1 node bounds and source hash unchanged.",
+    "review": "Existing measurement_replay form renders admitted read-only ordered names/kinds/positions/counts. Rebind adopts reviewed current entries at saved ordinals; selected owner and used entries revalidated on Apply. Saved intent immutable, no first-image fallback or silent dropped rows.",
+    "publication": "Existing startMeasurement, resolved manager target, table/CSV formatter and atomic record/rows publication reused. Manager Add-to-overlay stays a no-op; no dummy history edit.",
+    "limits": "5000-index parser coverage does not establish a full large-manager UI/performance campaign. Broader manager layouts, chooser usability and platform/release exits remain open."
+  },
+  "identities": [
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2",
+      "bytes": 84013
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5",
+      "bytes": 8688128
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "sha256": "55afa99d007059d003104b02a42ef6c0363b89ff1702b862792bd92b09aa600b",
+      "bytes": 21394944
+    },
+    {
+      "source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "sha256": "8a40b4c0882e8048ddd0dead8a809d58927edcdba860d4eb201280c2a9118c59",
+      "bytes": 20817920
+    }
+  ],
+  "cleanup": {
+    "scratch_absent": true,
+    "consumer_groups_retired": 5,
+    "source_bytes_removed": 894364,
+    "retained_archive_bytes": 140527,
+    "archive_sha256": "70cfcf1846a417e1cb5ff56bbf2a3f2fc96c9a5501b9f0264561b9c0bc381a33",
+    "blockers": []
+  },
+  "retained": {
+    "archive": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/evidence/phase025.zip",
+    "bytes": 140527,
+    "sha256": "70cfcf1846a417e1cb5ff56bbf2a3f2fc96c9a5501b9f0264561b9c0bc381a33",
+    "verified_receipt": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/retain026.json",
+    "scope": "68 necessary input/output/failure captures retained losslessly; no compiler/runtime/SDK archived. Root process logs/receipts retained, scratch absent."
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/manager-measurement-replay-entry004.json",
+    "before_known_bytes": 7529214126,
+    "after": ".tmp/manual-workflow-verification/manager-measurement-replay-after-retirement028.json",
+    "after_known_bytes": 7531596854,
+    "net_known_growth_bytes": 2382728,
+    "unknown_subtrees": 214,
+    "budget_verified": false,
+    "allocation_bytes": 268435456,
+    "last_physical_free_bytes": 22556893184,
+    "scope": "Complete normalized scope; unknown bytes are not headroom. After-retirement snapshot precedes small closeout prose. Physical free changes include unrelated disk activity; actual owned retirement894364B."
+  },
+  "process_receipts": [
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/build005.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 86.5200579999946
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/native008.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.16256450000219047
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/native009.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.11858939984813333
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/cpp010.process.json",
+      "state": "exited",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "seconds": 0.5054323000367731
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/build012.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 20.64164649997838
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/cpp013.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 1.174248200142756
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/link015.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 12.373438699869439
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/install016.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.34760460001416504
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/install017.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.36956650018692017
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/origins018.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.35806440003216267
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/python019.process.json",
+      "state": "exited",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "seconds": 5.355422500055283
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/readers021.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.47793269995599985
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/retain025.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.39729780005291104
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/retain026.process.json",
+      "state": "exited",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "seconds": 0.23236069991253316
+    }
+  ],
+  "remaining_owners": {
+    "T04a.3": "Profile/liveplot/chainedreplay,widerchooserusability",
+    "M2b.3": "FullMultiMeasure/Z/Tmanagerlayoutvariants",
+    "T06/T04": "Non-areaRECT/COM/differing-XY/constructors",
+    "T08": "Foreign/brush/pointwise",
+    "T09": "TableAUTO/string/editing",
+    "T12/T14/T00": "BroaderUI/platform/commercialrelease"
+  },
+  "task_record": ".tmp/manual-workflow-verification/manager-measurement-replay-20261107/entry.json",
+  "next_ready": "T04a.3 configured current-plane Profile recording/rebind; detail only that successor in PLAN.",
+  "waste_review": {
+    "decision": "Fix now: existing typed family, borrowed geometry hash and source-aware review avoid a new core program variant/controller/batch engine. Capture charge grows before index copies; existing read-only manager analysis/publication reused. No new runner/cache/environment/dependency.",
+    "build_seconds": 119.535,
+    "compiler_failure_retries": 0,
+    "probe_only_rebuild_seconds": 20.642,
+    "consumer_relink_seconds": 12.373,
+    "observed_failures": "010 physical row2 click was clipped; existing dock size could not expose it. Use actual child clip/wheel before Ctrl selection.019 two original readers assumed original delayed TCZ NaNs equal native raw coordinates; reused established M4/T09 policy with explicit captured coordinate assertions. No goldens or kernels changed.",
+    "verification_reuse": "36 passing API/regression cases retained after pure-reader correction;021 reads exact two captures rather than restarting UI/build/numerical campaign. Prior core/SDK/Linux evidence reused for unchanged public contracts.",
+    "authoring_lapses": "Mixed LF/CRLF anchors and immutable Python ROI fields were corrected before compiler/test launch by inspecting actual bytes and bindings. Do not infer either from formatting or field names.",
+    "cleanup": "All five groups retired after final source/ownership review;140527B verified archive retained, active compiler/runtime preserved; complete budget remains unverified due214 inaccessible subtrees.",
+    "deferred": "Full MultiMeasure/Z/T M2b.3; configured Profile and wider plot/chained/chooser T04a.3; non-area RECT/COM/differing-XY T06/T04; delayed table allocation T09; other types/foreign/platform/commercial release retain existing owners.",
+    "performance": "Build/check times are execution cost, not image-processing speed or overall completion evidence."
+  },
+  "source_sha256": {
+    "src/desktop/analysis_measurement.cpp": "3836cafe5c3437bda6f15bca0fc956dee5073922995140497c0f355e226e7af3",
+    "src/desktop/analysis_measurement.hpp": "48fa63d4df4da71d1fc1993758fbd4cafb942a2eef80ec7c1b50e40afb32af1a",
+    "src/desktop/window.cpp": "f04f1243c8c0ef133e0ad67250c79b9c2bb28fe52aadca6cf2eecc50ae4d4bf9",
+    "src/desktop/effective_display_ui_probe.cpp": "e389e1e6e03bc4c8285bb00a38de26da044d1a1719eefcf91e89e533efb83440",
+    "src/desktop/effective_display_ui_probe.hpp": "7532d681057af489d039943dfdf377495a1eef8e1d789ed20bd9e8040514ca14",
+    "src/desktop/python.cpp": "686d8483508e41d74e2d874b73c67f412f45c83887c049c86380e2dd232ecae2",
+    "tests/native/test_display_actions.cpp": "ad680f20dfeafaf00483f75b5edab769a96c3a57ed2efb764427d6122bec88bc",
+    "tests/python/test_manager_measurement_replay.py": "7f99e96d2248b6a696c66590f77e8ca13cb289d0e93a65c621d1086c5947c861"
+  }
+}

@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection Measure recording/rebind now has scoped both-Windows-host acceptance; next is ordered ROI Manager recording/rebind. Full ImageJ/Fiji and release remain open.
+Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance; next is configured Profile recording/rebind. Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Next: ordered ROI Manager Measure recording/rebind; Profile/live-plot/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-roi-manager-measure-recording-and-rebind). |
+| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. Next: configured Profile recording/rebind. Wider live-plot/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-profile-recording-and-rebind). |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -60,6 +60,22 @@ option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
 
+<a id="roi-manager-recording-and-rebind-current-wip"></a>
+## ROI Manager recording and rebind scoped coverage
+
+Owner: T04a.3 / G021 G009 G066 G071 G085 G089. **Scoped accepted.** [Receipt](parity/reviews/manager-measurement-replay-20261107.json), [next queue](PLAN.md#next-ready-increment-t04a3-profile-recording-and-rebind). I: V2 manager intent on existing C++ recorder/analysis/publication; V:36 installed API/regression passes plus2 corrected retained host-output readers,native zero-read V1/V2 controls; UI: actual standalone C++ and optional Python Windows ImGui; R: open. This does not close full T04a.3 or G021.
+
+- [x] V2 all/subset/caller-order grammar and consumed row name/index/geometry/positions/attributes/mask/path bindings;5000-index parser check and zero provider reads. Published V1 root/bounds remain compatible.
+- [x] Installed API no/self/foreign sampling,Record/Save/Load/repeated replay/explicit manager rebind and settings persistence; invalid/duplicate/out-of-range/Boolean indices,fingerprint and changed-manager refusal preserve stated data/history/intent. Unconsumed active selection and unused subset rows do not invalidate default replay.
+- [x] Both actual hosts: Record,Measure all,physical Ctrl selection/Measure selected,Replay/Run,read-only ordered review and explicit manager/sampling rebind. Actual clicked sampling/selected indices are proved before comparison.
+- [x] Four review-time manager changes(name/order/geometry/position) and eleven recorded-job endpoints(same four,cancel,record toggle,workflow clear,settings,results clear,sampling close,source close) preserve stated input/history/rows/intent and release work.
+- [x] Hosts match32rawrows/84visiblecells,three intent records,read-only summaries,table and Copy/Save CSV/workspace output. Original seven-row manager corpus matches its accepted scope; raw captured TCZ remains distinct from original delayed-table NaNs owned by T09.
+- [x] Correct installed components/bytes/origins checked; final source/ownership review precedes retirement. All five terminal groups(894364B) are retained losslessly in one hash-verified140527B archive; active compiler/runtime products are preserved.
+- [ ] Full MultiMeasure/Z/T layouts and wider manager command options remain M2b.3; configured Profile recording/rebind is next T04a.3. Wider plot/session/chained replay and chooser usability remain open.
+- [ ] Full non-area/type/constructor,numerical,platform/commercial and release exits remain with existing owners; all99full-family boxes stay open.
+
+The V2 record admits up to100000indices/104096nodes; manager geometry hashes borrow up to64MiB/1Mmetadata nodes while existing16MiB analysis-record limits still govern execution extent.5000-index grammar coverage does not certify a full large-manager UI/performance campaign. Known complete-scope storage grew2382728B;214 inaccessible subtrees keep the full8GiB budget unverified. The019pytest attempt had36passes/2reader failures; corrected pure readers021 reused exact retained captures and unchanged product/API inputs. This is not a claimed38-pass fresh pytest run. No golden,expectation or numerical kernel changed.
+
 <a id="measure-recording-and-rebind-current-wip"></a>
 ## Measure recording and rebind scoped coverage
 
@@ -73,7 +89,7 @@ Owner: T04a.3 / G009 G066 G071 G085 G089. **Scoped accepted.** [Receipt](parity/
 - [x] Ten recorded-job terminal cases: cancel,record toggle,workflow clear,source pose,sampling threshold,global calibration,consumed settings,results clear,sampling close and source close. Busy recorder controls disable; rejected jobs do not publish records/rows/table/history; working reservations return to zero.
 - [x] Hosts match4rawrows/72visiblecells,table state,overlay names1/2/3/4 and Copy/Save CSV; Undo/Redo and reopened workspace preserve the recorded output/intent. External native capture and Python host use the same original-corpus/output assertion.
 - [x] Correct installed components and source/built/installed bytes/loaded origins checked; final source/ownership review completed before hash-retiring captures. All9consumer groups plus1diagnostic group retired across3verified lossless archives (155167B).
-- [ ] Ordered ROI Manager recording/rebind: next ready under G021/T04a.3; manager content/order/indices need explicit bindings and actual controls. Existing manager numerical/UI evidence does not close recorder coverage.
+- [x] Ordered ROI Manager recording/rebind now has [scoped V2 API/both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); full MultiMeasure/Z/T and wider G021 remain open.
 - [ ] Profile/live-plot/general chained replay,all source/type/platform variants and release acceptance remain with their existing owners.
 
 Known complete-scope storage grew4087140B from task entry to final retirement;214 inaccessible subtrees keep the full8GiB budget unverified. Active compiler/runtime products are preserved. Current sampling review is bounded to256images/title4096 and metadata fingerprinting to1MiB/65536nodes/128depth; broader chooser usability stays T04a.3. Non-area RECT/COM/differing-XY T06/T04,foreign/brush/pointwise T08,table AUTO/string/editing T09 and platform/commercial release T12/T14/T00 remain open. All99 full-family boxes remain open.

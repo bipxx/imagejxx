@@ -503,9 +503,39 @@ void measurementRecordCases(const std::filesystem::path& root) {
   auto moved=owner->snapshot().display();moved.crosshair[2]=0;owner->set_display(moved);refuses([&]{validateMeasurementReplaySource(expected.source,app.resolve_target(),false);});validateMeasurementReplaySource(expected.source,app.resolve_target(),true);
   check(reader->reads==0,"Record/decode/rebind acquired source pixels");write(root/"record.json",withOverlay);write(root/"summary.json",{{"state","observed"},{"plane_reads",reader->reads},{"repeated_own_overlay",true},{"metadata_input_stale_guards",true},{"strict_grammar",true},{"explicit_rebind",true}});
 }
+
+void managerMeasurementRecordCases(const std::filesystem::path& root) {
+  using namespace imagejxx::desktop;
+  check(!std::filesystem::exists(root),"Fresh manager record output required");std::filesystem::create_directories(root);
+  auto reader=std::make_shared<Source>(PixelType::UInt8,1);auto owner=std::make_shared<imagejxx::Document>(Dataset(reader));
+  std::vector<Roi> rois={{"rectangle",Selection("rectangle",{{0,0},{4,3}}),{},{},0,{}},{"line",Selection("line",{{0,0},{3,2}}),{},{},1,{}},{"point",Selection("point",{{2,1}}),{},{},{},{}}};
+  auto edit=owner->begin_edit();edit.set_rois(rois);owner->commit(edit);Application app;app.adopt(owner);
+  TargetAnalysisOptions options;options.measurement=TargetMeasurementMode::RoiManager;Settings settings;
+  auto request=roi_measurement_target_request(owner->snapshot());const auto command=resolve_target_analysis(app.resolve_target(request),options);
+  const auto raw=captureMeasurementRecord(command,settings);const auto decoded=decodeMeasurementRecord(raw);check(raw.at("version")==2 && decoded.manager && decoded.manager->indices.empty(),"Manager record version/policy differs");validateMeasurementManager(*decoded.manager,owner->snapshot(),false);
+  auto subset=*decoded.manager;subset.indices={2,0};subset.fingerprint=measurementManagerFingerprint(owner->snapshot(),subset.indices);
+  for(int mode=0;mode<6;++mode){auto changed=rois;if(mode==0)changed[0].name="renamed";if(mode==1)std::swap(changed[0],changed[2]);if(mode==2)changed[0].selection.points[1][0]=3;if(mode==3)changed[0].z=1;if(mode==4)changed[0].selection.attributes["retained"]=true;if(mode==5)changed[0].attributes["retained"]=true;
+    auto mutation=owner->begin_edit();mutation.set_rois(changed);owner->commit(mutation);refuses([&]{validateMeasurementManager(*decoded.manager,owner->snapshot(),false);});validateMeasurementManager(*decoded.manager,owner->snapshot(),true);owner->undo();validateMeasurementManager(*decoded.manager,owner->snapshot(),false);
+  }
+  auto changed=rois;changed[1].name="not sampled";edit=owner->begin_edit();edit.set_rois(changed);owner->commit(edit);validateMeasurementManager(subset,owner->snapshot(),false);owner->undo();
+  owner->select(Selection("rectangle",{{1,1},{3,2}}));validateMeasurementReplaySource(decoded.source,app.resolve_target(request),false,true);validateMeasurementManager(*decoded.manager,owner->snapshot(),false);
+  for(const auto& patch:std::vector<std::pair<std::string,Json>>{{"indices",{0,0}},{"indices",{3}},{"indices",{false}},{"indices",false},{"total",0},{"fingerprint","bad"}}){auto bad=raw;bad["manager"][patch.first]=patch.second;refuses([&]{decodeMeasurementRecord(bad);});}
+  auto bad=raw;bad["version"]=3;refuses([&]{decodeMeasurementRecord(bad);});bad=raw;bad.erase("manager");refuses([&]{decodeMeasurementRecord(bad);});
+  auto large=raw;large["manager"]["total"]=5000;large["manager"]["indices"]=Json::array();for(int i=0;i<5000;++i)large["manager"]["indices"].push_back(i);check(decodeMeasurementRecord(large).manager->indices.size()==5000 && measurementRecordWorkingBytes(large)>65536,"V2 indices still use V1 capture allowance");
+  const auto summary=measurementManagerReview(owner->snapshot(),subset.indices);check(summary.find("[3]")<summary.find("[1]") && summary.size()<=measurementManagerReviewBytes(owner->snapshot(),subset.indices),"Manager review lost order/admission");
+  for(bool path:{false,true}){auto geometry=[&](bool alternate){return path?Selection::from_path({0,0,0,1,alternate?3.:4.,0,1,4,3,1,0,3,4}):Selection::from_packed_mask(5,4,{static_cast<unsigned char>(alternate?2:1),0,0});};
+    edit=owner->begin_edit();edit.set_rois({{"geometry",geometry(false),{},{},{},{}}});owner->commit(edit);const auto fingerprint=measurementManagerFingerprint(owner->snapshot(),{});edit=owner->begin_edit();edit.set_rois({{"geometry",geometry(true),{},{},{},{}}});owner->commit(edit);check(fingerprint!=measurementManagerFingerprint(owner->snapshot(),{}),"Manager mask/path geometry not bound");
+  }
+  check(reader->reads==0,"Manager record/review acquired pixels");write(root/"record.json",raw);write(root/"summary.json",{{"state","observed"},{"plane_reads",reader->reads},{"strict_v2",true},{"ordered_manager_binding",true},{"large_indices",5000},{"active_selection_ignored",true},{"mask_path_bound",true}});
+}
 } // namespace
 int main(int argc,char **argv){try{
+  if(argc==3 && std::string(argv[2])=="--manager-measurement-records") {managerMeasurementRecordCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
   if(argc==3 && std::string(argv[2])=="--measurement-records") {measurementRecordCases(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
+  if(argc==3 && std::string(argv[2])=="--manager-measurement-replay") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"manager-replay-preferences.json").u8string());
+    imagejxx::desktop::managerMeasurementReplayUiCase(w,"imgui_cpp",argv[1]);return 0;
+  }
   if(argc==3 && std::string(argv[2])=="--measurement-replay") {
     Window w((std::filesystem::u8path(argv[1]).parent_path()/"replay-preferences.json").u8string());
     imagejxx::desktop::measurementReplayUiCase(w,"imgui_cpp",argv[1]);return 0;

@@ -4523,9 +4523,9 @@ struct Window::Impl {
     const auto command=resolve_target_analysis(target,options,limits);
     const bool recordStep=owner.recording;const auto workflowSize=owner.workflow.size();
     if(recordStep && !owner.workflow.is_array())throw std::invalid_argument("Workflow must be an array");
-    const auto recordBytes=recordStep?RenderMemory::add(131072,RenderMemory::mul(RenderMemory::add(workflowSize,1),sizeof(Json)*2)):0;
+    const auto recordBytes=recordStep?RenderMemory::add(RenderMemory::add(131072,manager?RenderMemory::mul(indices.size(),512):0),RenderMemory::mul(RenderMemory::add(workflowSize,1),sizeof(Json)*2)):0;
     std::shared_ptr<RenderMemory::Lease> recordMemory;MetadataObject measurementRecord;
-    if(recordStep){recordMemory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(recordBytes));const auto value=captureMeasurementRecord(command,preferenceState.settings);if(measurementRecordWorkingBytes(value)>65536)throw std::length_error("Measure record exceeds captured record allowance");measurementRecord=metadataObjectFromJson(value);}
+    if(recordStep){recordMemory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(recordBytes));const auto value=captureMeasurementRecord(command,preferenceState.settings);if(measurementRecordWorkingBytes(value)>recordBytes/2)throw std::length_error("Measure record exceeds captured record allowance");measurementRecord=metadataObjectFromJson(value);}
 
     const auto rows=captured_measurement_row_bytes(command);
     const auto base=owner.results.size();
@@ -7291,10 +7291,14 @@ void Window::action(const std::string &name, const Json &p) {
     auto memory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(bytes*4));
     const auto decoded=decodeMeasurementRecord(p.at("record"));
     if(name=="show_measurement_rebind") {
-      const auto selected=document()->id;const auto reviewed=captureMeasurementReplaySource(controller_->resolve_target({},selected),decoded.source.composite.has_value());
+      const auto selected=document()->id;TargetRequest reviewRequest;if(decoded.manager)reviewRequest.roi=RoiPolicy::WholePlane;
+      const auto reviewTarget=controller_->resolve_target(reviewRequest,selected);const auto reviewed=captureMeasurementReplaySource(reviewTarget,decoded.source.composite.has_value());
+      std::shared_ptr<RenderMemory::Lease> managerMemory;std::string reviewedManagerFingerprint;
+      if(decoded.manager){const auto bytes=measurementManagerReviewBytes(reviewTarget.source(),decoded.manager->indices);if(bytes>impl->processingCap()/3)throw std::length_error("Manager review exceeds processing budget");managerMemory=std::make_shared<RenderMemory::Lease>(impl->renderMemory->acquire(bytes*3));reviewedManagerFingerprint=measurementManagerFingerprint(reviewTarget.source(),decoded.manager->indices);}
       Json values={{"rebind",false},{"restore_settings",true}},fields=Json::array({
         {{"name","rebind"},{"label","Use selected image's current selection and view"},{"kind","bool"}},
         {{"name","restore_settings"},{"label","Restore saved measurement settings"},{"kind","bool"}}});
+      if(decoded.manager){fields[0]["label"]="Use selected image's reviewed ROI Manager and view";values["manager_summary"]=measurementManagerReview(reviewTarget.source(),decoded.manager->indices);}
       Json choices=Json::array({"Choose sampling image"});std::vector<std::uint64_t> ids;std::vector<MeasurementRecordSource> reviewedSampling;
       std::shared_ptr<RenderMemory::Lease> choiceMemory;
       if(decoded.redirect){
@@ -7312,13 +7316,15 @@ void Window::action(const std::string &name, const Json &p) {
         }
         values["sampling"]=choices[0];fields.push_back({{"name","sampling"},{"label","Sampling image for explicit rebind"},{"kind","choice"},{"choices",choices}});
       }
-      impl->ask("Replay Measure",std::move(values),[this,memory,choiceMemory,record=p.at("record"),selected,reviewed,choices,ids,reviewedSampling](Json values){
+      impl->ask("Replay Measure",std::move(values),[this,memory,choiceMemory,managerMemory,record=p.at("record"),selected,reviewed,choices,ids,reviewedSampling,manager=decoded.manager,reviewedManagerFingerprint](Json values){
         Json request={{"record",record},{"rebind",values.at("rebind")},{"restore_settings",values.at("restore_settings")}};
         if(values.at("rebind").get<bool>()) {
           if(documents_.empty() || document()->id!=selected)throw std::invalid_argument("Selected source changed; reopen Measure review");
-          validateMeasurementReplaySource(reviewed,controller_->resolve_target({},selected),false);
+          TargetRequest reviewRequest;if(manager)reviewRequest.roi=RoiPolicy::WholePlane;const auto current=controller_->resolve_target(reviewRequest,selected);
+          validateMeasurementReplaySource(reviewed,current,false,bool(manager));
+          if(manager && measurementManagerFingerprint(current.source(),manager->indices)!=reviewedManagerFingerprint)throw std::invalid_argument("Reviewed ROI Manager changed; reopen Measure review");
           request["document_id"]=selected;
-          if(!ids.empty()){std::size_t found=0;for(std::size_t i=1;i<choices.size();++i)if(choices[i]==values.at("sampling"))found=i;if(!found)throw std::invalid_argument("Choose a sampling image for explicit Measure rebind");TargetRequest whole;whole.roi=RoiPolicy::WholePlane;validateMeasurementReplaySource(reviewedSampling[found-1],controller_->resolve_target(whole,ids[found-1]),false);request["redirect_id"]=ids[found-1];}
+          if(!ids.empty()){std::size_t found=0;for(std::size_t i=1;i<choices.size();++i)if(choices[i]==values.at("sampling"))found=i;if(!found)throw std::invalid_argument("Choose a sampling image for explicit Measure rebind");TargetRequest whole;whole.roi=RoiPolicy::WholePlane;validateMeasurementReplaySource(reviewedSampling[found-1],controller_->resolve_target(whole,ids[found-1]),false,bool(manager));request["redirect_id"]=ids[found-1];}
         }
         action("replay_measurement",request);
       },std::move(fields),"measurement_replay");return;
@@ -7329,18 +7335,19 @@ void Window::action(const std::string &name, const Json &p) {
     const auto sourceId=id("document_id",rebind?document()->id:decoded.source.document_id);
     if(!rebind && sourceId!=decoded.source.document_id)throw std::invalid_argument("Changing Measure source requires explicit rebind");
     if(document()->id!=sourceId)throw std::invalid_argument("Activate the recorded image or explicitly rebind Measure");
-    const auto source=controller_->resolve_target({},sourceId);validateMeasurementReplaySource(decoded.source,source,rebind);
+    TargetRequest sourceRequest;if(decoded.manager)sourceRequest.roi=RoiPolicy::WholePlane;const auto source=controller_->resolve_target(sourceRequest,sourceId);validateMeasurementReplaySource(decoded.source,source,rebind,bool(decoded.manager));
+    if(decoded.manager)validateMeasurementManager(*decoded.manager,source.source(),rebind);
     std::uint64_t samplingId=0;
     if(decoded.redirect){
       if(rebind && !p.contains("redirect_id"))throw std::invalid_argument("Explicit Measure rebind needs a sampling image");
       samplingId=id("redirect_id",decoded.redirect->document_id);if(!rebind && samplingId!=decoded.redirect->document_id)throw std::invalid_argument("Changing sampling image requires explicit rebind");
-      TargetRequest whole;whole.roi=RoiPolicy::WholePlane;const auto sampled=controller_->resolve_target(whole,samplingId);validateMeasurementReplaySource(*decoded.redirect,sampled,rebind);
+      TargetRequest whole;whole.roi=RoiPolicy::WholePlane;const auto sampled=controller_->resolve_target(whole,samplingId);validateMeasurementReplaySource(*decoded.redirect,sampled,rebind,bool(decoded.manager));
     }else if(p.contains("redirect_id"))throw std::invalid_argument("Recorded Measure has no sampling redirect");
     const auto authored=measurementSettingsJson(decoded.settings);if(!restore && measurementSettingsJson(settings())!=authored)throw std::invalid_argument("Measurement settings differ; explicitly restore saved settings in review");
     // Configuration restoration is a visible requested action; no hidden temporary
     // override, and no source/row/history publication occurs before worker guards.
     if(restore)updateSettings(authored,false);impl->measurementRedirectDocument=samplingId;
-    impl->startMeasurement(documentById(sourceId));return;
+    impl->startMeasurement(documentById(sourceId),bool(decoded.manager),decoded.manager?decoded.manager->indices:std::vector<std::size_t>{});return;
   }
   if(name=="measurement_redirect") {
     if(!p.contains("document_id") || !p.at("document_id").is_number_integer() ||
@@ -14077,6 +14084,13 @@ void Window::Impl::dialogs() {
         observed["read_only"] = true;
         dialog.controls["group_sizes"] = std::move(observed);
       }
+    }
+    if(dialog.id=="measurement_replay" && dialog.values.contains("manager_summary")){
+      ImGui::TextUnformatted("ROI Manager rows to use for explicit rebind:");
+      ImGui::BeginChild("Measure manager rows",{0,120},ImGuiChildFlags_Borders);
+      const auto& summary=dialog.values.at("manager_summary").get_ref<const std::string&>();ImGui::TextUnformatted(summary.c_str(),summary.c_str()+summary.size());
+      if(headlessDiagnostics){dialog.controls["manager_summary"]=itemControl(false);dialog.controls["manager_summary"]["read_only"]=true;dialog.controls["manager_summary"]["text"]=summary;}
+      ImGui::EndChild();
     }
     for (const auto &p : dialog.schema) {
       auto name = string(get(p, "name")), label = string(get(p, "label"), name),

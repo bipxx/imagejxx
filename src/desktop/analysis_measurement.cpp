@@ -7,6 +7,8 @@
 #include "../native/content_sha256.hpp"
 #include <limits>
 #include <type_traits>
+#include <set>
+#include <cstring>
 #include "../native/kernel_control.hpp"
 #include <cmath>
 
@@ -178,12 +180,12 @@ const char* measurement_keys[]={"measurements","measurement_precision","measurem
 void recordRequire(bool ok,const char* message){if(!ok)throw std::invalid_argument(message);}
 void recordFields(const Json& value,std::initializer_list<const char*> fields){recordRequire(value.is_object() && value.size()==fields.size(),"Invalid measurement record fields");for(const auto* field:fields)recordRequire(value.contains(field),"Missing measurement record field");}
 std::uint64_t recordUnsigned(const Json& value){recordRequire(value.is_number_integer() && (value.is_number_unsigned() || value.get<std::int64_t>()>=0),"Measurement record needs a nonnegative integer");return value.get<std::uint64_t>();}
-void recordScan(const Json& value,unsigned depth,std::size_t& nodes,std::size_t& strings) {
-  recordRequire(depth<=12 && ++nodes<=4096,"Measurement record exceeds structural limit");
+void recordScan(const Json& value,unsigned depth,std::size_t& nodes,std::size_t& strings,std::size_t maxNodes) {
+  recordRequire(depth<=12 && ++nodes<=maxNodes,"Measurement record exceeds structural limit");
   auto text=[&](const std::string& s){recordRequire(s.size()<=131064 && s.find('\0')==std::string::npos && s.size()<=524288-strings,"Measurement record exceeds text limit");strings+=s.size();};
   if(value.is_string())text(value.get_ref<const std::string&>());
-  else if(value.is_object())for(const auto& row:value.items()){text(row.key());recordScan(row.value(),depth+1,nodes,strings);}
-  else if(value.is_array())for(const auto& row:value)recordScan(row,depth+1,nodes,strings);
+  else if(value.is_object())for(const auto& row:value.items()){text(row.key());recordScan(row.value(),depth+1,nodes,strings,maxNodes);}
+  else if(value.is_array())for(const auto& row:value)recordScan(row,depth+1,nodes,strings,maxNodes);
   else recordRequire(value.is_null() || value.is_boolean() || (value.is_number() && std::isfinite(value.get<double>())),"Measurement record needs finite values");
 }
 // Hash borrowed controls directly: no serialization/copy of potentially large
@@ -191,8 +193,9 @@ void recordScan(const Json& value,unsigned depth,std::size_t& nodes,std::size_t&
 // little-endian lengths make this private draft fingerprint unambiguous.
 class MeasurementInputHash {
   detail::ContentSha256 hash;
-  std::size_t remaining=1048576,nodes=0;
+  std::size_t remaining,nodes=0,maxNodes;
 public:
+  explicit MeasurementInputHash(std::size_t bytes=1048576,std::size_t nodeLimit=65536):remaining(bytes),maxNodes(nodeLimit){}
   void bytes(const void* data,std::size_t n){recordRequire(n<=remaining,"Measure input metadata exceeds fingerprint allowance");remaining-=n;hash.update(static_cast<const unsigned char*>(data),n);}
   void integer(std::uint64_t n){unsigned char encoded[8];for(unsigned i=0;i<8;++i)encoded[i]=static_cast<unsigned char>(n>>(i*8));bytes(encoded,8);}
   void text(const std::string& value){integer(value.size());bytes(value.data(),value.size());}
@@ -202,7 +205,7 @@ public:
     for(const auto& item:values){if(properties && item.first==measurement_overlay_property)continue;integer(1);text(item.first);value(item.second,depth+1);}integer(0);
   }
   void value(const MetadataValue& input,unsigned depth){
-    recordRequire(depth<=128 && ++nodes<=65536,"Measure input metadata exceeds fingerprint structure");integer(input.index());
+    recordRequire(depth<=128 && ++nodes<=maxNodes,"Measure input metadata exceeds fingerprint structure");integer(input.index());
     std::visit([&](const auto& v){using T=std::decay_t<decltype(v)>;
       if constexpr(std::is_same_v<T,std::monostate>){}
       else if constexpr(std::is_same_v<T,std::string>)text(v);
@@ -246,24 +249,60 @@ MeasurementRecordSource decodeSource(const Json& value) {
 }
 }
 bool isMeasurementRecord(const Json& value){return value.is_object() && value.value("schema",Json{})=="imagejxx.measurement-command";}
-std::size_t measurementRecordWorkingBytes(const Json& value){std::size_t nodes=0,strings=0;recordScan(value,0,nodes,strings);return RenderMemory::add(8192,RenderMemory::add(RenderMemory::mul(nodes,128),RenderMemory::mul(strings,4)));}
+std::size_t measurementRecordWorkingBytes(const Json& value){std::size_t nodes=0,strings=0;const bool manager=value.is_object() && value.value("version",Json{})==Json(2);recordScan(value,0,nodes,strings,manager?104096:4096);return RenderMemory::add(8192,RenderMemory::add(RenderMemory::mul(nodes,128),RenderMemory::mul(strings,4)));}
 Json measurementSettingsJson(const Settings& settings){Json out=Json::object();for(const auto* key:measurement_keys)out[key]=std::visit([](const auto& value)->Json{if constexpr(std::is_same_v<std::decay_t<decltype(value)>,std::monostate>)return nullptr;else return value;},settings.at(key));return out;}
 MeasurementRecord decodeMeasurementRecord(const Json& value) {
-  measurementRecordWorkingBytes(value);recordFields(value,{"schema","version","source","redirect","settings"});recordRequire(isMeasurementRecord(value) && recordUnsigned(value.at("version"))==1,"Unsupported measurement record schema/version");
-  MeasurementRecord out;out.source=decodeSource(value.at("source"));if(!value.at("redirect").is_null())out.redirect=decodeSource(value.at("redirect"));const auto& settings=value.at("settings");recordRequire(settings.is_object() && settings.size()==8,"Invalid measurement record settings");for(const auto* key:measurement_keys)recordRequire(settings.contains(key),"Missing measurement record setting");out.settings.update(settingsPatch(settings));return out;
+  measurementRecordWorkingBytes(value);recordRequire(value.is_object() && value.contains("version"),"Invalid measurement record");const auto version=recordUnsigned(value.at("version"));
+  if(version==2)recordFields(value,{"schema","version","source","redirect","settings","manager"});else recordFields(value,{"schema","version","source","redirect","settings"});
+  recordRequire(isMeasurementRecord(value) && (version==1 || version==2),"Unsupported measurement record schema/version");
+  MeasurementRecord out;out.source=decodeSource(value.at("source"));if(!value.at("redirect").is_null())out.redirect=decodeSource(value.at("redirect"));const auto& settings=value.at("settings");recordRequire(settings.is_object() && settings.size()==8,"Invalid measurement record settings");for(const auto* key:measurement_keys)recordRequire(settings.contains(key),"Missing measurement record setting");out.settings.update(settingsPatch(settings));
+  if(version==2){const auto& manager=value.at("manager");recordFields(manager,{"indices","total","fingerprint"});MeasurementManagerRecord rows;
+    const auto total=recordUnsigned(manager.at("total"));recordRequire(total>0 && total<=std::uint64_t(std::numeric_limits<std::size_t>::max()),"Invalid recorded manager extent");rows.total=std::size_t(total);
+    const auto& indices=manager.at("indices");recordRequire(indices.is_array() && indices.size()<=100000,"Invalid recorded manager indices");std::set<std::size_t> seen;rows.indices.reserve(indices.size());
+    for(const auto& item:indices){const auto index=recordUnsigned(item);recordRequire(index<total && seen.insert(std::size_t(index)).second,"Recorded manager indices must be unique valid rows");rows.indices.push_back(std::size_t(index));}
+    const auto& fingerprint=manager.at("fingerprint");recordRequire(fingerprint.is_string(),"Invalid manager fingerprint");rows.fingerprint=fingerprint.get<std::string>();recordRequire(rows.fingerprint.size()==64 && rows.fingerprint.find_first_not_of("0123456789abcdef")==std::string::npos,"Invalid manager fingerprint");out.manager=std::move(rows);
+  }return out;
 }
 Json captureMeasurementRecord(const ResolvedTargetAnalysis& command,const Settings& settings) {
-  recordRequire(command.options().measurement==TargetMeasurementMode::Selection && command.target().position_count()==1,"Recorder currently requires one current-selection Measure");
-  const bool overlay=settings.boolean("measurement_add_to_overlay") && command.target().source().data().selection.has_value();
-  Json value={{"schema","imagejxx.measurement-command"},{"version",1},{"source",sourceRecord(recordSource(command.target(),overlay && command.target().source().data().dataset.shape().plane_count()>1))},{"redirect",command.options().redirect?sourceRecord(recordSource(*command.options().redirect)):Json{}},{"settings",measurementSettingsJson(settings)}};(void)decodeMeasurementRecord(value);return value;
+  const bool manager=command.options().measurement==TargetMeasurementMode::RoiManager;
+  recordRequire(manager || (command.options().measurement==TargetMeasurementMode::Selection && command.target().position_count()==1),"Recorder requires current-selection or manager Measure");
+  const bool overlay=!manager && settings.boolean("measurement_add_to_overlay") && command.target().source().data().selection.has_value();
+  Json value={{"schema","imagejxx.measurement-command"},{"version",manager?2:1},{"source",sourceRecord(recordSource(command.target(),overlay && command.target().source().data().dataset.shape().plane_count()>1))},{"redirect",command.options().redirect?sourceRecord(recordSource(*command.options().redirect)):Json{}},{"settings",measurementSettingsJson(settings)}};
+  if(manager)value["manager"]={{"indices",command.options().roi_indices},{"total",command.target().source().data().rois.size()},{"fingerprint",measurementManagerFingerprint(command.target().source(),command.options().roi_indices)}};
+  (void)decodeMeasurementRecord(value);return value;
 }
 MeasurementRecordSource captureMeasurementReplaySource(const ResolvedTarget& target,bool consumeComposite){return recordSource(target,consumeComposite);}
-void validateMeasurementReplaySource(const MeasurementRecordSource& expected,const ResolvedTarget& target,bool rebind) {
+void validateMeasurementReplaySource(const MeasurementRecordSource& expected,const ResolvedTarget& target,bool rebind,bool ignoreSelection) {
   auto now=recordSource(target,expected.composite.has_value());recordRequire(now.shape.dimensions()==expected.shape.dimensions() && now.pixel_type==expected.pixel_type && target.source().data().dataset.sample_policy()==FloatingSamplePolicy::FiniteOnly,"Recorded Measure source shape/type differs; choose a compatible source");
   // Metadata revision also advances for our annotation output. Compare its
   // actual input fingerprint instead; retain pixel/selection revisions and all
   // captured pose/threshold/calibration/owner guards.
-  if(!rebind){auto binding=expected;now.revisions.metadata=0;binding.revisions.metadata=0;recordRequire(sourceRecord(now)==sourceRecord(binding),"Recorded Measure source changed or closed; explicitly rebind to the selected source");}
+  if(!rebind){auto binding=expected;now.revisions.metadata=0;binding.revisions.metadata=0;if(ignoreSelection)now.revisions.selection=binding.revisions.selection=0;recordRequire(sourceRecord(now)==sourceRecord(binding),"Recorded Measure source changed or closed; explicitly rebind to the selected source");}
 }
 
+
+std::string measurementManagerFingerprint(const DocumentSnapshot& source,const std::vector<std::size_t>& indices) {
+  const auto& rois=source.data().rois;const auto count=indices.empty()?rois.size():indices.size();
+  recordRequire(count>0 && count<=100000,"Recorded manager needs a nonempty bounded row selection");
+  MeasurementInputHash hash(64ULL*1024*1024,1000000);hash.integer(count);
+  for(std::size_t n=0;n<count;++n){const auto index=indices.empty()?n:indices[n];recordRequire(index<rois.size(),"Recorded manager index outside current manager");const auto& roi=rois[index];const auto& s=roi.selection;
+    hash.integer(index);hash.text(roi.name);hash.text(s.kind);hash.number(s.width);hash.integer(s.points.size());for(const auto& point:s.points){hash.number(point[0]);hash.number(point[1]);}hash.object(s.attributes);hash.object(roi.attributes);
+    for(const auto& position:{roi.t,roi.c,roi.z}){hash.integer(position.has_value());if(position)hash.integer(std::uint64_t(*position));}
+    hash.integer(s.path_commands().size());for(const auto value:s.path_commands())hash.number(value);
+    hash.integer(std::uint64_t(s.mask_width()));hash.integer(std::uint64_t(s.mask_height()));for(const auto value:s.mask_origin())hash.integer(std::uint64_t(value));
+    const auto& mask=s.packed_mask();hash.integer(mask.size());hash.bytes(mask.data(),mask.size());
+  }return hash.finish();
+}
+void validateMeasurementManager(const MeasurementManagerRecord& expected,const DocumentSnapshot& source,bool rebind){
+  const auto fingerprint=measurementManagerFingerprint(source,expected.indices);if(!rebind)recordRequire(fingerprint==expected.fingerprint,"Recorded ROI Manager changed; explicitly rebind to reviewed current rows");
+}
+std::size_t measurementManagerReviewBytes(const DocumentSnapshot& source,const std::vector<std::size_t>& indices){
+  const auto& rois=source.data().rois;const auto count=indices.empty()?rois.size():indices.size();recordRequire(count>0 && count<=100000,"Manager review requires bounded rows");std::size_t bytes=1024;
+  for(std::size_t n=0;n<count;++n){const auto index=indices.empty()?n:indices[n];recordRequire(index<rois.size(),"Recorded manager index outside current manager");const auto& roi=rois[index];bytes=RenderMemory::add(bytes,RenderMemory::add(512,RenderMemory::mul(RenderMemory::add(roi.name.size(),roi.selection.kind.size()),6)));}return bytes;
+}
+std::string measurementManagerReview(const DocumentSnapshot& source,const std::vector<std::size_t>& indices){
+  const auto bound=measurementManagerReviewBytes(source,indices);const auto& rois=source.data().rois;const auto count=indices.empty()?rois.size():indices.size();std::string text;text.reserve(bound);
+  text=indices.empty()?"All current manager rows, in stored order:\n":"Current entries at the recorded indices, in recorded order:\n";
+  const auto& view=source.display();for(std::size_t n=0;n<count;++n){const auto index=indices.empty()?n:indices[n];const auto& roi=rois[index];text+=std::to_string(n+1)+". ["+std::to_string(index+1)+"] "+Json(roi.name).dump()+" / "+Json(roi.selection.kind).dump()+" / T="+std::to_string(roi.t.value_or(view.t)+1)+" C="+std::to_string(roi.c.value_or(view.c)+1)+" Z="+std::to_string(roi.z.value_or(view.crosshair[2])+1)+" / "+std::to_string(roi.selection.points.size())+" points\n";}recordRequire(text.size()<=bound,"Manager review text exceeds admission");return text;
+}
 }
