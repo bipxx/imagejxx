@@ -30,6 +30,7 @@ Json managerMeasurementReplayUiCase(Window&,const std::string&,const std::string
 Json profileReplayUiCase(Window&,const std::string&,const std::string&);
 Json mixedReplayUiCase(Window&,const std::string&,const std::string&);
 Json analysisExportChainUiCase(Window&,const std::string&,const std::string&);
+Json editAnalysisChainUiCase(Window&,const std::string&,const std::string&);
 Json measurementReplayUiCase(Window&,const std::string&,const std::string&);
 Json resultFormattingUiCase(Window&,const std::string&,const std::string&,const std::string& reference_path);
 Json interpolationRepeatUiCase(Window&,const std::string&,const std::string&,bool opened,bool high_zoom);

@@ -1398,3 +1398,31 @@ output review/default/rebind/Cancel. Installed API covers workspace reopening,
 font recovery, malformed/refusal/lifecycle cases and Profile CSV after explicit
 source activation. Source-changing edit/filter, general native-program/Batch,
 workflow editing and wider platform/release scope remain separate owned gaps.
+
+## Ordinary-source edit/filter and analysis chains
+
+[Scoped evidence](parity/reviews/edit-analysis-chain-20261107.json) adds compatible
+geometry-preserving pixel records to the existing sequence. Edited mixed Run
+requires explicit `rebind=true` and the selected baseline. Typed filters require
+`gaussian_rebind`/`rank_rebind` target JSON; ordinary current-plane/all-Z in-place
+plane execution is admitted, with existing destination-calibration consent.
+Closed schemas, parameter/selection/slice/all flags and source shape/type checks
+remain. Geometry/type-changing/general native-program/Batch compositions retain
+separate owners and qualification.
+
+Each pixel record uses existing `runWorkflow` private State execution and creator
+history publication. It preserves recorded selection/slice and manual per-step
+history; no second processing engine. Rank, outliers, top-hat and Remove NaNs
+share the existing typed rank dispatch. Borrowed metadata/ROI/path/mask/view and
+both calibration unit strings are admitted before State copies; the retained
+lease outlives result payloads, with kernel/target-mask/base workspace separate.
+This is logical owned-work admission, not whole-process RSS accounting.
+
+Run freezes consumed owner/foreign sampling revisions and input/calibration/cap
+context. Matching successful creator publication refreshes only its source before
+continuation; pending external changes cancel/refuse. The mixed legacy canceled
+callback throws rather than reporting completion without a commit. Earlier
+committed pixels/history/rows/files survive later failure. Busy pixel close and
+activation refuse until explicit Cancel/wait. Both real Windows hosts qualify the
+literal Gaussian/invert/Measure/Profile/PNG workflow, target/output review and
+Undo/Redo; wider composed target/platform/release variants remain open.

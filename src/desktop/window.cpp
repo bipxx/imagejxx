@@ -12,6 +12,8 @@
 #include <imagejxx/imagej_projection_command.hpp>
 #include <imagejxx/calibrated_command.hpp>
 #include "../native/calibration_preparation_internal.hpp"
+#include "../native/imagej_annotation_import_internal.hpp"
+#include "../native/operation_internal.hpp"
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/imagej_intensity_plot.hpp>
 #include <type_traits>
@@ -1308,6 +1310,7 @@ struct Window::Impl {
     // Declared first so every staged/native payload retires before its lease.
     std::shared_ptr<const void> reservation;
     std::shared_ptr<RenderMemory::Lease> measurement_record_memory;
+    std::shared_ptr<RenderMemory::Lease> pixel_capture_memory;
     std::size_t measurement_workflow_size=0,measurement_record_bytes=0;
     std::size_t profile_samples=0;std::uint64_t profile_plot_generation=0;
     State state;
@@ -1383,12 +1386,17 @@ struct Window::Impl {
   bool jobPreview = false, jobSkip = false;
   std::atomic<bool> cancelled{false};
   enum class MixedReplayState {Idle,Running,Completed,Canceled,Failed};
+  struct MixedSourceGuard {MeasurementRecordSource source;Revisions revisions;};
   struct MixedReplay {
     RenderMemory::Lease memory;
     Json steps,parameters;
     std::size_t completed=0;
     std::uint64_t job_id=0;
     const char* stop_error=nullptr;
+    bool edited=false;
+    std::size_t processing_cap=0;
+    std::uint64_t job_source=0;
+    std::map<std::uint64_t,MixedSourceGuard> guards;
   };
   std::optional<MixedReplay> mixedReplay;
   std::atomic<bool> mixedCancelRequested{false};
@@ -5323,6 +5331,101 @@ struct Window::Impl {
     fitShowPlot=show;calibrationUnit.swap(rememberedUnit);
     if(payload){livePlot.payload.swap(payload);livePlot.source.swap(binding);focusLivePlot();livePlot.view={};livePlot.drag.reset();++livePlot.generation;}
   }
+  static bool mixedPixelRecord(const Json& step) {
+    return step.is_object() && !step.contains("schema") && step.contains("operation");
+  }
+  static bool mixedRankRecord(const Json& step) {
+    const auto op=get(step,"operation");return op=="rank_filter_imagej" || op=="remove_outliers_imagej" || op=="top_hat_imagej" || op=="remove_nans_imagej";
+  }
+  void validateMixedPixel(const Json& step) const {
+    (void)measurementRecordWorkingBytes(step);
+    if(!get(step,"operation").is_string())throw std::invalid_argument("Mixed pixel operation needs a name");
+    const auto name=step.at("operation").get<std::string>();
+    if(step.contains("schema_version")) {
+      if(name=="gaussian_blur_imagej")validate_gaussian_command_record(metadataObjectFromJson(step));
+      else if(mixedRankRecord(step))validate_rank_command_record(metadataObjectFromJson(step));
+      else throw std::invalid_argument("Unsupported typed mixed pixel operation");
+    } else {
+      for(const auto& field:step.items())if(field.key()!="operation" && field.key()!="parameters" && field.key()!="selection" && field.key()!="slice_index" && field.key()!="all_slices")throw std::invalid_argument("Unsupported mixed pixel field");
+      if(!step.contains("parameters") || !step.at("parameters").is_object())throw std::invalid_argument("Mixed pixel parameters must be an object");
+      validateRecord(name,step.at("parameters"));
+      if(step.contains("all_slices") && !step.at("all_slices").is_boolean())throw std::invalid_argument("Mixed all_slices must be boolean");
+      if(step.contains("slice_index") && (!step.at("slice_index").is_number_integer() || step.at("slice_index")<0 || step.at("slice_index")>INT32_MAX))throw std::invalid_argument("Mixed slice index must be nonnegative int32");
+      if(step.contains("selection") && !step.at("selection").empty())(void)selectionFromJson(step.at("selection"));
+    }
+    if(operation_spec(name).geometry!=GeometryEffect::Preserve)throw std::invalid_argument("Mixed geometry edits require their explicit remap workflow");
+  }
+  TargetRequest mixedPixelTarget(const Json& step,const Json& params) const {
+    const auto key=get(step,"operation")=="gaussian_blur_imagej"?"gaussian_rebind":"rank_rebind";
+    if(!params.contains(key))throw std::invalid_argument("Mixed typed filters need an explicit target request");
+    auto request=gaussianRebindRequest(params.at(key));
+    if((request.scope!=TargetScope::CurrentPlane && request.scope!=TargetScope::AllZ) || request.t || request.c || request.z || !request.positions.empty() || request.mode!=ExecutionMode::Planes || request.destination!=OutputDestination::InPlace)throw std::invalid_argument("Mixed ordinary filters require current-plane/all-Z in-place plane execution");
+    return request;
+  }
+  MixedSourceGuard mixedSourceGuard(std::uint64_t id) const {
+    TargetRequest whole;whole.roi=RoiPolicy::WholePlane;const auto target=owner.controller_->resolve_target(whole,id);
+    return {captureMeasurementReplaySource(target,true),target.source().revisions()};
+  }
+  void validateMixedGuards() const {
+    if(!mixedReplay || !mixedReplay->edited)return;
+    if(processingCap()!=mixedReplay->processing_cap)throw RevisionConflict();
+    if(mixedReplay->job_id && job.valid() && (owner.documents_.empty() || owner.document()->id!=mixedReplay->job_source))throw RevisionConflict();
+    for(const auto& [id,guard]:mixedReplay->guards) {
+      TargetRequest whole;whole.roi=RoiPolicy::WholePlane;const auto target=owner.controller_->resolve_target(whole,id);
+      if(!target.source().revisions().matches(guard.revisions,Change::All))throw RevisionConflict();
+      validateMeasurementReplaySource(guard.source,target,false);
+    }
+  }
+  std::size_t mixedPixelMetadataBytes(const DocumentSnapshot& source) const {
+    std::size_t bytes=4096,nodes=0;const auto cap=processingCap()/32;
+    auto add=[&](std::size_t amount){bytes=RenderMemory::add(bytes,amount);if(bytes>cap)throw std::length_error("Mixed pixel metadata exceeds processing budget");};
+    auto object=[&](const MetadataObject& values){for(const auto& [key,value]:values){add(RenderMemory::add(64,key.size()));detail::charge_imagej_annotation_metadata(value,bytes,nodes,cap);}};
+    auto selection=[&](const Selection& value) {
+      add(RenderMemory::add(256,value.kind.size()));add(RenderMemory::mul(value.points.size(),64));
+      add(RenderMemory::mul(value.path_commands().size(),48));add(RenderMemory::mul(value.packed_mask().size(),8));object(value.attributes);
+    };
+    const auto& data=source.data();add(data.metadata.title.size());add(data.dataset.calibration().unit.size());add(data.dataset.calibration().time_unit.size());
+    object(data.metadata.properties);object(data.metadata.extensions);object(data.metadata.record_layout);object(source.display().properties);
+    if(data.selection)selection(*data.selection);if(data.previous_selection)selection(*data.previous_selection);
+    for(const auto& roi:data.rois){add(RenderMemory::add(512,roi.name.size()));selection(roi.selection);object(roi.attributes);}
+    for(const auto& overlay:data.overlays)object(overlay);
+    // Covers native/scalar/JSON node expansion across source, private working,
+    // result and creator transaction copies; shared pixel/spectrum data stay shared.
+    return RenderMemory::mul(bytes,32);
+  }
+  void startMixedPixel(const Json& step,const Json& params,std::uint64_t id) {
+    const auto facade=owner.documentById(id);facade->requireLegacyEditable();const auto native=facade->nativeSnapshot();
+    // Bound private source/working/result metadata before making those copies.
+    const auto capture=owner.controller_->prepare_snapshot_capture(processingCap(),id);
+    const auto metadataBytes=RenderMemory::add(RenderMemory::mul(capture.bytes(),8),mixedPixelMetadataBytes(native));
+    auto memory=std::make_shared<RenderMemory::Lease>(renderMemory->acquire(metadataBytes));
+    auto source=std::make_shared<Document>(facade->snapshot());
+    const auto operation=step.at("operation").get<std::string>();
+    std::optional<TargetRequest> gaussian,rank;std::size_t workspace=metadataBytes;
+    const auto budget=owner.controller_->job_scheduler()->limits().memory_budget;
+    const auto shape=native.data().dataset.shape();const OperationDefaultContext context{shape.x,shape.y,shape.s,native.data().dataset.pixel_type(),{}};
+    if(step.contains("schema_version")) {
+      auto request=mixedPixelTarget(step,params);
+      const auto account=[&](const auto& command) {
+        const auto extra=operation_extra_workspace(operation,context,command.parameters());
+        const auto base=legacy_job_base_workspace(native),cap=budget?budget:std::numeric_limits<std::size_t>::max();
+        const auto fixed=RenderMemory::add(RenderMemory::add(base,workspace),extra);if(fixed>cap)throw std::length_error("Mixed filter exceeds processing budget");
+        workspace=RenderMemory::add(RenderMemory::add(workspace,extra),detail::target_mask_workspace(command.target(),operation,cap-fixed));
+      };
+      if(operation=="gaussian_blur_imagej"){account(rebind_gaussian_command(native,metadataObjectFromJson(step),request));gaussian=request;}
+      else {account(rebind_rank_command(native,metadataObjectFromJson(step),request));rank=request;}
+    } else {
+      if(step.contains("selection"))source->select(step.at("selection"));
+      const auto index=step.value("slice_index",source->slice());if(index<0 || index>=shape.z)throw std::invalid_argument("Mixed recorded slice is outside source");
+      auto view=source->view().crosshair;view[2]=index;source->setView({{"crosshair",view}});
+      const auto extra=extraWorkspace(operation,context,step.at("parameters"));
+      workspace=RenderMemory::add(workspace,legacy_operation_workspace(operation,source->nativeSnapshot(),step.value("all_slices",false),index,extra,budget));
+    }
+    start([this,source=std::move(source),step,gaussian,rank,memory] {
+      auto proposed=runWorkflow(*source,Json::array({step}),[this]{return cancelled.load();},gaussian,{},rank);
+      JobResult result(std::move(proposed));result.pixel_capture_memory=memory;return result;
+    },facade,false,"","Recorded pixel edit",workspace);
+  }
   bool hasMixedAnalysis(const Json& steps) const {
     return steps.is_array() && steps.size()>1 && std::any_of(steps.begin(),steps.end(),[](const Json& step){return isMeasurementRecord(step)||isProfileRecord(step)||isDisplayExportRecord(step);});
   }
@@ -5330,7 +5433,8 @@ struct Window::Impl {
     if(!steps.is_array() || steps.size()<2 || steps.size()>256)throw std::invalid_argument("Mixed workflow requires2..256 commands");
     std::size_t bytes=8192;
     for(const auto& step:steps) {
-      if(!isMeasurementRecord(step) && !isProfileRecord(step) && !isDisplayExportRecord(step))throw std::invalid_argument("This mixed workflow contains an unsupported command family; replay it individually");
+      if(!isMeasurementRecord(step) && !isProfileRecord(step) && !isDisplayExportRecord(step) && !mixedPixelRecord(step))throw std::invalid_argument("This mixed workflow contains an unsupported command family; replay it individually");
+      if(mixedPixelRecord(step))validateMixedPixel(step);
       bytes=RenderMemory::add(bytes,isDisplayExportRecord(step)?displayExportRecordWorkingBytes(step):measurementRecordWorkingBytes(step));
     }
     if(bytes>processingCap()/8)throw std::length_error("Mixed workflow exceeds processing budget");return bytes;
@@ -5344,9 +5448,10 @@ struct Window::Impl {
   }
   void validateMixedParameters(const Json& params) const {
     if(!params.is_object())throw std::invalid_argument("Mixed workflow parameters must be an object");
-    for(const auto& item:params.items())if(item.key()!="rebind" && item.key()!="restore_settings" && item.key()!="document_id" && item.key()!="redirect_id" && item.key()!="export_options")throw std::invalid_argument("Unknown mixed workflow parameter");
-    (void)mixedFlag(params,"rebind");(void)mixedFlag(params,"restore_settings");
+    for(const auto& item:params.items())if(item.key()!="rebind" && item.key()!="restore_settings" && item.key()!="document_id" && item.key()!="redirect_id" && item.key()!="export_options" && item.key()!="gaussian_rebind" && item.key()!="rank_rebind" && item.key()!="use_destination_calibration")throw std::invalid_argument("Unknown mixed workflow parameter");
+    (void)mixedFlag(params,"rebind");(void)mixedFlag(params,"restore_settings");(void)mixedFlag(params,"use_destination_calibration");
     if(params.contains("document_id"))(void)mixedId(params,"document_id",0);if(params.contains("redirect_id"))(void)mixedId(params,"redirect_id",0);
+    for(const auto* key:{"gaussian_rebind","rank_rebind"})if(params.contains(key))(void)gaussianRebindRequest(params.at(key));
   }
   Json mixedExportOptions(const Json& params,std::size_t index) const {
     if(!params.contains("export_options"))return Json::object();
@@ -5368,6 +5473,7 @@ struct Window::Impl {
     return request;
   }
   std::uint64_t mixedSourceId(const Json& step,const Json& params) const {
+    if(mixedPixelRecord(step))return mixedId(params,"document_id",owner.document()->id);
     const auto recorded=isDisplayExportRecord(step)?decodeDisplayExportRecord(step).source_id:isProfileRecord(step)?decodeProfileRecord(step).source.document_id:decodeMeasurementRecord(step).source.document_id;
     return mixedId(params,"document_id",mixedFlag(params,"rebind")?owner.document()->id:recorded);
   }
@@ -5389,7 +5495,16 @@ struct Window::Impl {
     std::vector<std::filesystem::path> destinations;
     for(std::size_t index=0;index<steps.size();++index) {
       const auto& step=steps[index];const auto id=mixedSourceId(step,params);
-      if(isDisplayExportRecord(step)) {
+      if(mixedPixelRecord(step)) {
+        if(!rebind)throw std::invalid_argument("Mixed pixel edits require explicit selected-baseline rebind");
+        validateMixedPixel(step);owner.documentById(id)->requireLegacyEditable();
+        if(step.contains("schema_version")) {
+          const auto request=mixedPixelTarget(step,params);const auto native=owner.nativeSnapshot(id);
+          validateGaussianReplayCalibration(Json::array({step}),native,mixedFlag(params,"use_destination_calibration"));
+          if(get(step,"operation")=="gaussian_blur_imagej")(void)rebind_gaussian_command(native,metadataObjectFromJson(step),request);
+          else (void)rebind_rank_command(native,metadataObjectFromJson(step),request);
+        } else if(step.value("slice_index",0)>=owner.nativeSnapshot(id).data().dataset.shape().z)throw std::invalid_argument("Mixed recorded slice is outside source");
+      } else if(isDisplayExportRecord(step)) {
         const auto record=decodeDisplayExportRecord(step);if(!rebind && id!=record.source_id)throw std::invalid_argument("Changing mixed source requires explicit rebind");
         validateDisplayExportReplaySource(record,owner.nativeSnapshot(id),rebind);
         const auto options=mixedExportOptions(params,index);
@@ -5449,6 +5564,7 @@ struct Window::Impl {
   }
   void checkMixedReplay() {
     if(!mixedReplay)return;
+    if(mixedReplay->edited)try{validateMixedGuards();}catch(const std::exception&){mixedReplay->stop_error="Mixed workflow baseline or calibration changed";mixedCancelRequested=true;}
     if(owner.recording || owner.workflow!=mixedReplay->steps) {
       mixedReplay->stop_error=owner.recording?"Recording changed during mixed workflow":"Recorded workflow changed during mixed replay";
       mixedCancelRequested=true;
@@ -5464,12 +5580,15 @@ struct Window::Impl {
     checkMixedReplay();if(!mixedReplay || job.valid())return;
     try {
       if(mixedReplay->job_id)throw std::invalid_argument("Mixed workflow lost its active job");
-      const auto& step=mixedReplay->steps[mixedReplay->completed];auto request=mixedStepRequest(step,mixedReplay->parameters,mixedReplay->completed);const auto source=mixedSourceId(step,mixedReplay->parameters);
+      const auto& step=mixedReplay->steps[mixedReplay->completed];const auto source=mixedSourceId(step,mixedReplay->parameters);
       struct Dispatch {bool& flag;explicit Dispatch(bool& f):flag(f){flag=true;}~Dispatch(){flag=false;}} dispatch(mixedDispatch);
       const auto found=std::find_if(owner.documents_.begin(),owner.documents_.end(),[source](const auto& document){return document->id==source;});
       if(found==owner.documents_.end())throw std::invalid_argument("Mixed workflow source is closed");
       std::string message="Workflow command "+std::to_string(mixedReplay->completed+1)+" of "+std::to_string(mixedReplay->steps.size());
-      owner.setActiveIndex(int(found-owner.documents_.begin()));owner.action(isDisplayExportRecord(step)?"replay_display_export":isProfileRecord(step)?"replay_profile":"replay_measurement",request);
+      owner.setActiveIndex(int(found-owner.documents_.begin()));
+      if(mixedPixelRecord(step))startMixedPixel(step,mixedReplay->parameters,source);
+      else owner.action(isDisplayExportRecord(step)?"replay_display_export":isProfileRecord(step)?"replay_profile":"replay_measurement",mixedStepRequest(step,mixedReplay->parameters,mixedReplay->completed));
+      mixedReplay->job_source=source;
       if(!job.valid())throw std::invalid_argument("Mixed workflow command did not start its existing job");mixedReplay->job_id=job.info().id;
       status.swap(message);
     }catch(const std::exception& error){finishMixedReplay(MixedReplayState::Failed,std::string(error.what()).substr(0,2048));}
@@ -5477,7 +5596,11 @@ struct Window::Impl {
   void completeMixedReplay(const JobInfo& terminal) {
     if(!mixedReplay || mixedReplay->job_id!=terminal.id)return;
     mixedReplay->job_id=0;
-    if(terminal.state==JobState::Completed)++mixedReplay->completed;
+    if(terminal.state==JobState::Completed) {
+      ++mixedReplay->completed;
+      if(mixedReplay->edited && mixedReplay->completed<mixedReplay->steps.size())try {mixedReplay->guards.at(mixedReplay->job_source)=mixedSourceGuard(mixedReplay->job_source);}
+      catch(const std::exception& error){finishMixedReplay(MixedReplayState::Failed,std::string(error.what()).substr(0,2048));}
+    }
     else finishMixedReplay(terminal.state==JobState::Canceled && !mixedReplay->stop_error?MixedReplayState::Canceled:MixedReplayState::Failed,mixedReplay->stop_error?mixedReplay->stop_error:terminal.error);
   }
   struct MixedReviewGuard {
@@ -5510,7 +5633,12 @@ struct Window::Impl {
     };
     for(std::size_t index=0;index<steps.size();++index) {
       const auto& step=steps[index];summary+=std::to_string(index+1)+". ";
-      if(isDisplayExportRecord(step)) {
+      if(mixedPixelRecord(step)) {
+        summary+="Pixel edit: "+step.at("operation").get<std::string>()+"; selected baseline; one committed history step";
+        if(step.contains("schema_version"))summary+="; explicit in-place target required";
+        else summary+="; saved parameters/selection; "+std::string(step.value("all_slices",false)?"all Z":"saved/current slice");
+        capture(selected,false,true,1);
+      } else if(isDisplayExportRecord(step)) {
         const auto record=decodeDisplayExportRecord(step);summary+=record.action+"; saved plane "+std::to_string(record.display.crosshair[2]+1);
         summary+="; show ROIs: "+std::string(record.show_rois?"yes":"no")+"; all points: "+(record.point_show_all?"yes":"no");
         if(record.file.pdf)summary+="; DPI "+std::to_string(record.file.dpi)+(record.file.landscape?" landscape":" portrait");
@@ -5553,6 +5681,16 @@ struct Window::Impl {
     }
     Json values={{"rebind",false},{"restore_settings",true},{"sequence_summary",summary}};
     Json fields=Json::array({{{"name","rebind"},{"label","Use selected image for all source commands"},{"kind","bool"}},{{"name","restore_settings"},{"label","Restore recorded Measure and Profile settings at each step"},{"kind","bool"}}});
+    bool edits=false,gaussian=false,rank=false;
+    for(const auto& step:steps)if(mixedPixelRecord(step)){edits=true;if(step.contains("schema_version")){if(get(step,"operation")=="gaussian_blur_imagej")gaussian=true;else rank=true;}}
+    if(edits) {
+      fields[0]["label"]="Use selected baseline for edits and source commands";
+      values["use_destination_calibration"]=false;fields.push_back({{"name","use_destination_calibration"},{"label","Use destination calibration for typed filters"},{"kind","bool"}});
+      for(const auto* key:{"gaussian_rebind","rank_rebind"})if((std::string(key)=="gaussian_rebind"?gaussian:rank)) {
+        values[key]={{"scope","current_plane"},{"roi","active_selection"},{"mode","planes"},{"destination","in_place"}};
+        fields.push_back({{"name",key},{"label",std::string(key)=="gaussian_rebind"?"Gaussian target":"Rank target"},{"kind","json"}});
+      }
+    }
     if(redirected){values["sampling"]="Recorded sampling";fields.push_back({{"name","sampling"},{"label","Sampling image"},{"kind","choice"},{"choices",labels}});}
     for(std::size_t index=0;index<steps.size();++index)if(isDisplayExportRecord(steps[index])) {
       const auto record=decodeDisplayExportRecord(steps[index]);const auto prefix="export_"+std::to_string(index+1)+"_";
@@ -5576,6 +5714,7 @@ struct Window::Impl {
         if(guard.manager_indices && (guard.manager_fingerprint.empty() || measurementManagerFingerprint(current.source(),*guard.manager_indices)!=guard.manager_fingerprint))throw std::invalid_argument("Reviewed ROI Manager changed; reopen mixed review");
       }
       Json parameters={{"rebind",rebind},{"restore_settings",values.at("restore_settings")}};if(rebind)parameters["document_id"]=selected;if(redirect)parameters["redirect_id"]=redirect;
+      for(const auto* key:{"gaussian_rebind","rank_rebind","use_destination_calibration"})if(values.contains(key))parameters[key]=values.at(key);
       for(std::size_t index=0;index<steps.size();++index)if(isDisplayExportRecord(steps[index])) {
         const auto record=decodeDisplayExportRecord(steps[index]);Json options=Json::object();
         for(const auto* key:{"path","font_path","font_directory"})if(record.action!="flatten" || std::string(key)!="path")options[key]=values.at("export_"+std::to_string(index+1)+"_"+key);
@@ -5592,6 +5731,13 @@ struct Window::Impl {
     MixedReplay next;next.memory=renderMemory->acquire(RenderMemory::mul(bytes,4));
     validateMixedBindings(owner.workflow,parameters);next.steps=owner.workflow;next.parameters=std::move(parameters);
     if(mixedFlag(next.parameters,"rebind"))next.parameters["document_id"]=mixedId(next.parameters,"document_id",owner.document()->id);
+    next.edited=std::any_of(next.steps.begin(),next.steps.end(),[](const Json& step){return mixedPixelRecord(step);});next.processing_cap=processingCap();
+    if(next.edited)for(const auto& step:next.steps) {
+      const auto id=mixedSourceId(step,next.parameters);next.guards.emplace(id,mixedSourceGuard(id));
+      if(isMeasurementRecord(step))if(const auto record=decodeMeasurementRecord(step);record.redirect) {
+        const auto sampling=mixedId(next.parameters,"redirect_id",record.redirect->document_id);next.guards.emplace(sampling,mixedSourceGuard(sampling));
+      }
+    }
     mixedTotal=next.steps.size();mixedCompleted=mixedStoppedStep=0;mixedError.clear();mixedReplay.emplace(std::move(next));mixedReplayState=MixedReplayState::Running;mixedCancelRequested=false;
     advanceMixedReplay();
   }
@@ -11223,6 +11369,7 @@ void Window::poll() {
       }
       auto &proposed = completed.state;
       if (impl->cancelled) {
+        if(impl->mixedReplay)throw OperationCancelled();
         impl->status = "Cancelled";
         return;
       }

@@ -1554,7 +1554,7 @@ State runWorkflow(const Document &document, const Json &steps,
         if (!gaussian_rebind)
           throw std::invalid_argument(
               "Typed Gaussian workflow replay requires an explicit TargetRequest");
-      } else if (get(step, "operation") == "rank_filter_imagej") {
+      } else if (get(step, "operation") == "rank_filter_imagej" || get(step, "operation") == "remove_outliers_imagej" || get(step, "operation") == "top_hat_imagej" || get(step, "operation") == "remove_nans_imagej") {
         validate_rank_command_record(metadataObjectFromJson(step));
         if (!rank_rebind)
           throw std::invalid_argument(

@@ -1,0 +1,303 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T04a.3 ordinary-source editing/filter and analysis chain",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G042",
+    "G044",
+    "G045",
+    "G085",
+    "G089",
+    "G009",
+    "G066",
+    "G070",
+    "G071",
+    "G079",
+    "G082"
+  ],
+  "scope": "RecordSaveLoadRun compatibleordinaryeager finite scalar pixel/filtersteps followedbyMeasure/Profile/capturedexport. Explicitselectedbaseline/rebind andtypedtarget/calibration/outputreview; known77/178Gaussian theninvert178/77 oracle/manualmatch acrossAPI/bothhosts. Existingper-stepeditinghistory/UndoRedo, immutableintent, cancel/stale/sourceclose/laterfail andpriorcommittedoutputs. Fullgeometry/type-changing/scientific/nativeprogram/Batch/workfloweditingremainownedgaps.",
+  "aspects": {
+    "implemented": "Existingmixedcontinuation nowadmitsgeometry-preservingordinarypixelrecords, reusesrunWorkflow/privateState andexistingcreatorhistorypublication; frozenconsumedowner/cap/calibrationguards andboundedmetadata/resourceadmission. No newengine/controller/publicSDK/kernel/dependency.",
+    "verified": "391distinctselectedinstalledcases scopedbyfinal30editedcases+361unchangedearliercases; initial388+3fixturecorrections. CurrentnativeUIandretirementpass, rawbothhostoutputreadersmatch. Notfresh391finalcampaign.",
+    "integrated": "ActualstandaloneC++ andoptionalPythonWindowsImGuiRecord/SaveClearLoad/Run/baselineconsent/typedtargetJSON/outputtext/UndoRedo/Cancel forGaussian-invert-Measure-Profile-PNG.",
+    "release_ready": false
+  },
+  "contract": {
+    "baseline": "Anyeditedmixedworkflowrequiresrebind=true andselectedcompatiblebaseline. Defaultrefusesbeforeeffects; typedGaussian/rank requirestrictgaussian_rebind/rank_rebind targetobject. Current-plane/all-Z, in-place planeexecution; broader ranges/positions/new-document/volume stillownedgaps.",
+    "typed": "ExistingGaussianrawsigma/scaled_units andrankenvelopemethod/radius/outliers/tophat/removeNaNs preserved. Existingdestinationcalibrationconsent reused. runWorkflow rankdispatch recognizes3existingRankenvelopevariants formerlyrejectedbythisdesktopadapter; no kernelchange.",
+    "legacy": "Validateknownfields/parameters/selection/slice/all flags andGeometryEffect::Preserve; replaycapturedselection/slice andparameters throughsameprivateworkingState; onepixelrecordperjob preservesmanualhistory. Existinginitialanalysis/exportshape/typecompatibility stillrequired; geometry/type-changingcompositionsremainopen.",
+    "guards": "Freezeconsumedowners+foreignsamplers/Revisions/input/calibration/cap atRun; checkbeforeeachdispatch/publication. OnlymatchingCompletedjobsourceguardrefreshesafterownpublication/cleanup, unusedterminalrefreshskipped. WindowattachedDocumentcreator-threadconstraints andperjobstaleness remain.",
+    "resources": "BeforeprivateState copies reuseborrowedboundedmetadatacharge, countscalar/JSON nodes/ROI/selection/path/mask/view/spatialandtemporalunit expansion, retain32xcopyallowanceinJobResultbeforeStatepayload. Chargeactualtypedkernel/mask andmaintainedlegacybase separately; no processRSS/arena claim.",
+    "cancellation": "MixedlegacycancelpaththrowsOperationCancelled ratherthanreturningCompletedwithoutcommit. Earliercommittedpixels/history/rows/files preservedonlaterrefusal; no sequencewiderollbackclaim. Busyfirstpixelclose/activate is refused, explicitCancel/waitthenoperation supported.",
+    "ui": "Read-onlyorderedpixelintent/onehistory-step summary, explicitselected-baselineconsent, JSONtypedtarget/currentcalibrationcheckbox andexistingexportpaths/fonts; existingstatusAPIunchanged. DrafttextparsedonlyonApply.",
+    "limits": "FiniteordinarycompatiblecurrentplaneWholePlane5stepfixture; actualAllZ/ROI/rankparameter combinations requiretheirremainingintegrationevidence, notclaimedbythefixture. FullT04a.3/releaseopen."
+  },
+  "verification": {
+    "distinct_installed_cases": 391,
+    "new_cases": 30,
+    "final_edited_cases": 30,
+    "unchanged_reused_cases": 361,
+    "attempts": [
+      {
+        "receipt": "python014.process.json",
+        "passed": 388,
+        "failed": 3,
+        "seconds": 13.477276999969035
+      },
+      {
+        "receipt": "python016.process.json",
+        "passed": 3,
+        "failed": 0,
+        "seconds": 1.0843887000810355
+      },
+      {
+        "receipt": "python024.process.json",
+        "passed": 30,
+        "failed": 0,
+        "seconds": 1.6653022000100464
+      }
+    ],
+    "scope": "391distinctcases scoped viafinal30+unchanged361, notfresh391finalcampaign. Earlier391eventuallypass388+3; finalsinglemixedcancelguard fix rechecks30affectedcases andcurrentnative021/022.",
+    "native": "Currentcpp021actualeditUI andretirement022pass; prior007productexport010/mixed011UI green and unaffectedbyfinalmixedPixelcancelbranch. Allterminalcleanuptrue.",
+    "comparison": "FinalC++/Python actualpixels77/178then178/77, rawrows/source-clonetitles, Profilex0/1+y178/77, explicittypedtarget,historyUndoRedo,PNGbytesandcancelstatusmatch. Physicaldraftinputs/selectedbaselineconsentprovedbymaintainedreaders.",
+    "python_report": "scratch\\python024\\pytest\\test_python_actual_edit_chain0\\actual\\case.json",
+    "limitations": "Finiteordinarycompatiblecurrent-plane/whole-plane5stepfixture; existingAPIalsoacceptsall-Z/active/positionedtargetsbutwidercombinedvariantsnotqualifiedbythisfixture. Geometry/type-changing/newdocument/volume/scientific/nativeprogram/Batch andreleaseopen. Busyfirstpixelclose/activationrefuses; explicitCancel/waitthenoperationworks."
+  },
+  "source_review": {
+    "reviewed": [
+      "NativeRunWorkflow1recordperlegacyjob preservesmanualhistory/selection/slice; only3additionalRankenvelopenames reuseexistingtypeddispatch, no kernels/expectations changed",
+      "Typedtarget/calibrationvalidatedexplicitinplaceplane/current-or-allZ; knownschemas/legacyfields/geometry/shape/typecheckedbeforeeffects, defaultselectedbaselineconsentrequired",
+      "Borrowedmetadatacharge includesnativeScalar/JSON/node/selection/path/mask/ROI/view/unit/time_unit expansion beforeStatecopies; existingchargehelper reused, targetkernel/mask+legacybase workspace separate",
+      "MetadataRenderlease storedbeforeStatepayload inJobResult, immutableimage/spectrumplanes shared; result/documentcleanup finishes beforeadvance",
+      "Run freezesallconsumedsource+foreignsamplingRevisions/input/calibration andcap. Beforeeachdispatch/publication validateall; onlymatchingCompletedsourceguardrefreshed; skipunconsumedterminalrefresh. Futurechangedforeignsampling test stopsfirstedit",
+      "PublicationID/checks retained;mixedlegacycancelnowthrowsOperationCancelled instead ofreturningCompletedwithoutcommit. Otherlegacyunmixedcontractunchanged",
+      "Pixelbusyfrontendclose/activateguardsremain; cancellation/workflow/nativepixel/selection/title/recordtoggle/cap mutations protectoutputs/history. Existingread-onlyclose semantics remain",
+      "Read-onlyUIreview targetJSON/drafttext/path controls useexistingaskcleanup; stableworkflowReplayInfo/noWindowheaderAPI, privateprobeconsumerandbindingmatch"
+    ],
+    "source_sha256": {
+      "src/desktop/window.cpp": "63363c799f87b9937a7d1cd232a00c3cf454777d245588af770ef1126c0ae859",
+      "src/desktop/document.cpp": "345c68ed46b6f2e99384553aae18792d0404a199d1cdec6c6f462fc96fd73662",
+      "src/desktop/effective_display_ui_probe.cpp": "d3e628babd44c8af2e05a6199afa207dc443b50dfe6a619a6e3ce1471646fd84",
+      "src/desktop/effective_display_ui_probe.hpp": "f3b762dc541d68bbca012592ee1e8f44cf87f693737ec4e412bd9eded176e255",
+      "src/desktop/python.cpp": "ccd84a56325f9d215fb9665ad9de4dc00d64ead0b486666c560ec4f942fff351",
+      "tests/native/test_display_actions.cpp": "164275be8921f13f48ba0bcf68b2ff24aae87ceac11de74f3af1d09740c4c59a",
+      "tests/python/test_edit_analysis_chain.py": "a97f5c4d0682b3858b22d671606b24f3f0ec088cd7b9843839183774d952578b"
+    },
+    "decision": "Finalsource/ownershipreview complete; no further concretefixfound. Keepallcapturesuntilarchivehashverification, thenretireterminalgroups. No broaderhypotheticalframework/audit."
+  },
+  "installed_bytes": [
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5",
+      "bytes": 8688128
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "sha256": "dfdee7a3589c1156d61b9c9a71967f067d987d024f9225380c85190ddb3f1cb2",
+      "bytes": 21748736
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "sha256": "ea16eff056c9ce01f4366eed424160fcdfee8801f8944adbfdea67c0ec0fe6e4",
+      "bytes": 20987392
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2",
+      "bytes": 84013
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\ui\\app.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py",
+      "sha256": "2a6753fd74c6acd7fe9a38a626553edb74ce03dd82d3bf37b47988e35666fc66",
+      "bytes": 32259
+    }
+  ],
+  "runs": [
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/build004.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 63.322696699993685
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/build007.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 33.340594300068915
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/build019.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 33.64015500014648
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/cpp005.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.3937229998409748
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/cpp008.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.42869929992593825
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/cpp021.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.4506182998884469
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/export010.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.3690953999757767
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/install0130.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.14158519986085594
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/install0131.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.13917599990963936
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/install0230.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.14469829993322492
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/install0231.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.13945550005882978
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/mixed011.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.5702225998975337
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/python014.process.json",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "elapsed_seconds": 13.477276999969035
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/python016.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.0843887000810355
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/python024.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.6653022000100464
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/readers017.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.45131350005976856
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/retirement009.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.11429719999432564
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/retirement022.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.11352210002951324
+    }
+  ],
+  "corrections": {
+    "resource": "SnapshotCapturePlan excludesrecursiveMetadata/Stateprojection; addedactualborrowedmetadataadmissionbeforecopies, thenchargedunboundedtime_unit afterinspectingrealSpatialCalibrationfields. 50ktemporalunit/1MiBresourcecasepasses.",
+    "fixtures": "014388pass/3fail: readonlytimeunitsetter andwrongbusyPixelclose/activateassumptions. Inspectedactualbindings/refusal, correctedconstructor/cancel-beforeclose fixtures;3targetedpasses, no productweakened.",
+    "source_review": "After391eventualpass foundmixedlegacycancelledcallbackreturncouldcountunpublishedstep. Scopefixonlymixedbranch; final33.640sbuild and30affectedcases1.665s/currentnative021+022 rechecked,361unchangedcasesreused.",
+    "process_lapse": {
+      "observed": "019launchreusedterminalownedreceipts butmissedfreshliveinventoryimmediatelybeforebuild. PostlaunchCIMconfirmed193768CMake exactownedcachecommand,164792MSBuild child;3nodereuseMSBuild183788/163484/186528witholderparent183872, originnotreestablished, leftalone.",
+      "correction": "Recordactualmiss, notretrospectivepreflight. FreshfullCIM+terminalreceiptcheckmustbeimmediatelybeforenextnative/install action, thenrecordobservedclassification. No unchangedbuildrestartforreceiptcleanliness."
+    },
+    "searches": "Failedguessedpaths/literalWindowsglobs recordedatentry/resourceReview; actualrequiredheaders/functionsdiscoveredbeforebuild. Extra lateunactionableinspection stopped, no speculativeinfrastructure."
+  },
+  "cleanup": {
+    "state": "retired",
+    "groups": [
+      "cpp005",
+      "cpp008",
+      "cpp021",
+      "export010",
+      "mixed011",
+      "python014",
+      "python016",
+      "python024",
+      "retirement009",
+      "retirement022"
+    ],
+    "additional_files": [
+      "chain-preferences.json",
+      "edit-chain-preferences.json",
+      "mixed-replay-preferences.json"
+    ],
+    "source_bytes": 6455738,
+    "file_count": 574,
+    "archive": {
+      "bytes": 1158152,
+      "path": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/evidence027.zip",
+      "sha256": "8c170dde08df272e111e41602d9e27f14abda176b11029fdf3bd70cfaf462e8c"
+    },
+    "source_absent": true,
+    "retained": "Allprocess/log/pack/verify/manifest/artifactreceipt diagnostics outside scratch inclfailed014;activecache/runtime/compilerpreserved."
+  },
+  "retained_evidence": {
+    "entry": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/entry.json",
+    "manifest": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/evidence027.manifest.json",
+    "verify": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/verify027.json",
+    "archive": {
+      "bytes": 1158152,
+      "path": ".tmp/manual-workflow-verification/edit-analysis-chain-20261107/evidence027.zip",
+      "sha256": "8c170dde08df272e111e41602d9e27f14abda176b11029fdf3bd70cfaf462e8c"
+    },
+    "local_only": true
+  },
+  "storage": {
+    "entry_known_bytes": 7546595028,
+    "before_retirement_known_bytes": 7555693372,
+    "after_retirement_known_bytes": 7551507768,
+    "known_net_growth_bytes": 4912740,
+    "inaccessible_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_at_closeout_bytes": 2972700672,
+    "incremental_allocation_bytes": 268435456,
+    "snapshots": [
+      ".tmp/manual-workflow-verification/edit-analysis-entry003.json",
+      ".tmp/manual-workflow-verification/edit-analysis-before-retire026.json",
+      ".tmp/manual-workflow-verification/edit-analysis-after-retire029.json"
+    ]
+  },
+  "waste_review": {
+    "fix_now": "NoWindowheaderAPIchange; stableexistingstatus/job/record/strictvalidationhelpers. Borrowedactualmetadataadmission; no unusedterminalguardrehash. Coherent63.323sfirstbuild, resource33.341s andrequiredcancel33.640s followups; no failedcompile orfailednativeprobe. Testcorrectionsreuse388green; finalproductfixreruns30affected, no full391repeat.",
+    "defer": "T04a.3 widerAllZ/ROI/calibration/dtype/geometry/newdocument/scientific/nativeprogram/Batch andworkfloweditor; T12genericlonglabelcombo geometry remainsowneduntilrealconsumer; T14supportedplatform/release.",
+    "no_action": "No newengine/controller/runner/cache/environment/progressledger. ExistingCLIpack/verify/rootinventoryretired10groups+3prefs/574files6455738B into1158152Bverifiedarchive. Unknownstorage remainsunknown; no broadspeed/overallcompletion claim."
+  },
+  "next": "T04a.3 mixedWorkflowediting/reorder/disableandpersistence, reusingexistingrecorder/NativeWorkflowPanelcontrols wherecompatible, strictcommandrecordschemasunchanged andrun-timeintentfrozen."
+}
