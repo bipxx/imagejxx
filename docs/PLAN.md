@@ -29,7 +29,7 @@ API/both-host CSV/workspace evidence with explicit perimeter units. Calibrated
 geometric X/Y and intensity-weighted XM/YM now have scoped integration too.
 The explicit Shape descriptors, five-column Feret and four-column Bounding
 rectangle and ELLIPSE Major/Minor/Angle options now have scoped integration.
-Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); next is [mixed workflow editing/reorder/disable](#next-ready-increment-t04a3-workflow-editing). Full M3 and release scope remain open.
+Invert Y is scoped delivered: captured report coordinates, 3,330 distinct installed Python passes, both Windows hosts and Windows/Linux native/settings/installed C++ checks; all thirteen owned groups retired. [Receipt](parity/reviews/invert-y-20261106.json), [coverage](COVERAGE_CHECKLIST.md#invert-y-scoped-coverage). Prior accepted subsets remain in the queue/evidence rows below. NaN empty cells is scoped delivered:142 distinct installed Python passes, actual both-Windows-host controls/table/CSV/workspace and Windows/Linux native/settings/installed C++ clients. All ten owned groups are retired. [Receipt](parity/reviews/nan-empty-cells-20261106.json), [coverage](COVERAGE_CHECKLIST.md#nan-empty-cells-scoped-coverage). Add to overlay now has [scoped native/Python, both-Windows-host and Windows/Linux installed-client acceptance](parity/reviews/add-to-overlay-20261106.json); all15 owned groups are retired. M4 now has [scoped composition acceptance](parity/reviews/mixed-measurement-20261106.json); Measure recording/rebind now has [scoped both-host acceptance](parity/reviews/measurement-replay-20261106.json); ordered manager replay now has [scoped both-host acceptance](parity/reviews/manager-measurement-replay-20261107.json); configured Profile replay now has [scoped both-host acceptance](parity/reviews/profile-replay-20261107.json); retained numeric plots now have [scoped workspace acceptance](parity/reviews/plot-workspace-20261107.json); ordered mixed analysis replay now has [scoped both-host acceptance](parity/reviews/mixed-replay-20261107.json); analysis/display-export chaining now has [scoped both-host acceptance](parity/reviews/analysis-export-chain-20261107.json); ordinary-source edit/filter chaining now has [scoped both-host acceptance](parity/reviews/edit-analysis-chain-20261107.json); next is [bounded open-document mixed Batch](#next-ready-increment-t04a3-mixed-batch). Full M3 and release scope remain open.
 Remaining print/platform/output
 qualification stays owned by B2b.2/T10/T14/T15 and does not block independent
 workflows. This is not whole-process/RSS or full editor closure.
@@ -173,7 +173,8 @@ analysis persistence/replay. Preserve unrelated reference-contract work.
 | Delivered scoped | T04a.3: ordered mixed recorded analysis replay. | Measure V1/V2 and Profile V1;121 installed passes/20newmixed, native retirement and actual both Windows hosts;12rawrows/table/CSV/workspace/cancel/laterfailure. All6groups+preferences retired. [Receipt](parity/reviews/mixed-replay-20261107.json). |
 | Delivered scoped | T04a.3: analysis and captured display-export chain. | Measure/PNG/Profile/PDF/Flatten;238distinct installed cases pass via234+4,24new; bothactualWindows hosts, nativeownership/currentmixed checks. All7groups+2prefs retired. [Receipt](parity/reviews/analysis-export-chain-20261107.json). |
 | Delivered scoped | T04a.3: ordinary-source editing/filter and analysis chain. | Gaussian/invert/Measure/Profile/PNG;391distinct scoped installed cases (30final edited+361unchanged), bothactualWindows hosts, history/UndoRedo/frozen owners/cancel and metadata admission. All10groups+3prefs retired. [Receipt](parity/reviews/edit-analysis-chain-20261107.json). |
-| Next ready | T04a.3: mixed workflow editing/reorder/disable. | Reuse existing recorder/draft controls, preserve strict command records and persistence, and freeze enabled execution/output indices. [Specification](#next-ready-increment-t04a3-workflow-editing). |
+| Delivered scoped | T04a.3: mixed workflow editing/reorder/disable. | Idle draft, V2 persistence and authored enabled-subset mapping;427distinct installed cases via32new+395affected with2final strengthened readers, both actual Windows hosts, corrected native regressions and retirement.15groups+7prefs retired; [receipt](parity/reviews/workflow-editing-20261107.json). |
+| Next ready | T04a.3/T04b: bounded open-document mixed Batch. | Review an explicit source list and per-source output destinations, then run enabled work serially with per-item progress/results on the existing sequence/job owner. [Specification](#next-ready-increment-t04a3-mixed-batch). |
 | Required residual backlog | B2b.2/P2c.3/P3/P4, M2b.3/M3, T04a.3/T04b/T05 and all T06-T15 scope. | Select by demonstrated dependency or missing user workflow. Advanced point/manager, printing and additional platform qualification retain owners; no parent is closed merely because another workflow advances. |
 
 Do not restart completed point kernels/interchange or open a second batching
@@ -1248,58 +1249,79 @@ inventories, not another policy edit. Known storage grew4912740B;214 inaccessibl
 subtrees keep full budget unverified. T12 generic combo geometry remains deferred.
 
 <a id="next-ready-increment-t04a3-workflow-editing"></a>
-### Next ready: T04a.3 mixed workflow editing/reorder/disable
+### T04a.3 workflow editing: scoped delivered
 
-**User-visible exit.** Review a saved mixed workflow, move/remove steps and
-select enabled steps in an idle bounded draft; Apply or Cancel without changing
-image history. Save/Load and workspace reopen preserve the authored order,
-commands and enabled choices. Run executes exactly the enabled steps with clear
-original-step/output ownership, cancellation and immutable active intent.
-G085/G089/G083 and existing command-family owners apply.
+[Scoped receipt](parity/reviews/workflow-editing-20261107.json),
+[coverage](COVERAGE_CHECKLIST.md#workflow-editing-current-wip). The idle bounded
+draft moves/removes/enables commands; Apply/Cancel preserves source/history.
+Strict V2 row wrappers retain original leaf records; V1 files remain loadable.
+Workspace validation precedes publication. Run skips disabled rows and preserves
+authored output indices, including empty/single-enabled handling.
 
-- Inspect actual Window recorder row rendering and single-family replay controls,
-  `save_workflow`/`load_workflow` V1 envelope/native-program special route and
-  `NativeWorkflowPanel` Entry enabled/order/parameter draft controls. Reuse the
-  maintained renderer/control patterns where contracts match; no second generic
-  workflow engine, registry or controller. Raw strict command records stay closed.
-- Freeze exact editing actions in the task record before code: suggested existing
-  action-router surface `workflow_move(from_index,to_index)`,
-  `workflow_remove(index)`, `workflow_set_enabled(index,enabled)` with zero-based
-  row indices, real Boolean checks, bounds/no-op/refusal behavior and idle-only
-  mutation. Own one bounded draft, with original-owner/table conflict guards,
-  read-only command summary and Apply/Cancel. Do not let a stale draft overwrite
-  an externally loaded/recorded table or an active run.
-- Preserve original typed records byte/field-for-field when moving/disabling;
-  do not add `enabled` to Measure/Profile/export/filter schemas. Inspect persistence
-  consumers before choosing the smallest versioned editor representation. If old
-  readers would ignore enabled metadata and run disabled work, use a format
-  version they reject; keep old V1 files loadable and avoid silently weakening
-  historical validation. Workspace and changed pure Python serializers must agree.
-- Freeze enabled execution mapping before integration. Keep authored row order and
-  disabled visibility distinct from execution cursor/count; per-step output
-  overrides must continue to identify the reviewed authored step, including when
-  earlier rows are disabled. Run preflight considers enabled work, with explicit
-  empty/single-step behavior, selected baseline and saved settings review. Never
-  temporarily replace `owner.workflow` to dispatch an enabled subset. Existing
-  matching-job guards, committed-output behavior and busy status remain required.
-- Verify installed editing actions/defaults/invalid indices/Boolean/type/duplicate
-  commands, empty/single/enabled subsets, stale draft, busy refusal and persistence.
-  Shared real hosts must move/remove/disable, Cancel/Apply, Save/Load/reopen and Run
-  a useful edit->analysis/export subset; compare pixels/history/raw rows/CSV/files
-  to manual execution and preserve disabled destination sentinels. Keep native
-  program/Batch and unsupported family variants with their current owners.
-- Own existing Window recorder/sequence integration, existing workflow file/session
-  codec and Python exports only where required, shared probes/bindings/native
-  consumers, tests and current docs. Inspect install components/loaded pure bytes
-  if serializers change; stable status API should avoid another header declaration.
-  Batch compilation, choose affected checks, retain scratch through final source
-  review, then verify/retire it. Existing active cache/runtime and256MiB bounded
-  verification allocation apply; full-scope/free-space/process gates remain. No
-  agents authorized. This successor has not started implementation.
+427 distinct installed cases pass via32new+395affected, with final2strengthened
+host readers rechecked (425unchanged reuse). Both Windows ImGui hosts and native
+regressions/retirement pass. Failed native fixture/PNG-reader assumptions remain
+in verified retention; numerical expectations were preserved. All15scratchgroups
+and7rootpreferences/1099files/9654215B retired after final source review, retained
+1981929B. Disk pressure required retiring54native binding compiler intermediates
+(907299447B); active configuration and built/installed products stayed pinned.
+Future native binding builds recompile them.214 inaccessible subtrees leave full
+budget unverified. Full T04a.3 and release remain open.
 
-Wider All-Z/ROI/target/calibration/dtype/geometry/scientific/native-program/Batch,
-full filter/point/manager/Profile/table/Fiji and platform/commercial/release exits
-retain their existing owners. Editing this queue closes none by implication.
+<a id="next-ready-increment-t04a3-mixed-batch"></a>
+### Next ready: T04a.3/T04b bounded open-document mixed Batch
+
+**User-visible exit.** Choose an ordered list of already-open compatible images,
+review enabled edit/analysis/export commands and explicit per-source output
+paths, Apply to run serially, and see per-image and authored-step progress with
+completed/failed/canceled results. The same saved workflow must produce the
+manual pixels/history, rows, Profile data and files independently for each
+selected source. G085/G088/G089 and existing command-family owners apply.
+
+- At entry inspect actual recorder Batch routing, `NativeWorkflowPanel` batch
+  setup/job/result controls and the mixed cursor/rebind/export preflight. Freeze
+  real action signatures, return timing, installed consumers and result schema
+  in the existing task record before editing. Reuse controls where contracts
+  agree; do not send mixed analysis records to the operation-only native compiler.
+- Use one bounded reviewed source plan with stable IDs/order and current workflow
+  identity; reject duplicates, closed/incompatible sources and stale setup before
+  first effects. Require explicit per-source rebind and retain existing target,
+  calibration and settings consent. Keep strict saved V2 leaf records unchanged.
+  No automatic source discovery or hidden overwrite policy in this increment.
+- Preflight every enabled export's per-source authored index and absolute path,
+  parent/font policy and conflicts across the whole reviewed batch before work.
+  Disabled destinations are untouched. Show the actual source/path association;
+  reject ambiguous or missing overrides rather than writing every item to one
+  captured destination. File/folder naming variants remain assigned below.
+- Extend the current mixed sequence/job continuation for serial source plans;
+  keep one active processing job and the existing cancellation/publication owner.
+  Preserve per-item history and earlier committed rows/files on later failure.
+  Freeze pending consumed source/settings/cap context; no filtered workflow copy,
+  parallel batch scheduler, second engine, registry or new controller framework.
+- Make stop-on-failure and Cancel behavior explicit. Cancellation stops pending
+  work and prevents later sources from starting; successful earlier sources stay
+  committed and visible. Report source ID/title, execution ordinal, authored step,
+  completed count and terminal error independently; never call a partial batch
+  complete. Busy close/activation follows the existing pixel-lane contract.
+- Verify installed API and both actual hosts using at least two distinct sources,
+  a disabled export sentinel, reordered commands, per-source paths, raw rows/CSV,
+  literal pixels, Undo/Redo, Save/Load intent and independent reopened outputs.
+  Exercise later-source failure, Cancel during an item, stale/missing source,
+  duplicate/colliding outputs and zero final reservations. Inspect output capture
+  semantics and snapshot timing before writing assertions; this task exposed
+  two avoidable fixture assumptions there.
+- Own existing mixed/recorder/batch controls, bindings/probes/tests/docs only as
+  required by the inspected caller route. Batch core/header/binding/UI edits in
+  the active cache; choose affected checks and correct install components.
+  Inspect physical free space and full normalized storage first, retain terminal
+  groups serially after final review, and update canonical coverage at observed
+  checkpoints and closeout. No new cache/runtime or agents authorized.
+
+General native-program Batch, filesystem/folder input, automatic naming/conversion,
+continue-on-error/resume policy and unsupported families remain T04b/T12/T10;
+wider All-Z/ROI/target/calibration/dtype/geometry/scientific/filter/point/manager/
+Profile/table/Fiji and platform/commercial/release exits retain existing owners.
+This successor is specified, not implemented or accepted.
 
 Other constructors, positioned/cross-plane threshold, RGB/legacy-type, replay and supported-platform variants remain with M3/T06/T14. Full table editing/import/filtering/summaries and full commercial inventory/performance/release gates remain open. No speculative framework or broader audit is required to begin the next independent workflow.
 

@@ -2043,4 +2043,37 @@ Json editAnalysisChainUiCase(Window& w,const std::string& context,const std::str
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last},{"status",w.workflowReplayInfo()}});throw;}
 }
 
+Json workflowEditingUiCase(Window& w,const std::string& context,const std::string& directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(directory));require(!fs::exists(dir),"Fresh edit chain capture required");fs::create_directories(dir);
+  Json report={{"contract","workflow-editing-ui.001"},{"context",context},{"acceptance_claim",false},{"controls",Json::array()},{"events",Json::array()}},last;std::atomic<bool> release{true},entered{false};
+  try {
+    auto fixture=[](const std::string& title){Image image(2,1,1,PixelType::UInt8);image.at(0,0)=0;image.at(1,0)=255;Stack images;images.push_back(std::move(image));auto document=std::make_shared<imagejxx::Document>(Dataset::from_stack(std::move(images)),title);document->select(Selection("line",{{0,0},{1,0}}));return document;};
+    auto source=fixture("Edit source"),clone=fixture("Edit clone");w.addNativeDocument(source);w.addNativeDocument(clone);w.setActiveIndex(0);w.updateSettings({{"measurements",{"Area","mean","Length"}},{"profile_samples",2}},true);
+    auto values=[](const std::shared_ptr<imagejxx::Document>& document){const auto image=document->snapshot().data().dataset.plane();return Json::array({Json::array({image->at(0,0),image->at(1,0)})});};
+    HeadlessInputSession session(w);const auto scheduler=session.fixtureApplication().job_scheduler();
+    auto frame=[&](const Json& inputs=Json::array()){require(report["events"].size()<1024,"Edit chain frame bound");last=session.frame(inputs);require(last.at("input_frame").at("raw_inputs")==inputs,"Edit chain raw input differs");report["events"].push_back(inputs);};
+    auto click=[&](Json control,const std::string& name){require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>(),"Edit chain control unavailable");report["controls"].push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};auto dialog=[&](const std::string& name){click(last.at("dialog").at("controls").at(name),"dialog."+name);};
+    auto focus=[&](const char* name){auto* window=ImGui::FindWindowByName(name);require(window,"Edit chain panel missing");ImGui::FocusWindow(window);frame();};
+    auto text=[&](const std::string& value){for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));frame(Json::array({{{"type","text"},{"value",value}}}));frame();};
+    auto file=[&](const fs::path& path){click(last.at("file_browser").at("controls").at("path"),"file.path");text(path.u8string());click(last.at("file_browser").at("controls").at("submit"),"file.submit");frame();frame();};
+    auto acknowledge=[&]{frame();frame();click(last.at("error_modal").at("controls").at("ok"),"error.ok");frame();};
+    auto resources=[&]{require(w.renderMemoryInfo().at("working_bytes")==0 && scheduler->usage().reserved_bytes==0,"Edit chain resources leaked");};
+    frame();frame();frame();focus("Workflow");control("workflow.record");TargetRequest target;target.roi=RoiPolicy::WholePlane;w.applyGaussian(target,GaussianBlurCommandOptions{1,false});w.wait();frame();
+    w.applyOperation("invert",Json::object(),false,false);for(const auto* command:{"measure","profile"}){w.action(command);w.wait();frame();}
+    w.action("export_display",{{"path",(dir/"disabled.png").u8string()}});w.wait();frame();focus("Workflow");control("workflow.record");
+    const auto original=w.workflow;w.workflow.insert(w.workflow.begin(),original[4]);const auto before=w.workflow;const auto protectedSource=source->snapshot();
+    control("workflow.edit");dialog("row.0.down");dialog("row.1.up");dialog("row.1.enabled");dialog("row.1.remove");dialog("cancel");require(w.workflow==before,"Cancel changed authored records");resources();report["cancel_preserved"]=true;
+    focus("Workflow");control("workflow.edit");dialog("row.0.enabled");dialog("row.2.remove");dialog("apply");require(w.workflow.size()==5 && !w.workflow[0].at("enabled").get<bool>(),"Draft Apply differs");
+    const auto intent=w.workflow;for(std::size_t i=0;i<intent.size();++i){const auto sourceIndex=i==0?4:i==1?0:i;require(intent[i].at("record")==original[sourceIndex],"Draft changed original command fields");}
+    focus("Workflow");control("workflow.save");file(dir/"authored.json");control("workflow.clear");control("workflow.load");file(dir/"authored.json");require(w.workflow==intent,"Edited Save/Load differs");report["saved_equal"]=true;
+    const std::vector<unsigned char> sentinel={'d','i','s','a','b','l','e','d'};writeBytes((dir/"disabled.png").u8string(),sentinel);
+    w.setActiveIndex(1);focus("Workflow");control("workflow.run");report["review"]=last.at("dialog").at("controls").at("sequence_summary");dialog("rebind");dialog("gaussian_rebind");text(R"({"scope":"current_plane","roi":"whole_plane","mode":"planes","destination":"in_place"})");dialog("export_5_path");text((dir/"subset.png").u8string());dialog("apply");w.wait();frame();
+    require(w.error().empty() && w.workflowReplayInfo().at("state")=="completed" && w.workflowReplayInfo().at("completed")==4,"Edited subset Run failed");require(values(clone)==Json::array({Json::array({77,178})}) && clone->undo_steps()==1,"Edited subset pixels/history differ");
+    require(readBytes((dir/"disabled.png").u8string())==sentinel && fs::exists(dir/"subset.png"),"Disabled destination overwritten");resources();report["disabled_destination_protected"]=true;report["status"]=w.workflowReplayInfo();report["pixels"]=values(clone);report["undo_steps"]=clone->undo_steps();report["rows"]=w.results;report["profile"]=last.at("plot");
+    w.action("export_plot_csv",{{"path",(dir/"profile.csv").u8string()}});w.action("save_workspace",{{"path",(dir/"authored.ijx").u8string()}});
+    require(w.workflow==intent && source->snapshot().shares_data(protectedSource) && source->undo_steps()==2,"Editing changed original source/history");report["workflow"]=intent;report["final_working_bytes"]=w.renderMemoryInfo().at("working_bytes");report["state"]="observed";session.close();writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last},{"status",w.workflowReplayInfo()}});throw;}
+}
+
 }

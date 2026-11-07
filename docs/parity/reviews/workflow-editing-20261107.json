@@ -1,0 +1,161 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T04a.3 mixed workflow editing/reorder/disable",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G085",
+    "G089",
+    "G083",
+    "G009",
+    "G066",
+    "G070",
+    "G071",
+    "G079",
+    "G082"
+  ],
+  "scope": "Idle bounded Move/Remove/Enable draft with Apply/Cancel; V2 row persistence and enabled-subset execution on existing mixed controller, strict original commands unchanged. Installed API and both real Windows ImGui hosts. Full general Batch/native-program/unsupported-family and supported-platform release scope remains open.",
+  "aspects": {
+    "implemented": "Private row codec + existing dialog/recorder/sequence/file/session/binding consumers, no second processing engine, public SDK header or dependency.",
+    "verified": "427 distinct installed cases:32new+395affected, with final2 strengthened host readers rechecked. One native stale-fixture failure and2 new reader-oracle failures retained; no fresh full427 final rerun.",
+    "integrated": "Actual standalone C++ and optional Python ImGui controls; independent PNG/CSV/session readers and literal raw pixel/history/row checks.",
+    "release_ready": false
+  },
+  "contract": {
+    "entry": "Privateversioned row wrapper schema=imagejxx.workflow-entry/version1/enabled(bool)/record(originalobject). Strictoriginalcommandfieldsunchanged, no nestedwrappers; boundedouter/leafpreflight andknownleafvalidators. Canonicaldraftwrapsallrows; existingV1rawtablesunchangeduntilApply.",
+    "file": "Newimagejxx-workflow version2 forentryrows; oldversion1rawtables accepted. Oldreaders rejectv2files andunsupportedentryschema onworkspaceRun, neverexecuteignored-disabledwork. ExistingSessionworkflowJsonpersistswrapperrows withoutanotherextension/ledger.",
+    "python": "NativeEditor.action andexistingworkflowproperty exposeallnewbehavior inoptionalPythonUI. Legacyui.workflows operation-onlyV1 serializer remainsunchanged andexplicitlyrejectsv2; italreadydoesnotserialize mixedanalysis. Nochangedpureexports/installcomponentneeded.",
+    "draft": "OneadmittedsharedWorkflowDraft ownedbyImpl+existingaskcallback, memorydeclaredbeforeoriginal/entries. Freezeoriginaltable+activeowner0orid; actionszero-basedstrictindices/bools mutateonlydraft. Applyswapsonidle/currenttableowner; Cancelreleasesimmediately. ExistingdialogsApply closesonlyonsuccess, failedsubmitkeepsdraft/error.",
+    "execution": "MixedReplayretainsoneoriginalauthoredtableplusenabledslotvector, notasecondfilteredrecordcopy. Cursorcompleted/total referexecutedsubset;active_step remains1basedauthoredslot andoverridesuseauthoredslotkeys. Freezeentireauthoredtableagainstmutation.",
+    "routes": "hasentryroutesRunthroughsameexistingsequence evenoneenabledstep; zeroenabledrefusesbeforeeffects. Validateknownleafschemaandboundsallrows, compatibility/source/settings/outputs onlyenabledrows. Disabledoutputdestinations untouched andnotconflicting.",
+    "recorder": "OutputPublicationwrapsnewcaptureswhenauthoringtableusesentries; recorderrowpresentationunwrapsleafandmarksdisabled. Keepexistingper-rowreplayreviewowners; single native-workflow-program usesitsowneditor andisnotrewrapped.",
+    "persistence": "Window save/load V1/rootnativeprogramspecialroute inspected; Sessionread/write storesworkflowJson unchanged. NoGUIcontroller/sessioncache added.",
+    "prevention": "Reuseexistingmodalparse/text/submit cleanup, one-shotworkerhook, read-onlycalibrationconstructor, pixelbusyclose/activationrefusal. Preserveoriginalrecorddata aftermove/remove/disable; no sourcehistorychanges."
+  },
+  "verification": {
+    "distinct_installed_cases": 427,
+    "new_cases": 32,
+    "affected_regression_cases": 395,
+    "final_strengthened_readers": 2,
+    "python_attempts": [
+      {
+        "receipt": "python005",
+        "exit_code": 0,
+        "seconds": 1.690291500184685
+      },
+      {
+        "receipt": "python017",
+        "exit_code": 0,
+        "seconds": 13.005993400001898
+      },
+      {
+        "receipt": "python018",
+        "exit_code": 1,
+        "seconds": 1.058701999951154
+      },
+      {
+        "receipt": "python019",
+        "exit_code": 0,
+        "seconds": 1.0603803000412881
+      }
+    ],
+    "native": "new002 + existing006..012; corrected full native016 and reentrant retirement014 pass. Failed013 snapshot taken before recorded Measure; capture corrected and explicit two-record check added; fixed numerical expectations unchanged.",
+    "unavailable": [
+      "test_actual_export_record_replay_and_rebind_controls: old point annotation full reports retired, no new plausible source searched",
+      "test_actual_floating_snapshot_lifecycle[imgui_cpp]: old standalone snapshot report retired; current Python host still selected"
+    ],
+    "built_installed_pairs": [
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_native.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/_desktop.cp312-win_amd64.pyd",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "sha256": "44d41b5c101c871d3e4995805e38c1cb0f579936e37c13a9165932403bce1e52"
+      },
+      {
+        "built_or_source": ".cache/native-verification/windows/Release/imagejxx.exe",
+        "installed": ".tmp/p13g-verification/windows/app-installed/bin/imagejxx.exe",
+        "sha256": "6a029065a6ccbce427864a76259d6c6f62293f243823c2f5728d2f6403f0f220"
+      },
+      {
+        "built_or_source": "src/imagejxx/__init__.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/__init__.py",
+        "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/app.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/app.py",
+        "sha256": "2a6753fd74c6acd7fe9a38a626553edb74ce03dd82d3bf37b47988e35666fc66"
+      },
+      {
+        "built_or_source": "src/imagejxx/ui/workflows.py",
+        "installed": ".cache/native-verification/runtime/Lib/site-packages/imagejxx/ui/workflows.py",
+        "sha256": "96bd8502428afaafbaaa6fddac5e5343905c5f99344edd95f2d74f44a8e7cb92"
+      }
+    ],
+    "loaded_origins": {
+      "imagejxx": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "imagejxx._native": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "imagejxx._desktop": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "imagejxx.ui.app": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py"
+    },
+    "final_source_sha256": {
+      "src/desktop/workflow_entries.hpp": "b2b237ceccb7ea07f9b652568fd411d92993cf2813ef9bc246612811cf960c17",
+      "src/desktop/window.cpp": "d0ba961635b25789b11fb39f5f23f3a36d0918a2370c86d76409e494e16e4025",
+      "src/desktop/effective_display_ui_probe.cpp": "517e23f36726acd2571588e7856535a78bb490a077d36de12ab0a28b913c7d8c",
+      "src/desktop/effective_display_ui_probe.hpp": "dfac28a2b4e1022bfaa511fce77ccf1e2a637fd5b2c2e42e422ecbdb3f63feac",
+      "src/desktop/python.cpp": "d3d90d5d1b170396e344f551a48830367612b228427697884b92cccf798d38a2",
+      "tests/native/test_display_actions.cpp": "22530eecaf0f086b6841289bef062b3b82b81bf678dd3afd77a17cdb2f9e4745",
+      "tests/python/test_workflow_editing.py": "8ea4da12469a43d12ccc8847505116d2178baf61b6cf06cd6c6ef0ecb1717472"
+    }
+  },
+  "retention": {
+    "entry": ".tmp/manual-workflow-verification/workflow-editing-20261107/entry.json",
+    "archive": ".tmp/manual-workflow-verification/workflow-editing-20261107/evidence020.zip",
+    "manifest": ".tmp/manual-workflow-verification/workflow-editing-20261107/evidence020-manifest.json",
+    "verify": ".tmp/manual-workflow-verification/workflow-editing-20261107/verify020.json",
+    "archive_sha256": "caea5149d06737cc75be8126244910673445444c20b4c8a6cb56e6f3bf7979a7",
+    "archive_bytes": 1981929,
+    "retired_groups": 15,
+    "retired_root_preferences": 7,
+    "retired_files": 1099,
+    "retired_bytes": 9654215,
+    "source_absent": true,
+    "owner": "root",
+    "limitations": "Local retained archive, not a distributed full capture set. Preserve historical fingerprints; retired raw groups are unavailable without verified restoration."
+  },
+  "storage": {
+    "before": ".tmp/manual-workflow-verification/workflow-editing-storage001.json",
+    "after": ".tmp/manual-workflow-verification/workflow-editing-storage005.json",
+    "known_before_bytes": 7551613812,
+    "known_after_bytes": 6649582401,
+    "unknown_subtrees": 214,
+    "full_budget_verified": false,
+    "pressure_reclaimed_compiler_bytes": 907299447,
+    "pressure_reclaimed_compiler_files": 54,
+    "retained_compiler_identity": "Configured cache and built/installed native artifact hashes verified unchanged; only native-binding .obj/.iobj retired. Future binding build recompiles them.",
+    "physical_free_after_retirement": 7195291648,
+    "physical_space_note": "Physical free space rose during work; only measured907299447B compiler retirement and9654215B scratch deletion are attributed to this task.",
+    "allocation_bytes": 268435456
+  },
+  "cost": {
+    "build_seconds": 71.70932630007155,
+    "product_builds": 1,
+    "test_only_builds": 1,
+    "failed_attempts": [
+      "native013 stale fixture capture",
+      "python0182reader gray-PNG assumption contradicted by documented active-line stroke"
+    ],
+    "working_growth_before_retention_bytes": 11835931
+  },
+  "remaining": [
+    "Bounded multi-source mixed workflow Batch review/execution is next; general folder/format/native-program and unsupported families retain existing owners.",
+    "Wider target/ROI/All-Z/geometry/type/calibration/Profile/manager/table/Fiji workflows remain open.",
+    "Other supported-platform, licensing/distribution and release gates remain open; no dependency or asset added."
+  ],
+  "next": "docs/PLAN.md#next-ready-increment-t04a3-mixed-batch"
+}

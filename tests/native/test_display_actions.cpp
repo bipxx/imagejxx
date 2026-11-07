@@ -274,11 +274,13 @@ void everydayEditing(const std::filesystem::path& root) {
     w.recording=true;click(last.at("gaussian_panel").at("ok_point"));w.wait();frame();
     check(w.document()->frame().pixels==expected && w.nativeDocument()->undo_steps()==1,"Everyday selected Apply differs from fixed oracle/history");
     check(w.workflow.size()==1,"Everyday Gaussian Apply was not recorded exactly once");
-    const auto workflow=w.workflow;
+    const auto gaussianRecord=w.workflow[0];
     w.action("undo");check(w.document()->frame().pixels==source,"Everyday Undo lost original pixels");
     w.action("redo");check(w.document()->frame().pixels==expected,"Everyday Redo lost filtered pixels");
     w.action("measure");w.wait();
     check(w.results.size()==1 && w.results[0].at("count")==8 && w.results[0].at("mean")==77 && w.results[0].at("sum")==616,"Everyday Measure differs from independent selected statistics");
+    const auto workflow=w.workflow;
+    check(workflow.size()==2 && workflow[0]==gaussianRecord && workflow[1].value("schema",std::string{})=="imagejxx.measurement-command","Everyday Measure did not preserve Gaussian plus measurement intent");
     const auto rows=w.results;
     w.action("save_results",{{"path",(dir/"measurements.csv").u8string()}});
     check(std::filesystem::file_size(dir/"measurements.csv")>0,"Everyday CSV was not saved");
@@ -615,6 +617,10 @@ void mixedReplayRetirementCase(const std::filesystem::path& root) {
 int main(int argc,char **argv){try{
   if(argc==3 && std::string(argv[2])=="--mixed-replay-retirement"){mixedReplayRetirementCase(std::filesystem::absolute(std::filesystem::u8path(argv[1])));return 0;}
 
+  if(argc==3 && std::string(argv[2])=="--workflow-editing") {
+    Window w((std::filesystem::u8path(argv[1]).parent_path()/"workflow-editing-preferences.json").u8string());
+    imagejxx::desktop::workflowEditingUiCase(w,"imgui_cpp",argv[1]);return 0;
+  }
   if(argc==3 && std::string(argv[2])=="--edit-analysis-chain") {
     Window w((std::filesystem::u8path(argv[1]).parent_path()/"edit-chain-preferences.json").u8string());
     imagejxx::desktop::editAnalysisChainUiCase(w,"imgui_cpp",argv[1]);return 0;

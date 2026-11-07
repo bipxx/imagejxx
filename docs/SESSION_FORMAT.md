@@ -418,3 +418,32 @@ outside the selected grid but must remain inside the dataset. This form excludes
 Z subsetting intersects the selected grid and remaps its Z progression; an empty
 intersection removes the overlay. These are nested display-property versions,
 not changes to the session archive envelope.
+
+## Edited workflow rows
+
+The native desktop recorder saves an edited table as `imagejxx-workflow` file
+version2, with exactly `format`, `version` and `steps`. Each row is exactly
+`{"schema":"imagejxx.workflow-entry","version":1,"enabled":true,"record":{...}}`.
+The original strict command object is preserved under `record`; nested row
+wrappers, unknown outer fields, unsupported versions and non-Boolean enabled
+flags refuse. The editor bounds the table to256rows and admits its JSON before
+copies/known-command decoding. Version1 raw workflows remain supported; wrappers
+labelled as version1 refuse. Older readers reject the new file version.
+
+Workspace archives retain these rows in the existing workflow table, without
+changing the session envelope. Desktop Open/startup validates authored wrappers
+before publishing owners, results or workflow state. Generic core session I/O
+still transports metadata; it does not execute desktop commands. The optional
+Python UI uses native `Editor.action` Save/Load and the workflow property. The
+legacy pure-Python operation-only V1 adapter remains V1-only and rejects V2.
+
+`show_workflow_editor`, `workflow_move(from_index,to_index)`,
+`workflow_remove(index)`, `workflow_set_enabled(index,enabled)`,
+`apply_workflow_editor` and `cancel_workflow_editor` use the existing action
+router. Editing indices are zero-based integers. An idle, recording-stopped
+draft freezes its owner and original table; Apply refuses stale state and Cancel
+preserves it. Run executes only enabled rows on the existing mixed continuation;
+completed/total count executed commands, while active-step and export override
+keys identify1-based authored rows. Empty/all-disabled execution refuses; one
+enabled command is supported. General native-program/Batch and unsupported
+families remain separate owning workflows. See the [scoped Windows receipt](parity/reviews/workflow-editing-20261107.json).

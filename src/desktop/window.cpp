@@ -4,6 +4,7 @@
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
 #include "analysis_measurement.hpp"
+#include "workflow_entries.hpp"
 #include <imagejxx/results_table_state.hpp>
 #include <imagejxx/measurement_overlay.hpp>
 #include <array>
@@ -680,8 +681,13 @@ struct OutputPublication {
                         {"Count", count}});
       resultArray = reserve(results, rows.size(), "Results");
     }
-    if (!step.is_null())
+    if (!step.is_null()) {
+      if(hasWorkflowEntries(workflow)) {
+        if(workflow.size()>=256)throw std::length_error("Workflow editor supports at most256 commands");
+        step=workflowEntry(std::move(step));
+      }
       workflowArray = reserve(workflow, 1, "Workflow");
+    }
   }
   void publish() noexcept {
     // Storage and values are prepared before the pixel commit; these moves do
@@ -1390,6 +1396,7 @@ struct Window::Impl {
   struct MixedReplay {
     RenderMemory::Lease memory;
     Json steps,parameters;
+    std::vector<std::size_t> order;
     std::size_t completed=0;
     std::uint64_t job_id=0;
     const char* stop_error=nullptr;
@@ -1399,6 +1406,12 @@ struct Window::Impl {
     std::map<std::uint64_t,MixedSourceGuard> guards;
   };
   std::optional<MixedReplay> mixedReplay;
+  struct WorkflowDraft {
+    RenderMemory::Lease memory;
+    Json original,entries;
+    std::uint64_t owner_id=0;
+  };
+  std::shared_ptr<WorkflowDraft> workflowDraft;
   std::atomic<bool> mixedCancelRequested{false};
   bool mixedDispatch=false,mixedPolling=false;
   const Document* mixedFlattenAdoption=nullptr;
@@ -5331,6 +5344,57 @@ struct Window::Impl {
     fitShowPlot=show;calibrationUnit.swap(rememberedUnit);
     if(payload){livePlot.payload.swap(payload);livePlot.source.swap(binding);focusLivePlot();livePlot.view={};livePlot.drag.reset();++livePlot.generation;}
   }
+  void validateAuthoredWorkflow(const Json& table) {
+    if(!hasWorkflowEntries(table))return;
+    const auto bytes=workflowTableBytes(table);
+    if(bytes>processingCap()/4)throw std::length_error("Workflow exceeds processing budget");
+    auto memory=renderMemory->acquire(RenderMemory::mul(bytes,4));
+    for(const auto& row:table)validateWorkflowEntry(row);
+  }
+  static std::size_t workflowIndex(const Json& value,std::size_t size) {
+    if(!value.is_number_integer() || value<0 || value.get<std::uint64_t>()>=size)throw std::invalid_argument("Workflow index must be a zero-based row index");
+    return value.get<std::size_t>();
+  }
+  void validateWorkflowDraft() const {
+    if(!workflowDraft || dialog.id!="workflow_editor" || !dialog.open)throw std::invalid_argument("Open the workflow editor first");
+    if(owner.busy() || owner.recording)throw std::invalid_argument("Stop recording and wait for the current edit");
+    const auto id=owner.documents_.empty()?0:owner.document()->id;
+    if(id!=workflowDraft->owner_id || owner.workflow!=workflowDraft->original)throw std::invalid_argument("Workflow or active owner changed; reopen the editor");
+  }
+  void showWorkflowEditor() {
+    if(owner.busy() || owner.recording || dialog.open)throw std::invalid_argument("Select an idle workflow with recording stopped");
+    if(owner.workflow.is_array() && owner.workflow.size()==1 && get(workflowRecord(owner.workflow[0]),"schema")=="imagejxx.native-workflow-program")throw std::invalid_argument("Use the native program's existing workflow review");
+    const auto bytes=workflowTableBytes(owner.workflow);if(bytes>processingCap()/8)throw std::length_error("Workflow draft exceeds processing budget");
+    auto draft=std::make_shared<WorkflowDraft>();draft->memory=renderMemory->acquire(RenderMemory::mul(bytes,8));
+    for(const auto& row:owner.workflow)validateWorkflowEntry(row);
+    draft->original=owner.workflow;draft->entries=canonicalWorkflowEntries(owner.workflow);draft->owner_id=owner.documents_.empty()?0:owner.document()->id;
+    ask("Edit recorded workflow",Json::object(),[this](Json){applyWorkflowDraft();},Json::array(),"workflow_editor");workflowDraft=std::move(draft);
+  }
+  void editWorkflowDraft(const std::string& command,const Json& parameters) {
+    validateWorkflowDraft();
+    if(!parameters.is_object())throw std::invalid_argument("Workflow edit parameters must be an object");
+    auto& rows=workflowDraft->entries.get_ref<Json::array_t&>();
+    if(command=="workflow_move") {
+      if(parameters.size()!=2 || !parameters.contains("from_index") || !parameters.contains("to_index"))throw std::invalid_argument("Move needs from_index and to_index");
+      const auto from=workflowIndex(parameters.at("from_index"),rows.size()),to=workflowIndex(parameters.at("to_index"),rows.size());
+      if(from<to)std::rotate(rows.begin()+from,rows.begin()+from+1,rows.begin()+to+1);
+      else if(to<from)std::rotate(rows.begin()+to,rows.begin()+from,rows.begin()+from+1);
+    } else if(command=="workflow_remove") {
+      if(parameters.size()!=1 || !parameters.contains("index"))throw std::invalid_argument("Remove needs one index");
+      rows.erase(rows.begin()+workflowIndex(parameters.at("index"),rows.size()));
+    } else {
+      if(parameters.size()!=2 || !parameters.contains("index") || !parameters.contains("enabled") || !parameters.at("enabled").is_boolean())throw std::invalid_argument("Enable needs index and a Boolean enabled choice");
+      rows[workflowIndex(parameters.at("index"),rows.size())]["enabled"]=parameters.at("enabled");
+    }
+  }
+  void applyWorkflowDraft() {
+    validateWorkflowDraft();auto draft=workflowDraft;(void)workflowTableBytes(draft->entries);for(const auto& row:draft->entries)validateWorkflowEntry(row);
+    owner.workflow.swap(draft->entries);workflowDraft.reset();dialog.open=false;
+  }
+  void cancelWorkflowDraft() {
+    if(dialog.id=="workflow_editor") {dialog.open=false;dialog.submit={};dialog.values=Json::object();dialog.schema=Json::array();dialog.text.clear();dialog.controls=Json::object();dialog.id.clear();}
+    workflowDraft.reset();
+  }
   static bool mixedPixelRecord(const Json& step) {
     return step.is_object() && !step.contains("schema") && step.contains("operation");
   }
@@ -5427,15 +5491,17 @@ struct Window::Impl {
     },facade,false,"","Recorded pixel edit",workspace);
   }
   bool hasMixedAnalysis(const Json& steps) const {
-    return steps.is_array() && steps.size()>1 && std::any_of(steps.begin(),steps.end(),[](const Json& step){return isMeasurementRecord(step)||isProfileRecord(step)||isDisplayExportRecord(step);});
+    return hasWorkflowEntries(steps) || (steps.is_array() && steps.size()>1 && std::any_of(steps.begin(),steps.end(),[](const Json& step){return isMeasurementRecord(step)||isProfileRecord(step)||isDisplayExportRecord(step);}));
   }
   std::size_t mixedReplayBytes(const Json& steps) const {
-    if(!steps.is_array() || steps.size()<2 || steps.size()>256)throw std::invalid_argument("Mixed workflow requires2..256 commands");
+    if(!steps.is_array() || steps.empty() || (steps.size()<2 && !hasWorkflowEntries(steps)) || steps.size()>256)throw std::invalid_argument("Mixed workflow requires1..256 authored commands with enabled work");
     std::size_t bytes=8192;
-    for(const auto& step:steps) {
+    for(const auto& value:steps) {
+      const auto& step=workflowRecord(value);bytes=RenderMemory::add(bytes,workflowEntryBytes(value));
+      if(!workflowEnabled(value))continue;
       if(!isMeasurementRecord(step) && !isProfileRecord(step) && !isDisplayExportRecord(step) && !mixedPixelRecord(step))throw std::invalid_argument("This mixed workflow contains an unsupported command family; replay it individually");
       if(mixedPixelRecord(step))validateMixedPixel(step);
-      bytes=RenderMemory::add(bytes,isDisplayExportRecord(step)?displayExportRecordWorkingBytes(step):measurementRecordWorkingBytes(step));
+      // Entry preflight above includes the original command and wrapper bytes.
     }
     if(bytes>processingCap()/8)throw std::length_error("Mixed workflow exceeds processing budget");return bytes;
   }
@@ -5483,7 +5549,7 @@ struct Window::Impl {
     if(params.contains("export_options")) {
       const auto& options=params.at("export_options");if(!options.is_object())throw std::invalid_argument("Mixed export_options must be an object");
       for(const auto& item:options.items()) {
-        bool found=false;for(std::size_t i=0;i<steps.size();++i)if(item.key()==std::to_string(i+1) && isDisplayExportRecord(steps[i]))found=true;
+        bool found=false;for(std::size_t i=0;i<steps.size();++i)if(item.key()==std::to_string(i+1) && workflowEnabled(steps[i]) && isDisplayExportRecord(workflowRecord(steps[i])))found=true;
         if(!found)throw std::invalid_argument("Mixed export option needs a canonical 1-based export step");
         if(!item.value().is_object())throw std::invalid_argument("Mixed export step options must be an object");
         for(const auto& field:item.value().items()) {
@@ -5494,7 +5560,8 @@ struct Window::Impl {
     }
     std::vector<std::filesystem::path> destinations;
     for(std::size_t index=0;index<steps.size();++index) {
-      const auto& step=steps[index];const auto id=mixedSourceId(step,params);
+      if(!workflowEnabled(steps[index]))continue;
+      const auto& step=workflowRecord(steps[index]);const auto id=mixedSourceId(step,params);
       if(mixedPixelRecord(step)) {
         if(!rebind)throw std::invalid_argument("Mixed pixel edits require explicit selected-baseline rebind");
         validateMixedPixel(step);owner.documentById(id)->requireLegacyEditable();
@@ -5553,14 +5620,14 @@ struct Window::Impl {
   }
   Json mixedReplayInfo() const {
     const char* state=mixedReplayState==MixedReplayState::Running?"running":mixedReplayState==MixedReplayState::Completed?"completed":mixedReplayState==MixedReplayState::Canceled?"canceled":mixedReplayState==MixedReplayState::Failed?"failed":"idle";
-    return {{"state",state},{"completed",mixedReplay?mixedReplay->completed:mixedCompleted},{"total",mixedTotal},{"active_step",mixedReplay?mixedReplay->completed+1:mixedStoppedStep},{"job_id",mixedReplay?mixedReplay->job_id:0},{"error",mixedError}};
+    return {{"state",state},{"completed",mixedReplay?mixedReplay->completed:mixedCompleted},{"total",mixedTotal},{"active_step",mixedReplay?(mixedReplay->completed<mixedReplay->order.size()?mixedReplay->order[mixedReplay->completed]+1:0):mixedStoppedStep},{"job_id",mixedReplay?mixedReplay->job_id:0},{"error",mixedError}};
   }
   void finishMixedReplay(MixedReplayState state,std::string error={}) {
-    if(!mixedReplay)return;const auto done=mixedReplay->completed;const auto total=mixedReplay->steps.size();
+    if(!mixedReplay)return;const auto done=mixedReplay->completed;const auto total=mixedReplay->order.size();
     std::string message=state==MixedReplayState::Completed?"Workflow completed":state==MixedReplayState::Canceled?"Workflow cancelled":"Workflow stopped";
     message+=": "+std::to_string(done)+" of "+std::to_string(total)+" commands completed";
     if(state==MixedReplayState::Failed)lastError=error;
-    mixedCompleted=done;mixedTotal=total;mixedStoppedStep=state==MixedReplayState::Completed?0:done+1;mixedError.swap(error);mixedReplayState=state;mixedReplay.reset();status.swap(message);
+    mixedCompleted=done;mixedTotal=total;mixedStoppedStep=state==MixedReplayState::Completed || done>=total?0:mixedReplay->order[done]+1;mixedError.swap(error);mixedReplayState=state;mixedReplay.reset();status.swap(message);
   }
   void checkMixedReplay() {
     if(!mixedReplay)return;
@@ -5576,18 +5643,18 @@ struct Window::Impl {
   }
   void advanceMixedReplay() {
     if(!mixedReplay)return;
-    if(!mixedReplay->job_id && mixedReplay->completed==mixedReplay->steps.size()){finishMixedReplay(MixedReplayState::Completed);return;}
+    if(!mixedReplay->job_id && mixedReplay->completed==mixedReplay->order.size()){finishMixedReplay(MixedReplayState::Completed);return;}
     checkMixedReplay();if(!mixedReplay || job.valid())return;
     try {
       if(mixedReplay->job_id)throw std::invalid_argument("Mixed workflow lost its active job");
-      const auto& step=mixedReplay->steps[mixedReplay->completed];const auto source=mixedSourceId(step,mixedReplay->parameters);
+      const auto slot=mixedReplay->order.at(mixedReplay->completed);const auto& step=workflowRecord(mixedReplay->steps[slot]);const auto source=mixedSourceId(step,mixedReplay->parameters);
       struct Dispatch {bool& flag;explicit Dispatch(bool& f):flag(f){flag=true;}~Dispatch(){flag=false;}} dispatch(mixedDispatch);
       const auto found=std::find_if(owner.documents_.begin(),owner.documents_.end(),[source](const auto& document){return document->id==source;});
       if(found==owner.documents_.end())throw std::invalid_argument("Mixed workflow source is closed");
-      std::string message="Workflow command "+std::to_string(mixedReplay->completed+1)+" of "+std::to_string(mixedReplay->steps.size());
+      std::string message="Workflow command "+std::to_string(mixedReplay->completed+1)+" of "+std::to_string(mixedReplay->order.size())+" (authored step "+std::to_string(slot+1)+")";
       owner.setActiveIndex(int(found-owner.documents_.begin()));
       if(mixedPixelRecord(step))startMixedPixel(step,mixedReplay->parameters,source);
-      else owner.action(isDisplayExportRecord(step)?"replay_display_export":isProfileRecord(step)?"replay_profile":"replay_measurement",mixedStepRequest(step,mixedReplay->parameters,mixedReplay->completed));
+      else owner.action(isDisplayExportRecord(step)?"replay_display_export":isProfileRecord(step)?"replay_profile":"replay_measurement",mixedStepRequest(step,mixedReplay->parameters,slot));
       mixedReplay->job_source=source;
       if(!job.valid())throw std::invalid_argument("Mixed workflow command did not start its existing job");mixedReplay->job_id=job.info().id;
       status.swap(message);
@@ -5598,7 +5665,7 @@ struct Window::Impl {
     mixedReplay->job_id=0;
     if(terminal.state==JobState::Completed) {
       ++mixedReplay->completed;
-      if(mixedReplay->edited && mixedReplay->completed<mixedReplay->steps.size())try {mixedReplay->guards.at(mixedReplay->job_source)=mixedSourceGuard(mixedReplay->job_source);}
+      if(mixedReplay->edited && mixedReplay->completed<mixedReplay->order.size())try {mixedReplay->guards.at(mixedReplay->job_source)=mixedSourceGuard(mixedReplay->job_source);}
       catch(const std::exception& error){finishMixedReplay(MixedReplayState::Failed,std::string(error.what()).substr(0,2048));}
     }
     else finishMixedReplay(terminal.state==JobState::Canceled && !mixedReplay->stop_error?MixedReplayState::Canceled:MixedReplayState::Failed,mixedReplay->stop_error?mixedReplay->stop_error:terminal.error);
@@ -5632,7 +5699,8 @@ struct Window::Impl {
       guards.push_back(std::move(guard));
     };
     for(std::size_t index=0;index<steps.size();++index) {
-      const auto& step=steps[index];summary+=std::to_string(index+1)+". ";
+      const auto& step=workflowRecord(steps[index]);summary+=std::to_string(index+1)+". ";
+      if(!workflowEnabled(steps[index])){summary+="Disabled command\n";continue;}
       if(mixedPixelRecord(step)) {
         summary+="Pixel edit: "+step.at("operation").get<std::string>()+"; selected baseline; one committed history step";
         if(step.contains("schema_version"))summary+="; explicit in-place target required";
@@ -5669,7 +5737,8 @@ struct Window::Impl {
         summary+=measurementManagerReview(snapshot,manager.indices);
       }catch(const std::invalid_argument&){summary+="Required saved row indices are unavailable; this binding cannot run.\n";}
     };
-    for(const auto& step:steps)if(isMeasurementRecord(step)) {
+    for(const auto& value:steps)if(workflowEnabled(value) && isMeasurementRecord(workflowRecord(value))) {
+      const auto& step=workflowRecord(value);
       const auto record=decodeMeasurementRecord(step);if(!record.manager)continue;
       appendManager(record.source.document_id,*record.manager,record.source.document_id==selected?"Recorded and selected image's ROI Manager entries:":"Recorded image's ROI Manager entries:");
       if(record.source.document_id!=selected)appendManager(selected,*record.manager,"Selected image's ROI Manager entries for explicit rebind:");
@@ -5682,7 +5751,7 @@ struct Window::Impl {
     Json values={{"rebind",false},{"restore_settings",true},{"sequence_summary",summary}};
     Json fields=Json::array({{{"name","rebind"},{"label","Use selected image for all source commands"},{"kind","bool"}},{{"name","restore_settings"},{"label","Restore recorded Measure and Profile settings at each step"},{"kind","bool"}}});
     bool edits=false,gaussian=false,rank=false;
-    for(const auto& step:steps)if(mixedPixelRecord(step)){edits=true;if(step.contains("schema_version")){if(get(step,"operation")=="gaussian_blur_imagej")gaussian=true;else rank=true;}}
+    for(const auto& value:steps)if(workflowEnabled(value) && mixedPixelRecord(workflowRecord(value))){const auto& step=workflowRecord(value);edits=true;if(step.contains("schema_version")){if(get(step,"operation")=="gaussian_blur_imagej")gaussian=true;else rank=true;}}
     if(edits) {
       fields[0]["label"]="Use selected baseline for edits and source commands";
       values["use_destination_calibration"]=false;fields.push_back({{"name","use_destination_calibration"},{"label","Use destination calibration for typed filters"},{"kind","bool"}});
@@ -5692,8 +5761,8 @@ struct Window::Impl {
       }
     }
     if(redirected){values["sampling"]="Recorded sampling";fields.push_back({{"name","sampling"},{"label","Sampling image"},{"kind","choice"},{"choices",labels}});}
-    for(std::size_t index=0;index<steps.size();++index)if(isDisplayExportRecord(steps[index])) {
-      const auto record=decodeDisplayExportRecord(steps[index]);const auto prefix="export_"+std::to_string(index+1)+"_";
+    for(std::size_t index=0;index<steps.size();++index)if(workflowEnabled(steps[index]) && isDisplayExportRecord(workflowRecord(steps[index]))) {
+      const auto record=decodeDisplayExportRecord(workflowRecord(steps[index]));const auto prefix="export_"+std::to_string(index+1)+"_";
       for(const auto* key:{"path","font_path","font_directory"}) {
         if(record.action=="flatten" && std::string(key)=="path")continue;
         const auto name=prefix+key;values[name]=std::string(key)=="path"?record.path:std::string(key)=="font_path"?record.font.default_path:record.font.directory.u8string();
@@ -5715,8 +5784,8 @@ struct Window::Impl {
       }
       Json parameters={{"rebind",rebind},{"restore_settings",values.at("restore_settings")}};if(rebind)parameters["document_id"]=selected;if(redirect)parameters["redirect_id"]=redirect;
       for(const auto* key:{"gaussian_rebind","rank_rebind","use_destination_calibration"})if(values.contains(key))parameters[key]=values.at(key);
-      for(std::size_t index=0;index<steps.size();++index)if(isDisplayExportRecord(steps[index])) {
-        const auto record=decodeDisplayExportRecord(steps[index]);Json options=Json::object();
+      for(std::size_t index=0;index<steps.size();++index)if(workflowEnabled(steps[index]) && isDisplayExportRecord(workflowRecord(steps[index]))) {
+        const auto record=decodeDisplayExportRecord(workflowRecord(steps[index]));Json options=Json::object();
         for(const auto* key:{"path","font_path","font_directory"})if(record.action!="flatten" || std::string(key)!="path")options[key]=values.at("export_"+std::to_string(index+1)+"_"+key);
         parameters["export_options"][std::to_string(index+1)]=std::move(options);
       }
@@ -5730,15 +5799,18 @@ struct Window::Impl {
     if(bytes>processingCap()/8)throw std::length_error("Mixed workflow choices exceed processing budget");
     MixedReplay next;next.memory=renderMemory->acquire(RenderMemory::mul(bytes,4));
     validateMixedBindings(owner.workflow,parameters);next.steps=owner.workflow;next.parameters=std::move(parameters);
+    for(std::size_t i=0;i<next.steps.size();++i)if(workflowEnabled(next.steps[i]))next.order.push_back(i);
+    if(next.order.empty())throw std::invalid_argument("Workflow has no enabled commands");
     if(mixedFlag(next.parameters,"rebind"))next.parameters["document_id"]=mixedId(next.parameters,"document_id",owner.document()->id);
-    next.edited=std::any_of(next.steps.begin(),next.steps.end(),[](const Json& step){return mixedPixelRecord(step);});next.processing_cap=processingCap();
-    if(next.edited)for(const auto& step:next.steps) {
+    next.edited=std::any_of(next.order.begin(),next.order.end(),[&](std::size_t i){return mixedPixelRecord(workflowRecord(next.steps[i]));});next.processing_cap=processingCap();
+    if(next.edited)for(const auto index:next.order) {
+      const auto& step=workflowRecord(next.steps[index]);
       const auto id=mixedSourceId(step,next.parameters);next.guards.emplace(id,mixedSourceGuard(id));
       if(isMeasurementRecord(step))if(const auto record=decodeMeasurementRecord(step);record.redirect) {
         const auto sampling=mixedId(next.parameters,"redirect_id",record.redirect->document_id);next.guards.emplace(sampling,mixedSourceGuard(sampling));
       }
     }
-    mixedTotal=next.steps.size();mixedCompleted=mixedStoppedStep=0;mixedError.clear();mixedReplay.emplace(std::move(next));mixedReplayState=MixedReplayState::Running;mixedCancelRequested=false;
+    mixedTotal=next.order.size();mixedCompleted=mixedStoppedStep=0;mixedError.clear();mixedReplay.emplace(std::move(next));mixedReplayState=MixedReplayState::Running;mixedCancelRequested=false;
     advanceMixedReplay();
   }
   void focusLivePlot() noexcept {
@@ -6763,6 +6835,7 @@ void Window::executeStartup(StartupRequest request, bool retry) {
     }
     std::string status = opened.empty() ? "empty" : "loaded";
     stage = StartupStage::Validation;reason = StartupReason::UnsupportedDocument;
+    impl->validateAuthoredWorkflow(nextWorkflow);
     auto table=impl->loadResultsTable(nextExtensions,nextResults.size());
     auto plots=restorePlots?impl->preparePlotWorkspace(nextExtensions):Impl::PreparedPlotWorkspace{};
     if(restorePlots)nextExtensions.erase(plot_workspace_key);
@@ -7739,6 +7812,7 @@ void Window::openLegacyFile(const std::string &path) {
   if (extension(path) == ".ijx") {
     Json rows, steps, extensions;
     auto opened = loadSession(path, rows, steps, &extensions);
+    impl->validateAuthoredWorkflow(steps);
     auto table=impl->loadResultsTable(extensions,rows.size());
     auto plots=impl->preparePlotWorkspace(extensions);
     extensions.erase(plot_workspace_key);
@@ -7794,6 +7868,21 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+  if(name=="show_workflow_editor" || name=="apply_workflow_editor" || name=="cancel_workflow_editor") {
+    if(!p.is_object() || !p.empty())throw std::invalid_argument("Workflow editor action takes no parameters");
+    if(name=="show_workflow_editor")impl->showWorkflowEditor();
+    else if(name=="cancel_workflow_editor")impl->cancelWorkflowDraft();
+    else {impl->applyWorkflowDraft();impl->cancelWorkflowDraft();}return;
+  }
+  if(name=="replace_workflow_entries") {
+    if(!p.is_object() || p.size()!=1 || !p.contains("steps"))throw std::invalid_argument("Workflow replacement requires steps");
+    const auto& rows=p.at("steps");const auto bytes=workflowTableBytes(rows);
+    if(bytes>impl->processingCap()/4)throw std::length_error("Workflow replacement exceeds processing budget");
+    auto memory=impl->renderMemory->acquire(RenderMemory::mul(bytes,4));for(const auto& row:rows)validateWorkflowEntry(row);
+    workflow=rows;return;
+  }
+  if(name=="workflow_move" || name=="workflow_remove" || name=="workflow_set_enabled"){impl->editWorkflowDraft(name,p);return;}
+  if(name=="run_workflow" && workflow.is_array() && workflow.empty())throw std::invalid_argument("Workflow has no enabled commands");
   if(name=="show_mixed_replay"){if(!p.is_object() || !p.empty())throw std::invalid_argument("Mixed review takes no parameters");impl->showMixedReplay();return;}
   if(name=="run_workflow" && impl->hasMixedAnalysis(workflow)) {
     if(p.empty())action("show_mixed_replay",p);else impl->beginMixedReplay(p);return;
@@ -9980,9 +10069,12 @@ void Window::action(const std::string &name, const Json &p) {
       auto text=native_workflow_program_from_record(metadataObjectFromJson(workflow[0]),desktop_workflow_program_limits(cap)).json();
       writeBytes(string(get(p,"path")),{text.begin(),text.end()});return;
     }
-    writeJson(
-        string(get(p, "path")),
-        {{"format", "imagejxx-workflow"}, {"version", 1}, {"steps", workflow}});
+    if(hasWorkflowEntries(workflow)) {
+      const auto bytes=workflowTableBytes(workflow);if(bytes>impl->processingCap()/4)throw std::length_error("Workflow file exceeds processing budget");
+      auto memory=impl->renderMemory->acquire(RenderMemory::mul(bytes,4));
+      for(const auto& row:workflow)validateWorkflowEntry(row);
+      writeJson(string(get(p,"path")),{{"format","imagejxx-workflow"},{"version",2},{"steps",canonicalWorkflowEntries(workflow)}});
+    } else writeJson(string(get(p,"path")),{{"format","imagejxx-workflow"},{"version",1},{"steps",workflow}});
     return;
   }
   if (name == "load_workflow") {
@@ -9993,10 +10085,19 @@ void Window::action(const std::string &name, const Json &p) {
       auto program=native_workflow_program_from_record(metadataObjectFromJson(root),desktop_workflow_program_limits(cap));
       workflow=Json::array({metadataJson(program.record())});return;
     }
+    if(get(root,"format")=="imagejxx-workflow" && get(root,"version")==2 && root.at("version").is_number_integer()) {
+      if(root.size()!=3 || !get(root,"steps").is_array())throw std::invalid_argument("Invalid workflow editor file");
+      const auto& rows=root.at("steps");const auto bytes=workflowTableBytes(rows);
+      if(bytes>impl->processingCap()/4)throw std::length_error("Workflow file exceeds processing budget");
+      auto memory=impl->renderMemory->acquire(RenderMemory::mul(bytes,4));
+      for(const auto& row:rows){if(!isWorkflowEntry(row))throw std::invalid_argument("Version2 workflow needs entry records");validateWorkflowEntry(row);}
+      workflow=rows;return;
+    }
     if (get(root, "format") != "imagejxx-workflow" ||
         get(root, "version") != 1 || !get(root, "steps").is_array())
       throw std::invalid_argument("Invalid workflow file");
     for(const auto& step:root.at("steps")){if(isMeasurementRecord(step))(void)decodeMeasurementRecord(step);else if(isProfileRecord(step))(void)decodeProfileRecord(step);}
+    if(hasWorkflowEntries(root.at("steps")))throw std::invalid_argument("Edited entries require workflow file version2");
     workflow = get(root, "steps");
     return;
   }
@@ -12863,6 +12964,8 @@ void Window::Impl::recorder() {
         [this](std::string p) { owner.action("save_workflow", {{"path", p}}); },
         "workflow.json");
   observeControl("workflow.save");
+  if(ImGui::Button("Edit steps..."))guard([&]{owner.action("show_workflow_editor");});
+  observeControl("workflow.edit");
   ImGui::BeginDisabled(owner.documents_.empty() || !owner.workflow.is_array() || owner.workflow.empty() ||
                        !actionAllowed("run_workflow"));
   const auto runWorkflow = [this](bool batch) {
@@ -12947,7 +13050,8 @@ void Window::Impl::recorder() {
       ImGui::Text("%zu. Native program (%zu steps)",i+1,get(owner.workflow[i],"steps").size());
       continue;
     }
-    const auto step = owner.workflow[i]; // Replay can append and reallocate.
+    const auto step = workflowRecord(owner.workflow[i]); // Replay can append and reallocate.
+    if(!workflowEnabled(owner.workflow[i]))ImGui::TextDisabled("Authored step %zu disabled for Run",i+1);
     if(get(step,"schema")=="imagejxx.contrast-apply-command" || get(step,"schema")=="imagejxx.rgb-contrast-apply-command") {
       ImGui::Text("%zu. Apply brightness/contrast",i+1);ImGui::PushID(static_cast<int>(i));
       ImGui::BeginDisabled(owner.busy()||owner.documents_.empty());
@@ -14659,6 +14763,23 @@ void Window::Impl::dialogs() {
         dialog.controls["group_sizes"] = std::move(observed);
       }
     }
+    if(dialog.id=="workflow_editor" && workflowDraft) {
+      auto draft=workflowDraft;
+      ImGui::TextUnformatted("Move or remove commands; disabled rows remain saved and are skipped by Run.");
+      ImGui::BeginChild("Workflow draft rows",{0,240},ImGuiChildFlags_Borders);
+      for(std::size_t index=0;index<draft->entries.size();++index) {
+        auto& row=draft->entries[index];const auto& record=workflowRecord(row);ImGui::PushID(int(index));
+        const auto prefix="row."+std::to_string(index)+".";bool enabled=workflowEnabled(row);const bool changed=ImGui::Checkbox("##enabled",&enabled);dialog.controls[prefix+"enabled"]=itemControl();dialog.controls[prefix+"enabled"]["checked"]=enabled;
+        if(changed)guard([&]{owner.action("workflow_set_enabled",{{"index",index},{"enabled",enabled}});});
+        ImGui::SameLine();ImGui::BeginDisabled(index==0);const bool up=ImGui::SmallButton("Up");dialog.controls[prefix+"up"]=itemControl(index!=0);ImGui::EndDisabled();
+        ImGui::SameLine();ImGui::BeginDisabled(index+1==draft->entries.size());const bool down=ImGui::SmallButton("Down");dialog.controls[prefix+"down"]=itemControl(index+1<draft->entries.size());ImGui::EndDisabled();
+        ImGui::SameLine();const bool remove=ImGui::SmallButton("Remove");dialog.controls[prefix+"remove"]=itemControl();
+        ImGui::SameLine();const auto title=std::to_string(index+1)+". "+record.value("operation",record.value("schema",std::string("Command")));ImGui::TextUnformatted(title.c_str());ImGui::PopID();
+        if(up || down || remove){guard([&]{if(remove)owner.action("workflow_remove",{{"index",index}});else owner.action("workflow_move",{{"from_index",index},{"to_index",up?index-1:index+1}});});break;}
+      }
+      ImGui::EndChild();
+      if(headlessDiagnostics)dialog.controls["draft"]={{"read_only",true},{"entries",draft->entries}};
+    }
     if(dialog.id=="mixed_replay" && dialog.values.contains("sequence_summary")) {
       ImGui::BeginChild("Recorded command sequence",{0,140},ImGuiChildFlags_Borders);const auto& summary=dialog.values.at("sequence_summary").get_ref<const std::string&>();ImGui::TextUnformatted(summary.c_str(),summary.c_str()+summary.size());
       if(headlessDiagnostics){dialog.controls["sequence_summary"]=itemControl(false);dialog.controls["sequence_summary"]["read_only"]=true;dialog.controls["sequence_summary"]["text"]=summary;}ImGui::EndChild();
@@ -15333,7 +15454,8 @@ void Window::Impl::dialogs() {
     ImGui::EndPopup();
   }
   if(!dialog.open)dialog.calibrationCapture.reset();
-  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay" || dialog.id=="mixed_replay")) {
+  if(!dialog.open && (dialog.id=="display_export_replay" || dialog.id=="measurement_replay" || dialog.id=="profile_replay" || dialog.id=="mixed_replay" || dialog.id=="workflow_editor")) {
+    if(dialog.id=="workflow_editor")workflowDraft.reset();
     dialog.submit={};dialog.values=Json::object();dialog.schema=Json::array();dialog.text.clear();dialog.controls=Json::object();dialog.id.clear();
   }
   if(!dialog.open && dialog.id=="selection_enlargement"){dialog.enlargementSource.reset();dialog.submit={};}

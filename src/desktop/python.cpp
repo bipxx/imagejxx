@@ -48,6 +48,7 @@
 #include "slicer_resize_ui_probe.hpp"
 #include "startup_ui_probe.hpp"
 #include "window.hpp"
+#include "workflow_entries.hpp"
 #include "rendering.hpp"
 #include "point_raster_font.hpp"
 #include "z_subset_ui_probe.hpp"
@@ -284,6 +285,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_fit_circle_area_ui_case",[](Window& window,const std::string& directory) {
         return fitCircleWorkflowUiCase(window,"imgui_python",directory,true).dump();
       },py::arg("directory"),py::call_guard<py::gil_scoped_release>())
+      .def("_workflow_editing_ui_case",[](Window& window,const std::string& directory) {
+        py::gil_scoped_release release;return workflowEditingUiCase(window,"imgui_python",directory).dump();
+      })
       .def("_edit_analysis_chain_ui_case",[](Window& window,const std::string& directory) {
         py::gil_scoped_release release;return editAnalysisChainUiCase(window,"imgui_python",directory).dump();
       })
@@ -1150,7 +1154,8 @@ PYBIND11_MODULE(_desktop, m) {
             auto steps = Json::parse(s);
             if (!steps.is_array())
               throw std::invalid_argument("Workflow must be an array");
-            w.workflow = std::move(steps);
+            if(hasWorkflowEntries(steps))w.action("replace_workflow_entries",{{"steps",steps}});
+            else w.workflow = std::move(steps);
           })
       .def_property_readonly("busy", &Window::busy)
       .def_property_readonly("job_info", &Window::jobInfo)

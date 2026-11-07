@@ -1426,3 +1426,12 @@ committed pixels/history/rows/files survive later failure. Busy pixel close and
 activation refuse until explicit Cancel/wait. Both real Windows hosts qualify the
 literal Gaussian/invert/Measure/Profile/PNG workflow, target/output review and
 Undo/Redo; wider composed target/platform/release variants remain open.
+
+The shared recorder now supports a bounded idle Move/Remove/Enable draft over
+these typed Measure/Profile records and compatible edits/exports. Original leaf
+records stay strict; V2 file/workspace rows preserve authored order and flags.
+Run skips disabled rows while preserving authored output indices and existing
+per-command publication/cancellation. Installed API and both Windows ImGui hosts
+have [scoped acceptance](parity/reviews/workflow-editing-20261107.json); broader
+Batch/source/type/analysis/platform variants remain with their existing owners.
+See [row compatibility](SESSION_FORMAT.md#edited-workflow-rows).

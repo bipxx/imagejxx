@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining now has scoped both-host acceptance; ordinary-source editing/filter chaining now has scoped both-host acceptance; mixed workflow editing/reorder/disable is next. Full ImageJ/Fiji and release remain open.
+Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining now has scoped both-host acceptance; ordinary-source editing/filter chaining now has scoped both-host acceptance; mixed workflow editing/reorder/disable now has scoped installed API and both-Windows-host acceptance; bounded open-document mixed Batch is next. Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Analysis/display-export chaining has scoped both-host acceptance below. Ordinary-source edit/filter and analysis chaining has scoped both-host acceptance below. Next: mixed workflow editing/reorder/disable. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-workflow-editing). |
+| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Analysis/display-export chaining has scoped both-host acceptance below. Ordinary-source edit/filter and analysis chaining has scoped both-host acceptance below. [Mixed workflow editing/reorder/disable](#workflow-editing-current-wip) now has scoped installed API and both-host acceptance. Next: bounded open-document mixed Batch. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-mixed-batch). |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -83,6 +83,41 @@ option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
 
+## Workflow editing current WIP
+
+Owner: T04a.3 / G083 G085 G089, with existing command-family owners.
+[Specification and queue](PLAN.md#next-ready-increment-t04a3-workflow-editing).
+**Scoped accepted on Windows.** [Receipt](parity/reviews/workflow-editing-20261107.json).
+I: private entry codec, bounded draft, recorder, enabled-step routing and Python
+binding build/install passed. V: 32 new installed cases and 395 affected
+regressions passed; three unavailable historical reader parameters excluded.
+UI: current physical editing controls and subset outputs passed in both Windows
+ImGui hosts. R: open. Native regression first exposed a stale pre-Measure fixture
+snapshot; its corrected capture and explicit two-record check pass. Final source review and verified retention/retirement are complete;427distinct
+cases use425unchanged results plus2final strengthened host readers.
+
+- [x] **Draft controls:** Open Edit steps from the recorder; move up/down, remove and enable/disable rows in a bounded idle draft. Display command identity and disabled state in each host. No-op moves preserve intent.
+- [x] **Apply/Cancel:** Apply adopts exactly the reviewed order and flags; Cancel preserves the original table. Neither operation modifies image pixels/history. Failed Apply keeps a usable draft and visible error.
+- [x] **Strict API:** Verify `show_workflow_editor()`, `workflow_move(from_index,to_index)`, `workflow_remove(index)`, `workflow_set_enabled(index,enabled)`, `apply_workflow_editor()` and `cancel_workflow_editor()` through installed `Editor.action`. Indices are zero-based integers and enabled is a real Boolean; reject malformed keys, bounds and types before mutation.
+- [x] **Conflict protection:** Refuse stale owner/table, recording and busy mutations; preserve current work when the active document or workflow changes while a draft is open. Cancel releases the draft's reservations.
+- [x] **Record preservation:** Keep original command objects unchanged inside the versioned row envelope. Refuse nested/malformed wrappers. Newly recorded commands append consistently to an edited table without losing existing enabled choices.
+- [x] **Files:** Save/Load V2 preserves row order, enabled flags and exact leaf fields; V1 raw workflows remain compatible. Unsupported versions, malformed rows and incompatible old readers fail safely. Failed Load preserves the existing table.
+- [x] **Workspace:** Save/Open and startup restore the authored table and flags without silently executing disabled rows or losing unrelated image, result or plot state.
+- [x] **Enabled execution:** Run exactly the enabled subset in authored order. Empty/all-disabled workflows refuse before effects; a single enabled command works. Completed/total count executed steps while active-step and export overrides identify original authored rows.
+- [x] **Settings and outputs:** Preserve explicit baseline/rebind, processing targets, calibration consent and saved-setting review for enabled commands. Disabled export destinations and sentinel files remain untouched; enabled outputs agree with manual execution.
+- [x] **History and lifecycle:** Compare Gaussian/invert pixels, Undo/Redo, Measure rows, Profile CSV and PNG outputs. Cancellation, later failure, stale input and source-close cases preserve earlier committed work and finish with released working reservations.
+- [x] **Actual hosts:** Physically exercise Edit/Move/Remove/Enable/Apply/Cancel/Save/Load/Run in standalone C++ ImGui and optional Python ImGui; compare visible results with raw data and independent file readers. API success alone does not close this item.
+- [x] **Artifact and closeout evidence:** Verify built/installed/loaded bytes and affected regressions, retain failed attempts, hash-verify necessary evidence and retire terminal scratch. Link the scoped public receipt here before checking the affected items.
+- [ ] **Residual owners:** General native-program/Batch and unsupported command families remain T04a.3/T04b; wider targets, Profile/manager/table variants and other platforms remain with existing owners. Legacy Python operation-only V1 serialization is outside this increment. Full commercial/distribution and supported-platform release gates stay open.
+
+All15groups+7preferences/1099files/9654215B were retired after source review and
+hash-verified1981929B retention, including failures.54regenerable native-binding
+compiler intermediates/907299447B were pressure-retired with cache and built/
+installed products preserved.214 inaccessible subtrees leave full budget unverified.
+Next: [bounded open-document mixed Batch](PLAN.md#next-ready-increment-t04a3-mixed-batch),
+specified only. Update its observed checkpoints here when it starts; update affected
+family residuals and evidence at every task closeout. No full-family box closes.
+
 ## Ordinary-source edit/filter chain scoped coverage
 
 Owner: T04a.3 / G042 G044 G045 G085 G089 G009 G066 G070 G071 G079 G082.
@@ -100,7 +135,8 @@ R: open. No full family, all-target or general Batch acceptance is implied.
 - [x] Existing rank envelope dispatch accepts rank, outliers, top-hat and Remove NaNs; focused composition and unchanged literal Gaussian/rank workflow regressions pass. Kernels/original expectations unchanged.
 - [x] Final mixed legacy cancellation throws instead of completing without a commit. Rechecked30affected cases and current native UI/retirement;391is a scoped distinct count with explicit reuse, not a fresh final full run. Old unavailable standalone readers remain excluded.
 - [x] Built/installed/loaded extension/app and unchanged pure package bytes match. Source review precedes hash-verified lossless retention/retirement of10groups+3preferences/574files/6455738B (1158152B archive). Active compiler/runtime preserved;214 inaccessible storage subtrees leave full budget unverified.
-- [ ] T04a.3: [workflow editing/reorder/disable](PLAN.md#next-ready-increment-t04a3-workflow-editing), general native-program/Batch and wider composed All-Z/ROI/target/calibration variants.
+- [x] Scoped [workflow editing/reorder/disable](#workflow-editing-current-wip) is accepted.
+- [ ] T04a.3/T04b: general native-program/Batch and wider composed All-Z/ROI/target/calibration variants.
 - [ ] Existing owners: geometry/type-changing/new-document/volume/scientific workflows, broader filter/point/Profile/manager/table/Fiji and supported-platform/commercial/release exits.
 
 ## Analysis and captured export chain scoped coverage
@@ -121,7 +157,7 @@ R: open. No full family or general editing/Batch scope closes by implication.
 - [x] Built/installed/loaded extension/app and unchanged pure package bytes verified.234initial passes plus4corrected fixture cases; unavailable old standalone/annotation reports explicitly excluded, not passing evidence.
 - [x] Source/ownership review precedes lossless verified retention and retirement of7groups+2preferences/445files/6299679B (1065455B archive). Active cache/runtime preserved. Known storage grew3391653B;214 inaccessible subtrees keep full budget unverified.
 - [x] Ordinary-source edit/filter chaining has [scoped acceptance](#ordinary-source-editfilter-chain-scoped-coverage).
-- [ ] T04a.3/T06-T08: wider composed edits/targets, general native-program/Batch and workflow editing.
+- [ ] T04a.3/T06-T08: wider composed edits/targets and general native-program/Batch; scoped workflow editing is accepted above.
 - [ ] Existing owners: wider Profile/manager/table/source/type variants and supported-platform/commercial/release exits. Live Profile remains active-source-bound; use existing explicit retained snapshots for detached output.
 
 ## Ordered mixed replay current WIP
@@ -142,7 +178,7 @@ ImGui. R: open. This does not close full T04a.3 or any full-family box.
 - [x] Source/ownership review completed before retention.6scratch groups+preferences/259files/6254408B retired after hash-verifying the922973B archive; failures retained. Active compiler/runtime products preserved.
 - [x] Scoped receipt, queue, canonical coverage and waste feedback reconciled. Known storage grew3945821B;214 inaccessible subtrees leave full budget unverified.
 - [x] Compatible analysis/display-export chaining has [scoped acceptance](#analysis-and-captured-export-chain-scoped-coverage).
-- [ ] T04a.3: editing/filter chains, workflow edit/reorder/disable and Batch.
+- [ ] T04a.3/T04b: broader editing/filter compositions and Batch; ordinary edit/filter chaining and workflow editing have scoped acceptance above.
 - [ ] Existing owners: wider ProfileZ/time/thick/curved, manager MultiMeasure, full table and other source/type variants.
 - [ ] T12/T14/T00: other supported platforms, commercial/distribution and release gates.
 
@@ -3128,6 +3164,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Owner:** T12. **Recorded family state:** `open`. [Contract and evidence index](parity/inventory.json).
 
+**Accepted subset:** Recorder Edit steps and enabled-subset review controls pass in both Windows hosts; see [scoped workflow editing](#workflow-editing-current-wip). This does not close general menus/window management.
+
 - [ ] Command search, configurable shortcuts, linked image windows, view/menu controls and complete help/tool documentation
 ### G084 Accessibility/platform UI
 
@@ -3148,7 +3186,7 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 **Accepted subsets:** Captured Flatten/display/PDF recording, rebind/Run and recovery subset. Use their receipts above; full-family coverage remains open.
 
-- [ ] Recorded plane-command argument validation now uses the compiled C++ schema, with compatible v1 JSON adapters. Non-pixel action recording, workflow editing/reorder/disable, per-step outputs, batch measurement/conversion, progress and per-item results remain required.
+- [ ] Recorded plane-command argument validation now uses the compiled C++ schema, with compatible v1 JSON adapters. Scoped mixed Measure/Profile/export/edit recording, workflow reorder/disable and authored per-step outputs now have [Windows acceptance](#workflow-editing-current-wip). Broader non-pixel actions, parameter editing, batch measurement/conversion, progress and per-item results remain required.
 - [ ] Broader recorded actions and measurement/conversion workflows
 ### G086 Script editor/macros
 
@@ -3187,7 +3225,8 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 **Owner:** T12. **Recorded family state:** `in_progress`. [Contract and evidence index](parity/inventory.json).
 
 - [ ] Native desktop handles share the eager-Z owner and expose native target/preparation/publication and asynchronous jobs; P06a scientific session and detached-reader paths passed scoped runtime gates. Complete scientific desktop C/Z/T controls and targets, per-channel display, output/automatic-preview panels and full job/resource contracts.
-- [ ] Finish non-pixel action/automation registration and recording, full script/macro/editor integration and versioned extension lifecycle contracts.
+- [x] Installed native `Editor.action` and workflow property support the [scoped workflow editing/persistence/enabled replay](#workflow-editing-current-wip), with strict indices/Booleans, stale/busy refusal and both Windows hosts.
+- [ ] Finish broader non-pixel action/automation registration and recording, full script/macro/editor integration and versioned extension lifecycle contracts.
 
 ## Fiji viewing and commercially eligible workflows
 
@@ -3292,4 +3331,4 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ## Next update
 
-Follow the [next ready workflow editing/reorder/disable increment](PLAN.md#next-ready-increment-t04a3-workflow-editing). Inspect existing recorder/draft/persistence and enabled execution/output-index mapping before implementation. Keep strict original command schemas and busy/stale/history guarantees. Update this coverage at observed checkpoints and task closeout; wider targets/filter/Profile/manager/table/Fiji and supported-platform/commercial release retain owners. No agents are authorized by this update.
+Follow the [next bounded open-document mixed Batch increment](PLAN.md#next-ready-increment-t04a3-mixed-batch). Workflow editing now has scoped acceptance above; Batch is specified only. Inspect the actual batch controls, mixed continuation and per-source output mapping before authoring. Keep strict original command schemas and busy/stale/history guarantees. Update this coverage at observed checkpoints and task closeout; wider targets/filter/Profile/manager/table/Fiji and supported-platform/commercial release retain owners. No agents are authorized by this update.
