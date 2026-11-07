@@ -1,0 +1,275 @@
+{
+  "schema": "imagejxx.scoped-progress.001",
+  "task": "T04a.3 analysis and captured display-export chain",
+  "date": "2026-11-07",
+  "state": "scoped_integrated_windows_hosts",
+  "full_goal_complete": false,
+  "requirements": [
+    "G009",
+    "G066",
+    "G070",
+    "G071",
+    "G079",
+    "G082",
+    "G085",
+    "G089"
+  ],
+  "commands": [
+    "run_workflow",
+    "show_mixed_replay",
+    "replay_display_export",
+    "replay_measurement",
+    "replay_profile",
+    "save_workflow",
+    "load_workflow"
+  ],
+  "scope": "Record/SaveLoad andRun finite Measure/Profile/capturedPNG/PDF/Flatten chains usingexistingjobs. Read-only orderedreview+explicit per-stepoutput/font choices/default/rebind/settings, active/terminalstatus/cancel/laterfailure, matchingmanual outputs inbothhosts. Preserveimmutableintent/priorcommittedoutputs/source/history. Refuse unknownfamilies/conflictingdestinations/unboundsourcechanges beforeknown effects.",
+  "aspects": {
+    "implemented": "ExistingWindowmixedsequence admitscapturedexport/Flattenrecords withstrictoutput/fontchoices; stablefrontendstatusAPI,no newengine/controller/corekernel/dependency.",
+    "verified": "238distinct installedcases eventuallypass234+4, including24new; nativeactualchain/currentmixed/reentrantretirementpass. Notfresh238greencampaign.",
+    "integrated": "ActualstandaloneC++ andoptionalPythonWindowsImGuiRecord/SaveClearLoad/Run/read-onlyreview/physicaloutputoverrides/default+rebind/Cancel. PNG/PDF/Flatten matchmanual; independentdecodedPNG/PDFRGB/layoutchecks.",
+    "release_ready": false
+  },
+  "contract": {
+    "parameters": "run_workflow existingrebind/restore_settings/document_id/redirect_id plus export_options object: canonical1based exportstepkey -> object path/font_path/font_directory. Onlyconsumingstepsreceiveoptions. Fontdirectory/outputfilepathsabsolute; Flattenrejectsfilepath. Capturedrecordpathsareexplicitrevieweddefaults; optionsdonotrewritesavedintent.",
+    "preflight": "Bound2..256steps; exporterrecordbytepreflight+boundedparameterscan admittedbeforecopies. Exportshape/type/sourcevalidation andknownformat/path/duplicateconflictconditions beforefirsteffect. Windowsordinalcasecomparison,canonicalexistingparents/equivalent existingaliases; laterIOfailurestillhandledbyexistingstage.",
+    "async": "Internalexportexplicitlyasynchronous=true; directPythonexportsretainsynchronousdefault andexceptiontypes. JobIDmatchedcontinuationwaitsfullcreatorcleanup.",
+    "publication": "Existingquietsource/resource/visibilityguard andatomicstagedreplacement; Flattenadoptsnewdocumentonlythroughscopedexactpointer+matchingjobIDPublishing exemption. busy remains trueforother/reentrantcalls. Earliercommittedoutputsnotrolledback.",
+    "source_and_plot": "Eachstepusesdeclaredrecordowner/defaultorselectedexplicitrebind; neverimplicitnewFlattenowner. Flattenactivatesnewimageasinmanualroute. LiveProfile remainsactive-sourcebound andmayinvalidateafterGUIframeonanotherowner; explicitretainedsnapshotsretainexistingsemantics. APIcurvecomparison reactivatescapturedsourcebeforeframe.",
+    "ui": "Read-onlyorder/savedplane/render/PDFdpi/orientation/replacepath summary andperstepOutputfile/Defaultfont/Fontfolder textcontrols; parsedonlyonApply, callback/lease releasedonApplyCancel.",
+    "installed": "Unspecifiedextension anddesktopappcomponentsinstalledexistingprefixes; unchangedpurePythonbytesverifiedwithoutredundantreinstall."
+  },
+  "verification": {
+    "distinct_installed_passes": 238,
+    "new_chain_cases": 24,
+    "attempts": [
+      {
+        "receipt": "python021.process.json",
+        "passed": 234,
+        "failed": 4,
+        "seconds": 12.545451099984348
+      },
+      {
+        "receipt": "python023.process.json",
+        "passed": 4,
+        "failed": 0,
+        "seconds": 1.1138215998653322
+      }
+    ],
+    "scope": "238distinctcases eventuallypass via234+4, notfresh238greencampaign. Currentchain/mixed native reports andactualPythonUI included; exactexcludedoldreports in021.",
+    "native": "cpp015actualnewchain,retirement016reentrantsourcecleanup,mixed017actualpriorchain allpass terminalcleanuptrue.",
+    "comparison": "Native/Python actualreports rawrows/default-reboundtitles/terminal-cancelstatus match; manual/replayPNG+PDF filesbyteequalacrosshosts. Independentinstalledreaders decodePNG andPDFrawRGB equality/cornerpixels/landscapeMediaBox, actualclickedoutputtext andexpectedrows.",
+    "python_report": "scratch\\python021\\pytest\\test_python_actual_chain0\\actual\\case.json",
+    "remaining": "LiveProfile remainsactive-sourcebound: Flattenactivatesnewdocument, GUIframe caninvalidateunretainedliveplot; explicitretainedsnapshotsareexistingindependentfeature. Defaultsourcechangedrefusal staysstrict; chainnoimplicitnewFlattenownerrebinding."
+  },
+  "source_review": {
+    "reviewed": [
+      "Existingsequence source/metadata admission now sums export-specificboundedpreflight + parameterscan beforecopy, no newruntime/controller",
+      "Canonical1basedexport_options onlyvalidexportindices,knownkeysboundedstrings; absolutepaths/fontdirectory, format/duplicate/aliaspreflight beforefirsteffect",
+      "WindowsCompareStringOrdinal matches existingnativeworkflowaliaspolicy; weaklycanonical + equivalent handleexistingparent/hardlinkaliases withoutchanging actualdestinations",
+      "Internalexportasyncdispatch usesexistingstartControlled andJobResult/displayexport quietguard/stage, no ad-hocwrite orsecondqueue",
+      "Flatten exactunpublishedpointer+matchingjobID+Publishing exemption ataddDocument; busytrue toother/reentrantcallers, pointer resetbeforejob/result/providercleanup",
+      "Creatorcomplete checksjobID and waits all priorownedcleanup beforeadvance; sourceclose/cancel/workflow/visibility/laterIO retain earliercompletedrows/files",
+      "Dialog textparsedonlyonApply, fieldleases/callbacks releasedonApplyCancel; source/selectedowners guarded, overrideintent notmutated",
+      "PrivateprobeHeader/binding/nativecaller paths match, Window.hpp unchanged; affectednative retirement andinstalledactualclients pass"
+    ],
+    "source_sha256": {
+      "src/desktop/window.cpp": "1607ce5280b76ec4c0db5541ff9b5ca285ee3adf52ae7f5323753a8e1bd50d32",
+      "src/desktop/effective_display_ui_probe.cpp": "a2948e10eba5b17f8fe749cf9e2a3b1e7a5720ce197a79a8c3e7b8c697ccce46",
+      "src/desktop/effective_display_ui_probe.hpp": "8eb068874beeece3f5892a8cc55d5053b83e1352fce574f42e8590e2dd32bb97",
+      "src/desktop/python.cpp": "9c4f7b91d1c2a517f7e000a79853995edc5307ee7826a6689f4ce218611baa4d",
+      "tests/native/test_display_actions.cpp": "6e30b688c15d9cff1c5bcbad6075d42f35a957e1cbb18ce038ef0a296adaff17",
+      "tests/python/test_analysis_export_chain.py": "1bab1717902e4453d97951684fcada4951d0f12f1c3266e579d0208a64f6f988"
+    },
+    "decision": "Scopedsource/ownershipreview complete before retirement; no further productfixfound. Preservefailurediagnostics andcorrectedfourfixtures; no unchangedgreenrerun."
+  },
+  "installed_bytes": [
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "sha256": "d79c12f3868798ac1be6c55d193dab30737b6e4c84d30c1ffa12720d8ccfcde5",
+      "bytes": 8688128
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "sha256": "76fbb0c014f0e20273a04cd88cb598429d94b70c921850f25e6dd40c954b573b",
+      "bytes": 21684224
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "sha256": "95ee55530eeb211512d6f6aeff575af50a9af6ed96a06167373c56ae0b66bce8",
+      "bytes": 20958208
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\__init__.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "sha256": "9277a0c15423e7dbacc1eaccae9f5c798e6fe5c667b616674afd52b28199a2a2",
+      "bytes": 84013
+    },
+    {
+      "built_or_source": "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\imagejxx\\ui\\app.py",
+      "installed": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py",
+      "sha256": "2a6753fd74c6acd7fe9a38a626553edb74ce03dd82d3bf37b47988e35666fc66",
+      "bytes": 32259
+    }
+  ],
+  "runs": [
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/build004.process.json",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "elapsed_seconds": 4.464479400077835
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/build006.process.json",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "elapsed_seconds": 17.71344790002331
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/build008.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 48.17092929990031
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/build011.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 14.020714299986139
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/build014.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 32.57238829997368
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/cpp009.process.json",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.30819409992545843
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/cpp012.process.json",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.2902089001145214
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/cpp015.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.40610960009507835
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/install0190.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.5486650001257658
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/install0191.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.36834769998677075
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/mixed017.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.5953939000610262
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/python021.process.json",
+      "exit_code": 1,
+      "cleanup_complete": true,
+      "elapsed_seconds": 12.545451099984348
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/python023.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 1.1138215998653322
+    },
+    {
+      "receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/retirement016.process.json",
+      "exit_code": 0,
+      "cleanup_complete": true,
+      "elapsed_seconds": 0.112470299936831
+    }
+  ],
+  "failures_and_corrections": {
+    "004": "4.464s probeJSONinitializerbracefailed; explicitobjectfields corrected.",
+    "006": "17.713s WindowsRPC hypermacro collidedwithexistinglocalprojectionbool; undefineintroducedmacroafterWindowsinclude, preservingprojectionlogic.",
+    "009": "ActualInputTextworked; fixturecheckedvaluesinstead ofdrafttextbeforeApply. Correctreader/probe,nativeonlyretry01114.021s.",
+    "012": "First4stepscompleted,FlattenfailedataddDocumentbusyguard. Exactunpublishedpointer/jobPublishingexemptionfix; coherentbuild01432.572s. No broadbusyexemption.",
+    "021": "234passes/4fixturefailures:3liveProfileactiveownerassumptionsafterFlatten,1visibilityno-opdefault. Inspectedcontracts, correctedfixtures;4caseinstalledretry0231.114s passes,unchanged234greenreused.",
+    "process_observation": "009inventoryhad2cmakePIDsbutpreflightsaidnone; own008cleanupreceiptwasvalid. Immediatefullidentityfollowupfoundbothgone, historicaloriginsunknown, nootherprocesskilled. Laterinventoriesempty; notretrospectivelylabeledpreflight.",
+    "search_lapses": "LiteralWindowsglobs/guessedcppheadersfailed; exactdirectory/filediscoveryusedforrequiredcontracts. No missinginputcountedaspresent."
+  },
+  "cleanup": {
+    "state": "retired",
+    "groups": [
+      "cpp009",
+      "cpp012",
+      "cpp015",
+      "mixed017",
+      "python021",
+      "python023",
+      "retirement016"
+    ],
+    "additional_files": [
+      "chain-preferences.json",
+      "mixed-replay-preferences.json"
+    ],
+    "source_bytes": 6299679,
+    "file_count": 445,
+    "archive": {
+      "bytes": 1065455,
+      "path": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/evidence026.zip",
+      "sha256": "5dcf9c2fa6e19088a3919c9967af6055a0ba3a6b9bd452323b1fc123f960ff64"
+    },
+    "source_absent": true,
+    "retained": "Allprocess/log/pack/verify/manifest/artifact receipts outside scratch, includingallfailures; activecompiler/runtimepreserved."
+  },
+  "retained_evidence": {
+    "entry": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/entry.json",
+    "manifest": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/evidence026.manifest.json",
+    "verification_receipt": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/verify026.json",
+    "archive": {
+      "bytes": 1065455,
+      "path": ".tmp/manual-workflow-verification/analysis-export-chain-20261107/evidence026.zip",
+      "sha256": "5dcf9c2fa6e19088a3919c9967af6055a0ba3a6b9bd452323b1fc123f960ff64"
+    },
+    "local_only": true
+  },
+  "storage": {
+    "entry_known_bytes": 7543103313,
+    "before_retirement_known_bytes": 7550842327,
+    "after_retirement_known_bytes": 7546494966,
+    "known_net_growth_bytes": 3391653,
+    "inaccessible_subtrees": 214,
+    "budget_verified": false,
+    "physical_free_at_closeout_bytes": 7478923264,
+    "snapshots": [
+      ".tmp/manual-workflow-verification/analysis-export-entry003.json",
+      ".tmp/manual-workflow-verification/analysis-export-before-retire025.json",
+      ".tmp/manual-workflow-verification/analysis-export-after-retire028.json"
+    ],
+    "incremental_allocation_bytes": 268435456
+  },
+  "waste_review": {
+    "fix_now": "Reuse job/stage/status; noWindowheaderAPIchange. Probe-onlyreaderretry nativefirst; test-onlyretry4cases,reuse234green. ExistingCLIpack/verifyreceipts andobserved7groups+2rootprefsavoidpriorretentionlapses.445fileslosslesslycompressed1065455B.",
+    "defer": "T12 genericlonglabelcombo inputframegeometry remainsfrompriorreceipt. T04a.3/T06-T08 source-changingedit/filterchains next; fullProfile/manager/table/platformownedvariants retained.",
+    "no_action": "No newrunner/controller/queue/ledger/cache/env; no unchangedkernelnumericalcampaign orfull238retry. Fullstoragebudgetunverified, unknownsubtreesnotheadroom."
+  },
+  "remaining": [
+    "Source-changingediting/filterchains andnativeprogram/Batch integration",
+    "Workflowediting/reorder/disable; broaderProfileZtime/thickcurved,fullmanager/table/point/foreign/differingXYvariants",
+    "Other supportedplatformUI/macOS/commercialdistribution/performance/release exits"
+  ],
+  "next": "T04a.3 ordinary-source filter/edit followedbyanalysis/export, reusingrunWorkflowpixelresult/publicationandstablemixedstatus; freezeown-editlineage andexplicitbaseline/rebind beforeimplementation."
+}

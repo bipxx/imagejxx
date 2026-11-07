@@ -1371,3 +1371,30 @@ Both actual Windows hosts qualify read-only review, source/sampling choices,
 settings restoration/refusal, active/terminal progress, Cancel, table/CSV/Profile
 and workspace behavior. Compatible export/editing/general chains, broader Profile
 and manager variants and supported-platform release remain separate owned gaps.
+
+## Analysis and captured display-export chains
+
+[Scoped evidence](parity/reviews/analysis-export-chain-20261107.json) extends the
+same sequence to captured export_display/export_pdf/flatten records. Run accepts
+`export_options` keyed by canonical1-based export step strings, each containing
+only bounded `path`, `font_path`, `font_directory` text. The output file/font
+folder must be absolute; Flatten has no file path. Unknown/non-export indices,
+bad formats/types/source shapes and duplicate/canonical/case/hardlink output
+conflicts refuse before the first step. Defaults use the explicitly reviewed
+captured paths; per-run overrides do not rewrite intent.
+
+Internal replay requests async completion through the existing export job. Direct
+Python synchronous defaults stay unchanged. Existing rendering, guarded atomic
+staging/replacement, cancellation and exact captured display/font choices remain
+authoritative. Flatten publication permits only its exact unpublished document
+under the matching active job's Publishing state; busy stays true to other and
+reentrant callers. It activates the result as in manual use; later steps still
+bind declared existing owners, never an implicit new output. Live Profile still
+requires its active source and can invalidate on a GUI frame after owner changes;
+explicit retained plot snapshots keep their independent lifetime.
+
+Both Windows hosts qualify the five-step manual/replay workflow and physical
+output review/default/rebind/Cancel. Installed API covers workspace reopening,
+font recovery, malformed/refusal/lifecycle cases and Profile CSV after explicit
+source activation. Source-changing edit/filter, general native-program/Batch,
+workflow editing and wider platform/release scope remain separate owned gaps.

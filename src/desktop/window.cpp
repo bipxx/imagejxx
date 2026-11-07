@@ -21,6 +21,16 @@
 #include "point_raster_font.hpp"
 #include "display_export_io.hpp"
 #include "display_export_record.hpp"
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+// RPC headers define hyper, which is also a local projection flag.
+#ifdef hyper
+#undef hyper
+#endif
+#endif
 #include <imagejxx/selection_transform.hpp>
 #include <imagejxx/point_annotations.hpp>
 #include <imagejxx/point_presentation.hpp>
@@ -1383,6 +1393,7 @@ struct Window::Impl {
   std::optional<MixedReplay> mixedReplay;
   std::atomic<bool> mixedCancelRequested{false};
   bool mixedDispatch=false,mixedPolling=false;
+  const Document* mixedFlattenAdoption=nullptr;
   MixedReplayState mixedReplayState=MixedReplayState::Idle;
   std::size_t mixedCompleted=0,mixedTotal=0,mixedStoppedStep=0;
   std::string mixedError;
@@ -5313,14 +5324,14 @@ struct Window::Impl {
     if(payload){livePlot.payload.swap(payload);livePlot.source.swap(binding);focusLivePlot();livePlot.view={};livePlot.drag.reset();++livePlot.generation;}
   }
   bool hasMixedAnalysis(const Json& steps) const {
-    return steps.is_array() && steps.size()>1 && std::any_of(steps.begin(),steps.end(),[](const Json& step){return isMeasurementRecord(step)||isProfileRecord(step);});
+    return steps.is_array() && steps.size()>1 && std::any_of(steps.begin(),steps.end(),[](const Json& step){return isMeasurementRecord(step)||isProfileRecord(step)||isDisplayExportRecord(step);});
   }
   std::size_t mixedReplayBytes(const Json& steps) const {
     if(!steps.is_array() || steps.size()<2 || steps.size()>256)throw std::invalid_argument("Mixed workflow requires2..256 commands");
     std::size_t bytes=8192;
     for(const auto& step:steps) {
-      if(!isMeasurementRecord(step) && !isProfileRecord(step))throw std::invalid_argument("This mixed workflow contains an unsupported command family; replay it individually");
-      bytes=RenderMemory::add(bytes,measurementRecordWorkingBytes(step));
+      if(!isMeasurementRecord(step) && !isProfileRecord(step) && !isDisplayExportRecord(step))throw std::invalid_argument("This mixed workflow contains an unsupported command family; replay it individually");
+      bytes=RenderMemory::add(bytes,isDisplayExportRecord(step)?displayExportRecordWorkingBytes(step):measurementRecordWorkingBytes(step));
     }
     if(bytes>processingCap()/8)throw std::length_error("Mixed workflow exceeds processing budget");return bytes;
   }
@@ -5333,15 +5344,23 @@ struct Window::Impl {
   }
   void validateMixedParameters(const Json& params) const {
     if(!params.is_object())throw std::invalid_argument("Mixed workflow parameters must be an object");
-    for(const auto& item:params.items())if(item.key()!="rebind" && item.key()!="restore_settings" && item.key()!="document_id" && item.key()!="redirect_id")throw std::invalid_argument("Unknown mixed workflow parameter");
+    for(const auto& item:params.items())if(item.key()!="rebind" && item.key()!="restore_settings" && item.key()!="document_id" && item.key()!="redirect_id" && item.key()!="export_options")throw std::invalid_argument("Unknown mixed workflow parameter");
     (void)mixedFlag(params,"rebind");(void)mixedFlag(params,"restore_settings");
     if(params.contains("document_id"))(void)mixedId(params,"document_id",0);if(params.contains("redirect_id"))(void)mixedId(params,"redirect_id",0);
   }
-  Json mixedStepRequest(const Json& step,const Json& params) const {
+  Json mixedExportOptions(const Json& params,std::size_t index) const {
+    if(!params.contains("export_options"))return Json::object();
+    const auto& options=params.at("export_options");if(!options.is_object())throw std::invalid_argument("Mixed export_options must be an object");
+    const auto key=std::to_string(index+1);return options.contains(key)?options.at(key):Json::object();
+  }
+  Json mixedStepRequest(const Json& step,const Json& params,std::size_t index) const {
     const bool rebind=mixedFlag(params,"rebind"),restore=mixedFlag(params,"restore_settings");
     Json request={{"record",step},{"rebind",rebind}};
     if(params.contains("document_id"))request["document_id"]=params.at("document_id");
-    if(isProfileRecord(step))request["restore_sampling"]=restore;
+    if(isDisplayExportRecord(step)) {
+      const auto options=mixedExportOptions(params,index);for(const auto& item:options.items())request[item.key()]=item.value();
+      request["asynchronous"]=true;
+    } else if(isProfileRecord(step))request["restore_sampling"]=restore;
     else {
       request["restore_settings"]=restore;const auto record=decodeMeasurementRecord(step);
       if(record.redirect && params.contains("redirect_id"))request["redirect_id"]=params.at("redirect_id");
@@ -5349,15 +5368,57 @@ struct Window::Impl {
     return request;
   }
   std::uint64_t mixedSourceId(const Json& step,const Json& params) const {
-    const auto recorded=isProfileRecord(step)?decodeProfileRecord(step).source.document_id:decodeMeasurementRecord(step).source.document_id;
+    const auto recorded=isDisplayExportRecord(step)?decodeDisplayExportRecord(step).source_id:isProfileRecord(step)?decodeProfileRecord(step).source.document_id:decodeMeasurementRecord(step).source.document_id;
     return mixedId(params,"document_id",mixedFlag(params,"rebind")?owner.document()->id:recorded);
   }
   void validateMixedBindings(const Json& steps,const Json& params) const {
     validateMixedParameters(params);const bool rebind=mixedFlag(params,"rebind"),restore=mixedFlag(params,"restore_settings");bool hasRedirect=false;
     if(rebind && mixedId(params,"document_id",owner.document()->id)!=owner.document()->id)throw std::invalid_argument("Activate the selected image before explicit mixed rebind");
-    for(const auto& step:steps) {
-      const auto id=mixedSourceId(step,params);
-      if(isProfileRecord(step)) {
+    if(params.contains("export_options")) {
+      const auto& options=params.at("export_options");if(!options.is_object())throw std::invalid_argument("Mixed export_options must be an object");
+      for(const auto& item:options.items()) {
+        bool found=false;for(std::size_t i=0;i<steps.size();++i)if(item.key()==std::to_string(i+1) && isDisplayExportRecord(steps[i]))found=true;
+        if(!found)throw std::invalid_argument("Mixed export option needs a canonical 1-based export step");
+        if(!item.value().is_object())throw std::invalid_argument("Mixed export step options must be an object");
+        for(const auto& field:item.value().items()) {
+          if(field.key()!="path" && field.key()!="font_path" && field.key()!="font_directory")throw std::invalid_argument("Unknown mixed export step option");
+          if(!field.value().is_string() || field.value().get_ref<const std::string&>().size()>131064 || field.value().get_ref<const std::string&>().find('\0')!=std::string::npos)throw std::invalid_argument("Mixed export paths must be bounded text");
+        }
+      }
+    }
+    std::vector<std::filesystem::path> destinations;
+    for(std::size_t index=0;index<steps.size();++index) {
+      const auto& step=steps[index];const auto id=mixedSourceId(step,params);
+      if(isDisplayExportRecord(step)) {
+        const auto record=decodeDisplayExportRecord(step);if(!rebind && id!=record.source_id)throw std::invalid_argument("Changing mixed source requires explicit rebind");
+        validateDisplayExportReplaySource(record,owner.nativeSnapshot(id),rebind);
+        const auto options=mixedExportOptions(params,index);
+        const auto fontDirectory=std::filesystem::u8path(options.value("font_directory",record.font.directory.u8string()));
+        if(!fontDirectory.is_absolute())throw std::invalid_argument("Mixed export needs an absolute font directory");
+        if(record.action=="flatten") {if(options.contains("path"))throw std::invalid_argument("Flatten has no output file path");}
+        else {
+          const auto text=options.value("path",record.path);auto path=std::filesystem::u8path(text);
+          if(text.empty() || !path.is_absolute())throw std::invalid_argument("Choose an absolute mixed export destination");
+          path=path.lexically_normal();const auto suffix=extension(path.u8string());
+          static const std::set<std::string> formats{".png",".jpg",".jpeg",".bmp",".tga",".pgm",".ppm",".pnm",".npy",".tif",".tiff"};
+          if(record.action=="export_display" && !formats.count(suffix))throw std::invalid_argument("Choose a supported mixed display export format");
+          if(record.action=="export_pdf" && suffix!=".pdf")throw std::invalid_argument("Mixed PDF output needs a .pdf path");
+          if((suffix==".tif" || suffix==".tiff") && !tiffAvailable())throw std::runtime_error("Scientific TIFF requires optional libtiff");
+          validateDisplayExportFormat(path.u8string(),record.shape.x,record.shape.y,record.file);
+          // Resolve existing parents/aliases for conflict detection; missing output parents
+          // still reach the existing staged-file error path without touching a destination.
+          std::error_code error;auto identity=std::filesystem::weakly_canonical(path,error);if(error)identity=path;
+          for(const auto& prior:destinations) {
+            bool same=prior==identity;
+#ifdef _WIN32
+            if(!same)same=CompareStringOrdinal(prior.c_str(),-1,identity.c_str(),-1,TRUE)==CSTR_EQUAL;
+#endif
+            std::error_code equivalentError;if(!same)same=std::filesystem::equivalent(prior,identity,equivalentError);
+            if(same)throw std::invalid_argument("Mixed export destinations conflict; choose distinct output files");
+          }
+          destinations.push_back(std::move(identity));
+        }
+      } else if(isProfileRecord(step)) {
         const auto record=decodeProfileRecord(step);if(!rebind && id!=record.source.document_id)throw std::invalid_argument("Changing mixed source requires explicit rebind");
         validateProfileReplaySource(record.source,owner.controller_->resolve_target({},id),rebind);
         if(!restore && std::size_t(preferenceState.settings.integer("profile_samples"))!=record.samples)throw std::invalid_argument("Profile sampling differs; explicitly restore recorded mixed settings");
@@ -5403,12 +5464,12 @@ struct Window::Impl {
     checkMixedReplay();if(!mixedReplay || job.valid())return;
     try {
       if(mixedReplay->job_id)throw std::invalid_argument("Mixed workflow lost its active job");
-      const auto& step=mixedReplay->steps[mixedReplay->completed];auto request=mixedStepRequest(step,mixedReplay->parameters);const auto source=mixedSourceId(step,mixedReplay->parameters);
+      const auto& step=mixedReplay->steps[mixedReplay->completed];auto request=mixedStepRequest(step,mixedReplay->parameters,mixedReplay->completed);const auto source=mixedSourceId(step,mixedReplay->parameters);
       struct Dispatch {bool& flag;explicit Dispatch(bool& f):flag(f){flag=true;}~Dispatch(){flag=false;}} dispatch(mixedDispatch);
       const auto found=std::find_if(owner.documents_.begin(),owner.documents_.end(),[source](const auto& document){return document->id==source;});
       if(found==owner.documents_.end())throw std::invalid_argument("Mixed workflow source is closed");
       std::string message="Workflow command "+std::to_string(mixedReplay->completed+1)+" of "+std::to_string(mixedReplay->steps.size());
-      owner.setActiveIndex(int(found-owner.documents_.begin()));owner.action(isProfileRecord(step)?"replay_profile":"replay_measurement",request);
+      owner.setActiveIndex(int(found-owner.documents_.begin()));owner.action(isDisplayExportRecord(step)?"replay_display_export":isProfileRecord(step)?"replay_profile":"replay_measurement",request);
       if(!job.valid())throw std::invalid_argument("Mixed workflow command did not start its existing job");mixedReplay->job_id=job.info().id;
       status.swap(message);
     }catch(const std::exception& error){finishMixedReplay(MixedReplayState::Failed,std::string(error.what()).substr(0,2048));}
@@ -5449,7 +5510,13 @@ struct Window::Impl {
     };
     for(std::size_t index=0;index<steps.size();++index) {
       const auto& step=steps[index];summary+=std::to_string(index+1)+". ";
-      if(isProfileRecord(step)) {
+      if(isDisplayExportRecord(step)) {
+        const auto record=decodeDisplayExportRecord(step);summary+=record.action+"; saved plane "+std::to_string(record.display.crosshair[2]+1);
+        summary+="; show ROIs: "+std::string(record.show_rois?"yes":"no")+"; all points: "+(record.point_show_all?"yes":"no");
+        if(record.file.pdf)summary+="; DPI "+std::to_string(record.file.dpi)+(record.file.landscape?" landscape":" portrait");
+        if(record.action!="flatten")summary+="; replace file: "+record.path;
+        capture(record.source_id,false,true,0);capture(selected,false,true,1);
+      } else if(isProfileRecord(step)) {
         const auto record=decodeProfileRecord(step);summary+="Profile; samples per segment: "+std::to_string(record.samples)+" (0 automatic)";
         capture(record.source.document_id,true,false,0);capture(selected,true,false,1);
       } else {
@@ -5487,6 +5554,15 @@ struct Window::Impl {
     Json values={{"rebind",false},{"restore_settings",true},{"sequence_summary",summary}};
     Json fields=Json::array({{{"name","rebind"},{"label","Use selected image for all source commands"},{"kind","bool"}},{{"name","restore_settings"},{"label","Restore recorded Measure and Profile settings at each step"},{"kind","bool"}}});
     if(redirected){values["sampling"]="Recorded sampling";fields.push_back({{"name","sampling"},{"label","Sampling image"},{"kind","choice"},{"choices",labels}});}
+    for(std::size_t index=0;index<steps.size();++index)if(isDisplayExportRecord(steps[index])) {
+      const auto record=decodeDisplayExportRecord(steps[index]);const auto prefix="export_"+std::to_string(index+1)+"_";
+      for(const auto* key:{"path","font_path","font_directory"}) {
+        if(record.action=="flatten" && std::string(key)=="path")continue;
+        const auto name=prefix+key;values[name]=std::string(key)=="path"?record.path:std::string(key)=="font_path"?record.font.default_path:record.font.directory.u8string();
+        const auto label=std::to_string(index+1)+". "+(std::string(key)=="path"?"Output file":std::string(key)=="font_path"?"Default font":"Font folder");
+        fields.push_back({{"name",name},{"label",label},{"kind","text"}});
+      }
+    }
     ask("Run recorded workflow",std::move(values),[this,memory,steps=std::move(steps),guards=std::move(guards),choices=std::move(choices),labels,selected,redirected](Json values) {
       if(owner.workflow!=steps)throw std::invalid_argument("Recorded workflow changed; reopen mixed review");
       if(owner.documents_.empty() || owner.document()->id!=selected)throw std::invalid_argument("Selected source changed; reopen mixed review");
@@ -5499,13 +5575,21 @@ struct Window::Impl {
         if(guard.profile)validateProfileReplaySource(guard.source,current,false);else validateMeasurementReplaySource(guard.source,current,false,guard.ignore_selection);
         if(guard.manager_indices && (guard.manager_fingerprint.empty() || measurementManagerFingerprint(current.source(),*guard.manager_indices)!=guard.manager_fingerprint))throw std::invalid_argument("Reviewed ROI Manager changed; reopen mixed review");
       }
-      Json parameters={{"rebind",rebind},{"restore_settings",values.at("restore_settings")}};if(rebind)parameters["document_id"]=selected;if(redirect)parameters["redirect_id"]=redirect;beginMixedReplay(std::move(parameters));
+      Json parameters={{"rebind",rebind},{"restore_settings",values.at("restore_settings")}};if(rebind)parameters["document_id"]=selected;if(redirect)parameters["redirect_id"]=redirect;
+      for(std::size_t index=0;index<steps.size();++index)if(isDisplayExportRecord(steps[index])) {
+        const auto record=decodeDisplayExportRecord(steps[index]);Json options=Json::object();
+        for(const auto* key:{"path","font_path","font_directory"})if(record.action!="flatten" || std::string(key)!="path")options[key]=values.at("export_"+std::to_string(index+1)+"_"+key);
+        parameters["export_options"][std::to_string(index+1)]=std::move(options);
+      }
+      beginMixedReplay(std::move(parameters));
     },std::move(fields),"mixed_replay");
   }
   void beginMixedReplay(Json parameters) {
     if(owner.busy() || owner.documents_.empty())throw std::invalid_argument("Select an idle image before mixed replay");
     if(owner.recording)throw std::invalid_argument("Stop recording before running a mixed workflow");
-    const auto bytes=mixedReplayBytes(owner.workflow);MixedReplay next;next.memory=renderMemory->acquire(RenderMemory::mul(bytes,4));
+    const auto bytes=RenderMemory::add(mixedReplayBytes(owner.workflow),measurementRecordWorkingBytes(parameters));
+    if(bytes>processingCap()/8)throw std::length_error("Mixed workflow choices exceed processing budget");
+    MixedReplay next;next.memory=renderMemory->acquire(RenderMemory::mul(bytes,4));
     validateMixedBindings(owner.workflow,parameters);next.steps=owner.workflow;next.parameters=std::move(parameters);
     if(mixedFlag(next.parameters,"rebind"))next.parameters["document_id"]=mixedId(next.parameters,"document_id",owner.document()->id);
     mixedTotal=next.steps.size();mixedCompleted=mixedStoppedStep=0;mixedError.clear();mixedReplay.emplace(std::move(next));mixedReplayState=MixedReplayState::Running;mixedCancelRequested=false;
@@ -6636,7 +6720,10 @@ ShortcutProfile Window::shortcutProfile() const {
 }
 void Window::addDocument(std::shared_ptr<Document> d) {
   checkThread();
-  if (busy())
+  const bool mixedOutput=impl->mixedReplay && impl->mixedFlattenAdoption &&
+      impl->mixedFlattenAdoption==d.get() && impl->job.valid() &&
+      impl->mixedReplay->job_id==impl->job.info().id && impl->job.info().state==JobState::Publishing;
+  if (busy() && !mixedOutput)
     throw std::invalid_argument("Wait for the current edit");
   if (!d)
     throw std::invalid_argument("Document is required");
@@ -11025,7 +11112,11 @@ void Window::poll() {
         if(exported.pixels) {
           validate();
           auto flat=std::make_shared<Document>(exported.prepared->document(std::move(*exported.pixels)));
-          validate();addDocument(std::move(flat));
+          validate();
+          // Only this unpublished output may pass adoption. Keep busy() truthful
+          // to reentrant callers throughout creator publication and retirement.
+          struct Adoption {const Document*& slot;const Document* previous;Adoption(const Document*& s,const Document* value):slot(s),previous(s){slot=value;}~Adoption(){slot=previous;}} adoption(impl->mixedFlattenAdoption,flat.get());
+          addDocument(std::move(flat));
         } else publishDisplayExport(std::move(exported.stage),validate,{});
         outputs.publish();impl->status="Display export complete";return;
       }

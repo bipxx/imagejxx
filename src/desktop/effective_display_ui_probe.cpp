@@ -1969,4 +1969,47 @@ Json mixedReplayUiCase(Window& w,const std::string& context,const std::string& f
   }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last},{"status",w.workflowReplayInfo()}});throw;}
 }
 
+Json analysisExportChainUiCase(Window& w,const std::string& context,const std::string& directory) {
+  namespace fs=std::filesystem;const auto dir=fs::absolute(fs::u8path(directory));require(!fs::exists(dir),"Fresh chain capture required");fs::create_directories(dir);
+  Json report={{"contract","analysis-export-chain-ui.001"},{"context",context},{"acceptance_claim",false},{"controls",Json::array()},{"events",Json::array()}},last;
+  std::atomic<bool> release{true},entered{false};
+  try {
+    Stack stack;Image image(16,12,1,PixelType::UInt8);for(int y=0;y<12;++y)for(int x=0;x<16;++x)image.at(x,y)=x+16*y;stack.push_back(std::move(image));
+    auto source=std::make_shared<imagejxx::Document>(Dataset::from_stack(std::move(stack)),"Chain source");source->select(Selection("line",{{1,1},{12,9}}));auto clone=std::make_shared<imagejxx::Document>(source->snapshot().data().dataset,"Chain clone");clone->select(Selection("line",{{1,1},{12,9}}));
+    w.addNativeDocument(source);w.addNativeDocument(clone);w.setActiveIndex(0);w.updateSettings({{"measurements",{"Area","mean","Length"}},{"profile_samples",3}},true);
+    const auto before=source->snapshot();const auto history=source->undo_steps();HeadlessInputSession session(w);const auto scheduler=session.fixtureApplication().job_scheduler();
+    auto frame=[&](const Json& inputs=Json::array()){require(report["events"].size()<1024,"Chain frame bound");last=session.frame(inputs);require(last.at("input_frame").at("raw_inputs")==inputs,"Chain raw inputs differ");report["events"].push_back(inputs);};
+    auto click=[&](Json control,const std::string& name){require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>(),"Chain control unavailable");report["controls"].push_back({{"name",name},{"control",control}});frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    auto control=[&](const std::string& name){click(last.at("host_controls").at(name),name);};
+    auto dialog=[&](const std::string& name){click(last.at("dialog").at("controls").at(name),"dialog."+name);};
+    auto focus=[&](const char* name){auto* panel=ImGui::FindWindowByName(name);require(panel,"Chain panel missing");ImGui::FocusWindow(panel);frame();};
+    auto text=[&](const std::string& value){for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));frame(Json::array({{{"type","text"},{"value",value}}}));frame();};
+    auto file=[&](const fs::path& path){click(last.at("file_browser").at("controls").at("path"),"file.path");text(path.u8string());click(last.at("file_browser").at("controls").at("submit"),"file.submit");frame();frame();};
+    auto output=[&](int index,const fs::path& path){const auto name="export_"+std::to_string(index)+"_path";dialog(name);text(path.u8string());require(last.at("dialog").at("text").at(name)==path.u8string(),"Chain output text differs");};
+    auto resources=[&]{require(w.renderMemoryInfo().at("working_bytes")==0 && scheduler->usage().reserved_bytes==0,"Chain resources leaked");};
+    frame();frame();frame();focus("Workflow");control("workflow.record");
+    control("menu.Analyze");control("menu.action.measure");w.wait();frame();
+    w.action("export_display",{{"path",(dir/"manual.png").u8string()}});w.wait();frame();
+    control("menu.Analyze");control("menu.action.profile");w.wait();frame();
+    w.action("export_pdf",{{"path",(dir/"manual.pdf").u8string()},{"dpi",96},{"landscape",true}});w.wait();frame();
+    w.action("flatten");w.wait();frame();w.setActiveIndex(0);focus("Workflow");control("workflow.record");require(!w.recording && w.workflow.size()==5 && w.results.size()==1,"Chain recording differs");
+    const auto steps=w.workflow,manual=w.results;const auto png=readBytes((dir/"manual.png").u8string()),pdf=readBytes((dir/"manual.pdf").u8string());const auto flat=w.documents().back()->nativeSnapshot().data().dataset;
+    control("workflow.save");file(dir/"chain.json");control("workflow.clear");control("workflow.load");file(dir/"chain.json");require(w.workflow==steps,"Chain Save/Load changed intent");
+    focus("Workflow");control("workflow.run");report["review"]=last.at("dialog").at("controls").at("sequence_summary");require(report["review"].at("read_only")==true,"Chain summary is editable");dialog("cancel");resources();
+    for(bool rebind:{false,true}) {
+      if(rebind)w.setActiveIndex(1);focus("Workflow");control("workflow.run");if(rebind)dialog("rebind");
+      output(2,dir/"replay.png");output(4,dir/"replay.pdf");report["chosen_outputs"]=Json::object();report["chosen_outputs"]["2"]["path"]=last.at("dialog").at("text").at("export_2_path");report["chosen_outputs"]["4"]["path"]=last.at("dialog").at("text").at("export_4_path");
+      dialog("apply");w.wait();frame();require(w.error().empty() && w.workflowReplayInfo().at("state")=="completed" && w.workflowReplayInfo().at("completed")==5,"Chain Run failed");
+      require(readBytes((dir/"replay.png").u8string())==png && readBytes((dir/"replay.pdf").u8string())==pdf,"Chain file outputs differ");
+      const auto restored=w.documents().back()->nativeSnapshot().data().dataset;require(restored.shape().x==flat.shape().x && restored.shape().y==flat.shape().y,"Chain Flatten dimensions differ");const auto actual=restored.plane({0,0,0}),expected=flat.plane({0,0,0});require(actual->pixels==expected->pixels,"Chain Flatten pixels differ");resources();
+    }
+    report["status"]=w.workflowReplayInfo();report["rows"]=w.results;report["manual_rows"]=manual;report["workflow"]=steps;report["png_equal"]=true;report["pdf_equal"]=true;report["flatten_equal"]=true;
+    // Keep actual Cancel observable while the first existing job owns its source.
+    w.setActiveIndex(0);session.fixtureWorkerGate([&](const JobContext& job){entered=true;while(!release){job.checkpoint();std::this_thread::sleep_for(std::chrono::milliseconds(1));}});release=false;
+    focus("Workflow");control("workflow.run");output(2,dir/"canceled.png");output(4,dir/"canceled.pdf");dialog("apply");const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);while(!entered && std::chrono::steady_clock::now()<deadline){frame();std::this_thread::sleep_for(std::chrono::milliseconds(1));}require(entered,"Chain cancel worker timeout");focus("Workflow");control("workflow.cancel_replay");release=true;w.wait();frame();session.fixtureWorkerGate({});require(w.workflowReplayInfo().at("state")=="canceled" && !fs::exists(dir/"canceled.png") && w.results==report["rows"],"Chain canceled Run published output");resources();report["cancel_status"]=w.workflowReplayInfo();
+    require(w.workflow==steps && source->snapshot().shares_data(before) && source->undo_steps()==history,"Chain altered source/intent/history");report["intent_protected"]=true;report["final_working_bytes"]=w.renderMemoryInfo().at("working_bytes");
+    w.action("save_workspace",{{"path",(dir/"chain.ijx").u8string()}});session.close();report["state"]="observed";writeJson((dir/"case.json").u8string(),report);return report;
+  }catch(const std::exception& error){release=true;w.cancel();w.wait();writeJson((dir/"failure.json").u8string(),{{"failure",error.what()},{"report",report},{"last",last},{"status",w.workflowReplayInfo()}});throw;}
+}
+
 }

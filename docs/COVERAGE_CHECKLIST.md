@@ -1,6 +1,6 @@
 # ImageJ/Fiji coverage checklist
 
-Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining is next. Full ImageJ/Fiji and release remain open.
+Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and both-Windows-host acceptance; all11 scratch groups retired. [Accepted scope](#mixed-measurement-integration-scoped-coverage). Current-selection and ordered-manager Measure recording/rebind have scoped both-Windows-host acceptance. Configured Profile recording/rebind now has scoped both-Windows-host acceptance; retained numeric plot workspace persistence is now scoped accepted; ordered mixed recorded analysis replay now has scoped acceptance in both Windows hosts; compatible analysis/display-export chaining now has scoped both-host acceptance; ordinary-source editing/filter chains are next. Full ImageJ/Fiji and release remain open.
 
 | Tracked scope | Current meaning |
 |---|---|
@@ -8,7 +8,7 @@ Updated 2026-11-07. M4 mixed measurement integration has scoped original/API and
 | 85 registered option contracts across 17 families | Detailed registered parameters/defaults, dimensions, interfaces and residual obligations are listed below. These are not an exhaustive ImageJ/Fiji command inventory. |
 | 82 families without registered option contracts | Their family-level requirements remain visible. Decompose the next active workflow into actual controls/options/API behavior when its owner takes it up; do not claim these families are fully specified. |
 | Accepted scoped workflows | Checked behaviors have bounded receipts; platform, numerical and UI limitations remain attached to those receipts. |
-| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Next: compatible analysis/display-export chain. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-ordered-mixed-replay). |
+| Current replay coverage / next gap | [Current-selection Measure recording/rebind](#measure-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Ordered manager recording/rebind is also scoped accepted below. [Configured Profile recording/rebind](#profile-recording-and-rebind-current-wip) is scoped accepted in both Windows hosts. Retained numeric plot workspace persistence is scoped accepted below. Ordered mixed recorded analysis replay has scoped installed API/both-Windows-host acceptance below. Analysis/display-export chaining has scoped both-host acceptance below. Next: ordinary-source edit/filter and analysis chain. Wider profile/chained replay and full T04a.3 remain open. [Queue](PLAN.md#next-ready-increment-t04a3-edit-analysis-chain). |
 | Commercial scope | Commercially usable behavior only. Candidate/plugin discovery is not approval to incorporate code, dependencies, models, fonts or other assets. Unreviewed eligibility remains blocked under its existing owner. |
 
 ## Acceptance detail for each behavior
@@ -83,6 +83,26 @@ option children additionally list parameters/defaults, dimensions, interfaces
 and residual acceptance obligations. Discover further children through the
 owning task rather than treating the current 85 contracts as exhaustive.
 
+## Analysis and captured export chain scoped coverage
+
+Owner: T04a.3 / G009 G066 G070 G071 G079 G082 G085 G089. **Scoped accepted.**
+[Receipt](parity/reviews/analysis-export-chain-20261107.json).
+I: existing mixed C++ jobs/staged publication and Python interface. V:238distinct
+installed Windows cases eventually pass234+4 (24new), native creator retirement
+and current mixed UI. UI: actual standalone C++ and optional Python Windows ImGui.
+R: open. No full family or general editing/Batch scope closes by implication.
+
+- [x] Save/Load/Run Measure, PNG, Profile, PDF and Flatten in order using existing jobs, immutable intent and stable active/terminal status.
+- [x] Strict canonical 1-based `export_options`: consuming export path/font_path/font_directory only; explicit reviewed defaults, source rebind and settings restore. Known invalid keys/types/indices/absolute paths/formats/source/conflicting outputs refuse before first effects.
+- [x] Both real hosts: Record/Save/Clear/Load/Run/read-only saved-pose/render/PDF/path review, physical per-step output edits, default/rebind and Cancel. Three raw rows and exact PNG/PDF/Flatten output match manual behavior.
+- [x] Independent installed readers reopen PNG, compare PDF raw RGB and landscape MediaBox, check expected corner pixels, declared output text and exact source/clone raw-row ownership.
+- [x] API Save/Open/rebind, recorded destinations, export-only chains, explicit per-step font recovery, Profile CSV after reactivating its source, and malformed choices pass.
+- [x] Cancellation, close, workflow/visibility mutation and later I/O refusal preserve earlier committed analysis and destinations. Exact-pointer/job-Publishing Flatten adoption keeps busy truthful; native reentrant retirement and existing mixed UI regressions pass.
+- [x] Built/installed/loaded extension/app and unchanged pure package bytes verified.234initial passes plus4corrected fixture cases; unavailable old standalone/annotation reports explicitly excluded, not passing evidence.
+- [x] Source/ownership review precedes lossless verified retention and retirement of7groups+2preferences/445files/6299679B (1065455B archive). Active cache/runtime preserved. Known storage grew3391653B;214 inaccessible subtrees keep full budget unverified.
+- [ ] T04a.3/T06-T08: [source-changing edit/filter chains](PLAN.md#next-ready-increment-t04a3-edit-analysis-chain), general native-program/Batch and workflow editing.
+- [ ] Existing owners: wider Profile/manager/table/source/type variants and supported-platform/commercial/release exits. Live Profile remains active-source-bound; use existing explicit retained snapshots for detached output.
+
 ## Ordered mixed replay current WIP
 
 Owner: T04a.3 / G009 G066 G070 G071 G085 G089. **Scoped accepted.**
@@ -100,7 +120,8 @@ ImGui. R: open. This does not close full T04a.3 or any full-family box.
 - [x] Existing single-step and plot/workspace regressions pass in selected121checks; four older standalone readers and old C++ snapshot parameter explicitly excluded because their retired full captures are unavailable.
 - [x] Source/ownership review completed before retention.6scratch groups+preferences/259files/6254408B retired after hash-verifying the922973B archive; failures retained. Active compiler/runtime products preserved.
 - [x] Scoped receipt, queue, canonical coverage and waste feedback reconciled. Known storage grew3945821B;214 inaccessible subtrees leave full budget unverified.
-- [ ] T04a.3: [compatible analysis/display-export chaining](PLAN.md#next-ready-increment-t04a3-analysis-export-chain), editing/filter chains, workflow edit/reorder/disable and Batch.
+- [x] Compatible analysis/display-export chaining has [scoped acceptance](#analysis-and-captured-export-chain-scoped-coverage).
+- [ ] T04a.3: editing/filter chains, workflow edit/reorder/disable and Batch.
 - [ ] Existing owners: wider ProfileZ/time/thick/curved, manager MultiMeasure, full table and other source/type variants.
 - [ ] T12/T14/T00: other supported platforms, commercial/distribution and release gates.
 
@@ -3250,4 +3271,4 @@ All 99 full-family checkboxes remain open in the source inventory. This does not
 
 ## Next update
 
-Follow the [next ready analysis/display-export chain](PLAN.md#next-ready-increment-t04a3-analysis-export-chain). Reuse the accepted mixed sequence/status owner and inspect actual export timing, destinations and staged publication before implementation. Update this view at observed checkpoints and affected behavior/status/residual entries at closeout. Wider editing/filter chains, Profile variants, table state and supported-platform/commercial release retain their owners. No agents are authorized by this update.
+Follow the [next ready ordinary-source edit/filter chain](PLAN.md#next-ready-increment-t04a3-edit-analysis-chain). Inspect existing pixel-result publication, baseline/rebind and own-edit lineage before implementation; preserve stale-input and history guarantees. Update this view at observed checkpoints and affected behavior/status/residual entries at closeout. Wider filter/Profile/manager/table/Fiji and supported-platform/commercial release retain owners. No agents are authorized by this update.
